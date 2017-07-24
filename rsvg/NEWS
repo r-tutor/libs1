@@ -1,0 +1,26 @@
+1.1
+  - Fix the configure script to use legacybrew on OSX 10.9 for CRAN
+
+1.0
+  - Upgrade to fully static librsvg 2.40.16 build on Windows
+  - Fixed a bug that could cause a freeze or segfault with old versions of librsvg
+
+0.6
+  - Update Homebrew URL in configure script
+  - Change autobrew to --force-bottle dependencies and use current glib2
+  - Add '-framework AppKit' to PKG_LIBS for OSX static binary (needed by CMD check)
+
+0.5
+  - Fix for Warning on OSX CRAN builder.
+  - Minor tweaks to configure script
+
+0.4
+  - Fix autobrew script for Snow Leopard
+
+0.3
+  - Add output formats rsvg_png() rsvg_pdf() rsvg_ps() rsvg_svg()
+  - Fix for rounding issue in proportional image scaling
+  - Add support for url in rsvg()
+
+0.2
+  - Initial CRAN release with Windows support
