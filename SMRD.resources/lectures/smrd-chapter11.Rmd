@@ -1,0 +1,143 @@
+---
+title: "`r SMRD:::info('book')`"
+subtitle: "`r SMRD:::info('chapter11')`"
+author: "`r SMRD:::info('authors')`"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+output:
+  slidy_presentation:
+    smart: false
+    fig_caption: yes
+footer: "`r paste('SMRD: ', SMRD:::info('chapter11'))`"
+runtime: shiny
+graphics: yes
+---
+
+```{r intro, echo=FALSE,message=FALSE, warning=FALSE}
+assign('dynamic', TRUE, envir = sys.frame(),immediate = TRUE)
+source('scripts/R/setup.R')
+```
+
+# CHAPTER OVERVIEW
+
+```{r}
+shiny::includeCSS('scripts/css/flat-slidy.css')
+shiny::includeScript(path = "scripts/js/audiojs/audiojs/audio.min.js",
+                     "audiojs.events.ready(function() {audiojs.createAll();});")
+shiny::includeScript("scripts/js/jkf-scroll.js")
+```
+
+## This chapter explains
+
+
+- ML estimation for th egamma and the extended generalized gamma (EGENG) distributions
+- ML estimation for the Birnbaum-Saunders (BISA) and the inverse Gaussian (IGAU) distributions
+- ML estimation for the limmited failure population (LFP) model
+- How truncation arises in reliability data applications and ML estimation for truncated data (or data from truncated distributions)
+- ML estimation for distributions with a threshold parameter like the three-parameter lognormal and the three-parameter Weibull distributions [using the generalized threshold-scale (GETS) distribution]
+- Potential difficulties involved in using distributions with threshold parameters and how to avoid them
+
+# 11.1 - Introduction
+
+# 11.1.1 - Likelihood for other distributions and models
+
+
+# 11.1.2 - CIs for other distributions and models
+
+
+# 11.2 - Fitting the Gamma Distribution
+
+# 11.3 - Fitting the Extended Generalized Gamma Distribution
+
+# 11.4 - Fitting the BISA and IGAU Distributions
+
+# 11.5 - Fitting a Limited Failure Population Model
+
+# 11.5.1 - Example and data
+
+
+# 11.5.2 - The limited failure population model
+
+
+# 11.5.3 - The likelihood function and its maximum
+
+
+# 11.5.4 - Profile likelihood functions and likelihood-based CI for $\mu,\sigma$ and $p$
+
+
+# 11.6 - Truncated Data and Truncated Distributions
+
+<font color="blue">__Censored Data__</font>
+
+- Left censored $\in (0,t_1]$ - Event occurs prior to first observation period
+- Right censored $\in [t_{m+1},\infty)$ - Event occurs after final observation period
+- Interval censored $\in [t_{i-1},t_i]$ - Event occurs between observation periods 
+
+<font color="blue">__Truncated Data__</font>
+
+- Left truncated $\in [\tau_L,\infty)$ - Events cannot occur before $\tau_L$  
+- Right truncated $\in (0,\tau_R]$ - Events cannot occur after $\tau_R$  
+- Interval truncated $\in [\tau_L,\tau_R)$ - Events cannot occur before $\tau_L$ OR after $\tau_R$
+
+A truncated distribution is "conditional" in that responses are recorded conditioned on them falling  within the truncating limits
+
+Recall, conditioning respresents a restriction on the sample space of values that a random variable can take on 
+
+# 11.6.1 - Examples of Left Truncation
+
+
+Ultrasonic inspection is used to detect flaws in titanium alloys at key points in the manufacture of engine turbine disks
+
+Under sustained stresses, flaws may grow to become cracks that can cause engine failure
+
+The growth rate of a flaw/crack depends on the applied stress and the current length
+
+- Longer cracks grow faster
+
+Engine inspections often occur at discrete intervals 
+
+It is very important that flaws/cracks are discovered as early as possible
+
+
+During ultrasonic inspections, flaws are found by observing the amplitude of ultrasonic energy reflected by the flaw's surface
+
+As flaw size decreases, it becomes difficult for inspectors to distinguish between a flaw and the grain structure of the material
+
+- It is common practice for inspectors to establish material-specific thresholds $\tau_L$
+- The thresholds represent the base "noise-level" of a material
+- Any response observed below $\tau_L$ is discarded
+- The remaining distribution of responses is said to be "left-truncated"
+
+# 11.6.2 - Likelihood with Left Truncation
+
+
+# 11.6.3 - Nonparametric estimation with left truncation
+
+
+# 11.6.4 - ML estimation with left-truncated data
+
+
+# 11.6.5 - Examples of right truncation
+
+
+# 11.6.6 - likelihood with right (and left) truncation
+
+
+# 11.6.7 - Nonparametric estimation with right (and left) truncation
+
+
+# 11.7 - Fitting Distributions that have a Threshold Parameter
+
+# 11.7.1 - Estimation with a given threshold parameter
+
+
+# 11.7.2 - Probability plotting methods
+
+
+# 11.7.3 - Likelihood Methods
+
+
+# 11.7.4 - Summary of results of fitting models to skewed distributions
+
+```{r}
+
+```

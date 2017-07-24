@@ -1,0 +1,43 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__A particular type of integrated circuit (IC) is known to have an electromigration-related failure mode. A life test was conducted at a temperature of $120^{\circ}C$ in order to learn more about the life distribution and when failures might be expected to occur. A total of 20 ICs were tested and 5 failed before 500 hours, when the test was stopped. Failure times were at 252, 315, 369, 403, and 474 hours. ML estimates of the lognormal parameters are $\hat{\mu}=6.56$ and $\hat{\sigma}=.534$. The variance-covariance matrix estimate for $\hat{\mu}$ and $\hat{\sigma}$ is__
+$$
+ \widehat{\sum}_{\hat{\mu},\hat{\sigma}}= \left[  \begin{array}{rr} .0581 &.0374\\ .0374 & .0405 \end{array} \right]. 
+$$ 
+__Recall that $\exp(\hat{\mu})=\exp(6.56)=706$ hours is the ML estimate of the lognormal median.__
+
+a. __Make a lognormal probability plot of the failure data.__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __Compute ML estimates of the lognormal $F(200)$ and $F(1000)$ and use these to draw a line representing the lognormal estimate of $F(t)$.__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __Use $\hat{\mu}$ and $\hat{\sigma}$ to compute an estimate of the mean of the lognormal distribution (equation given in Section 4.6).  Compare this with the estimate of the lognormal median. Comment on the difference.__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __Compute $that_{.1}$, the ML estimate of  the .1 quantile of the life distribution.__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __Compute the standard error for $that_{.1}$. Explain the interpretation of this quantity.__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __Compute an approximate $95\%$ confidence interval for $t_{.1}$.   Include this interval in the plot in part (a). Explain the interpretation of this interval and the justification for the approximate method that you use.__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`

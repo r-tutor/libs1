@@ -1,0 +1,80 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__Use the results from Exercise 7.7 to compute and plot (use an exponential plot) the ML estimate of $F(t;\theta)$ and 95% simultaneous parametric confidence bands for $F(t;\theta),$ based on the exact distribution of $2(TTT/\theta).$__
+
+`r SMRD.resources:::solution()$begin`
+From problem 7.7(b) $\widehat{\theta}_{_{MLE}}$ was determined to be $198.6.$ Thus, 
+
+$$
+\widehat{F}(t)_{_{MLE}}=F(t;\widehat{\theta}_{_{MLE}})= 1-\text{exp}\left(-\frac{t}{198.6}\right)
+$$
+
+From problem 7.7(f) the upper and lower limits of the $95\%$ confidence interval on $\widehat{F}(t)_{_{MLE}}$ based on the exact distribution of $\frac{2(TTT)}{\theta}$ were determined to be 
+
+$$
+\left[1-\text{exp}\left(-t\frac{\chi^{2}_{(0.025;18)}}{2(TTT)}\right), 
+1-\text{exp}\left(-t\frac{\chi^{2}_{(0.975;18)}}{2(TTT)}\right)\right]
+$$
+
+Inserting the value of the Chi-square quantile function and the $TTT$ these limits become
+
+$$
+\left[1-\text{exp}\left(\frac{-t}{482.58}\right), 1-\text{exp}\left(\frac{-t}{125.99}\right)\right]
+$$
+
+The plot of $\widehat{F}(t)_{_{MLE}}$ along with these pointwise confidence limits is shown below
+
+```{r, echo=FALSE, fig.cap="Maximum Likelihood Estimate of F(t) for the insulating material test data with 95% Pointwise CI"}
+hours<-seq(0,500,1)
+par(family="serif")
+plot(hours,1-exp(-(hours/198.60)),axes=FALSE,xlab="",ylab="",type="l",lwd=2)
+par(new=TRUE)
+plot(hours,1-exp(-(hours/482.58)),axes=FALSE,xlab="",ylab="",type="l",lwd=1.5,col=2)
+par(new=TRUE)
+plot(hours,1-exp(-(hours/125.99)),axes=FALSE,xlab="",ylab="",type="l",lwd=1.5,col=2)
+box(lwd=1.25)
+axis(side = 1, tck = -.015, labels = NA)
+axis(side = 2, tck = -.015, labels = NA)
+axis(side = 1, lwd = 0, line = -.6)
+axis(side = 2, lwd = 0, line = -.6, las = 1)
+mtext(side = 1, "Hours", line = 2.0)
+mtext(side = 2, "Fraction Failing", line = 2.5)
+legend("bottomright", c(expression(widehat("F")*"(t)"[MLE]),expression("95% Pointwise CI")),
+       lwd=c(rep(1.5,1.25)),col=c(1,2),cex=1,bty="n",xjust=0.5)
+```
+
+Converting these pointwise limits into simultaneous limits of a $95\%$ confidence interval is accomplished by using equation (3.19, pg 62) where $\widehat{se}_{\widehat{F}}$ is expressed as shown in equation 3.4 (since the data is singly censored) and $e_{(a,b,1-\alpha/2)}$ is determined from Table 3.5.  The values of $a$ and $b$ chosen as the minimum and maximum quantile values that contain the data.  For the data in problem 7.7 the minimum and maximum quantile values computed from the Hazen plotting postion formula are $0.01$ and $0.17$. Thus, selecting $a=0.01$ and $b=0.90$ from Table 3.5 is sufficient for these data and results in $e_{(.01,.90,.975)}=3.21$ Inserting $e$ into the equation (3.19) results in the simultaneous confidence intervals shown in the
+following plot.
+
+```{r, echo=FALSE, fig.cap="Maximum Likelihood Estimate of F(t) for the insulating material test data with 95% Pointwise and 95% Simultaneous Confidence Intervals"}
+hours<-seq(0,500,1)
+FM<-1-exp(-(hours/198.6))
+FU<-1-exp(-(hours/125.99))
+FL<-1-exp(-(hours/482.58))
+par(family="serif")
+plot(hours,FM,axes=FALSE,xlab="",ylab="",type="l",lwd=2)
+par(new=TRUE)
+plot(hours,FL,axes=FALSE,xlab="",ylab="",type="l",lwd=2,col=2)
+par(new=TRUE)
+plot(hours,FU,axes=FALSE,xlab="",ylab="",type="l",lwd=2,col=2)
+par(new=TRUE)
+plot(hours, FL/(FL+(1-FL)*(3.21*(FL*(1-FL))^(-.5))),axes=FALSE,xlab="",ylab="",type="l",lwd=2,col=3)
+par(new=TRUE)
+plot(hours, FU/(FU+(1-FU)/(3.21*(FU*(1-FU))^(-.5))),axes=FALSE,xlab="",ylab="",type="l",lwd=2,col=3)
+box(lwd=1.25)
+axis(side = 1, tck = -.015, labels = NA)
+axis(side = 2, tck = -.015, labels = NA)
+axis(side = 1, lwd = 0, line = -.6)
+axis(side = 2, lwd = 0, line = -.6, las = 1)
+mtext(side = 1, "Hours", line = 2.0)
+mtext(side = 2, "Fraction Failing", line = 2.5)
+legend("bottomright", c(expression(widehat("F")*"(t)"[MLE]),expression("95% Pointwise CI"),expression("95% Simultaneous CI")),
+       lwd=c(rep(1.5,1.25,1.25)),col=c(1,2,3),cex=1,bty="n",xjust=0.5)
+```
+`r SMRD.resources:::solution()$end`

@@ -1,0 +1,33 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: true
+---
+
+__The Weibull SAFT regression model is also a PH model. Thus fitting a parametric PH model with a Weibull baseline distribution is equivalent to fitting a Weibull regression model in which $\mu=\log(\eta)$ is a function of explanatory variables and $\sigma=1/\beta$ is constant.__
+
+a. __Why is the Cox PH model called "semiparametric?"__
+
+`r SMRD.resources:::solution()$begin`
+The regression relationship proportionality factor $\Psi(x)$ is parametric. The shape of the underlying hazard, however, need not be specified, and so this part of the model is "nonparametric."  It is for this reason that the Cox model is called semiparametric.
+`r SMRD.resources:::solution()$end`
+
+a. __What are some advantages of using the semiparametric Cox PH model, when compared to using the parametric Weibull model.__
+
+`r SMRD.resources:::solution()$begin`
+The main advantage of the semiparametric model is that one does not have to specify the form of the underlying hazard function. The model is flexible and can fit hazards with different
+general shapes.
+`r SMRD.resources:::solution()$end`
+
+a. __What are some advantages of using the parametric Weibull model, when compared to using the semiparametric Cox PH model?__
+
+`r SMRD.resources:::solution()$begin`
+Fitting a fully parametric model like the Weibull has the following advantages:
+
+1. It is possible to extrapolate in time even when there is heavy censoring.
+2. Estimates are natually smooth.
+3. Estimates for the entire model can be described by just a few parameters instead of having to report the entire nonparametric estimate of $h(t)$ in addition to the regression coefficients.
+`r SMRD.resources:::solution()$end`
+

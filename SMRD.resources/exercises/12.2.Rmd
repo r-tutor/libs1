@@ -1,0 +1,83 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: true
+---
+
+__Show that putting together a one-sided lower and a one-sided upper $100(1-\alpha/2)\%$ prediction bounds for a future observation results in a two-sided $100(1 - \alpha)\%$ prediction interval for that observation.__
+
+`r SMRD.resources:::solution()$begin`
+A $100(1-\alpha/2)\%$ one-sided lower prediction interval for a future observation is expressed as
+
+$$
+Pr(0 \le T \le \overset{\sim}{T})=1-\alpha/2.
+$$ 
+
+This can be represented graphically (assuming a normal distribution and $\alpha = 0.05$) as shown in the plot below.
+
+```{r, fig.align='center'}
+par(lwd = 2, las = 1, yaxs = 'i')
+llim <- qnorm(0.975)
+curve(dnorm(x), xlim = c(-3,3), ylab = 'P(X = x)')
+abline(v = llim, col = 2)
+polygon(x = c(-3, seq(-3,llim, length = 100), llim),
+        y = c(0, dnorm(seq(-3,llim, length = 100)), 0),
+        border = F,
+        col = scales::alpha('red', 0.25))
+text(0,dnorm(0)/2, '0.975', cex = 1.5)
+mtext(side = 3, at = llim, 
+      expression(bold(tilde('T'))), 
+      line = 0.005, cex = 1.1)
+```
+
+Similarly, a $100(1-\alpha/2)\%$ upper one-sided PI for a future observation is expressed as 
+
+$$
+Pr(\underset{\sim}{T} \le T < \infty)=1-\alpha/2.
+$$
+
+This can be represented graphically (assuming a normal distribution and $\alpha = 0.05$) as shown in the plot below.
+
+```{r, fig.align='center'}
+par(lwd = 2, las = 1, yaxs = 'i')
+ulim <- qnorm(0.025)
+curve(dnorm(x), xlim = c(-3,3), ylab = 'P(X = x)')
+abline(v = ulim, col = 2)
+polygon(x = c(ulim,seq(ulim, 3, length = 100), 3),
+        y = c(0, dnorm(seq(ulim, 3, length = 100)), 0),
+        border = F,
+        col = scales::alpha('red', 0.25))
+text(0,dnorm(0)/2, '0.975', cex = 1.5)
+mtext(side = 3, at = ulim,'~', line = -0.250, font = 2, cex = 1.1)
+mtext(side = 3, at = ulim,'T', line = 0.250, font = 2, cex = 1.1)
+```
+
+The area contained in the tails of each of the above one-sided $100(1-\alpha/2)\%$ PIs represents $\alpha/2\%$ of the total area under the curve. Combining these two one-sided PI's results in a $100(1-\alpha)%$ two-sided PI expressed as 
+
+$$
+Pr(\underset{\sim}{T} \le T < \overset{\sim}{T})=1-\alpha.
+$$
+
+The endpoints of this two-sided PI correspond to those of both of the one-sided PI's at $[\underset{\sim}{T},\overset{\sim}{T}]$. This two-sided interval is shown graphically below.
+
+```{r, fig.align='center'}
+par(lwd = 2, las = 1, yaxs = 'i')
+lims <- qnorm(c(0.025, 0.975))
+curve(dnorm(x), xlim = c(-3,3), ylab = 'P(X = x)')
+abline(v = c(lims[1],lims[2]), col = 2)
+polygon(x = c(lims[1],seq(lims[1], lims[2], length = 100), lims[2]),
+        y = c(0, dnorm(seq(lims[1], lims[2], length = 100)), 0),
+        border = F,
+        col = scales::alpha('red', 0.25))
+text(0,dnorm(0)/2, '0.950', cex = 1.5)
+mtext(side = 3, at = lims[1],'~', line = -0.250, font = 2, cex = 1.1)
+mtext(side = 3, at = lims[1],'T', line = 0.250, font = 2, cex = 1.1)
+mtext(side = 3, at = lims[2], 
+      expression(bold(tilde('T'))), 
+      line = 0.005, cex = 1.1)
+```
+
+The probability of these bounds results in the total area under the curve minus the probability of the tails, $Pr(\underset{\sim}{T}\le T \le \overset{\sim}{T})=1-\alpha$, which is equivalent to a two-sided $100(1-\alpha)%$ PI.
+`r SMRD.resources:::solution()$end`

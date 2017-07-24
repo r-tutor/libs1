@@ -1,0 +1,29 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__A test facility with 20 test positions is being used to conduct a life test of a newly designed battery.  Each battery will be tested until failure or until it has accumulated 100 charge/recharge cycles or until it is taken off test for some other reason.  When a battery fails, it will be replaced with a new unit, keeping the 20 test positions busy. At several randomly occurring   times during the test it will be necessary to remove one or more unfailed units from test. The removed units will be used for other experiments and demonstrations, but will not be returned to the life test. Removed units will be treated as censored observations (all that is known is that the unit did not fail by the time the unit was removed from test). The following list suggests some methods that might be used for choosing which battery to remove from test.  For each method of choosing, explain whether the censoring mechanism is "fair" or not (i.e., a censoring method that will not lead to undue bias for making inferences about the distribution of battery life). If it is a "fair" censoring method, explain why the method might be better than the other suggested methods (acknowledging that this would depend on the purpose of the test). If the selection method will result in bias, explain the  direction of the bias. 
+
+a. A battery selected at random.
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. The battery with the most running time.
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. The battery with the least running time.
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. The battery with the lowest measured capacity (as measured at the end of each cycle).__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`

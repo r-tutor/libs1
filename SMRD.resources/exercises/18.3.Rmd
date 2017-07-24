@@ -1,0 +1,38 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__Refer to Exercise 18.2.  Obtain an expression for the (average) FIT rate (in standard units of failures per hour in parts per billion) for the first 10 years of operation at $100^{o}C$.  How much would this improve if the operating channel temperature is changed to only $90^{o}C?$__
+
+`r SMRD.resources:::solution()$begin`
+Recall that $FIT=AHR(t)\times10^{9}$ where $AHR(t)$ is the average hazard rate at time $t$ expressed as
+
+$$
+AHR(t)=\frac{H(t)}{t}=\frac{-\text{log}(1-F(t))}{t}=\frac{-\text{log}\left[1-\Phi\left(\frac{\text{log}(t)-\mu}{\sigma}\right)\right]}{t}
+$$
+
+At the use temperature of $100^{o}C$ the $FIT$ rate is computed as 
+
+$$
+\begin{aligned}
+FIT&=\frac{-\text{log}\left[1-\Phi\left(\frac{\text{log}(10\times365\times24)-\text{log}(30\times365\times24)}{\sigma}\right)\right]}{(10\times365\times24)}\times 10^{9}\\
+&=\frac{-\text{log}\left[1-\Phi\left(\frac{11.38-12.479}{.7}\right)\right]}{87600}\times 10^{9}\\
+&=684.6 \text{ FITS}
+\end{aligned}
+$$
+
+Computing the $FIT$ rate at $T\ne100^{o}C$ requires substituting the Arrhenius relationship for $\mu$ giving
+
+$$
+\begin{aligned}
+FIT&=\frac{-\text{log}\left[1-\Phi\left(\frac{11.38-12.479+.6\left[\frac{11605}{373.15}-\frac{11605}{363.15}\right]}{.7}\right)\right]}{87600}\times 10^{9}\\
+&=121.8 \text{ FITS}
+\end{aligned}
+$$
+
+Comparing the FIT rate at each temperature reveals that at $t=10 \text{ years}$ we would expect a $5x-6x$ reduction in the number of failures by reducing the channel temperature from $100^{o}C$ to $90^{o}C$. 
+`r SMRD.resources:::solution()$end`

@@ -1,0 +1,301 @@
+%epilogue
+%original by wqmeeker  12 Jan 95
+%edited by wqmeeker  21/24 june 97
+
+\addcontentsline{toc}{chapter}{Epilogue}
+\chapter*{Epilogue}
+
+The
+material in this book is only part of a much larger picture. Our
+examples, like the particular applications from which they
+originated, focused on the reliability or durability of materials,
+components, and relatively simple systems. Each of these
+applications was, however, associated with larger reliability,
+economic, and business questions like
+\begin{itemize}
+\item
+Is Bearing-A durable enough to use in a new automobile transmission
+or do the designers need to switch to the more durable (but somewhat
+more expensive) Bearing-B? With the prospect of selling millions of
+transmissions over several years, the decision has huge economic
+consequences.
+\item
+How much redundancy is required for a critical device in the
+repeater-transmitter subsystems for an under-sea telecommunications
+system? Adding redundancy will add cost but also improve system
+reliability and affect life-cycle cost. Promised life-cycle cost is
+an extremely important part of contract negotiations. A critical
+input to the analysis is the life distribution of the device. An
+accelerated life test will be used to obtain needed information.
+\end{itemize}
+Numerous decisions like these are made in typical product design
+processes. The methods presented in this book are essential for
+providing some of the information needed for making such decisions
+in the face of uncertainty. We close with some commentary on the
+changing role of statistical methods in a Design for Reliability
+program and as part of an overall Reliability Assurance process.
+
+\subsubsection{The challenges of achieving high reliability}
+In a conversation with one of us, an engineer commented that
+``reliability is much more difficult today than it used to be.''  He
+went on to explain that his company was facing real competition for
+the first time. They were having to reduce engineering safety
+factors and cut other corners to reduce cost. As a result, they were
+beginning to see many more field failures.  New technology, new
+materials, higher customer expectations, more competition, and the
+need to get competitively priced products to the market quickly
+complicate decision making. Indeed, reliability engineering {\em is}
+more difficult today due to stringent cost constraints and enormous
+time pressures caused by increased competition.
+
+The engineer's comment might suggest that there is a
+cost/reliability trade-off curve for product design and all one
+needs to do is to find the right place on the design curve.  What is
+really needed, however, is to move off of the old curve, find a
+better curve, and then optimize it. The ``best curve'' in this case
+depends on product design, manufacturing process design, the
+collection and use of appropriate reliability data, and other
+factors. There will always be cost/reliability tradeoff issues. To
+be successful, products in competitive markets must provide high
+reliability at low cost. The best curves (i.e., designs or products)
+will be determined by good engineers who can properly use modern
+statistical and other analytical engineering methods.
+
+Achieving high reliability is complicated by the fact that the
+impact of many reliability improvements will appear some time in the
+future (often some years). Thus, it is extremely difficult to
+quantify the effect on the current year's bottom line. For most
+companies, this will require a change in metrics and mind-sets.
+
+In spite of the difficult challenges involved, the leading companies
+in a number of industries have continued to improve performance and
+reliability while keeping cost low enough to maintain competitive
+prices.  Examples include computer hardware, telecommunications
+systems, and automobiles.
+
+\subsubsection{High reliability at competitive cost} 
+The necessary constant pressure on product and process designs to
+reduce costs and/or improve performance has the potential to cause
+reliability problems.  For example, reducing traditional safety
+factors mandates more careful engineering and statistical
+practice. Having large safety factors to protect against one
+failure mode may well have prevented other un-thought-of failure
+modes. A proposed design change for cost reduction may be analyzed
+for the known risks (or failure modes), but the unknown risks may
+not surface until product is in the field. There are also numerous
+instances where all available energy was devoted to addressing one
+failure mode; no resources or energy remained to address others
+failure modes that turned out to be the most troublesome in the
+field.
+
+How can design engineers deal with failure modes that might
+otherwise be in the un-thought-of category?  Three suggested ways
+are:
+\begin{itemize}
+\item
+Use careful, informed engineering (including knowledge of the
+product's use environment). Identify and prevent most potential
+failure modes before they have a chance to occur. See the discussion
+of FMEA, FMECA, design reviews, and related reliability management
+tools described in Section~\ref{section:fmea.fmeca}.
+\item
+Increase up-front experimentation and life testing to discover and
+eliminate other potential failure modes before they get into a final
+design.  It might be necessary to do such testing at the component
+level, the subsystem level, or at the system level.
+\item
+Collect and carefully scrutinize early information from the
+field. Compare with previous test results.
+Detect and fix product weaknesses before they cause serious problems.
+\end{itemize} 
+As with the product design itself, the key is to find efficient
+implementation of these activities and to balance costs against
+potential risks.  The biggest payoff is in building high reliability
+into the design before product introduction.  The cost of detecting
+and eliminating failure modes increases as the product moves from
+conceptualization through design, development, testing, and
+production, and into the field. It is inevitable that there will be
+some product reliability problems. Reliability assurance processes
+should reduce risk by reducing the probability and severity of
+field-failure problems.
+
+
+\subsubsection{\bf Advancing engineering practice to achieve high reliability}
+Today's engineers need to rely more heavily on modern tools like
+probabilistic design and risk analysis and less on the traditional
+easy-to-apply rules of thumb.  This modern approach to engineering
+leads to a new set of concerns and costs.  Issues of model adequacy
+and uncertainty in model inputs can be critical. More measurement,
+experimentation, systems analysis, and sensitivity analysis will be
+needed. Protection must still be provided where unacceptable
+uncertainty exists. To address these issues, some or many engineers
+need a command of basic experimental design and statistical
+concepts.
+
+Although reliability practice is primarily an engineering
+discipline, statistics and other scientific disciplines (material
+science, physical chemistry, and so on) play crucial supporting
+roles.  Engineers need specialized training to analyze reliability
+data (dealing with censored data, pitfalls of accelerated testing,
+difficulties of interpreting warranty data, multiple failure modes,
+physics of failure, and so on).
+
+\subsubsection{\bf Useful tools and some specific suggestions}
+There is no simple solution or magic for the challenge of achieving
+high reliability at low cost. The process involves hard work. Some
+suggestions, related to the technical material in this book, include
+the following.
+\begin{enumerate}
+
+\item
+Electronic design engineers use databases containing up-to-date
+reliability-related information (component reliability, derating
+functions, materials properties, etc.) linked with reliability modeling
+software, embedded within CAD systems. More wide-spread development of
+such systems would lead to better design practices.
+
+\item
+Computationally-based models of physical phenomena and increased use
+of computer simulation have the potential to save time and money by
+reducing reliance on expensive physical experimentation. Electronics
+and fracture mechanics are the important success stories
+here. Up-front investment in research and development is needed, but
+there are important potential payoffs.
+\item
+Up-front testing of materials and components, as well as subsystems
+and systems, is needed to reduce uncertainty about product
+reliability. Such tests are an important part of any reliability
+assurance program. What to test and how much testing to do (number
+of units, test duration, and at what level of system integration)
+requires careful consideration to balance risks with costs. It is
+important to take into consideration the way in which the product is
+used by customers.
+\item
+Efficiency in up-front testing (e.g., use of existing information,
+properly designed experiments, etc.) is important.  Experimental
+effort should be focused where engineering uncertainty implies
+reliability uncertainty. For materials and components, the goal
+should be to assess the failure-time distribution and/or to
+determine allowable levels of stress. For subsystem and system tests
+in the product development stage, the goal should be to apply
+appropriate amounts of stresses in the right combinations to
+discover (and then fix) potential failure modes.  Being able to
+identify failure modes that would not be expected to occur in actual
+operation is important and requires good engineering knowledge.
+\item
+Experiments in general and robust-design experiments, in particular,
+have potential for leading to important improvements in product and
+process design and resulting better reliability. The robust-design
+methods of Taguchi (e.g., Phadke 1989) are important
+here. Multifactor robust-design experiments (RDE) provide methods
+for systematic and efficient reliability improvement.  These are
+often conducted on prototype units and subsystems and focus on
+failure modes involving interfaces and interactions among components
+and subsystems.  Among many possible product-design factors that may
+affect a system's reliability, RDEs empirically identify the
+important ones and find levels of the product-design factors that
+yield consistent high quality and reliability.  Graves and
+Menten~(1996) provide an excellent description of experimental
+strategies that can be used to help design products with higher
+reliability.  Other important references relating to RDEs are
+Condra~(1993) and Hamada~(1993, 1995a, 1995b).  Byrne and
+Quinlan~(1993) present an interesting example to illustrate the
+concepts.
+\item
+Product engineers, scientists, and statisticians can work more
+effectively together to develop experimental strategies for
+robust-design experiments for improving product performance and
+reliability.  Those who follow the Taguchi approach seem to advocate
+running a larger number of different simple experiments (and the
+necessary confirmatory experiments) to obtain first-order
+improvements.  Improvement is the goal. Traditional
+statistical/engineering approaches might recommend a more extensive
+sequential program of experimentation (perhaps requiring higher cost
+and more time) to gain more fundamental scientific understanding.
+The best approach depends on the potential for improvement,
+available resources, and goals.
+\item
+Field data is a vital resource. There will always be risk of
+failures with any product design.  Field tracking is expensive and
+not always used. Warranty data usually have serious deficiencies and
+often come too late. Nevertheless, it is necessary to develop
+processes for the collection and appropriate use of field feedback
+to quickly discover and correct potential problems before they
+become wide spread, thereby reducing overall risk. Field-data
+feedback should also be used to improve future designs.  Important
+references describing the analysis of warranty and other field data
+include Amster, Brush, and Saperstein~(1982), Suzuki~(1985),
+Kalbfleisch and Lawless~(1988), Robinson and McDonald~(1991),
+Lawless and Kalbfleisch~(1992), Lawless and Nadeau~(1995), Lawless,
+Hu, and Cao~(1995), Blischke and Murthy~(1996), and Lawless~(1998).
+\item
+For field data, one general idea is to carefully monitor some number
+of units conveniently located in the field. To be most effective,
+the units should be operated in a reasonably use-intensive manner and
+failures should be reported promptly.  All early failures should be
+analyzed carefully to determine cause, whether the same failure mode
+could be expected in the rest of the product population, and
+relevant actions that might be taken to eliminate the failure mode.
+Rather than just tracking failures, it is often useful, when
+practicable, to go out periodically and inspect and take measurements
+on field units (e.g., to assess degradation).
+\item
+In some circumstances there is need to use limited reliability audit
+testing of ongoing production to catch the possible impact of
+changes in raw materials, supposedly innocuous design changes, and
+so on. This is especially important in today's manufacturing
+environment where many producers are often just assemblers, who rely
+heavily on  components provided by vendors.
+\end{enumerate}
+
+\subsubsection{\bf Statistics is much more than a collection of
+formulas} Those who have had one or two courses in statistics are
+often left with the impression that statistics is primarily a
+collection of analytical techniques and formulas. Choose the
+correct technique and formula and the problem is solved.
+
+Viewed properly, statistics is the science of collecting and
+extracting useful information from raw data and of dealing with
+variability in quantitative information.  Statistical tools provide
+the means for fitting and assessing the adequacy of models (physical
+or empirical). Statistical models are used to describe the
+relationships among variables as well as variability and
+uncertainty.
+
+\subsubsection{\bf Statistics is not magic}
+The statistical methods described in this book are useful for
+planning reliability studies and extracting useful information from
+reliability data. Statistical methods also provide quantification of
+sampling uncertainty and allow planning statistical studies so that
+estimates and predictions can be obtained with a specified degree of
+statistical uncertainty.
+
+There is, however, no magic in statistics.  For example, we have
+heard more than once a question that asks something like this:
+``What kind of test can I run to demonstrate, with 95\% confidence,
+that my system will have .99 reliability for its first year of
+operation when I only have, at most, three systems to test and the
+test has to be completed in two months?''  The answer is that such a
+demonstration is impossible. Even if there were a given acceleration
+method providing an acceleration factor of six (which would be
+unlikely because for a complete system there are many failure modes
+with different acceleration factors and typically one cannot
+increase stress enough on a complete system to achieve an
+acceleration factor as large as six), one would need to test
+approximately 300 units for the two months with no failures to
+have a successful demonstration.
+
+When demonstration of desired reliability is impossible, there is an
+inclination to take action the basis of the best estimate.  Then a
+minimal requirement would be that there be {\em no} failures.  It is
+for this reason that it is easier to prove lack of reliability when
+you don't have it than it is to prove adequate reliability when you
+do have it.
+
+Reliability demonstration for systems, once popular in the military
+and some other places, is difficult or impossible with today's
+higher reliability standards and cost sensitivity. In new industrial
+markets,``Reliability Assurance'' processes are needed instead. The
+statistical methods in this book provide important tools for such
+Reliability Assurance processes. For more discussion of this topic,
+see Meeker and Hamada~(1995).

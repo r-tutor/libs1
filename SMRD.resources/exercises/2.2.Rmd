@@ -1,0 +1,92 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__It is possible for a continuous cdf to be constant over some intervals of time__
+
+a. __Give an example of a physical situation that would result in a cdf, $F(t)$ that is constant over some values of $t$.__
+
+`r SMRD.resources:::solution()$begin`
+If life time is measured in real time, and if units do not operate during some times of the life-cycle, then there will be flat spots in the cdf during the off-times. For example, a light bulb that is turned off 12 hours each day will only fail during the operating hours. Yet lifetime may be measured in terms of days since the bulb was installed.  If flat spots exist in the cdf of a product's lifetime distribution, it is likely an indication that the definition of time scale could be improved. For the light bulb example, using operating time as the lifetime measure would be more appropriate than calendar time.
+`r SMRD.resources:::solution()$end`
+
+b. __Sketch such a cdf and its corresponding pdf__
+
+`r SMRD.resources:::solution()$begin`
+Suppose that the lifetime of the lightbulbs discussed in part (a) follows a $Lognor(5,.85)$ distribution (this is a poor assumption since a lightbulb's liftime is one of the few things that is known to follow an exponential distribution).  Under this assumption, if the lightbulbs were used continuously (24-hrs/day) the respective pdf and cdf plots would appear as shown in Figure 1.
+
+```{r, eval=params$show_solution, fig.cap="Pdf (left) and cdf curves for a lognormal(5,.85) distribution assuming continuous (24-hr) usage", fig.width=9, fig.height=5, echo=2:9}
+par(mfrow = c(1,2), las = 1)
+
+curve(dlnorm(x,5,.85),
+      from = 0,
+      to = 480,
+      xlab = "Hours", 
+      ylab = "f(t)")
+curve(plnorm(x,5,.85),
+      from = 0,
+      to = 480,
+      xlab = "Hours", 
+      ylab = "F(t)")
+
+par(mfrow = c(1,1))
+```
+
+If usage occurs in 12-hour increments and the reliability metric is stated with respect to hours, the cdf and pdf plots would appear as shown in Figure 2.
+
+```{r, eval=params$show_solution, fig.cap="Pdf (left) and cdf curves for a lognormal(5,.85) distribution assuming half-day usage (12-hr intervals)" ,echo=1:15, fig.width=9, fig.height=5}
+points <- seq(0,480,12)
+p <- points[c(1,rep(2:70,each = 2),71)]
+Z <- function(a) rep(plnorm(p[a],5,.85),13)
+z <- rep(0,13)
+par(mfrow = c(1,2))
+plot(
+c(p[ 1]:p[ 2],p[3] :p[ 4],p[ 5]:p[ 6],p[ 7]:p[ 8],p[ 9]:p[10],p[11]:p[12],p[13]:p[14], 
+  p[15]:p[16],p[17]:p[18],p[19]:p[20],p[21]:p[22],p[23]:p[24],p[25]:p[26],p[27]:p[28], 
+  p[29]:p[30],p[31]:p[32],p[33]:p[34],p[35]:p[36],p[37]:p[38],p[39]:p[40],p[41]:p[42], 
+  p[43]:p[44],p[45]:p[46],p[47]:p[48],p[49]:p[50],p[51]:p[52],p[53]:p[54],p[55]:p[56],
+  p[57]:p[58],p[59]:p[60],p[61]:p[62],p[63]:p[64],p[65]:p[66],p[67]:p[68],p[69]:p[70]),
+    
+c(dlnorm(p[ 1]:p[ 2],5,.85),z,dlnorm(p[ 3]:p[ 4],5,.85),z,dlnorm(p[ 5]:p[ 6],5,.85),z,  
+  dlnorm(p[ 7]:p[ 8],5,.85),z,dlnorm(p[ 9]:p[10],5,.85),z,dlnorm(p[11]:p[12],5,.85),z, 
+  dlnorm(p[13]:p[14],5,.85),z,dlnorm(p[15]:p[16],5,.85),z,dlnorm(p[17]:p[18],5,.85),z, 
+  dlnorm(p[19]:p[20],5,.85),z,dlnorm(p[21]:p[22],5,.85),z,dlnorm(p[23]:p[24],5,.85),z,
+  dlnorm(p[25]:p[26],5,.85),z,dlnorm(p[27]:p[28],5,.85),z,dlnorm(p[29]:p[30],5,.85),z,
+  dlnorm(p[31]:p[32],5,.85),z,dlnorm(p[33]:p[34],5,.85),z,dlnorm(p[35]:p[36],5,.85)),
+    type="l", lwd = 2, yaxt = "n", xlab = "Hours", ylab = "f(t)")
+box(lwd = 1.5)
+axis(side = 2, las = 1, tck = 0.04, hadj=0.65)
+
+plot(
+c(p[ 1]:p[ 2],p[3] :p[ 4],p[ 5]:p[ 6],p[ 7]:p[ 8],p[ 9]:p[10],p[11]:p[12],p[13]:p[14], 
+  p[15]:p[16],p[17]:p[18],p[19]:p[20],p[21]:p[22],p[23]:p[24],p[25]:p[26],p[27]:p[28], 
+  p[29]:p[30],p[31]:p[32],p[33]:p[34],p[35]:p[36],p[37]:p[38],p[39]:p[40],p[41]:p[42], 
+  p[43]:p[44],p[45]:p[46],p[47]:p[48],p[49]:p[50],p[51]:p[52],p[53]:p[54],p[55]:p[56],
+  p[57]:p[58],p[59]:p[60],p[61]:p[62],p[63]:p[64],p[65]:p[66],p[67]:p[68],p[69]:p[70]),
+    
+c(plnorm(p[ 1]:p[ 2],5,.85),Z( 2),plnorm(p[ 3]:p[ 4],5,.85),Z( 4),
+  plnorm(p[ 5]:p[ 6],5,.85),Z( 6),plnorm(p[ 7]:p[ 8],5,.85),Z( 8),
+  plnorm(p[ 9]:p[10],5,.85),Z(10),plnorm(p[11]:p[12],5,.85),Z(12), 
+  plnorm(p[13]:p[14],5,.85),Z(14),plnorm(p[15]:p[16],5,.85),Z(16),
+  plnorm(p[17]:p[18],5,.85),Z(18),plnorm(p[19]:p[20],5,.85),Z(20),
+  plnorm(p[21]:p[22],5,.85),Z(22),plnorm(p[23]:p[24],5,.85),Z(24),
+  plnorm(p[25]:p[26],5,.85),Z(26),plnorm(p[27]:p[28],5,.85),Z(28),
+  plnorm(p[29]:p[30],5,.85),Z(30),plnorm(p[31]:p[32],5,.85),Z(32),
+  plnorm(p[33]:p[34],5,.85),Z(34),plnorm(p[35]:p[36],5,.85)),
+
+type = "l", lwd = 2, yaxt = "n", xlab = "Hours", ylab = "F(t)")
+box(lwd = 1.5)
+axis(side = 2, las = 1, tck = 0.04, hadj=0.65)
+par(mfrow = c(1,1))
+```
+`r SMRD.resources:::solution()$end`
+
+d. __Think about and explain the relationship between the occurrence of flat spots in a cdf and the choice of an approriate time scale on which to define life.__
+
+`r SMRD.resources:::solution()$begin`
+Continuing with the lightbulb example, the flat spots in the cdf shown in Figure 2 occur because the time unit used to generate the plot differs from the time unit used to measure usage.  Had "operating hours" been used instead of "hours", the cdf plot would appear the same as shown in Figure 1.
+`r SMRD.resources:::solution()$end`

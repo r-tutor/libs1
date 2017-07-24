@@ -1,0 +1,29 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__In the development and presentation of traditional statistical methods, description and inference are often represented in terms of means and variances (or standard deviations) of distributions.__
+
+a. __Use some examples in this chapter to explain why in many applications reliability or design engineers would be more interested in the time at which 1% (or some smaller percentage) of a particular component will fail instead of the time at which 50% would fail.__
+
+`r SMRD.resources:::solution()$begin`
+Nearly all products will be taken out of service long before the mean of the failure time distribution is reached.  For the heat exchanger tube and turbine wheel examples, safety is a major concern.  Therefore, reaching the number of failures that represents the mean of the failure time distribution is unacceptable.  Rather, the focus is on ensuring that the probability of a single failure is low over a reasonable design life or until a scheduled inspection occurs.
+
+For the Ni-Cd battery and printed circuit board examples minizing the number of warranty claims may be the driving factor.  For these products a 5-10\% return rate during the warranty period could mean a significant loss of both profit and market share to a competitor.
+`r SMRD.resources:::solution()$end`
+
+b. __Explain why means and variances of time to failure may not be of such high interest in reliability studies__
+
+`r SMRD.resources:::solution()$begin`  
+In reliability practice, the failure time distribution may be highly skewed.  For such distributions, the mean and variance are less informative.  Further, many important reliability questions are often answered in terms of probabilities (e.g., the probability of survival or failure by a certain time or after a certain amount of use) the hazard function (the probability of failure in the next small interval of time, given survival to that time), and quantiles (the times at which a specified proportion of a large population will have failed).
+`r SMRD.resources:::solution()$end`
+
+c. __Give at least one example of a product for which the mean time to failure would be of interest.  Explain why.__
+
+`r SMRD.resources:::solution()$begin`
+The mean time to failure provides an economically sensible reliability metric for products that may fail during service with little or no adverse consequences and when all or most units are expected to fail in service (consumable items). An example would be light bulbs or automobile tires. For such products the cost of operation (including replacements) is inversely proportional to the mean time to failure.
+`r SMRD.resources:::solution()$end`

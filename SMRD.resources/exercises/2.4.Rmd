@@ -1,0 +1,47 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__Consider a cdf $F(t)=1-\exp\left[-\frac{t}{\eta}\right]^{\beta}, t>0, \eta>0, \beta>0.$ (This is the cdf of the Weibull distribution, which will be discussed in detail in Chapter 4.)__
+
+a. __Derive an expression for the pdf $f(t)$.__
+
+`r SMRD.resources:::solution()$begin`
+$$
+f(t)=\frac{dF(t)}{dt}=\frac{\beta}{\eta} \left( \frac{t}{\eta} \right)^{\beta-1}\exp\left\{ -\left(\frac{t}{\eta} \right)^{\beta} \right\}
+$$
+`r SMRD.resources:::solution()$end`
+
+b. __Derive an expression for the hazard function $h(t)$.__
+
+`r SMRD.resources:::solution()$begin`
+$$
+h(t) = \frac{f(t)}{1-F(t)} = \frac{\beta}{\eta} \left(\frac{t}{\eta} \right)^{\beta-1}
+$$
+`r SMRD.resources:::solution()$end`
+
+c. __Sketch (or use a computer to draw) the cdf, pdf, and hazard functions for $\eta=1$ and $\beta=.5,1,2$.__
+
+`r SMRD.resources:::solution()$begin`
+The plots are shown in Figure 3 below and may be produced using the following R code: 
+
+```{r echo=TRUE,fig.height=9, fig.cap="Pdf, CDF and hazard function curves for various Weibull distributions" }
+par(mfrow=c(3,3), family="serif")
+
+weihaz <- function(x,a,b) {(a/b)*(x/b)^(a-1)}
+
+curve(dweibull(x,.5,1),xlim=c(0,6),ylab="",xlab="PDF of Weibull(.5,1)")
+curve(dweibull(x,1,1),xlim=c(0,6),ylab="",xlab="PDF of Weibull(1,1)")
+curve(dweibull(x,2,1),xlim=c(0,6),ylab="",xlab="PDF of Weibull(2,1)")
+curve(pweibull(x,.5,1),xlim=c(0,6),ylim=c(0,1),ylab="",xlab="CDF of Weibull(.5,1)")
+curve(pweibull(x,1,1),xlim=c(0,6),ylim=c(0,1),ylab="",xlab="CDF of Weibull(1,1)")
+curve(pweibull(x,2,1),xlim=c(0,6),ylim=c(0,1),ylab="",xlab="CDF of Weibull(2,1)")
+curve(weihaz(x,.5,1),xlim=c(0,6),ylim=c(0,2),ylab="",xlab="Hazard of Weibull(.5,1)")
+curve(weihaz(x,1,1),xlim=c(0,6),ylim=c(0,2),ylab="",xlab="Hazard of Weibull(1,1)")
+curve(weihaz(x,2,1),xlim=c(0,6),ylab="",xlab="Hazard of Weibull(2,1)")
+```
+`r SMRD.resources:::solution()$end`

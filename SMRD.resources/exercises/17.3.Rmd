@@ -1,0 +1,155 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__McCool (1980) gives the result of a life test on rolling contact fatigue of ceramic ball bearings.  Ten specimens were tested at each of four levels of stress.  The ordered failure times are given in the following table.  McCool indicates that it is customary to model such data with the two-parameter Weibull distribution with a shape parameter that does not depend on stress.__
+
+a. __Plot the failure times versus stress on log-log axes (or, alternately take logs and plot on linear axes).__
+
+`r SMRD.resources:::solution()$begin`
+In R, plotting this data on log-log axes can be accomplished using the following code
+
+```{r echo=TRUE,fig.show='hide', fig.cap="Results from McCool (1980) ceramic ball bearing rolling contact fatigue test"}
+life17.3 <- 
+  matrix(c(1.67,2.2,2.51,3,3.9,4.7,7.53,14.7,27.8,37.4,
+           0.80,1,1.37,2.25,2.95,3.70,6.07,6.65,7.05,7.37,
+            .012,.18,.2,.24,.26,.32,.32,.42,.44,.88,
+            .073,.098,.117,.135,.175,.262,.270,.350,.386,.456),
+            nrow = 4, byrow = TRUE)
+stress17.3 <- 
+  matrix(rep(c(.87,.99,1.09,1.18),each = 10),
+         nrow = 4, byrow = TRUE)
+plot(stress17.3,
+     life17.3,
+     axes = FALSE,
+     xlab = expression("Contact Stress x"*10^-6*" psi"),
+     ylab = expression("Revolutions x"*10^-6*""),
+     log = "xy")
+box()
+axis(side = 1, tck = -.015, labels = F, at = c(.87,.99,1.09,1.18))
+axis(side = 2, tck = -.015, labels = F)
+axis(side = 1, lwd = 0, line = -.6, at = c(.87,.99,1.09,1.18))
+axis(side = 2, lwd = 0, line = -.6, las = 1)
+```
+`r SMRD.resources:::solution()$end`
+
+b. __It is often suggested that median failure time is proportional to a power transformation of stress: that is, $t_{.5}=e^{\beta_{0}}\times(\text{stress})^{\beta_{1}}$ or $\log(t_{.5})=\beta_{0}+\beta_{1}\text{log(stress)}.$  Is the suggestion reasonable in this case?  Plot the sample medians on the graph in part (a) to help answer this question.__
+
+`r SMRD.resources:::solution()$begin`
+The median failure times for the observations obtained at each level of contact stress can be found using the "median" function. Copying the R code shown below and pasting it just after the preceding code shown for part (a) results in the requested figure.
+
+```{r echo=TRUE,eval=FALSE}
+points(stress17.3[,1],
+       apply(life17.3,1,median),
+       pch = 4,
+       col = 2,
+       cex = 2,
+       lwd = 2)
+legend("bottomleft",
+       expression("Median failure times"),
+       pch = 4,
+       lwd = 1.5,
+       col = 2,
+       cex = 1.25,
+       bty = "n",
+       xjust = 0.5)
+```
+`r SMRD.resources:::solution()$end`
+
+c. __Use a hand drawn line through the sample versus stress points to obtain a graphical estimate of the exponent (or slope) $\beta_{1}$.__
+
+`r SMRD.resources:::solution()$begin`
+A best fit line through these points may be drawn using
+
+```{r echo=TRUE, eval=FALSE, error=FALSE}
+y = apply(life17.3, 1, median)
+x = stress17.3[ ,1]
+model <- lm(log(y) ~ log(x))
+
+abline(coef(model))
+```
+
+which when added to the end of the previous codes for parts (a) and (b) results in the following plot of the failure times observed at each level of contact stress along with the median failure times at each stress level and the best fit line through these median values
+
+```{r echo=FALSE, fig.cap="Results from McCool (1980) ceramic \n ball bearing rolling contact fatigue test"}
+y = apply(life17.3, 1, median)
+x = stress17.3[ ,1]
+plot(stress17.3,
+     life17.3,
+     axes = FALSE,
+     xlab = expression("Contact Stress x "*10^-6*" psi"),
+     ylab = expression("Revolutions x "*10^-6*""),
+     log = "xy")
+box()
+par(family="serif")
+axis(side = 1, tck = -.015, labels = F, at = c(.87,.99,1.09,1.18))
+axis(side = 2, tck = -.015, labels = F)
+axis(side = 1, lwd = 0, line = -.25, at = c(.87,.99,1.09,1.18))
+axis(side = 2, lwd = 0, line = -.25, las = 1)
+points(x = x,
+       y = y,
+       pch = 4,
+       col = 2,
+       cex = 2,
+       lwd = 2)
+abline(coef(lm(log(y) ~ log(x))))
+legend("bottomleft",
+       expression("Median failure times"),
+       pch = 4,
+       lwd = 1.5,
+       col = 2,
+       cex = 1.25,
+       bty = "n",
+       xjust = 0.5)
+```
+`r SMRD.resources:::solution()$end`
+
+d. __Make separate Weibull probability plots for the data at each level of stress, plotting them all on the same graph.  What does this plot suggest about the customary assumption that the Weibull shape parameter is the same for all levels of stress?  Provide possible explanations for the observed differences in teh estimates of the Weibull shape parameter at each level of stress__
+
+`r SMRD.resources:::solution()$begin`
+The requested plot may be produced using the R code below
+
+```{r echo=TRUE, fig.cap="Weibull probability plot of McCool (1980) ceramic \n ball bearing rolling contact fatigue test"}
+plot(NA,
+     xlim = c(log(range(life17.3))),
+     ylim = c(-4.6,4),
+     axes = FALSE,
+     xlab = expression("log(Revolutions x "*10^-6*")"),
+     ylab = expression("Standard Weibull Quantile - F(t)"))
+par(family="serif")
+box()
+points(log(life17.3[1,]),log(-log(1-(seq(1,10,1)-.5)/10)),col=2)
+points(log(life17.3[2,]),log(-log(1-(seq(1,10,1)-.5)/10)),col=12)
+points(log(life17.3[3,]),log(-log(1-(seq(1,10,1)-.5)/10)),col=22)
+points(log(life17.3[4,]),log(-log(1-(seq(1,10,1)-.5)/10)),col=32)
+
+axis(side = 1, tck = -.015, labels = F)
+axis(side = 2, tck = -.015, labels = F)
+axis(side = 1, lwd = 0, line = -.25)
+axis(side = 2, lwd = 0, line = -.25, las = 1)
+
+abline(coef(lm(log(-log((1-(seq(1,10,1)-.5)/10)))~log(life17.3[1,]))),col=2)
+abline(coef(lm(log(-log((1-(seq(1,10,1)-.5)/10)))~log(life17.3[2,]))),col=12)
+abline(coef(lm(log(-log((1-(seq(1,10,1)-.5)/10)))~log(life17.3[3,]))),col=22)
+abline(coef(lm(log(-log((1-(seq(1,10,1)-.5)/10)))~log(life17.3[4,]))),col=32)
+legend("topleft",
+       pch = 1,
+       lwd = 1.5,
+       col = c(2,12,22,32),
+       bty = "n",
+       xjust = 0.5,
+       legend = c(expression("0.87 X "*10^6*" psi"),
+                  expression("0.99 X "*10^6*" psi"),
+                  expression("1.09 X "*10^6*" psi"),
+                  expression("1.18 X "*10^6*" psi")))
+       
+```
+
+Upon first observing the plot, it is clear that the lines representing the best-fit Weibull distributions at each stress level are not parallel.  Thus, one might conclude that assuming the value of the Weibull shape parameter is independent of stress should not be used to analyze this data set.
+
+After a closer inspection, however, it is observed that the lines for  
+`r SMRD.resources:::solution()$end`

@@ -1,0 +1,1021 @@
+%chapter 22
+%original by wqmeeker  3 aug 1994
+%edited by driker 11 dec 96
+%edited by wqmeeker 14-15 dec 96
+%edited by driker 19 dec 96
+%edited by driker 7 apr 97
+%edited by driker 2 july 97
+%edited by driker 25 july 97
+\setcounter{chapter}{21}
+
+%\setcounter{page}{m}
+
+\chapter{Case Studies and Further Applications}
+\label{chapter:case.studies}
+
+\input{\chapterhome/common_heading.tex}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Objectives}
+This chapter 
+\begin{itemize} 
+\item 
+Describes additional applications of the
+reliability data analysis methods in this book.
+\item 
+Shows how to extend the general methods covered in the earlier
+chapters to handle other special models and applications.
+\item 
+Provides additional discussion of some important practical aspects of
+reliability data analysis applications.
+\end{itemize}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Overview}
+This chapter presents several case studies that illustrate some
+additional important concepts and pitfalls of reliability data
+analysis, shows how to integrate ideas taken from several different
+places in the book, and presents some important additional examples.
+
+Section~\ref{section:cen.mixed.pop} describes a serious problem that
+can arise when different cohorts of units are censored unequally,
+having the potential to lead to misleading conclusions about product
+life.  Section~\ref{section:bayes.acceleration} applies Bayesian
+methods from Chapter~\ref{chapter:singledist.bayes} to an
+accelerated testing example that was first introduced in
+Chapter~\ref{chapter:analyzing.alt.data}.  This example shows
+how the introduction of prior information can importantly improve
+the precision with which one can estimate a failure-time
+distribution with an accelerated life test.
+Section~\ref{section:crisk.mixture.model} illustrates the use of a
+model that can be used to describe the failure-time distribution of
+a product that has both infant mortality and wearout failure causes.
+Section~\ref{section:fatigue.limit.model} suggests a physically
+motivated model that nicely describes the features and complicated
+relationship between fatigue life and applied stress or strain.
+Finally,
+Section~\ref{section:planning.accelerated.degradation.tests} shows
+how to use simulation methods to plan an accelerated degradation test.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Dangers of Censoring in a Mixed Population}
+\label{section:cen.mixed.pop}
+
+The life distribution of a product can change from one production
+period to the next.  Changes in the design or method of manufacture
+may improve product reliability.  This is especially likely for new products
+undergoing reliability improvement efforts.  In other cases,
+reliability may deteriorate due to the adverse consequences of a cost
+reduction, change in raw materials, or a relaxation of process
+monitoring standards.  Thus, field-tracking life data usually involve
+a mixture of failure-time distributions.
+
+\subsection{A conceptual example}
+Suppose that a product had been manufactured in equal quantities in each of
+two short production periods, one year apart.  Units from the two
+periods had exponential life distributions (constant hazard rate) with
+mean times to failure of $\theta_{1}=1$ year (constant hazard rate
+$\lambda_{1}=1/\theta_{1}=1$) and $\theta_{2}=5$ years
+($\lambda_{2}=.2$), respectively.  Due to their earlier availability,
+the units made in period 1 were put into service approximately one
+year earlier than those from period 2. An analysis of the
+failure-time data, is performed two years after the first group (or
+equivalently, one year after the second group) was put into service.
+
+For the first year of operation, based upon combining the units from
+both production periods, the average failure rate would be
+approximately .6 [i.e., ($\lambda_{1}+\lambda_{2})/2 = (1 + .2)/2]$.
+For the second year of operation, based upon the units only from
+production period 1, the failure rate would be approximately 1.
+Thus, because the production period 2 units with the lower failure
+rate are mixed with production period 1 units with the higher
+failure rate for the first year of operation (but not the second),
+there is an incorrect indication of an increasing failure rate.  This is
+so despite the fact that a population consisting of a mixture of two
+different exponential distributions has a decreasing failure rate
+(see Exercises~\ref{exercise:simple.mix.exp} and
+\ref{exercise:mix.exp.haz.dec}).
+
+\subsection{A numerical example}
+To illustrate the dangers of censoring in this simple setting, we
+simulated data from two populations with known characteristics.  We used
+samples of 1000 units each from exponential distributions with
+$\theta_{1}=1$ year (production period 1) and $\theta_{2}=5$ years
+(production period 2), respectively.  The interval data are given in
+Table~\ref{table:sim.mix.data}. The data available after two years
+from the start of production (one year in service for the second
+group) are plotted on Weibull paper in Figure~\ref{figure:sim.mix1.ps}
+both separately and combined for the two groups.  Weibull probability
+plots of the data after two years of operation for both groups are
+given in Figure~\ref{figure:sim.mix2.ps}.  This is the plot that would
+have been obtained after two years if both groups had been put into
+service at the same time.  Curvature in the combined-sample plots in
+Figures~\ref{figure:sim.mix1.ps} and
+\ref{figure:sim.mix2.ps} suggests some
+deviation from a Weibull distribution. Because the data were
+generated from a mixture of exponentials, a single Weibull
+distribution is not strictly correct in either case.
+
+\begin{table}
+\caption{Simulated data from two different production periods.}
+\centering\small
+\begin{tabular}{r@{\hspace{2ex}}rr@{\hspace{2ex}}r@{\hspace{3ex}}rr}
+\\[-.5ex]
+\hline
+& \multicolumn{3}{c}{Production Period 1}
+& \multicolumn{2}{c}{Production Period 2}\\
+ & \multicolumn{3}{c}{$\theta=1$ year}
+& \multicolumn{2}{c}{$\theta=5$ years}  \\[.5ex]
+&  \multicolumn{3}{c}{Data After} 
+&\multicolumn{2}{c}{Data After} \\
+\cline{5-6}
+Time to Failure&  \multicolumn{3}{c}{2 Years of} & \multicolumn{1}{c}{1 Year of}
+& \multicolumn{1}{c}{2 Years of}  \\
+\multicolumn{1}{c}{(years)}&& \multicolumn{1}{c}{Operation} && \multicolumn{1}{c}{Operation}
+& \multicolumn{1}{c}{Operation}  \\
+\hline
+   0.0-0.2    &&  185  &   & 33    & 33  \\
+   0.2-0.4    &&  163  &   & 33    & 33  \\
+   0.4-0.6    &&  134  &    & 35    & 35  \\
+   0.6-0.8    &&  90   &   & 39    & 39  \\
+   0.8-1.0    &&  83   &   & 45    & 45  \\
+   1.0-1.2    &&  58   &   &     & 34  \\
+   1.2-1.4    &&  42   &   &     & 33  \\
+   1.4-1.6    &&  44   &   &     & 31  \\
+   1.6-1.8    &&  36   &   &     & 24  \\
+   1.8-2.0    &&  35   &   &     & 31  \\
+  $> 1.0$     &&       &   & 815   &   \\
+  $> 2.0$    &&   130  &   &       & 662  \\
+\hline      
+\end{tabular}\\
+\begin{minipage}[t]{4in}
+The total sample size for each production period was 1000 units.
+Data from Hahn and Meeker~(1982b).
+\end{minipage}
+\label{table:sim.mix.data}
+\end{table}
+
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/sim.mix1.ps}
+\caption{Weibull probability plot of failure data for units from
+different production periods after two years since production startup
+(but only one year of operation for the second production period).}
+\label{figure:sim.mix1.ps}
+\end{figure}
+%-------------------------------------------------------------------
+
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/sim.mix2.ps}
+\caption{Weibull probability plot of failure data for units from
+different production periods after two years operating time
+for both production periods.}
+\label{figure:sim.mix2.ps}
+\end{figure}
+%-------------------------------------------------------------------
+
+Analysis 1 is based upon the combined data after two years since
+production startup (one year of operation for units from production
+period 2), i.e., the crosses in Figure~\ref{figure:sim.mix1.ps}.
+Analysis 2 is based upon the combined data after two years of
+operation for the units from both production periods, i.e., the
+crosses in Figure~\ref{figure:sim.mix2.ps}
+\begin{itemize}
+\item
+{\bf Analysis 1.} A Weibull distribution is fit to the data with
+unequal right-censoring for the two production periods.  A 95\%
+confidence interval for the Weibull distribution shape parameter is
+$[1.02,\quad 1.15]$, incorrectly indicating an increasing hazard
+rate with time (as expected from the conceptual example).
+\item
+{\bf Analysis 2.}  A Weibull distribution is fit to the data with
+equal right-censoring at 2-years for both production periods. A 95\%
+confidence interval for the Weibull distribution shape parameter is
+$[.82,\quad .92].$ This indicates a decreasing hazard rate with
+time, as expected from theory (see Proschan 1963).
+\end{itemize}
+
+An appropriate analysis of the unequally censored data would fit
+separate exponential distributions for the two production
+periods. This analysis (left as an exercise) gives estimates of
+failure probabilities and quantiles that agree well with the true
+model from which the data were simulated.
+
+\subsection{Analyzing data from different production periods}
+
+Because reliability can change over time, it is advisable, when possible, to
+conduct separate analyses for each production period, to compare the
+results, and to combine them only if this seems appropriate.  Separate
+analyses, however, are not possible in the following circumstances.
+
+\begin{itemize}
+\item
+A unit's production period is not known.
+\item
+Production periods are not well defined. For example, when
+production is continuous, there may not be well defined points in
+time where the process has changed.
+\item
+The data are too scanty for reasonable dissection.
+\end{itemize}
+
+In most practical data analysis problems, available data could be
+viewed as having come from two or more populations. Analyses are
+most often done with the pooled data. This is appropriate when
+interest centers on failure-time distribution of the mixture and
+\begin{itemize}
+\item
+There are only small differences among the populations or
+\item
+The amount of censoring is approximately the same over the
+different populations.
+\end{itemize}
+
+The effect of fitting a simple distribution to mixtures of two (or more)
+populations with unequal censoring depends on the degree of
+dissimilarity between or among the subpopulations and on the
+relative number of units produced in the two periods.  The example
+in this section illustrates the desirability of doing separate
+analyses for units from different production periods, especially
+when field exposure periods differ for the different groups.  If
+separate analyses are not possible because of the sparsity of the
+data or limitations in identifying the production period, one needs
+to recognize that a seriously incorrect model can give misleading
+results.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Using Prior Information in Accelerated Testing}
+\label{section:bayes.acceleration}
+This section uses an extension of the Bayesian methods presented in
+Chapter~\ref{chapter:singledist.bayes}, to reanalyze the data from
+Example~\ref{example:new.tech.ic}.  Lerch and Meeker~(1998) present
+similar examples. The computational methods used here, like
+those used in Chapter~\ref{chapter:singledist.bayes}, follow
+Smith and Gelfand~(1992).
+
+Example~\ref{example:new.tech.ic} illustrated the analysis of
+accelerated life test data on a new-technology IC device. As a
+contrast, Example~\ref{example:new.tech.ic.beta.known} showed how
+much smaller the confidence intervals on $F(t)$ would be if the
+Arrhenius activation energy were known. Generally it is unreasonable
+to assume that a parameter like activation energy is known
+exactly. For some applications, however, it may be useful or even
+important to bring outside knowledge into the analysis. Otherwise it
+would be necessary to spend scarce resources to conduct experiments
+to learn what is already known. In some applications, knowledgeable
+reliability engineers can, for example, specify the approximate
+activation energy for different expected failure modes.  Translating
+the information about activation energy into a prior distribution
+will allow the use of Bayesian methods like those introduced in
+Chapter~\ref{chapter:singledist.bayes}. This section shows how to
+incorporate prior information on the activation energy for a failure
+mode into an analysis of the new-technology IC device data.
+
+\subsection{Prior distributions}
+
+Section~\ref{section:prior.dist} describes different kinds of prior
+information.  This section reanalyzes the new-technology IC
+device ALT data in order to compare 
+\begin{itemize}
+\item
+A diffuse (wide uniform) prior distribution for $\Ea$.
+\item
+A given value (degenerate prior distribution) for $\Ea$.
+\item
+The engineers' prior information, converted into an informative
+prior distribution for $\Ea$.
+\end{itemize}
+
+On the basis of previous experience with a similar failure mode, the
+engineers responsible for this device felt that it would be safe to
+presume that, with a ``high degree of certainty,'' the activation energy
+$\Ea$ is somewhere in the interval .80 to .95. They also felt that a
+normal distribution could be used to describe the uncertainty in
+$\Ea$. We use normal distribution 3-$\sd$ limits (i.e., mean $\pm$
+three standard deviations) to correspond to an interval with a
+high degree of certainty, corresponding to about 99.7\%
+probability. This is an informative prior distribution for
+$\Ea$. The engineers did not have any firm information about the
+other parameters of the model. To specify prior distributions for
+the other parameters, it is then appropriate to choose a diffuse
+prior. A convenient choice is a UNIF distribution that extends far
+beyond the range of the data and physical possibility. As
+described in Chapter~\ref{chapter:singledist.bayes}, the parameters
+used to specify the joint posterior distributions should be given in
+terms of parameters that can be specified somewhat independently and
+conveniently. For this example, the prior distributions for $\sigma$
+was specified as $\UNIF(.2,.9)$ and the prior distribution for
+$t_{.1}$ at 250$\degreesc$ was specified to be $\UNIF(500,7000)$
+hours. Comparison with the ML estimates from
+Example~\ref{example:new.tech.ic} shows that the corresponding joint
+uniform distribution is relatively diffuse.
+
+Figure~\ref{figure:nt.device.Ea.dist.ps} compares a NOR prior
+distribution with a 3-$\sd$ range of $(.80,.95)$ and a
+$\UNIF(.4,1.4)$ (diffuse) prior for $\Ea$. The corresponding marginal
+posterior distributions for $\Ea$ are also shown. 
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/nt.device.Ea.dist.ps} 
+\caption{Plot of diffuse and informative prior 
+distributions for the new technology device activation energy $\Ea$
+along with corresponding posterior distributions.}
+\label{figure:nt.device.Ea.dist.ps}
+\end{figure}
+%-------------------------------------------------------------------
+The center of the marginal posterior distribution for $\Ea$
+corresponding to the informative NOR prior is very close to that of
+the prior itself. This is mostly because the prior is strong
+relative to the information in the data.
+Figure~\ref{figure:nt.device.Ea.dist.ps} also shows a posterior
+distribution corresponding to the uniform (diffuse) prior. The
+corresponding joint posterior is approximately proportional to the
+profile likelihood for $\Ea$. The uniform prior has had little
+effect on the posterior and therefore is approximately
+noninformative.
+
+In addition to activation energy $\Ea$, the reliability engineers
+also wanted to estimate life at 100$\degreesc$.
+Figure~\ref{figure:nt.device.bayes.quant.ps} shows different
+posterior distributions for $t_{.01}$ at 100$\degreesc$.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/nt.device.bayes.quant.ps} 
+\caption{Plot of the marginal posterior distribution of $\rvquan_{.01}$
+at 100$\degreesc$ for the new technology device, based on different
+assumptions. NW corner: all data and an informative prior for $\Ea$. NE
+corner: all data and a diffuse prior for $\Ea$. SW corner: drop
+300$\degreesc$ data and an informative prior for $\Ea$. SE corner: drop
+300$\degreesc$ data and given $\Ea = .8$. The vertical lines are two-sided
+95\% Bayesian confidence intervals for $t_{.01}$ at 100$\degreesc$.}
+\label{figure:nt.device.bayes.quant.ps}
+\end{figure}
+%-------------------------------------------------------------------
+The plots on the top row of
+Figure~\ref{figure:nt.device.bayes.quant.ps} compare posteriors
+computed under the informative and diffuse prior distributions for
+$\Ea$. This comparison shows the strong effect of using the prior
+information in this application.
+
+Recall from Example~\ref{example:new.tech.ic} that there was some
+concern (because of the different slopes in
+Figure~\ref{figure:icdevice02.groupi.lognor.ps}) about the
+possibility of a new failure mode occurring at
+300$\degreesc$. Sometimes physical failure mode analysis is useful
+for assessing such uncertainties. In this application the
+information was inconclusive.
+
+When using ML estimation or when using Bayesian methods with a
+diffuse prior for $\Ea$, it is necessary to have failures at two or
+more levels of temperature in order to be able to extrapolate to
+100$\degreesc$.  With a given value of $\Ea$ or an informative prior
+distribution on $\Ea$, however, it is possible to use Bayesian methods
+to estimate $t_{.01}$ at 100$\degreesc$ with failures at only one
+level of temperature.  The posterior distributions in the bottom row
+of Figure~\ref{figure:nt.device.bayes.quant.ps} assess the effect of
+dropping the 300$\degreesc$ data, leaving failures only at
+250$\degreesc$. Comparing the graphs in the NW and SW corners, the
+effect of dropping the 300$\degreesc$ data results in a small
+leftward shift in the posterior. Relative to the confidence
+intervals, however, the shift is small. Comparing the two plots in
+the bottom row suggests that using a given value of $\Ea=.8$ results
+in an interval that is probably unreasonably narrow and potentially
+misleading. If the engineering information and previous experience
+used to specify the informative prior on $\Ea$ is credible for the
+new device, then the SW analysis provides an appropriate compromise
+between the commonly used extremes of assuming nothing about $\Ea$
+and assuming that $\Ea$ is known.
+
+If one tried to compute the posterior after dropping the
+300$\degreesc$, using a uniform prior distribution on $\Ea$, the
+posterior distribution would be strongly dependent on the range of
+the uniform distribution.  This is because with failures only at
+250$\degreesc$, there is no information on how large $\Ea$ might
+be. In this case there would  be no approximately uninformative prior
+distribution.
+
+To put the meaning of the results in perspective, the analysis
+based on the informative prior distribution for $\Ea$ after dropping
+the suspect data at 300$\degreesc$ would be more credible than the
+alternatives. The 95\% Bayesian confidence intervals for $t_{.01}$
+at 100$\degreesc$ for this analysis are $[.6913, \quad 2.192]$
+million hours or $[79, \quad 250]$ years. This does not imply that
+the devices will last this long (we are quite sure that they will
+not!). Instead, the results of the analysis suggest that, if the
+Arrhenius model is correct, this particular failure mode is unlikely
+to occur until far beyond the technological life of the system into
+which the IC would be used. It is likely, however, that there are
+other failure modes (perhaps with smaller $\Ea$) that will be
+observed, particularly at lower levels of temperature (see also the
+discussion of failure mode masking in
+Section~\ref{:section.masked.failure.mode}).
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{An LFP/Competing Risk Model}
+\label{section:crisk.mixture.model}
+
+Chan and Meeker~(1998) describe a model that combines components
+from the LFP model (for infant mortality, as described in
+Section~\ref{section:lfp.model}) with a competing risk model (for
+longer-term wearout, as described in
+Section~\ref{section:competing.risk}).  This model is called the
+Generalized Limited Failure Population (GLFP) model.  This section
+briefly describes the GLFP model and results of using maximum likelihood
+to estimate the parameters of the model.
+
+%----------------------------------------------------------------------
+\subsection{Background}
+
+Consider the Vendor 1
+data in Examples~\ref{example:electronic.subsystem.data},
+\ref{example:pretest.and.left.trun}, and \ref{example:pretest.mle}. 
+Most of the early failures were known to have been caused by
+defective integrated circuits (Mode 1). Only a small proportion of the
+circuit packs would contain an Integrated Circuit (IC) with such a
+defect (something like 1\% or 2\% was expected for this particular
+technology).  After about 2000 to 4000 hours, however, the failure
+rate began to increase and there was some evidence (both in the data
+and some limited physical failure analysis) that the latter failures
+were being caused by a combination of a corrosion and another
+chemical degradation failure mode to which all units would
+eventually succumb (Mode 2).  This can be seen in the Weibull probability
+plot shown in Figure~\ref{figure:vendor1.cdf.ps}, where the plotted
+points change direction after 2000 hours.
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/vendor1.cdf.ps}
+\caption{Weibull probability plot comparing the Weibull/Weibull and the
+Weibull/lognormal GLFP competing risk $F(t;\thetavechat$) ML estimates for the
+Vendor 1 circuit pack failure data.}
+\label{figure:vendor1.cdf.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Although something like this secondary failure mode had been
+expected, the managers responsible for the operation of the system
+in which the circuit packs were to be deployed, were concerned at
+how early such failures were beginning to appear. They were
+interested in obtaining a prediction for the proportion of units
+that would fail in the first 5 years (43,800 hours) of operation
+(approximate technological life of the system).
+
+%----------------------------------------------------------------------
+\subsection{The GLFP model}
+ Let $T_{1}$ denote the ``infant mortality'' failure time for a
+unit. If a unit is not defective, then $T_{1}=\infty$.  As with the
+LFP model described in Section~\ref{section:lfp.model}, the cdf for
+$T_{1}$, conditional on the unit being defective, is
+$F_{1}(t;\thetavec_{1})$, where $\thetavec_{1}$ is a vector of
+unknown parameters.  The unconditional cdf of $T_{1}$ is
+$pF_{1}(t;\thetavec_{1})$, where $p$ is the proportion of defective
+units in the population.  Similarly, let $T_{2}$ denote the unit's
+wearout failure time and let $F_{2}(t;\thetavec_{2})$ denote the cdf
+of $T_{2}$. 
+The unit's actual
+failure time is $T =\min(T_{1},T_{2})$. 
+As in (\ref{equation:two.comp.series}), if $T_{1}$ and
+$T_{2}$ are independent, the cdf of failure time $T$ is
+\begin{equation}
+\label{equation:glfp.cdf}
+F_{T}(t;\thetavec) =
+\Pr(T \leq t) = 1 - [1 - pF_{1}(t;\thetavec_{1})][1 -
+F_{2}(t;\thetavec_{2})]
+\end{equation}
+where $\thetavec = (\thetavec_{1},\thetavec_{2}).$ The pdf of $T$ is
+then given by 
+\begin{equation}
+\label{equation:glfp.pdf}
+f_{T}(t;\thetavec) = \frac{dF_{T}(t;\thetavec)}{dt}
+= pf_{1}(t;\thetavec_{1})[1-F_{2}(t;\thetavec_{2})] +
+f_{2}(t;\thetavec_{2})[1-pF_{1}(t;\thetavec_{1})]
+\end{equation}
+where
+$f_{1}(t;\thetavec_{1})$ and $f_{2}(t;\thetavec_{2})$ are the pdfs
+of $T_{1}$ and $T_{2}$, respectively.
+Chan and Meeker~(1998) used Weibull and lognormal distributions for
+$F_{1}(t;\thetavec_{1})$ and $F_{2}(t;\thetavec_{2})$. Other
+distributions could, however, be substituted without difficulty.
+
+%----------------------------------------------------------------------
+\subsection{Likelihood contributions}
+%----------------------------------------------------------------------
+The likelihood for the circuit pack data can be written using the
+general form for independent right-censored and interval-censored
+observations given in
+(\ref{equation:general.parametric.likelihood}). The contributions
+for the individual observations for the GLFP model depend, however,
+on whether the cause of failure is known or not and, if so, on which
+type of failure occurred.
+
+If the cause of failure is {\em known}, then either $T_{1}$ or
+$T_{2}$ is also known.  Otherwise if failure cause is {\em unknown}
+then only $T$ is known.  If $T_{1}<T_{2}$ the unit fails from a
+defective IC and $T_{2}$ is not observed. Similarly, if
+$T_{2}<T_{1}$, the unit fails from a wearout mode and $T_{1}$ is not
+observed.
+
+If unit $i$ is known to have failed between times $t_{i-1}$ and
+$t_{i}$ from failure Mode 1, the probability of the
+observation is 
+\begin{eqnarray*} 
+\like_{i}(\thetavec) &=&
+\Pr[(t_{i-1} < T \leq t_{i})
+\cap (T_{1}<T_{2})] \\
+               &=& \Pr[(t_{i-1} < T_{1} \leq t_{i}) \cap 
+                               (T_{1}<T_{2})] \\   
+                       &=& \int_{t_{i-1}}^{t_{i}}
+\int_{s}^{\infty} pf_{1}(s;\thetavec_{1})f_{2}
+             (v;\thetavec_{2})\,dv\,ds \\ &=&
+          \int_{t_{i-1}}^{t_{i}} p f_{1}(s;\thetavec_{1})
+          [1-F_{2}(s;\thetavec_{2})]\,ds
+\end{eqnarray*} 
+where, as before, $T =$ min$(T_{1},T_{2}).$ Similarly, if the cause
+of failure is Mode 2, 
+\begin{displaymath}
+\like_{i}(\thetavec) =
+\int_{t_{i-1}}^{t_{i}}f_{2}(s;\thetavec_{2})
+	[1-pF_{1}(s;\thetavec_{1})]\,ds.
+\end{displaymath}
+
+If the cause of failure is not known, then
+\begin{eqnarray*}
+      \like_{i}(\thetavec) &=& \Pr(t_{i-1} < T \leq t_{i}) \\
+    &=& F_{T}(t_{i};\thetavec)- F_{T}(t_{i-1};\thetavec) \\
+    &=& [1 - pF_{1}(t_{i-1};\thetavec_{1})][1 -F_{2}(t_{i-1};
+\thetavec_{2})] 
+- [1 - pF_{1}(t_{i};\thetavec_{1})][1 - F_{2}(t_{i};\thetavec_{2})].
+\end{eqnarray*}
+For a right-censored observation at time $t_{i}$ (i.e., the failure
+time is after $t_{i}$), then
+\begin{eqnarray*}   
+     \like_{i}(\thetavec) &=& \Pr(T > t_{i}) \\ &=&
+   [1-pF_{1}(t_{i};\thetavec_{1})][1-F_{2}(t_{i};\thetavec_{2})].
+\end{eqnarray*} 
+Chan and Meeker~(1998) also give expressions for left-censored and
+exact failure-time observations.
+
+%----------------------------------------------------------------------
+\subsection{ML estimates}
+%----------------------------------------------------------------------
+To develop predictions for the proportion failing in 5 years, we fit
+the Weibull/Weibull and Weibull/lognormal models to the available
+data. We did this by supposing, on the basis of engineering
+judgment, that the failures before 200 hours were due to defective
+components and that failures after 5000 hours were due to a wearout
+mechanism. No assumption was used for the failures between 200 and
+5000 hours.  Figure~\ref{figure:vendor1.cdf.ps} shows a Weibull
+probability plot comparing the Weibull/Weibull and the
+Weibull/lognormal GLFP competing risk models for the Vendor 1
+circuit pack failure data.  Although the two different distributions
+provide excellent agreement within the range of the data, they
+differ importantly in extrapolation.  It is interesting to note
+that, as we have seen in other similar examples, the lognormal
+extrapolation provides a much more optimistic (smaller) prediction
+of the future proportion of units that will fail.
+%-----------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/vendor1.lognor.cdf.ci.ps}
+\caption{Weibull probability plot showing the ML estimate
+of the Weibull/lognormal GLFP competing risk cdf with pointwise
+approximate 95\% confidence intervals for the Vendor 1 circuit pack
+failure data.}
+\label{figure:vendor1.lognor.cdf.ci.ps}
+\end{figure}
+%-----------------------------------------------
+Figure~\ref{figure:vendor1.lognor.cdf.ci.ps} shows the ML estimate
+of the Weibull/lognormal GLFP competing risk cdf along with
+pointwise approximate 95\% confidence intervals for the Vendor 1
+circuit pack failure data.  At $10^{4}$ hours, the confidence
+interval is narrow because of the large sample size ($n=4993$). At
+$10^{5}$ hours, the confidence interval is wide, ranging from about
+.3 to .85. This is due to the large amount of extrapolation. It is
+important to note, however, that the width of this confidence
+interval does {\em not} reflect the deviation (which almost
+certainly exists) from the assumed Weibull/lognormal
+GLFP distribution. Indeed, as seen in Figure~\ref{figure:vendor1.cdf.ps},
+the Weibull/Weibull ML estimate at $10^{5}$ hours is almost 1.
+
+Figure~\ref{figure:vendor1.hazard.ps} shows a plot of the
+corresponding Weibull/Weibull and the Weibull/lognormal GLFP
+competing risk hazard function ML estimates.
+%-----------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/vendor1.hazard.ps}
+\caption{Plot comparing the Weibull/Weibull and the
+Weibull/lognormal GLFP competing risk mode hazard function estimates
+for the Vendor 1 circuit pack failure data.}
+\label{figure:vendor1.hazard.ps}
+\end{figure}
+%-----------------------------------------------
+The hazard function
+was computed as $h_{T}(t)=f_{T}(t;\thetavec)/[1-
+F_{T}(t;\thetavec)]$ where $F_{T}(t;\thetavec)$ and
+$f_{T}(t;\thetavec)$ are defined in (\ref{equation:glfp.cdf}) and
+(\ref{equation:glfp.pdf}), respectively. The plot shows the hazard
+decreasing until the corrosion/degradation failure mode becomes
+active, at which time the hazard increases markedly. We also fit
+lognormal/Weibull and the lognormal/lognormal GLFP models, but the
+estimates of the cdf and hazard function estimates were, for all
+practical purposes, the same as the Weibull/Weibull and
+Weibull/lognormal models, respectively. The shape of $h_{T}(t)$
+results from adding the decreasing hazard of $T_{1}$ to the increasing
+hazard for $T_{2}$.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Fatigue-limit Regression Model}
+\label{section:fatigue.limit.model}
+
+ 
+Section~\ref{section:quad.regr} illustrated the fitting of a
+quadratic regression model to nickel-base superalloy fatigue data
+from Nelson~(1984).  Fitting a quadratic function is relatively easy
+to do and may be satisfactory for some purposes.  Alternative
+functional forms, however, may provide a better description of the
+data. Pascual and Meeker~(1998a) use ML methods to
+fit an alternative regression model that contains a fatigue limit
+parameter. The material in this section has been adapted from this
+paper.
+
+Under the fatigue-limit model, specimens operated at levels of
+stress below the fatigue-limit will never fail.  The fatigue-limit
+model also allows the standard deviation of fatigue life to be a
+function of stress.  The purpose of the analysis is to obtain an
+estimate of the small quantiles of the fatigue-life distribution.
+
+\begin{figure}
+\splusbookfigure{\figurehome/nelson.scatter.ps}
+\caption{Log-log S-N (stress versus number of cycles)
+plot for the superalloy data with ML
+estimates of the .05, .5 and .95 quantiles from the fatigue-limit
+model ($\bullet$ failure, $\triangleright$~censored).}
+\label{figure:nelson.scatter.ps}
+\end{figure}
+
+%----------------------------------------------------------------------
+\subsection{The fatigue-limit model}
+Let $x_{1}$,\,\ldots, $x_{n}$ denote pseudostress levels of $n$
+specimens and let $t_{1}$,\,\ldots, $t_{n}$ be actual failure times
+or censoring times. Censoring times may vary from specimen to specimen.  Let
+$\gamma$ be the fatigue limit.  At each pseudostress level with
+$x_{i}>\gamma$, fatigue life $t_{i}$ is modeled with a lognormal
+distribution, i.e., the cumulative proportion failing function and
+its derivative are given by
+\begin{eqnarray}
+\label{equation:fatigue.limit.cdf}
+\Pr(\rv \leq t)=
+F[\realrv;\mu(x),\sigma(x)]&=&\Phi\hspace{-1.2 mm}\left[\frac{\log(\realrv)-\mu(x)}{\sigma(x)}\right]\\
+f[\realrv;\mu(x),\sigma(x)]&=&\frac{1}{
+	\sigma(x)\realrv}\phi\hspace{-1.2 mm}
+	\left[\frac{\log(\realrv)-\mu(x)}{\sigma(x)}\right], 
+	\;\quad\realrv>0. \nonumber
+\end{eqnarray}
+For example, using $\Phi_{\nor}$ and $\phi_{\nor}$ implies that
+$\log(\rv)$ is modeled with a normal distribution with mean $\mu(x)$
+and standard deviation $\sigma(x)$.  These parameters are related to
+stress according to
+\begin{eqnarray}
+\label{equation:mu.model}
+\mu(x)&=&\mbox{E}[\log(\rv)]=
+	\beta^{[\mu]}_{0}+\beta^{[\mu]}_{1}\log(x-\gamma),
+\;x>\gamma\\
+\label{equation:sigma.model}
+\sigma(x)&=&\sqrt{\mbox{Var}[\log(\rv)]}=
+	\exp[\beta^{[\sigma]}_{0}+\beta^{[\sigma]}_{1}\log(x)],
+	\;x>\gamma
+\end{eqnarray}
+where $\beta^{[\mu]}_{0}$, $\beta^{[\mu]}_{1}$,
+$\beta^{[\sigma]}_{0}$, $\beta^{[\sigma]}_{1}$ and $\gamma$ are
+unknown parameters to be estimated from data.  If $x_{\rm minf}$ is the
+smallest observed stress level that yields a failure, then $\gamma$
+must be in the interval $[0,x_{\rm minf})$.
+ 
+Note that when $\beta^{[\sigma]}_{1}=0$, the model has a constant
+standard deviation.  In most fatigue data, the standard deviation
+decreases as stress increases, which corresponds to
+$\beta^{[\sigma]}_{1}<0$.  The scatter plot of the superalloy data
+(and the fitted model) in Figure~\ref{figure:nelson.scatter.ps} has
+cycles to failure on the horizontal axis, as is commonly done in the
+fatigue literature. This scatter-plot indicates more scatter at the
+lower stress levels and less at the higher stress levels.
+
+The value of $\gamma$ determines the amount of curvature present in
+the plotted S-N curve for values of stress that are not far from
+$x_{\rm minf}$. When $\gamma$ is close to zero, the S-N curve is close
+to linear.  Larger values of $\gamma$ result in more curvature in
+the plot.  When $\gamma=0$, the model is equivalent to the simple
+linear regression model used in
+Section~\ref{section:simple.linear.reg}.  Curvature in
+Figure~\ref{figure:nelson.scatter.ps} suggests the inclusion of a
+fatigue limit $\gamma$ in the model.  Although a fixed fatigue limit
+may be unrealistic for describing a population of specimens, the
+fatigue limit provides a physically appealing alternative to the
+quadratic term in the $\mu(x)$ relationship used in
+Section~\ref{section:quad.regr} for describing S-N curvature.
+ 
+The maximum likelihood methods described in the next section use the
+following assumptions: a) specimens are tested independently and b)
+for $x > \gamma$ the times at which observations were censored are
+independent of actual failure times that would be observed if the
+experiment were to be run until failure.
+
+\subsection{Maximum likelihood estimation}
+The parameters of the fatigue limit model can be estimated by using
+the method of maximum likelihood in a manner that is very similar to
+that described in Chapter~\ref{chapter:regression.analysis}.  As
+before, we use
+$\thetavec=(\beta^{[\mu]}_{0},~\beta^{[\mu]}_{1},~\beta^{[\sigma]}_{0},~\beta^{[\sigma]}_{1},~\gamma)$
+to denote the vector of model parameters. The log likelihood
+function is
+\begin{displaymath}
+\loglike(\thetavec)=\log[\like(\thetavec)]=\sum_{i=1}^{n}\loglikei(\thetavec)
+\end{displaymath}
+where 
+\begin{displaymath}
+\loglikei(\thetavec)=\delta_{i}\{\log[\phi(z_{i})]-\log[\sigma(x_{i})t_{i})]\}+(1-\delta_{i})\log[1-\Phi(z_{i})]
+\end{displaymath}
+where $\delta_{i}=1$ ($\delta_{i}=0$) if observation $i$ is a
+failure (right-censored observation)
+and $z_{i}=[\log(t_{i})-\mu(x_{i})]/\sigma(x_{i})$.
+ 
+The ML estimate $\thetavec$ is
+the set of parameter values that maximize
+$\loglike(\thetavec)$.  Table~\ref{table:mle.nelson} gives the
+ML estimates of all model parameters resulting from fitting the
+fatigue-limit model to the data. This table also shows normal-approximation
+and likelihood confidence intervals for the parameters.
+Figure~\ref{figure:nelson.scatter.ps} shows curves of the ML estimates
+of the .05, .5 and .95 quantiles of fatigue life.
+
+\begin{table}[htb]\centering
+\begin{tabular}{crrr} \hline
+Parameter        & Estimate & \multicolumn{2}{c}{Approximate}\\
+                 &          & \multicolumn{2}{c}{95\% Confidence Interval}\\ \cline{3-4}
+&&Normal-Theory & Likelihood-Ratio\\  \hline  
+$\beta^{[\mu]}_{0}$    & 14.75  & (12.06, \quad 17.44)   & (12.90, \quad 21.45)     \\  
+$\beta^{[\mu]}_{1}$    & $-1.39$  & $(-2.02, \quad -.76)$   &
+$(-2.81, \quad -.92)$  \\  
+$\beta^{[\sigma]}_{0}$ & 10.97  & (3.82, \quad 18.12)    & (3.22, \quad 17.90)      \\ 
+$\beta^{[\sigma]}_{1}$ & $-2.50$  & $(-4.04, \quad -.96)$   &
+$(-3.98, \quad -.81)$ \\  
+$\gamma$               & 75.71  & (67.35, \quad 84.06)   & (49.98, \quad 79.79)  \\ \hline
+\end{tabular}
+\caption{Maximum likelihood results for the superalloy data}
+\label{table:mle.nelson}
+\end{table}
+
+Nelson~(1984, pages 72-73) comments that the quadratic
+fatigue life models produce quantiles larger at an
+intermediate stress than at a lower stress. Such a relationship is physically
+implausible. Although such behavior is also theoretically possible for the
+fatigue-limit model, it seems to be less of a problem and
+does not occur within the range of interest
+for these data.
+ 
+\subsection{Profile likelihoods and likelihood-ratio-based
+confidence regions} 
+
+The profile likelihood for $\gamma$ is defined by
+\begin{displaymath}
+R(\gamma)=\max_{\thetavec}
+	\left[\frac{\like(\thetavec,\gamma)}
+	{\like(\thetavechat)}\right]
+\end{displaymath}
+and is shown, for the superalloy data, in
+Figure~\ref{figure:nelson.like.ps}.  The likelihood confidence
+interval for $\gamma$ in Table~\ref{table:mle.nelson} is indicated by
+the vertical lines where $R(\gamma)$ intersects the horizontal
+critical level. Note that the upper bound of the normal-approximation
+interval exceeds $x_{\rm minf}=80.3$. This will never happen with the
+likelihood interval.
+
+The confidence intervals in Table~\ref{table:mle.nelson} indicate that
+the parameters $\beta^{[\mu]}_{1}$, $\beta^{[\sigma]}_{1}$ and
+$\gamma$ are different from zero. The confidence intervals for
+$\beta^{[\sigma]}_{1}$ indicate that the standard deviation of fatigue
+life depends on the stress level and, moreover, that the standard
+deviation decreases as stress increases, a commonly observed
+phenomenon in metal fatigue data.  The confidence intervals for
+$\gamma$ support the inclusion of a fatigue limit as suggested by the
+curvature in Figure~\ref{figure:nelson.scatter.ps}. Similar confidence
+intervals could also be computed for functions of the parameters, following
+the methods described in Chapter~\ref{chapter:parametric.ml.ls}.
+
+\begin{figure}
+\splusbookfigure{\figurehome/nelson.like.ps}
+\caption{Profile likelihood plot for the Fatigue Limit $\gamma$ for the
+superalloy data}
+\label{figure:nelson.like.ps}
+\end{figure}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Planning Accelerated Degradation Tests}
+\label{section:planning.accelerated.degradation.tests}
+
+Morse and Meeker~(1998) describe the use of simulation methods to
+help plan accelerated degradation tests.  This section has been
+adapted from their work.
+
+The motivating problem arose from an extension of the accelerated
+degradation analysis described in
+Example~\ref{example:device-b.degradation.data}.  The Device-B
+accelerated test had been designed as an accelerated life test. The
+engineers were going to define failure time to be the time at which
+power output first dropped .5 decibels (dB) below initial output.
+After learning about the accelerated degradation analysis methods,
+the engineers wanted to know how to design an accelerated test with
+degradation analysis in mind and how to assess the potential
+advantage of using degradation methods. In particular, they were
+interested in seeing whether, with a different test plan, they could
+expect to obtain better precision for estimating $\Fhat(130000)$,
+the proportion failing at 130 thousand hours at $80\degreesc$ junction
+temperature.
+
+\subsection{Design parameters and test constraints}
+
+The evaluation of alternative test plans will be based on the
+information obtained in the initial study (see
+Examples~\ref{example:device-b.degradation.data} through
+\ref{example:device.b.basic.estimate}).  The test plans will be
+evaluated under the following constraints:
+%
+\begin{itemize} 
+\item The test will use 
+3 levels of accelerated temperature.
+\begin{itemize}
+\item The highest test temperature will be 237$\degreesc$.
+\item The middle temperature will be halfway between 237$\degreesc$ and the
+low temperature (on the Arrhenius scale).
+\end{itemize}
+\item 20\% of the units on test will be allocated to the middle
+level of temperature.
+\item 
+There is a constraint on the overall number of test positions and
+the length of the test. To get useful information, it is necessary
+to test units at lower temperatures for longer periods of time. The
+time to leave a unit on test at a particular level of temperature (censoring
+time) will be found through a censoring function:
+\begin{itemize}
+\item Censoring time = $ - 15621 + 730 \times 11605/(273.15+\Tempc{})$ hours. 
+This was the approximate censoring function used in the original
+study.
+\item 
+A total of 
+67,000 test position-hours will be available for testing, as in
+the original study (an average of about 22 test positions over 3000 hours).
+\end{itemize}
+%
+The parameters of the study that will be varied are
+\begin{itemize}
+\item The low level of test-plan temperature, denoted by $\Temp_{L}$.
+\item The proportion of units allocated to $\Temp_{L}$,
+denoted by $\pi_{L}$.
+\end{itemize}
+\end{itemize}
+Because the highest accelerated temperature is $\Temp_{H}=
+237\degreesc$ and the
+middle temperature is halfway between the low and high, specifying
+$\Temp_{L}$ fixes all three accelerated temperatures.  Likewise,
+because 20\% of the units will always be allocated to the middle
+temperature $(\pi_{M}=.2)$, 
+specifying the proportion allocated to $\Temp_{L}$
+fixes the allocations to all temperatures.
+\subsection{Evaluation of test plan properties}
+
+Chapters~\ref{chapter:test-planning} and \ref{chapter:alt.test.planning} 
+showed how to evaluate the properties of proposed test plans by 
+\begin{itemize}
+\item Using large-sample approximations (easy to compute for simple
+problems, but the approximation may not be adequate with small samples).
+\item Using Monte Carlo simulation (requires much more computing time, but
+does not rely on large-sample approximations).
+\end{itemize}
+For the nonlinear accelerated degradation models, easy-to-compute large-sample
+approximations have not been derived. To answer the engineers questions
+quickly, Monte Carlo simulation was used.
+
+\subsection{Simulation procedure}
+
+This section shows how to simulate the accelerated degradation
+experiment. Model parameter estimates from the original study were
+used as planning values (see
+Example~\ref{example:device.b.basic.estimate}). Test plan properties
+can be computed for test plans specified by different combinations
+of $\Temp_{L}$ and $\pi_{L}$.  These evaluations can be used to
+determine if a different test plan would yield more precise
+estimates of the failure-time distribution.  The procedure for doing
+this is as follows:
+%
+\begin{enumerate}
+\item Fix the test plan by specifying $\Temp_{L}$ and $\pi_{L}$
+from a candidate list of combinations.
+\item Randomly generate degradation sample paths for each of the $n$
+units according to the specified test plan, using parameter estimates from
+the original study as planning values. Add simulated measurement error.
+\item Fit the degradation model to the $n$ simulated paths and compute
+approximate ML estimates of the model parameters. 
+\item Compute $\Fhat(130000)$ at 80$\degreesc$ as a function of the
+parameter estimates. 
+\item Repeat steps 2 to 4 $N$ times obtaining $\Fhat_1, \ldots, \Fhat_N$.
+\item Compute some statistic quantifying the variation in these
+point estimates (e.g., a sample standard deviation).
+\item Return to step 1 until the list of $\Temp_{L}$ and $\pi_{L}$
+combinations
+has been exhausted.
+\end{enumerate}
+%
+For example, Figure~\ref{figure:adtplan.sim.cdfs.ps} shows 
+$\Fhat(t)$ curves computed from 
+20 simulated degradation analysis experiments,
+using a low accelerated temperature of $\Temp_{L}=130\degreesc$
+and allocation $\pi_{L}=.1$. Overall the $\Fhat$ estimates in 
+Figure ~\ref{figure:adtplan.sim.cdfs.ps} show a considerable amount of
+variability. At 130 thousand hours, however, most of the simulated $\Fhat$
+estimates are close to 0. Of course, if the specified planning values
+are optimistic [in terms of having $\Fhat(130000)$ be much less than 
+the true $F(130000)$], these calculations could be misleading.
+Thus, one should use sensitivity analysis to investigate the effect that
+deviations from the assumed (uncertain) inputs will have on conclusions.
+
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/adtplan.sim.cdfs.ps} 
+\caption{An example of variation in failure-time distributions for
+$(\Temp_{L}, \, \pi_{L}) = (130 \degreesc, \, .1)$ test parameter
+combination.}
+\label{figure:adtplan.sim.cdfs.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/adtplan.contour.ps}
+\caption{Contour plot of sample standard deviations of
+the simulated degradation $\Fhat(130000)$ values for different
+proposed compromise accelerated degradation plans.}
+\label{figure:adtplan.contour.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\subsection{Evaluation of test plans over a 
+grid of $\boldsymbol{(\Temp_{L}, \, \pi_{L})}$ values}
+
+Test plan simulations were run at each combination of $(\Temp_{L}, \,
+\pi_{L})$ values for $\Temp_{L}= 130(5)160$ and $\pi_{L}=
+.05(.05).30$. At each point in the grid, 2000 tests were
+simulated. For 32 out of the 42 combinations of $(\Temp_{L}, \,
+\pi_{L})$ values, the ML estimation algorithm  converged for all 2000 samples. For 
+the combination $(\Temp_{L}, \, \pi_{L})=(135,.25)$, about 6\% of
+the simulated tests resulted in samples that did not converge and
+about 1\% failed to converge at $(\Temp_{L}, \, \pi_{L})=(130, \,
+.20)$ and (130, \,.30). In the other 7 cells with some convergence
+difficulties, the percentage was on the order of .5\% or less. The
+nonconverging samples were omitted from summarizing computations.
+
+At each point the sample standard deviation of the
+$\Fhat(130000)$ values was computed.
+Figure~\ref{figure:adtplan.contour.ps} is a contour plot of the
+results.  The original test plan used $\Temp_{L}=150\degreesc$ and
+$\pi_{L}=.2$. The orientation of the contour lines suggests that
+higher precision can be obtained for estimating $F(130000)$ by using
+tests having lower levels of $\Temp_{L}$. At lower ranges of
+temperature, precision seems not to be highly dependent on
+$\pi_{L}$. The final recommendation was to choose a plan with
+$(\Temp_{L}, \, \pi_{L})=(130, \, .15)$. In comparison with the original
+test plan, this would reduce the amount of extrapolation in
+temperature, provide a test plan with somewhat more precision, and be
+safely away from the points that had convergence difficulties.
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Bibliographic Notes}
+
+The example in Section~\ref{section:cen.mixed.pop} was adapted from
+Hahn and Meeker~(1982b).  In addition to the unequal censoring
+example presented in Section~\ref{section:cen.mixed.pop}, Hahn and
+Meeker~(1982a, 1982b) describe several other potential pitfalls that
+arise in the analysis of life data.  The material in
+Section~\ref{section:bayes.acceleration} builds on work done in
+Lerch and Meeker~(1998).  The example in
+Section~\ref{section:crisk.mixture.model} was extracted from Chan and
+Meeker~(1998) who also describe in detail a Monte Carlo-based method
+for finding likelihood-based confidence intervals for functions of
+model parameters when one is faced with a model with many
+parameters.  The material in
+Section~\ref{section:fatigue.limit.model} was adapted from Pascual
+and Meeker~(1997).  In addition to analyzing the superalloy data,
+Pascual and Meeker~(1997) also investigate the effect that censoring
+has on the ability to estimate the fatigue-limit parameter. Pascual
+and Meeker~(1998a) describe a related regression model for fatigue
+data, suggested in Nelson~(1990a, page 93). In this model, the
+fatigue-limit parameter is allowed to vary from unit to unit.  Morse
+and Meeker~(1998) provide more information on the use of simulation
+methods to help plan accelerated degradation tests. Boulanger and
+Escobar~(1994) also describe methods for planning accelerated
+degradation tests.

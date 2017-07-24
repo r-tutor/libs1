@@ -1,0 +1,144 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: true
+---
+
+__A sample of 20 aluminum specimens was tested until fatigue failure. A probability plot showed that the lognormal distribution provides an adequate description of the spread in the data.  The sample mean and standard deviation of the logarithms of cycles-to-failure were 5.13 and .161, respectively.__
+ 
+a. __Compute a $95\%$ confidence interval for the median of the cycles to failure distribution.__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __Compute a $95\%$ prediction interval for the number of cycles to failure for a future specimen tested in the same way. Compare this with the "naive" prediction interval computed as if the estimates are the parameters.__
+
+`r SMRD.resources:::solution()$begin`
+```{r, echo=FALSE, warning=FALSE}
+mu = 5.13 ; sigma = 0.161 
+library(SMRD)
+bootPI20  <- c(118.1, 240.0)
+bootPI100 <- c(121.6, 233.7)
+```
+
+The data in this exercise are 20 failure times with no censored observations.  We are told that the best fit model for this data is a lognormal distribution with parameter values $\widehat{\mu}_{_{MLE}} = `r mu`$ and $\widehat{\sigma}_{_{MLE}} =`r sigma`$. A naive prediction interval for a future observation may be obtained from Equation 12.4 and substituting $\widehat{\mu}_{_{MLE}}$ and $\widehat{\sigma}_{_{MLE}}$.
+
+$$
+\begin{aligned} 
+\left[\underset{\sim}{T},\overset{\sim}{T}\right]&=\left[\exp\left(\widehat{\mu}_{{MLE}}+\Phi_{{NOR}}^{-1}(0.025)\times \widehat{\sigma}_{{MLE}}\right), \quad\exp\left(\widehat{\mu}_{{MLE}}+\Phi_{{NOR}}^{-1}(0.975)\times \widehat{\sigma}{_{MLE}}\right)\right]\\\\
+&=\left[\exp\left(`r mu`+(`r round(qnorm(.025),2)`)\times `r sigma` \right), \quad\exp\left(`r mu`+`r round(qnorm(0.975),2)`\times `r sigma`\right)\right]\\\\
+&=[`r round(exp(mu+qnorm(0.025)*sigma),2)`, \quad `r round(exp(mu+qnorm(0.975)*sigma),2)`] \end{aligned}
+$$
+
+This prediction interval is said to be naive as it ignores the uncertainty that exists due to sampling errors.  We can use the bootstrap-based (Approximate Pivotal) method to account for this
+sampling uncertainty.  The function defined in the code chunk below can be used to perform the bootstrap procedure and return the upper and lower limits of the prediction interval.  To use this function, copy the code in the chunk and paste it into the R console. 
+
+```{r echo=TRUE}
+set.seed(1)
+
+boot.pivot <- 
+  function(B = NULL, N = NULL, 
+           mu = NULL, sigma = NULL, 
+           alpha = NULL) 
+{
+
+samp <- replicate(B, rlnorm(N, mu, sigma))
+
+samp <- apply(samp, MARGIN = 2, sort)
+
+params <- 
+  sapply(X = 1:B, 
+         FUN = function(x) {
+           
+      fails <- N
+      right <- N-N
+      samp.df <- 
+        data.frame(samp[,x],
+                   rep(c('f','r'),c(fails,right)))
+      samp.ld <- 
+        frame.to.ld(samp.df,
+                    response.column = 1,
+                    censor.column = 2)
+      
+      print(mlest(samp.ld, distribution = 'lognormal'))$mle[,1]
+})
+
+zlog_t <- 
+  sapply(X = 1:B,
+        FUN = function(x) { 
+                        
+    numer <- log(rlnorm(1, mu, sigma)) - params[[1,x]]
+    denom <- params[[2,x]]
+    numer / denom
+})
+
+zlog_t <- sort(zlog_t)
+
+limits <- zlog_t[c(round(B * alpha / 2), round(B * (1 - alpha / 2)))]
+
+zout         <- list()
+zout$zlog_t  <- zlog_t
+zout$limits  <- limits 
+zout$predict <- exp(mu + limits * sigma) 
+
+return(zout)
+}
+```
+
+Pasting the above code into R makes the function `boot.pivot` available to use.  To evaluate the function we must call it and provide values for the following formal arguments:
+
+- The number of bootstrap samples $B$
+- The number of observations in each sample $N$ 
+- The desired significance level $\alpha$ 
+- The ML parameters of the original data set $\mu, \sigma$  
+
+The code chunk below evaluates the function using $B = 10,000$ bootstrap samples and saves the upper and lower limits of the prediction interval as an object called `bootPI20`.
+
+```{r, eval=FALSE, echo=TRUE}
+bootPI20 <- boot.pivot(B = 10000,
+                       N = 20,
+                       alpha = 0.05,
+                       mu = 5.13,
+                       sigma = 0.161)$predict
+```
+
+The endpoints of the $95\%$ prediction interval for a future observation, using the bootstrap-based (approximate pivotal) method with $10,000$ bootstrap samples are shown below.
+
+$$
+\lbrack\underset{\sim}{T},\overset{\sim}{T}\rbrack=\left[\exp\left(\widehat{\mu} + z_{_{\log(T)_{(\alpha/2)}}} \times \widehat{\sigma}\right), \quad  \exp\left(\widehat{\mu} + z_{_{\log(T)_{(1-\alpha/2)}}}\times \widehat{\sigma}\right) \right]=\lbrack`r bootPI20[1]`,`r bootPI20[2]`\rbrack
+$$
+
+In general, bootstrap-based prediction intervals will be wider than
+naive prediction intervals because they account for the uncertainty due to sampling errors. In this exercise the difference between the prediction intervals computed using the naive method and bootstrap-based method is small.  This is because the data set contained a moderate number of observation and there were no censored observations. Had the test concluded after a specified number of failures or at a pre-determined time, the difference between these prediction intervals would likely have been larger.
+`r SMRD.resources:::solution()$end`
+
+a. __Redo parts (a) and (b) supposing, instead, that the sample size had been 100 units. Comment on the results.__
+
+`r SMRD.resources:::solution()$begin`
+As the naive method does not incorporate sampling errors, increasing the number of samples from 20 to 100 does not effect the limits of the naive prediction interval.
+
+The bootstrap-based (approximate pivotal) method does account for sampling errors.  Thus, increasing the sample size of the original data set will effect the limits of this prediction interval.  In the code chunk we, once again, call the `boot.pivot` function using $B = 10,000$ bootstrap sample.  However, in this call we set $N=100$ to account for the larger sample size.
+
+```{r, eval=FALSE, echo=TRUE}
+bootPI100 <- boot.pivot(B = 10000,
+                        N = 100,
+                        alpha = 0.05,
+                        mu = 5.13,
+                        sigma = 0.161)$predict
+```
+
+The endpoints of the $95\%$ prediction interval for a future observation, using the bootstrap-based (approximate pivotal) method with $10,000$ bootstrap samples and $N = 100$ observations are shown below.
+
+$$
+\lbrack\underset{\sim}{T},\overset{\sim}{T}\rbrack=\left[\exp\left(\widehat{\mu} + z_{_{\log(T)_{(\alpha/2)}}} \times \widehat{\sigma}\right), \quad  \exp\left(\widehat{\mu} + z_{_{\log(T)_{(1-\alpha/2)}}}\times \widehat{\sigma}\right) \right]=\lbrack`r bootPI100[1]`,`r bootPI100[2]`\rbrack
+$$
+
+Using this larger sample size, the endpoints of the $95\%$ prediction interval are similar to those that were found using the naive method assuming a sample size of only 20.  While this may seem odd, it's important to remember that had another 20 specimens been tested to failure the resulting prediction interval could have been much different.   
+`r SMRD.resources:::solution()$end`
+
+a. __Explain why there is so much difference between  the confidence interval in part (a) and the prediction interval in part (b).__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`

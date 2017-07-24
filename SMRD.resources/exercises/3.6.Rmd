@@ -1,0 +1,54 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__Over the past 18 months, ten separate copies of an electronic system have been deployed in earth-orbit where repair is impossible. Continuous remote monitoring, however, provides information on the state of the system and each of its main subsystems.  Each system contains 3 nominally identical devices and it was learned, after deployment, that these devices are, in the system's environment, failing unexpectedly. The failures cause degradation to the overall system operation. For future systems that are to be deployed, the problem will be fixed, but owners of the systems have asked for information on the amount of degradation that can be expected in future years of operation among these currently deployed. To date, 5 of the 30 devices have failed. Due to the staggered entry of the systems into service, the available data are multiply censored. The following table summarizes the available information with times given in hours.  Times of unfailed units are marked with a "$+$."__
+
+{\centering\small 
+$$
+\begin{array}{rrrr} \\[-.5ex] 
+System & Device 1 & Device 2 & Device 3\\ 
+\hline
+1  & 564+              & 564+              & 564+              \\ 
+2  & 1321+             & 1104 \hspace{8pt} & 1321+             \\ 
+3  & 1933+             & 1933+             & 1933+             \\ 
+5  & 1965+             & 1965+             & 1965+             \\ 
+4  & 2578+             & 2345 \hspace{8pt} & 2578+             \\ 
+6  & 3122+             & 3122+             & 3122+             \\ 
+7  & 5918+             & 5918+             & 4467 \hspace{8pt} \\ 
+8  & 7912+             & 7912+             & 6623 \hspace{8pt} \\ 
+9  & 8156+             & 8156+             & 8156+             \\ 
+10 & 7885 \hspace{8pt} & 12229+            & 12229+            \\ 
+\hline
+\end{array}
+$$
+} 
+ 
+a. __Compute a nonparametric estimate of  $F(t)$, the life distribution of the devices, assuming that the devices are operating and failing independently.__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __Plot the nonparametric estimate of $F(t)$.__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __Compute pointwise approximate $95\%$ confidence intervals for $F(t)$ and add these to your plot.__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __Explain why it might be that the 30 devices are not operating and failing independently and how this would affect conclusions drawn from the data.__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __Describe possible reasons why this failure-causing problem was not discovered earlier and what might be done to minimize the chance of such problems occurring in the future. What questions would you ask of a client who wants you to help interpret the information in the failure data?__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`

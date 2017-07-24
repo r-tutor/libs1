@@ -1,0 +1,56 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__Section 10.5.1 shows how to use the elements of the Fisher information matrix to compute variance factors for test planning in a life test with a single censoring time.  In Appendix Table C.20, use the values of $f_{11}, f_{22},$ and $f_{12}$ in the row corresponding to $\zeta_{c}=1$, and show how to compute the quantities $\frac{1}{\sigma^{2}}V_{\widehat{\mu}},\frac{1}{\sigma^{2}}V_{\widehat{\sigma}}, \frac{1}{\sigma^{2}}V_{(\widehat{\mu},\widehat{\sigma})}, \rho_{(\widehat{\mu},\widehat{\sigma})}, \frac{1}{ \sigma^{2}}V_{\widehat{\mu}|\sigma},$ and $\frac{1}{\sigma^{2}}V_{\widehat{\sigma}|\mu}$ in that row.__
+
+`r SMRD.resources:::solution()$begin`
+The $f_{ij}$ elements in Appendix C.20 are the elements of the scaled Fisher information matrix, that is
+
+$$
+\left[\begin{array}{cc}f_{11}&f_{12}\\f_{21}&f_{22}\end{array}\right]=
+\sigma^{2}
+\left[\begin{array}{cc}
+E\left\{-\frac{\partial^{2}\mathcal{L}(\mu,\sigma)}{\partial\mu^{2}}\right\}&
+E\left\{-\frac{\partial^{2}\mathcal{L}(\mu,\sigma)}{\partial 
+ \mu \partial \sigma}\right\}\\
+E\left\{-\frac{\partial^{2}\mathcal{L}(\mu,\sigma)}{\partial   
+ \mu \partial \sigma}\right\}&
+E\left\{-\frac{\partial^{2}\mathcal{L}(\mu,\sigma)}{\partial\sigma^{2}}\right\}
+\end{array}\right]=\left[\begin{array}{cc}.96841&-0.11490\\-0.11490&1.56779
+\end{array}\right]
+$$
+
+The variance terms in Table C.20 are then found from
+
+$$
+\begin{aligned}
+\frac{1}{\sigma^{2}}\left[\begin{array}{cc}V_{\bar{\mu}}&V_{(\bar{\mu},\bar{\sigma})}\\V_{(\bar{\mu},\bar{\sigma})}&V_{\bar{\sigma}}\end{array}\right]&=\frac{n}{\sigma^{2}}\left[\begin{array}{cc}Avar(\bar{\mu})&Acov(\bar{\mu},\bar{\sigma})\\Acov(\bar{\mu},\bar{\sigma})&Avar(\bar{\sigma})\end{array}\right]=\left[\begin{array}{cc}f_{11}&f_{12}\\f_{12}&f_{22}\end{array}\right]^{-1}\\ 
+\\
+&=\frac{1}{f_{11}f_{22}-f_{12}^{2}}\left[\begin{array}{cc}f_{22}&-f_{12}\\-f_{12}&f_{11}\end{array}\right]\\\\
+&=\frac{1}{0.96841\times 1.56779-(-0.11490)^{2}}\left[\begin{array}{cc}0.96841&0.11490\\0.11490&1.56779\end{array}\right]\\\\
+&=\left[\begin{array}{cc}1.04168&0.07634\\ 0.7634&0.64344\end{array}\right]
+\end{aligned}
+$$
+
+The asymptotic correlation is then computed as
+
+$$
+\rho(\bar{\mu},\bar{\sigma})
+=\frac{V_{(\bar{\mu},\bar{\sigma})}}{\sqrt{V_{\bar{\mu}}V_{\bar{\sigma}}}}
+=\frac{0.07634}{\sqrt{1.04168\times 0.64344}}=0.09325
+$$
+
+Finally, the scaled asymptotic variances for either a known $\mu$ or a known $\sigma$ are
+
+$$
+\begin{aligned}
+\frac{n}{\sigma^{2}}Avar(\bar{\mu}|\sigma)&=\frac{1}{\sigma^{2}}V_{\bar{\mu}|\sigma}=\left[f_{11}\right]^{-1}=\left[0.96841\right]^{-1}=1.03262\\\\
+\frac{n}{\sigma^{2}}Avar(\bar{\sigma}|\mu)&=\frac{1}{\sigma^{2}}V_{\bar{\sigma}|\mu}=\left[f_{22}\right]^{-1}=\left[1.56779\right]^{-1}=0.63784
+\end{aligned}
+$$
+`r SMRD.resources:::solution()$end`

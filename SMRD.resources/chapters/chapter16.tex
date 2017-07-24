@@ -1,0 +1,2262 @@
+%chapter 16
+%original by wqmeeker  7 aug 94
+%edited by wqmeeker  8 aug 94
+%edited by wqmeeker  15 sept 94 morgan data table
+%edited by wqmeeker  17 june 95 breaking out repairable system
+%edited by wqmeeker  24/26 june 96 adding in psnup stuff
+%edited by driker 27 july
+%edited by driker 1 july 96
+%edited by wqmeeker  26 aug 96 abby suggestions
+%edited by driker 17 sept 96
+%edited by wqmeeker 28 sept 96 adding in diff example
+%edited by driker 22 oct 96  wayne's suggestions
+%edited by wqmeeker  30 oct 96 minor changes and step figures
+%edited by wqmeeker  27 nov 96 luis' comments
+%edited by wqmeeker   7 dec 96 luis' comments
+%edited by lae       08 dec 96 change a couple of exercises
+
+\setcounter{chapter}{15}
+
+\chapter{Analysis of Repairable System and Other Recurrence Data}
+\label{chapter:repairable.system}
+
+\input{\chapterhome/common_heading.tex}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+\section*{Objectives}
+This chapter explains
+\begin{itemize} 
+\item
+Typical data from repairable systems and other applications
+that have recurrence data.
+\item
+Simple nonparametric graphical methods for
+presenting recurrence data.
+\item
+Simple parametric models for recurrence data.
+\item
+The combined use of simple parametric and nonparametric
+graphical methods for drawing conclusions from recurrence data.
+\item
+A method of simulating recurrence data.
+\item
+Some basic ideas of software reliability modeling.
+\end{itemize}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Overview}
+This chapter describes methods for analyzing recurrence data where
+the recurrence times may not be  statistically
+independent.  A primary application for such methods is in the
+analysis of system repair data. The methods are useful for
+empirically quantifying overall system reliability, for monitoring
+and predicting repair cost and for checking to see if the times
+between repairs of individual components in a system can be treated
+as being independent or not.  Section~\ref{section:nonpar.mcf}
+describes nonparametric graphical methods to estimate mean
+cumulative recurrence rates and, when appropriate, confidence
+intervals to quantify sampling
+uncertainty. Section~\ref{section:nonpar.two.samp.mcf} gives
+nonparametric two-sample comparison methods. These nonparametric
+methods require few assumptions.
+Section~\ref{section:param.mcf.models} describes some simple
+point-process models that are useful for describing repairable
+system data for a single
+system. Section~\ref{section:check.point.process} gives methods for
+checking point-process model adequacy and
+Section~\ref{section:param.mcf.ml} shows how to use ML to fit
+parametric models to recurrence data for a single system.
+Section~\ref{section:random.nhpp} gives methods for simulating
+data from a nonhomogeneous Poisson process while
+Section~\ref{section:software.reliability} explains some of the
+basic ideas of software reliability.
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Introduction}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\subsection{Repairable system reliability data
+and other recurrence data}
+%----------------------------------------------------------------------
+
+Recurrence data arise frequently in reliability applications.  The
+stochastic model for recurrence data is called a ``point-process''
+model. An important application is system repair data. A repair
+process for a single system can be viewed as a sequence of repair
+times $\rv_{1},
+\rv_{2}, \dots $. In the following discussion of system reliability,
+the term ``system repair'' describes a general event of interest. In
+particular applications, however, the event may be a failure,
+replacement, adjustment, etc.
+
+Generally repair times are measured in
+terms of system age or time since some well-defined specific event
+in the system's history. Repairs are typically observed over a fixed
+observation interval $(\realrv_{0},
+\analysistime)$, where, typically,  
+$\realrv_{0}=0$.  In some cases the number of repairs in each
+interval is reported (e.g., because problems are detected and
+repairs are initiated at fixed times of inspection) and in other
+cases, exact times of repairs are recorded.
+
+
+Some applications have data on only one system. In other
+applications there may be data from a sample or other
+collection of systems.  When data from such a collection are
+combined into data to form a single process, the resulting process is
+known as the superposition of several point-processes or a superimposed
+point-process. For some applications cause of failure and/or
+cost of repair may also be recorded.  For some purposes,
+it is necessary to consider that the population contains a
+mixture of systems operating in different environments.
+
+Repairable system data are collected to estimate or predict quantities like:
+\begin{itemize}
+\item
+The distribution of the times between 
+repairs, $\tau_{j}=\rv_{j}-\rv_{j-1}$ ($j=1, 2, 
+\dots$)
+where $\rv_{0}=0$.
+\item
+The cumulative number of repairs in the interval
+$(0, \realrv]$ as a function of system age $\realrv$.
+\item
+The expected time between failures (also known as mean time
+between failures or MTBF).
+\item
+The expected number of repairs in the 
+interval $(0, \realrv]$ as a function of~$\realrv$. 
+\item
+The repair  rate as a function of $\realrv$.
+\item
+Average repair cost as a function of $\realrv$.
+\end{itemize}
+
+\begin{example}
+\label{example:grampus.data}
+{\bf Unscheduled maintenance actions for the U.S.S. Grampus
+number 4 diesel engine.} Table~\ref{table:grampus}
+gives the times (in thousands of operating hours) of unscheduled
+maintenance actions for the number 4 diesel engine of
+the U.S.S. Grampus, up to 16 thousand hours of operation.  This is an
+example of data on a single system. The unscheduled maintenance
+actions were caused by system failure or imminent failure. Such
+maintenance actions are inconvenient and expensive. We will use the data
+to assess if the system was deteriorating (i.e., maintenance actions
+occurring more frequently as the system ages) and whether the
+occurrence of unscheduled maintenance actions could be modeled by a
+homogeneous Poisson process (discussed in Section~\ref{section:hpp}).
+%-------------------------------------------------------------------
+\begin{table}
+\caption{Times (in thousands of operating hours) 
+of unscheduled maintenance actions for the U.S.S. Grampus
+number 4 main propulsion diesel engine. Data from Lee~(1980).}
+\centering\small
+\begin{tabular}{*{8}{r}}
+\\[-.5ex]
+\hline
+   .860 &  1.258 &  1.317 &  1.442 & 1.897 &  2.011 & 2.122 &  2.439  \\
+  3.203 &  3.298 &  3.902 &  3.910 &  4.000 &  4.247 &  4.411 &  4.456   \\
+  4.517 &  4.899 &  4.910 &  5.676 &  5.755 &  6.137 &  6.221 &  6.311   \\
+  6.613 &  6.975 &  7.335 &  8.158 &  8.498 &  8.690 &  9.042 &  9.330   \\
+  9.394 &  9.426 &  9.872 & 10.191 & 11.511 & 11.575 & 12.100 & 12.126   \\
+ 12.368 & 12.681 & 12.795 & 13.399 & 13.668 & 13.780 & 13.877 & 14.007   \\
+ 14.028 & 14.035 & 14.173 & 14.173 & 14.449 & 14.587 & 14.610 & 15.070   \\
+ 16.000   \\
+\hline      
+\end{tabular}
+\label{table:grampus}
+\end{table}
+%-------------------------------------------------------------------
+\end{example}
+
+\begin{example}
+\label{example:valve.seat.data}
+{\bf Times of replacement of diesel engine valve seats.}
+For a fleet of 41 diesel engines,
+Appendix Table~\ref{table:valve.seat.data} gives engine age
+(in days) at the time of a valve seat replacement.
+These data on a {\em sample} of systems appeared
+in Nelson and Doganaksoy~(1989) and also in Nelson~(1995a).
+Questions to be answered by these data include:
+\begin{itemize}
+\item
+Does the replacement rate increase with age?
+\item
+How many replacement valves will be needed in a future period of time?
+\item
+Can valve life in these systems be modeled as a 
+superimposed renewal process (if so,
+the methods in Chapters~\ref{chapter:nonparametric.estimation}
+through \ref{chapter:system.reliability} can be used to model the data)?
+\end{itemize}
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/valveseat.event.plot.ps} 
+\caption{Valve seat event plot showing engine age at time of replacement
+and period of observation for a subset of 22 observed engines.}
+\label{figure:valveseat.event.plot.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Figure~\ref{figure:valveseat.event.plot.ps} is an event plot of the
+valve seat repair data showing the observation period and the reported
+repair times for a subset of 22 diesels.
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{A nonparametric model for recurrence data}
+
+For a single system, recurrence data can be expressed as
+$N(s, \realrv)$, the cumulative number of 
+recurrences in the system age interval $(s, \realrv]$. To simplify notation,
+$N(\realrv)$ is used to represent $N(0,\realrv)$. 
+The corresponding model, used to describe a population
+of systems, is based on the mean cumulative function (MCF) at system age
+$\realrv$. The population MCF is defined as 
+$\mcf(\realrv)=\E[N(\realrv)]$, where the
+expectation is over the variability of each system
+and the unit-to-unit variability in the population.
+Assuming that $\mcf(\realrv)$ is differentiable
+\begin{eqnarray*}
+\rocof(\realrv)
+&=&\frac{d\E[N(\realrv)]}
+		     {d \realrv}=\frac{
+d \mcf(\realrv)
+     }
+     {
+d \realrv
+     }
+\end{eqnarray*}
+defines the recurrence rate per system for the
+population. 
+
+Although data on the number of repairs (or other recurrent events
+related to reliability) are common in practice, the methods in this
+chapter can be used to model other quantities accumulating in time,
+including continuous variables like cost.  Then, for example,
+$\mcf(\realrv)=\E[\cost(\realrv)]$ is the mean cumulative cost per
+system in the time interval $(0, \realrv]$.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Nonparametric Estimation of the MCF}
+\label{section:nonpar.mcf}
+This section describes a simple method for estimating the MCF.
+
+\subsection{Nonparametric model assumptions}
+Suppose that an observed collection of $\nsystems \ge 1$ systems is
+an entire population of interest or a sample from a larger
+population of systems.  Then the method described here can be used
+to estimate the population MCF. The method is nonparametric in the
+sense that it does not use a parametric model for the population
+MCF. The method requires minimal assumptions. The basic assumption
+is that there exists a population of cumulative functions (one for
+each system in the population) from which a sample has been
+observed. Randomness in the sample is due to the random sampling of
+cumulative functions from the population. The method also assumes
+that the time that observation of a system is terminated does not
+depend on the system's history. Biased MCF estimators will, for
+example, result if units follow a staggered-scheme of entry into
+service (e.g., some units put into service each month) and the
+recurrence rate $\nu(t)$ is increasing in real time due to external
+events affecting all systems simultaneously.  Then newer systems
+that have a more stressful life will be censored earlier, causing an
+overly optimistic estimate of the recurrence rate. The nonparametric
+estimate does not, however, require that the sampled systems be
+statistically independent.
+
+%----------------------------------------------------------------------
+\subsection{Point estimate of the MCF}
+
+Let $N_{i}(\realrv)$ denote the cumulative number of system recurrences
+for system $i$ before time $\realrv$, and let $\realrv_{ij},\, j=1, \dots,
+m_{i}$ be the recurrence times for system
+$i$. A simple naive estimator of the 
+population MCF at time $t$ would be the sample
+mean of the available $N_{i}(\realrv)$ values for the systems still
+operating at time $t$.  This estimator is simple, but appropriate only
+if all systems are still operating at time $t$.  Nelson~(1988)
+provided an appropriate unbiased estimator, allowing for different lengths 
+of observation among systems. Nelson's estimate of the 
+population MCF can be computed by using the following algorithm. 
+ 
+\begin{algorithm}
+{\bfseries Computation of the MCF estimate}
+\label{algorithm:np.repair.estimate}
+\begin{enumerate}
+\item
+Order the unique recurrence times $t_{ij}$ among all of the $n$
+systems. Let $m$ denote the number of unique times. These ordered
+unique times are denoted by $\realrv_{1}<
+\dots < \realrv_{m}$.
+\item
+Compute $\deadin_{i}(\realrv_{k})$, the total number
+of recurrences for system $i$ at $\realrv_{k}$.
+\item
+Let $\delta_{i}(\realrv_{k})=1$ if system $i$ is
+still being observed at time $\realrv_{k}$ and
+$\delta_{i}(\realrv_{k})=0$ otherwise.
+\item
+Compute
+\begin{eqnarray}
+\label{equation:mcfhat}
+\mcfhat(\realrv_{j})&=&\sum_{k=1}^{j}\left [\frac{
+\sum_{i=1}^{n} \delta_{i}(\realrv_{k}) 
+               \deadin_{i}(\realrv_{k})}     
+{\sum_{i=1}^{n} \delta_{i}(\realrv_{k})  }\right ]=\sum_{k=1}^{j}
+\frac{\deadin_{\cdot}(\realrv_{k})      }
+{\delta_{\cdot}(\realrv_{k})}=\sum_{k=1}^{j} \bar{\deadin}(\realrv_{k})
+\end{eqnarray}
+for $j=1, \dots, m$ where
+$\deadin_{\cdot}(\realrv_{k})=
+\sum_{i=1}^{n}\delta_{i}(\realrv_{k})
+\deadin_{i}(\realrv_{k})$,
+$\delta_{\cdot}(\realrv_{k})=\sum_{i=1}^{n} \delta_{i}(\realrv_{k})$,
+and $\bar{\deadin}(\realrv_{k})=
+\deadin_{\cdot}(\realrv_{k})/
+\delta_{\cdot}(\realrv_{k})$.
+\end{enumerate}
+Note that $\deadin_{\cdot}(\realrv_{k})$ is the total number of
+system recurrences at time $\realrv_{k}$,
+$\delta_{\cdot}(\realrv_{k})$ is the size of the risk set at
+$\realrv_{k}$, and $\bar{\deadin}(\realrv_{k})$ is the average
+number of recurrences per system at $\realrv_{k}$ (or proportion of
+systems with recurrences if individual systems have no more than one
+recurrence at a point time). Thus the estimator of the MCF is
+obtained by accumulating the mean number (across systems) of
+recurrences per system in each time interval.
+\end{algorithm}
+
+Like the nonparametric estimate of a cdf (see
+Chapter~\ref{chapter:nonparametric.estimation}), the estimate
+$\mcfhat(\realrv)$ is a step function, with jumps at recurrence times, but
+constant between the recurrence
+times. To provide better visual perceptions of shape, one might plot
+$\muhat(t)$ as a piece-wise linear function.
+
+\begin{example}
+\label{example:valve.data}
+{\bf MCF estimate for the valve-seat replacements.}
+Figure~\ref{figure:valveseat.mcf.plot.ps} shows the estimate of the
+valve-seat MCF as a function of engine age in days. The estimate
+increases sharply between 620 and 650 days, but it is important to
+recognize that this part of the estimate is based on only a small
+number of systems (i.e., 10 operating at 650 hours).  The estimate is
+flat after 653 hours, but this is largely because there were only two
+systems being observed between 667 and 759 hours and neither failed
+during this period.  The uncertainty in the estimate for longer
+times, due to the small number of systems, is reflected in the width
+of the confidence intervals (to be explained in
+Section~\ref{section:conf.int.for.mcf}).
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/valveseat.mcf.plot.ps} 
+\caption{Estimate of the mean cumulative number of valve seat replacements
+for all 41 engines and a set of pointwise approximate 95\% confidence
+intervals.}
+\label{figure:valveseat.mcf.plot.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Standard errors and nonparametric 
+confidence intervals for the MCF}
+\label{section:conf.int.for.mcf}
+For a random sample of $\nsystems \ge 2 $ cumulative functions (from a
+finite or infinite population of systems), there is a simple formula
+for the true $\var[\mcfhat(\realrv_{j})]$. A
+corresponding estimate of this variance can be computed from the
+sample data.
+
+Let $\deadin(\realrv_{k})$ denote the random number of recurrences
+at $\realrv_{k}$ for a cumulative function drawn at random from the
+population of cumulative functions.  Then, as
+shown in Nelson~(1995a), the true variance of $\mcfhat(\realrv_{j})$
+for a large population of cumulative functions can be expressed as
+\begin{eqnarray}
+\var[\mcfhat(\realrv_{j})]&=&
+\sum_{k=1}^{j} \var[\bar{\deadin}(\realrv_{k})]+ 2 \sum_{k=1}^{j-1} \sum_{v=k+1}^{j}
+\cov [\bar{\deadin}(\realrv_{k}),\bar{\deadin}(\realrv_{v})]
+\nonumber \\
+\label{equation:varhat.mcf.gen}
+&=&
+\sum_{k=1}^{j} 
+\frac{
+\var[\deadin(\realrv_{k})]
+     }
+     {
+\delta_{\cdot}(\realrv_{k}) 
+     }+ 2 \sum_{k=1}^{j-1} \sum_{v=k+1}^{j}
+\frac{
+\cov [\deadin(\realrv_{k}),\deadin(\realrv_{v})]
+     }
+     {
+\delta_{\cdot}(\realrv_{k})
+     }.
+\end{eqnarray}
+To estimate $\var[\deadin(\realrv_{k})]$, we use the assumption that
+$\deadin_{i}(\realrv_{k})$, $i=1,\dots,n$, is a random sample from
+the population of $\deadin(\realrv_{k})$ values. Moment estimators for 
+the variances and covariances on the right-hand side of 
+(\ref{equation:varhat.mcf.gen}) are
+\begin{eqnarray}
+\label{equation:var.deadin}
+\varhat[\deadin(\realrv_{k})]&=&
+\sum_{i=1}^{n}
+\frac{
+\delta_{i}(\realrv_{k})
+     }
+     {
+\delta_{\cdot}(\realrv_{k})
+     }
+[\deadin_{i}(\realrv_{k})
+-\bar{\deadin}(\realrv_{k})]^{2}
+\\
+\label{equation:cov.deadin}
+\covhat[\deadin(\realrv_{k}),\deadin(\realrv_{v})]
+&=&
+\sum_{i=1}^{n}
+\frac{
+\delta_{i}(\realrv_{v})
+     }
+     {
+\delta_{\cdot}(\realrv_{v})
+     }
+[\deadin_{i}(\realrv_{v})
+-\bar{\deadin}(\realrv_{v})]
+\deadin_{i}(\realrv_{k})
+\end{eqnarray}
+for $\realrv_{v} > \realrv_{k}$. Substituting these into (\ref{equation:varhat.mcf.gen}) and simplifying
+gives
+\begin{eqnarray}
+\varhat[\muhat(\realrv_{j})]
+&=&
+\sum_{k=1}^{j} 
+\frac{
+\varhat[\deadin(\realrv_{k})]
+     }
+     {
+\delta_{\cdot}(\realrv_{k}) 
+     }+ 2 \sum_{k=1}^{j-1} \sum_{v=k+1}^{j}
+\frac{
+\covhat[\deadin(\realrv_{k}),\deadin(\realrv_{v})]
+     }
+     {
+\delta_{\cdot}(\realrv_{k})
+     }
+ \nonumber \\
+\label{equation:varhat.mcf}
+&=&
+\sum_{i=1}^{n}
+\left \{
+\sum_{k=1}^{j}
+\frac{
+\delta_{i}(\realrv_{k})
+     }
+     {
+\delta_{\cdot}(\realrv_{k})
+     }
+\left [
+\deadin_{i}(\realrv_{k})-
+\bar{\deadin}_{\cdot}(\realrv_{k})
+\right ]
+\right \}^{2}.
+\end{eqnarray}
+Nelson~(1995a) presented an unbiased estimator of
+$\var[\muhat(t_{j})]$.  We use the estimator in
+(\ref{equation:varhat.mcf}), suggested by Lawless and
+Nadeau~(1995), because it is always greater than or equal to zero.
+
+\begin{example}
+\label{example:simple.var.mcf}
+{\bf Computation of the MCF estimate and its variance for simulated
+data.} To illustrate the computations of
+$\mcfhat(\realrv_{j})$ and $\varhat[\muhat(\realrv_{j})]$, we use the
+simple 3-system simulated data shown in
+Table~\ref{table:toy.repair.dat}. Suppose that the three cumulative
+functions are a random sample from a large population of cumulative
+functions.
+%-------------------------------------------------------------------
+\begin{table}
+\caption{Simulated system repair times}
+\centering\small
+\begin{tabular}{llc}
+\\[-.5ex]
+\hline
+System & System Age at  & \multicolumn{1}{c}{System Age at} 
+\\
+Number       &Time of Repair & \multicolumn{1}{c}{End of Observation}
+\\
+\hline
+1 & 5,  8       & 12
+\\
+2 &             & 16
+\\
+3 & 1,  8,  16  & 20
+\\
+\hline
+\end{tabular}
+\label{table:toy.repair.dat}
+\end{table}
+The unique system repair times are
+$\realrv_{1}=1$, $\realrv_{2}=5$, $\realrv_{3}=8$, and 
+$\realrv_{4}=16$ days.
+Table~\ref{table:toy.repair.compute} summarizes the computations
+for $\mcfhat(\realrv_{j})$.
+%-------------------------------------------------------------------
+\begin{table}
+\caption{Sample MCF computations for simulated system repair times}
+\centering\small
+\begin{tabular}{rr|rrr|rrr|rrr|r}
+\\[-.5ex]
+\hline
+$j$&$\realrv_{j}$ & $\delta_{1}$ & $\delta_{2}$ & $\delta_{3}$ & $\deadin_{1}$ & $\deadin_{2}$ & $\deadin_{3}$ & $\delta_{\cdot}$ & $\deadin_{\cdot}$ &
+\multicolumn{1}{c}{$\bar{d}$} &\multicolumn{1}{|c}{$\muhat(\realrv_{j})$}
+\\[1ex]
+\hline
+%\\
+1& 1 & 1 & 1 & 1 & 0 & 0 & 1 & 3 & 1 & 1/3& 1/3
+\\
+2& 5 & 1 & 1 & 1 & 1 & 0 & 0 & 3 & 1 & 1/3& 2/3
+\\
+3& 8 & 1 & 1 & 1 & 1 & 0 & 1 & 3 & 2 & 2/3& 4/3
+\\
+4&16 & 0 & 1 & 1 & 0 & 0 & 1 & 2 & 1 & 1/2& 11/6
+\\
+\hline
+\end{tabular}
+\label{table:toy.repair.compute}
+\end{table}
+Substituting results of Table~\ref{table:toy.repair.compute} 
+into (\ref{equation:varhat.mcf}) gives
+\begin{displaymath}
+\varhat[\muhat(\realrv_{1})]=
+[(1/3)\times (0-1/3)]^{2}+[(1/3)\times (0-1/3)]^{2}+ [(1/3)\times
+(1-1/3)]^{2}=6/81
+\end{displaymath}
+Similar computations yield
+$\varhat[\muhat(\realrv_{2})]=6/81=.0741$,
+$\varhat[\muhat(\realrv_{3})]=24/81=.296$, and
+$\varhat[\muhat(\realrv_{4})]=163/216=.755$
+\end{example}
+
+Pointwise normal-approximation confidence intervals for the
+population MCF at a specified time $t$ can be computed following the
+general approach used in
+Chapters~\ref{chapter:parametric.ml.one.par} and
+\ref{chapter:parametric.ml.ls}. In particular, a 
+normal-approximation 100$(1-\alpha)\%$ confidence interval based on
+$Z_{\muhat(\realrv)} =
+[\muhat(\realrv)-\mu(\realrv)]/\sehat_{\muhat(\realrv)}
+\approxdist \NOR(0,1)$
+is
+\begin{equation} 
+\label{equation:mcf.ci}
+[\undertilde{\mu}(\realrv) , \quad \tilde{\mu}(\realrv)] =
+\muhat(\realrv) \pm \norquan_{(1-\alpha/2)} \sehat_{\muhat(\realrv)}
+\end{equation}
+where $\sehat_{\muhat(\realrv)}= \sqrt{
+\varhat[\muhat(\realrv)] }$. When $\mu(\realrv)$
+is positive (which is common in applications), an alternative
+interval based on $Z_{\log[\muhat(\realrv)]} \approxdist \NOR(0,1)$
+is
+\begin{equation} 
+\label{equation:log.mcf.ci}
+[\undertilde{\mu}(\realrv) , \quad
+\tilde{\mu}(\realrv)] = [\muhat(\realrv)/w, \quad
+\muhat(\realrv) \times w]
+\end{equation}
+where $w=\exp[\norquan_{(1-\alpha/2)}
+\sehat_{\muhat(\realrv)}/\muhat(\realrv)]$.  Intervals constructed
+using (\ref{equation:log.mcf.ci}) will always have positive
+endpoints and, for some positive processes, can be expected to have
+coverage probabilities closer to the nominal confidence level.
+
+\begin{example}
+\label{example:mcf.cylinder}
+{\bf MCF estimate for the cylinder replacements.} Cylinders in a
+type of diesel engine can develop leaks or have low compression for
+some other reason.  Each engine has 16 cylinders. Cylinders are
+inspected at times of convenience, along with other usual engine
+maintenance operations. Faulty cylinders are replaced by a rebuilt
+cylinder.  More than one cylinder could be replaced at an
+inspection.  Nelson and Doganaksoy~(1989) present data on
+replacement times for 120 engines.  We take these engines to be a
+sample from a larger population of engines.  Management needed to
+know if the company should perform preventive replacement of
+cylinders before they develop low compression.
+
+Figure~\ref{figure:cylinder.event.plot.ps} displays
+cylinder replacement times for a subset of 31 of the engines.  Except
+for one outlying replacement at 568 days of service, no replacements occurred
+until after 847 days.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/cylinder.event.plot.ps} 
+\caption{Cylinder replacement event plot showing replacement times
+and period of observation for a subset of 31 observed engines.}
+\label{figure:cylinder.event.plot.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Figure~\ref{figure:cylinder.mcf.plot.ps} shows the MCF plot for the
+cylinder replacements for all 120 engines. The estimate is close to
+0 until about 800 days, after which the MCF estimate increases
+rapidly.  Interestingly, the sample MCF is nearly linear after about
+1200 days.  A possible explanation for this behavior in the sample
+MCF will be given in Section~\ref{section:super.pos.of.renewal}.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/cylinder.mcf.plot.ps} 
+\caption{MCF estimate for the cylinder replacements for the 120
+engines
+and a set of pointwise approximate 95\% confidence intervals.}
+\label{figure:cylinder.mcf.plot.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+\mbox{}\\
+\noindent
+{\bf Finite population correction.}
+When the number of cumulative functions sampled is more than 5\% or 10\% 
+of the population, 
+finite population methods should be used for estimating standard errors.
+In this case, the following should be substituted into
+(\ref{equation:varhat.mcf.gen}).
+\begin{eqnarray*}
+\varhat[\deadin(\realrv_{k})]&=&
+\left [
+1 -\frac{\delta_{\cdot}(\realrv_{k})}
+	{N}
+\right ]
+\sum_{i=1}^{n}
+\frac{
+\delta_{i}(\realrv_{k})
+     }
+     {
+\delta_{\cdot}(\realrv_{k})
+     }
+\left [\deadin_{i}(\realrv_{k})
+-\bar{\deadin}(\realrv_{k}) \right ]^{2}
+\\
+\covhat[\deadin(\realrv_{k}),\deadin(\realrv_{v})]
+&=&
+\left[
+1 -\frac{\delta_{\cdot}(\realrv_{v})}
+	{N}
+\right ]
+\sum_{i=1}^{n}
+\frac{
+\delta_{i}(\realrv_{v})
+     }
+     {
+\delta_{\cdot}(\realrv_{v})
+     }
+\left [\deadin_{i}(\realrv_{v})
+-\bar{\deadin}(\realrv_{v}) \right ]
+\deadin_{i}(\realrv_{k})
+\end{eqnarray*}
+where $N$ is the total number of cumulative functions in the
+population of interest.  The factors 
+$[ 1-  \delta_{\cdot}(\realrv_{v})/N ]$ 
+are known as finite
+population correction factors.
+
+\mbox{}\\
+\noindent
+{\bf Nonparametric estimation with a single system.}
+When there is a single system the point estimate $\muhat(\realrv)$
+is the number of system recurrences up to $\realrv$.  Due to the limited
+information (a sample of size one at each recurrence time), the quantities
+(\ref{example:valve.seat.data}) and (\ref{example:valve.data}) cannot be 
+computed for single systems.
+
+%----------------------------------------------------------------------
+\subsection{Adequacy of normal-approximation confidence intervals}
+The adequacy of the normal-approximation confidence interval
+procedures in (\ref{equation:mcf.ci}) and (\ref{equation:log.mcf.ci})
+depends on the number of sample cumulative functions (or sample
+systems) at risk to failure {\em and} on the shape of the distribution
+of the cumulative function levels at the point in time where the
+interval is to be constructed.
+
+As mentioned in Sections~\ref{section:exponential.ci.comparison} and
+\ref{section:improved.norm.ls}, the normal-approximation intervals
+like those in (\ref{equation:mcf.ci}) can be
+improved by using $\Tquant_{(p;\nu)}$ instead of $z_{(p)}$. When the
+number of sample systems at risk is small (say less than 30), using
+$\Tquant_{(p;\nu)}$ instead of $z_{(p)}$ can provide important
+improvements in confidence interval accuracy.  If the cumulative
+function at a point in time has a normal distribution and if all
+units are still under observation at that point, then using
+$\Tquant_{(p;\nu)}$ instead of $z_{(p)}$ and substituting
+$[n/(n-1)]^{1/2}\se_{\muhat}$ for $\se_{\muhat}$ in
+(\ref{equation:mcf.ci}) provides an exact interval for two or more
+systems. For a counting process like the Poisson processes described
+in Section~\ref{section:param.mcf.models}, the distribution of the
+level of a sample cumulative function at a pont in time can be
+adequately described by a normal distribution when the expected
+level of the cumulative function is 30 or more at that point in
+time.
+
+\begin{example}
+\label{example:hmachine.data}
+{\bf Maintenance costs for an earth-moving machine.}
+A construction company owns 23 large earth-moving machines that were
+put into service over a period of time.  At intervals of
+approximately 300 to 400 hours of operation, these machines receive
+scheduled preventive maintenance. Unscheduled maintenance actions
+are also needed from time to time.  Additionally, these machines
+require major (and costly) overhaul, usually every 2000 to 3000 hours of
+operation.  The event plot in
+Figure~\ref{figure:hmachine.event.plot.ps} shows times of the
+maintenance actions for the 23 machines.  Here time is taken to be
+the machine's age in hours operated.  The cost of each maintenance
+action was also recorded in terms of the number of hours of labor that were
+required for the maintenance work.
+%-------------------------------------------------------------------
+\begin{figure} \splusbookfigure{\figurehome/hmachine.event.plot.ps}
+\caption{Earth-moving machine maintenance event plot showing machine
+age at time of the maintenance action for the 23 machines.}
+\label{figure:hmachine.event.plot.ps} 
+\end{figure}
+%-------------------------------------------------------------------
+Figure~\ref{figure:hmachine.mcf.plot.ps} gives the estimate of
+the mean cumulative
+number of hours of labor for the earth movers as a function of hours
+of operation and corresponding pointwise normal-approximation
+confidence intervals. The periodicity of the early scheduled
+maintenance actions can be seen in the first 1500 hours or so. After
+that, the randomness in the intervals averages out over time,
+reducing the amplitude of the periodicity. The slope of the MCF is a
+bit larger over some intervals of time. These are intervals in which
+more of the machines were required to have major overhauls (after
+3000 and 5000 hours).
+%-------------------------------------------------------------------
+\begin{figure} \splusbookfigure{\figurehome/hmachine.mcf.plot.ps}
+\caption{Mean cumulative number of hours required for maintenance
+for earth-moving machines and approximate 95\% confidence intervals,
+as a function of machine age.}
+\label{figure:hmachine.mcf.plot.ps} 
+\end{figure}
+%-------------------------------------------------------------------
+The confidence intervals have no real meaning relative to the 23
+machines owned by the company. If, on the other hand, the 23
+machines were being viewed as a random sample from a much larger population
+(e.g., of other similar machines in other parts of the company or of
+similar machines to be purchased in the future), the confidence
+intervals would quantify the uncertainty in the mean of that larger
+population. The intervals are wider later in time because there
+are fewer machines with that much exposure time.
+\end{example}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Nonparametric Comparison of
+Two Samples of Recurrence Data}
+\label{section:nonpar.two.samp.mcf}
+Decisions often need to be made on the basis of a comparison between
+two manufacturers, product designs, environments, etc. This section describes
+methods for comparing recurrence-data
+samples from two different groups of systems.
+
+\begin{example}
+\label{example:braking.grid.data}
+{\bf Replacement times of locomotive braking grids.} A particular
+type of locomotive has six braking grids.  Appendix
+Table~\ref{table:braking.grids.data} shows data on locomotive ages when
+braking grids were replaced and the largest observed age for each
+locomotive.  The data are from Doganaksoy and Nelson~(1991).  A
+comparison between two different production batches of the braking
+grids is desired.
+\end{example}
+
+Suppose that there are two populations or processes with mean
+cumulative functions $\mcf_{1}(\realrv)$ and $\mcf_{2}(\realrv)$,
+respectively.  Let $\mcfdiff(\realrv)=\mcf_{1}(\realrv)-\mcf_{2}(\realrv)$ 
+represent the difference in the
+mean cumulative functions at time $\realrv$. Based on independent
+samples from the two populations, a nonparametric estimator of
+$\mcfdiff(\realrv)$ is
+\begin{displaymath}
+\mcfdiffhat(\realrv)=\mcfhat_{1}(\realrv)-\mcfhat_{2}(\realrv).
+\end{displaymath}
+If $\mcfhat_{1}(\realrv)$ and $\mcfhat_{2}(\realrv)$ are independent,
+an estimate of $\var \left[\mcfdiffhat(\realrv)\right]$ is
+\begin{displaymath}
+\varhat[\mcfdiffhat(\realrv)]=
+\varhat[\mcfhat_{1}(\realrv)]+
+\varhat[\mcfhat_{2}(\realrv)]
+\end{displaymath}
+and $\sehat_{\mcfdiffhat} =\sqrt{\varhat[\mcfdiffhat(\realrv)]}$.
+An approximate $100(1-\alpha)\%$ confidence interval for  
+$\mcfdiff(\realrv)$ based on $Z_{\mcfdiffhat} =
+[\mcfdiffhat(\realrv) - \mcfdiff(\realrv)]/\sehat_{\mcfdiffhat} 
+\approxdist \NOR(0,1)$ is
+\begin{displaymath}
+\left [ 
+\undertilde{\mcfdiff}, \quad
+ \tilde{\mcfdiff}
+\right ]=
+\left [
+\mcfdiffhat - \norquan_{(1-\alpha/2)} \sehat_{\mcfdiffhat},
+\quad
+\mcfdiffhat + \norquan_{(1-\alpha/2)} \sehat_{\mcfdiffhat}
+\right ].
+\end{displaymath}
+
+\begin{example}
+{\bf A comparison of two production batches of the
+locomotive braking grids.}
+Figure~\ref{figure:grids.compare.ps} shows the sample MCFs for the
+braking grids from production Batches 1 and 2. This figure shows that
+the sample MCF for Batch 2 is greater than that for Batch 1.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/grids.compare.ps}
+\caption{Comparison of MCFs for the braking grids from 
+production Batches 1 and 2.}
+\label{figure:grids.compare.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Figure~\ref{figure:grids.diff.ps} plots the nonparametric estimate 
+and confidence intervals for the population
+$\mcfdiff(\realrv)$. This figure indicates that there is a statistically
+significant difference between the MCFs over almost the entire
+span of locomotive age.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/grids.diff.ps}
+\caption{Difference $\mcfhat_{1}-\mcfhat_{2}$ 
+between sample MCFs for production Batches 1 and 2 and a set of
+pointwise approximate 95\% confidence intervals for the population
+difference.}
+\label{figure:grids.diff.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Parametric Models for Recurrence Data}
+%----------------------------------------------------------------------
+\label{section:param.mcf.models}
+Parametric point-process models are also useful
+for recurrence data. The most commonly used models for recurrence
+data are Poisson processes (homogeneous and nonhomogeneous),
+renewal processes, and superimposed versions of these processes.
+The most common application is for monitoring and modeling
+recurrences,
+such as repairs,
+from a {\em single system}.
+
+\subsection{Poisson process}
+The Poisson process is a simple parametric model that is commonly used 
+for the analysis of certain kinds of recurrence data.
+An integer-valued point process on $[0, \infty)$ is said to be
+a Poisson process if it satisfies the following three conditions:
+\begin{itemize} 
+\item
+$N(0)=0$.
+\item
+The number of recurrences in disjoint time intervals are
+statistically independent. Such a process is said to have ``independent 
+increments.''
+\item
+The process recurrence rate $\rocof(\realrv)$ is positive and 
+$
+\mu(a,b)=\E[N(a,b)]=\int_{a}^{b} \rocof(u) du< \infty,
+$
+when $0 \le a<b<\infty$.
+\end{itemize}
+It follows, for a Poisson process, that $N(a,b)$, has a Poisson
+distribution with pdf
+\begin{displaymath}
+\Pr \left [N(a,b)=\deadin
+    \right ]=\frac{\left [ \mcf(a,b) \right ]^{\deadin}}
+                  {\deadin!}
+	     \exp \left [-
+\mcf(a,b)
+		  \right ], \, \deadin=0,1,2, \dots .
+\end{displaymath}
+
+%----------------------------------------------------------------------
+\subsection{Homogeneous Poisson process}
+\label{section:hpp}
+A homogeneous Poisson process (HPP) is a Poisson process
+with a {\em constant} recurrence rate, say $\rocof(\realrv)=1/\theta$.
+In this case: 
+\begin{itemize} 
+\item
+$N(a,b)$ has a Poisson distribution with parameter 
+$\mu(a,b)=(b-a)/\theta$.
+\item
+The expected number of recurrences in $(a,b]$ is $\mu(a,b)$.  Equivalently
+the expected number of recurrences per unit time over $(a,b]$ is constant
+and equal to $ 1/\theta$. This property is called ``stationary
+increments.''
+\item
+The interrecurrence times (the times between recurrences),
+$\tau_{j}=\rv_{j}-\rv_{j-1}$, are independent and identically
+distributed (iid), each with an $\EXP(\theta)$ distribution.  This follows
+directly from the relationship
+\begin{displaymath}
+\Pr ( \tau_{j} > \realrv )
+=
+\Pr \left [ N(\rv_{j-1},\rv_{j-1} + \realrv )=0
+    \right ]=\exp(-\realrv/\theta).
+\end{displaymath}
+Thus the steady-state mean time between recurrences for an HPP is equal
+to $\theta$. For a failure process one would say that
+the mean time between failures, MTBF=$\theta$. 
+\item
+The time $T_{k}=\tau_{1} + \dots + \tau_{k}$ to the $k$th 
+recurrence has a $\GAM(\theta,k)$ distribution.
+\end{itemize}
+
+%----------------------------------------------------------------------
+\subsection{Nonhomogeneous Poisson process}
+%----------------------------------------------------------------------
+A ``nonhomogeneous'' Poisson process (NHPP) model is a Poisson
+process model with a nonconstant recurrence rate $\nu(t)$.  In this
+case the interrecurrence times are neither independent nor
+identically distributed.  The expected number of recurrences per
+unit time over $(a,b]$ is
+\begin{eqnarray*}
+\frac{
+\mu(a, b)
+     }
+     {
+ b-a
+     }&=& \frac{1}{b-a} \,
+\int_{a}^{b} \rocof(t) dt.
+\end{eqnarray*}
+An NHPP model is often specified in terms of the recurrence rate
+$\rocof(\realrv)$. To specify an NHPP model we use
+$\rocof(t)=\rocof(t;\thetavec)$, a function of an unknown vector of
+parameters $\thetavec$. For example, the power-model recurrence rate is
+\begin{eqnarray*}
+\rocof(\realrv;\beta, \weibscale)&=&  \frac{\beta}
+		         {\weibscale}
+       \left (
+	 \frac{\realrv}
+	      {\weibscale}  
+       \right )^{\beta-1}, \quad \beta>0, \weibscale>0.
+\end{eqnarray*}
+The corresponding mean cumulative number of 
+recurrences over $(0,\realrv]$ is 
+$\mu(\realrv;\beta, \weibscale)= (\realrv/\weibscale )^{\beta}$.
+When $\beta=1$, this model reduces to the HPP model.
+The loglinear model recurrence rate is
+$\rocof(\realrv;\gamma_{0},\gamma_{1})=\exp(\gamma_{0}+\gamma_{1} \realrv)$.
+The corresponding mean cumulative number of
+recurrences over $(0, \realrv]$ is
+$\mu(\realrv;\gamma_{0},\gamma_{1})=
+[\exp(\gamma_{0})]  [\exp(\gamma_{1} \realrv)-1 ]/\gamma_{1}$.
+When $\gamma_{1}=0$, $\mu(\realrv;\gamma_{0},1)=\exp(\gamma_{0})$
+which is an HPP.
+%----------------------------------------------------------------------
+\subsection{Renewal processes}
+%----------------------------------------------------------------------
+A sequence of system recurrences at system ages $\rv_{1}, \rv_{2},
+\ldots$ is a renewal process if the interrecurrence times
+$\tau_{j}=
+\rv_{j}-\rv_{j-1}$, $j=1,2,\ldots$ ($\rv_{0}=0$) are iid.  
+The MCF for a renewal
+process is also known as the ``renewal function.''  If a renewal
+process provides an adequate model for interrecurrence times, one
+can use the single distribution statistical techniques, as described
+Chapters~\ref{chapter:nonparametric.estimation} through
+\ref{chapter:ml.other.parametric}, to display, model, and draw conclusions
+from the data. Note that an HPP is a renewal process (and that
+interrecurrence times $\tau_{j} \sim \EXP(\theta)$ with
+$\theta=1/\nu$) but the NHPP is not.
+
+Before using a renewal process model, it is important to check for
+departures from the model such as trend and
+nonindependence of interrecurrence times (note that in general,
+independent increments, as defined in Section~\ref{section:hpp} and
+independent interrecurrence times are not the same). The methods in
+Section~\ref{section:check.point.process} can be used for this
+purpose. If trend and nonindependence tests suggest a renewal
+process, then one might use methods in the earlier chapters of this
+book to describe the distribution of interrecurrence times (i.e.,
+times between repairs, failures, etc.).
+
+Renewal process characteristics that are typically of interest
+include:
+\begin{itemize} \itemsep 0in
+\item 
+The distribution of the $\tau_{j}$'s.
+\item 
+Thus the steady-state mean time between recurrences for a renewal
+process is $\E(\tau)$.  Again, for a failure renewal process one
+would say that MTBF=$\E(\tau)$.
+\item
+The distribution of the time until
+the $k$th recurrence for a system, $k=1,2, \ldots$ .
+\item
+The recurrence (or renewal) rate.
+\item
+The number of recurrences that will be observed in a given future
+time interval.
+\end{itemize}
+
+%----------------------------------------------------------------------
+\subsection{Superimposed renewal processes}
+\label{section:super.pos.of.renewal}
+The point process arising from the aggregation of renewals from a
+group of $n$ independent renewal processes operating simultaneously
+is known as a superimposed renewal process (SRP).  Unless the
+individual renewal processes are HPP, an SRP is not a renewal
+process. Drenick's theorem (Drenick~1960) says, however, that when
+the number of systems $n$ is large and the systems have run long
+enough to eliminate transients, a SRP behaves as an HPP.  This
+result is rather like a central limit theorem for renewal
+processes. This result is sometimes used to justify the use of the
+exponential distribution to model interrecurrence times
+in a large population of systems (see
+Section~\ref{section:super.pos.of.renewal}).  This result, for
+example, provides a possible explanation for why the MCF for the
+cylinder replacement data in Example~\ref{example:mcf.cylinder} is
+nearly linear after about 1200 days.
+
+Depending on the shape of the underlying distributions in the
+individual superimposed
+renewal processes, large samples and long times may be needed for
+the HPP approximation to be adequate (see Blumenthal, Greenwood,
+Herbach~1973, 1976). In practice, it is
+straightforward to check the adequacy of the approximation by using
+simulation.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Tools for Checking Point-Process Assumptions}
+\label{section:check.point.process}
+This section describes graphical and analytical tools for
+checking point-process model assumptions.
+
+%----------------------------------------------------------------------
+\subsection{Tests for recurrence rate trend}
+The simplest plot for recurrence data of a single-system shows the
+cumulative number of system recurrences versus time (a special case
+of an MCF used with multiple systems).  Nonlinearity in this plot
+indicates that the interrecurrence times are not identically
+distributed. For Poisson processes, this implies a nonconstant
+recurrence rate. An HPP should have an MCF plot that is
+approximately linear (but a linear MCF alone does not imply an
+HPP). A plot of interrecurrence times versus system age or a ``time
+series plot'' showing interrecurrence times versus recurrence
+number will allow discovery of trends or cycles that would suggest
+that the interrecurrence times are not identically distributed.
+
+Several formal tests for trend are available.  The ``Military
+Handbook'' test (so known because it appears in MIL-HDBK-189) tests
+for $\beta=1$ (implying HPP and thus no trend) in the power NHPP
+model.  The statistic
+\begin{eqnarray*}
+X^{2}_{\rm MHB}= -2 \sum_{j=1}^{r} \log(\realrv_{j}/\analysistime)
+%rem = 2r/\betahat   \sim \chi^{2}_{(2r)}
+\end{eqnarray*}
+approximately has a $\chi^{2}_{(2r)}$ distribution under the HPP model.  Thus
+values of $X^{2}_{\rm MHB}$ greater than $\chi^{2}_{(1-\alpha;2r)}$
+provide evidence of a nonconstant recurrence rate $\nu(t)$ at the
+$100 \alpha \%$ level of significance.  This is a powerful test for
+testing HPP versus NHPP with a power-model $\nu(t)$.
+
+The well-known Laplace test has a similar basis for testing for
+trend in the loglinear NHPP model. In this case if the underlying
+process is HPP ($\gamma_{1}=0$), the test statistic
+\begin{eqnarray*}
+Z_{\rm LP}&=&\frac{
+    \sum_{j=1}^{r} {\realrv_{j}}/
+			{\analysistime}
+	-{r}/{2} 
+    }
+     {
+    \sqrt{r/12}
+     }  
+\end{eqnarray*}
+has, approximately, a $\NOR(0,1)$ distribution. Thus values of
+$Z_{\rm LP}$ in excess of $\norquan_{(1-\alpha/2)}$ provide evidence
+of a nonconstant $\nu(t)$ at the $100 \alpha \%$ level of
+significance. This is a powerful test for testing HPP versus NHPP
+with a loglinear $\nu(t)$.
+
+Both the Military Handbook test and the Laplace test can give
+misleading conclusions for situations where there is no trend but the
+underlying process is a renewal process other than HPP. The
+Lewis-Robinson test for trend uses
+\begin{equation}
+\label{equation:lewis.robinson}
+Z_{\rm LR} = Z_{\rm LP} \times \frac{\bar{\tau}}{S_{\tau}}
+\end{equation}
+where $\bar{\tau}$ and $S_{\tau}$ are, respectively, the sample mean
+and standard deviation of the interrecurrence times.  The fraction
+on the right-hand side of (\ref{equation:lewis.robinson}) is the
+reciprocal of the sample coefficient of variation (the population
+coefficient of variation is defined in
+Section~\ref{section:functions.of.parameters}).  In large samples,
+$Z_{\rm LR}$ follows approximately a $\NOR(0,1)$ distribution if the
+underlying process is a renewal process (renewal processes, in
+general, have no trend).  The statistic $Z_{\rm LR}$ was derived
+from heuristic arguments to allow for non-exponential
+interrecurrence times by adjusting for a different coefficient of
+variation (the exponential distribution has a coefficient of
+variation equal to 1).  Results in Lawless and Thiagarajah~(1996)
+indicate that $Z_{\rm LR}$ is preferable to $Z_{\rm LP}$ as a
+general test of trend in point-process data.
+
+\begin{example}{\bf Initial graphical analysis of the Grampus
+diesel engine data.}
+\label{example:grampus.initial.plots}
+Continuing from Example~\ref{example:grampus.data},
+Figure~\ref{figure:grampus.mcf.plot.ps} shows the cumulative number
+of unscheduled maintenance actions for a U.S.S. Grampus diesel
+engine versus operating hours. The plot is nearly linear, indicating
+that the recurrence rate $\nu(t)$ is nearly constant (as in the HPP
+model).
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/grampus.mcf.plot.ps} 
+\caption{Cumulative number of unscheduled maintenance actions versus age 
+in operating hours for a U.S.S. Grampus diesel engine.}
+\label{figure:grampus.mcf.plot.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Figure~\ref{figure:grampus.repair.tsplot.ps} shows the times between
+unscheduled maintenance actions plotted against maintenance action
+number.  This plot indicates that there has not been a
+discernible trend over time
+(again consistent with the HPP model) but there is one large outlier
+(which might, for example,
+have been caused by failing to report a single
+maintenance action).
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/grampus.repair.tsplot.ps} 
+\caption{Times between unscheduled maintenance actions versus maintenance 
+action number for a U.S.S. Grampus diesel engine.}
+\label{figure:grampus.repair.tsplot.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Test for independent interrecurrence times}
+%-------------------------------------------------------------------
+When assessing the adequacy of a renewal process model, it is also
+necessary to check if the model assumption of independent
+interrecurrence times is consistent with the data. To do this we
+consider the serial correlation in the sequence of interrecurrence
+times. Plotting interrecurrence times versus lagged
+interrecurrence times ($\tau_{i}$ versus $\tau_{i+k}$) provides a
+graphical representation of serial correlation (the correlation
+between adjacent interrecurrence times). The serial correlation
+coefficient of lag-$k$ is
+\begin{displaymath}
+\rho_{k}=
+\frac{\cov(\tau_{j},\tau_{j+k})}{
+\var(\tau_{j})}
+\end{displaymath}
+First-order serial correlation ($k=1$) is typically the most important
+lag to consider.
+
+If $\tau_{1}, \ldots, \tau_{r}$ are observed interrecurrence times,
+then the sample serial correlation coefficient is
+\begin{displaymath}
+\rhohat_{k}=
+\frac{
+\sum_{j=1}^{r-k} (\tau_{j}-\bar{\tau})
+		 (\tau_{j+k}-\bar{\tau})
+     }
+     {
+\sqrt{
+\sum_{j=1}^{r-k} (\tau_{j}-\bar{\tau})^{2}
+\, \,
+\sum_{j=1}^{r-k} (\tau_{j+k}-\bar{\tau})^{2}
+     }
+     }
+\end{displaymath}
+where $\bar{\tau}=\sum_{j=1}^{r} \tau_{j}/r$.  When $\rho_{k}=0$ and
+$r$ is large, $\sqrt{r-k} \times \rhohat_{k}
+\approxdist \NOR(0,1)$. This test is used to 
+assess if $\rhohat_{k}$ is significantly different from zero.
+
+\begin{example}
+{\bf Checking for independent times between maintenance actions in
+the U.S.S.  Grampus diesel engine data.} Continuing from
+Examples~\ref{example:grampus.data} and
+\ref{example:grampus.initial.plots},
+Figure~\ref{figure:grampus.ar1.plot.ps} plots the times between
+unscheduled maintenance actions versus lagged times between
+unscheduled maintenance actions for the U.S.S. Grampus diesel
+engine.  Although at first glance there might seem to be some
+negative correlation, ignoring the one outlying large time between
+unscheduled maintenance actions (which appears twice in
+Figure~\ref{figure:grampus.ar1.plot.ps}) suggests that there is no
+discernible serial correlation. Numerically, including the outlier,
+$\rhohat_{1}=-.094$ and $\sqrt{r-1} \times \rhohat_{1} = -.70$ (with
+an approximate $p$-value of .48).
+%--------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/grampus.ar1.plot.ps} 
+\caption{Plot of $\tau_{j+1}$ versus $\tau_{j}$ for the U.S.S. Grampus diesel 
+engine.}
+\label{figure:grampus.ar1.plot.ps}
+\end{figure}
+\end{example}
+%--------------------------------------------
+%-------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Maximum Likelihood Fitting of Poisson Process}
+\label{section:param.mcf.ml}
+%----------------------------------------------------------------------
+\subsection{Poisson process likelihood}
+For a system that has been observed for a period $(0,
+\analysistime]$, the data are the number of recurrences
+$\deadin_{1}, \ldots, \deadin_{m}$ in the nonoverlapping intervals
+$(\realrv_{0}, \realrv_{1}],$ $ (\realrv_{1}, \realrv_{2}],$ $
+\ldots,$ $ (\realrv_{m-1},
+\realrv_{m}]$ (with $\realrv_{0}=0$, $\realrv_{m}=\analysistime$). The
+likelihood for the NHPP model is
+\begin{eqnarray*}
+\like(\thetavec)&=& \Pr \left [N(\realrv_{0},\realrv_{1})=\deadin_{1}, \ldots,
+N(\realrv_{m-1},\realrv_{m})=\deadin_{m} \right ]
+=\prod_{j=1}^{m} \Pr \left [N(\realrv_{j-1},\realrv_{j})=\deadin_{j} \right ]
+\\
+&=&\prod_{j=1}^{m} 
+\frac{\left [ \mu(t_{j-1}, t_{j};\thetavec) 
+       \right]^{d_{j}}}
+                  {d_{j}!}
+	     \exp \left [-
+	\mu(t_{j-1}, t_{j};\thetavec)
+		  \right ]
+=
+\prod_{j=1}^{m} \frac{
+\left [ \mu(t_{j-1},t_{j};\thetavec) \right ]^{d_{j}}}
+                  {d_{j}!} \times
+\exp \left [-
+\mu(t_{0}, \analysistime;\thetavec) 
+		  \right ].
+\end{eqnarray*}
+As the number of intervals $m$ increases and the size of the
+intervals approaches zero, there are
+{\em exact} reported recurrence times at 
+$\realrv_{1} \le \ldots \le
+\realrv_{r}$ (here $r=\sum_{j=1}^{m}d_{j}$, 
+$\realrv_{0} \le \realrv_{1}$, $\realrv_{r} \le \analysistime$), then
+using a limiting argument it follows that the likelihood in terms of
+the density approximation is
+\begin{eqnarray*}
+\like(\thetavec)&=& 
+\prod_{j=1}^{r} \rocof(\realrv_{j};\thetavec)
+\times
+\exp \left [-
+\mu(0, \analysistime;\thetavec) 
+		  \right ].
+\end{eqnarray*}
+
+\subsection{Superimposed Poisson process likelihood}
+Suppose that data are
+available from $n$ independent systems with the same intensity
+function $\nu(t)$ and system $i$ is observed in the interval $(0,
+\realrv_{a_{i}}]$, $i=1, \ldots, n$ and the system $i$ recurrence times are
+denoted by $\realrv_{i1}, \ldots, \realrv_{ir_{i}}$.  Then the NHPP
+likelihood is simply the product of the individual system likelihoods
+\begin{eqnarray*}
+\like(\thetavec)&=& 
+\prod_{i=1}^{n}\prod_{j=1}^{r_{i}} 
+\rocof(\realrv_{ij};\thetavec)
+\times
+\exp \left [- \sum_{i=1}^{n}
+\mu(0, \realrv_{a_{i}};\thetavec) 
+		  \right ].
+\end{eqnarray*}
+
+The assumption that all systems have the same $\nu(t)$ is a strong
+assumption that was not required for the nonparametric estimation
+method in Section~\ref{section:nonpar.mcf}. This assumption will often be 
+inappropriate in practical applications. Generalizations (e.g., use of
+explanatory variables to account for system-to-system differences)
+are possible but are beyond the scope of this book.
+
+%----------------------------------------------------------------------
+\subsection{ML estimation for the power NHPP}
+\label{section:ml.power.nhpp}
+For the NHPP model with a power $\nu(t)$, the single-system likelihood
+for exact recurrence times is
+\begin{displaymath}
+\like(\beta, \weibscale)=
+\left( \frac{\beta}{ \weibscale^{\beta}}\right)^{r} \times
+\prod_{j=1}^{r} \realrv_{j}^{\beta-1} \,
+\times
+ \exp 
+ \left [ -
+\mu(\analysistime;\beta, \weibscale)
+ \right ].
+\end{displaymath}
+The
+ML estimates of the parameters are 
+$\betahat=r/ \sum_{j=1}^{r}
+    \log \left (\analysistime/\realrv_{j} \right )$
+and $\weibscalehat=\analysistime/ r^{1/\betahat}$.
+The relative likelihood is
+\begin{displaymath}
+R(\beta, \weibscale)=
+\left (\frac{  \beta } { \betahat } \times
+\frac{  \weibscalehat^{\betahat} } { \weibscale^{\beta} }\right )^{r}
+\times \left ( \prod_{j=1}^{r} \realrv_{j}\right )^{\beta-\betahat}
+\exp  \left [ r - \mu(\analysistime;\beta, \weibscale)
+ \right ].
+\end{displaymath}
+
+%----------------------------------------------------------------------
+\subsection{ML estimation for the loglinear NHPP} 
+\label{section:ml.loglinear.nhpp}
+With a loglinear $\nu(t)$ and exact recurrence times, the 
+single-system likelihood is
+\begin{displaymath}
+\like(\gamma_{0},\gamma_{1})=
+\exp \left (
+r \gamma_{0} + \gamma_{1} \sum_{j=1}^{r} \realrv_{j} \right )
+\times
+\exp \left [
+-
+\mu(\analysistime;\gamma_{0}, \gamma_{1})
+\right ].
+\end{displaymath}
+The ML estimates $\gammahat_{0}$ and $\gammahat_{1}$ 
+are obtained by solving
+\begin{displaymath}
+\sum_{j=1}^{r} \realrv_{j}+ \frac{r}
+				 {\gamma_{1}} -\frac{ r
+\analysistime \exp (\gamma_{1} \analysistime) } {
+\exp(\gamma_{1} \analysistime)-1 } =0
+\quad {\rm and} \quad
+\gamma_{0}
+   =
+\log \left (\frac{
+   r \gamma_{1}
+     }
+     {
+   \exp(\analysistime \gamma_{1}) -1
+     }  \right ).
+\end{displaymath}
+The relative likelihood is
+\begin{displaymath}
+R(\gamma_{0},\gamma_{1})=
+\exp \left [ r ( \gamma_{0}-\gammahat_{0})
++(\gamma_{1}-\gammahat_{1}) \sum_{j=1}^{r} \realrv_{j}
+    \right ] \times
+\exp \left \{r-\mu(\analysistime; \gamma_{0}, \gamma_{1}) \right \}.
+\end{displaymath}
+
+\begin{example}
+\label{example:grampus.nhpp}
+{\bf U.S.S. Grampus diesel engine data.}
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/grampus.mcf.nhpp.plot.ps} 
+\caption{Cumulative number of unscheduled 
+maintenance actions for a U.S.S. Grampus diesel engine versus operating
+hours with fitted power and loglinear NHPP models.}
+\label{figure:grampus.mcf.nhpp.plot.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Figure~\ref{figure:grampus.mcf.nhpp.plot.ps} shows the fitted
+$\mcf(t)$ for both the power and loglinear NHPP models. 
+There is very little difference between the two NHPP
+models and both seem to fit the data very well.  For the power NHPP model,
+$\betahat$=1.22 and $\etahat=$.553.  For the loglinear NHPP model,
+$\gamma_{0}$=1.01 and $\gamma_{1}=$.0377.  The Lewis-Robinson test
+gave $Z_{\rm LR}=1.02$ with $p$-value = $.21$.  The MIL-HDBK-189 test
+gave $X^{2}_{\rm MHB}=92$ with $p$-value = .08. These results are
+consistent with a renewal process. Exponential and Weibull probability
+plots (details requested in
+Exercise~\ref{exercise:grampus.renewal.dist}) strongly suggested that
+the times between unscheduled maintenance actions could be described by an exponential
+distribution.  Thus these data seem to be consistent with the HPP
+model.
+\end{example}
+
+\begin{example}
+{\bf U.S.S. Halfbeak diesel engine data.} 
+Table~\ref{table:halfbeak.dat} gives times of
+unscheduled maintenance actions for the U.S.S. Halfbeak number 4 main
+propulsion diesel engine over 25,518 operating hours.
+%-------------------------------------------------------------------
+\begin{table}
+\caption{Engine age at time of unscheduled maintenance actions (in thousands of 
+hours of operation) for the U.S.S. Halfbeak number 4 main propulsion
+diesel engine.  From Ascher and Feingold~(1984, page 75).}
+\centering\small
+\begin{tabular}{*{8}{r}}
+\\[-.5ex]
+\hline
+  1.382&   2.990&    4.124&    6.827&    7.472&    7.567&    8.845& 9.450\\ 
+  9.794&   10.848&   11.993&  12.300&   15.413&   16.497&   17.352& 17.632\\ 
+ 18.122&   19.067&   19.172&   19.299&   19.360&   19.686&   19.940& 19.944\\ 
+ 20.121&   20.132&   20.431&   20.525&   21.057&   21.061&   21.309& 21.310\\ 
+ 21.378&   21.391&   21.456&   21.461&   21.603&   21.658&   21.688& 21.750\\ 
+ 21.815&   21.820&   21.822&   21.888&   21.930&   21.943&   21.946& 22.181\\ 
+ 22.311&   22.634&   22.635&   22.669&   22.691&   22.846&   22.947& 23.149\\ 
+ 23.305&   23.491&   23.526&   23.774&   23.791&   23.822&   24.006& 24.286\\ 
+ 25.000&   25.010&   25.048&   25.268&   25.400&   25.500&   25.518 \\
+\hline      
+\end{tabular}
+\label{table:halfbeak.dat}
+\end{table}
+%-------------------------------------------------------------------
+As with the Grampus data, questions to be answered were a) Was the
+system deteriorating (i.e., are unscheduled maintenance actions
+occurring more rapidly as the system ages)? and b) Can unscheduled
+maintenance actions be modeled by an HPP?
+Figure~\ref{figure:halfbeak.mcf.nhpp.plot.ps} shows the cumulative
+number of unscheduled maintenance actions versus operating hours
+with fitted $\mcf(t)$ for both the power and loglinear NHPP
+models. Both NHPP models roughly follow the pattern in the data
+(nonparametric estimate), but
+the loglinear $\nu(t)$ seems to fit a little better than the power
+$\nu(t)$.  For the power model, $\betahat$=2.76 and $\etahat=$5.45.
+For the loglinear model, $\gamma_{0}$=$-1.43$ and $\gamma_{1}=$.149.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/halfbeak.mcf.nhpp.plot.ps}
+\caption{Cumulative number of unscheduled 
+maintenance actions for a U.S.S. Halfbeak diesel engine versus operating
+hours with fitted power and loglinear NHPP models.}
+\label{figure:halfbeak.mcf.nhpp.plot.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/halfbeak.repair.tsplot.ps} 
+\caption{Times between unscheduled maintenance actions for a U.S.S. Halfbeak
+diesel engine versus maintenance action number.}
+\label{figure:halfbeak.repair.tsplot.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Figure~\ref{figure:halfbeak.repair.tsplot.ps} shows a strong downward
+shift in the times between unscheduled maintenance actions after
+maintenance action number 17, suggesting a change in the
+distribution of times between maintenance actions. Confirming this,
+the Lewis-Robinson test gave
+$Z_{\rm LR}=4.70$ with $p$-value =$2.5\times 10^{-6}$.  The
+MIL-HDBK-189 test gave $X^{2}_{\rm MHB}=51$ with $p\mbox{-value}
+\approx 0$.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/halfbeak.ar1.plot.ps} 
+\caption{Times 
+between unscheduled maintenance actions versus lagged times between
+unscheduled maintenance actions for U.S.S. Halfbeak diesel engine.}
+\label{figure:halfbeak.ar1.plot.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Figure~\ref{figure:halfbeak.ar1.plot.ps} plots the times between
+unscheduled maintenance actions versus lagged times between
+unscheduled maintenance actions.  This plot indicates a strong
+positive correlation. Numerically, $\rhohat_{1}=.43$ and $\sqrt{r-1}
+\times \rhohat_{1} = 3.58$.  In contrast to the Grampus data, there is
+strong evidence against the HPP model for these data.
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Confidence intervals for parameters and functions of
+parameters}
+Confidence intervals for NHPP parameters or functions of the parameters
+can be computed using the
+general ideas developed in Chapters~\ref{chapter:parametric.ml.one.par}
+and \ref{chapter:parametric.ml.ls}.
+
+%----------------------------------------------------------------------
+\subsection{Prediction of future recurrences with a Poisson process}
+
+The expected number of recurrences in an interval $[a, b]$ is $
+\int_{a}^{b} \rocof(u,\thetavec) du.
+$
+The corresponding ML point prediction is
+$
+\int_{a}^{b} \rocof(u,\thetavechat) du.
+$
+A point prediction for the future number of recurrences using
+the power NHPP model is
+\begin{displaymath}
+\int_{a}^{b} \rocof(u,\thetavechat) du=
+\left (
+\frac{
+1
+     }
+     {
+\weibscalehat
+     }	
+\right )^{\betahat}
+\left (
+b^{\betahat}
+-
+a^{\betahat}
+\right ).
+\end{displaymath}
+Similarly, a point prediction for the future number of recurrences
+using the loglinear NHPP model is
+\begin{displaymath}
+\int_{a}^{b} \rocof(u,\thetavechat) du=
+\frac{
+ \exp(\gammahat_{0})
+     }
+     {
+\gammahat_{1}
+     }	
+\left [
+\exp(\gammahat_{1} b)
+-
+\exp(\gammahat_{1} a)
+\right ].
+\end{displaymath}
+Prediction intervals could be computed using bootstrap/simulation
+methods like those used in Chapter~\ref{chapter:prediction}.
+
+\section{Generating Pseudo-Random Realizations from an NHPP Process}
+\label{section:random.nhpp}
+This section shows how to generate a pseudo-random realization
+$\rv_{1}, \rv_{2}, \dots$ from an NHPP process.  Such realizations are
+useful for checking the adequacy of large-sample approximations and
+for implementing bootstrap methods like those described in
+Chapter~\ref{chapter:bootstrap}.
+
+\subsection{General approach}
+Using the properties of the NHPP model, it is easy to show (see
+Exercise~\ref{exercise:nhpp.simulation}) that for a monotone
+increasing $\mu(t)$, the random variables $
+\mu(\rv_{i-1}, \rv_{i}), \quad i=1, \dots
+$ are ${\rm iid}$, each with an $\EXP(1)$ (where $\rv_{0} =
+0$).  Suppose that $U_{i}, \quad i=1, \dots, r$ is a pseudorandom
+sample from a $\UNIF(0,1)$. Then using $\mu(\rv_{i-1},
+\rv_{i})=\mu(\rv_{i})-\mu(\rv_{i-1})$ and solving sequentially for
+$\rv_{1}, \rv_{2}, \dots$ gives the equations
+\begin{eqnarray*}
+\mu(\rv_{1})&=&-\log(U_{1})
+\\
+\mu(\rv_{2})-\mu(\rv_{1})&=&-\log(U_{2})
+\\
+& \vdots &
+\\
+\mu(\rv_{r})-\mu(\rv_{r-1})&=&-\log(U_{r}).
+\end{eqnarray*}
+Then one generates $r$ recurrence times from the NHPP with
+recurrence rate
+$\rocof(t)$ [or MCF $\mcf(t)$]. If one wants a realization in an
+interval $(0,
+\analysistime]$ then $r$ is random and the sequential process is
+stopped when $\rv_{i}>\analysistime$ which implies that the
+number of recurrences is $r=i-1$.
+
+The general solution can be expressed as
+\begin{displaymath}
+\rv_{j}=\mu^{-1} \left[-\sum_{i=1}^{j}\log(U_{i}) \right], \quad j=1,
+\dots .
+\end{displaymath}
+Sometimes it is more convenient to express the general
+solution recursively as
+\begin{displaymath}
+\rv_{j}=\mu^{-1} \left[\mu(\rv_{j-1})-\log(U_{j}) \right], \quad j=1,
+\dots 
+\end{displaymath}
+where $\rv_{0}=0$. The following subsections give explicit formulas for two 
+cases of interest.
+
+\subsection{NHPP with a power recurrence rate.}
+In this case $\mu(t)=(\realrv/\weibscale )^{\beta}$ and
+$\mu^{-1}(s)=\weibscale \times s^{(1/\beta)}$. Then using the 
+general solution, one gets
+\begin{displaymath}
+\rv_{j}=\weibscale \times 
+	  \left [
+	  -\sum_{i=1}^{j} \log(U_{i})
+	  \right ]^{\frac{1}{\beta}}
+=\left [ 
+	  \rv_{j-1}^{\beta} \,-\,
+	  \weibscale^{\beta} \times \log(U_{j})
+	  \right ]^{\frac{1}{\beta}}, \quad j=1, \dots .
+\end{displaymath}
+
+
+\subsection{NHPP with a loglinear recurrence rate.}
+In this case $\mu(t)=[\exp(\gamma_{0})]  [\exp(\gamma_{1} \realrv)-1 ]/\gamma_{1}$ and $\mu^{-1}(s)=(1/\gamma_{1}) \log \left [
+				    \gamma_{1} \exp(-\gamma_{0}) s +1
+				    \right ]$. 
+Again using the general solution
+\begin{eqnarray*}
+\rv_{j}&=&
+\frac{1}{\gamma_{1}} \times
+\log\left [
+-\gamma_{1}\times \exp(-\gamma_{0}) \times \sum_{i=1}^{j} \log(U_{i})
+\,+\,1
+\right ]
+\\
+&=&
+\frac{1}{\gamma_{1}} 
+\times
+\log\left [
+\exp(\gamma_{1} \,\rv_{j-1})
+-\gamma_{1}\times \exp(-\gamma_{0}) \times  \log(U_{j})
+\right ]
+, \quad j=1, \dots .
+\end{eqnarray*}
+
+\section{Software Reliability}
+\label{section:software.reliability}
+State-of-the-art reservation, banking, billing, accounting, and
+other financial and business systems depend on complicated software
+systems.  Additionally, modern hardware systems of all kinds, from
+automobiles and televisions to communications networks and
+spacecraft, contain complicated electronic circuitry.  Most of these
+electronic systems depend heavily on software for important
+functionality and flexibility. For many systems, software
+reliability has become an important limiting factor in system
+reliability.  The Institute of Electrical and Electronic Engineers
+defines software reliability as ``the probability that software will
+not cause a system failure for a specified time under specified
+conditions.''  This is very similar to the general definition of
+reliability given in Section~\ref{section:qual.rel}.
+
+Software reliability differs from hardware reliability in at least
+one important way.  Hardware failures can generally be traced to
+some combination of a physical fault and a physical/chemical
+degradation that progresses over time, perhaps accelerated by
+stress, shocks, or other environmental or operating conditions.
+Software failures, on the other hand, are generally caused by
+inherent faults (or ``bugs'') in the software that are usually
+present all along (although a new fault can be introduced during the
+process of fixing an existing fault).  Actual failure may not occur
+until a particular set of inputs is used or until a particular
+system state or level of system load is reached. The state of the
+software itself does not change without intervention.
+
+Software errors differ in their criticality. Those who work with
+personal computers know that from time to time the system will stop
+functioning for reasons that are unknown.  The cause is often
+software related (i.e., would not have occurred if the software had
+been designed to anticipate the conditions that caused the
+problem). Restarting the computer and the application will seem to
+make the problem disappear. Important data in the application being
+used at the time of the failure may or may not have been lost.
+Future versions of the operating system or the application software
+may reduce the probability of such problems.  In safety-critical
+systems (e.g., medical, air-traffic control, or military
+weapons-control systems) software failures can, of course, have much
+more serious (e.g., life-threatening) consequences.
+
+For some purposes, statistical methods for software reliability are
+similar to those used in monitoring a repairable system or an other
+sequence of recurrences.  Software reliability data often consist of
+a sequence of times of failures (or some other specific event of
+interest) in the operation of the software system. Software
+reliability data are collected for various reasons, including
+assessment of the distribution of times between failures, tracking
+the effect of continuing efforts to find and correct software
+errors, making decisions on when to release a software product,
+assessing the effect of changes to improve the software development
+process, and so on.
+
+Numerous special models have been suggested and developed to model
+software reliability data. The simplest of these describe the
+software failure rate as a smooth function of time of the service
+and other factors, such as system load and amount of testing or use
+to which the system has been exposed.  The models and data analysis
+methods presented in this chapter are useful for software data
+analysis. In an attempt to be more mechanistic and to incorporate
+information from the fix process directly into the software
+reliability model, many of these models have a parameter
+corresponding to the number of faults remaining in the system. In
+some models, the failure rate would be proportional to the number of
+faults. When a ``repair'' is made, there is some probability that
+the fault is fixed and, perhaps, a probability that a new fault is
+introduced.  For more information on software reliability and
+software reliability models, see Musa, Iannino, and Okumoto~(1987),
+Shooman~(1983), Neufelder~(1993), Chapter 6 of Pecht~(1995), or
+Azem~(1995).
+
+\section*{Bibliographic Notes}
+Asher and Feingold~(1984) provide a comprehensive review of the
+important ideas for modeling a single repairable
+system. Thompson~(1981) outlines and explains important aspects of
+probabilistic models and metrics relating to reliability of
+replaceable units and repairable systems. Snyder~(1975), Cox and
+Isham~(1980) and Thompson~(1988) present theory and methods for
+general point-process models.  Nelson~(1988) describes simple
+graphical methods for the analysis of system repair data.
+Nelson~(1995a) extends these results, showing how to compute
+confidence limits for the MCF and references available computer
+programs.  Our presentation of methods for nonparametric estimation
+depends heavily on the results in these papers, but the formulas
+given in this chapter are closer to those in Lawless and
+Nadeau~(1995).  Lawless and Nadeau~(1995) also present models and
+methods for covariate adjustment and for comparing point process.
+Robinson~(1995) derived the finite-sample variances given in
+Section~\ref{section:conf.int.for.mcf}.  Doganaksoy and
+Nelson~(1991) explain how to compare two samples of repair data and
+provide a computer program.  Cox and Lewis~(1966) provides an
+outline of methods for analyzing point process data. Cox (1962)
+gives special attention to renewal processes. Crowder, Kimber,
+Smith, and Sweeting~(1991), Ansell and Phillips~(1994), and H\o yland
+and Rausand~(1994) contain useful chapters on counting processes
+including Poisson process models, and corresponding methods for data
+analysis.  Lee~(1980) presents methods for testing between HPP with
+NHPP alternative models.  Lawless and Thiagarajah~(1996) present a
+general model that connects NHPP and renewal processes and allows
+for adjustment for covariates.  Crow~(1982) uses the power NHPP
+model to describe reliability growth of a product. Kuo and
+Yang~(1996) describe Bayesian computations for NHPP models with
+applications to software reliability.
+
+%----------------------------------------------------------------------
+\section*{Exercises}
+\begin{exercise}
+A small un-monitored computer laboratory contains 10 networked
+microcomputers. Users who notice a hardware or software problem with
+a computer are supposed to report the problem to a technician who
+will fix the problem.  The following table gives, for each computer,
+the days in which trouble calls were received. Most of the trouble
+reports were easy to address (replace a defective mouse, reboot
+the computer, remake the computer's file system from the server, remove
+stuck floppy disk, tighten loose connector, etc.). Calls reporting
+network problems or problems in the remote file server (which would
+affect all of the computers in the laboratory) were eliminated from
+the data base. All of the computers were in operation for the entire
+semester (day 1 through 105).
+\\[3ex]
+\begin{center}
+\begin{tabular}{cl}
+\hline
+Unit Number &  Day Trouble Reported\\
+\hline
+401 & 18, 22, 45, 52, 74, 76, 91, 98, 100, 103\\
+402 & 11,  17,  19,  26,  27,  38,  47,  48,  53, 86,  88\\
+403  & 2, 9,  18,  43,  69,  79,  87,  87,  95, 103, 105\\
+404 & 3,  23,  47,  61,  80,  90\\
+501 & 19,  43,  51,  62,  72,  73,  91,  93, 104, 104, 105\\
+502 & 7,  36, 40,  51,  64,  70,  73,  88,  93,  99, 100, 102\\
+503 & 28,  40,  82,  85,  89,  89,  95, 97, 104\\
+504 & 4,  20, 31,  45,  55,  68,  69,  99, 101, 104\\
+601 & 7,  34,  34,  79,  82,  85, 101 \\
+602 & 9,  47, 78,  84 \\
+\hline
+\\[2ex]
+\end{tabular}
+\end{center}
+\begin{enumerate}
+\item
+Plot the trouble reports on a time-event chart.
+\item
+Compute an estimate of the mean cumulative number of trouble reports,
+as a function of days.
+\item
+What do you notice about the pattern of trouble reports over the semester?
+What could explain this pattern?
+\item
+What information could be added to the table above to make the
+data on computer trouble reports more informative and more useful?
+\item
+Could these data be used to predict the number of trouble reports next
+semester for the same lab? 
+\item
+Could these data be used to predict the number of trouble reports next
+semester for a different computer lab in the same building? Explain.
+\end{enumerate}
+\end{exercise}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise1}
+\label{exercise:ml.nhpp.power}
+Consider the 
+NHPP model with a power $\rocof(t)$ given in 
+Section~\ref{section:ml.power.nhpp}.
+\begin{enumerate}
+\item
+\label{exercise:ml.power.nhpp.par}
+Verify the formulas given there for the
+ML estimates of the parameters $\beta$ and $\weibscale$.
+\item
+\label{exercise:ml.power.nhpp.pro}
+Verify the expression given for the relative likelihood $R(\beta,\weibscale)$.
+\item
+Show that the profile likelihood for $\beta$
+has the form $R(\beta)=(\beta/\betahat)^{r} 
+\times \left [ \prod_{j=1}^{r} (\realrv_{j}/\analysistime)
+\right ]^{\beta-\betahat}.$
+\end{enumerate}
+\end{exercise1}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise1}
+Consider the 
+NHPP model with a loglinear $\rocof(t)$ given in 
+Section~\ref{section:ml.loglinear.nhpp}.
+\begin{enumerate}
+\item
+Do parts \ref{exercise:ml.power.nhpp.par}
+and \ref{exercise:ml.power.nhpp.pro}
+as in Exercise~\ref{exercise:ml.nhpp.power},
+but using the  loglinear NHPP model.
+\item
+Show that the profile likelihood for $\gamma_{1}$
+is 
+\begin{displaymath}
+R(\gamma_{1})=
+\left [
+  \frac{  
+\gamma_{1} \, (   \exp(\analysistime \gammahat_{1}) -1)
+       }
+       {
+\gammahat_{1} \,  (   \exp(\analysistime \gamma_{1}) -1)
+       }
+\right ]^{r}
+\times
+\exp \left [ 
+(\gamma_{1}-\gammahat_{1}) \sum_{j=1}^{r} \realrv_{j}
+    \right ].
+\end{displaymath}
+\end{enumerate}
+\end{exercise1}
+
+%----------------------------------------------------------------------
+\begin{exercise1}
+A repair process has been observed for a period
+$(\realrv_{0}, \analysistime]$ and the data are the number of repairs
+$\deadin_{1},
+\dots, \deadin_{m}$
+in the nonoverlapping intervals $(\realrv_{0}, \realrv_{1}],$ $
+(\realrv_{1}, \realrv_{2}],$ $ \dots,$ $ (\realrv_{m-1},
+\realrv_{m}]$ (with $\realrv_{m}=\analysistime$). Suppose that the 
+process can be described with the loglinear $\nu(t)$ NHPP model.
+\begin{enumerate}
+\item
+\label{exercise:ml.loglinear.int}
+Show that the ML estimates $\gammahat_{0}$ and $\gammahat_{1}$ are the
+solution to the equations
+\begin{eqnarray*}
+&&\sum_{j=1}^{m} \deadin_{j}
+\left [
+\frac{
+\realrv_{j} \exp(\gamma_{1}\realrv_{j} )-
+\realrv_{j-1}\exp( \gamma_{1}\realrv_{j-1})
+     } {
+\exp(\gamma_{1} \realrv_{j} )-
+\exp(\gamma_{1} \realrv_{j-1} )
+     }
+\right ] -
+r \left [ \frac{
+\realrv_{m} \exp(\gamma_{1}\realrv_{m} )-
+\realrv_{0}\exp(\gamma_{1}\realrv_{0} )
+	}
+        {
+ \exp(\gamma_{1} \realrv_{m} )-
+ \exp(\gamma_{1} \realrv_{0})
+	}
+\right ]=0
+\\[1ex]
+&&
+\gamma_{0}=
+\log
+\left [
+\frac{
+r \gamma_{1}
+     }
+     {
+\exp(\gamma_{1} \realrv_{m})-\exp(\gamma_{1} \realrv_{0})
+     }
+\right ]
+\end{eqnarray*}
+where $r=\sum_{i=1}^{m}\deadin_{j}$.
+\item
+Show that when the length of the intervals $\realrv_{i+1}-\realrv_{i}$
+approaches zero (exact recurrence times reported), then the formulas in 
+part~\ref{exercise:ml.loglinear.int} simplify to
+the formulas given in Section~\ref{section:ml.loglinear.nhpp}.
+\end{enumerate}
+\end{exercise1}
+
+
+%-------------------------------------------
+\begin{exercise}
+Show that substituting (\ref{equation:var.deadin}) and
+(\ref{equation:cov.deadin}) into (\ref{equation:varhat.mcf.gen}) and
+simplifying gives (\ref{equation:varhat.mcf}).
+\end{exercise}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise}
+Consider the 
+power-loglinear recurrence rate given by
+\begin{eqnarray*}
+\rocof(\realrv;\gamma_{0},\gamma_{1},\gamma_{2},\gamma_{3})&=&\frac{\gamma_{3}}
+		         {\gamma_{2}} \left ( 	 \frac{\realrv}
+{\gamma_{2}} \right )^{\gamma_{3}-1}
+\exp(\gamma_{0}+\gamma_{1} \realrv).
+\end{eqnarray*}
+\begin{enumerate}
+\item
+Show that this model includes as special cases the power and the
+loglinear models.
+\item
+Show that under the NHPP model, the
+mean cumulative number of system events over $(0, \realrv]$ is
+\begin{eqnarray*}
+\mu(\realrv;\gamma_{0},\gamma_{1}, \gamma_{2},\gamma_{3} )
+&=&
+\gamma_{3}
+\,
+\left (
+\frac{\realrv}
+     {\gamma_{2}}
+\right )^{\gamma_{3}}
+\exp(\gamma_{0})
+\left [
+\frac{1}{\gamma_{3}}
++ 
+\sum_{i=1}^{\infty}
+\frac{
+ (\gamma_{1} \realrv)^{i}
+     }
+     {
+(\gamma_{3}+i) \times i!
+     }
+\right ].
+\end{eqnarray*}
+\item
+Derive expressions for $\mcf(\realrv)$ for the 
+power and loglinear models from the general expression
+given above.
+\end{enumerate}
+\end{exercise}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:grampus.renewal.dist}
+Example~\ref{example:grampus.nhpp} showed that the times
+between unscheduled 
+maintenance actions were consistent with a renewal process.
+Use exponential and Weibull probability plots to explore the
+form of the distribution of the times
+between unscheduled 
+maintenance actions.
+\end{exercise}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise}
+Verify the computation of 
+$\varhat[\muhat(\realrv_{2})]$ and $\varhat[\muhat(\realrv_{3})]$
+given in Example~\ref{example:simple.var.mcf}.
+\end{exercise}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise1}
+A company manufactures systems. The number of faults in new a
+system, say $X$, has a Poisson distribution with mean $\gamma$.
+Each fault has associated with it a time of occurrence. These times
+can be modeled as being independent and distributed with a pdf
+$f(\realrv;\thetavec)$. Consider the counting process $N(\realrv)$
+giving the number of failures at time $t$ (see Kuo and Yang~1996
+for a more detailed description and applications for this model).
+\begin{enumerate}
+\item
+Show that, conditional on fixed number of faults $X>0$, the distribution of
+$N(\realrv)$ is binomial with probability of success equal
+to $F(\realrv)$.
+\item
+Show that $N(\realrv)$ is an NHPP with $\rocof(\realrv)=\gamma
+f(\realrv; \thetavec)$.
+\item
+Derive an expression for the MCF $\mcf(\realrv)$.
+\item
+Show that $\lim_{t \to \infty}\mcf(\realrv)=\gamma<\infty$, and give an
+intuitive explanation for this result.
+\item
+Compute an expression for the probability of zero failures in the
+interval $(0,t]$.  Use this expression to show that there is always
+a positive probability of zero failures even for large $\realrv$.
+\item
+Suppose that $f(\realrv;\thetavec)$ is an exponential density with mean
+$\theta$.
+\begin{enumerate}
+\item
+Show that in this case the recurrence rate $\nu(t)$
+is loglinear function and express $\beta_{0}$
+and $\beta_{1}$ as a function of $\theta$ and $\gamma$.
+\item
+Show that there is a restriction on the sign of $\beta_{1}$ imposed
+by the model.
+\end{enumerate}
+\item
+Compute $\rocof(\realrv)$ and $\mcf(\realrv)$ when $f(\realrv;
+\thetavec)$ is a Weibull density.
+\end{enumerate}
+\end{exercise1}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise}
+A company that runs a fleet of passenger automobiles would like to do
+a retrospective study to compare two different brands of automobile
+batteries.  The fleet contains 55 automobiles. All 
+of the automobiles started with brand
+B, but during the life of the automobiles, when a battery failed, it
+was replaced with either Brand A or Brand B. The available data show
+the date of purchase of the original automobile and the date and brand of
+replacement for batteries that were replaced.
+\begin{enumerate}
+\item
+How would you organize the data for analysis?
+What kind of questions could you answer from an analysis
+focusing on the mean cumulative number of failures?
+\item
+Describe some of the potential pitfalls involved in drawing inferences
+from a retrospective study like this. What advantages would there
+be for doing a prospective study where the failure times of future
+batteries would be studied?
+\item
+What assumptions would you have to make about the battery failures in
+order to be able to use the times between battery failures to estimate
+such a failure-time distribution for the batteries?  How could you
+use the available data to check the assumptions?
+\end{enumerate}
+\end{exercise}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:mcf.special.cases}
+Suppose that $n$ repairable systems
+were put into service at the same time and
+that, up to time 
+$\realrv_{j}$, all systems are still being monitored.
+\begin{enumerate}
+\item
+\label{exer.part:naive.mcf.estimate}
+Show that, in this case, the estimator of the MCF at $\realrv_{j}$ 
+in (\ref{equation:mcfhat}) reduces to the sample
+mean of the $N_{i}(\realrv_{j})$ values:
+\begin{displaymath}
+\mcfhat(\realrv_{j})=\bar{N}_{i}(\realrv_{j})=
+\frac{ \sum_{i=1}^{n} N_{i}(\realrv_{j})} {n}.
+\end{displaymath}
+\item
+\label{exer.part:naive.mcf.var.estimate}
+Show that the estimator of $\var[\muhat(\realrv_{j})]$ 
+in (\ref{equation:var.deadin}) reduces to
+\begin{displaymath}
+\varhat[\muhat(\realrv_{j})]=\frac{\varhat[N(\realrv_{j})]}
+			            {n}
+=
+\frac{\sum_{i=1}^{n} [N_{i}(\realrv_{j})-\bar{N}_{i}(\realrv_{j})]^{2}
+}{n^{2}}.
+\end{displaymath}
+\item
+\label{exer.part:naive.mcf.var.0}
+Show why $\varhat[\muhat(\realrv_{j})]=0$
+when $N_{1}(\realrv_{j})=N_{2}(\realrv_{j})=\dots=N_{n}(\realrv_{j})$.
+\item
+Give the formula for the unbiased 
+estimator of
+$\var[\muhat(_{j})]$.
+\end{enumerate}
+\end{exercise}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise1}
+As in Exercise~\ref{exercise:mcf.special.cases}
+suppose that $n$ repairable systems
+are being observed but that at time 
+$\realrv_{j}$ some of the systems
+have been censored.
+\begin{enumerate}
+\item
+Show the result in Exercise~\ref{exercise:mcf.special.cases}
+part~\ref{exer.part:naive.mcf.estimate} does not hold.
+\item
+Show that the result in 
+Exercise~\ref{exercise:mcf.special.cases}
+part~\ref{exer.part:naive.mcf.var.0} is still true.
+\end{enumerate}
+
+\end{exercise1}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise1}
+Consider a sequence of recurrence times $\rv_{1},\rv_{2}, \dots$ 
+from an NHPP with recurrence rate $\nu(t)$.
+\begin{enumerate}
+\item
+\label{exer.part:nhpp.cond.dist}
+Show that the cdf of $\rv_{i}$ conditional on $\rv_{i-1}$ is
+\begin{displaymath}
+F(t |\rv_{i-1})=\Pr(\rv_{i} \le \realrv|\rv_{i-1})=1-
+\exp
+\left [
+-\int_{\rv_{i-1}}^{t} \nu(u) du
+\right ].
+\end{displaymath}
+(Hint: $\Pr(\rv_{i} > \realrv|\rv_{i-1})=
+\Pr \left [N(\realrv)-N(\rv_{i-1})=0 \right ]$ and use 
+the properties of the NHPP).
+\item
+Using the method given in Section~\ref{section:generating.random.numbers}
+show that $F(\rv_{i}|\rv_{i-1}) \sim \UNIF(0,1)$.
+\item
+Suppose that $\rv_{0}=0$. 
+Show that 
+pseudorandom observations of $\rv_{i}$ are obtained
+from the sequence,
+$\rv_{1}=F^{-1}\left (U_{1} \right )$,
+$\rv_{2}=F^{-1}\left (U_{2} \mid \rv_{1} \right )$,
+$\dots$,
+$\rv_{i}=F^{-1}\left (U_{i} \mid \rv_{i-1} \right )$,
+where $U_{1}, \dots, U_{i}$ is a pseudorandom sample from a $\UNIF(0,1)$.
+\item
+\label{exer.part:simulation.nhpp.power}
+For the power model, show that a simulated values of the NHPP can be obtained 
+from the sequence,
+$\rv_{1}=\left [ -\weibscale^{\beta} \log(1-U_{1})\right ]^{1/\beta}$,
+$\rv_{2}=\left [ \rv_{1}^{\beta}-
+\weibscale^{\beta} \log(1-U_{2}) \right ]^{1/\beta}$,
+$\dots$,
+$\rv_{i}=\left [ \rv_{i-1}^{\beta}-
+\weibscale^{\beta} \log(1-U_{i})
+\right ]^{1/\beta}$.
+
+Also show that the recursive formula can be expressed
+as,
+$\rv_{1}=\weibscale \left [ -\log(1-U_{1}) \right ]^{1/\beta}$,
+$\rv_{2}=\weibscale \left [ -\sum_{j=1}^{2}\log(1-U_{j})
+\right ]^{1/\beta}$,
+$\dots$,
+$\rv_{i}=\weibscale \left [ -\sum_{j=1}^{i}\log(1-U_{j})
+\right ]^{1/\beta}$.
+\item
+Show why and how one can replace $1-U_{j}$ with $U_{j}, j=1, \dots$ in
+part~\ref{exer.part:simulation.nhpp.power}, and still the expressions will 
+provide the desired sequence of NHPP recurrence times.
+\item
+Derive the corresponding recursive formulas for the NHPP model with
+loglinear recurrence rate function.
+\end{enumerate}
+\end{exercise1}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:nhpp.simulation}
+Consider an NHPP model with a strictly positive recurrence rate
+$\rocof(\realrv)$, [i.e.,$\nu(t)>0$ for all $\realrv$ in
+$[0,\infty)$].  Let $\rv_{1},\rv_{1},\dots $ be the random times at
+which the recurrent events occur in the stochastic process.  Let
+$W_{1}=\mu(\rv_{1}),W_{2}=\mu(\rv_{2}) $ denote transformed times,
+where $\mu(\realrv)$ is the process MCF.
+\begin{enumerate}
+\item
+Show that the time transformation $w=\mu(\realrv)$ is
+monotone increasing. This implies that 
+the inverse transformation $\realrv=\mu^{-1}(w)$
+is well defined.
+\item
+\label{exer.part:time.transform.hpp}
+Let $N_{W}(a)$ be the number of events in the
+interval $[0,a)$ in the $W$ time scale.
+Show that events in nonoverlapping intervals 
+are independent and that
+\begin{eqnarray*}
+N_{W}(0)&=&0
+\\
+\Pr \left [N_{W}(a,b)=\deadin \right ]&=&\Pr\{N \left
+[ \mu^{-1}(a),\mu^{-1}(b) \right ]=\deadin\}
+\\
+&=&
+\frac{\left ( b-a  \right )^{\deadin}}
+                  {\deadin !}
+	     \exp \left [ -(
+ b-a)
+		  \right ], \, \deadin=0,1,2, \dots .
+\end{eqnarray*}
+This implies that in the $W$ time scale, the point process
+is HPP with a constant 
+recurrence rate equal~to~1.
+\item
+Using the result in part~\ref{exer.part:time.transform.hpp},
+show that the interrecurrence transformed times 
+$W_{i}-W_{i-1}=\mu(\rv_{i-1}, \rv_{i})$, $i=1,2, \dots$, (where
+ $W_{0}=0$) are $\rm iid$ with an $\EXP(1)$ distribution.
+ 
+
+\end{enumerate}
+\end{exercise}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise2}
+\label{exercise:poisson.sim}
+The confidence interval procedure
+given in Section~\ref{section:conf.int.for.mcf} is based on the
+large-sample approximation that $Z_{\muhat(\realrv)} =
+\left [\muhat(\realrv)-\mu(\realrv) \right ]/\sehat_{\muhat(\realrv)} 
+\approxdist \NOR(0,1)$. The adequacy of this approximation 
+depends on the number of system in the sample, and the distribution of
+the cumulative function levels at the point in time of interest. The
+adequacy of the approximation can be checked by doing a Monte Carlo
+simulation.
+\begin{enumerate}
+\item
+\label{exer.part:nhpp.sim1}
+Show that if the underlying processes generating repairs for
+refrigerators can be described by an NHPP (with possibly different
+recurrence rate functions from refrigerator to refrigerator), the
+cumulative number of repairs for a sample of such refrigerators at a
+particular point in time (assuming no censoring) has a Poisson
+distribution.
+\item
+Simulate 1000 samples, each giving the total number of repairs from
+$n=5$ systems. Suppose, as suggested in
+part~\ref{exer.part:nhpp.sim1}, that $\sum_{i=1}^{n} N_{i}(t)$, the
+cumulative number of repairs at time $t$ for all $n$ systems, has a
+Poisson distribution with mean $\E \left [ \sum_{i=1}^{n} N_{i}(t)
+\right ]$=30.  For each sample, compute (again, assuming no
+censoring) $\muhat(t)$, $\sehat_{\muhat(t)}$, and
+$Z_{\muhat(\realrv)}$. Make a normal probability plot of the
+$Z_{\muhat(\realrv)}$. What do you conclude?
+\item
+Repeat part~\ref{exer.part:nhpp.sim1}, but use samples of size $n$=10,
+25, 50, and 100. What do you conclude?
+\item
+Explain how you could use the bootstrap methods in
+Chapter~\ref{chapter:bootstrap}
+to obtain better  approximate confidence intervals for $\mu(t)$.
+\end{enumerate}
+\end{exercise2}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise2}
+Redo Exercise~\ref{exercise:poisson.sim} with $\E \left[ \sum_{i=1}^{n}
+N_{i}(t) \right]$ = 5, 10, 20, 50, and 100. Comment on the results.
+\end{exercise2}

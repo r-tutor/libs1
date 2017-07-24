@@ -1,0 +1,49 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__A small un-monitored computer laboratory contains 10 networked microcomputers. Users who notice a hardware or software problem with a computer are supposed to report the problem to a technician who will fix the problem.  The following table gives, for each computer, the days in which trouble calls were received. Most of the trouble reports were easy to address (replace a defective mouse, reboot the computer, remake the computer's file system from the server, remove stuck floppy disk, tighten loose connector, etc.). Calls reporting network problems or problems in the remote file server (which would affect all of the computers in the laboratory) were eliminated from the data base. All of the computers were in operation for the entire semester (day 1 through 105).__
+```{r}
+computerlab <- SMRD::computerlab
+un <- unique(computerlab[,1])
+tu <- by(computerlab[[2]], 
+         computerlab[,1], 
+         FUN = function(x) paste(x, collapse = ', '))[1:length(un)]
+knitr::kable(data.frame(names(tu),tu, row.names = NULL), 
+             format = 'pandoc',
+             col.names = names(computerlab[1:2]))
+```
+
+a. __Plot the trouble reports on a time-event chart.__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __Compute an estimate of the mean cumulative number of trouble reports, as a function of days.__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __What do you notice about the pattern of trouble reports over the semester? What could explain this pattern?__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __What information could be added to the table above to make the data on computer trouble reports more informative and more useful?__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __Could these data be used to predict the number of trouble reports next semester for the same lab?__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __Could these data be used to predict the number of trouble reports next semester for a different computer lab in the same building? Explain.__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`

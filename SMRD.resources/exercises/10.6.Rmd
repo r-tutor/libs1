@@ -1,0 +1,86 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__A reliability engineer wants to run a life test to estimate the .05 quantile of the fatigue life distribution of a metal component used in a switch.  The engineer has to choose a sample size that will allow estimation to be precise enough so that the lower endpoint of a 95% confidence interval for the quantile will be about one-half of the ML estimate.  It will be possible to test each specimen until about 100-thousand cycles, when it is expected that about 15% of the specimens will have failed.  It is expected that about 5% will have failed after about 40-thousand cycles.__
+
+a. __Use the information above on Weibull probability paper to obtain "planning values" for the Weibull parameters.__
+
+`r SMRD.resources:::solution()$begin`
+For this problem it is simpler if we avoid using the plotting paper and instead calculate the planning values $\beta^{\square} \text{ and } \eta^{\square}$  directly from the Weibull cdf where
+
+$$
+0.15=1-\exp\left[-\left(\frac{100000}{\eta^{\square}}\right)^{\beta^{\square}}\right]\hspace{30pt}\text{and}\hspace{30pt}0.05=1-\exp\left[-\left(\frac{40000}{\eta^{\square}}\right)^{\beta^{\square}}\right]
+$$
+
+Solving the first equation for $\eta^{\square}$ results in 
+
+$$
+\eta^{\square}=\frac{100000}{\left(-\log[.85]\right)^{\frac{1}{\beta^{\square}}}}
+$$
+
+substituting this expression for $\eta^{\square}$ into the second Weibull cdf equation above results in a function where
+$\beta^{\square}$ is the only unknown
+
+$$
+.95=\exp\left[-\left(40000 \times \frac{\left(-\log[.85]\right)^{ \frac{1} {\beta^{\square}} } } {100000}\right)^{\beta^{\square}}\right].
+$$
+
+Solving the above expressions for $\beta^{\square}$ and $\eta^{\square}$ give
+
+$$
+\beta^{\square}=\frac{\log\left(\frac{\log(.95)}{\log(.85)}\right)}{\log(0.4)}\approx 1.26\hspace{20pt}\text{and}\hspace{20pt}\eta^{\square}\approx 423612
+$$
+
+Alternatively, we can express these values in location scale form as
+
+$$
+\sigma^{\square}=0.793\hspace{30pt}\mu^{\square}=12.956
+$$
+`r SMRD.resources:::solution()$end`
+
+b. __Determine the sample size needed to achieve the desired precision__
+
+`r SMRD.resources:::solution()$begin`
+In critical safety items there is interest in knowing the "safe life" of a system or component. Often "safe life" is defined as half of the expected life.  In this problem we are asked to find the required sample size such that the lower limit of the $95\%$ confidence interval for $t_{.05}$ is half of the expected value for $t_{.05}.$  This can be accomplished using Equation 10.8
+
+$$
+n=\frac{z^{2}_{(1-\alpha/2)}V^{\square}_{\log(\widehat{t}_{p})}}{[\log(R_{T})]^{2}}
+$$
+
+where 
+
+$$
+\begin{aligned}
+z^{2}_{(1-\alpha/2)}=&\;1.96^{2}=3.84\\\\
+[\log(R_{T})]^{2}=&\left[\log\left(\frac{\widehat{t}_{.05}}{\underline{t}_{.05}}\right)\right]^{2}=\left[\log\left(\frac{\widehat{t}_{.05}}{\frac{1}{2}\widehat{t}_{.05}}\right)\right]^{2}=\left[\log(2)\right]^{2}=0.4804.
+\end{aligned}
+$$
+
+The variance component $V^{\square}_{\log(\widehat{t}_{p})}=V^{\square}_{\widehat{\mu}}+[\Phi^{-1}(p)]^{2}V^{\square}_{\widehat{\sigma}}+2\Phi^{-1}(p)V^{\square}_{(\widehat{\mu},\widehat{\sigma})}$ can be read from Table 10.5, following the curve for $p_{c}=.15$ as the fraction   of units planned to survive at the conclusion of the test (i.e. right censored observations).
+
+From the table, the variance factor appears to be $\approx 15$.  This value can also be found with the SMRD package, using the command
+
+```{r echo=TRUE, results='markup'}
+variance.factor(distribution = 'sev',
+                type = 'quantile',
+                quantile.of.interest = .05, 
+                proportion.failing = .15)
+```
+
+where the command results in $V^{\square}_{\log(\widehat{t}_{.05})}\times\left(\frac{1}{\sigma^{\square}}\right)^{2}\approx 14.6$.  Thus,
+
+$$
+V^{\square}_{\log(\widehat{t}_{.05})}=14.6\times.793^{2}=9.181
+$$
+
+Finally, the required sample size may be computed as
+
+$$
+n=\frac{3.84 \times 9.181 }{0.4804}=73.38 \approx 74 \text{ units}.
+$$
+`r SMRD.resources:::solution()$end`

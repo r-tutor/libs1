@@ -1,0 +1,37 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__Suppose that $n$ repairable systems were put into service at the same time and that, up to time  $t_{j}$, all systems are still being monitored.__ 
+
+a. __Show that, in this case, the estimator of the MCF at $t_{j}$ in (16.1) reduces to the sample mean of the $N_{i}(t_{j})$ values:__
+$$
+\hat{\mu}(t_{j})=\bar{N}_{i}(t_{j})= \frac{ \sum_{i=1}^{n} N_{i}(t_{j})} {n}. 
+$$ 
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __Show that the estimator of $Var[\hat{\mu}(t_{j})]$ in (16.3) reduces to__ 
+$$
+\widehat{Var}[\hat{\mu}(t_{j})] =
+\frac{\widehat{Var}[N(t_{j})]}{n} = 
+\frac{\sum_{i=1}^{n} [N_{i}(t_{j})-\bar{N}_{i}(t_{j})]^{2} }{n^{2}}. 
+$$
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __Show why $\widehat{Var}[\hat{\mu}(t_{j})]=0$ when $N_{1}(t_{j})=N_{2}(t_{j})=\dots=N_{n}(t_{j})$.__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`
+
+a. __Give the formula for the unbiased estimator of $Var[\hat{\mu}(_{j})]$.__
+
+`r SMRD.resources:::solution()$begin`
+`r SMRD.resources:::solution()$end`

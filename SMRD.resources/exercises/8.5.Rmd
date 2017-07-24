@@ -1,0 +1,110 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__Return to the fatigue crack-initiation test in Exercise 6.7.  Fit a Weibull distribution with a given shape parameter $\beta=2.$__
+
+a. __Compute the ML estimate of $\eta.$  What is the practical interpretation of this estimate?__
+
+`r SMRD.resources:::solution()$begin`
+If neither $\eta$ nor $\beta$ are known, a closed-form analytical solution for the MLE's does not exist.  In this problem, the value of $\beta$ is known, thus $F(t|\eta,\beta=2)=1-e^{-\left(\frac{t}{\eta}\right)^{2}}$ and $f(t)=\frac{2}{\eta}\left(\frac{t}{\eta}\right)e^{-\left(\frac{t}{\eta} \right)^{2}}.$  The likelihood function for the data is
+
+$$
+L(\eta)=\prod_{i=1}^{9}f(t_{i})\prod_{i=10}^{100}1-F(t_{i})=\frac{2^{9}}{\eta^{18}}\left(\prod_{i=1}^{9} t_{i}\right)\text{exp}\left(-\frac{\sum_{i=1}^{9} t_{i}^{2}}{\eta^{2}}\right)\text{exp}\left(-\frac{\sum_{i=10}^{100} t_{i}^{2}}{\eta^{2}}\right)
+$$
+
+After combining terms, the log-likelihood function is 
+
+$$
+\mathcal{L}(\eta)=C-18\times \log(\eta)-\eta^{-2}\sum_{i=1}^{100}t_{i}^{2}.
+$$
+
+Taking the derivative of the log-likelihood function wrt $\eta$ gives
+
+$$
+\frac{d \mathcal{L}}{d\eta}=\frac{-18}{\eta}+\frac{2\sum_{i=1}^{100}t_{i}^{2}}{\eta^{3}}\rightarrow \eta^{2}=\frac{\sum_{i=1}^{100}t_{i}^{2}}{9} \rightarrow \widehat{\eta}=\frac{\sqrt{\sum_{i=1}^{100}t_{i}^{2}}}{3}
+$$
+
+$$
+\frac{d\mathcal{L}^{2}}{d\eta^{2}}=\frac{18}{\eta^{2}}+\frac{6\sum_{i=1}^{100}t_{i}^{2}}{\eta^{4}}
+$$
+
+So, $\widehat{\eta}_{_{MLE}}=\sqrt{314815}=323.94$ kilocycles, the practical implication of this result is that the Weibull shape parameter, or characteristic life (the time at which $63.2\%$ of a population of units has failed) is equal to the $\widehat{\beta}_{_{MLE}}^{-1}$ root of the ratio of the sum of the individual items times on test, raised to the $\widehat{\beta}_{_{MLE}}$ power, divided by the number of failures.
+`r SMRD.resources:::solution()$end`
+
+b. __Obtain the estimate $\widehat{se}_{\widehat{\eta}}.$__
+
+`r SMRD.resources:::solution()$begin`
+The value for $\widehat{se}_{\widehat{\eta}}$ is obtained from taking the square root of the negative-inverse of the Observed Fisher Information matrix.  For this problem the Observed Fisher Information matrix is a single term, thus the inverse is found by taking the reciprocal.
+
+$$
+\widehat{se}_{\widehat{\eta}}=\sqrt{\left[-\frac{d^{2}\mathcal{L}(\eta|\underline{X})}{d\eta^{2}}\right]^{-1}}=\sqrt{\left(-\frac{18}{\left(\widehat{\eta}_{_{MLE}}\right)^{2}}+\frac{6\sum_{i=1}^{100}t_{i}^{2}}{\left(\widehat{\eta}_{_{MLE}}\right)^{4}}\right)^{-1}}=\sqrt{2914.87}=53.99
+$$
+`r SMRD.resources:::solution()$end`
+
+c. __Compute a conservative 95% confidence interval for $\eta.$__
+
+`r SMRD.resources:::solution()$begin`
+To find the confidence intervals for $\widehat{\eta}$ we substitute $\widehat{\mu}_{_{MLE}}=\text{log}[\widehat{\eta}_{_{MLE}}]$ into Equation (8.7) where
+
+$$
+\left[\underline{\mu},\overline{\mu}\right]=\widehat{\mu}\pm Z_{(1-\alpha/2)} \widehat{se}_{\widehat{\mu}}
+$$
+
+and
+
+$$
+\widehat{se}_{\widehat{\mu}}=\sqrt{\left(-\frac{18}{\left(\text{log}[\widehat{\eta}_{_{MLE}}]\right)^{2}}+\frac{6\sum_{i=1}^{100}t_{i}^{2}}{\left(\text{log}[\widehat{\eta}_{_{MLE}}]\right)^{4}}\right)^{-1}}=\sqrt{.000197}=0.01404
+$$
+
+The confidence intervals for $\eta$ may then be expressed as
+
+$$
+\left[\underline{\eta},\overline{\eta}\right]=\text{exp}\left(\text{log}[\widehat{\eta}_{_{MLE}}]\pm 1.96\times 0.01404\right)=\left[ 332.97,315.15\right]
+$$
+`r SMRD.resources:::solution()$end`
+
+d. __Plot the Weibull estimate of $F(t)$ along with the nonparametric estimate.  Comment on the adequacy of the Weibull distribution to describe the data.__
+
+`r SMRD.resources:::solution()$begin`
+In Problem 6.7(b) a plot of the nonparametric estimate of the cdf was was produced for the titanium alloy fatigue test data.  Here, we are asked to plot a Weibull$(\widehat{\eta}_{_{MLE}},\widehat{\beta}_{_{MLE}})$ cdf on top of the nonparametric estimate to verify that the maximum likelihood distribution fits the data.  A poor fit could result from (1) calculating $\widehat{\beta}_{_{MLE}}$ or $\widehat{\eta}_{_{MLE}}$ incorrectly, (2) assuming the Weibull distribution is correct when it is not, or (3) insufficient data to accurately estimate the parameter values. The plot, shown below, includes the nonparametric estimate of the cdf as well as three different Weibull models.
+
+For the first Weibull model $\widehat{\beta}_{_{MLE}}=2$ as was directed in part (a) of this problem.  The corresponding scale parameter $\widehat{\eta}_{_{MLE}}$ was found to be $323.94$.  For the second Weibull model the shape parameter was found by using the Kaplan-Meier plotting position values calculated in problem 6.7(a), resulting in $\widehat{\beta}_{_{MLE}}=1.36.$ The shape parameter for the third Weibull model was found using the Hazen plotting position values, for this model $\widehat{\beta}_{_{MLE}}=1.75$.  Using the procedure shown in part (a) to calculate $\widehat{\eta}_{_{MLE}}$  resulted in the scale parameter values shown in the legend.
+
+From observing these curves, the plotting position values obtained from the Kaplan-Meier estimate result in a Weibull model that fits the data better that the model resulting from the Hazen plotting position values or whaterver method was used to arrive at $\widehat{\beta}_{_{MLE}}=2$. 
+```{r, fig.cap="Fit comparison of three Weibull distributions to the titanium fatigue crack data"}
+par(family="serif")
+plot(titanium.ld, band.type="none") #Using titanium.ld created for Exercise 6.7
+curve(pweibull(x,scale=323.94,shape=2),lwd=2,col=2,xlab="",ylab="",add=TRUE)
+curve(pweibull(x,scale=567.45,shape=1.36),lwd=2,col=3,xlab="",ylab="",add=TRUE)
+curve(pweibull(x,scale=383.95,shape=1.75),lwd=2,col=4,xlab="",ylab="", add=TRUE)
+legend("topleft", c(expression("("*beta*","*alpha*") = (2.00, 323.94)"),
+    	expression("("*beta*", "*alpha*") = (1.75, 383.95)"),
+			expression("("*beta*", "*alpha*") = (1.36, 567.45)")),
+			lwd=c(2,2,2),col=c(2,4,3),cex=1,bty="n",xjust=0.5)
+```
+`r SMRD.resources:::solution()$end`
+
+e. __What is an estimate of the .1 quantile of the time-to-initiation distribution?__
+
+`r SMRD.resources:::solution()$begin`
+The maximum likelihood estimate for $t_{0.1}$ is found from the Weibull quantile function where $\widehat{\beta}_{_{MLE}}=2$ and $\widehat{\eta}_{_{MLE}}=323.94.$  Substituting these values into the quantile function gives
+
+$$
+\left(\widehat{t}_{_{0.1}}\right)_{_{MLE}}=\widehat{\eta}_{_{MLE}}\sqrt{-\text{log}[1-0.1]}=105.15 \text{ kilocycles}
+$$
+`r SMRD.resources:::solution()$end`
+
+f. __Compute a conservative 95% confidence interval for the .1 quantile of the time-to-initiation distribution.__
+
+`r SMRD.resources:::solution()$begin`
+Because the quantile function is a monotone function of $\eta$ a $95\%$ confidence interval on $\left(\widehat{t}_{_{0.1}}\right)_{_{MLE}}$ is found from
+
+$$
+\left[\underline{t}_{_{0.1}},\overline{t}_{_{0.1}}\right]=\left[\underline{\eta}\times\sqrt{-\text{log}[0.9]},\overline{\eta}\times\sqrt{-\text{log}[0.9]}\right]=[75.85,145.77]
+$$
+`r SMRD.resources:::solution()$end`

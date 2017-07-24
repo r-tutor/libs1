@@ -1,0 +1,146 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__Consider the relationship $S(t_{i})=\exp[-H(t_{i})],$ where $H(t)$ is  the cumulative hazard function.  Note that a nonparametric ML estimator (based on the product-limit estimator) of $H(t)$ without assuming a distributional form is__
+
+$$
+\widehat{H}(t_{i})=-\sum_{j=1}^{i} \log(1-\widehat{p_{j}})\approx \sum_{j=1}^{i}\widehat{p}_{j}=\sum_{j=1}^{i}\frac{d_{j}}{n_{j}}=\widehat{\widehat{H}}(t_i)
+$$
+
+__$\widehat{\widehat{H}}(t_{i})$ is known as the Nelson-Aalen estimator of $H(t_{i}).$  Thus $\widehat{\widehat{F}}(t_{i})=1-\exp[-\widehat{\widehat{H}}(t_{i})]$ is another nonparametric estimator for $F(t_{i}).$__
+
+a. __Give conditions to assure a good agreement between $\widehat{H}(t_{i})$ and $\widehat{\widehat{H}}(t_{i})$ and thus between $\widehat{F(t_{i})}$ and $\widehat{\widehat{F}}(t_{i}).$__
+
+`r SMRD.resources:::solution()$begin`
+To have good agreement we must have
+
+$$
+-\sum_{j=1}^{i}\log\left(1-\widehat{p}_j\right) \approx \sum_{j=1}^{i} \widehat{p}_j.
+$$
+
+Looking at the Taylor series expansion 
+
+$$
+\log(1-\widehat{p}_j) = -\sum_{n=1}^{\infty} \frac{\widehat{p}_j^n}{n} \text{, if } \widehat{p}_j<1
+$$
+
+From this we can see if $\widehat{p}_j$ is small the first term in the Taylor series will accurately approximate it.  Therefore we see that we'll have good agreement if these probabilities are relatively small.
+`r SMRD.resources:::solution()$end`
+
+b. __Use the delta method to compute approximate expressions for $Var[\widehat{H}(t_{i})]$ and $Var[\widehat{\widehat{H}}(t_{i})].$  Comment on the expressions you get.__
+
+`r SMRD.resources:::solution()$begin`
+From equation 3.9 (Greenwood's Formula) we know
+
+$$
+\widehat{Var}\left(\widehat{F}(t_{i})\right)=\left(\widehat{S}(t_{i})\right)^{2}\sum_{j=1}^{i}\frac{\widehat{p}_{j}}{n_{j}(1-\widehat{p_{i}})}.
+$$  
+
+From the delta method we also know $\widehat{F}(t_{i})$ and $\widehat{H}(t_{i})$ are related by 
+
+$$
+\widehat{H}(t_{i})=g\left(\widehat{F}(t_{i})\right)=-\text{log}(1-\widehat{F}(t_{i})),
+$$ 
+
+thus
+
+$$
+\begin{aligned}
+Var\left[\widehat{H}(t_{i})\right]\approx\left[g'(\widehat{F}(t_{i}))\right]^{2}\widehat{Var}\left(\widehat{F}(t_{i})\right)&=\frac{1}{\left(\widehat{S}(t_{i})\right)^{2}}\left(\widehat{S}(t_{i})\right)^{2}\sum_{j=1}^{i}\frac{\widehat{p}_{j}}{n_{j}(1-\widehat{p}_{j})}\\
+&=\sum_{j=1}^{i}\frac{\widehat{p}_{j}}{n_{j}(1-\widehat{p}_{j})}
+\end{aligned}
+$$
+
+Using similar arguments as on top of pg. 55 we can find the approximate variance for $\widehat{H}(t_{i})$ as
+
+$$
+Var\left(\widehat{\widehat{H}}(t_{i})\right)=Var\left(\sum_{j=1}^{i}\widehat{p}_{j}\right)\approx\sum_{j=1}^{i}Var\left(\widehat{p}_{j}\right)=\sum_{j=1}^{i}\frac{\widehat{p}_{j}(1-\widehat{p}_{j})}{n_{j}}
+$$
+
+These look pretty similar.
+`r SMRD.resources:::solution()$end`
+
+c. __Compare the Nelson-Aalen estimate of $F(t)$ and compare with the estimate computed in Exercise 3.20.  Describe similarities and differences.__
+
+`r SMRD.resources:::solution()$begin`
+Run the following R-Code to obtain the plots and tables. (the fleming-harrington method is the Nelson-Aalen estimate).  The similaries occur at the beginning, and after a few failures they estimates start to diverge.  As expected, the Nelson-Aalen estimate for $\widehat{\widehat{S}}(t_{i})$ are always greater than (or equal to) the Kaplan-Meier estimate, see part (d)
+
+```{r,echo=TRUE, fig.cap="Comparison of Nelson-Aalen and Kaplan-Meier Estimates for the Diesel Engine Fan Data Set (Table C.1)", fig.pos='h'}
+fan_dat <- matrix(c(
+450.000,1,460.000,0,1150.000,1,1150.000,1,1560.000,0,1600.000,1,
+1660.000,0,1850.000,0,1850.000,0,1850.000,0,1850.000,0,1850.000,0,
+2030.000,0,2030.000,0,2030.000,0,2070.000,1,2070.000,1,2080.000,1,
+2200.000,0,3000.000,0,3000.000,0,3000.000,0,3000.000,0,3100.000,1,
+3200.000,0,3450.000,1,3750.000,0,3750.000,0,4150.000,0,4150.000,0,
+4150.000,0,4150.000,0,4300.000,0,4300.000,0,4300.000,0,4300.000,0,
+4600.000,1,4850.000,0,4850.000,0,4850.000,0,4850.000,0,5000.000,0,
+5000.000,0,5000.000,0,6100.000,0,6100.000,0,6100.000,0,6100.000,1,
+6300.000,0,6450.000,0,6450.000,0,6700.000,0,7450.000,0,7800.000,0,
+7800.000,0,8100.000,0,8100.000,0,8200.000,0,8500.000,0,8500.000,0,
+8500.000,0,8750.000,0,8750.000,0,8750.000,1,9400.000,0,9900.000,0,
+10100.000,0,10100.000,0,10100.000,0,11500.000,0),
+byrow = T, ncol = 2)
+
+s1 <- Surv(fan_dat[,1],fan_dat[,2],type = 'right')
+
+f1 <- survfit(s1~1,type = "kaplan-meier")
+f2 <- survfit(s1~1,type = "fleming-harrington")
+
+plot(f1, 
+     ylim = c(.5,1), 
+     xlab = 'Time (t)',
+     ylab = 'Fraction Surviving',
+     las = 1, lwd = 2)
+par(new = T)
+plot(f2,
+     col = 2,
+     ylim = c(.5,1),
+     axes = FALSE, lwd = 2)
+
+legend("bottomleft", 
+       c(expression("Kaplan-Meier"),
+         expression("Nelson-Aalen")),
+       col = 1:2, bty = "n", 
+       lwd = 2, xjust = 0.5)
+```
+
+```{r,echo=TRUE, results='markup'}
+F1 <- summary(f1)[c(2:6,8:11)]
+
+knitr::kable(data.frame(F1))
+```
+
+```{r,echo=TRUE, results='markup'}
+F2 <- summary(f2)[c(2:6,8:11)]
+
+knitr::kable(data.frame(F2))
+```
+`r SMRD.resources:::solution()$end`
+
+d. __Show that $\widehat{\widehat{H}}(t_{i})<\widehat{H}(t_{i})$ and that $\widehat{\widehat{F}}(t_{i})<\widehat{F}(t_{i}).$__
+
+`r SMRD.resources:::solution()$begin`
+We know that $\widehat{H}(t_{i})=-\sum_{j=1}^{i}\text{log}(1-\widehat{p}_{j})$. Using the the Taylor Series expansion for $\text{log}(1-\widehat{p}_{j})$ shown in part (a) results in
+
+$$
+\widehat{H}(t_{i})=\sum_{j=1}^{i}\left(\sum_{n=1}^{\infty}\frac{\widehat{p}_{j}^n}{n}\right).
+$$
+
+Because $\widehat{p}_{j}>0, \forall j$ we know that $\widehat{H}(t_{i})>\sum_{j=1}^{i}\widehat{p}_{j}=\widehat{\widehat{H}}(t_{i})$. 
+
+Therefore,
+
+$$
+\begin{aligned}
+\widehat{H}(t_{i})&>\widehat{\widehat{H}}(t_{i})\\
+-\text{exp}[\widehat{H}(t_{i})]&>-\text{exp}[\widehat{\widehat{H}}(t_{i})]\\
+1-\text{exp}[\widehat{H}(t_{i})]&>1-\text{exp}[\widehat{\widehat{H}}(t_{i})]\\
+\widehat{F}(t_{i})&>\widehat{\widehat{F}}(t_{i})\\
+\end{aligned}
+$$
+`r SMRD.resources:::solution()$end`

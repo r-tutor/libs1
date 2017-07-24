@@ -1,0 +1,104 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__During a single a company sold 2341 modems.  These modems have a 36-month warranty.  During the first 24 months, 75 of these modems had been returned for warranty service.  Suppose that it is reasonable to assume that this is the number failing out of the 2341 modems that were sold.  From previous experience with similar products, it is known that a Weibull distribution with a shape parameter $\beta=.85$ provides an adequate description of the failure time distribution.__
+
+a. __Show that the conditional probability of failing in the third year of life, given survival up to 2 years, can be expressed as a truncated distribution.__
+
+`r SMRD.resources:::solution()$begin`
+Recall that the conditional probability of event $A$ occurring, given event $B$ has already occurred is expressed as
+
+$$
+P(A|B)=\frac{P(A\cap B)}{P(B)}
+$$
+
+In this problem $A$ represents the event that modem $i$ fails at time $T_{i} \in (2,3]$ years and $B$ represents the event that $T_{i}>2.$ The conditional probability requested in this problem may then be expressed as
+
+$$
+P(2< T_{i}\le 3|T_{i}>2)=\frac{P(2<T_{i}\le 3)}{P(T_{i}>2)}=\frac{F(3|\theta)-F(2|\theta)}{F(2|\theta)}.
+$$
+
+This equation can be seen as that of a left truncated distribution where $\tau^{L}$.  Replacing $F(t|\theta)$ with the Weibull cdf gives
+
+$$
+\frac{e^{\left(-\frac{2}{\eta}\right)^{0.85}}-e^{\left(-\frac{3}{\eta}\right)^{0.85}}}{e^{\left(-\frac{2}{\eta}\right)^{0.85}}}=1-\frac{e^{\left(-\frac{3}{\eta}\right)^{0.85}}}{e^{\left(-\frac{2}{\eta}\right)^{0.85}}}=1-e^{\left(-\frac{0.7037}{\eta}\right)^{0.85}}.
+$$
+
+It should be noted that the left-truncated Weibull distribution is a special case in that the resulting model is still in the Weibull family.  In general truncated distributions do not remain in the same family as the parent distribution. 
+`r SMRD.resources:::solution()$end`
+
+b. __Although the times to failure for the returned modems were not available, it is still possible to compute an estimate of the Weibull cdf using the given value of $\beta=.85.$  Show how to do this.__
+
+`r SMRD.resources:::solution()$begin`
+Since we are not excluding the $75$ modems that were returned from the analysis we must treat them as left censored observations.  The remaining $2341-75=2266$ modems are then considered as right-censored observations.
+
+Therefore, the likelihood function for $\eta$, given the data and the known shape parameter $\beta=0.85$ is expressed as
+
+$$
+\begin{aligned}
+\mathcal{L}(\eta)&=\prod_{i=1}^{75}\left[1-e^{-\left(\frac{24}{\eta}\right)^{0.85}}\right]\prod_{i=76}^{2341}\left[ e^{-\left(\frac{24}{\eta}\right)^{0.85}}\right]\\\\
+&=\left(1-e^{-\left(\frac{24}{\eta}\right)^{0.85}}\right)^{75}\left(e^{-2266\left(\frac{24}{\eta}\right)^{0.85}}\right).
+\end{aligned}
+$$
+
+The log-likelihood function is then expressed as
+
+$$
+l(\eta)=75\times\log\left(1-e^{-\left(\frac{24}{\eta}\right)^{0.85}}\right)-2266\left(\frac{24}{\eta}\right)^{0.85}
+$$
+
+Maximizing the log-likelihood function results in 
+
+$$
+\widehat{\eta}_{_{MLE}}\approx 1349 \text{ months}
+$$
+
+giving an estimate for the Weibull cdf at any value of $t$.
+
+If we had chosen to exclude these $75$ observations, the appropriate way forward would have been to model the remaining $2341-75=2266$ modems as right-censored observations from a left-truncated distribution where $\tau^{L}=24 \text{months}$ as was found in part (a) of this problem.
+`r SMRD.resources:::solution()$end`
+
+c. __Use the estimate from part (b) to compute an estimate for the number of units that will fail in the third year of operation.__
+
+`r SMRD.resources:::solution()$begin`
+Using the estimate for the Weibull cdf that was found in part (b) of this problem, we can estimate the number of units that will in the third year of life as
+
+$$
+\text{exp}\left(\frac{24}{1349}\right)^{0.85}-\text{exp}\left(\frac{36}{1349}\right)^{0.85}=0.0129
+$$
+
+In R, this can be accomplished using
+
+```{r echo=TRUE}
+pweibull(36,shape=.85,scale=1349)-pweibull(24,shape=.85,scale=1349)
+```
+`r SMRD.resources:::solution()$end`
+
+d. __Suppose that you had learned that 2 years after being sold, between 5% and 10% of the purchased modems had never been put into service.  How would you do part (b)?__
+
+`r SMRD.resources:::solution()$begin`
+If we were to reaccomplish the analysis with the updated information that $5\%\text{ - }10\%$ of the modems sold were never put into service the most appropriate course of action would be to reduce the number of right censored observations. The updated likelihood functions for the $5\%$ and $10\%$ cases would then be expressed as
+
+$$
+\mathcal{L}(\eta)=\prod_{i=1}^{75}\left[1-e^{-\left(\frac{24}{\eta}\right)^{0.85}}\right]\prod_{i=76}^{2341(.95)}\left[ e^{-\left(\frac{24}{\eta}\right)^{0.85}}\right]\hspace{22pt}5\%\text{ unused}
+$$
+
+$$
+\mathcal{L}(\eta)=\prod_{i=1}^{75}\left[1-e^{-\left(\frac{24}{\eta}\right)^{0.85}}\right]\prod_{i=76}^{2341(.90)}\left[ e^{-\left(\frac{24}{\eta}\right)^{0.85}}\right]\hspace{18pt}10\%\text{ unused}
+$$
+
+and the respective log-likelihood functions would be
+
+$$
+l(\eta)=75\times\log\left(1-e^{-\left(\frac{24}{\eta}\right)^{0.85}}\right)-2152.7\left(\frac{24}{\eta}\right)^{0.85}\hspace{22pt}5\%\text{ unused}
+$$
+
+$$
+l(\eta)=75\times\log\left(1-e^{-\left(\frac{24}{\eta}\right)^{0.85}}\right)-2039.4\left(\frac{24}{\eta}\right)^{0.85}\hspace{18pt}10\%\text{ unused}
+$$
+`r SMRD.resources:::solution()$end`

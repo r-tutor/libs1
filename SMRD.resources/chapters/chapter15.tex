@@ -1,0 +1,1480 @@
+%%chapter 15
+%\batchmode
+%original by wqmeeker   7 aug 94
+%edited by wqmeeker  8 aug 94
+%edited by wqmeeker  15 sept 94 morgan data table
+%edited by wqmeeker  17 june 95 breaking out system ideas
+%edited by wqmeeker  15 June 96 bringing in slides
+%edited by driker 28 June 96
+%edited by wqmeeker 28-29 June 96 tuning
+%edited by wqmeeker 1-8 July 96 adding examples and exercises
+%edited by driker 9 july 96
+%edited by wqmeeker 9 July 96 minor changes
+%edited by wqmeeker 28 nov 96 new exercise
+%edited by driker 21 july 97
+
+\setcounter{chapter}{14}
+
+\chapter{System Reliability Concepts and Methods}
+\label{chapter:system.reliability}
+
+\input{\chapterhome/common_heading.tex}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+\section*{Objectives}
+This chapter explains
+\begin{itemize} 
+\item
+Important system reliability concepts like system structure;
+redundancy; nonrepairable and repairable systems; maintainability and
+availability.
+\item
+Basic concepts of system reliability modeling.
+\item 
+The distribution of system failure time as a function of individual
+component failure-time distributions.
+\item 
+Simple methods for using
+component test data to estimate system reliability.
+\item
+Analysis of data with more than one failure mode.
+\end{itemize}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Overview}
+This chapter describes and illustrates some basic ideas behind system
+reliability analysis.  Section~\ref{section:system.structure} describes some
+simple system structures and shows how to compute system reliability as a
+function of component reliability. These simple structures can be used
+as building blocks to compute system reliability for more complicated
+systems. Section~\ref{section:est.sys.rel} shows how to estimate and
+compute confidence intervals for system reliability from limited
+component data. Section~\ref{section.multiple.causes} explains
+methods of analyzing failure time data with more than one cause of
+failure and how to use such data to estimate the distribution
+corresponding to the individual failure modes or the overall system.
+Section~\ref{section:other.sys.rel.topics} provides a brief overview
+of other topics and references related to system reliability.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Introduction}
+
+A system is a collection of components interconnected to
+perform a given task.  Component state (e.g., working or not working)
+and system structure determine whether a system is working or not.
+System structure is described by a logic diagram illustrating the
+relationship between components and satisfactory system performance.
+Ultimately, interest centers on the reliability of specific systems.
+Assessing and improving system reliability generally requires
+consideration of system structure and component reliability. Some
+systems are replaced upon failure.  Many systems, however, are
+maintained (e.g., replacing worn components before they fail) and/or
+repaired after failure.  For repairable systems, availability (the
+fraction of time that a system is available for use) may be the
+appropriate metric.  This leads to consideration of maintainability
+(e.g., improvement of reliability through inspection and/or preventive
+maintenance) and repairability (characterized by the distribution of time
+to do a repair).  In general, availability can be increased by
+increasing reliability or by improving maintainability and
+repairability.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{System Structures and System Failure Probability}
+\label{section:system.structure}
+System failure probability, $F_{\rv}(\realrv; \thetavec)$, is 
+the probability that the system fails before $\realrv$.
+The failure probability of the system is a function of time in
+operation $t$ (or other measure of use), the system structure,
+reliability of system components, interconnections, and interfaces
+(including, for example, human operators).
+%\item
+%Repair time of components in the case of repairable systems.
+
+This section describes several simple system structures. Not all
+systems fall into one of these categories, but the examples provide
+a collection of building blocks to illustrate the basics of system
+structure. Complicated system structures can generally be decomposed
+into collections of the simpler structures presented here. The
+methods for evaluation of system reliability can be adapted to more
+complicated structures.
+
+%----------------------------------------------------------------------
+\subsection{Time dependency of system reliability}
+\label{F.as.fun.of.time}
+For a new system (i.e., all components starting
+a time 0) with $\ncomponents$ independent components, the cdf for
+component $i$ is denoted by $F_{i}=F_{i}(t;\thetavec_{i})$. The
+corresponding survival probability (reliability) for component $i$ is
+$S_{i}=S_{i}(t;\thetavec_{i})= 1-F_{i}(t;\thetavec_{i})$.  The
+$\thetavec_{i}$s may have some elements in common. We let $\thetavec$
+denote the unique elements in
+$(\thetavec_{1},\ldots,\thetavec_{\ncomponents})$.  The cdf for the
+system is denoted by $F_{\rv}=F_{\rv}(\realrv ; \thetavec)$.  This cdf
+is determined by the $F_{i}$'s and the system structure.  Then
+$F_{\rv}(\realrv; \thetavec)=g[F_{1}(\realrv; \thetavec_{1}),
+\ldots,F_{\ncomponents}(\realrv; \thetavec_{\ncomponents})]$.
+To simplify the presentation, time (and parameter) dependency will
+usually be suppressed in this chapter.  Then this function can also be
+expressed in one of the simpler forms $F_{\rv}( \thetavec)=g[F_{1}(
+\thetavec_{1}),
+\ldots,F_{\ncomponents}(\thetavec_{\ncomponents})]$ or
+$F_{\rv}=g(F_{1}, \ldots,F_{\ncomponents})$.  
+
+%Probability that component $i$ will fail before time $t$ is
+%$F_{i}=F_{i}(t)$. The corresponding survival probability is
+%$S_{i}=S_{i}(t)= 1-F_{i}(t)$. To simplify the formulas, 
+%time-dependency will usually be suppressed in this chapter.
+
+%----------------------------------------------------------------------
+\subsection{Systems with components in series}
+\label{section:system.series}
+%----------------------------------------------------------------------
+A series system structure with $\ncomponents$ components works if
+and only if all the components work. 
+%-------------------------------------------------------------------
+\begin{figure}
+\xfigbookfiguresize{\figurehome/system.seriesfig.ps}{1.5in}
+\caption{A system with two components in
+series.}
+\label{figure:system.seriesfig.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Examples of systems with components in series include chains,
+high-voltage multicell batteries, inexpensive computer systems,
+inexpensive decorative tree lights using low-voltage bulbs, etc.  For
+a system with 
+two independent components in series, illustrated in
+Figure~\ref{figure:system.seriesfig.ps}, the cdf is
+\begin{eqnarray}
+\label{equation:two.comp.series}
+F_{\rv}(\realrv)&=&\Pr( \rv \le \realrv)
+=1-\Pr( \rv > \realrv)=1-\Pr(\rv_{1} > \realrv \cap \rv_{2} > \realrv)
+\\ \nonumber
+&=&1-\Pr(\rv_{1} > \realrv) \Pr(\rv_{2} > \realrv)
+=1-(1-F_{1})(1-F_{2})=  F_{1} + F_{2} -  F_{1}F_{2} .
+\end{eqnarray}
+For $\ncomponents$ independent components $F_{\rv}(\realrv)=
+1-\prod_{i=1}^{\ncomponents} \left (1-F_{i} \right )$ and for
+$\ncomponents$ ${\rm iid}$ components ($F=F_{i}, \, i=1, \ldots,
+\ncomponents$), $F_{\rv}(\realrv)= 1-(1-F)^{\ncomponents}$.
+This is the same as the minimum-type distributions discussed in
+Section~\ref{section:power.dist}.  For a series system of independent
+components, the system hazard function is the sum of the
+component hazard functions
+\begin{equation}
+\label{equation:sum.hazard}
+h_{T}(t) = \sum_{i=1}^{\ncomponents} h_{i}(t).
+\end{equation}
+
+Figure~\ref{figure:series.effect.ps} shows the relationship between
+system reliability $1-F_{T}(t)$ and individual component reliability
+$1-F(t)$ for different
+numbers of identical independent components in series.  This figure
+shows that extremely high component reliability is needed to maintain
+high system reliability, particularly if the system has many
+components in series.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/series.effect.ps} 
+\caption{Reliability of a system with $\ncomponents$ identical
+independent components in series.}
+\label{figure:series.effect.ps}
+\end{figure}
+%-------------------------------------------------------------------
+
+{\bf Importance of part count in product design.} An important rule
+of thumb in reliability engineering design practice is ``keep the
+part count small,'' meaning keep the number of individual parts (or
+components) in a system to a minimum. Besides the cost of purchase
+and handling of additional individual parts, there is also an
+important reliability motivation for having a smaller number of
+parts at risk of failure in a product. Of course, this rule of thumb
+holds when the reliability of the individual parts in the design
+with a smaller number of parts is the same or similar to the
+reliability of the parts in the design with a larger number of
+parts.
+
+\begin{example}
+{\bf Effect of part-count reduction on modem reliability.}
+The design for a new computer modem uses a higher level of
+microelectronic integration and requires only 20 discrete parts
+instead of the 40 parts required in the previous generation.  
+For a series system of parts with independent failure times, the hazard
+function of the system can be obtained by summing the hazards for
+the individual parts.  This is particularly simple if 
+a constant hazard rate (or equivalently, an exponential time to
+failure distribution) provides an adequate model for part life.  As a
+rough approximation, suppose that all failures are due to part
+failures, and that all of the parts have the same hazard function.
+Then the population of modems produced with the new design with only 20
+parts will experience only half of the failures when compared to the
+old design. Allowing that failures can occur at interfaces and
+interconnections between parts with the same frequency in the new and
+old designs would widen the reliability gap because of the larger
+number of such interfaces with a higher number of parts.  With a
+nonconstant hazard function (more common in practice) the idea is
+similar.
+\end{example}
+
+\noindent
+{\bf Series system of independent components having Weibull distributions with the
+same shape parameter.}
+Recall from Section~\ref{section:weibull.distribution} that the
+Weibull hazard function can be written as
+\begin{displaymath}
+ h(\realrv) = \frac{\beta}{\weibscale}
+\left (\frac{\realrv}{\weibscale} \right )^{\beta-1},  \quad \realrv > 0.
+\end{displaymath}
+For a series system of $\ncomponents$ independent components having a Weibull
+distribution with the same shape parameter
+$\beta$
+but possibly differing $\weibscale$ values, the system 
+failure time distribution is also Weibull. The system hazard function is
+\begin{displaymath}
+ h_{T}(\realrv) = \sum_{i=1}^{\ncomponents}\frac{\beta}{\weibscale_{i}}
+\left (\frac{\realrv}{\weibscale_{i}} \right )^{\beta-1}=\frac{\beta}{\weibscale_{T}}
+\left (\frac{\realrv}{\weibscale_{T}} \right )^{\beta-1} ,  \quad \realrv > 0
+\end{displaymath}
+where
+\begin{displaymath}
+\weibscale_{T} = \left( \sum_{i=1}^{\ncomponents} 
+	\frac{1}{\weibscale_{i}^{\beta}}\right)^{-1/\beta}.
+\end{displaymath}
+If all of the $\ncomponents$ components have the same $\weibscale$,
+then this simplifies to $\weibscale_{T} =
+\weibscale/\ncomponents^{1/\beta}$.
+
+\begin{example}
+{\bf Reliability of a chain.}  A particular kind of chain link can
+fail from growth of fatigue cracks and eventual fracture. The life
+distribution of a single link has a Weibull distribution with
+$\weibscale=100$ thousand use cycles and a shape parameters
+$\beta=2.3$. A chain of 75 links can be viewed as a series
+system. When the first link breaks, the chain fails and has to be
+replaced. In the application, all links in the chain are subject to
+the same level of stress. If the cycles to failure for the
+individual links are independent, then the chain has a Weibull time
+to failure distribution with $\weibscale_{T} =
+100/(75)^{1/2.3}=15.30$ thousand cycles and a shape parameter
+$\beta=2.3$.
+%splus> 100/(75)^(1/2.3)
+\end{example}
+
+\noindent
+{\bf Effect of positive dependency in a two-component
+series system.}
+If a series system contains two components with dependent failure
+times, then the first line of $(\ref{equation:two.comp.series})$ still
+gives $F_{\rv}(\realrv)$, but the evaluation has to be done with
+respect to the bivariate distribution of $\rv_{1}$ and $\rv_{2}$. More
+generally, for a system with $\ncomponents$ components in series, the system
+$F_{\rv}(\realrv)$ would have to be computed with respect to the
+underlying $\ncomponents$-variate distribution.  Such computations
+are, in general difficult. If the correlation among the $\ncomponents$
+series components is positive, then the assumption of independence is
+conservative in the sense that the actual $F_{\rv}(\realrv)$ is
+smaller than that predicted by the independent-component model.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/series.dep.effect.ps} 
+\caption{Reliability of a system with 2 dependent
+components in series.}
+\label{figure:series.dep.effect.ps}
+\end{figure}
+%-------------------------------------------------------------------
+For a simple two-component series system,
+Figure~\ref{figure:series.dep.effect.ps} shows the reliability
+$1-F_{T}(t)$ of a two-component series system as a function of the
+reliability $1-F(t)$ of the individual components that have positive
+correlation.  For this example, the distributions of log failure
+times for the individual components is bivariate normal with the
+same (arbitrary) mean and standard deviation for both components and
+correlation $\rho$.  When $\rho=1$ (so the two components are
+perfectly dependent and will fail at exactly the same time), the
+curve is the same as the $s=1$ (single component) system shown in
+Figure~\ref{figure:series.effect.ps}. When $\rho=0$ (so the two
+components are independent), the curve would correspond to an $s=2$
+curve in Figure~\ref{figure:series.effect.ps}.
+Figure~\ref{figure:series.dep.effect.ps} shows that when there is
+positive correlation between the failure times of the individual
+components, the actual reliability of the system exceeds that
+predicted by the independent-component series system. The
+multivariate generalization of this result is important in
+reliability modeling applications.
+
+\begin{example}
+{\bf Reliability of a jet engine turbine disk.}  The primary threat
+for a jet engine turbine disk failure is the initiation and growth
+of a fatigue crack. Generally it is not economically desirable to
+test more than one or two jet engine turbine disks.  Additionally,
+even with under realistic continuous accelerated testing, no
+failures would be expected for years. Instead, disk reliability is
+predicted by using a model.  The reliability model for the disk is
+obtained by dividing the disk into a large number of small
+``elements'' that are first modeled individually.  Accelerated tests
+on materials specimens provide information to predict the life of an
+element as a function of temperature and stress. The overall
+reliability of the system can then be modeled as a series system of
+independent components. Modeling the individual elements' failure
+time distribution as a function of temperature and stress (which
+depend on position within the disk) improves the adequacy of the
+independence assumption. Still, however, one would expect the
+initiation and growth of cracks to be positively correlated from
+element to element within a disk, especially among elements that are
+close together.  When the failure times of a series system's
+components have positive association (nonnegative correlation
+between all pairs), the independence model provides a conservative
+prediction of the system's overall reliability.  Theoretical
+justification for this result is given in Chapter 2 of Barlow and
+Proschan~(1975).
+\end{example}
+
+Of course, if the lifetimes of components in a series system have
+negative association, then the reliability predicted with the independence
+model will be anticonservative.  We do not give details for this
+situation because it is not common in physical systems.
+
+%----------------------------------------------------------------------
+\subsection{Systems with components in parallel}
+A parallel system structure with $\ncomponents$ components works if at
+least one of the components works.  Examples of systems with
+components in parallel include automobile headlights, RAID computer
+disk array systems, stairwells with emergency lighting, overhead
+projectors with backup bulb, and multiple light banks in classrooms.
+For two independent parallel components,
+illustrated in Figure~\ref{figure:system.parallelfig.ps},
+%-------------------------------------------------------------------
+\begin{figure}
+\xfigbookfiguresize{\figurehome/system.parallelfig.ps}{1.5in}
+\caption{A system with two components in parallel.}
+\label{figure:system.parallelfig.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\begin{eqnarray}
+\label{equation:two.comp.parallel}
+F_{\rv}(\realrv)&=&\Pr( \rv \le \realrv)
+=\Pr(\rv_{1} \le  \realrv \cap \rv_{2} \le \realrv)
+\\ \nonumber
+&=&\Pr(\rv_{1} \le \realrv) \Pr(\rv_{2} \le \realrv)
+=F_{1} F_{2}.
+\end{eqnarray}
+For $\ncomponents$ independent components
+$F_{\rv}(\realrv)=\prod_{i=1}^{\ncomponents} F_{i}$ and for
+$\ncomponents$ iid components $(F_{i}=F, \, i=1, \ldots,
+\ncomponents)$, $F_{\rv}(\realrv)=F^{\ncomponents}$.
+
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/parallel.effect.ps} 
+\caption{Reliability of a system with $s$ iid
+components in parallel.}
+\label{figure:parallel.effect.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Figure~\ref{figure:parallel.effect.ps} shows the relationship between
+system reliability $1-F_{T}(t)$ and individual component reliability
+$1-F(t)$ for different numbers of identical independent components in
+parallel.  The figure shows the dramatic effect that parallel
+redundancy can have on the reliability of the system or subsystem.
+If the components are not independent, then the first line of
+$(\ref{equation:two.comp.parallel})$ still gives $F_{\rv}(\realrv)$,
+but the evaluation has to be done with respect to the bivariate
+distribution of $\rv_{1}$ and $\rv_{2}$.
+
+\noindent
+{\bf Effect of positive dependency in a two-component
+parallel-redundant system.}
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/parallel.dep.effect.ps} 
+\caption{Reliability of a system with 2 dependent
+components in parallel.}
+\label{figure:parallel.dep.effect.ps}
+\end{figure}
+%-------------------------------------------------------------------
+For a simple two-component parallel system,
+Figure~\ref{figure:parallel.dep.effect.ps} shows the effect that
+positive dependency between the failure times of the two components
+has on system reliability $1-F_{\rv}(\realrv)$.
+For this example, the distributions of log failure times for the
+individual components is bivariate normal with the same (arbitrary)
+mean and standard deviation for both components and correlation
+$\rho$. With $\rho=0$ (so the components are independent), the curve
+is the same as the $s=2$ curve shown in
+Figure~\ref{figure:parallel.effect.ps}. When $\rho=1$ (so the
+components are perfectly dependent and will fail at exactly the same
+time), the curve is the same as the $s=1$ curve (single component) shown in
+Figure~\ref{figure:parallel.effect.ps}. The advantages of redundancy
+can be degraded seriously when the failure times of the individual
+components have positive dependence.
+
+%----------------------------------------------------------------------
+\subsection{Systems with components in series-parallel}
+\label{section:series.parallel}
+Methods for evaluating the reliability of structures with components
+in both series and parallel provide the basis for evaluating more
+complicated structures that use redundancy to increase system
+reliability.  There are two types of simple (i.e., rectangular)
+series-parallel structures: series-parallel with system-level
+redundancy and series-parallel with component-level redundancy.
+
+\mbox{ }\\
+\noindent
+{\bf Series-parallel systems with system-level redundancy.}
+%-------------------------------------------------------------------
+\begin{figure}
+\xfigbookfiguresize{\figurehome/system.sysredunfig.ps}{2.5in}
+\caption{A 
+series-parallel system structure with system-level redundancy.}
+\label{figure:system.sysredunfig.ps}
+\end{figure}
+%-------------------------------------------------------------------
+In some applications it is more cost effective to achieve higher
+reliability by using two or more copies of a series system rather
+than having to improve the reliability of the single system itself.
+Series-parallel system structures with system-level redundancy are
+used in applications like parallel central processors for a
+system-critical communications switching system, space-craft or
+aircraft fly-by-wire computer control systems, automobile brake
+system (hydraulic and mechanical), and multiple trans-Atlantic
+transmission cables.
+
+A $k \times r$ series-parallel system-level redundancy structure has
+$r$ parallel sets each of $k$ components in series.  For a $2 \times
+2$ structure with independent components, illustrated in
+Figure~\ref{figure:system.sysredunfig.ps},
+\begin{eqnarray}
+\label{equation:system.sysredunfig}
+F_{\rv}(\realrv)&=&\Pr( \rv \le \realrv)
+=\Pr [\mbox{``series 1 failed''} \cap 
+\mbox{``series 2 failed''} ]
+\\ \nonumber
+&=&[1-(1-F_{11})(1- F_{12})][1-(1-F_{21})(1- F_{22})]
+\\ \nonumber
+&=& [F_{11} + F_{12} - F_{11} F_{12}   ] [F_{21} + F_{22} - F_{21} F_{22}  ] 
+\end{eqnarray}
+where $F_{ij}$, $j=1,2$, are the cdfs for the series
+subsystem $i$.  For a $r
+\times k$ structure with independent components
+$F_{\rv}(\realrv)=\prod_{i=1}^{r} \left [ 1- \prod_{j=1}^{k} \left
+(1-F_{ij} \right )\right ]$ and for a $r \times k$ parallel-series
+structure with ${\rm iid}$ components $F_{\rv}(\realrv)=
+\left [1- (1-F)^{k}\right ]^{r}$.
+If the system components are not independent, then the first line of
+$(\ref{equation:system.sysredunfig})$ still gives $F_{\rv}(\realrv)$, but
+the evaluation has to be done with respect to the multivariate
+distribution of $\rv_{1}, \dots, \rv_{4}$.
+
+\mbox{ }\\
+\noindent
+{\bf Series-parallel system structure with component-level
+redundancy.} 
+%-------------------------------------------------------------------
+\begin{figure}
+\xfigbookfiguresize{\figurehome/system.compredunfig.ps}{2.5in}
+\caption{A 
+simple series-parallel system structure with component-level
+redundancy.}
+\label{figure:system.compredunfig.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Component redundancy is an important method for improving
+system reliability. Series-parallel system structures with
+component-level redundancy are found in numerous applications
+including parallel dual repeaters in under-sea fiber-optic data
+transmission systems, and the human body (lungs, kidneys).  A $k \times r$
+component-level redundant structure has $k$ series structures each one
+made of $r$ components in parallel. If it is necessary to have only one
+path through the system, such a structure is, for a given number of
+identical components, more reliable than the series-parallel
+system-level redundancy.  For a $2 \times 2$ series-parallel system with
+independent components, illustrated in
+Figure~\ref{figure:system.compredunfig.ps},
+\begin{eqnarray}
+\label{equation:system.compredunfig}
+F_{\rv}(\realrv)&=&1-\Pr( \rv > \realrv)
+=1-\Pr [\mbox{``parallel 1 works''} \cap 
+\mbox{``parallel 2 works''} ]
+\\ \nonumber
+&=&1-(1-F_{11} F_{21})(1-F_{12} F_{22})
+\\ \nonumber
+&=& F_{11} F_{21} + F_{12} F_{22} - F_{11} F_{21} F_{12} F_{22}
+\end{eqnarray}
+where $F_{ij}$, $i=1,2$ are the cdfs for parallel
+subsystem $j$.  For a $k
+\times r$ series-parallel system with independent components
+\begin{eqnarray*}
+F_{\rv}(\realrv)&=&
+1- \prod_{i=1}^{k} \left (1-\prod_{j=1}^{r} F_{ij} \right).
+\end{eqnarray*}
+When all of the system's components are ${\rm iid}$ 
+$F_{\rv}(\realrv)=1- (1-F^{r})^{k}$.
+If the system components are not independent, then the first line of
+$(\ref{equation:system.compredunfig})$ still gives $F_{\rv}(\realrv)$,
+but the evaluation has to be done with respect to the multivariate
+distribution of $\rv_{1}, \dots, \rv_{4}$.
+
+\subsection{Bridge-system structure}
+
+Bridge-system structures provide another useful structure for
+improving the reliability of certain systems. Bridge-system structures are
+common in computer and electric power-distribution networks.
+Figure~\ref{figure:system.bridgefig.ps} illustrates a simple
+bridge-system structure. Note that if component 3 is {\em not}
+working, the bridge system has the same structure as
+Figure~\ref{figure:system.sysredunfig.ps}.  If component 3 is working,
+the bridge system has the same structure as
+Figure~\ref{figure:system.compredunfig.ps}.  In many practical
+situations a bridge such as the one at component 3 in
+Figure~\ref{figure:system.bridgefig.ps} can be installed at little
+extra cost, but provides a potentially important improvement in
+reliability when compared to a simple series-parallel system (see
+Exercise~\ref{exercise:sp.bridge.comp}).
+%-------------------------------------------------------------------
+\begin{figure}
+\xfigbookfiguresize{\figurehome/system.bridgefig.ps}{2.5in}
+\caption{A bridge-system structure.}
+\label{figure:system.bridgefig.ps}
+\end{figure}
+%-------------------------------------------------------------------
+
+The relationship between the bridgesystem structure and the two different
+series-parallel structures provides a method to compute the
+bridge-system structure reliability.  We use $A_{3}$ ($A_{3}^{c}$)
+to denote the event that component $3$ is working (is not working).
+Then similar to (\ref{equation:system.compredunfig}) $\Pr( \rv \le
+\realrv | A_{3})= F_{1} F_{4} + F_{2} F_{5} - F_{1} F_{2}
+F_{4} F_{5}$ and similar to (\ref{equation:system.sysredunfig})
+$\Pr(\rv \le
+\realrv | A_{3}^{c})= [F_{1} + F_{2} - F_{1} F_{2} ] [F_{4} +
+F_{5} - F_{4} F_{5} ] $ and thus
+\begin{eqnarray*}
+F_{\rv}(\realrv)&=& 
+\Pr( \rv \le \realrv \cap A_{3})
++
+\Pr(\rv \le \realrv \cap A_{3}^{c})
+\\[1ex]
+&=&
+\Pr(A_{3}) \Pr( \rv \le \realrv | A_{3}) 
++
+\Pr(A_{3}^{c}) \Pr(\rv \le \realrv | A_{3}^{c}) 
+\\[1ex]
+&=&
+(1-F_{3}) \left (
+F_{1}F_{4}+ F_{2}F_{5}
+-
+F_{1}F_{2}F_{4}F_{5}
+          \right )
++
+F_{3}     \left (
+F_{1}+F_{2}-F_{1}F_{2}
+          \right )
+          \left (
+F_{4}+F_{5}- F_{4}F_{5}
+          \right ).
+\end{eqnarray*}
+
+\subsection{$\boldsymbol{k}$-out-of-$\boldsymbol{\ncomponents}$ 
+\label{section:k.of.n}
+system structures}
+
+Some systems work if at least $k$ out of $\ncomponents$ components
+work, but not otherwise. Special cases include the 1 of $\ncomponents$
+parallel structure and the $\ncomponents$ of $\ncomponents$ series
+structure.  Other examples of $k$-out-of-$\ncomponents$ system structures
+include a satellite battery system in which the system will continue
+to operate as long as 6 of 10 batteries continue to operate correctly,
+or computer storage disks which continue to provide service by
+blocking out bad sectors up to a certain limit, and heat exchangers
+that continue to operate even when a certain small proportion of their tubes
+have been plugged (see Example~\ref{example:heat.exchanger.data}).
+
+%-------------------------------------------------------------------
+\begin{figure}
+\xfigbookfiguresize{\figurehome/system.kofnfig.ps}{2.5in}
+\caption{A $k$-out-of-$\ncomponents$ system structure.}
+\label{figure:system.kofnfig.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Figure~\ref{figure:system.kofnfig.ps} illustrates
+a system requiring that at least two out of three independent
+components work.  Note that the system structure diagram does not
+reflect physical layout, but rather paths through the system that will
+allow operation of the system. Computationally, for a two-out-of-three
+system of independent components,
+\begin{eqnarray*}
+F_{\rv}(\realrv)&=&\Pr( \rv \le \realrv)
+\\
+&=&
+  \Pr(\mbox{``exactly two fail''} )
+ +\Pr(\mbox{``exactly three fail''})
+\\
+&=&
+ [F_{1} F_{2}(1-F_{3})
++F_{1} F_{3}(1-F_{2})
++F_{2} F_{3}(1-F_{1})]
++F_{1} F_{2}F_{3}
+\\
+&=&
+F_{1} F_{2}
++F_{1} F_{3}
++F_{2} F_{3}
+-2F_{1} F_{2}F_{3}.
+\end{eqnarray*}
+
+For $k$ out of $\ncomponents$ independent components
+\begin{equation}
+\label{equation:system.kofsfig}
+F_{\rv}(\realrv)=
+\sum_{j=k}^{\ncomponents}
+\left \{
+\sum_{\deltavec \in A_{j} } \left [
+\prod_{i=1}^{\ncomponents}
+F_{i}^{\delta_{i}}(1-F_{i})^{(1-\delta_{i})}\right ]\right \}
+\end{equation}
+where $\deltavec =
+(\delta_{1}, \ldots, \delta_{\ncomponents})$ with
+$\delta_{i}=1$ indicating failure of
+component $i$ by time $\realrv$ and 
+$\delta_{i}=0$ otherwise and $A_{j}$ is the set of all
+$\deltavec$
+such that $\sum_{i=1}^{\ncomponents} \delta_{i}=j$.
+For identically distributed components ($F=F_{i}, i=1, \dots,s$)
+$F_{\rv}(\realrv)=\sum_{j=k}^{\ncomponents} {\ncomponents \choose j}
+F^{j}(1-F)^{\ncomponents-j}$, a binomial distribution.
+
+\begin{example} {\bf Spacecraft power system.}
+A spacecraft power system uses 10 rechargable batteries in parallel.
+The capacity of the power system is equal to the sum of
+the power provided by each of the batteries. The system can continue
+to operate at design specifications as long as seven of the ten
+batteries are functional.
+\end{example}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Estimating System Reliability from Component Data}
+\label{section:est.sys.rel}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\subsection{Computing system reliability from component reliability}
+
+To compute the system cdf, one can use $F_{\rv}=g(F_{1}, \ldots,
+F_{\ncomponents})$ when $g$ is known from the system structure.
+If $g$ cannot be expressed in closed form or is otherwise difficult to
+compute, one can use a computer simulation of the system based on the
+$F_{i}$ and the system structure.  When the $F_{i}$ are unknown, an
+estimate of the system $F_{\rv}$ can be obtained by evaluating
+$F_{\rv}$ at the ML estimates of the needed $F_{i}$ values.
+
+%----------------------------------------------------------------------
+\subsection{Sources of reliability data}
+
+Laboratory tests are used widely, especially to test new materials and
+components where there is little past experience.  Such testing is
+generally expensive and may have limited ability to predict product
+field reliability. Special care must be taken to assure that test
+conditions can be accurately related to actual field conditions (as
+described in Chapters~\ref{chapter:accelerated.test.models} through
+\ref{chapter:accelerated.degradation}, laboratory tests are often
+accelerated with the goal of getting component reliability
+information more quickly).  Carefully collected field data, when
+available, provides the most accurate information about how
+components and systems behave in the field.  Field data collection,
+however, is also expensive.  Warranty data often have serious
+deficiencies. For example, warranty often contain no information on
+units that do not fail (see Robinson and McDonald~(1991) for further
+discussion of this and other related issues). Ireson~(1996) 
+describes some general issues relating to the collection
+and storage of reliability data. Reliability hand
+books and data banks can be useful (e.g., Klinger, Nakada, and
+Menendez~1990 and MIL-HDBK~217E).  One common complaint about such
+hand books, however, is that data become obsolete by the time they
+are published and that reported hazard rates and failure
+probabilities may be off by an order of magnitude or more.
+Technology, in many areas, is moving faster than accurate
+traditional reliability data can be obtained. Expert knowledge is
+often used when no other source of information is available. Unless
+data are collected from carefully conducted statistical studies,
+quantifying uncertainty may be impossible.
+
+%----------------------------------------------------------------------
+\subsection{Maximum likelihood estimation of system reliability}
+Suppose that sample data are available to estimate the failure-time
+distributions of the system's individual components.  For example,
+data on component $i$ for $i=1,\dots, \ncomponents $ can be used to
+estimate $\thetavec_{i}, i=1,\dots,\ncomponents$, providing
+estimates $\Fhat_{1}, \ldots, \Fhat_{\ncomponents}$,
+respectively. These cdf estimates are functions of time, as
+described in Section~\ref{F.as.fun.of.time}. Then the system cdf (or
+other related functions) can be estimated as functions of
+$\Fhat_{1},
+\ldots, \Fhat_{\ncomponents}$, the function being 
+determined from the system's structure, as described in
+Sections~\ref{section:system.series} through
+\ref{section:k.of.n}.  Let $\thetavechat$ be the ML estimate of
+$\thetavec$ (the unique parameters describing
+the components' cdfs) and $\vcvmathat_{\thetavechat}$ the ML
+estimate of $\vcvmat_{\thetavechat}$ obtained from the component
+data. Then using the same methods as in previous chapters,
+$\Fhat_{\rv}=F_{\rv}(\thetavechat) =g[F_{1}(\thetavechat_{1}),
+\ldots, F_{\ncomponents}(\thetavechat_{\ncomponents})]$. The
+variance of $\Fhat_{\rv}$ can be computed by using the delta method
+(Appendix Section~\ref{asection:delta.method}) as
+$\varhat(\Fhat_{\rv})= \left (\frac{\partial F_{\rv}}{\partial
+\thetavec } \right ) \transpose
+\vcvmathat_{\thetavechat} 	\left (\frac{\partial
+F_{\rv}}{\partial \thetavec } \right )$, where the derivatives are
+evaluated at $\thetavechat$.
+
+\begin{example}
+{\bf 
+Maximum likelihood estimation for a simple parallel system structure.
+}For a parallel structure with 
+$\ncomponents$ ${\rm iid}$ components
+\begin{eqnarray*}
+\Fhat_{\rv}&=& [\Fhat]^{\ncomponents} = [F(\thetavechat)]^{\ncomponents}
+\\[2ex]
+\varhat(\Fhat_{\rv})&=&
+	\left (\frac{\partial F_{\rv}}{\partial \thetavec }
+ 	\right ) \transpose
+ 	\vcvmathat_{\thetavechat}
+	\left (\frac{\partial F_{\rv}}{\partial \thetavec } \right )=
+ \left (\frac{\partial F_{\rv}}{\partial F} \, \frac{\partial F}{\partial \thetavec }
+ 	\right ) \transpose
+ 	\vcvmathat_{\thetavechat}
+        \left (
+\frac{\partial F_{\rv}}{\partial F} \, \frac{\partial F}{\partial \thetavec }	
+        \right )\\[1ex]
+&=&
+	\left (\ncomponents \Fhat^{\ncomponents-1}\frac{\partial F}{\partial \thetavec }
+ 	\right ) \transpose
+ 	\vcvmathat_{\thetavechat}
+        \left (
+\ncomponents \Fhat^{\ncomponents-1}\frac{\partial F}{\partial \thetavec }	
+        \right ).
+\end{eqnarray*}
+Then $\sehat_{\Fhat_{\rv}}= \sqrt{\varhat(\Fhat_{\rv})}$.
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Normal-approximation confidence intervals for system
+reliability}
+\label{section:system.rel.not.approx}
+A normal approximation 100$(1-\alpha)$\% confidence interval for $F_{\rv}(t;
+\thetavec)$ based on
+$Z_{\logit(\Fhat_{\rv})} \approxdist \NOR(0,1)$ is
+\begin{eqnarray*}
+[\undertilde{F_{\rv}}, \quad \tilde{F_{\rv}}] = 
+\left[\frac{\Fhat_{\rv}}{\Fhat_{\rv}
++(1-\Fhat_{\rv}) \times w },  \quad \frac{\Fhat_{\rv}}{\Fhat_{\rv}+
+(1-\Fhat_{\rv})/w }
+\right]
+\end{eqnarray*}
+where
+$w=\exp\{\norquan_{(1-\alpha/2)}\sehat_{\Fhat_{\rv}}/
+[\Fhat_{\rv}(1-\Fhat_{\rv})]\}$.
+
+%----------------------------------------------------------------------
+\subsection{Bootstrap approximate confidence intervals for system reliability}
+Bootstrap confidence intervals can be used to improve upon the simple
+normal-approximation method in
+Section~\ref{section:system.rel.not.approx}. One
+iteration of the bootstrap procedure requires the computation of
+bootstrap estimates $\Fhatboot_{i}$, $i=1, \ldots, \ncomponents$ (as
+in Chapter~\ref{chapter:bootstrap}) for each of the $\ncomponents$ components.
+These lead
+to the system bootstrap estimate $\Fhatboot_{\rv}=g(\Fhatboot_{1},
+\ldots,
+\Fhatboot_{\ncomponents})$.
+The procedure is repeated $B$ times and, as in
+Section~\ref{section:par.boot.ci.f}, an approximate $100(1-\alpha)\%$ 
+confidence interval for $F_{T}(t)$ based on $Z_{\logit(\Fhat_{\rv})}
+\approxdist Z_{\logit(\Fhat_{\rv}^{*})}$ and the $B$ bootstrap
+samples is
+\begin{displaymath}
+[\undertilde{F_{\rv}}, \quad \tilde{F_{\rv}}] = 
+\left[\frac{\Fhat_{\rv}}{\Fhat_{\rv}
++(1-\Fhat_{\rv}) \times \undertilde{w}},  \quad \frac{\Fhat_{\rv}}{\Fhat_{\rv}+
+(1-\Fhat_{\rv}) \times \tilde{w}}
+\right].
+\end{displaymath}
+Here $\undertilde{w}=\exp\{ z_{\logit(\Fhat^{*})_{(1-\alpha/2)}}
+\sehat_{\Fhat_{\rv}}/ [\Fhat_{\rv}(1-\Fhat_{\rv})]\}$ and
+$\tilde{w}=\exp \{ z_{\logit(\Fhat^{*})_{(\alpha/2)}}/
+[\Fhat_{\rv}(1-\Fhat_{\rv}) ] \}$ where
+$z_{\logit(\Fhat^{*})_{(1-\alpha/2)}}$ and
+$z_{\logit(\Fhat^{*})_{(\alpha/2)}}$ are obtained from the quantiles
+of the $B$ bootstrap estimates $\Fhatboot_{\rv}$,
+as described in Section~\ref{section:par.boot.ci.f}.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Estimating Reliability with Two or More Causes of Failure}
+\label{section.multiple.causes}
+%----------------------------------------------------------------------
+\subsection{Products with two or more causes of failure}
+
+Many systems, subsystems, and components (which we generically refer
+to as ``units'') have more than one cause of failure.  In some
+applications and for some purposes it is important to distinguish
+between the different failure causes (sometimes referred to as
+``failure modes''). For purposes of improving reliability, it is
+essential to identify the cause of failure down to the component
+level and, in many applications, down to the actual physical cause
+of failure.
+
+Multiple failure modes should be distinguished from population
+mixtures (e.g.,
+Section~\ref{section:discrete.mix.intro}). Population mixtures
+divide a population into different mutually exclusive groupings of
+units.  Such subpopulations result from differences in the
+manufacture or use of the product.  Multiple failure modes, on the
+other hand, are the different ways in which a particular unit might
+fail.
+
+Failure time of a system with two or more failure modes can be
+modeled with a series-system or competing risk model.  Each risk is
+like a component in a series system.  When one component fails, the
+system (i.e., product) fails.  Each unit has a potential failure
+time associated with each failure mode. The observed  failure time
+is the minimum of these individual potential failure times.
+
+%----------------------------------------------------------------------
+\subsection{Estimation with two or more causes of failure}
+\label{section:competing.risk}
+This section explores applications in which failed units are
+replaced rather than repaired after failure (repairable system data
+analysis is described in Chapter~\ref{chapter:repairable.system}).
+Some life tests result in failure-time data that have more than one
+cause of failure. Most field data could have both failure-time and
+failure-cause information reported for each failure (although
+failure-cause information is often expensive or otherwise
+difficult to obtain and is therefore often {\em not}
+reported). Warranty data have potential problems of bias and limited
+information about surviving units. As described in
+Example~\ref{example:warranty.and.right.trun}, it may be necessary
+to conduct a survey to get information about the status of units
+that have not been reported as failing (e.g., if and when units have
+been retired and the number of use-cycles for units still in
+service).  Typically, many of units reported as failing in the
+warranty period are units that have been subjected to the harshest
+use conditions.
+
+Field tracking studies will follow, more carefully, a group of units
+in service (or simulated service). Such studies are more expensive,
+but provide better information about field reliability. See Amster,
+Brush, and Saperstein~(1982) for more information on planning field
+tracking studies. For some applications it is possible to test in an
+``accelerated'' field environment where failures could be expected
+to occur more rapidly than in typical service applications
+(providing time to make corrections in customer units before serious
+problems might arise).
+
+\begin{example}
+{\bf Estimation of Device-G $\boldsymbol{F_{T}(t)}$ 
+using failure mode information.}
+\label{example:deviceg}
+\begin{table}
+\caption{Device-G failure times and cause of failure  
+for devices that failed and running times for units that did not
+fail.}
+\centering\small
+\begin{tabular}{rcrcrc} 
+\\[-.5ex]
+\hline
+\multicolumn{1}{c}{Thousands}&{Failure}&\multicolumn{1}{c}{Thousands}&{Failure}&\multicolumn{1}{c}{Thousands}&{Failure}\\
+\multicolumn{1}{c}{of Cycles}&{Mode}&\multicolumn{1}{c}{of
+Cycles}&{Mode}&\multicolumn{1}{c}{of Cycles}&{Mode}\\
+\hline
+275  & W  &  106  &  S  &   88  & S \\
+ 13  &  S &   300 &   -- &   247 &  S  \\
+147  &  W &   300 &   -- &    28 &  S  \\
+ 23  &  S &   212 &   W &   143 &  S  \\
+181  &  W &   300 &   -- &   300 &  --  \\
+ 30  &  S &   300 &   -- &    23 &  S  \\
+ 65  &  S &   300 &   -- &   300 &  --  \\
+ 10  &  S &     2 &   S &    80 &  S  \\
+300  &  -- &   261 &   S &   245 &  W  \\
+173  &  S &   293 &   W &   266 &  W  \\
+\hline
+\end{tabular}
+\begin{minipage}[t]{4in}
+W indicates a wearout failure, S indicates an electrical surge
+failure, and -- indicates a unit still operating after 300 thousand
+cycles.
+\label{table:deviceg.data}
+\end{minipage}
+\end{table}
+Table~\ref{table:deviceg.data} gives times of failure and running
+times for a sample of devices from a field tracking study of a
+larger system. At a certain point in time, 30 units were installed
+in typical service environments. Cause of failure information was
+determined for each unit that failed. Mode S failures were caused by
+an accumulation of randomly occurring damage from power-line voltage
+spikes during electric storms resulting in failure of a particular
+unprotected electronic component. These failures predominated early
+in life. Mode W failures, caused by normal product wear, began to
+appear after 100 thousand cycles of use.
+%-------------------------------------------------------------------
+\begin{sidewaysfigure}
+\splusbookfiguresize{\figurehome/deviceg.crisk.comp.ps}{7in}
+\caption{Weibull analyses of Device-G data 
+estimating time to failure Mode S only, failure Mode W
+only, and ignoring the cause of failure.}
+\label{figure:deviceg.crisk.comp.ps}
+\end{sidewaysfigure}
+%-------------------------------------------------------------------  
+The NW corner of Figure~\ref{figure:deviceg.crisk.comp.ps} displays
+the results of a Weibull analysis of the Mode S failures only
+(failures due to Mode W were treated as censored at the time of the
+Mode W failure---all we know is that the unobserved Mode S failure
+time would have been sometime after the observed Mode W failure).
+Similarly, the NE corner of
+Figure~\ref{figure:deviceg.crisk.comp.ps} displays the results of a
+Weibull analysis of the Mode W failures only. The results for these
+two analyses are also summarized in Table~\ref{table:deviceg.mles}.
+In both cases, the Weibull distribution provides a good fit to the
+data. The SW corner shows the results of a Weibull analysis ignoring
+the cause of failure information. Looking carefully shows evidence
+of a change in the slope of the plotted points, indicating a gradual
+shift from one failure mode to another.
+\begin{table}
+\caption{Device-G field-tracking data ML estimation results for the
+electric surge (S) and
+wearout (W) failure modes.}
+\centering\small
+\begin{tabular}{lcrrrr} 
+\\[-.5ex]
+\hline
+& & & & \multicolumn{2}{c}{95\% Approximate}\\
+& &\multicolumn{1}{c}{ML} &Standard & 
+\multicolumn{2}{c}{Confidence Interval}\\
+Mode & Parameter &
+ \multicolumn{1}{c}{Estimate}& \multicolumn{1}{c}{Error} & Lower & Upper \\
+\hline 
+S&$\mu_{\rm S} $ & 6.11 & .427 &  5.27  & 6.95 \\[.7ex] 
+&$\sigma_{\rm S}$ & 1.49 & .35 &  .94 &  2.36\\[1.2ex]
+\hline 
+W&$\mu_{\rm W} $ & 5.83 & 0.11 & 5.62 & 6.04 \\[.7ex] 
+&$\sigma_{\rm W}$ &.23 &.08 & .12 & .44 \\[.7ex]\hline 
+S and W&$\mu_{\rm SW} $ & 5.49 & 0.23 & 5.04 & 5.94 \\[.7ex] 
+&$\sigma_{\rm SW}$ &1.08 &.21 & .74 & 1.57 \\[.7ex]\hline 
+\end{tabular}
+\begin{minipage}[t]{4in}
+For Mode S alone, $\loglike_{\rm S}=-101.36$
+for Mode W alone, $\loglike_{\rm W}=-47.16$, and for both modes
+together,  $\loglike_{\rm SW}= -142.62$.
+\label{table:deviceg.mles}
+\end{minipage}
+\end{table}
+The dotted lines in Figure~\ref{figure:deviceg.crisk.comp2.ps} show
+the estimated ML lines for the two individual failure modes.  The
+thin, straight, solid line is the ML line estimating the Weibull
+$F_{T}(t)$ obtained from ignoring the cause of failure information
+(i.e., using both failure modes together in the analysis). The
+curved line is the series-system estimate of $F_{T}(t)$ for the two
+failure modes acting together. This estimate was computed, under the
+assumption of independence of $T_{1}$ and $T_{2}$ as
+$\Fhat_{T}(t)=1-[1-\Fhat_{1}(t)]\times [1-\Fhat_{2}(t)]$. The two
+estimates diverge rapidly after 100 thousand cycles.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/deviceg.crisk.comp2.ps}
+\caption{Weibull analyses of Device-G data 
+estimating time to failure Mode S only, failure Mode W
+only, and distribution to the minimum of Mode S and Mode W.}
+\label{figure:deviceg.crisk.comp2.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Estimates of the mean time to failure were computed from
+%\ref{equation:mttf} later
+$\mttfhat=\int_{0}^{\infty}[1-\Fhat_{T}(t)]dt$ and were 251.3 and 196.0
+thousand cycles, respectively, for the models ignoring and using
+the failure mode information. The difference between these estimates
+would have been greater if the censoring had been heavier (implying
+more extrapolation in time).
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Estimation of multiple failure mode distributions
+when only some failure modes are identified in the data}
+
+When the failure modes are not identified or are only partially
+identified, it is sometimes possible to estimate the individual
+$F_{i}(t)$ distributions by using maximum likelihood.  This may,
+however, be difficult because the analyses are no longer separable,
+and failure-time distributions must be estimated simultaneously
+even if the modes act independently.  Also, the parameter estimates
+for the distribution for one mode will be correlated with those of the
+other modes (Friedman and Gertsbakh~1980).  In practice, one is
+likely to analyze the data as if there were only a single mode.  This
+can result in the pitfalls described earlier, especially when the
+shapes of the distributions of the individual failure modes are not
+similar or if censoring is somehow linked to one or more of the
+failure modes. Guess, Usher,  and Hodgson~(1991), for example,
+describe maximum likelihood methods. Determining the
+appropriate likelihood is straight forward. Determining if
+there is enough information in the data to estimate
+all of the model parameters can be problematic. Also see the example
+in Section~\ref{section:crisk.mixture.model}.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Other Topics in System Reliability}
+\label{section:other.sys.rel.topics}
+%----------------------------------------------------------------------
+\subsection{Other system structures}
+For standby redundancy (also known as passive redundancy), a redundant
+unit is activated only when another unit fails and the redundant unit
+is needed to keep the system working.
+There are many variations of this including cold standby and
+partially loaded redundancy. Also it is necessary, in some systems,
+to consider the reliability of component and subsystem interfaces
+as well as the switching mechanism that activates the 
+standby units. This can be done by including such interfaces and
+switching mechanism into the overall system structure.
+
+%----------------------------------------------------------------------
+\subsection{Dependency among components}
+%----------------------------------------------------------------------
+The common assumption of components with independent failures is
+sometimes unrealistic. It is, for example, possible that failure of
+one component either improves or degrades the reliability of other
+system components (leading to either negative or positive
+correlation between failure times in different components).  Another
+common source of dependency is ``common cause of failure'' which
+occurs when an external force causes failure of more than on
+component.  Figure~\ref{figure:series.dep.effect.ps}
+(Figure~\ref{figure:parallel.dep.effect.ps}) showed the effect of
+dependency on a simple two-component series (parallel) system. The
+same effect would be amplified in a multicomponent redundant
+system.
+
+%----------------------------------------------------------------------
+\subsection{Systems with repair}
+%----------------------------------------------------------------------
+Many systems are repaired after failure. Questions of repairability,
+maintainability, and availability generally depend on knowledge of
+a repair time distribution. The methods used in this book can
+also be used to estimate such distributions.
+
+Questions involving time-dependence of system failure/repair cycles
+generally use models different from those used in the previous
+chapters in this book.  Chapter~\ref{chapter:repairable.system}
+describes simple methods for analyzing system repair-history 
+and other recurrence-type data.
+
+%----------------------------------------------------------------------
+\subsection{FMEA/FMECA}
+\label{section:fmea.fmeca}
+%----------------------------------------------------------------------
+Products and systems often have complicated designs that are
+the result of efforts of one or more design teams. Management for system
+reliability requires a global process to assure that the
+product/system reliability will meet customer requirements.
+
+Failure Modes and Effect Analysis (FMEA) is a systematic, structured
+method for identifying system failure modes and assessing the effects
+or consequences of the identified failure modes.  Failure Modes and
+Effect Criticality Analysis (FMECA) considers, in addition, the
+criticality (or importance) of identified failure modes, with respect
+to safety, successful completion of system mission, or other
+criteria.  The goal of FMEA/FMECA is to identify all possible failure
+modes at a specified level of system architecture. These methods are
+typically used in product/system design review processes.  The use of
+FMEA/FMECA typically begins in the early stages of product/system
+conceptualization and design.  Then the FMEA/FMECA evolves over time
+along with changes in the product/system design and accumulation on
+information about product/system performance in pre-production
+testing and field experience. FMEA/FMECA is used during the
+product/system design phase to help guide decision making. FMEA/FMECA
+is also used to develop product/system guidelines for system repair
+and maintenance procedures, to make statements about system safety,
+and to provide direction for reliability improvement efforts.
+
+Operationally, FMEA/FMECA begins by defining the scope of the
+analysis, specified by the system level at which failures are to be
+considered.  FMEA/FMECA can be conducted at various different levels
+in a product or a system. FMEA/FMECA might be done
+initially for individual subsystems.  Then the results can be
+integrated to provide an FMEA/FMECA for a entire system comprised of
+many subsystems. For example, an FMEA to study the reliability of
+telecommunications relay repeater might consider, as basic
+components, each discrete device in the electronic circuit (e.g.,
+ICs, capacitors, resistors, diodes, etc.).  At another level, an FMEA
+for a large telecommunications network might consider as components
+all of the network nodes and node interconnections (ignoring the
+electronic detail within each node). 
+
+The next step in the FMEA/FMECA process is the identification of all
+components that are subject to failure.  This is followed by
+identification of all component interfaces or connections between
+components that might fail. In many applications, environmental and
+human-factors related failures are considered in defining failure
+modes. Finally the effects of the identified failure modes are
+delineated. Determining the effect of failure modes and combinations
+of failure modes uses the detailed specification of the relationship
+among the product/system components (system structure). Special
+worksheets and/or computer software can be used to organize all of
+the information. 
+
+%----------------------------------------------------------------------
+\subsection{Fault trees}
+\label{section:fault.trees}
+%----------------------------------------------------------------------
+The FMEA/FMECA process described above is sometimes referred to as the
+``bottom-up'' approach to reliability modeling. Fault tree analysis,
+on the other hand, quantifies system failure using a ``top-down''
+approach. First, one or more critical ``top-events'' (such as loss of
+system functionality) are defined. Then in a systematic manner, the
+combination (or combinations) of conditions required for that event to
+occur are delineated.  Generally this is done by identifying how
+failure-related events at a higher level are caused by lower level
+``primary-events'' (e.g., failure of an individual component) and
+``intermediate-events'' (e.g., failure of a subsystem).  Information
+from an FMEA analysis might be used as input to this step. The
+information is organized in the form of a ``fault-tree diagram'' with
+the top event at the top of the diagram. Events at different levels of
+the tree are connected by logic gates defined on a system of Boolean
+logic (e.g., AND, OR, Exclusive OR, etc. gates).
+
+A complete fault tree can be used to model the probability of critical
+system events. Additional inputs required for this analysis include
+probability or conditional probabilities of the primary events.  With
+this information and the detailed system structure specification
+provided by the fault tree, it is possible to compute critical event
+probabilities. 
+
+Fault tree diagrams are, in one sense, similar to the reliability
+block diagrams presented earlier in this section. It is generally
+possible to translate from one to the other. Fault tree analysis,
+differs in its basic approach to system reliability.  Reliability
+block diagrams are structured around the event that the system does
+{\em not} fail. Fault tree analysis, however, provides focus on the
+critical failure-causing top-events like loss of system
+functionality or other safety-critical events. The tree shows,
+directly, the root causes of these top-events, and other
+contributing events, at all levels within the scope of the
+analysis. The structure and logic of the fault tree itself provides
+not only a mechanism for quantitative reliability assessment, but
+also clearer insight into possible approaches for reliability
+improvement.
+
+%----------------------------------------------------------------------
+\subsection{Component importance}
+%----------------------------------------------------------------------
+A component's importance to overall system reliability depends on
+the reliability of the component and the component's position in the
+system structure.  Measures of component importance with respect to
+reliability provide information that is needed to develop effective
+strategies to improve system reliability. In particular, such
+measures suggest which components should get attention in
+reliability improvement efforts.  For example, one particularly
+simple measure of component reliability, motivated by traditional
+sensitivity analysis, is the partial derivative of overall system
+reliability with respect to the individual component's reliability.
+Chapter 5 of H\o yland and Rausand~(1994) provides details on a
+number of other useful measures of component importance.
+
+%----------------------------------------------------------------------
+\subsection{Markov and other state-space reliability models}
+
+System models described up to this point have had only two states of
+interest: failed or not failed. A state-space model can be used to
+allow for a richer formulation of system behavior. For example, in a
+parallel system, the system state might describe the number of
+failed components. A state-space model would describe the
+different system states, possible transitions from one state to
+another, and probability distributions describing how the system
+goes from one state to another (transition probabilities).
+ 
+A Markov model is a special case of a state-space model requiring
+that a) a memoryless property that future events depend only on the
+current state and not on the manner in which the system arrived at
+that state and b) a stationarity property that transition
+probability distributions do not change with time. Although somewhat
+restrictive, it is possible to use Markov models to describe many
+kinds of practical systems with useful approximations. If a
+model with a limited number of states does not have the memoryless
+property, it might be possible to reformulate the state definition,
+add some more states, and find a structure that does meet (at least
+approximately) the required conditions.
+
+Markov models are useful for handling dependencies among system
+components, complicated repair policies, common-cause failures,
+and other system complexities.  With large, complicated systems,
+however, the number of states can be large, leading to
+computational difficulties. Also, because of the memoryless
+property, Markov models are limited to exponential distributions for
+life and repair distributions.
+
+Non-Markovian generalizations of state-space models are possible, but
+there are few analytical results available and numerical
+computations become exceedingly difficult when dealing with
+nontrivial system structures. Analyses of such models are generally
+done by using simulation methods.
+
+\section*{Bibliographic Notes}
+
+Barlow and Proschan~(1975) is the classic reference outlining the
+mathematical theory of system reliability. Kozlov and Ushakov~(1970),
+H\o yland and Rausand~(1994), Ushakov~(1994), and Gnedenko and Ushakov
+(1995) provide detailed coverage of many different kinds of system
+reliability models. O'Connor~(1985), and Lewis~(1996) provide
+engineering-oriented descriptions of system reliability
+concepts.  Gertsbakh~(1989) also describes a number of important
+system reliability concepts and methods.
+
+Chapter 5 of Nelson~(1982) provides theory and applications of multiple
+failure mode (competing risk) methods for series systems of
+independent components.  David and Moeschberger~(1978) and Birnbaum
+(1979) provide theory, some applications, and numerous important
+references for such models (for a single subpopulation).
+
+O'Connor~(1985), Sundararajan~(1991), H\o yland and Rausand~(1994),
+and Lewis~(1996) provide more details, examples, and references for
+fault-tree methods.  MIL-STD-1629A and books like H\o yland and
+Rausand~(1994), Klion~(1992), and Sundararajan~(1991) outline in
+more detail and provide examples for the procedures for performing
+an FMEA/FMECA analysis.  H\o yland and Rausand~(1994) also list
+several computer programs designed to facilitate FMEA/FMECA
+analyses.
+%----------------------------------------------------------------------
+\section*{Exercises}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:sp.bridge.comp}
+Consider the bridge system structure in
+Figure~\ref{figure:system.bridgefig.ps}. Assume that components 1,
+2, 4, and 5 all have the same cdf $F(t)$. Plot $F_{T}(t)$ versus $0
+< F(t) < 1 $ with a separate line for each value of $\Pr( A_{3})= 0,
+.25, .5, .75$, and 1. Comment on the results relative to the
+reliability of the two different series-parallel structures in
+Section~\ref{section:series.parallel}.
+\end{exercise}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise}
+Revisit the shock absorber data introduced in
+Example~\ref{example:shock.absorber.data} and given in
+Appendix Table~\ref{atable:shockabs.data}.  There were actually two different
+causes of failure for this product. The analyses in
+Chapters~\ref{chapter:nonparametric.estimation} and
+\ref{chapter:parametric.ml.ls} ignored the different
+``failure modes'' in the analysis. An alternative analysis (important
+for some purposes) would take into consideration the different
+failure modes. Such an analysis is straightforward when
+the failure times to the two different
+failure modes are statistically independent.
+     \begin{enumerate}
+\item
+\label{part:shock.separate.modes}
+Assuming that the failure modes are independent, fit Weibull
+distributions separately to estimate the time to failure for each
+failure mode.  Also fit other parametric distributions to the
+individual failure modes to see if there are other distributions that fit
+better than the Weibull.
+\item
+\label{exer.part:shockabs.crisk}
+Suppose that the shock absorber is a series system that fails as soon
+as there is a failure due to one mode of the other.  Combine the
+results from part~\ref{part:shock.separate.modes} to obtain an
+estimate of the cdf for the shock absorbers with both modes acting
+together.  Plot these on Weibull probability paper and compare the
+results with the analysis that ignores the differences between the two
+different failure modes.
+\item
+Provide an intuitive explanation for the result from
+part~\ref{exer.part:shockabs.crisk}.
+\item
+Explain why the agreement between the two methods of analysis is so
+good in this case (as compared with Example~\ref{example:deviceg}). In
+general, when would you expect to see more important differences
+between the analysis that accounts for the different failure modes and
+the analysis that does not account for the different failure modes?
+\end{enumerate}
+\end{exercise}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise}
+Consider the following system diagram. Derive an expression for the
+cdf of the system as a function of $F_{1}$, $F_{2}$, and $F_{3}$.\\
+\xfigbookfiguresize{\figurehome/system.threefig.ps}{1.5in}
+\end{exercise}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise}
+Consider the following system diagram. Derive an expression for the
+cdf of the system as a function of $F_{1}, \dots, F_{6}$.\\
+\xfigbookfiguresize{\figurehome/system.sixafig.ps}{2.2in}
+\end{exercise}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise}
+Consider the following system diagram. Derive an expression for the
+cdf of the system as a function of $F_{1}, \dots, F_{6}$.\\
+\xfigbookfiguresize{\figurehome/system.sixbfig.ps}{2.2in}
+\end{exercise}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise1}
+Show that for a series system of $\ncomponents$ independent
+components, the system hazard function is the sum of the component
+hazard functions.  That is $h_{T}(t) = \sum_{i=1}^{\ncomponents}
+h_{i}(t)$.
+\end{exercise1}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:ram.option}
+A new computer-based home entertainment system will require 16
+megabytes of RAM to run the operating system, store needed information
+for quick access, and other tasks.  The product designers can use a
+single 16 megabyte chip or four 4 megabyte chips, the latter option
+being 30\% less expensive. The manufacturers of the memory claim that
+the average fit rate for 2 years at normal operating conditions is 10
+fits/per chip for all of their memory chips. Compare the reliability
+of the memory system for the two different design options.
+\end{exercise}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise2}
+Consider the model used in Example~\ref{example:deviceg}, with the
+generalization
+that only a proportion $\xi$ of the units in the population are
+susceptible to
+failure Mode S.
+\begin{enumerate}
+\item
+Write down expressions for the cdf and pdf of the overall failure time
+distribution.
+\item
+Write a computer program to compute and plot the hazard function
+for this model. Find combinations of the five parameters that
+give a bathtub shaped hazard function.
+\end{enumerate}
+See Section~\ref{section:crisk.mixture.model} for an example using
+this model.
+\end{exercise2}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise1}
+Consider a parallel system with 
+$\ncomponents$ independent components. Show that
+\begin{enumerate}
+\item
+The pdf for the system is 
+\begin{displaymath}
+f_{\rv}(\realrv)=
+F_{\rv}(\realrv) \times \sum_{j=1}^{\ncomponents} 
+\frac{
+    f_{j}(\realrv)
+     }
+     {
+    F_{j}(\realrv)
+     }.
+\end{displaymath}
+\item
+The hazard function is
+\begin{displaymath}
+h_{\rv}(\realrv)=
+\frac{F_{\rv}(\realrv)}
+     {1- F_{\rv}(\realrv)}
+\times \sum_{j=1}^{\ncomponents} 
+\left [
+\frac{
+    1-F_{j}(\realrv)
+     }
+     {
+    F_{j}(\realrv)
+     }
+\right ] h_{j}(\realrv).
+\end{displaymath}
+\end{enumerate}
+\end{exercise1}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise1}
+Suppose that a series system has $\ncomponents$
+$\rm{iid}$ components. If the life of each component
+is modeled with a $\WEIB(\mu, \sigma)$ then
+\begin{enumerate}
+\item
+\label{exer.part:cdf.series.weibull}
+Show that the cdf for the
+system is $\WEIB[\mu-\sigma \log(\ncomponents), \sigma]$.
+\item
+Using the cdf obtained in part~\ref{exer.part:cdf.series.weibull}
+compute the hazard function for the system. Verify that
+the same answer can be obtained using the formula 
+for the hazard function given in Section~\ref{equation:sum.hazard}.
+\item
+\label{exer.part:components.reli.haz}
+Compute the reliability and hazard of 
+the components at $\realrv=1$ month when $\sigma=.5$ and
+$\mu=2.3$. 
+\item
+Use the information in part~\ref{exer.part:components.reli.haz}
+to compute the
+reliability and hazard of the system when $\ncomponents=10$.
+\end{enumerate}
+\end{exercise1}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise1}
+For a series system with 
+$\ncomponents$ ${\rm iid}$ components each having
+a failure-time cdf $F=F(t)$, show that
+\begin{displaymath}
+\varhat(\Fhat_{\rv}) =
+	\left [\ncomponents (1-\Fhat)^{\ncomponents-1}\frac{\partial F}{\partial \thetavec }
+ 	\right ] \transpose
+ 	\vcvmathat_{\thetavechat}
+        \left [
+\ncomponents (1-\Fhat)^{\ncomponents-1}\frac{\partial F}
+{\partial \thetavec }	
+        \right ].
+\end{displaymath}
+\end{exercise1}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise1}
+Beginning with the general formula given 
+in (\ref{equation:system.kofsfig}) for 
+$F_{\rv}$ in a $k$-out-of-$\ncomponents$ system
+\begin{enumerate}
+\item
+\label{exer.part:cdf.koutofs}
+Show that with identically distributed components,
+$F_{\rv}(\realrv)=\sum_{j=k}^{\ncomponents} {\ncomponents \choose j}
+F^{j}(1-F)^{\ncomponents-j}$.
+\item
+Use the result in part~\ref{exer.part:cdf.koutofs} to 
+obtain $F_{\rv}(\realrv)$ when $k=2$ and $\ncomponents=3$.
+%Compare your result with the special case of 
+%$F_{\rv}$ given
+%in (\ref{equation:system.kofsfig})
+%using $F_{1}=F_{2}=F_{3}$.
+\end{enumerate}
+\end{exercise1}

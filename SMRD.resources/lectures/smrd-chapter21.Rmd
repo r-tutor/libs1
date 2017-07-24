@@ -1,0 +1,92 @@
+---
+title                  : "STAT 687 - Chapter 21"
+subtitle               : "Accelerated Degradation Tests"
+author                 : "Maj Jason Freels"
+date                   : "Air Force Institute of Technology"
+output                 : 
+  ioslides_presentation:
+    widescreen         : true
+    logo               : images/afit-logo-bg.gif
+    css: codes/custom.css
+runtime: shiny
+---
+
+```{r echo=FALSE,message=FALSE}
+connected<-FALSE
+
+if(connected==TRUE)  {
+
+setInternet2(TRUE)  
+path   <-"https://afit.blackboard.com/bbcswebdav/users/jfreels"
+
+download.file(paste(c(path,"DFORRT.dll"), collapse="/"),
+              paste(c(getwd(),"DFORRT.dll"), collapse="/"),
+              method="internal",mode="ab")
+
+download.file(paste(c(path,"SPLIDA.dll"), collapse="/"),
+              paste(c(getwd(),"SPLIDA.dll"), collapse="/"),
+              method="internal",mode="ab")
+
+dyn.load("DFORRT.dll",envir=globalenv())  ;  dyn.load("SPLIDA.dll",envir=globalenv())
+
+a<-url(paste(c(path,"echapters.RData"    ), collapse="/")); load(a, envir=globalenv())
+b<-url(paste(c(path,"RSplida Codes.RData"), collapse="/")); load(b, envir=globalenv())
+c<-url(paste(c(path,"RSplidaData.RData"  ), collapse="/")); load(c, envir=globalenv())
+d<-url(paste(c(path,"RSplidaUser.RData"  ), collapse="/")); load(d, envir=globalenv())
+e<-url(paste(c(path,"Text data.RData"    ), collapse="/")); load(e, envir=globalenv())  }
+
+if (connected==FALSE)  {
+
+path   <- getwd()
+
+setwd(paste(c(path,"codes"), collapse="/"))
+for(i in 1:5){     load(list.files( )[grep("RData",strsplit(list.files( ),"\\W+"))][i],envir=globalenv()) } 
+for(i in 1:2){ dyn.load(list.files( )[grep("dll"  ,strsplit(list.files( ),"\\W+"))][i],envir=globalenv()) }
+setwd("..")            }
+
+logo<-paste(c(path,"images","afit-logo-bg.gif"), collapse="/")
+SplidaOptions(SPLIDA.DateOnPlot=FALSE)
+
+library(survival) ; library(actuar) ; library(evd)
+```
+
+### This chapter explains
+<div id="play"><audio controls src="media/audio/test-slide.m4a"></audio></div>
+
+- How accelerated degradation tests can be used to assess and improve product reliability
+
+- Models for accelerated degradation tests
+
+- How to analyze accelerated degradation data
+
+- How accelerated degradation test methods compare with traditional accelerated life test methods
+
+- A simple approximate method that can be used for some accelerated degradation data analyses 
+
+# Section 20.1|Introduction
+
+### $\S$ 20.1 - Introduction
+
+# Section 20.2|Models for Accelerated Degradation Test Data
+
+### $\S$ 20.2.1 - Accelerated degradation model parameters
+
+# Section 20.3|Estimating Accelerated Degradation Test Model Parameters
+
+### $\S$ 20.3 - Estimating accelerated degradation test model parameters
+
+# Section 20.4|Estimation of Failure Probabilities, Distribution Quantiles and Other Functions of Model Parameters
+
+### $\S$ 20.4 - Estimation of Failure Probabilities, Distribution Quantiles and Other Functions of Model Parameters
+
+# Section 20.5|Confidence Intervals Based on Bootstrap Samples
+
+### $\S$ 20.5|Confidence Intervals Based on Bootstrap Samples
+
+# Section 20.6|Comparison with Traditional Accelerated Life Test Methods
+
+### $\S$ 20.6|Comparison with Traditional Accelerated Life Test Methods
+
+# Section 20.7|Approximate Accelerated Degradation Analysis
+
+### $\S$ 20.7|Approximate Accelerated Degradation Analysis

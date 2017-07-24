@@ -1,0 +1,1464 @@
+%chapter 10
+%original by wqmeeker  12 Jan 94
+%edited by wqmeeker 9 Apr 94
+%modified by wqm 26-28 may 94 simulation,examples,mult cens (see slides)
+%edited by wqmeeker  9 june 94; bring in new quant figures
+%edited by wqmeeker 20 june 94; bring in new haz figures
+%edited by wqmeeker 18 aug 94 exercises
+%edited by wqmeeker 19 aug 94 changes and new haz figures
+%edited by wqmeeker 22 aug 94 
+%edited by wqmeeker 30 nov 94 
+%edited by wqmeeker  2 sept 94 added examples
+%edited by driker 7 nov 95
+%edited by driker 11 nov 95
+%edited by driker 1 july 96
+%edited by driker 6-9 sept 96
+%edited by wqmeeker 15 sept 96
+%edited by driker 4 april 97
+%edited by driker 21 july 97
+
+
+\setcounter{chapter}{9}
+
+\chapter{Planning Life Tests}
+\label{chapter:test-planning}
+
+\input{\chapterhome/common_heading.tex}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+\section*{Objectives}
+This chapter explains:
+\begin{itemize} 
+\item 
+Basic ideas for planning a life test or field tracking study.
+\item 
+The use of simulation to get an indication of how the results of
+a life test or other
+study might look, to see how the data might be analyzed, and to get
+a rough idea of the precision that can be expected for a proposed test
+plan.
+\item 
+The use of large-sample approximate methods 
+to assess the precision of the results that will
+be obtained from a future reliability study.
+\item 
+How to determine an approximate sample size that provides
+a specified degree of precision.
+\item 
+How to assess the trade-offs involving sample size and study length.
+\item 
+The use of simulation to check and
+``calibrate'' the easier-to-use large-sample approximate methods.
+\item 
+Methods for assessing sensitivity of test planning
+conclusions to unknown inputs that must be provided.
+\end{itemize}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Overview}
+This chapter provides tools for evaluating and controlling 
+estimation precision for a life
+test when censored data are expected.  For
+those interested primarily in data analysis methods, this chapter can be
+skipped.  Section~\ref{section:planning.intro} introduces the basic
+ideas of test planning and uses simulation to illustrate and explain
+the effect that sample size has on sampling variability. Simulation
+is an extremely important tool for test planning.
+Section~\ref{section:planning.asymptotic.variance} shows how to
+compute approximate sampling variability directly.
+Sections~\ref{section:sample.size.unrest} and 
+\ref{section:sample.size.pos} show how to find the sample size
+needed to control sampling variability (or precision) and illustrate
+the ideas for the normal and exponential distribution.
+Section~\ref{section:location.scale.single.censoring} applies these
+methods to problems involving Type~I censored data with the Weibull
+and lognormal distributions.  Section~\ref{section:zero.failures}
+describes methods for planning a test to demonstrate conformance
+with a specified reliability standard.
+Section~\ref{section:test.plan.ext} describes some extensions to
+other types of censoring and related sample size problems.
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Introduction}
+\label{section:planning.intro}
+%----------------------------------------------------------------------
+\subsection{Basic ideas}
+Because life tests and reliability field-tracking studies are
+expensive, it is essential to plan them carefully. Frequently asked
+questions include ``How many units do I need to test in order to
+estimate the .1 quantile of life?'' or ``How long do I need to run the
+life test?'' Simply put, more test units and more test time will generate
+more information which improves the precision of estimates.  
+Precision and other test plan properties depend, however, on the
+actual model and its parameters. In
+order to describe the kind of results that might be expected from a
+particular test plan, it is necessary to have some ``planning
+information'' about the life distribution to be estimated.  Having
+such information makes it possible to assess the effect that sample
+size and test length will have on the outcome of a particular test
+plan. Such planning information is typically obtained from design
+specifications, expert opinion, or previous experience with similar
+products or materials.
+Here  the superscript $\planvalue$ is used to denote a planning
+value of a population or process quantity.
+
+%----------------------------------------------------------------------
+\begin{example}
+\label{example:insulation.plan.info}
+{\bf Engineering ``planning values'' and assumed distribution for
+planning an insulation life test.} A manufacturer wants
+to estimate the .1 quantile of the life distribution of a newly
+developed insulation.  Tests are run on small specimens and at higher
+than usual electrical stress (specified in kilovolts/mm)
+to cause failures to occur sooner. The amount of time available for
+the life test is 1000 hours.  Engineering has provided the following
+information in order to help plan the life test.
+\begin{itemize}
+\item
+They expect that about 12\% of the specimens will fail in the first
+500 hours of the test and about 20\% of the specimens will fail by
+the end of 1000 hours (i.e., the proportion failing at the censoring
+time should be in the neighborhood of
+$\censorprop^{\planvalue}$=.2).
+\item
+For purposes of test planning, the engineers will use a Weibull
+distribution to describe failure time variability, but they also want
+to make an assessment using the lognormal distribution (they
+would be concerned if the answers differ too much).
+\end{itemize}
+Substituting the above planning information into the Weibull
+distribution cdf (\ref{equation:weibull.cdf.mu.sigma}) and solving
+for $\mu$ and $\sigma$ provides ``planning values'' $\muplan=8.774$
+[or $\weibscaleplan=\exp(8.774)=6464$ hours] and $\sigmaplan=1.244$ (or
+$\betaplan=1/1.244=.8037$).  A simple way of getting these values
+graphically is to plot the two planning failure probability points
+$(500,.12)$ and $(1000,.2)$ on probability paper, draw a straight
+line through the points, and read off parameter planning values, as
+discussed in Section~\ref{section:grid.lines}.
+Figure~\ref{figure:weibull.plan.values.ps} illustrates this for the
+Weibull distribution. Similarly, using the lognormal distribution
+cdf (\ref{equation:lognormal.cdf}) gives $\muplan=8.658$ and
+$\sigmaplan=2.079$.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/weibull.plan.values.ps}
+\caption{Weibull probability paper showing the cdf corresponding to
+the planning values in Example~\ref{example:insulation.plan.info}.}
+\label{figure:weibull.plan.values.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%splus  quant.to.plan.values(500,.12,1000,.20,"Lognormal")
+%splus      sigma       mu      beta    expmu        z1         z2 
+%splus   2.079241 8.657688 0.4809448 5754.217 -1.174987 -0.8416212
+%splus  
+%splus > quant.to.plan.values(500,.12,1000,.20,"Weibull")
+%splus      sigma       mu      beta    expmu        z1       z2 
+%splus   1.244234 8.774031 0.8037076 6464.177 -2.057028 -1.49994
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Simulation of a proposed test plan}
+\label{section.planning.simulation}
+Simulation provides a powerful, insightful tool for planning
+experiments. The following steps outline a useful simulation method for
+helping to plan a life test.
+\begin{itemize}
+\item
+Use the chosen model and planning values of the distribution parameters to
+simulate data from the proposed life test.
+\item
+Analyze the data, perhaps fitting more than one distribution.
+\item
+Assess precision of estimates. This can be done initially by
+computing approximate confidence intervals, as would be done for
+the real data.
+\item
+Simulate and fit distributions to many samples to assess the
+sample-to-sample differences.  Such multiple simulations provide an
+assessment of estimation precision. This assessment does not
+depend on the usual large-sample approximations.
+\item
+Repeat the simulation-evaluation process with different sample sizes
+to gauge the actual sample size and test length
+requirements to achieve the desired precision.
+\item
+Repeat the simulation-evaluation process with different
+input ``planning values'' over the range of their uncertainty.
+\end{itemize}
+
+\begin{example}
+{\bf Illustration of simulations of insulation life tests.}
+Figures~\ref{figure:test.sim.weib.n5.ps}, 
+\ref{figure:test.sim.weib.n50.ps}, and
+\ref{figure:test.sim.weib.n500.ps}
+show plots of ML estimates obtained from 30 simulated samples of size
+$n=5$, $n=50$, and $n=500$, respectively, from a Weibull
+distribution with $\mu=8.774$ and $\sigma=1.244$ (shown with the
+thicker, longer line).
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/test.sim.weib.n5.ps}
+\caption{ML cdf estimates from 30 simulated samples of size $n=5$ from
+a Weibull distribution with $\muplan=8.774$ and $\sigmaplan=1.244$
+(shown with the thicker, longer line).}
+\label{figure:test.sim.weib.n5.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/test.sim.weib.n50.ps}
+\caption{ML cdf estimates from 30 simulated samples of size $n=50$ from
+a Weibull distribution with $\muplan=8.774$ and $\sigmaplan=1.244$
+(shown with the thicker, longer line).}
+\label{figure:test.sim.weib.n50.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/test.sim.weib.n500.ps}
+\caption{ML cdf estimates from 30 simulated samples of size $n=500$ from
+a Weibull distribution with $\muplan=8.774$ and $\sigmaplan=1.244$
+(shown with the thicker, longer line).}
+\label{figure:test.sim.weib.n500.ps}
+\end{figure}
+%-------------------------------------------------------------------
+ The dashed vertical line at $\censortime=1000$ indicates the
+censoring time (end of the test).  The horizontal line at $p=.1$
+provides a better visualization of the distribution of estimates of
+$\rvquan_{.1}$.  These graphs illustrate a number of interesting and
+important points about the effect that sample size will have on our
+ability to make inferences. In particular,
+\begin{itemize}
+\item
+%   (1-.2)^5=.32768
+For the $n=5$ estimates in Figure~\ref{figure:test.sim.weib.n5.ps},
+there is enormous  variability in the ML estimates.  In
+fact, for eight
+of the simulated data sets, there are no ML estimates because
+all units were censored (the probability of all units
+being censored in a sample of
+$n=5$ units is $(1-.2)^{5}=.328)$. This is a strong indication that the
+usual large-sample approximate confidence intervals will, in this situation,  
+be seriously inadequate. The standard deviation of the 22 values of 
+$\log(\rvquanhat_{.1})$
+(for those samples that had 1 or more failures) was 1.36.
+\item
+The estimates for $n=50$ in Figure~\ref{figure:test.sim.weib.n50.ps}
+indicate much more accurate estimation.  The spread in the ML
+estimates of $\rvquan_{.1}$  might be small enough
+for some applications. The standard deviation of the
+30 values of $\log(\rvquanhat_{.1})$ was .408.
+\item
+As shown in Figure~\ref{figure:test.sim.weib.n500.ps}, increasing
+the sample size to $n=500$ provides a substantial reduction in
+sampling variability. The standard deviation of the 30 values of
+$\log(\rvquanhat_{.1})$ was .173.
+\end{itemize}
+In general, simulation is an easy, useful method of assessing variability.
+\end{example}
+
+To control the standard deviation of an estimator to a specified
+degree of precision, it is possible to interpolate among simulated
+values at different sample sizes. Statistical theory (e.g.,
+Section~\ref{subsection:basic.lgsamp.approx}) tells us that the
+sampling variance of estimators is approximately proportional to
+$1/n$ where $n$ is the sample size.  This suggests linear a
+relationship between $1/\sqrt{n}$ and the standard deviation.
+Section~\ref{section:planning.asymptotic.variance} suggests a more
+direct approach to controlling precision.
+
+\subsection{Uncertainty in planning values}
+Life test planning requires specification of a
+model and ``planning values'' for the model parameters. Of course, these
+model parameters are generally unknown and, indeed, this is usually
+the reason for conducting the life test. Typically, however, planning
+values can be obtained from some combination of experience with
+similar products, design specifications, and engineering judgment. As
+suggested in Section~\ref{section.planning.simulation}, one could
+evaluate plans over a range of planning
+values.  An alternative would be to use a Bayesian approach
+by specifying a prior probability distribution to describe the
+uncertainty in the unknown model parameters, in effect, averaging over
+the plans suggested by the prior distribution.
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Approximate Variance of ML Estimators}
+\label{section:planning.asymptotic.variance}
+%----------------------------------------------------------------------
+\subsection{Motivation for use of large-sample approximations of test
+plan properties}
+In contrast to the use of simulation for assessing properties
+of proposed test plans, large-sample approximations provide:
+\begin{itemize}
+\item
+Simple expressions that allow one to compute directly the
+approximate precision of a specified estimator as a function of
+sample size.
+\item
+Simple approximate expressions for the needed sample size
+as a function of the specified precision of an estimator.
+\item
+Simple tables or graphs of variance factors that provide insight and allow
+easy assessments of trade-offs in test planning decisions
+(e.g., sample size and test length).
+\end{itemize}
+The remainder of this chapter describes the basic ideas behind the 
+approximate large-sample formulas, illustrates their use in the 
+development of simple-to-use figures for test planning, and shows how to
+fine-tune test plans by using simulation methods.
+%----------------------------------------------------------------------
+\subsection{Basic large-sample approximations}
+\label{subsection:basic.lgsamp.approx}
+This section summarizes some important ideas given in more detail in
+Appendix Section~\ref{asection:asymptotic.theory.mle}.
+Under standard regularity conditions 
+(see Appendix Section~\ref{asection:regularity.conditions}), for a model with
+parameters $\thetavec=(\theta_{1},\ldots,\theta_{k})$, the
+following results hold approximately for large samples:
+\begin{itemize}
+\item
+ML estimators $\thetavechat$ follow a multivariate normal
+distribution with mean vector $\thetavec$ and covariance matrix
+$\vcvmat_{\thetavechat}$ [abbreviated $\thetavechat \approxdist
+\mbox{MVN}(\thetavec,\vcvmat_{\thetavechat})$].
+\item
+The large-sample approximate covariance matrix can be computed from
+$\vcvmat_{\thetavechat}=I_{\thetavec}^{-1}$ where
+\begin{equation}
+\label{equation:planning.fisher.info}
+     I_{\thetavec}= 
+     \E \left [
+    -\,\frac{\partial ^2 \loglike(\thetavec)}{\partial \thetavec
+      \partial \thetavec \transpose}\right ]
+      =
+\sum^{n}_{i=1} \E\left [-\,\frac{\partial ^2
+\loglike_{i}(\thetavec)}{\partial \thetavec
+\partial \thetavec \transpose}\right ]
+\end{equation}
+is the Fisher information matrix. Recall from
+Section~\ref{section:normal.theory.exponential} that more curvature
+in the log likelihood implies more precision for estimation. The
+actual amount of curvature at the maximum of a likelihood function
+is, in general, random, depending on the sample data. The matrix
+$I_{\thetavec}$ can be viewed as the expected amount of curvature in
+the sample log likelihood function at its maximum.  The inverse of
+this curvature matrix provides the approximate large-sample
+covariance matrix that, given the model and ``planning values'' for
+$\thetavec$, can be used for test planning.
+\end{itemize}
+
+In most practical problems, interest will center on one or more
+scalar functions of the parameters, say $g=g(\thetavec)$.  Then, in
+large samples, the distribution of $\ghat=g(\thetavechat)$ can be
+approximated by a normal distribution, $\ghat \approxdist
+\NOR \,[g(\thetavec), \ase(\ghat)]$,
+where, from the delta method 
+(see Appendix Sections~\ref{asection:delta.method}
+and \ref{asection:asymptotic.theory.fmle})
+\begin{equation}
+\label{equation:planning.avar.fun}
+ \avar(\ghat)=
+\left [\frac{\partial g(\thetavec)}{\partial \thetavec }
+ \right ] \transpose \vcvmat_{\thetavechat}
+\left [\frac{\partial g(\thetavec)}{\partial \thetavec } \right ].
+\end{equation}
+When the function $g(\thetavec)$ is {\em positive} for all
+$\thetavec$, then it is generally better to use an alternate form of
+the delta method approximation in which $\log[g(\thetavechat)]
+\approxdist
+\NOR \{\log[g(\thetavec)], \ase[\log(\ghat)]\}$,
+where 
+\begin{displaymath}
+\avar[\log(\ghat)]=\left (\frac{1}{g} \right )^{2}
+\avar(\ghat).
+\end{displaymath}
+The approximate standard errors for $\ghat$
+and $\log(\ghat)$ are, respectively:
+\begin{eqnarray*}
+\ase(\ghat)=\frac{1}{\sqrt{n}} \sqrt{\avarf_{\ghat}} \quad \mbox{and}
+\,\,\, \ase[\log(\ghat)]=\frac{1}{\sqrt{n}} \sqrt{\avarf_{\log(\ghat)}}
+\end{eqnarray*}
+where the variance factors $\avarf_{\ghat}=n\avar(\ghat)$ and
+$\avarf_{\log(\ghat)} = n \avar[\log(\ghat)]$ may (and usually do)
+depend on the actual value of $\thetavec$ but they do {\em not}
+depend on $n$.  Thus it is easy to choose $n$ to control
+$\ase(\cdot)$.  To compute $\avarf_{\ghat}$ and
+$\avarf_{\log(\ghat)}$, one uses planning values $\thetavecplan$, as
+described in Example~\ref{equation:planning.fisher.info}.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Sample Size for Unrestricted Functions}
+\label{section:sample.size.unrest}
+When $-\infty< g(\thetavec)<\infty$, an approximate
+$100(1-\alpha)\%$ confidence interval for $g(\thetavec)$, using a
+re-expression of (\ref{equation:ci.for.function}), is
+\begin{equation}
+\label{equation:ci.for.sample.size}
+ [\undertilde{g}, \quad  \tilde{g}] \,= \,
+\ghat \pm 
+\norquan_{(1-\alpha/2)}(1/\sqrt{n})\sqrt{\avarfhat_{\ghat}}
+\, = \, \ghat \pm \cihalfwidth 
+\end{equation}
+where $\norquan_{(p)}$ is the $p$ quantile of the standard normal
+distribution and $\avarfhat_{\ghat}$ is $\avarfhat_{\ghat}$ evaluated at
+$\thetavechat$. The actual confidence interval {\em half-width}
+$\cihalfwidth=(\tilde{g}-\undertilde{g})/2$ is a convenient measure
+of confidence interval precision.  To compute the sample size needed
+for a specified degree of precision, let $\cihalfwidth_{T}$ denote a
+specified target value for $\cihalfwidth$, replace
+$\avarfhat_{\ghat}$ by $\avarfplan_{\ghat}$ in
+(\ref{equation:ci.for.sample.size}), and solve for $n$ giving
+\begin{eqnarray}
+\label{equation:m.for.unrest}
+n&=&\frac{\norquan_{(1-\alpha/2)}^{2}
+\avarfplan_{\ghat}}{\cihalfwidth_{T}^{2}}
+\end{eqnarray}
+where $\avarfplan_{\ghat}$ is $\avarf_{\ghat}$ evaluated at
+$\thetavecplan$.  To obtain $n$, one needs to specify $1-\alpha$,
+$\cihalfwidth_{T}$, $\censortime$ and the planning values
+$\thetavecplan$ needed to compute $\avarfplan_{\ghat}$.
+
+Test plans with this sample size provide confidence
+intervals for $g(\thetavec)$ with the following characteristics:
+\begin{itemize} 
+\item 	
+In repeated samples, approximately $100(1-\alpha)\%$ of the intervals
+will contain $g(\thetavec)$.
+\item
+In repeated samples, $\avarfhat_{\ghat}$ is random because it 
+depends on $\thetavechat$ (which depends on the sample data). If
+$\avarfhat_{\ghat}> \avarfplan_{\ghat}$, then confidence interval width
+$2 \cihalfwidth$ is greater than the target $2 \cihalfwidth_{T}$.
+\item 
+The probability that the realized interval width $2\cihalfwidth$ is greater than 
+the target width $2
+\cihalfwidth_{T}$ is near $.5$.
+\end{itemize}
+
+\begin{example}
+\label{example:light.bulb.sample.size}
+{\bf Sample size needed to estimate the mean of light bulb life.}
+Life of some types of incandescent light bulbs can be modeled
+adequately with a normal distribution.  Depending on the particular
+design, mean life might be on the order of $1000$ hours with a
+standard deviation under 200 hours.  To satisfy a request from
+marketing, it was desired to plan a life test that would estimate
+mean life of light bulbs so that a 95\% confidence interval has a
+half-width that is approximately $30$ hours.  The product
+engineers are willing to assume that life is adequately described by
+a normal distribution with a standard deviation no larger than
+$\sigmaplan=200$ hours and there is enough time to let all of the
+bulbs fail before analyzing the data.
+
+From elementary statistics, $\muhat=\bar{x}$
+so $\avarf_{\muhat}=n\var(\bar{x}) =
+\sigma^2$,
+and $\avarfplan_{\muhat}=(\sigmaplan)^2=(200)^2$.
+Substituting this and $\cihalfwidth_{T}=30$ into
+(\ref{equation:m.for.unrest}) shows that the number of bulbs needed is
+% splus  (1.96)^2 * (200)^2/(30^2) = 171 
+\begin{eqnarray*}
+n&=&\frac{\norquan_{(1-\alpha/2)}^{2} \avarfplan_{\muhat}}{\cihalfwidth_{T}^{2}}=
+\frac{(1.96)^{2} (200)^2}{30^{2}} \approx 171.
+\end{eqnarray*}
+\end{example}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Sample Size for Positive Functions}
+\label{section:sample.size.pos}
+When $g(\thetavec) > 0$ for all $\thetavec$, using a re-expression of
+(\ref{equation:exponential.interval.log}) and
+(\ref{equation:norm.approx.for.quant}), an approximate
+$100(1-\alpha)\%$ confidence interval for $\log[g(\thetavec)]$ is:
+\begin{eqnarray*}
+	\left [ \undertilde{\log(g)}, \quad \tilde{\log(g)} \right] &=& 
+	\log(\ghat) \pm 
+	(1/\sqrt{n})
+\norquan_{(1-\alpha/2)}\sqrt{\avarfhat_{\log(\ghat)}}\\
+ &=& \log(\ghat) \pm \log(\cifactor).
+\end{eqnarray*}
+Exponentiation yields a confidence interval 
+$[ \undertilde{g}, \quad \tilde{g} ]=[\ghat/\cifactor, \quad \ghat
+\cifactor \, ]$
+for $g$. 
+Here
+\begin{equation}
+\label{equation:cifactor}
+\cifactor=\exp \left [\frac{1}{\sqrt{n}} \norquan_{(1-\alpha/2)}
+\sqrt{\avarfhat_{\log(\ghat)}} \, \right ]=\frac{\tilde{g}}{\ghat}
+=\frac{\ghat}{\undertilde{g}} = \sqrt{\tilde{g}/\undertilde{g}}
+\end{equation}
+is a convenient measure of confidence interval precision.  Let
+$\cifactor_{T}$ denote a target value for the precision factor
+$\cifactor$.  Typical values for $\cifactor$ are numbers like 1.2 and
+1.5 indicating approximate expected deviation of 20\% or 50\%,
+respectively, between the estimate and the upper (or lower) confidence
+bound. Replacing $\avarfhat_{\log(\ghat)}$ with
+$\avarfplan_{\log(\ghat)}$ in (\ref{equation:cifactor}) and solving
+for sample size $n$ gives
+\begin{eqnarray}
+\label{equation:n.for.positive}
+	n&=&\frac{\norquan_{(1-\alpha/2)}^{2} 
+	\avarfplan_{\log(\ghat)}}{[\log(\cifactor_{T})]^2}.
+\end{eqnarray}
+Similar to the sample size formula for unrestricted functions of
+parameters, this sample size provides confidence intervals for
+$g(\thetavec)$ with the following characteristics:
+\begin{itemize}
+\item 
+In repeated samples, approximately $100(1-\alpha)\%$ of the intervals
+will contain $g(\thetavec)$.
+\item	
+In repeated samples, $\avarfhat_{\log({\ghat})}$ is random because it
+depends on $\thetavechat$ (which depends on the sample data).  If
+$\avarfhat_{\log({\ghat})} > \avarfplan_{\log({\ghat})}$ then
+$R=\sqrt{\tilde{g}/\undertilde{g}}$ will be greater than
+$\cifactor_{T}$.
+\item
+The realized precision factor $R$ will be greater than the target
+$\cifactor_{T}$ with a probability that is near $.5$.
+\end{itemize}
+
+\begin{example}
+\label{example:exponential.insulation.sampsize}
+{\bf Sample size needed to estimate the mean of an exponential
+distribution for insulation life.} A newly developed electrical
+insulation requires a life test to estimate the mean life of specimens
+at highly accelerated conditions.  That is, the test will be run at
+higher than usual voltage to get failure information quickly.  It is
+possible to use simultaneous testing of all units but the test must be
+completed in only 500 hours.  Insulation engineers have been able to
+suggest a planning value of $\thetaplan=1000$ hours.  The
+experimenters need to choose the sample size to be large enough so that a
+95\% confidence interval will have endpoints that are approximately
+50\% away from the estimated mean (so $\cifactor_{T}=1.5$).
+
+From Section~\ref{section:exponential.density.approx.mle}, the ML
+estimate for the exponential mean will be computed as
+$\expmeanhat=\ttt/r$, where $\ttt$ is the total time on test and $r$
+is the number of failures. It follows, as a special case of
+(\ref{equation:planning.fisher.info}) and
+(\ref{equation:planning.avar.fun}) that the scaled asymptotic
+(large-sample approximate) variance of $\thetahat$ is
+\begin{eqnarray*}
+	\avarf_{\expmeanhat}= n \avar(\expmeanhat)=\frac{n}
+	{\E \left [-\frac{\partial^{2}\loglike(\theta)}{\partial
+	\theta^{2}} \right] } = \frac{\theta^{2}}{1-\exp\left
+	(-\frac{\censortime}{\theta}\right )}.
+\end{eqnarray*}
+Then using the delta method,
+%splus: 1/(1-exp(-(500)/(1000)))   = 2.5415
+\begin{eqnarray*}
+	\avarfplan_{\log(\expmeanhat)}=
+	\frac{\avarfplan_{\expmeanhat}}{ (\expmeanplan)^{2}}=
+\frac{1}{1-\exp\left(-\frac{500}{1000}\right )}=2.5415.
+\end{eqnarray*}
+Thus the number of needed specimens for the test is
+%splus:  (1.96)^2*2.5415/(log(1.5)^2)   = 59.38753
+\begin{eqnarray*}
+	n&=&\frac{\norquan_{(1-\alpha/2)}^{2} 
+	\avarfplan_{\log(\expmeanhat)}}{[\log(\cifactor_{T})]^2}=
+	\frac{(1.96)^{2}(2.5415)}{[\log(1.5)]^2} \approx 60.
+\end{eqnarray*}
+\end{example}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Sample Sizes for Log-Location-Scale Distributions with Censoring}
+\label{section:location.scale.single.censoring}
+%----------------------------------------------------------------------
+\subsection{Large-sample approximate variance-covariance 
+matrix for location-scale parameters}
+\label{section:large.sample.vcv}
+This section specializes the computation of sample sizes to situations in
+which: 
+\begin{itemize} 
+\item $T$ has a log-location-scale distribution
+with parameters $(\mu, \sigma)$.  
+\item The life test is to be
+Type~I right censored at time $\censortime$.  
+\end{itemize} In this
+case, the large-sample approximate 
+covariance matrix can be computed as 
+\begin{displaymath}
+\Sigma_{(\muhat,\sigmahat)}
+=
+\left [
+ \begin{array}{ll}
+  \avar(\muhat) &  \acov(\muhat, \sigmahat) \\
+  \acov(\muhat, \sigmahat) &  \avar(\sigmahat)
+ \end{array}
+\right ]
+=
+\frac{1}{n}
+\left [
+ \begin{array}{ll}
+  \avarf_{\muhat} &  \acovf_{(\muhat, \sigmahat)} \\
+  \acovf_{(\muhat, \sigmahat)} &  \avarf_{\sigmahat}
+ \end{array}
+\right ] = I^{-1}_{(\mu,\sigma)}
+\end{displaymath}
+where $I_{(\mu,\sigma)}$
+is the Fisher information matrix for $(\mu,\sigma)$.
+Appendix Table~\ref{atable:lognormal.plan} provides, for the 
+lognormal/normal distributions,
+the following as a function of the standardized censoring time
+$\censortimestd = [\log(\censortime)-\mu]/\sigma$
+\begin{itemize}
+\item
+$100\Phi(\censortimestd)$, the population percentage failing by
+the standardized censoring time $\censortimestd$. 
+\item
+The scaled large-sample approximate variance-covariance factors
+$\frac{1}{\sigma^2}\avarf_{\muhat}$,
+$\frac{1}{\sigma^2}\avarf_{\sigmahat}$, and
+$\frac{1}{\sigma^2}\avarf_{(\muhat,\sigmahat)}$.
+%The large-sample approximate variance and covariance factors
+%$(1/\sigma) \avarf_{\muhat}$, 
+%$(1/\sigma) \avarf_{\sigmahat}$, and 
+%$(1/\sigma) \acovf_{(\muhat, \sigmahat)}$,
+\item 
+$\rho_{( \muhat, \sigmahat) }=
+\acovf_{(\muhat, \sigmahat)}/\sqrt{\avarf_{\muhat}\avarf_{\sigmahat}}$,
+the large-sample approximate correlation between the ML estimators
+$\muhat$ and $\sigmahat$.
+\item
+The scaled Fisher information matrix elements 
+$f_{11}, f_{22}$, and $f_{12}$. The scaled Fisher information matrix for
+a single observation from the corresponding location-scale distribution
+is
+\begin{displaymath}
+\frac{\sigma^{2}}{n}I_{(\mu,\sigma)} = 
+\left [
+ \begin{array}{ll}
+  f_{11} & f_{12} \\
+  f_{12} & f_{22}
+ \end{array}
+\right ].
+\end{displaymath}
+\item
+For $\sigma$-given, the large-sample approximate variance factor
+for $\muhat$ is 
+$\frac{1}{\sigma^2}\avarf_{\muhat|\sigma}=\frac{n}{\sigma^{2}}
+\avar(\muhat|\sigma) = 1/f_{11} $. For $\mu$ given, the factor for $\sigmahat$ is 
+$\frac{1}{\sigma^2}\avarf_{\sigmahat|\mu}=\frac{n}{\sigma^{2}}
+\avar(\sigmahat|\mu) = 1/f_{22} $.
+\end{itemize}
+
+\subsection{Sample size to estimate 
+parameters when $T$ is log-location-scale} To compute needed sample
+sizes for estimating $\mu$ and $\sigma$ under Type~I censoring for
+the lognormal distribution, the variance factors in Appendix
+Table~\ref{atable:lognormal.plan} can be used directly in the sample
+size formulas (\ref{equation:m.for.unrest}) and
+(\ref{equation:n.for.positive}). Algorithm LSINF by Escobar and
+Meeker~(1994) provides the $f_{ij}$ elements for the smallest
+extreme value (Weibull), normal (lognormal), and logistic
+(loglogistic) distributions.  These elements facilitate computation
+of quantities like those in Appendix
+Table~\ref{atable:lognormal.plan} and allow easy programming of the
+computations in this chapter.
+Section~\ref{section:avar.functions.lc} shows how to use the
+variance factors from Appendix Table~\ref{atable:lognormal.plan} or
+Algorithm LSINF to compute variance factors for ML estimates of
+functions of $\mu$ and
+$\sigma$. Sections~\ref{section:fail.typeII.cen} and
+\ref{section:location.scale.mul.censoring} show how to use the
+scaled Fisher information matrix elements to compute variance
+factors for Type~II censoring and multiple censoring.  
+
+\begin{example}
+\label{example:insulation.plan.weibull.shape}
+{\bf Sample size needed to estimate the shape parameter of a Weibull
+distribution for insulation life.}  Recall the test situation
+described in Example~\ref{example:insulation.plan.info} where it was
+expected that about 20\% of the insulation specimens would fail in
+the 1000-hour test and that 12\% would fail in the first 500 hours,
+giving the Weibull parameter planning values $\muplan=8.774$,
+%> exp(8.774)= 6464
+$\sigmaplan=1.244$ [or $\etaplan=\exp(8.774)= 6464$ and
+$\betaplan=1/1.244=.8037$]. Suppose that the engineers need a test
+plan that estimates the Weibull shape parameter $\beta=1/\sigma$
+such that a 95\% confidence interval has endpoints that are
+approximately 50\% away from the ML estimate (so
+$\cifactor_{T}=1.5$).  From Table 1 of Meeker and Nelson~(1977) or
+using Algorithm LSINF from Escobar and Meeker~(1994), using as input
+$\zeta^{\planvalue}=[\log(1000)-8.774]/1.244 = -1.5$ or
+$\Phi_{\sev}(-1.5)=.20$ (the proportion failing by the end of the
+test), gives
+$\avarfplan_{\log(\betahat)}=\avarfplan_{\log(\sigmahat)}=
+\frac{1}{\left(\sigmaplan \right)^2}\avarfplan_{\sigmahat}=4.74$. Thus
+%splus ftavarvec(-1.49994,dist="Weibull")   4.738764
+%splus weibull:   (1.96)^2*4.74/(log(1.5)^2)   = 110.7601
+%splus 
+%splus ftavarvec(-0.8416212,dist="normal")   3.537
+%splus lognormal:   (1.96)^2*(3.537)/(log(1.5)^2)   = 82.6495
+\begin{eqnarray*}
+	n&=&\frac{\norquan_{(1-\alpha/2)}^{2}
+	\avarfplan_{\log(\sigmahat)}}{[\log(\cifactor_{T})]^2}=
+	\frac{(1.96)^{2}(4.74)}{[\log(1.5)]^2} \approx 111
+\end{eqnarray*}
+is the number of specimens that should be tested.
+\end{example}
+
+\begin{example}
+\label{example:insulation.plan.lognormal.shape}
+{\bf Sample size needed to estimate $\sigma$
+of a lognormal distribution for insulation life.}
+We use the same inputs as in  
+Example~\ref{example:insulation.plan.weibull.shape}, 
+but assume that the underlying distribution is lognormal. 
+Using the lognormal planning values from 
+Example~\ref{example:insulation.plan.info} gives $n \approx 83$.
+Note that this sample size is not directly comparable to that from
+Example~\ref{example:insulation.plan.weibull.shape} because the 
+$\sigma$ parameters have different meanings.
+\end{example}
+%----------------------------------------------------------------------
+\subsection{Large-sample approximate variance for 
+estimators of functions of location-scale parameters}
+\label{section:avar.functions.lc}
+
+A special case of the Taylor-series approximation in Appendix
+equation (\ref{equation:gcovariance}) can be used to compute
+variance factors for ML estimates of functions of $\mu$ and
+$\sigma$; namely
+\begin{eqnarray}
+\label{equation:vghat}
+\avarf_{\ghat}&=&
+\left (\frac{ \partial g}{ \partial \mu} \right )^2 \avarf_{\muhat} + 
+ \left (\frac{ \partial g}{ \partial \sigma}\right)^2 \avarf_{\sigmahat} +
+ 2 \left( \frac{ \partial g}{ \partial \mu} \right)
+\left( \frac{ \partial g}{\partial \sigma} \right)
+\acovf_{(\muhat, \sigmahat)} \\[.5ex] \nonumber
+\avarf_{\log(\ghat)}&=& \left (\frac{1}{g} \right ) ^{2}  \avarf_{\ghat},
+\quad \text{if $g>0$} \\[.5ex] \nonumber
+\avarf_{\exp(\ghat)}&=& g ^{2} \,\,  \avarf_{\ghat}.
+\end{eqnarray}
+Here the large-sample approximate variance factors
+$\avarf_{\muhat}$, $\avarf_{\sigmahat}$, and the large-sample
+approximate covariance factor $\acovf_{(\muhat, \sigmahat)}$ depend
+on the assumed location-scale distribution and the standardized
+censoring time $\censortimestd=[\log(\censortime)-\mu]/\sigma$.
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+\subsection{Sample size to estimate a quantile 
+when $\rv$ is log-location-scale $(\mu, \sigma)$}
+
+To find the sample size needed to estimate $\rvquan_{p}>0$ with a
+specified degree of precision, it is convenient to work with
+$g(\thetavec)=\log(\rvquan_{p})=\mu + \Phi^{-1}(p) \sigma$, the
+logarithm of the $p$ quantile of $\rv$. Here $\Phi^{-1}(p)$ is the
+$p$ quantile of the standardized random variable
+$Z=[\log(\rv)-\mu]/\sigma$.  The sample size $n$ is obtained as a
+special case of (\ref{equation:n.for.positive}) and it is given by
+\begin{displaymath}
+n = \frac{\norquan_{(1-\alpha/2)}^{2} \avarfplan_{\log(\rvquanhat_{p})}}{[\log(\cifactor_{T})]^2}.
+\end{displaymath}
+$\avarfplan_{\log(\rvquanhat_{p})}$ is obtained by evaluating
+\begin{equation}
+\label{equation:avar.lc.quan}
+\avarf_{\log(\rvquanhat_{p})}=
+	 \avarf_{\muhat} +\left [\Phi^{-1}(p) \right ]^{2} \avarf_{\sigmahat}
+     +2 \Phi^{-1}(p) \acovf_{(\muhat, \sigmahat)}
+\end{equation}
+[a special case of (\ref{equation:vghat})] at the planning values
+$\censortimestdplan=[\log(\censortime)-\muplan]/\sigmaplan$ and
+$\sigmaplan$.  To obtain $n$ one also needs to specify $\Phi$ and a
+target value $\cifactor_{T}$ for
+$R=\tilde{g}/\ghat=\ghat/\undertilde{g}$.
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/weib.quant.avarf.ps}
+\caption{Large-sample approximate variance factor 
+$\frac{1}{\sigma^{2}}\avarf_{\log(\rvquanhat_{p})}$ for ML
+estimation of Weibull quantiles as a function of $\censorprop$ (the
+population proportion failing by censoring time $\censortime$) and
+$p$ (the quantile of interest).}
+\label{figure:weib.quant.avarf.ps}
+\end{figure}
+%----------------------------------------------------------------------
+For the Weibull distribution,
+Figure~\ref{figure:weib.quant.avarf.ps} gives a plot of the
+large-sample approximate variance factor
+$\frac{1}{\sigma^{2}}\avarf_{\log(\rvquanhat_{p})}$ versus the
+quantile of interest $p$. The lines correspond to different values
+of the expected proportion failing in the life test,
+$\censorprop=\Pr(\rv
+\leq \censortime )=\Pr(Z \leq \censortimestd )$.  
+Figure~\ref{figure:lnor.quant.avarf.ps} 
+is a similar plot for the lognormal distribution.
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/lnor.quant.avarf.ps}
+\caption{Large-sample approximate variance factor 
+$\frac{1}{\sigma^{2}}\avarf_{\log(\rvquanhat_{p})}$ for ML
+estimation of lognormal quantiles as a function of $\censorprop$
+(the population proportion failing by censoring time $\censortime$)
+and $p$ (the quantile of interest).}
+\label{figure:lnor.quant.avarf.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Close inspection of Figures~\ref{figure:weib.quant.avarf.ps} and
+\ref{figure:lnor.quant.avarf.ps} indicates the following:
+\begin{itemize}
+\item
+Although the factor values differ, the behavior of
+these plots is similar across distributions.
+\item Looking vertically,
+using any particular quantile of interest $p$, shows that
+increasing the test length (increasing the expected
+proportion of failures)  always reduces the 	
+ variance. After a point, however, the returns diminish (indicated by
+$p_{c}$ lines that are closer together).
+\item
+The point of diminishing returns for a longer test is somewhat
+beyond the quantile being estimated.  For example, if the goal of
+the test is to estimate the .1 quantile, then important gains in
+precision can be obtained by running the test until 15\% or so of
+the units fail. There is, however, little additional improvement in
+precision from running the test much longer. Also, running the test
+far beyond 10\% failing could introduce bias into the estimate of
+the .1 quantile.
+\end{itemize}
+
+\begin{example}
+\label{example:insulation.plan.weibull.quantile}
+{\bf Sample size needed to estimate $\rvquan_{.1}$ of a Weibull
+distribution for insulation life.}  Refer to the insulation
+evaluation problem described in
+Examples~\ref{example:insulation.plan.info} and
+\ref{example:insulation.plan.weibull.shape}.
+Suppose now that the engineers want to obtain a test plan that will
+estimate the Weibull $\rvquan_{.1}$ such that a 95\% confidence
+interval will have endpoints that are approximately 50\% away from
+the ML estimate of $\rvquan_{.1}$ (so $\cifactor_{T}=1.5$).  By
+taking variance factors from Table 1 of Meeker and Nelson~(1977) or
+using Algorithm LSINF from Escobar and Meeker~(1994), and using
+(\ref{equation:avar.lc.quan}) or by taking the quantile variance
+factor directly from Figure~\ref{figure:weib.quant.avarf.ps}
+(entering with $\censorprop^{\planvalue} =.2$ and $p=.1$) gives
+$\frac{1}{(\sigmaplan)^{2}}\avarfplan_{\log(\rvquanhat_{p})}=7.28$
+so $\avarfplan_{\log(\rvquanhat_{p})}=7.28 \times (1.244)^2
+=11.266$.  Thus
+%splus > single.quantile.var.fact(.1,.2,"sev")
+%splus [1] 7.282288
+%splus weibull:   (1.96)^2*7.28*1.244^2/(log(1.5)^2)   = 263.2554
+%splus
+%splus > single.quantile.var.fact(.1,.2,"normal")
+%splus [1] 2.062374
+%splus lognormal:   (1.96)^2*(2.062)*2.079241^2/(log(1.5)^2)   = 208
+\begin{eqnarray*}
+	n&=&\frac{\norquan_{(1-\alpha/2)}^{2} 
+	\avarfplan_{\log(\rvquanhat_{.1})}}{[\log(\cifactor_{T})]^2}=
+	\frac{(1.96)^{2}(11.266)}{[\log(1.5)]^2} \approx 263
+\end{eqnarray*}
+is the number of specimens that should be tested.
+\end{example}
+
+\begin{example}
+\label{example:insulation.plan.lognormal.quantile}
+{\bf Sample size needed to estimate $\rvquan_{.1}$ of a lognormal
+distribution used to describe insulation life.} Using the same inputs
+as in Example~\ref{example:insulation.plan.weibull.quantile}, but
+assuming that the underlying distribution is lognormal, using the 
+lognormal planning values from Example~\ref{example:insulation.plan.info},
+and using Figure~\ref{figure:lnor.quant.avarf.ps} to obtain
+$\frac{1}{(\sigmaplan)^{2}}\avarf_{\log(\rvquanhat_{p})}$, gives $n
+\approx 208$. Figure~\ref{figure:test.sim.lognor.n208.ps}
+is a lognormal probability plot showing ML estimates from 30
+replications of this proposed test plan. The range of estimates of
+$\rvquan_{.1}$ indicates that the proposed plan will provide the
+desired degree of precision.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/test.sim.lognor.n208.ps}
+\caption{ML cdf estimates from 30 simulated samples of size $n=208$ from
+a lognormal distribution with $\muplan=8.658$ and $\sigmaplan=2.079$
+(shown with the thicker, longer line).}
+\label{figure:test.sim.lognor.n208.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+%----------------------------------------------------------------------
+\subsection{Sample sizes to estimate the hazard function
+when $\rv$ has a log-location-scale distribution}
+
+When $\rv$ has a log-location-scale distribution,
+the hazard function of $\rv$ evaluated at  $\estimtime$
+can be expressed as
+\begin{eqnarray*}
+ g(\thetavec)&=&h(\estimtime ; \thetavec)
+  = \frac{\phi(\estimtimestd)}
+        {\estimtime \, \sigma \left [1-\Phi(\estimtimestd) \right ]}.
+\end{eqnarray*}
+Here $\estimtimestd=(\estimtime-\mu)/\sigma$ and 
+$\Phi$ is the cdf of $Z=[\log(\rv)-\mu]/\sigma$.
+Because $h(\estimtime ; \thetavec) >0$, the sample size is
+obtained using the confidence interval for $\log(h)$. In this case
+\begin{equation}
+\label{equation:log.hazard.avar}
+\avarf_{\log(\hhat)} =
+\frac{1}{h^{2}}
+\avarf_{\hhat} = 
+\frac{1}{h^{2}}
+        \left [\left (\frac{\partial h}{\partial\mu} \right )^{2}  
+        \frac{\avarf_{\muhat}}{\sigma^{2}} +
+\left (\frac{\partial h}{\partial\sigma}\right)^2  
+\frac{\avarf_{\sigmahat}}{\sigma^{2}}
++ 2 \left( \frac{\partial h}{\partial\mu} \right)
+\left( \frac{\partial h}{\partial\sigma} \right) 
+\frac{\acovf_{(\muhat, \sigmahat)}}{\sigma^{2}} \right ]
+\end{equation}
+and
+$n$ is determined from
+\begin{eqnarray*}
+n&=&\frac{\norquan_{(1-\alpha/2)}^{2} 
+\avarfplan_{\log(\hhat)}}{[\log(\cifactor_{T})]^2}
+\end{eqnarray*}
+where, as before, $\avarfplan_{\log(\hhat)}$ is obtained by
+evaluating $\avarf_{\log(\hhat)}$ at $\muplan$ and $\sigmaplan$.
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/weib.hazard.avarf.ps}
+\caption{Large-sample approximate variance factor 
+$\avarf_{\log(\hhat)}$ for ML estimation of the Weibull distribution
+hazard rate at $\estimtime $ as a function of $\censorprop$ (the
+population proportion failing by time $\censortime$) and
+$\estimprop$ (the population proportion failing by time
+$\estimtime$).}
+\label{figure:weib.hazard.avarf.ps}
+\end{figure}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/lnor.hazard.avarf.ps}
+\caption{Large-sample approximate variance factor 
+$\avarf_{\log(\hhat)}$ for ML estimation of the lognormal
+hazard rate at $\estimtime $ as a function of $\censorprop$ (the
+population proportion failing by time $\censortime$) and
+$\estimprop$ (the population proportion failing by time
+$\estimtime$).}
+\label{figure:lnor.hazard.avarf.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Figures~\ref{figure:weib.hazard.avarf.ps} and 
+\ref{figure:lnor.hazard.avarf.ps} give
+plots  of variance factors $\avarf_{\log(\hhat)}$ as
+a function of $\censorprop=\Pr(T\leq \censortime)=\Pr(Z \leq  \censortimestd)$ and 
+$\estimprop=\Pr(T\leq t_{e})=\Pr(Z \leq \estimtimestd)$.
+The plots are similar to variance factor plots for the quantile estimates.
+
+\begin{example}
+\label{example:insulation.plan.weibull.hazard}
+{\bf Sample size needed to estimate $h(1000)$ for a Weibull
+distribution used to describe insulation life.}  Refer to the
+insulation evaluation problem described in
+Examples~\ref{example:insulation.plan.info},
+\ref{example:insulation.plan.weibull.shape}, and
+\ref{example:insulation.plan.weibull.quantile}.
+Suppose that the engineers need obtain a test plan that will
+estimate $h(1000)$, the Weibull hazard at 1000 hours, such that a
+95\% confidence interval will have endpoints that are approximately
+50\% away from the ML estimate of $h(1000)$ (so
+$\cifactor_{T}=1.5$).  Using $\censorprop^{\planvalue}=.2$ and
+$\estimprop=.2$ to enter Figure~\ref{figure:weib.hazard.avarf.ps}
+gives $\avarfplan_{\log[\hhat(1000)]}=10.3$. Thus
+%splus> single.hazard.var.fact(0.2, 0.2, "sev") [1] 10.28875
+%splus weibull :   (1.96)^2*10.29/(log(1.5)^2)   = 240.4009
+%splus
+%splus > single.hazard.var.fact(0.2, 0.2, "normal") [1] 8.182025
+%splus lognormal:   (1.96)^2*(8.18)/(log(1.5)^2)   = 191.1
+\begin{eqnarray*}
+	n&=&\frac{\norquan_{(1-\alpha/2)}^{2} 
+	\avarfplan_{\log[\hhat(1000)]}}{[\log(\cifactor_{T})]^2}=
+	\frac{(1.96)^{2}(10.3)}{[\log(1.5)]^2} \approx 240.
+\end{eqnarray*}
+\end{example}
+
+\begin{example}
+\label{example:insulation.plan.lognormal.hazard}
+{\bf Sample size needed to estimate $h(1000)$
+for a lognormal
+distribution used to describe insulation life.}
+We use the same inputs
+as in Example~\ref{example:insulation.plan.weibull.hazard}, 
+but assume that the underlying distribution
+is lognormal. Using the lognormal planning values from
+Example~\ref{example:insulation.plan.info},
+gives  $n \approx 191$.
+\end{example}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Test Plans
+to Demonstrate Conformance with a Reliability Standard}
+\label{section:zero.failures}
+%----------------------------------------------------------------------
+\subsection{Reliability demonstration plans}
+It is often necessary to specify the sample size and test length for
+a life test that is to be used to {\em demonstrate}, with some level of
+confidence, that reliability exceeds a given standard.  Often the
+reliability standard is specified in terms of a quantile, say
+$\rvquan_{p}$.  For example, a customer purchasing a product may
+require demonstration, by the vendor, that $\rvquan_{p} >
+\realrv_{p}^{\specvalue}$ where $\realrv_{p}^{\specvalue}$ is a
+specified value.  In general the demonstration that $\rvquan_{p} >
+\realrv_{p}^{\specvalue}$ will be successful at the $100(1-\alpha)\%$
+level of confidence if $\tplower > \realrv_{p}^{\specvalue}$, where
+$\tplower$ is a lower $100(1-\alpha)\%$ confidence bound for
+$\rvquan_{p}$.
+
+\begin{example}
+{\bf Reliability demonstration test for
+a life-limiting component.}
+A relatively expensive life-limiting component is to be installed in a
+product with a 1-year warranty. The manufacturer of the product will
+purchase the component from a vendor.  The vendor has been asked to
+demonstrate that $\rvquan_{.01}$ exceeds $24 \times 365 = 8760$ hours.
+Equivalently, in terms of failure probabilities the reliability
+requirement could be specified as
+\begin{displaymath}
+F(\estimtime) < p^{\specvalue}
+\end{displaymath}
+which would be demonstrated if $\Fupper(\estimtime) < p^{\specvalue}$.
+For this example, $\estimtime=8760$ and $p^{\specvalue}=.01$.
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Weibull minimum sample size reliability demonstration
+plans with given $\beta$}
+
+Suppose that failure times have a Weibull distribution with a given
+shape parameter $\beta$. A {\em minimum sample size} test plan is
+one that tests $n$ units until time $\censortime$ and the demonstration
+is successful if there are no failures. The particular sample size
+$n$ depends on the confidence level $1-\alpha$, the quantile of
+interest $p$, the amount of time available for testing
+$\censortime$, and the given Weibull shape parameter $\beta$.  The
+needed sample size $n$ is the smallest integer greater than
+\begin{displaymath}
+\frac{ 1 } {\timefactor^{\beta}  }
+\times
+\frac  {\log(\alpha)} { \log(1-p) }
+\end{displaymath}
+and $k=\censortime/\realrv_{p}^{\specvalue}$. 
+This minimum sample size reliability demonstration plan (also known
+as a ``zero-failure demonstration plan'') can be justified as
+follows.  Suppose that failure-times are Weibull with a given
+$\beta$ and there are zero failures during a test in which $n$ units
+are tested until $\censortime$.  Using the results in
+Section~\ref{section:weib.zero.fail}, lower $100(1-\alpha)\%$
+confidence bounds for $\weibscale$ and $\rvquan_{p}$ are
+\begin{eqnarray*}
+\undertilde{\weibscale} &=&
+\left[ \frac{2 n \censortime^{\beta}}
+            {
+\chisquare_{(1-\alpha;2)}}\right]^{\frac{1}{\beta}
+            }
+=
+\left[ \frac{
+n \censortime^{\beta} } { -\log(\alpha) } \right]^{\frac{1}{\beta}}
+\\[1ex]
+\tplower&=&\undertilde{\weibscale} 
+\times
+\left [
+-\log(1-p)
+\right]^{\frac{1}{\beta}}.
+\end{eqnarray*}
+Then using the inequality 
+$\tplower \geq \realrv_{p}^{\specvalue}$ and solving for $n$ gives
+\begin{equation}
+\label{equation:zero.failure.n}
+n \geq \frac{ 1 } {
+\timefactor^{\beta} 
+       }
+\times
+\frac  { 
+\log(\alpha) 
+       } { \log(1-p) }
+\end{equation}
+where $k=\censortime/\realrv_{p}^{\specvalue}$. Thus the needed
+minimum sample size is the smallest integer greater than or equal to
+the right-hand side of (\ref{equation:zero.failure.n}).
+
+The inequality in
+(\ref{equation:zero.failure.n}) can also be solved for $k$, $\beta$,
+or $\alpha$.  For example,
+\begin{equation}
+\label{equation:zero.failure.k}
+k \geq \left \{\frac{ 1 } {
+n
+       }
+\times
+\frac  { 
+\log(\alpha) 
+       } { \log(1-p) } \right\}^{1/\beta}.
+\end{equation}
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/zero.failure.ps}
+\caption{Minimum sample size for a 99\% reliability demonstration for
+$\rvquan_{.1}$ as a function of the test-length factor $k$.}
+\label{figure:zero.failure.ps}
+\end{figure}
+%----------------------------------------------------------------------
+
+\begin{example}
+{\bf Life test to demonstrate the reliability of a bearing.} The
+manufacturer of a home food processor requires that a bearing to be
+used in the product have no more than 10\% failing at 5 million
+revolutions (a conservatively high number of revolutions expected in
+a typical 10-year life).  Thus $\realrv_{.1}^{\specvalue}=5$ million
+revolutions. A new long-life, low-cost bearing is available from a
+vendor.  The vendor will, however, be asked to demonstrate the
+specified level of reliability.  Similar bearings in this kind of
+application have had lifetimes that could be described by a Weibull
+distribution with a shape parameter of $\beta=2$ or more
+($\sigma=.5$ or less).  Figure~\ref{figure:zero.failure.ps} gives
+the needed sample size for a 99\% demonstration (so $\alpha=.01$) on
+$\rvquan_{.1}$ (sometimes known, in the bearing industry and
+elsewhere, as B10 for 10\% bearing life), as a function of the
+test-length factor $k=\censortime/\realrv_{p}^{\specvalue}$ and the
+Weibull shape parameter $\beta$. This figure indicates that a
+zero-failure test on $n=5$ units will provide the desired
+demonstration if there are no failures up to $3 \times 5 = 15 $
+million revolutions.  More precisely, substituting into
+(\ref{equation:zero.failure.k}) gives $k=2.96$ which implies that
+the test should be run until $\censortime=2.96 \times 5 = 14.6$
+million revolutions.
+\end{example}
+
+For tests with $k > 1$, having a specified value of $\beta$ less than
+the true value is conservative (in the sense that the demonstration is
+still valid).  If, however, the specified value of $\beta$ is larger
+than the true value, the demonstration would not be valid.  The
+biggest danger of using such a minimum sample size zero-failure test
+is that defect-related failures (which might occur in only a small
+proportion of units) might not show up in the sample.
+
+It is also possible to conduct minimum sample size zero-failure
+tests with $k < 1$. In this case having a specified value of $\beta$
+greater than the true value is conservative.  Such tests give
+information quickly, but require correspondingly large sample
+sizes. The most serious difficulty with such demonstrations is that
+they are based on large amounts of data early in life and if there
+is an unknown wearout failure mode occurring later in life that is
+not reflected in the given Weibull shape parameter, the results of
+the test could be seriously misleading.
+
+\subsection{Extensions for other reliability demonstration test plans}
+
+Zero-failure test plans can be obtained for other failure-time
+distributions with only one unknown parameter. The ideas in this
+section can also be extended to test plans with one or more failures.  Such
+test plans require more units but provide a higher probability of
+successful demonstration for a given $\realrv_{p}^{\specvalue} >
+\realrv_{p}$.  General reliability demonstration test plans can be
+obtained for any distribution, with or without specified parameter
+values, although, in general, it may be necessary to base the test
+on a large-sample approximation, corresponding to the methods used
+in Chapter~\ref{chapter:parametric.ml.ls}.  Chapter~9 of Hahn and
+Meeker (1991) give tables and charts for demonstration plans for
+$k=1$ plans not requiring any distributional assumption or for
+normal/lognormal demonstration tests with no censoring.  For more
+information on reliability demonstration tests, see Wang~(1991) and
+Chapter~6 of Abernethy~(1996).
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Some Extensions}
+\label{section:test.plan.ext}
+%----------------------------------------------------------------------
+
+\subsection{Failure (Type~II) censoring}
+\label{section:fail.typeII.cen}
+Most of this chapter has focused on planning reliability tests with
+time (Type~I) censoring. This is because Type~I censoring is most
+common in practice.  Most reliability studies are conducted with tight
+time constraints.  With failure (Type~II) censoring, a test is stopped
+after a specified number (say $r \leq n$) of units have failed.  The
+methods and figures in
+Section~\ref{section:location.scale.single.censoring} also apply to
+failure censoring.  In this case, $\censorprop=r/n$ is specified 
+and $\censortimestd = \Phi^{-1}(\censorprop)$.
+
+Although less common in practice, failure-censored tests can be
+useful. In particular, if one is interested in estimating the .1
+quantile, then, as shown in Figures~\ref{figure:weib.quant.avarf.ps}
+and
+\ref{figure:lnor.quant.avarf.ps}, there is little to be gained by
+continuing testing beyond the time at which about 15\% of
+the units have failed.  If there is a limited number of test
+positions and one needs to plan a test to estimate a specific
+quantile of the distribution, failure-censoring provides a
+convenient mechanism for deciding when to replace unfailed units
+with new ones. In particular, if one is interested in estimating the
+.1 quantile of a failure-time distribution and only 5 test positions
+are available for testing, a reasonable test plan would test five
+units at a time, replacing the test units with a new set after the
+first failure in each group. Such tests are known as sudden death
+tests. Pascual and Meeker (1998b) describe such tests and
+extensions.
+
+%----------------------------------------------------------------------
+\subsection{Variance factors for location-scale 
+	parameters and multiple censoring}
+\label{section:location.scale.mul.censoring}
+Section~\ref{section:location.scale.single.censoring} provides
+methods and easy-to-use graphs for planning life tests in which all
+units will be censored at the same time (single censoring).  The
+scaled Fisher matrix elements $f_{11}$, $f_{12}$, and $f_{22}$ (for
+the normal/lognormal distribution) in Appendix
+Table~\ref{atable:lognormal.plan} or from Algorithm LSINF from
+Escobar and Meeker~(1994) (also for the SEV/Weibull and
+logistic/loglogistic distributions) can, however, also be used to
+compute variance factors for more complicated censoring patterns.
+For example, in some applications, a life test may run in groups,
+each group having a different censoring time (e.g., testing at two
+different locations or beginning times as lots of units to be tested
+are received).  In this case it is necessary to generalize the
+single-censoring formula.
+
+For a life test that is to be run in $k$ groups, let $\delta_{i},
+i=1, \ldots,k$ (where $\sum_{i=1}^{k}\delta_{i}=1$) denote the
+proportion of units that will be run until standardized right
+censoring time $\zeta_{c_{i}}$ or failure (whichever comes first).
+In this case,
+\begin{equation}
+\label{equation:lsvcv}
+\vcvmat_{(\muhat,\sigmahat)}=
+\frac{1}{n}
+\left [
+ \begin{array}{ll}
+  \avarf_{\muhat} &  \acovf_{(\muhat, \sigmahat)} \\
+  \acovf_{(\muhat, \sigmahat)} &  \avarf_{\sigmahat}
+ \end{array}
+\right ]  = \frac{\sigma^{2}}{n}\left (
+ \frac{1}{J_{11}J_{22}-J_{12}^{2}} \right )
+\left [
+ \begin{array}{rr}
+  J_{22}  &  -J_{12} \\
+  -J_{12}  &  J_{11} 
+ \end{array}
+\right ]
+\end{equation}
+where $J_{11}=\sum_{i=1}^{k}\delta_{i}f_{11}(\zeta_{c_{i}}),
+J_{22}=\sum_{i=1}^{k}\delta_{i}f_{22}(\zeta_{c_{i}})$,
+$J_{12}=\sum_{i=1}^{k}\delta_{i}f_{12}(\zeta_{c_{i}})$, and
+$\zeta_{c_{i}} = [\log(t_{c_{i}})-\mu]/\sigma$, and the values of
+$f_{11}$, $f_{22}$, and $f_{12}$ are the Fisher information matrix
+elements in given by Algorithm LSINF by Escobar and Meeker~(1994).
+Appendix Table~\ref{atable:lognormal.plan} provides these values for
+the lognormal distribution.  Factors for the approximate
+variance-covariance matrix $\frac{1}{\sigma^2}\avarf_{\muhat}$,
+$\frac{1}{\sigma^2}\avarf_{\sigmahat}$, and
+$\frac{1}{\sigma^2}\avarf_{(\muhat,\sigmahat)}$ depend on $\Phi$,
+the standardized censoring times $\zeta_{c_{i}}$, and the
+proportions $\delta_{i}, \,i=1,\ldots k$.
+
+%----------------------------------------------------------------------
+\subsection{Test planning for distributions that are not log-location-scale}
+The methods in Sections~\ref{section:planning.intro} through
+\ref{section:sample.size.pos} can be applied to a much
+wider class of models than that treated in detail in
+Section~\ref{section:location.scale.single.censoring}.  For
+distributions that are not log-location-scale, however, variance
+factors may depend on an additional shape parameter and separate
+graphs like those in Figures~\ref{figure:weib.quant.avarf.ps},
+\ref{figure:lnor.quant.avarf.ps}, \ref{figure:weib.hazard.avarf.ps}
+and
+\ref{figure:lnor.hazard.avarf.ps} would have to be made for each
+representative set of values of such shape parameters.  In such
+cases it may be necessary to rely on a computer program to compute
+the Fisher information matrix or to do a simulation.
+
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+\section*{Bibliographic Notes}
+
+Escobar and Meeker~(1994) describe algorithm LSINF that provides the
+$f_{ij}$'s for smallest extreme value~(Weibull), normal (lognormal),
+and logistic (loglogistic) distributions.  Meeker and Nelson~(1976)
+present asymptotic theory, tables, and figures that can be used to
+plan a life test to estimate a Weibull quantile with a specified
+degree of precision. Figures~\ref{figure:weib.quant.avarf.ps} and
+\ref{figure:lnor.quant.avarf.ps} were patterned after their figure
+for the Weibull distribution. Meeker and Nelson~(1977) present general
+theory and tables that can be used to choose the needed sample size
+for other functions of Weibull parameters.  Meeker, Escobar, and Hill
+(1992) present asymptotic theory and figures that can be used to plan
+a life test to estimate a Weibull hazard function with a specified
+degree of precision. Figures~\ref{figure:weib.hazard.avarf.ps} and
+\ref{figure:lnor.hazard.avarf.ps} were patterned after their
+figure for the Weibull distribution.  Escobar and Meeker~(1997) show
+how to compute the Fisher information matrix and asymptotic
+variances for truncated distributions and the LFP model (Chapter
+\ref{chapter:ml.other.parametric}) and regression models (Chapter
+\ref{chapter:regression.analysis}).
+\section*{Exercises}
+
+\begin{exercise}
+Use the input information in
+Example~\ref{example:insulation.plan.info} to compute the planning
+values $\muplan$ and $\sigmaplan$ for both the lognormal and the
+Weibull distributions. Plot these cdfs on appropriate probability
+paper.  Also, compute the standardized censoring times
+$\censortimestd$.
+\end{exercise}
+\begin{exercise}
+Refer to the information for Example
+\ref{example:light.bulb.sample.size}.  Use
+(\ref{equation:m.for.unrest}) to compute the suggested $n$ for
+additional values of $\cihalfwidth_{T}=20,10,5$. Describe the effect
+that changing the target precision has on the needed sample size.
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise1}
+Derive an expression for the large-sample approximate variance of
+the ML estimate of the logarithm of the Weibull hazard
+function. Start by taking the partial derivatives indicated in
+(\ref{equation:log.hazard.avar}). This expression should depend on
+$\avar(\muhat)$, $\avar(\sigmahat)$, and $
+\acov(\muhat,\sigmahat)$.
+\end{exercise1}
+
+\begin{exercise}
+Refer to Example~\ref{example:insulation.plan.weibull.quantile}.  Use
+the given inputs and interpolation in Appendix
+Table~\ref{atable:lognormal.plan}
+to compute the needed sample size assuming that the
+distribution is lognormal instead of Weibull.
+\end{exercise}
+
+\begin{exercise}
+Refer to Example~\ref{example:insulation.plan.weibull.hazard}.  Use
+the given inputs to compute the needed sample size assuming that the
+distribution is lognormal instead of Weibull.
+\end{exercise}
+
+\begin{exercise}
+A reliability engineer wants to run a life test to
+estimate the .05 quantile of the fatigue life distribution of a metal
+component used in a switch. The engineer has to choose a sample size that
+will allow estimation to be precise enough so that the lower endpoint
+of a 95\% confidence interval for the quantile will be about one half
+of the ML estimate. It will be possible to test each specimen until
+about 100 thousand cycles, when it is expected that about 15\% of the
+specimens will have failed. It is expected that about 5\% will have
+failed after about 40 thousand cycles.
+\begin{enumerate}
+\item
+Use the information above on Weibull probability
+paper to obtain ``planning values'' for the Weibull parameters.
+\item
+Determine the sample size needed to achieve the desired precision.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+Consider the sample size problem in
+Example~\ref{example:insulation.plan.weibull.quantile}.  Solve the
+same problem assuming that there is need to estimate $\realrv_{.02}$
+with $R_{\rv}=2.$
+\end{exercise}
+\begin{exercise}
+Do the calculations for Example~\ref{example:insulation.plan.lognormal.shape}.
+\end{exercise}
+
+\begin{exercise1}
+Section~\ref{section:large.sample.vcv} shows how to use the elements
+of the Fisher information matrix to compute variance factors for test
+planning in a life test with a single censoring time.  In Appendix
+Table~\ref{atable:lognormal.plan}, use the values of $f_{11}$,
+$f_{22}$, and $f_{12}$ in the row corresponding to $\censortimestd=1$,
+and show how to compute the quantities
+$\frac{1}{\sigma^{2}}\avarf_{\muhat}$,
+$\frac{1}{\sigma^{2}}\avarf_{\sigmahat}$,
+$\frac{1}{\sigma^{2}}\acovf_{(\muhat, \sigmahat)}$, $\rho_{(\muhat,
+\sigmahat)}$, $\frac{1}{\sigma^{2}}\avarf_{\muhat|\sigma}$, 
+and $\frac{1}{\sigma^{2}}\avarf_{\sigmahat|\mu}$
+in that row.
+\end{exercise1}
+
+\begin{exercise1}
+For Example \ref{example:light.bulb.sample.size}, compute 
+$\Pr(\cihalfwidth>\cihalfwidth_{T})$, 
+the probability that the actual half-width will
+be greater than the target half-width $\cihalfwidth_{T}=10$
+for samples of size $n=200$, 300, and 400,
+and sketch a graph of $\Pr(\cihalfwidth>\cihalfwidth_{T})$ versus $n$.
+\end{exercise1}
+
+\begin{exercise1}
+For Example \ref{example:exponential.insulation.sampsize}, derive an
+approximate expression for $\Pr(\cifactor>\cifactor_{T})$, the
+probability that the actual confidence interval factor is greater than
+the target factor $\cifactor_{T}=1.5$. Evaluate this expression for
+samples sizes ranging between $n=30$ and 100.  Make a plot of
+$\Pr(\cifactor>\cifactor_{T})$ versus $n$.
+\end{exercise1}
+
+\begin{exercise1}
+Refer to Example~\ref{example:insulation.plan.weibull.quantile}.
+Derive an approximate expression for 
+$\Pr(\cifactor>\cifactor_{T})$, based on a
+large-sample approximate distribution for the
+random variable $\avarfhat_{\log({\rvquanhat_{p}})}$.
+\end{exercise1}
+
+\begin{exercise1}
+Refer to Example~\ref{example:exponential.insulation.sampsize}.  Show
+that, for the exponential distribution, $\E \left
+[-\frac{\partial^{2}\loglike(\theta)}{\partial 	\theta^{2}}
+\right]=  \frac{n}{\theta^{2}} \left[  1-\exp\left
+(-\frac{\censortime}{\theta}\right ) \right ]$.
+\end{exercise1}
+
+\begin{exercise1}
+Refer to Section~\ref{section:location.scale.single.censoring}.
+Show how to compute the no-censoring $(\censortimestd \rightarrow
+\infty)$
+asymptotic values of $f_{11}=1$, $f_{12}=0$, and $f_{22}=2$ for the normal
+distribution.
+\end{exercise1}
+
+\begin{exercise1}
+Show that, for the Weibull distribution,
+(\ref{equation:log.hazard.avar}) reduces to
+$
+\avarf_{\log(\hhat)} =
+        \left [   \avarf_{\muhat} + (\zeta_{e} +
+1)^2\avarf_{\sigmahat} + 2(\zeta_{e} +
+1) \acovf_{(\muhat,\sigmahat)} \right ]/\sigma^{2}.
+$
+\end{exercise1}
+
+\begin{exercise}
+Verify equation (\ref{equation:lsvcv}).
+\end{exercise}
+
+\begin{exercise}
+In some cases (e.g., for the lognormal distribution), planning values
+will be specified in terms of the shape parameter
+$\sigma$ and a particular quantile, say $\realrv_{p_{1}}$ for a
+specified $p_{1}$.  Given these values, derive an expression for $\mu$
+and for $\realrv_{p_{2}}$ for a given $p_{2}$.
+\end{exercise}
+
+\begin{exercise}
+Refer to Appendix Table~\ref{atable:lognormal.plan}. 
+What can you say about the effect that censoring has
+on the correlation between ML estimators $\muhat$ and $\sigmahat$?
+\end{exercise}

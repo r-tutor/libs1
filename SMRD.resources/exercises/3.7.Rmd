@@ -1,0 +1,33 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__Consider the Plant 1 heat exchanger data in Figure 3.1__
+
+a. __Write the likelihood for these data in terms of $\pi_{1},\pi_{2},\pi_{3},$ _and_ $\pi_{4}$__
+
+`r SMRD.resources:::solution()$begin`
+In terms of $\boldsymbol{\pi}=(\pi_{1},\pi_{2},\pi_{3},\pi_{4})$, the likelihood can be written as
+
+$$
+L(\boldsymbol{\pi})=C[\pi_{1}]^1[\pi_{2}]^2[\pi_{3}]^2[\pi_{4}]^{95}
+$$
+
+where $C$ is a constant that does not depend on $\mathbf{\pi}$.
+`r SMRD.resources:::solution()$end`
+
+b. __Write the likelihood for these data in terms of $p_{1},p_{2},p_{3},$ _and_ $p_{4}$__
+
+`r SMRD.resources:::solution()$begin`
+In terms of $\mathbf{p}=(p_{1},p_{2},p_{3},p_{4})$, the likelihood can be written as
+
+$$
+L(\mathbf{p})=C[p_{1}]^1[p_{2}(1-p_{1})]^2[p_{3}(1-p_{1})(1-p_{2})]^2[(1-p_{1})(1-p_{2})(1-p_{3})]^{95}
+$$
+
+because $p_{4}=1$ in this case.
+`r SMRD.resources:::solution()$end`

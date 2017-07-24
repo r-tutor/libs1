@@ -1,0 +1,15 @@
+---
+output:
+  html_document:
+params:
+  setup: '`r SMRD.resources:::setup( )`'
+  show_solution: false
+---
+
+__There was a considerable amount of censoring at low levels of humidity in the printed circuit accelerated life test data shown in Figure 1.9.  Explain how such censoring can obscure important information about the relationship between humidity and time to failure.__
+
+`r SMRD.resources:::solution()$begin`
+In an accelerated life test our interest is in translating the observed times to failure at one or more elevated stress levels to some use-level stress.  Usually, this is accomplished by extrapolating a regression line through a specific life quantile (mean life, median life, characteristic life, etc.)  at each elevated stress level to that same life quantile at the use stress.  
+
+If a signifigant number of observations obtained at an elevated stress are censored, the estimate of the mean, median or characteristic life may have a high level of uncertainty.  As result, there may be a high level of uncertainty on the slope of regression line, leading to significant errors in the life prediction at the use level stress. For this example, a majority of the systems tested at the lowest humidity level did not fail prior to the end of the test.  The time $t_{p}$ corresponding to the $100p\%$ fraction of failures at this humidity level would be overly conservative.
+`r SMRD.resources:::solution()$end`
