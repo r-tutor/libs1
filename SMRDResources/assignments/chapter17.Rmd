@@ -1,0 +1,127 @@
+---
+output: html_document
+---
+
+```{r echo=FALSE}
+ex <- 0
+```
+
+
+# From the Text Exercise 17.`r ex = ex+1; ex`
+
+ The confidence intervals for Example~\ref{example:ct.regr.model} given in Table~\ref{table:comptime.mles} were computed by using the normal approximation method that is commonly used for censored data problems. For this data set, with the lognormal model, it is possible to use standard "exact" methods to compute confidence intervals for these parameters, based on a simple ordinary least squares regression relating the logarithms of execution time to system load.  Formulas for these exact methods are available in almost any elementary statistics text covering regression analysis.  Use a computer program to do the necessary least squares computations and compute, by hand, the "exact" confidence intervals.  Compare the estimates and confidence intervals. What is your conclusion? 
+
+
+# From the Text Exercise 17.`r ex = ex+1; ex`
+
+ Refer to the loglinear model in (\ref{equation:weib.reg.quant}). Show why $100\beta_{1}$ can be interpreted as the approximate percent increase in $\rvquan_{p}(x)$ for a one-unit increase in $x$. 
+
+
+# From the Text Exercise 17.`r ex = ex+1; ex`
+
+ \label{exercise:rcfatigue.graphical} McCool~(1980) gives the results of a life test on rolling contact fatigue of ceramic ball bearings. Ten specimens were tested at each of 4 levels of stress. The ordered failure times are given in the following table.  McCool indicates that it is customary to model such data with the two-parameter Weibull distribution with a shape parameter that does not depend on stress.\\[3ex] 
+$$
+\begin{array}{ll} Stress ($10^{6}$ psi) &  Ordered Life Times ($10^{6}$ revolutions) \\ 
+\hline
+ .87 & 1.67, 2.20, 2.51, 3.00, 3.90, 4.70, 7.53, 14.70, 27.80, 37.40 \\ .99& .80, 1.00, 1.37, 2.25, 2.95, 3.70, 6.07, 6.65, 7.05, 7.37 \\  1.09& .012, .18, .20, .24, .26, .32, .32, .42, .44, .88 \\  1.18 & .073, .098, .117, .135, .175, .262, .270, .350, .386, .456 \\ 
+\hline
+ \\[2ex] 
+\end{array}
+$$
+ 
+ 
+
+a. \label{exer.part:refatigue.logplot} Plot the failure times versus stress on log-log axes (or alternatively, take logs and plot on linear axes). 
+
+a. It is often suggested that median failure time is proportional to a power transformation of stress. That is,  $t_{.5}= e^{\beta_{0}} \times {(\Stress)}^{\beta_{1}}$ or $\log(t_{.5})= \beta_{0}+ \beta_{1}\log(\Stress)$. Is the suggestion reasonable in this case?  Plot the sample medians on the graph in part~\ref{exer.part:refatigue.logplot} to help answer this question. 
+
+a. \label{exer.part:refatigue.graphical} Use a hand-drawn line through sample medians versus stress points to obtain a graphical estimate of the exponent (or slope) $\beta_{1}$. 
+
+a. Make separate Weibull probability plots for the data at each level of stress, plotting them all on the same graph. What does this plot suggest about the customary assumption that the Weibull shape parameter is the same for all levels of stress?  Provide possible explanations for the observed differences in the estimates of the Weibull shape parameter at each level of stress.  
+
+
+# From the Text Exercise 17.`r ex = ex+1; ex`
+
+ Figure~\ref{figure:super.alloy.data} shows that there is more spread  (variability) in the observed log failure times at low stress, as compared with high stress. Provide a simple, nontechnical, intuitive explanation for this common behavior of fatigue data. 
+
+ 
+# From the Text Exercise 17.`r ex = ex+1; ex`
+
+ Use the results in Table~\ref{table:super.alloy.mles} for Example~\ref{example:super.alloy.nf20} to compute an 80\% normal-approximation confidence interval for $\sigma$.  Explain the interpretation of this interval. 
+
+
+# From the Text Exercise 17.`r ex = ex+1; ex`
+
+ Use the results in Table~\ref{table:super.alloy.mles} for Example~\ref{example:super.alloy.nf21} to do the following:  
+ 
+
+a. \label{exer.part:nc.sig.beta.ci} Compute an 90\% normal-approximation confidence interval for $\beta_{1}^{[\sigma]}$. 
+
+a. Explain how this confidence interval can be used to judge whether $\sigma$ depends on the level of pseudo stress or not. 
+
+a. Do a likelihood ratio test to determine whether or not there exists strong evidence that $\sigma$ depends on the level of pseudo stress. 
+
+a. Explain the steps you would follow to compute a likelihood-ratio-based confidence interval for $\beta_{1}^{[\sigma]}$.  
+
+
+# From the Text Exercise 17.`r ex = ex+1; ex`
+
+ \label{exercise:reverse.quant} Consider the model used in Example~\ref{example:super.alloy.nf21} and the corresponding ML estimates for Model 2 in Table~\ref{table:super.alloy.mles}.  
+ 
+
+a. \label{exer.part:reverse.quant} Show that it is possible to have $\rvquan_{p}(x_{1}) < \rvquan_{p}(x_{2})$ when $x_{1} < x_{2}$. 
+
+a. Explain why the relationship in part~\ref{exer.part:reverse.quant} is physically unreasonable.  
+
+
+# From the Text Exercise 17.`r ex = ex+1; ex`
+
+  Return to the capacitor life test data in Example~\ref{example:zelen.data}.  Physical theory suggests that the Weibull shape parameter $\beta=1/\sigma$ will depend on temperature if there is unit-to-unit variability in both the initial level of dielectric degradation and in dielectric degradation rate. Insulation engineers were interested in using these data to see if there was evidence for a temperature or voltage effect on $\beta=1/\sigma$. 
+ 
+
+a. \label{exer.part:zelen.indiv} Use the fitted model  in Table~\ref{table:zelen.cap.data} giving the Weibull distribution estimates at each combination of the individual experimental conditions. Compute the sum of the log likelihoods for all of the conditions. 
+
+a. Plot, on Weibull probability paper, the estimates of the Weibull cdfs for each test condition, as done in Figure~\ref{figure:zelencap.groupi.ps}. 
+
+a. \label{exer.part:zelen.csig} Fit an indicator-variable regression model to the capacitor life test data such that there is a constant value of $\sigma$ but that a separate value of $\mu$ is estimated at each test condition. 
+
+a. Compare the sum of the likelihoods from part~\ref{exer.part:zelen.indiv} with the likelihood obtained from the model in part~\ref{exer.part:zelen.csig}. Use these results to test if there is evidence for nonconstant $\sigma$ in these data. What do you conclude?  
+
+
+# From the Text Exercise 17.`r ex = ex+1; ex`
+
+ Refer to Example~\ref{example:zelen.data.int.model} and Figure~\ref{figure:zelencap.cellquan.int.ps}.  The two points corresponding to the subexperiments at 250 and 300 volts and 180$\degreesc$ seem to be out of line from the other points. Use the individual subexperiment results given in Table~\ref{table:zelen.cap.data} to compute a confidence interval for $t_{.5}$ at 300 volts and 180$\degreesc$.  What does this suggest about the two outlying points? 
+
+
+# From the Text Exercise 17.`r ex = ex+1; ex`
+
+ Refer to Example~\ref{example:zelen.data.int.model} and the numerical results in Table~\ref{table:zelen.mles}. For both models, compute the ML estimates of $t_{.5}$ for the 8 factor-level combinations and plot these on a graph like that in Figure~\ref{figure:zelencap.cellquan.int.ps}.  What do you conclude? 
+
+
+# From the Text Exercise 17.`r ex = ex+1; ex`
+
+ Consider the two-variable regression model with interaction given in Section~\ref{section:two.var.with.int}. Show that $\beta_{1} + \beta_{3}x_{2}$ is the change in $\mu$ for a one-unit change in $x_{1}$. 
+
+
+# From the Text Exercise 17.`r ex = ex+1; ex`
+
+ In some reliability applications it is common to use transformations of explanatory variables in regression modeling (models involving such transformations are described in Chapter~\ref{chapter:accelerated.test.models}). Also, it might be possible to find a distribution other than the Weibull that will provide a better fit to the data.  Use the glass capacitor data in Examples~\ref{example:zelen.data} and \ref{example:zelen.data.int.model}, and fit the following alternative models. 
+ 
+
+a. \label{exer.part:zelen.tran.expvar} In the two variable regression model, use the transformations $x_{1}=1/(\mbox{temp}\degreesc+ 273.15)$ (known as the Arrhenius relationship) and $x_{2}=\log(\mbox{Voltage})$ (known as the inverse power relationship).  Compare estimates of $t_{.5}$ at the different levels of temperature and voltage used in the life test. Is there evidence that these factors affect life? Explain. 
+
+a. Repeat the analysis in part~\ref{exer.part:zelen.tran.expvar}, using the normal distribution instead of the Weibull distribution. Again, compare estimates of $t_{.5}$ at the different levels of temperature and voltage used in the life test.  
+
+
+# From the Text Exercise 17.`r ex = ex+1; ex`
+
+ The Weibull SAFT regression model is also a PH model. Thus fitting a parametric PH model with a Weibull baseline distribution is equivalent to fitting a Weibull regression model in which $\mu=\log(\weibscale)$ is a function of explanatory variables and $\sigma=1/\beta$ is constant. 
+ 
+
+a. Why is the Cox PH model called "semiparametric?" 
+
+a. What are some advantages of using the semiparametric Cox PH model, when compared to using the parametric Weibull model. 
+
+a. What are some advantages of using the parametric Weibull model, when compared to using the semiparametric Cox PH model?    
+
+

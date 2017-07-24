@@ -1,0 +1,2279 @@
+%chapter 19
+%\batchmode
+%original by wqmeeker  12 Jan 94
+%edited by wqmeeker 9 Apr 94
+%edited by wqmeeker 26 Apr 94
+%edited by driker 22 May 95
+%edited by driker 6 Sept 95
+%edited by driker 2 July 96
+%edited by driker 21 nov 96
+%edited by driker 9 apr 97
+\setcounter{chapter}{18}
+
+\chapter{Accelerated Life Tests}
+
+\label{chapter:analyzing.alt.data}
+
+\input{\chapterhome/common_heading.tex}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Objectives}
+This chapter explains
+\begin{itemize} 
+\item 
+Nonparametric and graphical methods for presenting and analyzing
+accelerated life test (ALT) data.
+\item 
+Likelihood methods for analyzing right-censored data from an ALT
+with a single accelerating factor.
+\item
+Analysis of other kinds of ALT experiments including experiments
+yielding interval data and experiments with two accelerating
+variables.
+\item
+Some other common forms of accelerated testing.
+\item
+Some potential pitfalls of accelerated testing.
+\end{itemize}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Overview}
+This chapter describes and illustrates some basic data analysis
+methods for accelerated life tests (ALT).  These tests are used to
+characterize durability properties or the life distribution of
+materials or simple components. The presentation employs the ALT
+models described in Chapter~\ref{chapter:accelerated.test.models}.
+Section~\ref{section:single.factor.alt} explains and illustrates
+basic important ideas for a single-variable ALT with right-censored
+data and exact failure times.
+Section~\ref{section:further.examp.alt} presents several other
+important examples with special models or data features.
+Section~\ref{section:practical.suggest.alt} gives some suggestions
+and cautions for drawing conclusions from AT data.
+Section~\ref{section:other.kinds.alt} briefly describes other kinds
+of ``accelerated tests.'' Section~\ref{section:alp.pitfalls} outlines
+a number of potential pitfalls that can arise in the application of
+accelerated testing.
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Introduction}
+This chapter shows how to apply regression methods
+from Chapter~\ref{chapter:regression.analysis} to the analysis
+of accelerated life test (ALT) data.
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{example}{\bf Temperature-accelerated life test on Device-A.}
+\label{example:devicea.data}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/devalt.weib.raltplot.ps}
+\caption{Scatter-plot of temperature-accelerated 
+life test data for Device-A. Censored observations are indicated by
+$\Delta$. The number of censored/tested units were 30/30, 90/100,
+11/20, 1/15 at 10, 40, 60, and $80\degreesc$, respectively.}
+\label{figure:devalt.weib.raltplot.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Hooper and Amster~(1990) analyze the temperature-accelerated life test
+data on a particular kind of device. Because they do not identify the
+particular device, we will refer to it as Device-A. The data are given
+in Appendix Table~\ref{atable:devalt.data} and
+Figure~\ref{figure:devalt.weib.raltplot.ps}.  The purpose of the
+experiment was to determine if Device-A would meet its failure rate
+objective through 10,000 hours and 30,000 hours at its operating
+ambient temperature of $10\degreesc$. In this context, failure rate is
+usually taken to mean the proportion failing over the specified time
+interval [see (\ref{equation:ahr.point}) in
+Section~\ref{section:ttf.functions}]. In the following sections we
+will show how to fit an accelerated life regression model to these
+data to answer this and other questions.
+\end{example}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\subsection{Accelerated life test models}
+%----------------------------------------------------------------------
+Most parametric ALT models have the following two components:
+\begin{enumerate}
+\item
+A parametric distribution for the life of a population of units at a
+particular level(s) of an experimental variable or variables.  It
+might be possible to avoid this parametric assumption for some
+applications, but when appropriate, parametric models (e.g., Weibull
+and lognormal) provide important practical advantages for most
+applications.
+
+\item
+A relationship between one (or more) of the distribution parameters
+and the acceleration or other experimental variables. Such a
+relationship models the effect that variables like temperature,
+voltage, humidity, and specimen or unit size will have on the
+failure-time distribution.  As described in
+Chapter~\ref{chapter:accelerated.test.models}, this part of the
+accelerated life model should be based on a physical model such as
+one relating the accelerating variable to degradation, on a
+well-established empirical relationship, or some combination.
+\end{enumerate}
+
+The examples in this section use the log-location-scale regression
+models described in Section~\ref{section:exp.regr.model} and
+illustrated with other examples in
+Chapter~\ref{chapter:regression.analysis}. The relationships between
+parameters and accelerating variables come from considerations like
+those described in Chapter~\ref{chapter:accelerated.test.models}.
+
+%----------------------------------------------------------------------
+\subsection{Strategy for analyzing ALT data}
+\label{section:alt.strategy}
+This section outlines and illustrates a strategy that is useful for
+analyzing ALT data consisting of a number of groups of specimens,
+each having been run at a particular set of conditions. The basic
+idea is to start by examining the data graphically. Use probability
+plots to analyze each group separately and explore the adequacy of
+candidate distributions. Then fit a model that describes the
+relationship between life and the accelerating variable(s).
+Briefly, the strategy is to
+
+\begin{enumerate}
+\item
+Examine a scatter-plot of failure time versus the accelerating variable.
+\item
+\label{item.alt.gi}
+Fit distributions individually to the data at separate levels of the
+accelerating variable.  Plot the fitted ML lines on a multiple
+probability plot along with the individual nonparametric estimates
+at each level of the accelerating variable. Use the plotted points
+and fitted lines to assess the reasonableness of the corresponding
+life distribution and the constant-$\sigma$ assumption. Repeat with
+probability plots for different assumed failure-time distributions.
+\item
+\label{item.alt.gm}
+Fit an overall model with the proposed relationship between life and
+the accelerating variable.
+\item
+Compare the combined model from Step~\ref{item.alt.gm} with the individual
+analyses in  Step~\ref{item.alt.gi} to
+check for evidence of lack of fit for the overall model.
+\item
+Perform residual analyses and other diagnostic checks of the model
+assumptions.
+\item
+Assess the reasonableness of the ALT data to make the
+desired inferences.
+\end{enumerate}
+The first examples in this chapter have just one accelerating
+variable (the simplest and most common type of ALT).
+Section~\ref{section:two.factor.alt} shows how to apply
+the same general strategy to an ALT with two or more accelerating variables.
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Analysis of Single-Variable ALT Data}
+\label{section:single.factor.alt}
+This section describes methods for analyzing ALT data with a single
+accelerating variable.  The subsections illustrate, in sequence, the
+steps in the strategy described in Section~\ref{section:alt.strategy}.
+
+\subsection{Scatter-plot of ALT data}
+Start by examining a scatter-plot of failure-time data versus the
+accelerating-variable data. A different symbol should be used
+to indicate censored observations.
+\begin{example}{\bf Scatter-plot of the Device-A data.}
+Figure~\ref{figure:devalt.weib.raltplot.ps} is a scatter-plot of the
+Device-A ALT data introduced in Example~\ref{example:devicea.data}. As
+expected, units fail sooner at higher levels of temperature.  The
+heavy censoring (note for example that there were no failures at
+10$\degreesc$) makes it difficult to see the form of the
+life/accelerating variable relationship from this plot.
+\end{example}
+
+\subsection{Multiple probability plot of
+nonparametric cdf estimates at individual levels of the accelerating
+variable}
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/devalt.weib.groupi.ps}
+\caption{Weibull multiple probability plot with individual Weibull ML fits
+for each temperature for the Device-A data.}
+\label{figure:devalt.weib.groupi.ps}
+\end{figure}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/devalt.lnor.groupi.ps}
+\caption{Lognormal multiple probability plot 
+with lognormal ML fits
+for each temperature for the Device-A data.}
+\label{figure:devalt.lnor.groupi.ps}
+\end{figure}
+%----------------------------------------------------------------------
+To make a multiple probability plot, first compute nonparametric
+estimates of the failure-time distribution for each group of
+specimens tested at the same level of the accelerating
+variable. Then plot these on probability paper. Use the plot to
+assess the distributional model for the different levels of the
+accelerating variable (or variable-level combinations).
+
+\begin{example}{\bf Multiple probability plot of the Device-A data.}
+Figure~\ref{figure:devalt.weib.groupi.ps} is a Weibull multiple
+probability plot of the Device-A data.
+Figure~\ref{figure:devalt.lnor.groupi.ps} is a corresponding
+lognormal probability plot.  Comparison of these plots indicates
+that both the Weibull and the lognormal distributions provide a
+reasonable fit to the failure data at the different levels of
+temperature, but that the lognormal distribution provides a better
+fit to the individual temperature groups.
+\end{example}
+%----------------------------------------------------------------------
+\subsection{Adding ML estimates at each level of 
+the accelerating variable(s) to a multiple probability plot} 
+
+If a suitable parametric distribution can be found, then ML estimates of the
+cdf at each level of the accelerating variable should be computed
+and put on the probability plot along with the corresponding
+nonparametric cdf estimates. This plot is useful for assessing the
+commonly used assumptions that distribution shape does not depend on
+the level of the accelerating variable and that the accelerating variable
+only affects the distribution scale parameter. The slopes of the 
+lines are related to the distribution shape parameter values. Thus
+we can assess graphically the assumption that temperature has no effect on 
+distribution  shape.
+%----------------------------------------------------------------------
+\begin{table}
+\caption{Device-A ALT lognormal ML estimation 
+results at individual temperatures.}
+\centering\small
+\begin{tabular}{lcrrrr}
+\\[-.5ex] \hline
+& & & & \multicolumn{2}{c}{95\% Approximate}\\
+&&\multicolumn{1}{c}{ML} &Standard & \multicolumn{2}{c}{Confidence
+Interval}\\ \cline{5-6}
+& Parameter & Estimate&
+\multicolumn{1}{c}{Error} & Lower & Upper \\
+\hline 
+40$\degreesc$
+& $\mu$ &9.81 &.42 &8.9 &10.6 \\[.7ex] 
+&$\sigma$ & $1.0$  &.27  & $.59$  & $1.72$ \\[.7ex]
+\hline 
+60$\degreesc$
+& $\mu$ & 8.64 & .35 & $8.0$ & 9.3 \\[.7ex] 
+&$\sigma$ &$1.19$  &.32  & $.70$  & $2.0$\\[.7ex] 
+\hline 
+80$\degreesc$
+&$\mu$ &7.08 &.21 &$6.7$ &7.5 \\[.7ex] 
+&$\sigma$ &$.80$  &.16 & $.55$  & $1.17$\\[.7ex]
+\hline 
+\\[-1.8ex]
+\end{tabular}
+\begin{minipage}[t]{4in}
+The individual log likelihoods were
+$\loglike_{40} = -115.46 $, $ \loglike_{60} =-89.72 $, 
+and $  \loglike_{80} = -115.58 $. The confidence intervals 
+are based on the normal-approximation method.
+\end{minipage}
+\label{table:deva.indiv.mles}
+\end{table}
+
+
+\begin{example}{\bf ML estimates of Device-A life
+at 40, 60 and 80$\degreesc$.}
+\label{example:devicea.mle}
+The straight lines on Figures~\ref{figure:devalt.weib.groupi.ps} and 
+\ref{figure:devalt.lnor.groupi.ps} depict, respectively, individual
+Weibull and lognormal ML estimates of the cdfs at the different
+levels of temperature.  Table~\ref{table:deva.indiv.mles} summarizes
+the lognormal ML estimation results. In this plot there are small
+differences among the slopes, but this could be due to sampling
+error. This can be seen, informally, from the overlapping confidence
+intervals for $\sigma$ (this issue is addressed more formally in
+Example~\ref{example:devicea.model.lrt}).  Although both
+distributions fit reasonably well, tradition and physical theory
+(see Section~\ref{section:lognormal.distribution.def}) suggest the
+lognormal distribution to describe the failure-time distribution for
+such devices.  Subsequent Device-A examples will also use the
+lognormal distribution.
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Multiple probability plot of
+ML estimates with a fitted acceleration relationship}
+\label{section:mpplot}
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/devalt.lnor.groupm.ps}
+\caption{Lognormal multiple probability plot depicting
+the Arrhenius-lognormal regression model
+ML fit to the Device-A ALT data.}
+\label{figure:devalt.lnor.groupm.ps}
+\end{figure}
+
+%----------------------------------------------------------------------
+In order to draw conclusions about life at low levels of
+accelerating variables, one needs to use a life/accelerating
+variable relationship to tie together results at the different
+levels of the accelerating variable. The cdfs estimated from the
+model fit can also be plotted on a probability plot along with the
+data to assess how well the life/accelerating variable model fits
+the data. Extrapolations to other levels of the accelerating
+variable can also be plotted.
+
+\begin{example}
+{\bf ML estimates of Device-A data for the Arrhenius-lognormal model.}
+\label{example:devicea.arr.log.model}
+The Arrhenius-lognormal regression model, described in
+Section~\ref{section:nonlin.deg.acc}, is
+\begin{displaymath}
+\Pr[\rv \leq t;\Temp] = \Phi_{\nor} \left[\frac{\log(t)-\mu}{\sigma} \right]
+\end{displaymath}
+where $\mu = \beta_{0}+ \beta_{1} x$, $x=11605/(\Tempk{})$, and
+$\beta_{1}=\Ea$ is the activation energy.
+Table~\ref{table:deva.arr.lognor.mles} contains ML estimates and
+other information. The estimate of the variance-covariance matrix
+for the ML estimates
+$\thetavechat=(\betahat_{0},\betahat_{1},\sigmahat)$ is
+\begin{eqnarray}
+\label{equation:devicea.local.est.vcv}
+\vcvmathat_{\thetavechat} &=&
+\left[ 
+\begin{array}{rrr}
+ 8.336  & $-0.239$ & $ -.195$\\
+$-.239$ & $.0069$  & $.0059$\\
+$-.195$ & $.0059$  & $.0176$\\
+\end{array}
+\right].
+\end{eqnarray}
+These quantities will be used in subsequent numerical examples.
+Figure~\ref{figure:devalt.lnor.groupm.ps} is a lognormal probability
+plot showing the
+Arrhenius-lognormal model fit to the Device-A ALT data. The solid line at
+the bottom of the graph is the ML estimate of the cdf at
+10$\degreesc$, extrapolated from the ML fit.  
+
+%----------------------------------------------------------------------
+\begin{table}
+\caption{ML estimates for the Device-A 
+data and the Arrhenius-lognormal regression model.}
+\centering\small
+\begin{tabular}{crrrr}
+\\[-.5ex] \hline
+ & & & \multicolumn{2}{c}{95\% Approximate}\\
+&\multicolumn{1}{c}{ML} &Standard  & \multicolumn{2}{c}{Confidence
+Intervals}\\  \cline{4-5}
+Parameter &  Estimate & \multicolumn{1}{c}{Error} & Lower & Upper \\
+\hline 
+ $\beta_{0} $ & $-13.5$ & $2.9$ & $-19.1$ & $-7.8$ \\[.7ex] 
+$\beta_{1}$ &.63 &.08 &.47 &.79 \\[.7ex] 
+$\sigma$ &.98 &.13 &.75 &1.28\\
+\hline
+\\[-1.8ex]
+\end{tabular}
+\begin{minipage}[t]{4in}
+The log likelihood is $\loglike= -321.7$. The confidence intervals 
+are based on the normal-approximation method.
+\end{minipage}
+\label{table:deva.arr.lognor.mles}
+\end{table} 
+%----------------------------------------------------------------------
+The dotted curves are a set of pointwise 95\% normal-approximation
+confidence intervals. They reflect the random
+``sampling uncertainty'' arising from
+the limited sample data. The necessary computations are illustrated in
+Example~\ref{example:ci.fhat.comp}. It is important to note that these
+intervals do {\em not} reflect model-specification and other
+errors (and we know
+that the model is only an approximation for the exact relationship).
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/devalt.lnor.altplot.ps}
+\caption{Scatter-plot showing hours to failure versus
+$\degreesc$ (on an Arrhenius scale) and
+the Arrhenius-lognormal regression model
+fitted to the Device-A data.
+Censored observations are indicated by $\Delta$.}
+\label{figure:devalt.lnor.altplot.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Figure~\ref{figure:devalt.lnor.altplot.ps} shows directly the fitted
+life/accelerating variable relationship and the estimated densities at
+each level of temperature, and lines indicating ML estimates of
+percent failing as a function of temperature. The density estimates 
+are normal densities because time is plotted on a log scale.
+\end{example}
+
+It is useful to compare individual analyses with model analyses.  This
+can be done both graphically and analytically. A likelihood ratio test
+provides an analytical assessment about whether observed deviations
+between the individual model fit and the overall life/accelerating
+variable relationship can be explained by random variability or not.
+\begin{example}
+{\bf Analytical comparison of individual lognormal fits
+and Arrhenius-lognormal model fit to the Device-A data.} 
+\label{example:devicea.model.lrt}
+Fitting individual lognormal distributions
+(Table~\ref{table:deva.indiv.mles} and
+Figure~\ref{figure:devalt.lnor.groupi.ps}) estimates
+$\mu$ and $\sigma$ at each level of temperature without any
+constraints. Fitting the Arrhenius-lognormal model
+(Table~\ref{table:deva.arr.lognor.mles} and
+Figure~\ref{figure:devalt.lnor.groupm.ps}) estimates
+$\mu$ and $\sigma$ at each level of temperature with $\mu$ constrained
+to be a linear function of $x=11605/(\Tempk{})$ and $\sigma$
+constrained to be the same for all temperatures.  The total likelihood
+for the unconstrained Arrhenius-lognormal
+model will always be larger than the likelihood for
+the constrained model.  If the total likelihood for the unconstrained
+model is {\em much} larger than the total likelihood for the
+constrained model, there is evidence of lack of fit for the
+constrained Arrhenius-lognormal model. These two approaches for fitting
+the data can be compared with an ``omnibus'' likelihood ratio test.
+From Table~\ref{table:deva.indiv.mles}, for the
+unconstrained model, $\loglike_{\rm unconst}=\loglike_{40} +
+\loglike_{60} + \loglike_{80} = -320.76$ and from
+Table~\ref{table:deva.arr.lognor.mles}, for the constrained model,
+$\loglike_{\rm const}= -321.7$.  If the constrained model is
+``correct'' then the test statistic
+$Q=-2(\loglike_{\rm const}-\loglike_{\rm unconst})$
+has a $\chisquare_{3}$ distribution (see Appendix
+Section~\ref{section:profile.on.theta}).  In this case the 3 degrees of
+freedom is the difference between the 6 parameters in the
+unconstrained model and the 3 parameters in the constrained model.
+Thus $Q=-2(-321.7 +320.76) =1.88 <
+\chisquare_{(.75;3)} =4.1$ indicating that there is no evidence of inadequacy of the constrained model, relative to the unconstrained
+model.
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Checking other model assumptions}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/devalt.residual.linear.lnor.ps}
+\caption{Lognormal probability plot of the standardized residuals
+from the Arrhenius-lognormal model
+fit to the Device-A data.}
+\label{figure:devalt.residual.linear.lnor.ps}
+\end{figure}
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/devalt.fitvsres.linear.lnor.ps}
+\caption{Plot of standardized residuals
+versus fitted values for the Arrhenius-lognormal regression model
+fitted to the Device-A data. Censored residuals are indicated by
+$\Delta$.}
+\label{figure:devalt.fitvsres.linear.lnor.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Before drawing conclusions from a set of data, it is important to
+check, as carefully as possible, model assumptions by using residual
+analysis and other model diagnostics, as explained in
+Section~\ref{section:resid.def}. A probability plot of residuals is
+useful for assessing the overall adequacy of a fitted distribution.
+A standard plot of residuals versus fitted values (e.g., $\muhat$)
+can also be useful for identifying other departures from the fitted
+model. Heavy censoring, however, makes such plots difficult to
+interpret. Without censoring, the residuals should not show any
+structure that might have been explained by a more elaborate model.
+In interpreting such a plot with censoring, one has to make
+allowances for the predictable patterns that censoring will induce.
+
+\begin{example}
+{\bf Residual analysis for the Arrhenius-lognormal model fit to the
+Device-A data.} 
+Figure~\ref{figure:devalt.residual.linear.lnor.ps} is a lognormal
+probability plot of the (censored) standardized residuals from the
+life/temperature model. In this case the deviation from linearity 
+is not strong and can be attributed to randomness in the data. Thus,
+the lognormal distribution appears to be adequate.
+
+Figure~\ref{figure:devalt.fitvsres.linear.lnor.ps} is a plot of the
+(censored) standardized residuals (as defined in
+Section~\ref{section:censored.data.regression.diagnostics}) versus
+the Arrhenius-lognormal model fitted values (as in other plots of failure
+times, $\Delta$ represents right-censored residuals).  The heavy
+censoring makes this plot more difficult to interpret.  All that we
+know about the residuals marked with a $\Delta$ is that they are
+larger than the plotted points. The appearance of a downward sloping
+trend is mostly due to the right-censored observations. The smallest
+observations also appear to slope downward, but there are only a few
+observations involved in this trend. Although this might, at first,
+suggest that there are outliers or some kind of other model
+departure, there is no evidence of outliers in
+Figure~\ref{figure:devalt.residual.linear.lnor.ps} and the observed
+pattern could be a result of randomness from the
+Arrhenius-lognormal model.
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Estimation at use conditions}
+%----------------------------------------------------------------------
+The methods presented in
+Section~\ref{section:se.and.ci.for.regr.funct} can also be used to
+compute estimates and
+confidence intervals for quantities of interest at use
+conditions.  The following example gives details on how to compute
+an estimate of $F(t)$ but, as explained in
+Section~\ref{section:se.and.ci.for.regr.funct}, the same ideas can be
+applied to compute estimates of other quantities of interest such as
+distribution quantiles or hazard function values.
+
+\begin{example}
+{\bf Confidence interval for the Device-A lognormal distribution 
+$\boldsymbol{F(30000)}$ and $\boldsymbol{F(10000)}$ at 10$\degreesc$.}
+\label{example:ci.fhat.comp}
+%splus>      Location     Scale 
+%splus> [1,]  12.2641 0.9778227
+%splus>           Location      Scale 
+%splus> Location 0.2867719 0.04781510
+%splus>    Scale 0.0478151 0.01759516
+As mentioned in Example~\ref{example:devicea.data},
+the purpose of the ALT was to estimate the proportion failing at
+30,000 and 10,000 hours. To illustrate the methods we use 
+$\estimtime$=30,000 hours.
+Using methods described in Sections~\ref{section:ci.for.loc.scale.cdf} and
+\ref{section:se.and.ci.for.regr.funct}, and the numerical results in
+Table~\ref{table:deva.arr.lognor.mles}, simple computations give, at
+10$\degreesc$,
+\begin{eqnarray*}
+\muhat & = & \betahat_{0} + \betahat_{1}x\\ 
+	& = & -13.469  + .6279 \times 11605/(10+273.15) = 12.2641\\[1ex]
+\estimtimestdhat &= & [\log(\estimtime)-\muhat]/\sigmahat
+ 		= [\log(30000)-12.2641]/.9778=-2.000 \\[1ex]
+\Fhat(30000)  &=  & \Phi_{\nor}(\estimtimestdhat) =
+\Phi_{\nor}(-2.000) = .02281.
+\end{eqnarray*}
+%splus> -13.4693146 + .6279 * (11605/(10+273.15)) =  12.41985
+%splus>   (log(30000)-12.2641)/.9778 = -2.000
+%splus>  pnorm(-2.000) =  .02275013
+%genmax 0.3000E+05  0.2281E-01  0.2253E-01  0.3206E-02  0.1448 
+The estimated covariance matrix for $\muhat$ and $\sigmahat$ at
+10$\degreesc$ can be computed as shown in equation
+(\ref{equation:ls.regr.local.est.vcv}), using
+(\ref{equation:devicea.local.est.vcv}). The result is
+\begin{displaymath}
+\vcvmathat_{\muhat,\sigmahat}=
+\left[ 
+\begin{array}{ll}
+\varhat(\muhat)& \covhat(\muhat,\sigmahat)\\
+\covhat(\muhat,\sigmahat)& \varhat(\sigmahat)
+\end{array}
+\right]=
+\left[ 
+\begin{array}{lr}
+ .287 & .048 \\
+ .048 & .0176
+\end{array}
+\right].
+\end{displaymath}
+The off-diagonal elements are zero for complete data but are
+nonzero here because of the right censoring.
+Then, following the general approach in
+Section~\ref{section:ci.for.loc.scale.cdf}, equation
+(\ref{equation:ls.se.fhat}) gives
+%splus> ((dnorm(-2.000))/(.9778))* sqrt(.287-2*2.000*.048+(-2.000)^2*.0176)=.02245633
+%splus>
+\begin{eqnarray*}
+	\sehat_{\Fhat}
+	&=& \frac{  \phi(\estimtimestdhat )  }{\sigmahat} \left[ \varhat(\muhat) + 
+	 2 \estimtimestdhat \covhat(\muhat,\sigmahat) +
+	\estimtimestdhat^2 \varhat(\sigmahat) \right]^{\frac{1}{2}}\\
+	&=& \frac{  \phi( -2.000 )  }{.9778  } \left[ .287 + 
+	 2 \times  (-2.000) \times .048 +
+	(-2.000)^2 \times .0176 \right]  ^ {\frac{1}{2}} = .0225.
+\end{eqnarray*}
+From this, the 95\% normal-approximation confidence interval for $F(30000)$, 
+using (\ref{equation:normal.theory.ci.on.cdf}), is
+\begin{eqnarray*}
+	  [ \Flower(\estimtime), \quad	\Fupper(\estimtime) ] &= &
+	\left[\frac{\Fhat}{\Fhat
+	+(1-\Fhat) \times w}, \quad \frac{\Fhat}{\Fhat+
+	(1-\Fhat)/w}\right]\\ &= &
+	\left[\frac{.02281}{.02281
+	+(1-.02281) \times w}, \quad \frac{.02281}{.02281+
+	(1-.02281)/w}\right] =[.0032, \quad .14 ]
+\end{eqnarray*}
+%splus>  ((.02281)/(.02281+(1-.02281)* 7.231829))
+%splus>  ((.02281)/(.02281+(1-.02281)/ 7.231829))
+%splus>
+%splus>
+%splus>
+where
+\begin{eqnarray*}
+w&=&\exp\{\norquan_{(1-\alpha/2)}
+	\sehat_{\Fhat}/[\Fhat(1-\Fhat)]\}\\
+  &=&\exp\{1.96 \times .0225/[.02281(1-.02281)]\} = 7.232.
+\end{eqnarray*}
+%splus>  exp((1.96 * .0225)/(.02281*(1-.02281))) =7.231829
+This interval is based on the assumption that $Z_{\logit(\Fhat)}\approxdist
+\NOR(0,1)$. The interval is wide
+(also see Figure~\ref{figure:devalt.lnor.groupm.ps}),
+but properly reflects the sampling uncertainty when the activation energy is
+unknown. Additionally, it is important to note that the interval does
+not reflect model uncertainty. On the other hand, if one 
+assumed that the activation energy is known, this and other confidence
+intervals would be much narrower.
+A similar approximate 95\% confidence interval for $F(10000)$
+(computations left as an exercise) is $[.00006, \quad .013]$.
+\end{example}
+
+Conclusions based on unverified assumptions are subject to
+error. Although confidence intervals provide an assessment of sampling
+uncertainty, they do not reflect possible model deviations.
+When model assumptions are uncertain, repeating computations with
+alternative assumptions provides informative sensitivity analyses.
+The following example illustrates this by changing the fitted distribution
+for the Device-A data.
+
+\begin{example}
+{\bf Confidence interval for the Weibull distribution $F(30000)$ and
+$F(10000)$ for Device-A at 10$\degreesc$.} For the Weibull
+distribution model (with other details omitted to save space), an
+approximate 95\% confidence interval for $F(30000)$ is $[.0092,\quad
+.126]$.  An approximate 95\% confidence interval for $F(10000)$ is
+$[.0021,\quad.027]$.  The differences between the lognormal and
+Weibull confidence intervals is not that large, relative to width of
+these intervals.  Without some physical basis for a choice between
+these two distributions, both sets of intervals would have to be
+taken into consideration.  In this case, however, the lognormal was
+favored on physical grounds, and the lognormal distribution also
+provided a better fit.
+%genmax>   0.1000E+05  0.7583E-02  0.4935E-02  0.2109E-02  0.2688E-01
+%genmax>   0.3000E+05  0.3536E-01  0.2383E-01  0.9237E-02  0.1260    
+\end{example}
+
+
+%-----------------------------------------------------------------------------
+%-----------------------------------------------------------------------------
+\section{Further Examples}
+\label{section:further.examp.alt}
+%-----------------------------------------------------------------------------
+\subsection{Voltage acceleration}
+\label{section:volt.alt}
+This section illustrates statistical methods for fitting a model to
+and making inferences from voltage-accelerated life data.
+Section~\ref{section:voltage.at.models} describes the inverse power
+relationship for voltage acceleration used here.
+
+\begin{example}{\bf Accelerated life test of a mylar-polyurethane insulating 
+structure.} 
+\label{example:mylar.voltage.ivp model}
+Returning to the data introduced in
+Example~\ref{example:mylar.voltage.data}, it was clear from the
+scatter-plot in Figure~\ref{figure:mylarpoly.altplot.ps} that the
+linear relationship for log life versus log voltage relationship
+implied by the inverse power relationship
+(Section~\ref{section:inverse.power.rule}) did not hold for the data
+at 361.4 kV/mm.  This suggests that the failure mechanism might be
+different at 361.4 kV/mm.  In this kind of situation, particularly
+when primary interest is in extrapolating to lower ranges of
+voltage, it is appropriate to drop the 361.4 kV/mm data and analyze
+the remaining data.
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/mylarpoly.lnor.groupi.ps}
+\caption{Lognormal multiple 
+probability plot and ML fit for each voltage in the 
+mylar-polyurethane ALT.}
+\label{figure:mylarpoly.lnor.groupi.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Figure~\ref{figure:mylarpoly.lnor.groupi.ps} is a lognormal
+probability plot of the data at each of the 5 different
+levels of voltage stress along with individual lognormal ML estimates.
+Although the $\sigma$ estimates differ across voltage-stress levels, the 
+differences are small and consistent with ordinary
+random variability. A similar Weibull plot (not shown
+here) also provided a reasonable fit to the data at the different
+levels of voltage stress but, overall, the lognormal seemed to fit
+better.
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/mylarsub.lnor.groupm.ps}
+\caption{Lognormal multiple probability plot 
+and ML fit of the inverse power relationship-lognormal model to
+the mylar-polyurethane data with the 361.4 kV/mm data omitted.}
+\label{figure:mylarsub.lnor.groupm.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Figure~\ref{figure:mylarsub.lnor.groupm.ps} shows the
+inverse power relationship-lognormal model fitted to the mylar-polyurethane
+data. The model is
+\begin{displaymath}
+\Pr[\rv\leq t;\Volt] = \Phi_{\nor}\left[\frac{\log(t)-\mu}{\sigma} \right]
+\end{displaymath}
+where $\mu = \beta_{0}+ \beta_{1} x$, $x=\log(\text{\Volt})$, and
+$\Volt$ is voltage stress in kV/mm. Numerical estimates are
+summarized in Table~\ref{table:mylar.lognor.mles}.  The solid line
+in the SE part of Figure~\ref{figure:mylarsub.lnor.groupm.ps} is the
+ML estimate of the cdf at 50 kV/mm, extrapolated from the ML fit. As
+in Example~\ref{example:devicea.arr.log.model}, the dotted lines are
+pointwise 95\% normal-approximation confidence intervals, reflecting
+sampling uncertainty.
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/mylarsub.residual.linear.lnor.ps}
+\caption{Lognormal
+probability plot of the residuals from the inverse power
+relationship-lognormal model fitted to the mylar-polyurethane data.}
+\label{figure:mylarsub.residual.linear.lnor.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Figure~\ref{figure:mylarsub.residual.linear.lnor.ps} is a lognormal
+probability plot of the residuals from the inverse power
+relationship-lognormal model (Section~\ref{section:inverse.power.rule})
+fitted to the mylar-polyurethane data. This plot does not
+suggest any important departure from the assumed lognormal
+distribution and is closer to linear than the corresponding plot for
+the inverse power relationship-Weibull model (not shown here).
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/mylarpoly.lnor.altplot.ps}
+\caption{Plot of the inverse power relationship-lognormal model fitted to the
+mylar-polyurethane data (also showing 361.4 kV/mm
+data omitted from the ML estimation).}
+\label{figure:mylarpoly.lnor.altplot.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Figure~\ref{figure:mylarpoly.lnor.altplot.ps} shows the fitted model
+and the original data (showing the data at 361.4 kV/mm even though
+these data were not used in the model fitting). This plot indicates
+that there is a substantial probability of failure before 10,000
+hours $[F(10000)=.076]$ for this insulating structure at 50 kV/mm. A
+95\% confidence interval for $F(10000)$ is $[.0058, \quad
+.54]$. Incorrectly including the 361.4 kV/mm data in the analysis
+(details not shown here, but see
+Exercise~\ref{exercise:mylar.lognormal.all}) changes the confidence
+interval to $[.00012, \quad .064]$, resulting in a very optimistic
+and misleading impression.
+%lognormal sub data
+%genmax>  0.1000E+05  0.7618E-01  0.9476E-01  0.5857E-02  0.5358    
+%genmax>    0.3000E+05  0.3502      0.2376      0.6513E-01  0.8066 
+%lognormal all data
+%genmax>    0.1000E+05  0.2827E-02  0.4583E-02  0.1171E-03  0.6420E-01
+%genmax>    0.3000E+05  0.3265E-01  0.3523E-01  0.3780E-02  0.2310
+%genmax>
+%genmax>
+%----------------------------------------------------------------------
+\begin{table}
+\caption{Inverse power relationship-lognormal model ML estimates for the
+mylar-polyurethane data.}
+\centering\small
+\begin{tabular}{crrrr}
+\\[-.5ex] \hline
+ & & & \multicolumn{2}{c}{95\% Approximate}\\
+&\multicolumn{1}{c}{ML} &Standard  & \multicolumn{2}{c}{Confidence
+Intervals}\\  \cline{4-5}
+Parameter &  Estimate & \multicolumn{1}{c}{Error} & Lower & Upper \\
+\hline 
+ $\beta_{0} $ & 27.5 & 3.0 &21.6 &33.4 \\[.7ex] 
+$\beta_{1}$ & $-4.29$ & .60 & $-5.46$ & $-3.11$ \\[.7ex] 
+$\sigma$ & 1.05 & .12 & .83 & 1.32 \\
+\hline
+\\[-1.8ex]
+\end{tabular}
+\begin{minipage}[t]{4in}
+The log likelihood is $\loglike= -271.4$. The confidence intervals 
+are based on the normal-approximation method.
+\end{minipage}
+\label{table:mylar.lognor.mles}
+\end{table}
+%----------------------------------------------------------------------
+%splus>ML estimation results
+%splus>
+%splus>Data: Mylar-Polyurethane Insulating Structure 
+%splus>Data units: Minutes 
+%splus>Distribution:  Lognormal 
+%splus>Relationship:  log 
+%splus>Log Likelihood at maximum: -271.4247 
+%splus>
+%splus>Parameter Estimation Results 
+%splus>             MLE        se   z-ratio   95% lower  95% upper 
+%splus>   b0  27.491758 2.9971602  9.172602  21.6173243  33.366192
+%splus>   b1  -4.289109 0.5991313 -7.158879  -5.4634061  -3.114811
+%splus>sigma   1.049793 0.1237193  8.485281   0.8332721   1.322576
+%splus>
+%splus>Variance-covariance matrix
+%splus>                 b0            b1         sigma 
+%splus>   b0  8.982969e+00 -1.792630e+00 -1.376619e-08
+%splus>   b1 -1.792630e+00  3.589583e-01  2.385898e-09
+%splus>sigma -1.376619e-08  2.385898e-09  1.530647e-02
+\end{example}
+%-----------------------------------------------------------------------------
+\subsection{Analysis of interval ALT data}
+\label{section:interval.data.alt}
+Previous examples have shown that interval (or read-out) data occur
+frequently in reliability studies.  Such data also arise in
+accelerated tests. With a complicated evaluation process and limited
+resources, it is often possible to do only a few inspections on each
+unit.
+\begin{example}
+{\bf Analysis of ALT data on a new-technology IC device.}
+\label{example:new.tech.ic}
+Appendix Table~\ref{atable:icdevice2.data} gives data from an
+accelerated life test on a new-technology integrated circuit (IC)
+device. The device inspection involved an expensive electrical
+diagnostic test.  Thus only a few inspections could be conducted on
+each device. One common method of planning the times for such
+inspections is to choose a first inspection time and then space the
+inspections such that they are equally spaced on a log axis. In this
+case, the first inspection was after one day with subsequent
+inspections at two days, four days, and so on (except for one day
+when the person doing the inspection had to leave early). Tests were
+run at 150, 175, 200, 250, and 300$\degreesc$.  Failures had been
+found only at the two higher temperatures.  After an initial
+analysis based on early failures at 250$\degreesc$ and
+300$\degreesc$, there was concern that no failures would be observed
+at 175$\degreesc$ before the time at which decisions would have to
+be made. Thus the 200$\degreesc$ test was started later than the
+others to assure some failures and only limited running time on
+these units had been accumulated by the time of the analysis.
+
+The developers were interested in estimating the activation energy
+of the failure mode and the long-life reliability of the
+ICs. Initially engineers asked about ``MTTF'' at use conditions of
+100$\degreesc$ junction temperature. After recognizing that the
+estimate of the mean would be on the order of 6 million hours (more
+than 700 years) decided that this would not be a useful reliability
+metric. Subsequently they decided that the average hazard rate or
+the proportion that would fail by 100 thousand hours (about 11
+years) would be more useful for decision-making purposes.
+
+Figure~\ref{figure:icdevice02.groupi.lognor.ps} is a lognormal
+probability plot of the failures at 250$\degreesc$ and
+300$\degreesc$ along with the ML estimates of the individual
+lognormal cdfs.
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/icdevice02.groupi.lognor.ps}
+\caption{Lognormal
+probability plot of the failures at 250$\degreesc$ and 300$\degreesc$
+for the new-technology integrated circuit device ALT experiment.}
+\label{figure:icdevice02.groupi.lognor.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Table~\ref{table:icdevice2.lognor.indiv.mles} summarizes the
+individual lognormal ML estimates. 
+\begin{table}
+\caption{Individual lognormal ML estimation 
+results for the new-technology IC device.}
+\centering\small
+\begin{tabular}{ccrrrr}
+\\[-.5ex] \hline
+ & & & & \multicolumn{2}{c}{95\% Approximate}\\ 
+& &\multicolumn{1}{c}{ML}
+&Standard & \multicolumn{2}{c}{Confidence Intervals}\\  \cline{5-6}
+& Parameter & Estimate & \multicolumn{1}{c}{Error} & Lower & Upper \\
+\hline 
+250$\degreesc$ &$\mu $ & 8.54 & .33 &7.9 &9.2 \\[.7ex] 
+ &$\sigma$ & .87 & .26 & .48 & 1.57 \\
+\hline 
+300$\degreesc$ &$\mu $ & 6.56 & .07 &6.4 &6.7 \\[.7ex] 
+ 	&$\sigma$ & .46 & .05 & .36 & .58 \\
+\hline
+\\[-1.8ex]
+\end{tabular}
+\begin{minipage}[t]{4in}
+The log-likelihood values were $\loglike_{250}= -32.16$
+and $\loglike_{300}= -53.85$. The confidence intervals 
+are based on the normal-approximation method.
+\end{minipage}
+\label{table:icdevice2.lognor.indiv.mles}
+\end{table}
+%splus>Data: HTGB   ALT   Data subset 250 
+%splus>Data units: Hours 
+%splus>Distribution:  Lognormal 
+%splus>Log Likelihood at maximum: -32.15036 
+%splus>Parameter Estimation Results 
+%splus>           MLE        se   z-ratio 95% lower 95% upper 
+%splus>   mu 8.539997 0.3337729 25.586248 7.8858021  9.194192
+%splus>sigma 0.870981 0.2621932  3.321906 0.4827976  1.571275
+%splus>
+%splus>Data: HTGB   ALT   Data subset 300 
+%splus>Data units: Hours 
+%splus>Distribution:  Lognormal 
+%splus>Log Likelihood at maximum: -53.84794 
+%splus>
+%splus>Parameter Estimation Results 
+%splus>            MLE        se   z-ratio 95% lower 95% upper 
+%splus>   mu 6.5632715 0.0707790 92.729082 6.4245447 6.7019984
+%splus>sigma 0.4571633 0.0548708  8.331632 0.3613304 0.5784133
+The different slopes in the plot suggests that the lognormal shape
+parameter $\sigma$ changes from 250 to 300$\degreesc$. Such a change
+could be caused by the occurrence of a different failure mode at high
+temperatures, casting doubt on the simple first-order Arrhenius model.
+Failure modes with a higher activation energy, that
+might never be seen at low levels of temperature, can appear at higher
+temperatures (or other accelerating variables).  A 95\% confidence
+interval for the ratio $\sigma_{250}/\sigma_{300}$ is $[1.01, \quad
+3.53]$ (calculations requested in
+Exercise~\ref{exercise:sigma.ratio}), suggesting that there could be a
+real difference. These results also suggested that detailed physical
+failure mode analysis should be done for at least some of the failed
+units and that the accelerated test should be extended until some
+failures are observed at lower levels of temperature. Even if the
+Arrhenius model is questionable at 300$\degreesc$, it could be
+adequate below 250$\degreesc$.
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/icdevice02.groupm.lognor.ps}
+\caption{Lognormal probability plot showing the ML fit of the 
+Arrhenius-lognormal model for the new-technology IC device.}
+\label{figure:icdevice02.groupm.lognor.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Table~\ref{table:icdevice2.lognor.arrhen.mles} gives
+Arrhenius-lognormal model ML estimates for the new-technology
+IC device.
+\begin{table}
+\caption{Arrhenius-lognormal model ML 
+estimation results for the new-technology IC device.}
+\centering\small
+\begin{tabular}{crrrr}
+\\[-.5ex] \hline
+ & & & \multicolumn{2}{c}{95\% Approximate}\\ &\multicolumn{1}{c}{ML}
+&Standard & \multicolumn{2}{c}{Confidence Intervals}\\ \cline{4-5} 
+Parameter &
+Estimate & \multicolumn{1}{c}{Error} & Lower & Upper \\
+\hline 
+ $\beta_{0}$ & $-10.2$ & $1.5$ & $-13.2$ & $-7.2$ \\[.7ex] 
+$\beta_{1}$ & $.83$ & .07 & $.68$ & $.97$ \\[.7ex] 
+$\sigma$ & $.52$ & $.06$ & $.42$ & $.64$ \\
+\hline
+\\[-1.8ex]
+\end{tabular}
+\begin{minipage}[t]{4in}
+The log likelihood is $\loglike= -88.36$. The confidence intervals 
+are based on the normal-approximation method.
+\end{minipage}
+\label{table:icdevice2.lognor.arrhen.mles}
+\end{table}
+% splus> Distribution:  Lognormal 
+% splus> Relationship:  arrhenius2 
+% splus> Log Likelihood at maximum: -88.3578 
+% splus> 
+% splus> Parameter Estimation Results 
+% splus>               MLE         se    z-ratio   95% lower  95% upper 
+% splus>    b0 -10.1721601 1.52700302  -6.661519 -13.1650861 -7.1792342
+% splus>    b1   0.8265388 0.07319185  11.292770   0.6830828  0.9699948
+% splus> sigma   0.5165083 0.05747376   8.986853   0.4152974  0.6423849
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/icdevice02.altplot.lognor.ps}
+\caption{Arrhenius plot showing the new-technology IC device data and 
+the Arrhenius-lognormal model ML estimates.
+Censored observations are indicated by $\Delta$.}
+\label{figure:icdevice02.altplot.lognor.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Figure~\ref{figure:icdevice02.groupm.lognor.ps} is a lognormal
+probability plot showing the Arrhenius-lognormal model fit to the
+new-technology IC device ALT data. This figure shows lognormal cdf estimates
+for all of the test levels of temperature as well at
+the use-condition of 100$\degreesc$.
+
+Following the approach used in
+Example~\ref{example:devicea.model.lrt}, we use the ``omnibus'' test
+to compare the constrained and unconstrained models for estimating the
+lognormal distributions at the different levels of temperature.  From
+Table~\ref{table:icdevice2.lognor.indiv.mles}, for the unconstrained
+model, $\loglike_{\rm unconst}=\loglike_{250} +
+% splus >   -2*(-88.36 +86.01 )
+\loglike_{300}  = -86.01$ and from
+Table~\ref{table:deva.arr.lognor.mles}, for the constrained model,
+$\loglike_{\rm const}= -88.36$.  In this case the comparison has just
+one degree of freedom (i.e., $dof=4-3=1$) and the test statistic is
+$Q=-2(-88.36 +86.01 ) =4.7>
+\chisquare_{(.95;1)} =3.84$. This indicates that there 
+is some lack of fit in the constant-$\sigma$ Arrhenius-lognormal
+model. Note that there were no failures at 150, 175, or
+200$\degreesc$.  These results were implicitly in the likelihood.
+Because the result of 0 failures at these temperatures is consistent
+with the model and the other data, the computed likelihood at these
+three temperatures would be very close to 1 and the computed values
+of $\loglike$ are therefore very close to 0. Thus the results have
+no direct effect on the ML fit. A result of 0 failures at any
+temperature greater than 250$\degreesc$ combined with the rest of
+these data would, however, have had a strong effect on the fit.
+
+Figure~\ref{figure:icdevice02.altplot.lognor.ps} is an Arrhenius
+plot of the Arrhenius-lognormal model fit to the IC new-technology
+device data.  This plot shows the rather extreme extrapolation
+needed to estimate the failure-time distribution at the use
+conditions of 100$\degreesc$.  If the projections are close to the
+truth, it appears unlikely that there will be any failures below
+200$\degreesc$ during the remaining 3000 hours of testing and, as
+mentioned before, this was the reason for starting some units at
+200$\degreesc$.
+\end{example}
+
+In some applications, temperature-accelerated life tests are run
+with only one level of temperature. Then a given value of activation
+energy is used to compute an acceleration factor to estimate life at
+use temperature. Resulting confidence intervals are generally
+unreasonably precise because activation energy is generally not know
+exactly.  For example, MIL-STD-883 provides reliability
+demonstration tests based on a given value of $\Ea$.
+
+\begin{example}
+\label{example:new.tech.ic.beta.known}
+{\bf Estimation with activation energy given.}
+Figure~\ref{figure:icdevice02.groupm.lognor.fixedea.ps}, similar to
+Figure~\ref{figure:icdevice02.groupi.lognor.ps} shows the effect of
+assuming that $\Ea=.8$ eV and having to estimate only $\beta_{0}$
+and $\sigma$ from the limited data. Using a given $\Ea$ results in a
+set of approximate 95\% confidence intervals for $F(t)$ at
+100$\degreesc$ that are unrealistically narrow. See
+Section~\ref{section:bayes.acceleration} for alternative analyses of
+these data.
+\end{example}
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/icdevice02.groupm.lognor.fixedea.ps}
+\caption{Lognormal probability plot showing the Arrhenius-lognormal model ML 
+estimates and 95\% confidence intervals for $F(t)$ at $100\degreesc$ for the 
+new-technology IC device with given 
+$\Ea=.8$.}
+\label{figure:icdevice02.groupm.lognor.fixedea.ps}
+\end{figure}
+%----------------------------------------------------------------------
+
+%-----------------------------------------------------------------------------
+\subsection{Analysis of a two-variable ALT}
+\label{section:two.factor.alt}
+%----------------------------------------------------------------------
+This section shows how to analyze AT data with two 
+experimental variables. In this case, both variables
+were thought to be accelerating. The methods
+illustrated apply to experiments with any number of variables.
+
+Appendix Table~\ref{atable:tantalum.alt.data} contains
+temperature/voltage ALT data on tantalum electrolytic capacitors.
+These data come from Singpurwalla, Castellino, and Goldschen~(1975).
+Tests were conducted at temperature/voltage combinations that were
+nonrectangular and with unequal allocations of units.
+Figure~\ref{figure:tantalum.scatter.ps} is a scatter-plot of hours
+to failure versus voltage with temperature indicated by different
+symbols in the plot (with some jitter used in voltage to help in
+viewing ties in the data).  The amount of censoring is indicated in
+the top margin.  There were various censoring times that are given
+in Table~\ref{atable:tantalum.alt.data}.
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/tantalum.scatter.ps}
+\caption{Scatter-plot of failures in the tantalum capacitor data
+showing hours to failure versus voltage with temperature indicated by
+different symbols.}
+\label{figure:tantalum.scatter.ps}
+\end{figure}
+%----------------------------------------------------------------------
+
+Figure~\ref{figure:tantalum.groupi.ps} is a multiple Weibull
+probability plot for the individual combinations of voltage and
+temperature for the tantalum capacitor data. The plot also shows
+individual ML estimates of Weibull cdfs for those combinations
+having more than one failure. The line for 85$\degreesc$ and 46.5
+Volts is much steeper than the others, but this line results from
+only two out of 50 capacitors failing. Thus, this deviation in the
+slopes could be due to random variability.  The Weibull distribution
+seems to provide a reasonable model for the failure-time
+distribution at those conditions with enough failures to make a
+judgment.  Figure~\ref{figure:tantalum.groupi.ps} shows that units
+fail more rapidly at high voltage. Any possible temperature effect
+is not as strong.
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/tantalum.groupi.ps}
+\caption{Weibull probability 
+plot for the individual combinations of voltage and temperature for
+the tantalum capacitor data, along with ML estimates of Weibull
+cdfs.}
+\label{figure:tantalum.groupi.ps}
+\end{figure}
+%----------------------------------------------------------------------
+The Arrhenius-inverse power relationship-Weibull model
+(Section~\ref{section:temp.volt.acc.model}) both without the
+interaction term (Model 1) and with the interaction term (Model 2),
+were fitted to these data. In particular, the fitted relationships were
+\begin{eqnarray*}
+\mu &=& \beta_{0} + \beta_{1} x_{1}+\beta_{2} x_{2}\\
+\mu &=& \beta_{0} + \beta_{1} x_{1}+\beta_{2} x_{2}+ \beta_{3} x_{1} x_{2}
+\end{eqnarray*}
+where $x_{1}=11605/(\Tempk{})$, $x_{2}=\log(\Volt)$, and
+$\beta_{1}=\Ea$.  The results for Model 1 are depicted in
+Figure~\ref{figure:tantalum.groupm.ps} and the results for Models 1
+and 2 are summarized numerically in Table~\ref{table:tantalum.mles}.
+Comparing the log-likelihood values in Table~\ref{table:tantalum.mles}
+indicates that the interaction term in Model 2 is not helpful in
+explaining variability in these data (correspondingly, the
+confidence interval for $\beta_{3}$ contains zero). There is
+strong evidence for an important voltage effect on life.  There is
+also some evidence for a temperature effect, but the evidence is not
+strong. Physical theory, however, predicts the positive coefficient
+$\beta_{1}$; the lack of strong evidence could be the result of a small
+number of failures at most variable-level combinations and the
+odd-shaped experimental region.
+
+In Table~\ref{table:tantalum.mles}, it is interesting that the
+coefficient estimates of the regression model are highly sensitive
+to whether the interaction term is included in the model or
+not. This is due, in part, to the highly unbalanced allocation in
+the experiment.
+Figure~\ref{figure:tantalum.residual.linear.weib.ps} is a Weibull
+probability plot of the regression residuals for Model 1.  The
+Weibull distribution appears to provide a reasonable description of
+the variability in these data.
+Figure~\ref{figure:tantalum.cellquan.ps} shows Model 1 estimates of
+the .01 quantile of the life distribution of the tantalum capacitors
+as a function of voltage, for the three temperatures in the data (5,
+45, and 85$\degreesc$).  The plotted points give the individual ML
+estimates of the .01 quantile at the temperature/voltage
+combinations that had more than one failure. This figure shows the
+relatively strong effect of voltage, relative to the effect of
+temperature. The lines in this plot are parallel because there is no
+interaction term in Model 1.
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/tantalum.groupm.ps}
+\caption{Weibull multiple probability plot showing the fitted
+Arrhenius-inverse power relationship Weibull model (with no interaction) for
+the tantalum capacitor data. The dotted lines
+are 95\% confidence limits for $F(t)$ at use conditions.}
+\label{figure:tantalum.groupm.ps}
+\end{figure}
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+\begin{table}
+\caption{Tantalum capacitor Weibull-inverse power relationship 
+regression ML estimation results.}
+\centering\small
+\begin{tabular}{lcrrrr}
+\\[-.5ex] \hline
+& & & & \multicolumn{2}{c}{95\% Approximate}\\
+&&\multicolumn{1}{c}{ML} &Standard & \multicolumn{2}{c}{Confidence
+Interval}\\ \cline{5-6}
+& Parameter & Estimate&
+\multicolumn{1}{c}{Error} & Lower & Upper \\
+\hline 
+Model 1 
+&$\beta_{0}$ &84.4 &13.6 &$57.8$ &111. \\[.7ex] 
+&$\beta_{1}$ &$.33$  &.19 &$-.04$ &$.69$ \\[.7ex] 
+&$\beta_{2}$ &$-20.1$  &4.4  & $-28.8$  & $-11.4$\\[.7ex] 
+&$\sigma$ &2.33 &.36 &1.72 & 3.16 \\[1.2ex]
+\hline 
+Model 2 
+&$\beta_{0}$ &-78.6 &109.0 &$-292.3$ &135.1 \\[.7ex] 
+&$\beta_{1}$ &$5.13$ &3.3 & $-1.35$ &11.6 \\[.7ex]
+&$\beta_{2}$ & $19.9$ &26.7 &$-32.5$ &72.35 \\[.7ex]  
+&$\beta_{3}$ &$-1.17$ &$.80$ & $-2.8$ &$.40$ \\[.7ex] 
+&$\sigma$ &2.33 &.36 &1.72 &3.16 \\[1.2ex]
+\hline 
+\\[-1.8ex]
+\end{tabular}
+\begin{minipage}[t]{4in}
+The log likelihoods for Models 1 and 2 are, 
+respectively, $\loglike_{1}=-539.63 $
+and $\loglike_{2}=-538.40 $. The confidence intervals 
+are based on the normal-approximation method.
+\end{minipage}
+\label{table:tantalum.mles}
+\end{table}
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/tantalum.residual.linear.weib.ps}
+\caption{Weibull probability plot of the residuals from the Arrhenius-inverse 
+power relationship Weibull model (with no interaction) for
+the tantalum capacitor data.}
+\label{figure:tantalum.residual.linear.weib.ps}
+\end{figure}
+%----------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/tantalum.cellquan.ps}
+\caption{Log-log plot of the ML estimates of the
+.01 quantile of tantalum capacitor life
+based on data fitted to the 
+Arrhenius-inverse power relationship Weibull model with no-interaction.}
+\label{figure:tantalum.cellquan.ps}
+\end{figure}
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Some Practical Suggestions for Drawing Conclusions
+from ALT Data}
+\label{section:practical.suggest.alt}
+%----------------------------------------------------------------------
+
+Due to their extrapolative nature,
+drawing conclusions from ALT data can be difficult.
+This section describes some cautions.
+
+\subsection{Predicting product performance}
+
+It is particularly difficult to use AT data to predict actual product
+performance.  This is because most products tend to be complicated
+combinations of materials and components, AT data are mostly
+successful for estimating life distributions of simple components and
+materials.  Extrapolation is needed to make predictions on the life
+distribution of a product in the field environment (which, itself, may
+be difficult to predict).  Extrapolation is difficult or impossible to
+justify completely.
+
+ALT experiments should be planned and executed with a great deal of
+care.  Inferences and predictions should be made with a great deal of
+caution.  Some particular suggestions for doing this are
+\begin{itemize}
+\item
+Use previous experience with similar products and materials.
+\item
+Conduct initial studies (pilot experiments) to evaluate the effect
+that the accelerating variable or variables will have on degradation and
+the effect that degradation will have on life or performance.
+Information from preliminary tests provide useful input for planning
+ALTs (as described in Chapter~\ref{chapter:alt.test.planning}).
+\item
+Use failure mode analysis and physical/chemical theory to improve or
+develop physical understanding to provide a better physical basis for
+ALT models.
+\item
+Limit, as much as possible, the amount of extrapolation (in time and
+in the accelerating variable). Methods for doing this are described in
+Chapter~\ref{chapter:alt.test.planning}.
+
+\end{itemize}
+
+%-----------------------------------------------------------------------------
+\subsection{Drawing conclusions from accelerated test experiments}
+
+A typical AT is an extreme example of what Deming~(1975) calls an
+``analytic study.''  As such, when making predictions from an AT, one
+has to question the reasonableness of using the AT
+manufacturing/testing process to represent the actual
+manufacturing/use process and the adequacy of the life-acceleration
+model.  Typically, confidence intervals based on analytic studies
+provide, at best, only a lower bound on the total variability and
+uncertainty; see Hahn and Meeker~(1991, Chapter 1 for more detail).
+For example, such intervals do {\em not} account for model inadequacy.
+Extrapolation will amplify model errors, often dominating
+other sources of uncertainty.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Other Kinds of Accelerated Tests}
+\label{section:other.kinds.alt}
+The first parts of this chapter have discussed traditional ATs that
+are used to obtain timely information on a product life distribution
+at use  conditions by testing units at one or more higher levels
+of accelerating variables. Usually such tests are done on materials,
+devices, other components, or relatively simple subsystems or
+systems where the focus is one or a small number of known failure
+modes.  The primary purpose of these tests has been to assess the
+failure-time distribution of the failure mode(s) of interest. Such
+information is then used to characterize product life at use
+conditions and to make product design, warranty coverage, and other
+decisions.
+
+There are several other important types of accelerated reliability
+testing, particularly in the electronics industry.  These additional
+types have also been called ``Accelerated Tests.''  Their purpose is
+generally other than direct estimation of reliability.
+Nevertheless, these other tests do generate data that can, in some
+cases, provide useful information for reliability estimation.
+
+%----------------------------------------------------------------------
+\subsection{Continuous operation product accelerated testing}
+Assuring the reliability of individual components is generally not
+sufficient to assure the reliability of the larger product or other
+system within which the components are installed. In particular, it
+is necessary to assure that components, subsystems, and various
+interfaces work together.  Acceleration is more difficult when
+testing a complete system and acceleration factors will generally be
+small (i.e., 2 to 10).  During a system test, there are more
+potential failure modes.  Relative to materials or component tests,
+there generally has to be more stringent limitations on how much
+accelerating variables can be increased.  One must be careful not to
+cause damage to the system (e.g., melting of components,
+over-heating causing a rapid change in material properties, or other
+damage that would not accurately simulate degradation at use
+conditions).  Usually acceleration is achieved by running the system
+more or less continuously. For example a refrigerator might be
+tested, with focus on the compressor, by running the cooling system
+continuously.  Similar tests are used for systems like washing
+machines and automobile engines (where the purpose of the test might
+be either to accelerate the life of the engine itself or of the
+engine's lubricant).
+
+
+Usually accelerated systems tests are started on prototype units or
+early production units, before the product is introduced into the
+field. For some products, however, tests will continue for some
+period of time after units have been introduced into the field (to
+protect against failure modes that will not show up until later in
+life).  If a design change is being contemplated new tests may
+be needed.
+
+Sometimes a manufacturer will design an accelerated system test to
+be run on an audit basis to check the output of the production
+process over time. For example, two units might be selected from
+production at the beginning and end of each week.  These units would
+be run at stressful conditions for some period of time (e.g., one
+month) to see if any early failures occur (which might indicate that
+there is a problem in the manufacturing process).
+
+Manufacturers have developed a number of strategies for accelerated
+testing of complete systems.  The characteristics of system
+accelerated tests are often product and failure mode specific.  In
+addition to testing units at higher than usual use rates, systems
+might be placed in a more stressful environment (e.g., high
+temperature and humidity, or higher or lower voltage).  A
+manufacturer of electric garbage disposal system tests the unit by
+having it ``chew'' on hard plastic cubes to provide a more stressful
+kind of ``garbage.''  If the motor withstands an equivalent amount
+of service with the more stressful garbage, then, in this case, the
+reliability engineers believe that the product will not experience
+motor or bearing wearout problems in actual use.
+
+To test the starting system of an
+automobile, the engine could be started and stopped. Such a
+start-stop test would also tend to put special stresses on the
+engine (or lubricant) itself, and might be used to study different
+failure modes than the continuous test.  
+The manufacturer of laser printers has the printer print a ream of
+paper, rest two minutes and then continue printing. A sump pump
+needs to be tested in humid environments. Continuous tests will
+track some kinds of failure modes quite well. One does, however, run
+the risk that continuous operation can actually inhibit some
+failure-causing processes.
+
+%----------------------------------------------------------------------
+\subsection{Highly accelerated life tests}
+
+When planning ALTs to make projections about life at use conditions,
+Meeker and Hahn~(1985) suggest that tests should be planned to
+minimize the amount of extrapolation in both the accelerating
+variable and in time. In other applications, where life information
+at use conditions is not needed, Highly Accelerated Life Tests
+(HALTs) may be useful. Confer, Canner, and Trostle~(1991) discuss
+the use of extremely high temperature (up to 150$\degreesc$) and
+voltage (8 times rating) to achieve acceleration factors of up to
+2555 times.  They suggest that such tests can be used as (a) a means
+of sampling inspection for incoming component lots and (b) as
+burn-in screening test (in this application there is danger that
+high levels of the accelerating variable will damage units that are
+to be put into service).  Other applications include (c) pilot tests
+to get information needed for planning a more extensive ALT at lower
+levels of the accelerating variable and (d) experiments to obtain
+information on the relevance of failure modes discovered in STRIFE
+testing (see next section).  When using very high levels of the
+accelerating variable(s), one must watch for failure modes that
+would never occur at use conditions and have concern for the
+adequacy of the model (Chapter 7 of Nelson~1990a shows how modeling
+might be used to deal with multiple failure modes in ALTs).
+
+
+%----------------------------------------------------------------------
+\subsection{Environmental stress testing}
+
+The pressure to quickly develop new, high reliability products has
+motivated the development of new product testing methods. The
+purpose of these testing methods is to quickly identify and
+eliminate potential reliability problems early in product
+development.  One such testing method is known as STRIFE
+(STRESS-LIFE) testing.  The basic idea of STRIFE testing is to
+aggressively stress and test prototype or early production units to
+force failures. It is common to test only one or two units, but more
+test units can provide important additional information, for
+example, on unit-to-unit variation.  Typical STRIFE tests use
+combinations of temperature and vibration cycling. The amplitude of
+the cycling is increased continuously until the end of the
+test. When possible, use-rate may also be increased.  Such a test
+could be run for days, provided appropriate fixes for detected
+failure modes can be effected without long delays that might be
+needed for a complicated redesign (as opposed to a simple part
+substitution). Bailey and Gilbert~(1981) report an example in which
+the complete STRIFE test and improvement program was successfully
+completed in three weeks.  Nelson~(1990a, pages 37-39) describes
+environmental stress tests as ``elephant tests'' and describes some
+important issues.  The {\em Proceedings of the Institute of
+Environmental Sciences} often contain papers on this subject as do
+various journals on reliability of electronics systems.
+
+Generally, failures in STRIFE testing are due to product or process
+design flaws. When there is a failure in a STRIFE test it is necessary
+to find and carefully study the failure's root cause.  First it is
+necessary to assess whether if the failure could occur in actual use or not.
+Knowledge and physical/chemical modeling of the particular failure
+mode is useful for helping to make this assessment.  Nelson~(1990a,
+page 38) describes an example where a costly effort was made to remove
+a high-stress-induced failure mode that never would have occurred in
+actual use.  The occurrence of such failures might indicate that the
+test is using some combinations of accelerating variables that are too
+high to be useful.  When it is determined that a failure could occur
+in actual use, it is necessary to change the product design or
+manufacturing process to eliminate that cause of failure.  In some
+cases, the fix is obvious.  In other cases additional focused research
+and experimentation at the component level or at component interfaces
+may be required.
+
+Because the results of STRIFE testing are used to make changes on
+the product design and manufacturing process, it is difficult, or at
+the very least, very risky to use the test data to predict what will
+happen in normal use. Even so, ideas from statistical experimental
+design and models relating stress to life could be useful in
+choosing stresses, stress ramp speed, and other aspects of the test.
+
+In other testing programs, the goal is to test prototype or
+early-production units at somewhat accelerated conditions to obtain
+information on field performance of a product. For example, a newly
+designed automobile engine may be run continuously at high rpm to
+simulate rapidly 50 thousand miles of service. The danger in
+interpreting the results of such tests is that the assumed
+acceleration factors can be seriously inaccurate. Different failure
+modes have different acceleration factors. For example, such an
+accelerated test may accurately predict a wear mechanism, but not even
+discover a corrosion mechanism. In another accelerated test
+application, humidity was used to accelerate a corrosion mechanism,
+but had the unexpected effect of reducing wear rate. For these
+reasons, it is important to have a good understanding of the
+physics and/or chemistry of possible failure mechanisms.
+
+Schinner~(1996) describes and gives examples of system-level and
+system-level accelerated tests such as STRIFE.
+
+%----------------------------------------------------------------------
+\subsection{Burn-in}
+The most common reliability problem for manufacturers and consumers
+of electronic equipment has been early (infant mortality) failures.
+Such failures are typically caused by manufacturing defects which
+often appear in only a small proportion of the manufactured
+units. In electronic manufacturing such defective components are
+called ``freaks.'' The problem of early failure also arises in other
+kinds of products. Such problems are sometimes referred to as a
+``quality problem.''  Often such problems are cured as a product's
+design and manufacturing process matures. Manufacturers would prefer
+to ``build-in'' reliability by eliminating all manufacturing defects
+from the start of production. With rapidly changing technology,
+however, it has been difficult to achieve a goal of zero defects,
+particularly early in the product development cycle.  To achieve
+sufficiently high reliability, particularly in critical applications
+(e.g., space and under-sea systems), it has been common practice to
+use burn-in of components and systems to screen out the units that
+would otherwise fail early in life. For components like integrated
+circuits it is common to do burn-in at high humidity and
+temperature. For system burn-in, it is generally necessary to avoid
+the use of high levels of the accelerating variables to avoid
+damaging sensitive components. In either case, burn-in may also
+involve continuous operational exercising and monitoring of the
+units. Such burn-in is useful for detecting intermittent failure
+modes that have a low probability of being detected in ordinary
+testing.
+
+Burn-in can be viewed as a type of 100\% inspection or screening of
+the product population to eliminate or reduce the number of
+defective items going to customers.  Burn-in may be necessary if the
+output of production does not meet reliability specifications.  It
+is important that the burn-in stress or temperature not be so high
+as to damage the good units.  Burn-in is expensive and thus the
+length of the burn-in is typically limited.  The decision on how
+long to run a burn-in can be based on the desired level of
+reliability and the distribution of the observed failures during the
+screening. For a stable production process, which has been
+adequately characterized, this can be set in advance.  Otherwise a
+sequential or dynamic stopping rule may be needed.  Kuo~(1984)
+provides and applies a cost-optimization model for important burn-in
+decisions.  He also reviews previous literature on this
+subject. Most of the literature deals with burn-in at use
+conditions.  Kuo, Chien, and Kim~(1998) describe methods for
+implementing and optimizing the use of burn-in for electronic
+components and systems.
+
+
+Jensen and Petersen~(1982) provide an engineering approach to this
+subject. Also, see Nelson~(1990a, page 43).  Statistical methods can
+and have been useful for helping to choose stress levels, length of
+burn-in, and in using burn-in data to assess the state of the
+production process and the likely field reliability of a product
+going into service.
+
+%----------------------------------------------------------------------
+\subsection{Environmental Stress Screening}
+
+Environmental Stress Screening (ESS) was developed as an improvement
+over traditional burn-in methods. ESS provides a more economical and
+more effective means of removing defective units from a product
+population when testing units at the system or subsystem (e.g.,
+circuit board) level.  Because systems and subsystems cannot tolerate
+high levels of stress for long periods of time, ESS uses mild, but
+more complicated stressing. High levels of temperature and humidity at
+the component level are replaced by more moderate temperature cycling,
+physical vibration, and perhaps stressful operational regimes (e.g.,
+running computer CPU chips at higher than usual clock speeds and lower
+than usual voltages) to help identify the defective units.  These
+tests can be viewed as generalizations of step-stress tests (but their
+purposes are much different).  The tests are sometimes called ``shake
+and bake'' tests.  Again, the goal is to screen out, as effectively
+and as quickly as possible, the defective items without otherwise
+doing harm to the product.
+
+Numerous articles on ESS testing appear each year in the {\em
+Proceedings of the Institute of Environmental Sciences}.
+Tustin~(1990) provides a motivational description of the methodology
+and several references.  Nelson~(1990a, page 39) gives additional
+references, including military standards.  Kececioglu and Sun~(1995)
+provide a comprehensive description of ESS methods, including
+optimization and management of ESS programs. MIL-STD-2164
+describes standard procedures for ESS of electronic equipment.
+
+Statisticians have had little impact in the development of ESS
+methods because they are mostly based on engineering
+knowledge. There are, however, some areas where statistical methods
+could have an impact on ESS. Some of these will require the
+development of better models to relate the effect that complicated
+stressing has on the life distribution of both the defective and the
+nondefective units.  For example, advanced application of the
+statistical principles of experimental design, modeling, and data
+analysis can be used to help:
+\begin{itemize}
+\item
+Choose stress conditions that are best for weeding out manufacturing
+defects, but minimize the chance of doing damage to good units.
+\item
+Design screens to provide feedback that can be used to improve
+product design or the manufacturing process by reducing the frequency of
+manufacturing defects or eliminating them.
+\item
+Assess information that would allow prediction of field reliability.
+The typically complicated stress patterns make it difficult or
+impossible to use ESS data directly to make predictions about field
+performance.  However, with enough screening data, correlated with
+field data, one could find relationships that would allow such
+predictions.
+\end{itemize}
+The development of physical/statistical models to describe the
+effect of ESS stress patterns on product life would be useful.  This
+task, will, however, not be easy.  LuValle and Hines~(1992) report
+experimental evidence indicating that varying several accelerating
+variables in typical ESS procedures leads to complicated effects on
+life.  There can be interactions among the variables and there may
+be ``memory'' of past stress patterns in that, from a particular
+point in time, future degradation may depend not only on the current
+amount of degradation, but also on how (i.e., under which stress
+patterns) that degradation has accrued.  This is in contrast to
+traditional step-stress failure models (e.g., Chapter 10 of Nelson
+1990a).
+
+Like burn-in, ESS is an inspection/screening scheme.  In line with the
+modern quality precept of eliminating reliance on mass inspection,
+most manufacturers would prefer not to use burn-in or ESS. They are
+expensive and may not be totally effective.  By improving the
+reliability through continuous improvement of the product design and
+the manufacturing process, it is often possible to reduce or eliminate
+reliance on screening tests except, perhaps, in the most critical
+applications. Some companies apply
+ESS only on an audit basis to monitor production quality on an
+on-going basis. 
+
+
+%--------------------------------------------------------------------------
+%--------------------------------------------------------------------------
+\section{Potential Pitfalls of Accelerated Life Testing}
+%--------------------------------------------------------------------------
+\label{section:alp.pitfalls}
+As described earlier in this chapter, accelerated life testing can
+be a useful tool for obtaining timely information about materials
+and products.  There are, however, a number of important potential
+pitfalls that could cause an ALT to lead to seriously incorrect
+conclusions. Users of ALTs should be careful to avoid these pitfalls.
+
+\subsection{Pitfall 1: Multiple (unrecognized) failure modes}
+
+High levels of accelerating variables like temperature or voltage
+can induce failure modes that would not be observed at normal
+operating conditions.  In some cases new failure modes result from a
+fundamental change in the way that the material or component
+degrades or fails at high levels of the accelerating variable(s).
+For example, instead of simply accelerating a failure-causing
+chemical process, increased temperature may actually change certain
+material properties (e.g., cause melting).  In less extreme cases,
+high levels of an accelerating variable will change the relationship
+between life and the accelerating variable (e.g., life at high
+temperatures may not be linear in inverse absolute temperature, as
+predicted by the Arrhenius relationship).
+
+If other failure modes are caused at high levels of the accelerating
+variables and this is recognized, it can be accounted for in the
+data analysis by treating the failure for the new failure modes as a
+censored observation (as long as the new failure mode does not
+completely dominate the failure mode(s) of interest). Chapter 7 of
+Nelson~(1990a) gives several examples. In this case, however, such
+censoring can severely limit the information available on the
+failure mode of interest.  If other failure modes are present but
+not recognized in data analysis, seriously incorrect conclusions are
+likely.
+
+%--------------------------------------------------------------------------
+\subsection{Pitfall 2: Failure to properly quantify uncertainty}
+It is important to recognize that there is uncertainty in
+statistical estimates. Basing decisions on point estimates alone
+can, in many applications, be seriously misleading.  Standard
+statistical confidence bounds quantify uncertainty arising from
+limited data.  For example,
+Figure~\ref{figure:icdevice02.groupm.lognor.ps} shows an enormous
+amount of uncertainty in life at 100$\degreesc$, due to the small
+number of failures, and the large amount of extrapolation in
+temperature.  The corresponding analysis depicted in
+Figure~\ref{figure:icdevice02.groupm.lognor.fixedea.ps} uses a given
+value of activation energy for the life-temperature relationship.
+Because the activation energy is not known exactly, the precision
+exhibited in this plot is too small and potentially misleading. For
+many applications, neither of these extremes would provide a proper
+quantification of uncertainty.
+Section~\ref{section:bayes.acceleration} describes an appropriate
+compromise for situations where there is useful information about
+activation energy.
+
+It is also important to remember that statistical confidence bounds
+do not account for model uncertainty (which can be tremendously
+amplified by extrapolation in accelerated testing).  In general,
+performing sensitivity analysis is an important step in any
+quantitative analysis involving uncertainty and is particularly
+useful for assessing the effects of model uncertainty.  For example,
+one can rerun analyses under different assumed models to see the
+effect that different model assumptions have on important
+conclusions.
+
+%--------------------------------------------------------------------------
+\subsection{Pitfall 3: Multiple time scales and degradation affected
+by more than one accelerating variable}
+
+Section~\ref{section:def.of.time.scale} described issues relating to
+time scales. These issues become even more important with
+accelerated testing, and particularly when there is more than one
+failure-causing mechanism that might be accelerated. Standard
+acceleration methods generally will not accelerate all time scales
+in the same manner. A serious pitfall of accelerated testing is to
+assume a simple relationship between life and the accelerating
+variables when the actual relationship if really very
+complicated. Consider the following examples.
+
+\begin{itemize}
+\item
+In an accelerated test to estimate the life-time characteristics of
+a composite material, chemical degradation over time changes
+material ductility.  Failures, however, are actually caused by
+stress cycles during use, leading to initiation and growth of
+cracks, and eventually to fracture. Thus there are two
+failure-causing mechanisms. The acceleration model would be
+complicated because the effect of cycling depends on the
+material ductility and because increasing temperature would affect
+the time scales of both mechanisms.
+\item
+An incandescent light bulb usually fails when its filament
+breaks. During burn time the bulb's filament will go through an
+evaporation process, eventually leading to failure.  There are,
+however, other variables that can shorten a bulb's life. In
+particular, on-off cycles can induce both thermal and mechanical
+shocks that can, over time, lead to the growth of fatigue cracks in
+the filament.  Thus the on-off frequency can have an effect on bulb
+life.  Accelerating only the burn time (e.g., by testing at higher
+voltage) may give misleading predictions of life in an environment
+with many on-off cycles. Relatedly, light bulbs operated in an
+environment with physical vibration (e.g., in automobiles, on large
+ships, or in a motorized appliance) will often exhibit shorter life
+times depending on the frequency and amplitude of the vibrations as
+well as the bulb's design.
+
+\item
+The degradation of coatings like paint depends on a number of
+different variables relating to time scales.  Most coatings degrade
+chemically over time.  UV light accelerates the degradation process
+of many kinds of coatings, as does high temperature and humidity.
+The {\em number} of wet-dry and thermal cycles is also important to
+coating life, but generally relates to a separation or peeling
+failure-mechanism that is different from (but perhaps related to)
+the chemical degradation mechanism. Each of these variables and each
+failure mode has its own underlying time-scale.
+\end{itemize}
+
+Generally, there will be a distribution of product-use conditions
+in the field.  For example, the number of fatigue cycles as a
+function of the changing ductility of the composite material over
+time or the ratio giving the number of on-off cycles per hour of
+burn time for an incandescent light bulb. Similarly, some
+automobiles are driven in the north and some in the south; some
+spend substantial time in direct sunlight, others do not).  In these
+situations, product-use environment plays an important, but
+complicated, role in planning and making life predictions from
+accelerated tests.
+
+In a simple situations where the ratio of the time scales for
+different mechanisms is known and reasonably constant in the product
+population, an accelerated test could be conducted to simulate life
+in that ratio.  When the ratio has a known distribution in the
+product population, tests can be conducted over an appropriate range
+of the ratio. In other applications, it will be necessary to use an
+accelerated test in which accelerating variable (e.g., temperature,
+humidity, and UV exposure simultaneously) are varied
+simultaneously. To predict life at specified use conditions, one
+needs an adequate physical model to describe the relationship among
+these variables, the different degradation scales, and the
+definition failure.
+
+%--------------------------------------------------------------------------
+\subsection{Pitfall 4: Masked failure mode}
+\label{:section.masked.failure.mode}
+Figure~\ref{figure:masked.failure.mode.ps} shows a graph of what
+might illustrate the results of a typical accelerated life test
+if there were just a single failure mode and if
+increased temperature accelerated that failure mode in a simple
+manner, described by the Arrhenius relationship.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/masked.failure.mode.ps} 
+\caption{Possible results for a typical temperature-accelerated failure
+mode on an IC device.}
+\label{figure:masked.failure.mode.ps}
+\end{figure}
+%-------------------------------------------------------------------
+It is possible that such an
+accelerated test, while focusing on one known failure mode, 
+may mask another!
+This is illustrated in Figure~\ref{figure:unmasked.failure.mode.ps}.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/unmasked.failure.mode.ps} 
+\caption{Failure Mode 2 with lower activation energy, masked at high
+temperature and unmasked at low temperature.}
+\label{figure:unmasked.failure.mode.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Moreover, as shown in Figure~\ref{figure:unmasked.failure.mode.ps},
+it is often the masked failure mode that is the first one to show up
+in the field. In such cases, the masked failure modes often
+dominates among reported field failures.
+
+%--------------------------------------------------------------------------
+\subsection{Pitfall 5: Faulty comparison}
+
+It is sometimes claimed that accelerated testing is not really
+useful for predicting reliability, but is useful for comparing
+alternatives (e.g., alternative designs, vendors, etc.). Consider
+comparing similar products from two different vendors.  The thought
+behind this claim is that laboratory accelerated tests generally
+cannot be expected to adequately approximate actual use conditions,
+but that if Vendor 1 is better than Vendor 2 in an accelerated test,
+then the same would be true in field use, as illustrated in
+Figure~\ref{figure:standard.comparison.ps}.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/standard.comparison.ps} 
+\caption{Well-behaved comparison of two products.}
+\label{figure:standard.comparison.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Comparisons based on ALTs are, however, subject to some of the same
+difficulties as other ALTs. 
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/faulty.comparison.ps} 
+\caption{Comparison with evidence of different failure modes.}
+\label{figure:faulty.comparison.ps}
+\end{figure}
+%-------------------------------------------------------------------
+In particular, consider the results depicted in
+Figure~\ref{figure:faulty.comparison.ps}.  In this case, Vendor 1
+had longer life at both of the accelerated test conditions, but the
+prediction at use conditions suggested that Vendor 2 would have
+higher reliability.  An important decision on the basis of limited
+results in this ALT would be, at best, difficult to justify.  It
+would be most important to find out why the slopes are different and
+to understand the life-limiting failure modes at use conditions. If
+the failures at the use conditions are not the same as those at the
+accelerated conditions, then the ALT results would be wrong. Also,
+it might be possible that the early failures for Vendor 2 are
+masking the failure mode that we see in Vendor 1's test results.
+One cannot use an ALT to compare products that have different kinds
+of failure modes.
+%--------------------------------------------------------------------------
+\subsection{Pitfall 6: Accelerating variables can cause deceleration!}
+
+In some cases it is possible that increasing what is thought to be
+an accelerating variable will actually cause deceleration! For
+example, increased temperature in an ``accelerated'' circuit-pack
+reliability audit predicted few field failures. The number of 
+failures in the field was much higher than predicted
+because the increased temperature resulted in lower humidity in the
+``accelerated'' test and the primary failure mode in the field was
+caused by corrosion that did not occur at high temperature and low
+humidity.  It is for this reason that in most accelerated tests of
+electronic equipment, both temperature and humidity need to be
+controlled.
+
+In another similar application, a higher than usual use-rate for a
+mechanical device in an accelerated test inhibited a corrosion failure
+mechanism. That corrosion mechanism
+eventually caused a serious field problem that was
+not predicted by the accelerated test.
+
+In an accelerated test of a newly designed automobile air
+conditioner, reliability, based on a series of constant-run accelerated
+life tests, was predicted to be very high over a 5-year
+period. However, after two years, a substantial number of the
+in-service air conditioners failed due to a ``drying out'' material
+degradation. These failure were caused by lack of use in winter and
+had never been seen in the continuous accelerated testing.
+
+\subsection{Pitfall 7: Untested design/production changes}
+
+A new electro-mechanical device was to be used in a system designed
+for 20 years of service in a protected environment.  
+An accelerated test of the device was conducted and this test
+``demonstrated'' 20 year life (no more than 10\% failing) under
+normal operating conditions (typical use rate).
+After the accelerated test, and as the product was going to
+production, a material change was made by the device vendor.
+The change led to a material-degradation failure mode
+that caused (or would have caused) all in-service units to fail
+within ten years. Eventually, all installed devices had to be replaced.
+
+\subsection{Pitfall 8: Beware of drawing conclusions
+on the basis of specially built prototype test units.}
+
+Seriously incorrect conclusions can result from an accelerated life
+test if test units will differ importantly from actual production
+units.  For example, factory manufacturing conditions are different
+from those in a laboratory. Cleanliness and care in building 
+prototype versus production units may
+differ substantially. Material and parts in prototype units might
+differ from those that will be used in production. Highly trained
+technicians may build prototype units that are importantly different
+from units that would be made in the factory.
+
+As much as possible, test units for an accelerated test should be
+manufactured under actual production conditions, using raw materials
+and parts, etc. that are the same as or as close as possible to
+those that will be used in actual manufacturing of units. As much as
+possible, the test units should reflect variabilities that will be
+present in actual production.
+
+In one situation, an accelerated test was conducted on 12 prototype
+units.  The units contained epoxy that had to be cured in an oven
+for a specified amount of time. The product passed its accelerated
+test with a safe margin. In actual manufacturing operations,
+however, the curing process was not well controlled. Uncured epoxy
+can be highly reactive. For this product, a substantial proportion
+of installed units eventually failed due to corrosion caused by
+the improperly controlled curing.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Bibliographic Notes}
+Nelson~(1990a) is an extensive and comprehensive source for further
+material, practical methodology, basic theory, and examples for
+accelerated testing.  Viertl~(1988) provides a briefer (and more
+academic) overview of the available statistical methods for ALTs,
+with more focus than Nelson~(1990a) on a large class of statistical
+methods that, for a variety of practical reasons, seem not to have
+been used widely in practice.  These methods include nonparametric
+and semiparametric statistical methods. Viertl~(1988) also discusses
+Bayesian methods for ALT planning and analysis.  Nelson~(1990a)
+contains 431 references; Viertl~(1988) contains 208.  The
+intersection is only 55 references.  Mann, Schafer, and
+Singpurwalla~(1974, Chapter 9) overview ALT methods available at the
+time.  Derringer~(1982) describes some important practical
+considerations in the planning and analysis of ALTs. Meeker and
+Escobar~(1993) survey important areas of research in Accelerated
+Testing. LuValle~(1993) illustrated the use of graphical methods
+that can be used to detect departures from the SAFT model.
+
+Nelson~(1975a), Nelson~(1975b), and Nelson~(1990a, Chapter 7) describe
+graphical and ML methods for analyzing ALT data with competing failure
+modes.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Exercises}
+
+%-----------------------------------------------------------------------------
+\begin{exercise}
+Explain the importance of having physical understanding of the physics
+or chemistry of failure mechanisms when one is doing accelerated life
+testing.
+\end{exercise}
+
+%-----------------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:devicec.analysis}
+The following table contains data from an accelerated life test on 
+Device-C, an integrated circuit. Failures were caused by a chemical
+reaction inside the circuit package. Reliability engineers tested 10
+circuits at each temperature over a period of 3000 hours. The purpose of
+the experiment was to estimate the activation energy of the
+failure-causing reaction and to obtain an estimate of the integrated
+circuit life distribution at $80\degreesc$ junction temperature.
+\\[3ex]
+\begin{tabular}{ccl}
+Junction & \# of Units \\
+Temperature &  Tested & Recorded Failure Times in Thousands of Hours \\
+\hline
+$80\degreesc$ &10& None by 3000 hours\\
+$125\degreesc$&10& None by 3000 hours\\
+$150\degreesc$&10  & 2.35, 2.56, 2.98\\
+$175\degreesc$&10 & .80, 1.13, 1.21, 1.31, 
+	1.35, 1.35, 1.37, 1.42, 1.77, 1.96\\
+$200\degreesc$&10 & .22, .25, .28, .33, 
+	.37, .38, .46, .46, .51, .61 \\
+\hline
+\\[2ex]
+\end{tabular}
+\begin{enumerate}
+\item
+\label{exer.part:device.c.lognormal}
+For each temperature with failures, plot the ordered failure time
+$t_{(i)}$ versus $(i-.5)/10$ on lognormal probability paper.
+\item
+Repeat part~\ref{exer.part:device.c.lognormal}, but use Weibull
+probability paper.
+\item
+Make a judgment as to whether the lognormal or the Weibull
+distribution is a more adequate distribution for these data.
+\item
+Using the lognormal probability plot, draw a set of parallel straight
+lines through the plotted points, one line for each
+temperature having failures.
+\item
+Use each line on the probability plot to obtain graphical estimates
+of the .5 quantiles at the corresponding temperatures. 
+\item
+Use each line on the probability plot to obtain graphical estimates of
+the .01 quantiles at the corresponding temperatures. Describe the
+nature of the extrapolation in these estimates.
+\item
+\label{exer.part:device.c.arrhen.plot}
+Plot the estimates of the .5 quantile versus temperature on Arrhenius
+paper. Draw a straight line to estimate the relationship between life
+and temperature. Do the same with the graphical estimates of the .01
+quantile.
+\item
+Graphically estimate the slope of the lines drawn in
+part~\ref{exer.part:device.c.arrhen.plot}, and use these to obtain a
+graphical estimate of the failure mode's activation energy.
+\item
+Use the lines drawn in part~\ref{exer.part:device.c.arrhen.plot} to
+obtain estimates of the .01 and .5 quantiles of the life distribution
+of Device-C at $80\degreesc$. Describe the nature of the extrapolation
+in these estimates.
+\item
+Predict the effect on the estimates of the Arrhenius relationship
+if the data at $80\degreesc$ and $125\degreesc$ were to be omitted
+from the analysis. Explain.
+\end{enumerate}
+\end{exercise}
+
+%-----------------------------------------------------------------------------
+\begin{exercise}
+Provide a list of the different things that one can learn from
+plotting individual nonparametric estimates and parametric ML
+estimates on Weibull probability paper (such as
+Figure~\ref{figure:mylarpoly.lnor.groupi.ps}).
+\end{exercise}
+
+%-----------------------------------------------------------------------------
+\begin{exercise}
+Suppose that failure time $T \sim \LOGNOR(\mu,\sigma)$ at a given
+level of temperature and that the Arrhenius model can be used to get a
+temperature/time acceleration factor as in
+(\ref{equation:arrhenius.af}). Then show that the logarithm of quantiles
+of the failure-time distribution will be a linear function of
+$1/(\Tempc{} +273.15)$.
+\end{exercise}
+
+%-----------------------------------------------------------------------------
+\begin{exercise}
+Suppose that failure time $T \sim \WEIB(\mu,\sigma)$ at a given
+level of voltage and that the inverse power relationship can be used
+to get a voltage/time acceleration factor as in
+(\ref{equation:voltage.acceleration}). Then show that the logarithm of quantiles
+of the failure-time distribution will be a linear function of
+$\log({\rm Voltage})$.
+\end{exercise}
+
+
+
+%-----------------------------------------------------------------------------
+\begin{exercise}
+An analyst has fitted the Arrhenius-lognormal model
+\begin{displaymath}
+\Pr[\rv\leq t;\Temp] = \Phi_{\nor} 
+\left[\frac{\log(t)-\mu}{\sigma} \right]
+\end{displaymath}
+where $\mu =\beta_{0}+ \beta_{1} x$, $\sigma$ is constant and
+$x=1/(\Tempk{})$.  Show how $\beta_{1}$ in this model is related to
+activation energy $\Ea$ in the Arrhenius relationship.
+\end{exercise}
+
+
+
+%-----------------------------------------------------------------------------
+\begin{exercise}
+An analyst has fitted the Arrhenius-lognormal model
+\begin{displaymath}
+\Pr[\rv \leq t;\Temp] = \Phi_{\nor} 
+\left[\frac{\log_{10}(t)-\mu}{\sigma} \right]
+\end{displaymath}
+where $\mu = \beta_{0}+ \beta_{1} x$, where $\sigma$ is constant and
+$x=11605/(\Tempk{})$.  This differs from the model presented in
+Example~\ref{example:devicea.arr.log.model} because base-10
+logarithms have been used (something done quite commonly, and
+usefully, in engineering and other non-mathematical disciplines).
+Show how estimates of $\beta_{0}, \beta_{1},
+\sigma,$ and $t_{p}$ in this model
+relate to estimates in the traditional base-$e$ lognormal
+distribution.
+\end{exercise}
+
+
+
+%-----------------------------------------------------------------------------
+\begin{exercise}
+Refer to Example~\ref{example:ci.fhat.comp}.  Write down expressions
+that could be used to compute a normal-approximation confidence
+interval for the $p$ quantile of the life distribution at a
+specified level of temperature.
+\end{exercise}
+
+%-----------------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:crisk.alt}
+A particular type of IC has two different failure modes, both of
+which can be accelerated by increasing temperature.  The random
+failure-time of Mode 1 is $T_{{\rm M}_{1}}$ and the
+random failure time due to Mode 2 is $T_{{\rm M}_{2}}$. In a unit,
+suppose that the IC fails at $T=\min(T_{{\rm M}_{1}},T_{{\rm
+M}_{2}})$. Failure mode ${\rm M}_{1}$ has an activation energy of
+$\Ea=1.4$ electron volts and failure mode ${\rm
+M}_{2}$ has an activation energy of $\Ea=.7$.  The physical nature
+of the failure mechanisms suggests that $T_{{\rm M}_{1}}$ and
+$T_{{\rm M}_{2}}$ are independent. The engineers involved believe
+that both $T_{{\rm M}_{1}}$ and $T_{{\rm M}_{2}}$ have a lognormal
+distribution.  At the proposed highest test temperature of
+$120\degreesc$, with failure time measured in hours, assume that
+$\mu_{1}=6.9$, $\sigma_{1}=.6$, $\mu_{2}=9.0$, and $\sigma_{2}=.8$.
+\begin{enumerate}
+\item
+Assuming an Arrhenius ALT model, plot the median of the failure-time
+distribution versus temperature for failure mode ${\rm M}_{1}$ and also
+for failure mode ${\rm M}_{2}$. Plot using temperatures between the use
+temperature of $40\degreesc$ and $120\degreesc$.
+\item
+Plot the .1 and .9 quantiles of the mode ${\rm M}_{1}$
+failure-time distribution and of the mode ${\rm M}_{2}$ failure-time
+distribution, as a function of temperature.
+\item
+Use the plots to help describe potential dangers of using a
+temperature-accelerated life test on a component, ignoring failure mode
+differences, when the  different
+failure modes have vastly different activation energies.
+\end{enumerate}
+\end{exercise}
+
+%-----------------------------------------------------------------------------
+\begin{exercise1}
+Refer to Exercise~\ref{exercise:crisk.alt}.  Compute and plot the
+median, as well as the .1 and .9 quantiles of the failure-time 
+distribution for the IC, as a function of temperature, when
+both failure modes are active. That is, use the distribution of
+$T=\min(T_{{\rm M}_{1}},T_{{\rm M}_{2}})$.  What do these results
+suggest about appropriate methods for dealing with test acceleration
+when there are 2 or more failure modes?  That is, suggest how a useful
+ALT can be conducted and how the data could be analyzed when there are
+2 or more failure modes.
+\end{exercise1}
+
+
+%-----------------------------------------------------------------------------
+\begin{exercise1}
+To describe the failure-time distribution of specimens of an
+insulating material at use operating conditions $\Temp_{U}$, use a
+Weibull distribution with cdf $F(t)=
+1-\exp[-(t/\eta_{U})^\beta]$. Suppose that the Arrhenius model
+applies. Then the model is SAFT and at some high temperature
+$\Temp_{H}$, $\eta_{U} = \AF(\Temp_{H})
+\eta_{H} $.
+\begin{enumerate}
+\item
+Show that  $\log(t_{p})$, the logarithm of the Weibull quantile, is a linear
+function of $1/(\Tempc{} +273.15)$.
+\item
+Derive an expression for the pdf at $\Temp_{H}$.
+\item
+Derive an expression for the hazard function at $\Temp_{H}$.
+\item
+Show that the ratio of the hazard function at $\Temp_{U}$
+and at $\Temp_{H}$ does not depend on time. This implies that
+the Weibull SAFT is also a proportional hazards model.
+\end{enumerate}
+\end{exercise1}
+
+
+%-----------------------------------------------------------------------------
+\begin{exercise}
+For a particular kind of insulating material, life can be
+described by the inverse power model 
+\begin{displaymath}
+\Pr[\rv\leq t;\Volt] = \Phi_{\sev}\left[\frac{\log(t)-\mu}{\sigma} \right]
+\end{displaymath}
+where $\sigma$ is constant, $\mu = \beta_{0}+ \beta_{1} x$, and
+$x=\log(\Volt)$.
+\begin{enumerate}
+\item
+Show that  $\log(t_{p})$, the logarithm of the Weibull quantile, is a linear
+function of $\log(\Volt)$.
+\item
+Suppose that $100p_{1}$\% would fail at voltage $\Volt_{1}$
+and $100p_{2}$\% would fail at voltage $\Volt_{2}$ before time
+$\censortime$. Derive an expression for the proportion failing at
+$\Volt_{3}$.
+\item
+Derive expressions
+for the inverse power relationship parameters $\beta_{0}$ and
+$\beta_{1}$
+as functions of $p_{1}$, $p_{2}$, and $\sigma$.
+\end{enumerate}
+\end{exercise}
+
+%-----------------------------------------------------------------------------
+\begin{exercise}
+Example~\ref{example:devicea.model.lrt} showed how to use an omnibus
+likelihood ratio test to compare fitting individual lognormal
+distributions at each level of temperature and fitting the
+Arrhenius-lognormal ALT model.  This provides an overall test for
+model adequacy.
+\begin{enumerate}
+\item
+Explain, precisely, the hypothesis or hypotheses being tested in
+Example~\ref{example:devicea.model.lrt}.
+\item
+Explain which constrained and unconstrained models you would
+fit in order to test the assumption of a common $\sigma$ at all
+levels of temperature. Do not assume anything about the
+temperature-life relationship.
+\item
+Explain possible likelihood ratio tests on whether $\sigma$ is
+constant, under the assumption that $\mu$ is linearly related to
+$11605/\Tempk{}$.
+\item
+Explain how to do a likelihood ratio test to check the assumption
+that $\mu$ is linearly related to $11605/\Tempk{}$ versus an
+alternative relationship with curvature, assuming that $\sigma$ does
+not depend on temperature.
+\end{enumerate}
+\end{exercise}
+
+
+%-----------------------------------------------------------------------------
+\begin{exercise}
+Refer to Example~\ref{example:ci.fhat.comp} for the Device-A data.
+Compute a confidence interval for the lognormal distribution
+$F(10000)$ at 10$\degreesc$.
+\end{exercise}
+
+
+
+%-----------------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:mylar.lognormal}
+The ALT data on the mylar-polyurethane insulating structure in
+Appendix Table~\ref{atable:mylar.alt.data} are complete data (no
+censored observations). Thus it is possible to fit a lognormal
+distribution to these data using the standard least-squares regression
+analysis procedure in a standard statistical package.
+Use these data, dropping the 361.4 kV/mm observations, to do the following.
+\begin{enumerate}
+\item
+Use such a statistical package to compute the least squares estimates for
+the inverse power relationship lognormal model.
+\item
+Plot the regression estimates of median of the failure-time
+distribution on log-log axes. Also plot the sample median at each
+level of voltage. What conclusions can you draw from this?
+\item
+Compare the least squares estimates with estimates obtained by using
+ML estimation with the inverse power relationship lognormal
+model. What differences do you notice in the parameter estimates?
+\end{enumerate}
+\end{exercise}
+
+%-----------------------------------------------------------------------------
+\begin{exercise}
+Refer to Exercise~\ref{exercise:mylar.lognormal}.  Use a maximum
+likelihood program to fit the inverse power relationship Weibull
+model to these data. Compare Weibull and lognormal estimates of the
+.1 quantile of failure at 50 kV/mm. What do you conclude about the
+importance of the distribution used for this estimate?
+\end{exercise}
+
+
+%-----------------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:mylar.lognormal.all}
+Redo the analyses in Exercise~\ref{exercise:mylar.lognormal} but
+include the 361.4 kV/mm observations. What do you conclude?
+\end{exercise} 
+
+
+%-----------------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:sigma.ratio}
+For Example~\ref{example:new.tech.ic}, using the results in
+Table~\ref{table:icdevice2.lognor.indiv.mles}, compute a 95\%
+normal-approximation confidence interval for the ratio
+$\sigma_{250}/\sigma_{300}$. Base the interval on the large sample
+distribution of $Z_{\log(\sigmahat_{250}/\sigmahat_{300})}$.
+\end{exercise}
+
+
+%-----------------------------------------------------------------------------
+\begin{exercise}
+In Example~\ref{example:new.tech.ic}, there is evidence that
+$\sigma$ differs from one level of temperature to the other.
+\begin{enumerate}
+\item
+Suppose that $\sigma$ is really changing (as suggested by the point
+estimates) describe the effect that using a constant $\sigma$ model would
+have on estimates of the life distribution at $100
+\degreesc$. You do not need to do any numerical 
+computations; answer using intuition or analytical arguments.
+\item
+With reference to the simple Arrhenius-lognormal failure-time model
+described in Sections~\ref{section:arrhenius.af} and
+\ref{section:nonlin.deg.acc} suggest possible physical reasons
+(i.e., deviations from the simple model) that might cause $\sigma$
+to change as a function of temperature.
+\end{enumerate}
+\end{exercise}
+
+
+%-----------------------------------------------------------------------------
+\begin{exercise1}
+In Example~\ref{example:new.tech.ic}, the likelihood ratio test for
+comparing the constrained and unconstrained models has only one
+degree of freedom. In Example~\ref{example:devicea.model.lrt},
+however, the comparison test has three degrees of freedom.
+\begin{enumerate}
+\item
+Explain why there is a difference.
+\item
+If the 200 $\degreesc$ subexperiment had run to $10^{5}$ hours
+without failure, would the number of degrees of freedom in the test
+change?  Why or why not?
+\end{enumerate}
+\end{exercise1}
+

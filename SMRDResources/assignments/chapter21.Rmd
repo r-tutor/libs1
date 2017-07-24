@@ -1,0 +1,97 @@
+---
+output: html_document
+---
+
+```{r echo=FALSE}
+ex <- 0
+```
+
+
+# From the Text Exercise 21.`r ex = ex+1; ex`
+
+ \label{exercise:resist.deg.data} Appendix Table~\ref{atable:resistance.degradation.data} gives ADT data on the increase in resistance over time of carbon-film resistors tested at three different levels of temperature.  Suppose that failure is defined as the time at which the resistance has increased by 5\%. Use the approximate method of analysis described in Sections~\ref{section:app.deg.anal} and \ref{section:app.acc.deg.anal} to analyze these data. In particular, 
+ 
+
+a. Make a plot the degradation versus time for each of the sample paths.  Use both log and linear axes. 
+
+a. Choose an appropriate transformation scale for the data to make the paths approximately linear. Fit a separate linear regression model to the appropriate subset of the data in each sample path. Plot the estimated regression estimates in various ways. 
+
+a. Explain the interpretation of the parameters of the regression model for the individual paths. In what sense are these regression parameters random? 
+
+a. \label{exer.part:resist.deg.model} Compute the average of the slope estimates within each temperature group.  Plot these averages versus $11605/(\Tempc{} + 273.15)$ (or, equivalently, plot on Arrhenius scales, as described in Exercise~\ref{exercise:arrhenius.scale}). Assess the adequacy of a linear relationship. What measure could you use, in an informal way, to help in this assessment? 
+
+a. Write down the temperature/degradation model implied by the relationship graphed in part~\ref{exer.part:resist.deg.model}. Obtain a graphical estimate of the activation energy for this degradation process. 
+
+a. Compute pseudo failure time for each of the sample paths and use these to do a life data analysis and to estimate the failure-time distribution at 50$\degreesc$.  
+
+
+# From the Text Exercise 21.`r ex = ex+1; ex`
+
+ Refer to Example~\ref{example:sliding.wear.simple}.   
+ 
+
+a. \label{exerpart:5microns} Repeat the analysis using 30 microns as the definition of failure. 
+
+a. \label{exerpart:500microns} Repeat the analysis using 100 microns as the definition of failure. 
+
+a. Compare the results in parts  \ref{exerpart:5microns} and \ref{exerpart:500microns}. Comment on the differences in assumptions needed to estimate these two different distributions.  
+
+
+# From the Text Exercise 21.`r ex = ex+1; ex`
+
+ When iterative techniques are used for maximum likelihood estimation, there is always some chance that the iterations will not converge to the actual maximum.  As described in Section~\ref{section:numerical.methods}, two precautions that will improve the probability of success are to use a parameterization that does not result in highly correlated parameter estimates and to have good starting values for the iterations. In most cases, the best way to get good starting values is to find simple graphical or moment-based estimates (e.g., estimates based on sample means and variances).  For the accelerated degradation model described by (\ref{equation:nonlinear.deg.path}) and (\ref{equation:adt.arrhenius.af}), and the corresponding data from Example~\ref{example:device-b.degradation.data}, suggest expressions that can be used to obtain starting values for the approximate ML estimation algorithm. 
+
+
+# From the Text Exercise 21.`r ex = ex+1; ex`
+
+ The relationship graphed in Exercise~\ref{exercise:resist.deg.data}\ref{exer.part:resist.deg.model} seems to provide an adequate description of the available data. Describe the risks of using these data to predict life at lower levels of temperature. 
+
+
+# From the Text Exercise 21.`r ex = ex+1; ex`
+
+ \label{exercise:ber.adt.deg.data} Extend the analysis done in Exercise~\ref{exercise:block.error.rate.degradation.data}.  The block error rate data were obtained by testing at higher than usual conditions. Suppose that the activation energy for the degradation process in $\Ea=.9$. Use this to obtain an estimate of disk life at 50$\degreesc$ and 85\% relative humidity. 
+
+
+# From the Text Exercise 21.`r ex = ex+1; ex`
+
+ An alternative to the simple graphical/ordinary least squares estimation method described in Exercise~\ref{exercise:resist.deg.data} is to do "full maximum likelihood" (or a close approximation to full ML), as described in Section~\ref{section:est.degrad.param} and illustrated in Examples~\ref{example:device.b.parameterization} through \ref{example:device.b.degradation.ci}.  Explain the reason(s) for any differences in the analyses.  Explain the trade-offs between these two different approaches. 
+
+
+# From the Text Exercise 21.`r ex = ex+1; ex`
+
+ Refer to the data in Appendix Table~\ref{atable:metal.wear.data}, also used in Example~\ref{example:sliding.wear.simple}. Data were collected by testing four specimens at three different levels of applied weight (10, 50, and 100 grams). Scar depth was measured at 2, 5, 10, 20, 50, 100, 200, and 500 cycles. Comment on the practical value and the potential cost of the additional information that would be obtained by 
+ 
+
+a. Sampling wear at $2,5,10,15,20,25, \dots, 495$, and $500$ cycles. 
+
+a. Sampling wear at $2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000$, and $5000$ cycles. 
+
+a. Testing eight units each at 10, 50, and 100 grams, using the original sampling rate in time. 
+
+a. Testing three units each at 10, 30, 60, and 100 grams, using the original sampling rate in time. 
+
+a. Testing three units each at 5, 20, 40, and 50 grams, using the original sampling rate in time. 
+
+a. Testing  three units each at 20, 60, 200, and 400 grams, using the original sampling rate in time.  
+
+
+# From the Text Exercise 21.`r ex = ex+1; ex`
+
+ Refer to Figure~\ref{figure:device.b.degradation.data.ps}. Comment on the possible loss of information that would result from using the censored time to failure data instead of the degradation data to make inferences on the failure time distribution. 
+
+
+# From the Text Exercise 21.`r ex = ex+1; ex`
+
+ It has sometimes been suggested that one can (or even should) use degradation data to obtain failure-time (or crossing time) data to be used in analysis. Is this a good thing to do?  What are the trade-offs? How should one handle observations that have not yet crossed the boundary, but are close?  Refer to the data in Figure~\ref{figure:device.b.degradation.data.ps} to help formulate your answer. 
+
+
+# From the Text Exercise 21.`r ex = ex+1; ex`
+
+ \label{exercise:adt.sim} Design a computer program that can be used to simulate the results of an ADT experiment, using the model defined by (\ref{equation:adt.deg.path.model}), (\ref{equation:nonlinear.deg.path}), and (\ref{equation:adt.arrhenius.af}).  Write down all of the needed inputs. Then outline each step of the process, including the formulas that you would use to generate the needed random numbers, assuming that you have access to a uniform random number generator. Note that there are two stages of randomness in this "mixed-effect" model. 
+
+
+# From the Text Exercise 21.`r ex = ex+1; ex`
+
+ Refer to Exercise~\ref{exercise:adt.sim}. Explain how you could use such a simulation program to help plan an ADT like the one in Example~\ref{example:device-b.degradation.data}. 
+
+

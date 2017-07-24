@@ -1,0 +1,62 @@
+
+\documentclass{book}
+
+%the following are now in the commands
+
+%\usepackage{latexsym}
+%\usepackage{\texstyhome/amstex}
+
+\setcounter{tocdepth}{1}
+
+
+%uncomment the following to get big page
+\setlength{\topmargin}{-.1in}
+\setlength{\textwidth}{6.0in}
+\setlength{\textwidth}{6.25in}
+\setlength{\textheight}{8.9in}
+\setlength{\oddsidemargin}{0.25in}
+\setlength{\evensidemargin}{0.25in}
+
+%comment out the following to double space
+%\renewcommand{\baselinestretch} {1.9}
+
+\input{commands.tex}
+%
+%define the new example environment
+\newtheorem{exampleit}{Example}[chapter]
+\newenvironment{example}{\begin{exampleit}
+\mbox{  }\rm   }{\myblackbox \end{exampleit}}
+%added a little space after the Example
+%
+%
+%define the new exercise environment for regular exercises
+\newtheorem{exerciseit}{\mbox{ }}[chapter]
+\newenvironment{exercise}{\begin{exerciseit}
+ \renewcommand{\theenumi}{(\alph{enumi})}
+\setlength{\rightmargin}{\leftmargin}
+	\rm }{\end{exerciseit}}
+%
+%define the new exercise environment for marked (difficult) exercises
+\newtheorem{exerciseit1}[exerciseit]{\difficultexercise}
+\newenvironment{exercise1}{\begin{exerciseit1}
+ \renewcommand{\theenumi}{(\alph{enumi})}
+	\rm}{\end{exerciseit1}}
+%
+%
+%define the new exercise environment for marked (programming) exercises
+\newtheorem{exerciseit2}[exerciseit]{\computationalexercise}
+\newenvironment{exercise2}{\begin{exerciseit2}
+ \renewcommand{\theenumi}{(\alph{enumi})}
+	\rm}{\end{exerciseit2}}
+%
+%define the new algorithm environment for algorithms
+\newtheorem{algorithmit}{Algorithm}[chapter]
+\newenvironment{algorithm}{\begin{algorithmit}
+ \renewcommand{\theenumi}{\arabic{enumi}}
+\setlength{\rightmargin}{\leftmargin}
+	\rm \mbox{ } }{\algblackbox  \end{algorithmit}}
+
+\newif\ifempty 
+
+
+\pagenumbering{roman}

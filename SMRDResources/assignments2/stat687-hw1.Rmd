@@ -1,0 +1,127 @@
+---
+title: 'STAT 687 - Homework # 1'
+author: "Due 0800, 21 July 2014"
+fontsize: 11in
+output:
+  pdf_document:
+    fig_cap: yes
+    includes:
+      in_header: ../css/jkf.header.tex
+  html_document:
+    css: ../css/homework.css
+    fig_cap: yes
+    highlight: pygments
+    theme: readable
+    toc: yes
+geometry: margin=1in
+citation_package: natbib
+---
+
+```{r,echo=FALSE,message=FALSE, warning=FALSE}
+source('../css/setup.R')
+output <- getYAML('stat687-hw2.Rmd')$output
+if(!    'SMRD'%in%library()$results) install.packages('SMRD')     ; library(SMRD)
+if(!'survival'%in%library()$results) install.packages('survival') ; library(survival)
+if(!  'actuar'%in%library()$results) install.packages('actuar')   ; library(actuar)
+if(!     'evd'%in%library()$results) install.packages('evd')      ; library(evd)
+```
+
+## From the text problem # 1.1
+
+Discuss the assumptions that would be needed to convert the heat exchanger data from calendar time in Figure 1.6 to operating-time data in Figure 1.7 and then use these data for purposes of analysis and inference on the life distribution of heat exchanger tubes of the type in these heat exchangers.
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 1.3
+
+In the development and presentation of traditional statistical methods, description and inference are often represented in terms of means and variances (or standard deviations) of distributions.
+
+(a) Use some examples in this chapter to explain why in many applications reliability or design engineers would be more interested in the time at which 1% (or some smaller percentage) of a particular component will fail instead of the time at which 50% would fail.
+
+(b) Explain why means and variances of time to failure may not be of such high interest in reliability studies
+
+(c) Give at least one example of a product for which the mean time to failure would be of interest.  Explain why. 
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 1.5
+
+An important part of quantifying product reliability is the specification of an appropriate time-scale (or time-scales) on which life should be measured (e.g. hours of operation, cycles of operation, etc.).  For each of the following products, suggest and give reasons for an appropriate scale (or scales) upon which one might measure life.  Also, discus possible environmental factors that might affect the lifetime of individual units.
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 1.6
+
+For each of the products listed in Exercise 1.5 explain your best understanding of the underlying failure mechanism.  Also, describe possible ways in which an analyst could define failure.
+
+(a) ___Painted surface of an automobile___ -- 
+
+(b) ___Automobile lead-acid battery___ --
+
+(c) ___Automobile windshield wipers___ --
+
+(d) ___Automobile tires___ --
+
+(e) ___Incandescent light bulb___ --
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 1.8
+
+For each of the products listed in Exercise 1.7, describe the range of environments that the product might encounter in use and the effect that environment could have on the product's reliability
+
+(a) ___Automobile alternator___ --
+
+(b) ___Video cassette recorder___ --
+
+(c) ___Microwave oven___ --
+
+(d) ___Home air conditioner___ --
+
+(e) ___Hand-held calculator___ --
+
+(f) ___Clothes dryer___ --
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 1.14
+
+There was a considerable amount of censoring at low levels of humidity in the printed circuit accelerated life test data shown in Figure 1.9.  Explain how such censoring can obscure important information about the relationship between humidity and time to failure.
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 2.2
+
+It is possible for a continuous cdf to be constant over some intervals of time
+
+(a) Give an example of a physical situation that would result in a cdf, $F(t)$ that is constant over some values of $t$.
+
+(b) Sketch such a cdf and its corresponding pdf
+
+(c) For your example, explain why the convention for defining quantiles given in Section 2.1.2 is sensible.  Are there alternative definitions that would also be suitable?
+
+(d) Think about and explain the relationship between the occurrence of flat spots in a cdf and the choice of an approriate time scale on which to define life.
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 2.4
+
+Consider a cdf $F(t)=1-\exp\left[-\frac{t}{\eta}\right]^{\beta}, t>0, \eta>0, \beta>0.$ (This is the cdf of the Weibull distribution, which will be discussed in detail in Chapter 4.)
+
+(a) Derive an expression for the pdf $f(t)$.
+
+(b) Derive an expression for the hazard function $h(t)$.
+
+(c) Sketch (or use a computer to draw) the cdf, pdf, and hazard functions for $\eta=1$ and $\beta=.5,1,2$.
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 2.13
+
+Show that the pdf, cdf, survival, hazard, and cumulative hazard are mathematically equivalent descriptions of a continuous distribution in the sense that given any of these functions the other four are completely determined
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 2.16
+
+If a continuous random variable $T$ has a cdf $F(t)=Pr(T\le t)$, then it is easy to show that the transformed random variable $F(T)$ follows a $UNIF(0,1)$ distribution.  A similar property for random variables is that the cumulative hazard transformation $H(T)$ follows an exponential distribution.  Show this.

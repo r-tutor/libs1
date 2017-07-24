@@ -1,0 +1,117 @@
+---
+output: html_document
+---
+
+```{r echo=FALSE}
+ex <- 0
+```
+
+
+# From the Text Exercise 2.`r ex = ex+1; ex`
+
+ Although the diesel generator fan failure times in Appendix Table \ref{atable:fan.data} were reported as exact failures, the ties suggest that the data are really discrete due to rounding or because failures were found on inspection. Suggest appropriate partitioning of the time line to reflect the true discrete nature of the data. Explain how you arrived at this partitioning.  Use this partitioning to develop an expression for the discrete-data likelihood. 
+
+
+# From the Text Exercise 2.`r ex = ex+1; ex`
+
+ It is possible for a continuous cdf to be constant over some intervals of time. 
+ 
+
+a. Give an example of a physical situation that would result in a cdf $F(t)$ that is constant over some values of $t$. 
+
+a.  Sketch such a cdf and its corresponding pdf.   
+
+a.  For your example, explain why the convention for defining quantiles given in Section~\ref{section:np.quantile.def} is sensible.  Are there alternative definitions that would also be suitable?  
+
+
+# From the Text Exercise 2.`r ex = ex+1; ex`
+
+ Consider a random variable with cdf $F(t)=t/2$, $0 < t \leq 2$. Do the following: 
+ 
+
+a. \label{exercise.part:unif.haz} Derive expressions for the corresponding pdf and hazard functions. 
+
+a. Use the results of part~\ref{exercise.part:unif.haz} to verify the relationship given in (\ref{equation:cum.haz.to.cdf}). 
+
+a. Sketch (or use the computer to draw) the cdf and pdf functions. 
+
+a. Sketch (or use the computer to draw) the hazard function. Give a clear intuitive reason for the behavior of $h(t)$ as $t \rightarrow 2$. Hint: by the time $t=2$, all units in the population must have failed. 
+
+a. Derive an expression for $t_{p}$, the $p$ quantile of $F(t)$, and use this expression to compute $t_{.4}$. Illustrate this on your plots of the cdf and pdf functions. 
+
+a. Compute $\Pr(.1 < T \leq .2)$ and $\Pr(.8 < T \leq .9)$. Illustrate or indicate this  probabilities on your graphs.  
+
+a. \label{exercise.part:unif.haz.prob.approx} Compute $\Pr(.1 < T \leq .2 \mid T>.1)$ and $\Pr(.8 < T \leq .9 \mid T > .8)$.  Compare your answers with the approximation in (\ref{equation:hazard.prob.approx}).  
+
+a. Explain the results in  in part \ref{exercise.part:unif.haz.prob.approx} and give a general result on the relationship  between  $\Pr(t< T< t \mid T>t)$  and the approximation in (\ref{equation:hazard.prob.approx}).   
+
+
+# From the Text Exercise 2.`r ex = ex+1; ex`
+
+ Consider a  cdf $F(t)=1-\exp[-(t/\eta)^{\beta}]$, $t > 0, \eta >0,  \beta >0$. (This is the cdf of the Weibull distribution, which will be discussed in detail in Chapter~\ref{chapter:ls.parametric.models}.) 
+ 
+
+a. Derive an expression for the pdf $f(t)$. 
+
+a. Derive an expression for the hazard function $h(t)$. 
+
+a. Sketch (or use the computer to draw) the cdf, pdf, and hazard functions for $\eta=1$ and $\beta=$ .5, 1, and 2.  
+
+
+# From the Text Exercise 2.`r ex = ex+1; ex`
+
+ Consider a cdf $F(t)=1-\exp(-t)$, $t>0$. Do the following. 
+ 
+
+a. Derive expressions for the corresponding pdf and hazard functions. 
+
+a. Sketch (or use the computer to draw) the cdf, pdf, and hazard functions. 
+
+a. Derive an expression for $t_{p}$, the $p$ quantile of $F(t)$, and use this expression to compute $t_{.1}$. Illustrate this on your plots of the cdf and pdf functions. 
+
+a. Compute $\Pr(.1 < T \leq .2)$. Illustrate this probability on your graphs. Compare your answer with the approximation in (\ref{equation:hazard.prob.approx}).  
+
+
+# From the Text Exercise 2.`r ex = ex+1; ex`
+
+ An electronic system contains 20 copies of a particular integrated circuit that is at risk to failure during operation.  The manufacturer of the component claims that the component's average hazard rate over the first two years of operation is 75 FITs.  For the 1500 systems that are currently in operation, compute a prediction for the total number of these integrated circuits that will fail over the next two years of operation. 
+
+
+# From the Text Exercise 2.`r ex = ex+1; ex`
+
+ Write an expression for the likelihood of the turbine wheel data in Table \ref{table:turbine.data}.  Also give an explicit expression for the constant term $\mathcal{C}$.  How would the likelihood differ if we knew the actual service time of each of the inspected turbine wheels? 
+
+
+# From the Text Exercise 2.`r ex = ex+1; ex`
+
+ Consider the V7 vacuum tube data in Table~\ref{table:v7.transmitter.tube}. 
+ 
+
+a. Explain why the failures in the interval 0-25 days could be considered to be left-censored observations. 
+
+a. Explain why the failures in the interval 100-$\infty$ days are right-censored observations.  
+
+
+# From the Text Exercise 2.`r ex = ex+1; ex`
+
+ Write down an expression for the likelihood of the V7 tube data in Table \ref{table:v7.transmitter.tube}. Also give an explicit expression for the constant term $\mathcal{C}$. 
+
+
+# From the Text Exercise 2.`r ex = ex+1; ex`
+
+ \label{exercise:battery.censor.methods} A test facility with 20 test positions is being used to conduct a life test of a newly designed battery.  Each battery will be tested until failure or until it has accumulated 100 charge/recharge cycles or until it is taken off test for some other reason.  When a battery fails, it will be replaced with a new unit, keeping the 20 test positions busy. At several randomly occurring   times during the test it will be necessary to remove one or more unfailed units from test. The removed units will be used for other experiments and demonstrations, but will not be returned to the life test. Removed units will be treated as censored observations (all that is known is that the unit did not fail by the time the unit was removed from test). The following list suggests some methods that might be used for choosing which battery to remove from test.  For each method of choosing, explain whether the censoring mechanism is "fair" or not (i.e., a censoring method that will not lead to undue bias for making inferences about the distribution of battery life). If it is a "fair" censoring method, explain why the method might be better than the other suggested methods (acknowledging that this would depend on the purpose of the test). If the selection method will result in bias, explain the  direction of the bias. \begin{itemize} 
+
+a. A battery selected at random. 
+
+a. The battery with the most running time. 
+
+a. The battery with the least running time. 
+
+a. The battery with the lowest measured capacity (as measured at the end of each cycle). \end{itemize} 
+
+
+# From the Text Exercise 2.`r ex = ex+1; ex`
+
+ Consider the life test described in Exercise~\ref{exercise:battery.censor.methods}. Generally, experimenters would want to assume that there would be no differences among the 20 test positions. Describe the consequences of  incorrectly making such an assumption and how one could detect such differences and/or protect against such consequences. 
+
+

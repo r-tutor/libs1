@@ -1,0 +1,87 @@
+---
+title: 'STAT 687 - Homework # 4'
+author: "Due 0800, 21 July 2014"
+fontsize: 11pt
+output:
+  pdf_document:
+    fig_cap: yes
+    includes:
+      in_header: ../css/jkf.header.tex
+  html_document:
+    css: ../css/homework.css
+    fig_cap: yes
+    highlight: pygments
+    theme: readable
+    toc: yes
+geometry: margin=1in
+citation_package: natbib
+---
+
+```{r,echo=FALSE,message=FALSE, warning=FALSE}
+source('../css/setup.R')
+output <- getYAML('stat687-hw4.Rmd')$output
+if(!    'SMRD'%in%library()$results) install.packages('SMRD')     ; library(SMRD)
+if(!'survival'%in%library()$results) install.packages('survival') ; library(survival)
+if(!  'actuar'%in%library()$results) install.packages('actuar')   ; library(actuar)
+if(!     'evd'%in%library()$results) install.packages('evd')      ; library(evd)
+```
+
+## From the text problem # 9.3
+
+Write a computer program to do the following, using the shock absorber data from Example 9.4 to illustrate the program's use:
+
+(a) Sample with replacement to obtain a sample of size $n=38$ shock absorbers from the 38 rows of Appendix Table C.2 
+
+(b) Compute the Weibull distribution ML bootstrap estimates $(\hat{\mu}^{*},\hat{\sigma}^{*})$ for this sample.
+
+(c) Compute the bootstrap studentized quantile estimate $Z_{log(\hat{t}^{*}_{.1})}=[log(\hat{t}^{*}_{.1})-log(\hat{t}^{*}_{.1})]/\hat{se}_{log(\hat{t}^{*}_{.1})}$ 
+
+(d) Repeat steps (a) to (c) 2000 times to get 2000 values of $Z_{log(\hat{t}^{*}_{.1})}.$  Make a histogram of these values to see the bootstrap distribution of $Z_{log(\hat{t}^{*}_{.1})}.$  Find the $0.25$ and $.975$ quantiles of this distribution.
+
+(e) Use the results in part (d) to compute a bootstrap confidence interval for $t_{.1}.$  Compare with the interval in Table 9.2.  Why are they not exactly the same?  What could be done to assure better agreement in such a comparison?
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 10.6
+
+A reliability engineer wants to run a life test to estimate the .05 quantile of the fatigue life distribution of a metal component used in a switch.  The engineer has to choose a sample size that will allow estimation to be precise enough so that the lower endpoint of a 95% confidence interval for the quantile will be about one-half of the ML estimate.  It will be possible to test each specimen until about 100-thousand cycles, when it is expected that about 15% of the specimens will have failed.  It is expected that about 5% will have failed after about 40-thousand cycles.
+
+(a) Use the information above on Weibull probability paper to obtain "planning values" for the Weibull parameters. 
+
+(b) Determine the sample size needed to achieve the desired precision 
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 10.9
+
+Section 10.5.1 shows how to use the elements of the Fisher information matrix to compute variance factors for test planning in a life test with a single censoring time.  In Appendix Table C.20, use the values of $f_{11}, f_{22},$ and $f_{12}$ in the row corresponding to $\zeta_{c}=1$, and show how to compute the quantities $\frac{1}{\sigma^{2}}V_{\hat{\mu}},\frac{1}{\sigma^{2}}V_{\hat{\sigma}}, \frac{1}{\sigma^{2}}V_{(\hat{\mu},\hat{\sigma})}, \rho_{(\hat{\mu},\hat{\sigma})}, \frac{1}{ \sigma^{2}}V_{\hat{\mu}|\sigma},$ and $\frac{1}{\sigma^{2}}V_{\hat{\sigma}|\mu}$ in that row.
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 10.18
+
+Refer to Appendix Table C.20.  What can you say about the effect that censoring has on the correlation between ML estimators $\hat{\mu}$ and $\hat{\sigma}$}?
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 11.1
+
+Wilk, Gnanadesikan and Hyuett (1962b) give the number of weeks until failure for a sample of 34 transistors subjected to accelerated conditions.  The reported failure times, with the number of ties shown in parentheses, were 3, 4, 5, 6(2), 7, 8(2), 9(3), 10(2), 11(3), 13(5), 17(2), 19(2), 25, 29, 33, 42(2), 52.  The other 3 transistors had not failed at the end of 52 weeks.
+
+(a) Use ML to estimate the parameters of the BISA, IGAU, gamma and lognormal distributions to these data using discrete data likelihood.  Plot all of these estimates on lognormal probability paper and compare the different estimates.  Describe any important differences you see in the estimates. 
+
+(b) Redo the gamma distribution analyses assuming that the failures occurred at exactly the reported time.  Are there differences of practical importance in this example? 
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 11.12
+
+During a single month a company sold 2341 modems.  These modems have a 36-month warranty.  During the first 24 months, 75 of these modems had been returned for warranty service.  Suppose that it is reasonable to assume that this is the number failing out of the 2341 modems that were sold.  From previous experience with similar products, it is known that a Weibull distribution with a shape parameter $\beta=.85$ provides an adequate description of the failure time distribution. 
+
+(a) Show that the conditional probability of failing in the third year of life, given survival up to 2 years, can be expressed as a truncated distribution. 
+
+(b) Although the times to failure for the returned modems were not available, it is still possible to compute an estimate of the Weibull cdf using the given value of $\beta=.85.$  Show how to do this. 
+
+(c) Use the estimate from part (b) to compute an estimate for the number of units that will fail in the third year of operation. 
+
+(d) Suppose that you had learned that 2 years after being sold, between 5% and 10% of the purchased modems had never been put into service.  How would you do part (b)? 

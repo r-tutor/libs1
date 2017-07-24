@@ -1,0 +1,104 @@
+---
+output: html_document
+---
+
+```{r echo=FALSE}
+ex <- 0
+```
+
+
+# From the Text Exercise 18.`r ex = ex+1; ex`
+
+ For the toaster example in Section~\ref{section:methods.of.acceleration}, toasters were cycled 365 times per day to get reliability information more quickly. Discuss the practical limitations of increasing the cycling frequency to get information even more quickly. 
+
+
+# From the Text Exercise 18.`r ex = ex+1; ex`
+
+ \label{exercise:fet.acc} Based on previous experience with similar products, the failure time of a particular field effect transistor on a monolithic microwave GaAs integrated circuit, operating at $100\degreesc$ (channel temperature), is expected to have a lognormal distribution with a median time to failure of 30 years. The primary failure mode is caused by a chemical reaction that has an activation energy of $\Ea$=.6 eV. The value of the lognormal scale parameter for this failure mode is expected to be $\sigma=.7$. 
+ 
+
+a. What are the lognormal parameters $\mu$ and $\sigma$ if time is recorded in hours? 
+
+a. For operation at $100\degreesc$ channel temperature, what is the time at which $5\%$ of the units would fail? $10\%$? 90\%? 
+
+a. Calculate the time-acceleration factor for testing at $250\degreesc$, $200\degreesc$ and $150\degreesc$ channel temperature. Use Table~\ref{table:arrhenius.temp.diff} and Figure~\ref{figure:arrhenius.af.ps} and check with equation (\ref{equation:arrhenius.af}). 
+
+a. Obtain an expression for the temperature at which $100p\%$ of tested units would be expected to fail in a 6000-hour test. Use this expression to compute the temperatures at which $90\%$ and $10\%$ would be expected to fail.  
+
+
+# From the Text Exercise 18.`r ex = ex+1; ex`
+
+ Refer to Exercise~\ref{exercise:fet.acc}.  Obtain an expression for the (average) FIT rate (in standard units of failures per hour in parts per billion) for the first ten years of operation at $100\degreesc$? How much would this improve if the operating channel temperature is changed to only $90\degreesc$? 
+
+
+# From the Text Exercise 18.`r ex = ex+1; ex`
+
+ \label{exercise:mech.adhesive} A mechanical adhesive has been designed for 10-year life at  $60 \degreesc$ ambient temperature. Over time, the bond will degrade chemically and will eventually fail. The rate of the chemical reaction can be increased by testing at higher levels of temperature. Using an activation energy of $\Ea=1.2$ eV and the Arrhenius relationship, calculate the time-acceleration factors for testing at $120 \degreesc$, $90\degreesc$, and $80\degreesc$. 
+
+
+# From the Text Exercise 18.`r ex = ex+1; ex`
+
+ Time to failure of incandescent light bulbs can be described accurately with a lognormal distribution. A test engineer claims that a $10\%$ increase in voltage decreases life by approximately $50\%$. A particular brand of 100 watt bulb has a median life of 1200 hours at 110 volts. 
+ 
+
+a. Give an inverse power relationship expression for the life of such light bulbs as a function of voltage. 
+
+a. Calculate the time-acceleration factors for operating the light bulb at 120 volts and 130 volts?  
+
+
+# From the Text Exercise 18.`r ex = ex+1; ex`
+
+ Refer to Exercise~\ref{exercise:ic.sing.alt}.   
+ 
+
+a. \label{ex.par:ic.accel} Assume that the activation energy of the observed failure mode is $\Ea=1.2$ eV and that the Arrhenius relationship provides an adequate description of the effect of temperature on the reaction rate. Compute estimates of the lognormal distribution parameters at $50\degreesc$, $80\degreesc$, and $120\degreesc$. 
+
+a. On lognormal probability paper, plot the estimate of the life distributions at $50\degreesc$, $80\degreesc$, and $120\degreesc$. 
+
+a. Repeat part~\ref{ex.par:ic.accel}, using an activation energy of $\Ea=.7$ eV and also plot these results. 
+
+a. Explain the effect that an incorrect assumption about  activation energy could have on estimates of life at low temperature.  
+
+
+# From the Text Exercise 18.`r ex = ex+1; ex`
+
+ A certain kind of capacitor has an exponential life distribution with a median life of 10 thousand hours at operating voltage of 400 volts. The relationship between life and voltage can be described by the inverse power relationship with an exponent $\beta=-10$. Determine the time-acceleration factors for accelerated testing of these capacitors at 500 volts, 600 volts, and 800 volts. 
+
+
+# From the Text Exercise 18.`r ex = ex+1; ex`
+
+ A particular type of integrated circuit is thought to have a dominant failure mode with an activation energy of $\Ea=1.2$ eV.  This circuit is designed to operate at $50\degreesc$.  If a 1000-hour life test is conducted at $120\degreesc$, under the Arrhenius relationship, what is the equivalent amount of operating time for this failure mode? 
+
+
+# From the Text Exercise 18.`r ex = ex+1; ex`
+
+ Consider a failure mechanism modeled with an underlying degradation path model in (\ref{equation:gen.deg.model}).  Suppose that the reaction activation energy is $\Ea=1.8$ eV.  For $\Rate_{U}=.2$ and $\degpath_{\infty}=.6$, compute the crossing times for all combinations of $t=$1000, 2000 hours  and $\critdeg=$.5, 1.  Use these results to verify that the SAFT property holds in this case. 
+
+
+# From the Text Exercise 18.`r ex = ex+1; ex`
+
+ Table~\ref{table:arrhenius.temp.diff} and Figure~\ref{figure:arrhenius.af.ps} can be used together to determine time-acceleration factors for different levels of use and test temperatures.  Create a similar table and figure that can be used to obtain time-acceleration factors for the logit-transformation relative humidity model described in Section~\ref{section:temp.hum.acc}. 
+
+
+# From the Text Exercise 18.`r ex = ex+1; ex`
+
+ \label{exercise:arrhenius.scale} Equation (\ref{equation:saft.mu.def}) gives the Arrhenius relationship between the location parameter of the log-life distribution and temperature. When needed,  suppose that $\beta_{0}=-17$, $\beta_{1}=.86$, and $\sigma=1.2$. Using this model: 
+ 
+
+a. Give an expression for $\rvquan_{p}$, the $p$ quantile  as a function of temperature in $\degreesc$. 
+
+a. \label{exer.part:linear.arrhen.relat} Show that the relationship between $\log(\rvquan_{p})$ versus $1/\kelvin$ is linear. 
+
+a.  Starting with linear graph paper, make an "Arrhenius plot" for this model, similar to Figure~\ref{figure:arrhenius.alt.ps}.  Start by plotting the linear relationship in part~\ref{exer.part:linear.arrhen.relat} on linear paper over the range of interest. Use a range of temperature running from 50$\degreesc$ to 140$\degreesc$.  Note that in order to have the slope of the plotted line decreasing in with temperature, it will be necessary to have the $1/\kelvin$ axis running left to right from largest to smallest values of $1/\kelvin$ (instead of the customary increasing axis). Then, finally, add in new (nonlinear) axes for Time and $\degreesc$.  Generally it is most convenient to do this on the axis opposite to the corresponding linear axis. On these axes, use tick and tick labels at major points on the scale (e.g., for temperature at 50, 60, \dots , 140, corresponding to $1/\kelvin$=.003094538, 0.003001651,\dots , 0.002420428).  
+
+
+# From the Text Exercise 18.`r ex = ex+1; ex`
+
+ Show why the relationships between the TDF and $\AF$ in Figure~\ref{figure:arrhenius.af.ps} plot as straight lines. 
+
+
+# From the Text Exercise 18.`r ex = ex+1; ex`
+
+ Show why the relationships between the voltage ratio and $\AF$ in Figure~\ref{figure:inverse.power.af.ps} plot as straight lines. 
+
+

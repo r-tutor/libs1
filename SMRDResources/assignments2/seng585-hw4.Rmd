@@ -1,0 +1,66 @@
+---
+title: "STAT 687 HW #4"
+author: ""
+date: ""
+output: 
+  pdf_document:
+    fig_height: 4
+    fig_width:  5
+---
+
+```{r echo=FALSE,message=FALSE}
+library(meekR)
+library(survival)
+library(actuar)
+library(evd)
+```
+
+# From the text problem # 9.3
+
+_Write a computer program to do the following, using the shock absorber data from Example 9.4 to illustrate the program's use:_
+
+(a) _Sample with replacement to obtain a sample of size_ $n=38$ _shock absorbers from the 38 rows of Appendix Table C.2_ 
+
+(b) _Compute the Weibull distribution ML bootstrap estimates_ $(\hat{\mu}^{*},\hat{\sigma}^{*})$ _for this sample._
+
+(c) _Compute the bootstrap studentized quantile estimate_ $Z_{log(\hat{t}^{*}_{.1})}=[log(\hat{t}^{*}_{.1})-log(\hat{t}^{*}_{.1})]/\hat{se}_{log(\hat{t}^{*}_{.1})}$ 
+
+(d) _Repeat steps (a) to (c) 2000 times to get 2000 values of_ $Z_{log(\hat{t}^{*}_{.1})}.$  _Make a histogram of these values to see the bootstrap distribution of_ $Z_{log(\hat{t}^{*}_{.1})}.$  _Find the_ $0.25$ _and_ $.975$ _quantiles of this distribution._
+
+(e) _Use the results in part (d) to compute a bootstrap confidence interval for_ $t_{.1}.$  _Compare with the interval in Table 9.2.  Why are they not exactly the same?  What could be done to assure better agreement in such a comparison?_
+
+# From the text problem # 10.6
+
+_A reliability engineer wants to run a life test to estimate the .05 quantile of the fatigue life distribution of a metal component used in a switch.  The engineer has to choose a sample size that will allow estimation to be precise enough so that the lower endpoint of a 95% confidence interval for the quantile will be about one-half of the ML estimate.  It will be possible to test each specimen until about 100-thousand cycles, when it is expected that about 15% of the specimens will have failed.  It is expected that about 5% will have failed after about 40-thousand cycles._
+
+(a) _Use the information above on Weibull probability paper to obtain "planning values" for the Weibull parameters._ 
+
+(b) _Determine the sample size needed to achieve the desired precision_ 
+
+# From the text problem # 10.9
+
+_Section 10.5.1 shows how to use the elements of the Fisher information matrix to compute variance factors for test planning in a life test with a single censoring time.  In Appendix Table C.20, use the values of_ $f_{11}, f_{22},$ _and_ $f_{12}$ _in the row corresponding to_ $\zeta_{c}=1$, _and show how to compute the quantities_ $\frac{1}{\sigma^{2}}V_{\hat{\mu}},\frac{1}{\sigma^{2}}V_{\hat{\sigma}}, \frac{1}{\sigma^{2}}V_{(\hat{\mu},\hat{\sigma})}, \rho_{(\hat{\mu},\hat{\sigma})}, \frac{1}{ \sigma^{2}}V_{\hat{\mu}|\sigma},$ _and_ $\frac{1}{\sigma^{2}}V_{\hat{\sigma}|\mu}$ _in that row._
+
+# From the text problem # 10.18
+
+_Refer to Appendix Table C.20.  What can you say about the effect that censoring has on the correlation between ML estimators_ $\hat{\mu}$ _and_ $\hat{\sigma}$}_?_
+
+# From the text problem # 11.1
+
+_Wilk, Gnanadesikan and Hyuett (1962b) give the number of weeks until failure for a sample of 34 transistors subjected to accelerated conditions.  The reported failure times, with the number of ties shown in parentheses, were 3, 4, 5, 6(2), 7, 8(2), 9(3), 10(2), 11(3), 13(5), 17(2), 19(2), 25, 29, 33, 42(2), 52.  The other 3 transistors had not failed at the end of 52 weeks._
+
+(a) _Use ML to estimate the parameters of the BISA, IGAU, gamma and lognormal distributions to these data using discrete data likelihood.  Plot all of these estimates on lognormal probability paper and compare the different estimates.  Describe any important differences you see in the estimates._ 
+
+(b) _Redo the gamma distribution analyses assuming that the failures occurred at exactly the reported time.  Are there differences of practical importance in this example?_ 
+
+# From the text problem # 11.12
+
+_During a single month a company sold 2341 modems.  These modems have a 36-month warranty.  During the first 24 months, 75 of these modems had been returned for warranty service.  Suppose that it is reasonable to assume that this is the number failing out of the 2341 modems that were sold.  From previous experience with similar products, it is known that a Weibull distribution with a shape parameter_ $\beta=.85$ _provides an adequate description of the failure time distribution._ 
+
+(a) _Show that the conditional probability of failing in the third year of life, given survival up to 2 years, can be expressed as a truncated distribution._ 
+
+(b) _Although the times to failure for the returned modems were not available, it is still possible to compute an estimate of the Weibull cdf using the given value of_ $\beta=.85.$  _Show how to do this._ 
+
+(c) _Use the estimate from part (b) to compute an estimate for the number of units that will fail in the third year of operation._ 
+
+(d) _Suppose that you had learned that 2 years after being sold, between 5% and 10% of the purchased modems had never been put into service.  How would you do part (b)?_ 

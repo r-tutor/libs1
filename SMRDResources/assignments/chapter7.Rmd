@@ -1,0 +1,128 @@
+---
+output: html_document
+---
+
+```{r echo=FALSE}
+ex <- 0
+```
+
+
+# From the Text Exercise 7.`r ex = ex+1; ex`
+
+ \label{exercise:exponential.ml.complete} Consider the case of $n$ observations reported as "exact" failure times from an $EXP(\theta)$ distribution.  	  
+ 
+
+a.  Show that the ML estimate, $\hat{\theta}$, of $\theta$ is the sample mean, say $\bar{t}=\sum_{i=1}^{n}t_{i}/n$.  	  
+
+a.  \label{exercise.part:complete.data.exponential.profile} Show that the relative likelihood has the simple expression 
+$$
+ R(\theta)=\exp(n) \left (\frac{\bar{t}}{\theta}\, \right )^{n} \exp \left ( - \frac{n\bar{t}}{\theta} \,\right ). 
+$$  
+
+a. \label{exercise.part:chisquare.exponential.lr.interval} Explain how to use $R(\theta)$ to obtain an approximate confidence interval for $\theta$ based on inverting a likelihood ratio test [i.e., assume that when evaluated at the true value of $\theta$, $R(\theta) \overset{\cdot}{\sim} \mathcal{X}^{2}_{1}$]. 
+
+a.  \label{exercise.part:chisquare.exponential.lr.interval.ex} Suppose that $n=4$ and $\bar{t}=0.87$. Obtain  the ML estimate and an approximate $90\%$ confidence interval for $\theta$ using the method in part~\ref{exercise.part:chisquare.exponential.lr.interval}. Plot $R(\theta)$ to facilitate your work.  
+
+
+# From the Text Exercise 7.`r ex = ex+1; ex`
+
+ \label{exercise:exponential.ml.type1.censored} Let $t_{1}, \ldots, t_{r}$ be the failure times in a singly time-censored sample of size $n$ from an $EXP(\theta)$ distribution. Suppose that the prespecified censoring time is $t_{c}$. The total time on test is $TTT=\sum_{i=1}^{r}t_{i}+(n-r)t_{c}$. 
+ 
+
+a.  \label{exercise.part:exponential.ml.density} Write an expression for the log likelihood using the density approximation for the observations reported as exact failures. 
+
+a.  Show that the ML estimate is $\hat{\theta}=TTT/r$.  		 
+
+a.  \label{exercise.part:exponential.ml.exist.limit.allc} Use the result of part~\ref{exercise.part:exponential.ml.density} to show that the ML estimate of $\theta$ is equal to $\infty$ (or "does not exist") when all the observations are censored. 
+
+a.  Derive an expression for the relative likelihood similar to the one given in part~\ref{exercise.part:complete.data.exponential.profile} of Problem~\ref{exercise:exponential.ml.complete} (note that in this case $TTT/r$ plays the role of $\bar{t}$ and $r$ the role of $n$).  
+
+
+# From the Text Exercise 7.`r ex = ex+1; ex`
+
+ Refer to Exercise~\ref{exercise:exponential.ml.type1.censored}. Show that  if there are no failures by time $t_{c}$, then $L(\theta)$ always increases as a function of  $\theta$ and thus $L(\theta)$ does not have a maximum. 
+
+
+# From the Text Exercise 7.`r ex = ex+1; ex`
+
+ \label{exercise:elec.sys} A large electronic system contains thousands of copies of a particular component, which we will refer to as Component-A (each system is custom-made to order and the actual number of components varies with the size of the particular system). The failure rate for Component-A is small, but because there are so many of the components in operation, failures are reported from time to time. A field tracking study was conducted to estimate the failure rate of a new design for Component-A (which was intended to provide better reliability at lower cost), to see if there was any real improvement. A number of systems were put into service simultaneously and monitored for 1000 hours. The total number of copies of Component-A in all of the systems was 9432. Failures of Component-A were observed at 345, 556, 712, and 976 hours. Failure mode analysis suggested that the failures were due to random shocks rather than any kind of quality defects or wearout. This, along with past experience with simpler components, suggested that an exponential distribution might be an appropriate model for the lifetime of Component-A. 
+ 
+
+a. Compute the ML estimate for the exponential mean $\theta$ for Component-A. 
+
+a. \label{ex.pt:ci.theta} Compute an approximate 95\% confidence interval for $\theta$. 
+
+a. Explain the interpretation of the confidence interval obtained in part~\ref{ex.pt:ci.theta}. 
+
+a. Explain the interpretation of the hazard function  $\lambda=1/\theta$. In what way can this quantity be used to compute failure rates for Component-A or for the overall system? 
+
+a. Use the results of part~\ref{ex.pt:ci.theta} to obtain an approximate 95\% confidence interval for $\lambda$. Express this in units of FITs (failures per $10^{9}$ hours of operation). 
+
+a. The hazard for the old part was $\lambda_{\mbox{old}}=8.5 \times 10^{-7}$ (or 850 FITs). How strong is the evidence that reliability has improved with the new design? Describe how you would phrase a statement about the relative improvement. 
+
+a. Compute and plot the exponential $\hat{F}(t)$ from 0 to 10,000 hours on Weibull paper. Comment on the usefulness of this plot.  
+
+
+# From the Text Exercise 7.`r ex = ex+1; ex`
+
+ The manufacturer of computer hard disks reports in its promotional literature an "MTBF" figure. This figure is obtained by taking a sample of units from each day's production, putting the units on test for a period $t_{c}$ (perhaps one week), pooling the available data over several months, and computing 
+$$
+ \widehat{MTBF} = \frac{TTT}{r} 
+$$ where $TTT$ is the total time on test of all units that were tested and $r$ is the observed number of failures (typically a very small number of drives).  Reported figures are typically numbers like MTBF=30 years.  Comment on the usefulness and validity of the use of this figure for characterizing the reliability of disk drives. 
+
+
+# From the Text Exercise 7.`r ex = ex+1; ex`
+
+ Nelson~(1982, page 105) provides data on minutes to breakdown for an insulating fluid. There were 11 tests at 30 kV.  After 100 minutes, there were $7$ breakdowns (failures) at the following times (in minutes): 7.74, 17.05, 20.46, 21.02, 22.66, 43.40, 47.30. The other $4$ units had not failed. 
+ 
+
+a. Make a Weibull probability plot and an exponential probability plot for these data. 
+
+a.  What do you think about the suggestion of using  an exponential distribution, $EXP(\theta)$, to model the data?  
+
+a. Assuming an exponential distribution, obtain the ML estimate of  $\theta$ and give an estimate of $se_{\hat{\theta}}$. 
+
+a. Compute an approximate $95\%$ confidence interval for $\theta$. 
+
+a. Compute the ML estimate of $t_{.1}$, the $.1$ quantile of the time to breakdown distribution. 
+
+a. Compute an approximate $95\%$ confidence interval for $t_{.1}$.  
+
+
+# From the Text Exercise 7.`r ex = ex+1; ex`
+
+ \label{exercise:insul.material.40kv}  A life test for a new insulating material used 50 specimens.  The specimens were tested simultaneously at 40 kV (considerably higher than the rated voltage of 20 kV). The test was run until 10 of the specimens failed (this is known as "failure"  or Type~II censoring). The failure times were recorded as 8, 11, 12, 13, 19, 21, 28, 34, 36, and 44 hours. The engineers responsible for the reliability believe, based on previous experience with similar materials, tested under similar conditions, that the failure-time distribution at 40 kV can be described by an $EXP(\theta)$ distribution. 
+ 
+
+a.	 Construct an exponential probability plot of the data. Does the plot provide any evidence that the exponential distribution is inadequate? 
+
+a.	 Compute $TTT$, the total time on test,  and $\hat{\theta}$, the ML estimate for $\theta$. 
+
+a.	 Compute an estimate of the standard error of $\hat{\theta}$. 
+
+a.	 Compute 95\% confidence intervals for $\theta$ based on, $Z_{\hat{\theta}} \overset{\cdot}{\sim} NOR(0,1)$, $Z_{\log(\hat{\theta})} \overset{\cdot}{\sim} NOR(0,1)$, and the exact distribution of $2(TTT/\theta)$. Which of these intervals would you feel comfortable using? Why? 
+
+a.	 For this problem, is there any extrapolation involved in  estimating $\theta$? Explain. 
+
+a.	 Compute 95\% confidence intervals for $t_{.1}$, $h(50;\theta)$, and $F(50;\theta)$ based on the exact distribution of $2(TTT/\theta)$. Is there any  extrapolation involved in these intervals? Explain.  
+
+
+# From the Text Exercise 7.`r ex = ex+1; ex`
+
+ Use the results from Exercise~\ref{exercise:insul.material.40kv} to compute and plot (use an exponential plot) the ML estimate of $F(t;\theta)$ and 95\% simultaneous parametric confidence bands for $F(t;\theta)$, based on the exact distribution of $2(TTT/\theta)$. 
+
+
+# From the Text Exercise 7.`r ex = ex+1; ex`
+
+ A life test was conducted for the same insulating material described in Exercise~\ref{exercise:insul.material.40kv}.  Again, 50 specimens were tested, but at 25 kV. The test ran for 20 hours without any failures. The test had to be terminated at this time so that the test equipment could be used for other experiments. 
+ 
+
+a.	 Compute the $TTT$ and show why the ML estimate for $\theta$ is equal to $\infty$. 
+
+a. \label{exercise.part:insulation.ci.for.expmean} Compute a conservative 95\% lower confidence bound for $\theta$. 
+
+a.	 For this problem, is there any extrapolation involved in  computing the lower confidence bound for $\theta$? Explain. 
+
+a.	 Use the result in part~\ref{exercise.part:insulation.ci.for.expmean} to compute a conservative 95\% lower confidence bound for $t_{.1}$, and conservative 95\% upper confidence bounds for $h(50;\theta)$ and $F(50;\theta)$.  
+
+

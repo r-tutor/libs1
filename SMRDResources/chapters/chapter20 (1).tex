@@ -1,0 +1,1915 @@
+%chapter 20
+%original by wqmeeker  12 Jan 94
+%edited by wqmeeker 10 Apr 94
+%edited by wqmeeker  3 aug 1994
+%edited by wqmeeker  9 aug 94 outline
+%edited by wqmeeker  9 dec 94 figures
+%edited by wqmeeker  2 july 96 mexico psnups
+%edited by wqmeeker  7-9 july 96 organizing and smoothing
+%edited by wqmeeker  21/22 dec 96  two variable stuff
+%edited by driker 6/6/97
+%edited by driker 7/23/97
+
+\setcounter{chapter}{19}
+
+\chapter{Planning Accelerated Life Tests}
+
+\label{chapter:alt.test.planning}
+
+\input{\chapterhome/common_heading.tex}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Objectives}
+This chapter explains
+\begin{itemize} 
+\item 
+Criteria for planning accelerated life tests (ALTs).
+\item 
+Simulation and analytical methods for evaluating proposed ALT plans.
+\item 
+The value and limitations of theoretically optimum ALT plans.
+\item
+Compromise accelerated test plans that have good statistical
+properties and, at the same time, meet practical constraints.
+\item
+How to extend methods for planning single-variable ALT plans to
+planning ALTs with more than one variable.
+\end{itemize}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Overview}
+Chapter~\ref{chapter:test-planning} described methods for evaluating
+proposed test plans for estimating a single failure-time
+distribution.  These methods led to some simple formulas that
+provide a means of choosing test length and sample size to control
+estimation precision.  This chapter describes methods for planning
+ALTs
+and for evaluating
+the precision of estimates illustrated in
+Chapter~\ref{chapter:analyzing.alt.data}.  Familiarity with the
+ideas from Sections~\ref{section:planning.intro} and
+\ref{section:planning.asymptotic.variance} is important for
+understanding the underlying technical methods. A good understanding
+of the basic data analysis material in
+Chapter~\ref{chapter:analyzing.alt.data} is also helpful.
+
+Section~\ref{section:alt.plan.intro} uses a test-planning example to
+introduce some of the concepts involved in planning an ALT.
+Section~\ref{section:alt.plan.eval} describes how to evaluate the
+properties of a specified ALT plan. The ability to evaluate the
+properties of these plans allows one to choose a plan that will
+optimize according to particular criteria.
+Section~\ref{section:alt.plan.sing.fact} provides details and
+examples on how to plan a single-variable ALT.
+Section~\ref{section:alt.plan.two.fact} extends these methods to
+two-variable ALTs.  Section~\ref{section:alt.plan.multi.fact}
+describes how to extend the concepts to ALTs with more than two
+variables.
+
+%-----------------------------------------------------------------------------
+%-----------------------------------------------------------------------------
+\section{Introduction}
+\label{section:alt.plan.intro}
+Usually ALTs need to be conducted within stringent
+cost and time constraints.  Careful planning is essential.  Resources
+need to be used efficiently and the amount of extrapolation should be
+kept to a minimum. During the test planning phase,
+experimenters should be able to explore the kind of results that they
+might obtain as a function of the specified model and proposed test plan.
+
+\begin{example}
+\label{example:adv.bond.intro}
+{\bf Reliability estimation of an adhesive bond.} The following
+example comes from Meeker and Hahn~(1985). The engineers responsible
+for the adhesive bond reliability needed to estimate the .1 quantile
+of the failure-time distribution at the usual operating temperature
+of $50\degreesc$.  The .1 quantile was expected to be more than 10
+years, but this needed to be demonstrated.  There were 300 units,
+but only 6 months (183 days) available for testing.  If testing had been done
+at $50\degreesc$, no failures would be expected.  But no failures in
+6 months would not provide the needed degree of assurance that the
+.1 quantile is at least 10 years.  An ALT was proposed to make the
+required demonstration.
+\end{example}
+
+\subsection{Planning information}
+The properties of ALT plans depend on the underlying model and the
+parameters of that model.  The form of the underlying model and at
+least some of the parameters are generally unknown. To evaluate and
+compare alternative test plans, it is necessary to have some planning
+information about the model. Sources of such planning
+information include previous experience with similar products and
+failure modes, expert opinion, and other engineering information or
+judgment. There are a number of different questions that one could ask 
+to get the required information.
+
+\begin{example}
+{\bf Planning values for the adhesive bond ALT.}
+\label{example:alt.planning.values}
+Failure is thought to be caused by an unobservable simple chemical
+degradation process, leading to weakening and eventual failure of
+the bond.  The engineers feel that the rate of the chemical reaction
+can be modeled with the Arrhenius relationship over some reasonable
+range of higher temperatures.  This would suggest a SAFT model (see
+Section~\ref{section:temp.acc}), implying that the form and shape of
+the failure-time distributions are the same at all levels of
+temperature. The engineers felt that something like .1\% of the
+bonds might fail in 6 months at $ 50\degreesc$, but that something
+like 90\% would fail in 6 months at $ 120\degreesc$. Additionally,
+the Weibull distribution had been used successfully in the past to
+model data from similar adhesive bonds. This information, alone,
+allows one to obtain algebraically the failure probability in 6
+months at any level of temperature (deriving such a formula is left
+as an exercise). The Weibull shape parameter was thought to be near
+$\betaplan=1.667$ (or $\sigmaplan=1/\betaplan=.6$). With this
+additional information, the other Weibull regression model
+parameters are defined.  In particular, for time measured in days,
+$\betaplan_{0}=-16.733$ and $\betaplan_{1}=.7265$.
+\end{example}
+As in Chapter~\ref{chapter:test-planning} the superscript
+$\planvalue$ is used to denote a planning value of a population or
+process quantity needed to plan the ALT. Functions of the planning
+values (e.g., failure probabilities and, indeed, the plan and
+characteristics of the plan, will not be encumbered with this
+symbol).
+
+In applications, it is important to assess the sensitivity of ALT
+plans to misspecifications of the unknown inputs.  Generally this is
+done by developing a test plan with the given planning values and
+then, at the end, doing some sensitivity analysis to assess the effect
+that changes have on the suggested plan.
+
+\subsection{Model assumptions}
+The model assumptions used in this chapter parallel those introduced
+and used in Chapters~\ref{chapter:regression.analysis},
+\ref{chapter:accelerated.test.models}, and
+\ref{chapter:analyzing.alt.data}. The presentation
+in this chapter continues to use log-location-scale
+distributions. Most of the general ideas can, however, be applied
+(with a higher level of technical difficulty) to other parametric
+distributions like the ones in
+Chapter~\ref{chapter:other.parametric.models}.
+
+As described in Chapters~\ref{chapter:accelerated.test.models} and
+\ref{chapter:analyzing.alt.data}, most common parametric ALT models
+use a log-location-scale distribution to describe the variability in
+failure times. The cdf for failure time $T$ is
+\begin{equation}
+\label{equation:alt.prob.model}
+\Pr(T \leq t)=F(t;\mu,\sigma)=\Phi\left[\frac{\log(t)-\mu}{\sigma}\right]
+\end{equation}
+where $\mu=\mu (x)$, the location parameter for $\log(\rv)$, is a
+function of the accelerating variable and $\sigma$ is constant. For
+the Arrhenius relationship between life and temperature, $\mu
+(x)=\beta_{0}+\beta_{1}x$ and $x=11605/(\Tempc{}+273.15)$. Here
+units are tested simultaneously until censoring time
+$\censortime$. Care in testing must be taken to assure that failure
+times are independent from unit to unit.
+
+Again, most of the important ideas in this chapter can be applied,
+with appropriate modifications, to other testing situations (e.g.,
+other failure-time distributions, acceleration relationships, types
+of censoring, etc.).
+
+\subsection{Traditional test plans}
+Traditional test plans use equally-spaced levels of the accelerating
+variable(s) and equal allocation of test units to those levels.
+
+\begin{example}
+{\bf Engineers' originally proposed test plan 
+for the adhesive bond ALT.}
+\label{example:engineer.orig.plan}
+%----------------------------------------------------------------------
+The engineers responsible for the adhesive bonded power
+element reliability had developed a preliminary ALT plan,
+given in Table~\ref{table:alt.plan.eng.plan}
+and shown graphically in Figure~\ref{figure:adh.bond.engineers.plan.ps}.
+This traditional plan used equal spacing and equal allocation
+of units to the different levels of
+temperature, but had some deficiencies.
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/adh.bond.engineers.plan.ps}
+\caption{Illustration of the engineers' preliminary ALT  
+plan and the planning model for adhesive-bonded power elements on
+Arrhenius paper.}
+\label{figure:adh.bond.engineers.plan.ps}
+\end{figure}
+%----------------------------------------------------------------------
+\begin{table}
+\caption{Engineers' preliminary ALT 
+plan with a maximum test temperature of 150$\degreesc$.}
+\centering\small
+\begin{tabular}{ccccc}
+\\[-.5ex]
+\hline
+& Failure & \multicolumn{2}{c}{Allocation} & Expected \\ \cline{3-4}
+Level& Probability & Proportion & Number & Number Failing\\ TEMPC &
+$p_{i}$ & $\pi_{i}$ &$n_{i}$ & $\E(r_{i})$ \\
+\hline
+\mbox{ 50}  & .001 &      &     &            \\
+\mbox{110}  &  .59 & 1/3  & 100 & \mbox{ 59} \\
+\mbox{130}  & 1.00 & 1/3  & 100 & \mbox{100} \\
+\mbox{150}  & 1.00 & 1/3  & 100 & \mbox{100} \\
+\hline
+\end{tabular}
+\begin{minipage}[t]{4.5in}
+\end{minipage}
+\label{table:alt.plan.eng.plan}
+\end{table}
+%----------------------------------------------------------------------
+In particular, there was concern about the large amount of
+extrapolation in temperature (to $50\degreesc$) and the Arrhenius
+relationship was in doubt at temperatures above $120\degreesc$.  The
+engineers had proposed testing at the very high levels of temperature
+under the mistaken belief that it would be necessary to have all or
+almost all of the test units fail before the end of the test. As
+shown in Chapter~\ref{chapter:analyzing.alt.data}, however, ML
+methods can be used to estimate the parameters of the ALT model,
+even if data are censored. Moreover, because interest centered on
+the lower tail of the distribution at $50\degreesc$, data in the
+upper tail of the distribution would be of limited value (and could
+even be a source of bias if the fitted distribution were not
+adequate there). It would be more appropriate to
+test at lower more realistic temperatures (even if only a small
+fraction of units will fail) and to allocate more units to lower
+temperatures. Intuitively, this is because such units would be
+closer to the use conditions and because, with smaller failure
+probability at low temperature, more units need to be tested to have
+assurance that at least a few units will fail. Such a test plan is
+shown in Table~\ref{table:alt.plan.mod.trad.plan}.
+\end{example}
+
+%----------------------------------------------------------------------
+%-----------------------------------------------------------------------------
+%-----------------------------------------------------------------------------
+\section{Evaluation of Test Plans}
+\label{section:alt.plan.eval}
+%-----------------------------------------------------------------------------
+\subsection{Evaluation using Monte Carlo simulation}
+
+As described in Section~\ref{section.planning.simulation}, simulation
+provides a powerful, insightful tool for planning experiments. For a
+specified model and planning values for the model parameters, it is
+possible to use a computer to simulate ALT experiments to see the kind
+of data that will be obtained and to visualize the variability from
+trial to trial. Such simulations provide an assessment of sampling
+uncertainty that will result from using a limited number of test
+specimens.
+
+\begin{example}
+{\bf Simulation evaluation of the modified traditional test
+plan for the adhesive bond.} 
+\label{example:adh.bond.mod.trad.plan}
+%----------------------------------------------------------------------
+\begin{table}
+\caption{Engineers' modified traditional ALT 
+plan with a maximum test temperature of 120$\degreesc$.}
+\centering\small
+\begin{tabular}{ccccc}
+\\[-.5ex]
+\hline
+& Failure & \multicolumn{2}{c}{Allocation} & Expected    \\ \cline{3-4}
+Level& Probability & Proportion & Number & Number Failing\\
+TEMPC     & $p_{i}$  & $\pi_{i}$ &$n_{i}$ & $\E(r_{i})$ \\
+\hline
+\mbox{ 50}& .001  &      &      &      \\
+\mbox{ 80}& .04   & 1/3  & 100 & \mbox{ 4} \\
+\mbox{100}& .29   & 1/3  & 100 & \mbox{29} \\
+\mbox{120}& .90   & 1/3  & 100 & \mbox{90} \\
+\hline
+\end{tabular}
+\begin{minipage}[t]{4.5in}
+For this plan, $\ase[\log(\rvquanhat_{.1}(50))]= .4167 $
+for the Weibull-Arrhenius model.
+\end{minipage}
+\label{table:alt.plan.mod.trad.plan}
+\end{table}
+%----------------------------------------------------------------------
+The planning values from Example~\ref{example:alt.planning.values}
+define the complete ALT model for adhesive bond failure. Based on
+the engineers' modified test plan in 
+Table~\ref{table:alt.plan.mod.trad.plan},
+Figure~\ref{figure:advbond.plan1.sim.ps} shows 50 ML estimate lines
+for the .5 quantile, simulated from 50 ALTs.
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/advbond.plan1.sim.ps}
+\caption{Simulations of the engineers' modified traditional
+test plan in Table~\ref{table:alt.plan.mod.trad.plan} on Arrhenius paper.}
+\label{figure:advbond.plan1.sim.ps}
+\end{figure}
+%----------------------------------------------------------------------
+%
+This figure illustrates the amount of variability expected if the ALT
+experiment were to be repeated over and over, assuming the Arrhenius
+relationship to be correct over the entire range of temperature.  The
+figure also clearly shows the deteriorating effect that extrapolating to
+50$\degreesc$ has on precision, even assuming that the Arrhenius
+relationship is correct.  Approximate precision is also reflected in
+the sample standard deviations given directly in  
+Figure~\ref{figure:advbond.plan1.sim.ps} (the
+approximation here is due to using only 500 simulations). 
+The sample standard deviation $\sd[\log(\rvquanhat_{.1})]=.427$
+agrees well with the large-sample approximate standard error
+$\ase[\log(\rvquanhat_{.1}(50))]= .4167 $ from
+Table~\ref{table:alt.plan.mod.trad.plan}. Relative to
+the plan from Example~\ref{example:engineer.orig.plan}, the engineers
+felt more comfortable with the degree of extrapolation in this plan
+even though this modified plan would provide less precision, due to the
+smaller range of test temperatures and the larger proportion of units
+that would be censored.
+\end{example}
+
+%-----------------------------------------------------------------------------
+\subsection{Evaluation using large-sample approximations}
+
+Section~\ref{section:planning.asymptotic.variance} provides
+motivation for and shows how to compute approximate standard errors
+of sample estimates for a given model and test plan. The general
+formulas given there and in Section~\ref{section:large.sample.vcv}
+and Appendix Section~\ref{asection:asymptotic.theory.mle} can be
+used to compute approximate standard errors and other properties for
+ALT plans and these can be used as an aid in comparing and designing
+ALT plans.  The references in the bibliographic notes at the end of
+this chapter give references for particular models considered
+here. For a specified model, planning values for the model
+parameters, and test plan, these methods allow one to compute the
+large-sample approximate variance-covariance matrix of the ML
+estimators of the model parameters $\thetavec$. Using this matrix it
+is easy to compute large-sample approximate standard errors of ML
+estimates and these easy-to-compute quantities are useful for
+comparing different test plans.  For example, with the simple linear
+regression model used in Sections~\ref{section:mpplot},
+\ref{section:volt.alt}, and \ref{section:interval.data.alt}, 
+the large-sample approximate variance-covariance matrix for
+$\thetavechat=(\betahat_{0},\betahat_{1},\sigmahat)$ is
+\begin{eqnarray*}
+\vcvmat_{(\betahat_{0},\betahat_{1},\sigmahat)} &=& 
+\left [
+ \begin{array}{lll}
+  \avar(\betahat_{0}) &  \acov(\betahat_{0}, 
+\betahat_{1})& \acov(\betahat_{0}, \sigmahat) \\
+  \acov(\betahat_{0}, \betahat_{1}) &  
+\avar( \betahat_{1} )  &\acov(\betahat_{1}, \sigmahat)\\
+  \acov(\betahat_{0}, \sigmahat) &\acov(\betahat_{1}, \sigmahat)&  
+\avar(\sigmahat)  \\
+ \end{array}
+\right ].
+\end{eqnarray*}
+The following is similar to the development for
+(\ref{equation:avar.lc.quan}).  The ML estimator of the $p$ quantile
+of $\log(\rv)$ at transformed accelerating variable $x$ is
+$\log(\rvquanhat_{p}) = \betahat_{0}+ \betahat_{1} x +
+\Phi^{-1}(p)\sigmahat=\muhat+\Phi^{-1}(p)\sigmahat$. As a 
+special case of (\ref{equation:gcovariance}) from Appendix
+Section~\ref{asection:asymptotic.theory.fmle},
+\begin{equation}
+\label{equation:avar.alt.lc}
+\avar[\log(\rvquanhat_{p})]=
+	 \avar(\muhat) +\left [\Phi^{-1}(p) \right ]^{2} \avar(\sigmahat)
+     +2 \Phi^{-1}(p) \acov(\muhat, \sigmahat)
+\end{equation}
+where $\avar(\muhat)=\avar(\betahat_{0}) + 2 \times x \times
+\acov(\betahat_{0}, \betahat_{1}) + x^{2} \times \avar(\betahat_{1}
+) $ and
+$\acov(\muhat, \sigmahat)= \acov(\betahat_{0}, \sigmahat) + x
+\times \acov(\betahat_{1}, \sigmahat)$. Then
+$\ase[\log(\rvquanhat_{p})]=
+\sqrt{\avar[\log(\rvquanhat_{p})]}$.
+Large-sample approximate standard deviations of other quantities
+of interest can be computed in a similar manner. Appendix B.2 gives more
+details.
+
+%-----------------------------------------------------------------------------
+\section{Planning Single-Variable ALT Experiments}
+\label{section:alt.plan.sing.fact}
+This section develops some further concepts relating to planning ALTs.  
+
+%-----------------------------------------------------------------------------
+\subsection{Specifying the ALT plan}
+To plan an ALT one needs to
+\begin {itemize}
+\item
+Specify the experimental range(s) of the accelerating
+(or experimental) variable(s).
+\item
+Choose levels of the accelerating variable(s).
+\item
+Choose the number of test units to allocate to each
+level of the accelerating variable.
+\end {itemize}
+This section describes analytical methods for making these decisions.
+
+Examples~\ref{example:engineer.orig.plan} and
+\ref{example:adh.bond.mod.trad.plan} illustrated traditional ALT
+plans with equal allocation of units to equally-spaced levels of
+temperature.  Because of censoring and extrapolation, traditional
+test plans may not be the best alternative. It is possible to choose
+levels of accelerating variables and the corresponding allocation of
+test units to minimize the large-sample approximate variance of the
+ML estimator of a quantity of interest. Plans developed in this way
+are called ``optimum plans.''  Although optimum plans may be best in
+terms of estimation precision, they generally have practical
+deficiencies.  This leads to compromise plans that are optimized
+subject to practical constraints.  This section will show how to
+construct and compare such plans.
+
+\mbox{ }\\
+\noindent
+%-------------------------------
+{\bf The experimental region.} In theory, testing over a wider range
+of an accelerating variable provides higher degrees of precision.
+The highest level of the accelerating variable, however, has to be
+constrained to prevent testing beyond the range where the
+acceleration model is adequate (the problem with the plan in
+Example~\ref{example:engineer.orig.plan}). On the other hand,
+testing at levels of the accelerating variable that are too low
+result in few or no failures during the time available for testing.
+These, and perhaps other constraints, define the range(s) of the
+accelerating variable(s).
+
+\mbox{ }\\
+\noindent
+%-------------------------------
+{\bf Levels of the accelerating variable.} The ALT plans developed
+here use either two or three levels of the accelerating
+variable. Let $x_{H}$ denote the highest allowable level of
+transformed experimental variable and let $x_{U}$ denote the
+use condition.  For a three-level test plan, $x_{L}$ and $x_{M}$ will
+denote the low and middle levels of the (transformed) accelerating
+variable, respectively.  To describe the ALT plan accelerating
+variable levels independent of specific test situations and units,
+it is convenient to use a standardized acceleration level $\xi_{i} =
+(x_{i}-x_{U})/ (x_{H}-x_{U})$ so that $\xi_{U}=0$, $\xi_{H}=1$, and
+other values of $0 < \xi_{i} <1 $ represent the fraction of the
+distance between $x_{H}$ and $x_{U}$. A negative value of $\xi_{i}$
+implies a level of an experimental variable that is less than the
+use condition $x_{U}$.  If there is a specified lower limit for an
+accelerating variable, it will be denoted by $x_{A}$
+and $\xi_{A}$ for the corresponding standardized level.
+
+
+\mbox{ }\\
+\noindent
+%-------------------------------
+{\bf Allocation of test units.} To describe ALT plan allocations of
+test units or specimens independent of the total number of units to be
+tested, we will allocate units by proportion, using $\pi_{i}$ as the
+allocation to $x_{i}$ (or standardized level $\xi_{i}$).
+
+\mbox{ }\\
+\noindent
+%-------------------------------
+{\bf Standardized censoring times.}  The standardized censoring time
+at the $i$th set of experimental conditions $x_{i}$ is defined as
+$\zeta_{i}= [\log(\censortime)-\mu(x_{i})]/\sigma= \Phi^{-1}(p_{i})$,
+where $\mu(x_{i})$ is the location parameter at $x_{i}$ and $p_{i}$
+is the expected proportion failing at $x_{i}$. Because $p_{i}=\Phi
+(\zeta_{i})$,  $\zeta_{i}$ can be used as a
+surrogate for $p_{i}$. In situations where $p_{i}$ is very close to
+0 or 1, it is more convenient to specify $\zeta_{i}$.
+
+\mbox{ }\\
+\noindent
+%-----------------------------------------------------------------------------
+{\bf Testing units at use conditions.} Some experimenters, when
+conducting an ALT, choose to test a small number of units at use
+conditions. These ``insurance'' units are typically tested to watch
+for evidence of other potential modes, especially when it is
+possible to take degradation measurements (or other parametric
+measurements) over time. Such units would not be expected to fail in
+the accelerated test and therefore will have no noticeable effect on
+estimates. For this reason, decisions about allocation of the other
+units in the test can be made independently of decisions on the
+insurance units.
+
+\subsection{Planning criteria}
+
+The appropriate criteria for choosing a test plan depend on the
+purpose of the experiment.   In some cases, optimizing under one
+criterion will result in a plan with poor properties under other
+criteria and it is useful to evaluate the trade-offs to obtain a
+satisfactory practical plan.  In developing test plans, the following
+figures of merit are useful:
+\begin{itemize}
+\item
+A common purpose of an ALT experiment is to estimate a particular
+quantile, $t_{p}$, in the lower tail of the failure-time distribution at
+use conditions. Thus a natural criterion is to minimize
+$\ase[\log(\rvquanhat_{p})]$ the
+large-sample approximate standard error of $\log(\rvquanhat_{p})$, the ML
+estimator of the target quantile at use conditions $x_{U}$.
+\item
+Some experiments have more general purposes with corresponding overall 
+interest in estimation precision for the parameters in $\thetavec$.  Let
+$I_{\thetavec}$ denote the Fisher information matrix for the model
+parameters.  A useful secondary criterion is to minimize
+$|I_{\thetavec}|$, the
+determinant of $I_{\thetavec}$.  This criterion is motivated because
+the volume of an approximate joint confidence region for all of the model
+parameters in $\thetavec$ is inversely proportional to an estimate of
+$\sqrt{|I_{\thetavec}|}$.
+\item
+To assess robustness to departures from the fitted model it
+is useful to evaluate test properties under alternative, typically
+more general, models.  For example, if one is planning a single-variable
+experiment under a linear model, it is useful to evaluate test plan
+properties under a quadratic model. Also, when planning a two-variable
+experiment under the assumption of a linear model with no interaction,
+it is useful to evaluate test plan properties under a linear model
+with an interaction term.
+\item
+To have a useful amount of precision in one's estimates, it is
+necessary to have more than the minimum number of failures needed
+for the ML estimates to exist (e.g., at least four or five or more,
+depending on the desired precision) at two and, preferably, three or
+four levels of the accelerating variable. Thus, it is important to
+evaluate the expected number of failures at each test condition.
+\end{itemize}
+These first three figures of merit depend on
+$\vcvmat_{(\betahat_{0},\betahat_{1},\sigmahat)}$, the large-sample
+approximate covariance matrix of the ML estimators of the model
+parameters.  All of these figures of merit are easy to evaluate
+with a computer program. It is important to recognize that generally, all of 
+the evaluation criteria depend on unknown parameter values.
+Because these parameters are unknown, we use the planning values 
+in their place. It is important to do sensitivity
+analysis over the plausible range of parameter values.
+
+%-----------------------------------------------------------------------------
+\subsection{Statistically optimum test plans}
+For a
+specified model and planning values for the model parameters, it is
+possible to find an optimum test plan that will, for example, minimize
+$\ase(\rvquanhat_{p})$ (or equivalently,
+$\ase[\log(\rvquanhat_{p})]$) at a specified value of $x$, the
+transformed accelerating variable.
+With a linear
+relationship between log life and $x$ for a log-location-scale distribution, 
+a statistically optimum plan will
+\begin{itemize}
+\item
+Test units at only two levels
+of $x$ (denoted by $x_{L}$ and $x_{H}$).
+\item
+Choose the highest level of $x$ to be as high as possible.  Using a
+larger value of $x_{H}$ increases precision and statistical
+efficiency.  The highest level of $x$ should not, however, be chosen
+to be so high that it actuates new failure modes or that it
+otherwise causes the relationship between the accelerating variable
+and life to be inadequate.
+\item
+Optimize the location of $x_{L}$ (the lowest level of $x$) and $\pi_{L}$
+(the allocation to $x_{L}$).
+\end{itemize}
+
+\begin{example}
+\label{example:adh.bond.opt.plan}
+{\bf Optimum test plan for the adhesive bond ALT.} Continuing with
+Examples~\ref{example:adv.bond.intro}-\ref{example:adh.bond.mod.trad.plan},
+it will be interesting to consider a statistically optimum plan with
+$x_{H}=120\degreesc$. The optimization criterion is to minimize the
+large-sample approximate standard error of
+$\log(\rvquanhat_{.1})$, the ML estimator of the logarithm of the .1
+quantile of the adhesive bond log-life distribution at the use
+conditions of 50$\degreesc$.  The large-sample approximate variance
+$\avar[\log(\rvquanhat_{.1})]$ is a function of $\xi_{L}$ and
+$\pi_{L}$.  Figure~\ref{figure:opt.contour.ps} is a contour plot of
+log base 10 of the variance of $\avar[\log(\rvquanhat_{.1})]$,
+relative to the minimum variance.  Thus points on the contour marked
+1 (marked 2) have a variance that is ten (one hundred) times that at
+the minimum.  The actual optimum plan is indicated by the ``$+$'' at
+the minimum of the variance surface in
+Figure~\ref{figure:opt.contour.ps} and given numerically in
+Table~\ref{table:alt.plan.opt.plan}.
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/opt.contour.ps}
+\caption{Contour plot showing
+$\log_{10}
+\{\avar[\log(\rvquanhat_{.1})]/\min\avar[\log(\rvquanhat_{.1})]\} $ as
+a function of $\xi_{L}$ and $\pi_{L}$ being varied to find the optimum ALT
+plan.}
+\label{figure:opt.contour.ps}
+\end{figure}
+%----------------------------------------------------------------------
+\begin{table}
+\caption{Statistically optimum ALT plan.}
+\centering\small
+\begin{tabular}{ccrrccccc}
+\\[-.5ex]
+\hline
+     &
+Level&  \multicolumn{2}{c}{Standardized} &Failure & \multicolumn{2}{c}{Allocation}  & Expected    \\ \cline {3-4} \cline{6-7}
+Condition&TEMPC &  Level& Time &   Probability & Proportion & Number & Number Failing\\
+$i$ & & \multicolumn{1}{c}{$\xi_{i}$} & \multicolumn{1}{c}{$\zeta_{i}$}&  $p_{i}$  & $\pi_{i}$ &$n_{i}$& $\E(r_{i})$ \\
+\hline
+$\mbox{Use}$ &\mbox{ 50}&.000  &$-6.91$ &   .001  &     &     &           \\
+$\mbox{Low}$ &\mbox{ 95}&.687  &$-1.59$ &   .18   & .71 & 212 & \mbox{ 38} \\
+$\mbox{High}$ &\mbox{120}&1.000&$.83  $ & .90     & .29 &  88 & \mbox{ 79} \\
+\hline
+\end{tabular}
+\begin{minipage}[t]{4in}
+For this plan, $\ase[\log(\rvquanhat_{.1}(50))]=.3794$ for the 
+Weibull-Arrhenius  model.
+\end{minipage}
+\label{table:alt.plan.opt.plan}
+\end{table}
+Figure~\ref{figure:advbond.plan2.sim.ps} indicates the temperature
+levels for the optimum plan and shows ML estimate lines from 50
+simulated ALTs from this test plan.  As with
+Figure~\ref{figure:advbond.plan1.sim.ps} from
+Example~\ref{example:adh.bond.opt.plan},
+Figure~\ref{figure:advbond.plan2.sim.ps} illustrates the kind of
+variability expected if the ALT experiment were to be repeated over
+and over, assuming the Arrhenius relationship to be correct over the
+entire range of temperature. The plot and the corresponding sample
+standard deviations given directly in the figure show that precision
+is somewhat better than that with the traditional plan in
+Example~\ref{example:adh.bond.mod.trad.plan} and
+Figure~\ref{figure:advbond.plan1.sim.ps}. The sample standard
+deviation $\sd[\log(\rvquanhat_{.1})]=.3848$ agrees well with the
+large-sample approximate standard error
+$\ase[\log(\rvquanhat_{.1}(50))]= .3794 $ from
+Table~\ref{table:alt.plan.opt.plan}.
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/advbond.plan2.sim.ps}
+\caption{Simulations of the
+statistically optimum ALT plan on Arrhenius paper
+for the Weibull-Arrhenius model.}
+\label{figure:advbond.plan2.sim.ps}
+\end{figure}
+%----------------------------------------------------------------------
+
+The optimum plan, however, has some serious deficiencies. In
+particular, the plan caused an uncomfortable feeling 
+that, for estimating life at 50$\degreesc$, there was (relative to the
+plan in Figure~\ref{figure:advbond.plan1.sim.ps}) too
+much temperature extrapolation.  Also, the optimum plan uses only two
+levels of temperature, providing no ability to detect departures from
+the Arrhenius relationship and no insurance in case something goes
+wrong at one of the temperature levels (e.g., no failures at the lower
+level).  Also, the optimum Weibull and lognormal plans were quite
+different (95$\degreesc$ and 120$\degreesc$ for Weibull versus
+70$\degreesc$ and 120$\degreesc$ for lognormal).  This was
+disconcerting because there were no strong feelings about which model
+would be used in the end and both models had, in the past, provided
+reasonable descriptions of adhesive bond failure times.  In general,
+optimum plans tend not to be robust to model departures and deviations
+between the planning values and the actual model parameters.
+\end{example}
+
+The main reason for consideration of the optimum plan is to provide
+a ``best case'' bench mark (i.e., the best that one could do if
+model assumptions were known to be correct), insight into possible
+good design practices (e.g., the optimum plan suggests testing more
+units at lower levels of the accelerating variable and that we have
+to constrain the highest level of the accelerating variable) and to
+provide a starting point leading to a compromise plan that has good
+statistical properties and that meets necessary practical
+constraints (including robustness to departures to unknown inputs).
+
+%-----------------------------------------------------------------------------
+\subsection{Compromise test plans}
+\label{section:comptestplan}
+Real applications require a test plan that meets practical
+constraints, has intuitive appeal, is robust to deviations from
+specified inputs, and has reasonably good statistical properties.
+Compromise test plans that use 3 or 4 levels of 
+the accelerating variable have somewhat
+reduced statistical efficiency, but provide important practical
+advantages. They tend to be more robust to misspecification of
+unknown inputs and they allow one to estimate model parameters even
+if there are no failures at one level of the accelerating
+variable. The traditional plans addresses some of these concerns.
+
+There are two basic issues in finding a good compromise test plan:\\[1ex]
+
+{\bf Basic Issue 1: Choose levels of the accelerating variable.} In
+choosing levels of the accelerating variable it is necessary to
+balance extrapolation in the accelerating variable (e.g., the fitted
+temperature-time relationship) with extrapolation in time (fitted
+failure time distribution). Consider the distribution at
+78$\degreesc$ in Figure~\ref{figure:advbond.plan3.sim.ps}. Moving
+the 78$\degreesc$ test to a higher temperature would provide a
+higher proportion of failures.  But this would also increase the
+degree of extrapolation down to 50$\degreesc$ and reduce the
+resolution needed to estimate the slope precisely. Moving the
+78$\degreesc$ test to a lower temperature would reduce extrapolation
+in temperature, and increase the resolution to estimate the slope, except
+that it would also increase extrapolation in time (with the expected
+number of failures becoming smaller).
+
+Generally at the middle and high levels of the accelerating variable
+we would have enough failures to interpolate in time in order to
+estimate quantiles in the lower tail of the distribution.  For
+example, if interest is in the .1 quantile, we would try to test at
+conditions where more than 10\% would be expected to fail.  At the
+lower level of the accelerating variable we would often expect to
+extrapolate in time. That is, if interest is in the .1 quantile, we
+might have to test at conditions where somewhat less than 5\%
+of the test units would be expected to fail.\\[1ex]
+
+{\bf Basic Issue 2: Allocation of units to the accelerating variable
+levels.}  As suggested by optimum test plans, one should allocate
+more test units to the lower accelerating variable level than to the
+high accelerating variable levels. This compensates for the small
+proportion failing at low levels of the accelerating variable.
+Also, testing more units near
+the use conditions is intuitively appealing because more testing is
+being done closer to the use conditions.  In trying to optimize
+allocation, it is necessary to constrain a certain percentage of
+units to the middle level of accelerating variable. Otherwise
+optimizing a three-level plan will result in the three-level plan
+degenerating to a two-level plan.
+
+Generally it is sufficient to use three or four levels of an
+accelerating variable.  It is always necessary to limit the highest
+level of an accelerating variable to the maximum reasonable condition.
+Optimization of the position of the lowest level of the accelerating variable
+(constraining the middle level to be half way between) often leads to
+an intolerable degree of extrapolation. In this case, reduce the
+lowest level of the accelerating variable (to minimize
+extrapolation)---subject to the expectation of seeing a minimum
+four or five failures. After deciding on some candidate plans, they can be
+evaluated using either large-sample approximations or simulation
+methods.
+
+\begin{example}
+{\bf Evaluation of a compromise plan for the adhesive bond ALT.} 
+Table~\ref{table:alt.plan.comp.plan} shows a
+compromise plan in which tests are run at 78, 98, and 120$\degreesc$.
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/advbond.plan3.sim.ps}
+\caption{Simulations of the 20\% compromise ALT 
+plan and the Weibull-Arrhenius model for the adhesive-bonded power
+elements on Arrhenius paper.}
+\label{figure:advbond.plan3.sim.ps}
+\end{figure}
+%----------------------------------------------------------------------
+\begin{table}
+\caption{Compromise ALT plan for the adhesive bond.}
+\centering\small
+\begin{tabular}{ccrrccccc}
+\\[-.5ex]
+\hline
+     &
+Level&  \multicolumn{2}{c}{Standardized} &Failure & \multicolumn{2}{c}{Allocation}  & Expected    \\ \cline {3-4} \cline{6-7}
+Condition&TEMPC &  Level& Time &   Probability & Proportion & Number & Number Failing\\
+$i$ & & \multicolumn{1}{c}{$\xi_{i}$} & \multicolumn{1}{c}{$\zeta_{i}$}&  $p_{i}$  & $\pi_{i}$ &$n_{i}$& $\E(r_{i})$ \\
+\hline
+$\mbox{Use}$& \mbox{ 50}&.000 &$-6.91$ & .001  &   &   &           \\
+$\mbox{Low}$& \mbox{ 78}&.448 &$-3.44$ &.03    & .52   & 156  & \mbox{ 5} \\
+$\mbox{Mid}$& \mbox{ 98}&.726 &$-1.28$ &.24    & .20   &  60  & \mbox{14} \\
+$\mbox{High}$& \mbox{120}&1.000&$.83 $ &.90    & .28   & 84   &  \mbox{76} \\
+\hline
+\end{tabular}
+\begin{minipage}[t]{4in}
+For this plan, $\ase[\log(\rvquanhat_{.1}(50))]= .4375 $ for the Weibull-Arrhenius
+model.
+\end{minipage}
+\label{table:alt.plan.comp.plan}
+\end{table}
+Relative to optimum plans, this compromise plan increases the
+large-sample approximate standard deviation of the ML estimator of
+the .1 quantile at 50$\degreesc$ by 15\% (if assumptions are
+correct).  However, it reduces the low test temperature to
+78$\degreesc$ (from 95$\degreesc$) and uses three levels of the
+accelerating variable, instead of two levels.  It is also more
+robust to departures from assumptions and uncertain inputs.
+Figure~\ref{figure:advbond.plan3.sim.ps} shows the results obtained
+by simulating from this proposed compromise test plan. The sample
+standard deviation $\sd[\log(\rvquanhat_{.1})]=.4632$ agrees well
+with the large-sample approximate standard error
+$\ase[\log(\rvquanhat_{.1}(50))]= .4375 $ from
+Table~\ref{table:alt.plan.comp.plan}.
+\end{example}
+	
+
+%-----------------------------------------------------------------------------
+%-----------------------------------------------------------------------------
+\section{Planning Two-variable ALT Experiments}
+\label{section:alt.plan.two.fact}
+
+This section describes some of the basic ideas for planning ALTs with
+two variables.  The discussion extends the material in
+Sections~\ref{section:alt.plan.intro} through
+\ref{section:alt.plan.sing.fact} and uses 
+the same general setting and model assumptions, except that the
+regression model allows for two experimental variables affecting the
+scale parameter of the log-location-scale distribution (location
+parameter of the location-scale distribution).  Most of the ideas
+can be extended to ALTs with more than two experimental variables.
+
+\subsection{Two-variable ALT model}
+For a log-location-scale distribution, the two-variable ALT model is
+similar to the model in (\ref{equation:alt.prob.model}) except that
+$\mu$ is a linear function of two experimental variables.
+Specifically,
+\begin{displaymath}
+\mu  =  \mu(x_{1},x_{2})=\beta_{0}+\beta_{1} x_{1}+\beta_{2}x_{2}
+\end{displaymath}
+where $x_{1}$ and $x_{2}$ are the (possibly transformed) levels of the
+accelerating or other experimental variables. For some underlying
+failure processes,
+it is possible for the underlying accelerating variables to
+``interact.''
+For example, in the model
+\begin{displaymath}
+\mu  =  \mu(x_{1},x_{2})=\beta_{0}+\beta_{1} x_{1} +\beta_{2}x_{2}+\beta_{3}x_{1}x_{2}
+\end{displaymath}  
+the transformed variables $x_{1}$ and $x_{2}$ interact in the sense that the
+effect of changing $x_{1}$ depends on the level of $x_{2}$ and
+vice versa.  As before, the simple ALT models (i.e., SAFT models)
+assume that $\sigma$ does not depend on the
+experimental variables.  The $\beta$'s and $\sigma$ are unknown
+parameters that are characteristics of the material or product being
+tested and they are to be estimated from the available ALT data.
+
+%-----------------------------------------------------------------------------
+\subsection{Examples}
+
+\begin{example}
+\label{example:tvalt.insulation.volt.thick}
+{\bf Voltage-stress/thickness ALT for an insulation.}  Nelson
+(1990a, page 349) describes the design of a complicated ALT with
+several experimental variables.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/nelson.tvalt.ps}
+\caption{Insulation  $3 \times 3$ $ (\Vpm \times \Thick)$
+factorial ALT plan.}
+\label{figure:nelson.tvalt.ps}
+\end{figure}
+%-----------------------------------------------------------------------------
+To provide input for the design of a product, reliability engineers
+needed a rapid assessment of insulation life at use conditions. They
+also wanted to estimate the effect of insulation thickness on life,
+and to compare different conductors in the insulation.  For purposes
+of test planning, Nelson~(1990a) used the standard Weibull regression
+model in which log hours has a smallest extreme value distribution
+with location
+\begin{displaymath}
+\mu=\beta_{0}+\beta_{1} \log(\Vpm) + \beta_{2} \log(\Thick)
+\end{displaymath}
+and a $\sigma$ that does not depend on the accelerating or other
+experimental variables. Here $\Vpm$ is voltage stress in volts/mm of
+insulation thickness and $\Thick$ is insulation thickness in cm .
+Nelson~(1990a, page 352) gives ``planning'' values
+$\betaplan_{0}=67.887$, $\betaplan_{1}=-12.28$,
+$\betaplan_{2}=-1.296$, and $\sigmaplan=.6734$.  Nelson considered
+test plans with $\Vpm$ ranging between $\Vpm_{A}=120$ volts/mm and
+$\Vpm_{H}=200$ volts/mm and $\Thick$ between $\Thick_{A}=.163$ cm 
+and $\Thick_{H}=.355$ cm .  The variable levels at use conditions
+were $\Vpm_{U}=80$ volts/mm for voltage stress and $\Thick_{U}=.266$
+cm  for thickness.  Voltage stress was the accelerating variable in
+the experiment.  Thickness was an ordinary experimental variable;
+its levels were chosen because they were of interest to the
+engineers.  For purposes of illustration, we follow
+Nelson~(1990a) and plan 1000-hour ALTs using
+$n=170$ insulation specimens.  The traditional plan in
+Figure~\ref{figure:nelson.tvalt.ps} was obtained by choosing the
+lowest level of $\Vpm$ to minimize $\ase[\log(\rvquanhat_{p})]$ with
+the middle $\Vpm$ constrained to lie half way between the high and
+the lower levels.  The slanted lines in
+Figure~\ref{figure:nelson.tvalt.ps} are lines of experimental
+variable combinations that yield equal probability of failing during
+the 1000-hour life test (these probabilities are indicated by a
+``$p$='' in the neighborhood of the lines).  The slope of these
+lines show that the effect of changing $\Vpm$ is much stronger than
+that of changing $\Thick$.  As with the one-variable ALT, testing at
+combinations of the accelerating variables with small $p$ will
+result in few failures and little information. On the other hand, we
+have a need to spread out the test conditions to get a better
+estimate of $\mu$ over the experimental region.
+\end{example}
+
+In contrast to the previous
+example, the following example uses two different {\em accelerating}
+experimental variables.
+
+\begin{example}
+\label{example:tvalt.insulation.volt.temp}
+{\bf Voltage-stress/temperature ALT for an insulation.} 
+This example is a modification of
+Example~\ref{example:tvalt.insulation.volt.thick} in which $\Thick$
+will be held constant at its use conditions of $\Thick_{U}=.266$ cm  and
+insulation life will be accelerated by using levels of voltage stress and 
+temperature that are  higher than use conditions.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/insul.vpm.temp.factorial.ps}
+\caption{Insulation  $3 \times 3$ $ (\Vpm \times \Temp)$ factorial ALT plan.}
+\label{figure:insul.vpm.temp.factorial.ps}
+\end{figure}
+%-------------------------------------------------------------------
+The Weibull regression model will again be used for purposes of test
+planning, with
+\begin{displaymath}
+\mu=\beta_{0} + \beta_{1} \log(\Vpm) + \beta_{2} [11605/(\Tempc{}+273.15)]
+\end{displaymath}
+and constant $\sigma$. Again $\Vpm$ is voltage stress in volts/mm of
+insulation thickness and $\Temp$ is temperature in $\degreesc$.  The
+primary purpose of the test is to estimate $\rvquan_{.001}$ at the
+use conditions of $\Vpm_{U}=80$ volts/mm and
+$\Temp_{U}=120 \degreesc$.  Both $\Vpm$ and $\Temp$ are accelerating
+variables in this experiment.  The highest level of the variables should
+be no more than $\Vpm_{H}=200$ volts/mm and $\Temp_{H}=260 \degreesc$. Lower
+limits on testing are $\Vpm_{A}=80$ volts/mm and $\Temp_{A}=120 \degreesc$.
+The lower limit on temperature was chosen as the use temperature
+because it is generally not economical to {\em lower} temperatures for
+reliability testing.
+
+The ``planning values'' $\betaplan_{1}=-12.28$, and $\sigmaplan=.6734$ carry
+over from the previous example.  The value $\betaplan_{2}=.3878$ was
+chosen, by reviewing examples in Nelson~(1990a), as a typical
+activation energy for temperature-accelerated insulation ALTs.  Then
+$\betaplan_{0}=58.173$ was chosen to give the probability $p_{UU}=1.82
+\times 10^{-6}$ (as in the previous 
+example) at use conditions $\Vpm_{U}=80$, $\Thick_{U}=.266$, and 
+$\Temp_{U}=120\degreesc$. Then $\zeta_{U}=-13.216$.
+For purposes of illustration we will again plan a 1000-hour ALT using
+a total of $n=170$ insulation specimens.
+
+The slanted lines in Figure~\ref{figure:insul.vpm.temp.factorial.ps}
+are also lines of equal probability failing during the 1000-hour
+life test.  The slope of these lines show that both $\Vpm$ and
+$\Temp$ will have a strong effect on life.  The circles in
+Figure~\ref{figure:insul.vpm.temp.factorial.ps} correspond to a
+traditional test plan using equally spaced levels of the
+accelerating variables temperature and voltage stress and equal
+allocation of specimens to the 9 different test conditions.
+\end{example}
+
+%-----------------------------------------------------------------------------
+\subsection{Two-variable ALT plans}
+
+As with the one-variable ALT plans, it is convenient to use
+standardized units for the accelerating (or other experimental)
+variables.  The standardized variable for level $i$ of variable $j$
+is defined as $\xi_{ji}=(x_{ji}-x_{jU})/(x_{jH}-x_{jU})$.  Then
+$\xi_{jU}=0$ and $\xi_{jH}=1$, $(j=1,2)$. This implies that, at use
+conditions, $\xivec_{U}=(0,0)$ and at the highest levels of the
+experimental variables, $\xivec_{H}=(1,1)$.
+
+In the two-variable setup, there are several distinctly different kinds
+of test plans that provide estimates of any specified
+quantile $\rvquan_{p}$ at $\xivec_{U}$.
+\begin{itemize}
+\item
+Test all units at $ \xivec_{U}$.  This is a degenerate test plan
+(because it does not allow the estimation of all of the regression
+model parameters) that is capable of estimating the failure-time
+distribution at $\xivec_{U}$.  When the quantile of interest $p$ and
+$p_{UU}$ are not too small (e.g., $p=.01$ and $p_{UU} > .1$)
+concentrating all test units at $ \xivec_{U}$ can actually minimize
+$\avar[\log(\rvquanhat_{p})]$ (see the figures in Meeker and
+Nelson~1975).
+\item
+Test at any two (or more) combinations of variable levels on a line that
+passes through $\xivec_{U}$. See, for example, the circles on the
+dashed lines in Figures~\ref{figure:insul.vpm.temp.opt.ps} and
+\ref{figure:insul.vpm.temp.20perct.zeta.ps}.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/insul.vpm.temp.opt.ps}
+\caption{Insulation $\Vpm \times \Temp$  optimum 
+degenerate and optimum split ALT plans.}
+\label{figure:insul.vpm.temp.opt.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/insul.vpm.temp.20perct.zeta.ps}
+\caption{Insulation
+$\Vpm \times \Temp$ 20\% compromise ALT plans with $\zeta^{*}$
+constraint.}
+\label{figure:insul.vpm.temp.20perct.zeta.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Such plans are also degenerate but allow estimation of $\rvquan_{p}$ at
+$\xivec_{U}$ (or any other point on the line). 
+
+\item
+Test at three (or more) noncollinear combinations of the experimental
+variables in the plane. This is the type of plan that one would use in
+practice.
+\end{itemize}
+
+Degenerate plans would be an unlikely choice in practice. They are,
+however, useful for developing more reasonable optimum and
+compromise test plans.  In the next section we show how to obtain an
+optimum (or compromise) two-variable ALT plan by first finding a
+{\em degenerate} optimum (or compromise) plan that yields a
+particular $\avar[\log(\rvquanhat_{p})]$.  Then we show how to
+``split'' this degenerate plan into an optimum (or compromise)
+two-variable plan that gives the same $\avar[\log(\rvquanhat_{p})]$
+and that has other desirable properties.  The choice among possible
+split plans allows us to also optimize with respect to secondary
+criteria and to evaluate trade-offs among these criteria.
+
+%-----------------------------------------------------------------------------
+\subsection{Optimum two-variable ALT plans}
+\label{section:opt.tvalt}
+When testing is allowed anywhere in the square defined by the limits on
+the individual variables, an optimum degenerate plan is on the 
+line $\sclvec$ going
+through $\xivec_{U}$ and $\xivec_{H}$.  This optimum plan corresponds
+to the optimum test plan for a one-variable testing situation
+specified by
+$\zeta_{U}=\zeta_{UU}$ (standardized censoring time at use
+conditions $\xivec_{L}$) and $\zeta_{H}=\zeta_{HH}$ (standardized censoring time at
+conditions $\xivec_{H}$).  The
+single-variable optimum plan provides the optimum $\zeta_{L}$
+(standardized censoring time at the optimum lowest test variable level)
+and $\pi_{L}$ (allocation to this variable level).  The optimum
+degenerate two-variable plan allocates $\pi_{L}$ 
+to the diagonal
+point 
+$\xivec_{L}=(\xi_{1L},\xi_{2L})$  on the
+line $\sclvec$ having $\zeta_{LL}=\zeta_{L}$ (or equivalently so that
+$p_{LL}=p_{L}$) and $\pi_{H}=1-\pi_{L}$ to the point $\xivec_{H}$.
+This diagonal point has components
+\begin{equation}
+\label{equation:diagonal.points}
+\xi_{1L}=\xi_{2L}=
+\frac{
+\sigma (\zeta_{U}-\zeta_{L})
+     }
+     {
+(x_{1H}-x_{1L}) \beta_{1} +
+(x_{2H}-x_{2L}) \beta_{2} 
+     }.
+\end{equation}
+Figure~\ref{figure:insul.vpm.temp.opt.ps} shows the
+degenerate optimum plan along the dashed line from $\xivec_{H}$ to
+$\xivec_{U}$. The centers of the circles on this line
+indicate the variable-level combination and the areas of the circles are
+proportional to the allocations to the different variable-level
+combinations.
+
+Although a degenerate ALT plan may not be directly useful in
+practice, it does provide a means for finding nondegenerate optimum
+two-variable ALT plans.  In particular, it is possible to ``split''
+a degenerate plan into a nondegenerate optimum test plan
+(maintaining optimum $\avar[\log(\rvquanhat_{p})]$).  Thus it is possible to
+use some secondary criteria to chose a ``best'' split plan. A
+reasonable strategy for many testing situations is to split the
+degenerate plan points into two points that extend along the
+equal-probability line to reach the boundary of the experimental
+region. As shown in Escobar and Meeker~(1995), a two-variable
+degenerate optimum test plan having $\xivec_{L}=(\xi_{1L},\xi_{2L})$
+with allocation $\pi_{L}$ can be split into two points on the same
+equal-probability line
+\begin{eqnarray*} 
+\xivec_{L1} &=& (\xi_{1L1},\xi_{2L1})\quad\text{with allocation } \pi_{L1}\\
+\xivec_{L2} &=& (\xi_{1L2},\xi_{2L2})\quad\text{with allocation } \pi_{L2}
+\end{eqnarray*}
+where $\pi_{L}=\pi_{L1}+\pi_{L2}$. To
+maintain the optimality, the split allocations are chosen such that
+\begin{eqnarray} 
+\label{equation:tvalt.splitL}
+\pi_{L1} \, \xi_{1L1} + \pi_{L2} \, \xi_{1L2} &=& \pi_{L} \, \xi_{1L}\\
+\nonumber
+\pi_{L1} \, \xi_{2L1} + \pi_{L2} \, \xi_{2L2} &=& \pi_{L} \, \xi_{2L}.
+\end{eqnarray}
+Depending on the value of $\zeta_{L}$, the point $\xivec_{L1}$ will
+be either on the North boundary or the West boundary of the
+experimental region. Similarly, the point $\xivec_{L2}$ will be
+either on the South boundary or the East boundary of the
+experimental region.
+
+When $\zeta_{L} \ge \zeta_{LH}$, 
+$\xivec_{L1}=(\xi_{1L1},1)$ will be on the North boundary
+of the experimental region,
+with
+\begin{equation}
+\label{equation:north.boundary}
+\xi_{1L1}=\frac{
+\sigma (\zeta_{U}-\zeta_{L}) -(x_{2H}-x_{2L})\beta_{2} 
+               }
+               {
+(x_{1H}-x_{1L})\beta_{1} 
+               }.
+\end{equation}
+When $\zeta_{L} < \zeta_{LH}$, $\xivec_{L1}=(\xi_{1A}, \xi_{2L1})$
+will be on the West boundary of the experimental region, with
+\begin{equation}
+\label{equation:west.boundary}
+\xi_{2L1}=\frac{
+\sigma (\zeta_{U}-\zeta_{L}) -(x_{1H}-x_{1L})\beta_{1} \xi_{1A}
+               }
+               {
+(x_{2H}-x_{2L})\beta_{2} 
+               }.
+\end{equation}
+When $\zeta_{L} \le  \zeta_{LH}$, 
+$\xivec_{L2}=(\xi_{1L2}, \xi_{2A})$ will be on the South boundary
+of the experimental region, with
+\begin{equation}
+\label{equation:south.boundary}
+\xi_{1L2}=
+\frac{
+\sigma (\zeta_{U}-\zeta_{L}) -(x_{2H}-x_{2L})\beta_{2} \xi_{2A}
+               }
+               {
+(x_{1H}-x_{1L})\beta_{1} 
+               }.
+\end{equation}
+Finally when $\zeta_{L} > \zeta_{HL}$, $\xivec_{L2}=(\xi_{1A}, \xi_{2L2})$
+will be on the East boundary of the experimental region, with
+\begin{equation}
+\label{equation:east.boundary}
+\xi_{2L2}=\frac{
+\sigma (\zeta_{U}-\zeta_{L}) -(x_{1H}-x_{1L})\beta_{1}
+               }
+               {
+(x_{2H}-x_{2L})\beta_{2} 
+               }.
+\end{equation}
+
+\begin{example}
+{\bf Voltage-stress/temperature optimum ALT for an insulation.} 
+\label{example:tvalt.insulation.volt.temp.opt.plan}
+Figure~\ref{figure:insul.vpm.temp.opt.ps} shows the optimum plan for
+the voltage stress/temperature accelerated test on the insulation.
+\begin{table}
+\caption{Accelerating variable levels and
+allocations for the optimum degenerate
+and optimum split test plans.}
+\centering\small
+\begin{tabular}{c*{11}{r}}
+&&&&\multicolumn{3}{c}{Standardized}
+ \\
+\cline{5-7}
+Point&\multicolumn{2}{c}{Levels}& &
+\multicolumn{2}{c}{Levels} & Time& &\multicolumn{2}{c}{Allocation} \\
+\cline{2-3} \cline{5-6} \cline{9-10}
+\multicolumn{1}{c}{$i$} &
+\multicolumn{1}{c}{VPM} &
+\multicolumn{1}{c}{TEMPC} & &
+\multicolumn{1}{c}{$\xi_{1i}$} &
+\multicolumn{1}{c}{$\xi_{2i}$} &
+\multicolumn{1}{c}{$\zeta_{i}$} &
+\multicolumn{1}{c}{$p_{i}$} &
+\multicolumn{1}{c}{$\pi_{i}$}&
+\multicolumn{1}{c}{$n_{i}$}&
+\multicolumn{1}{c}{${\rm E}(r_{i})$} \\
+\hline
+\multicolumn{11}{c}{Optimum  degenerate}\\
+  $\mbox{Use}$ &  80 & 120 & & .000     & .000     &$-13.22 $ 
+	&$1.8\times 10^{-6}$\\
+   $\mbox{Low}$  & 137 & 192 &&  .591 & .591  & $-.71$ & .387 & .614& 104& 
+40\\
+   $\mbox{High}$ & 200 & 260 && 1.000 & 1.000 & 7.95   & 1.000& .386& 66&  
+66\\
+\multicolumn{11}{c}{Optimum split}\\
+  $\mbox{Use}$ &  80 & 120 & & .000     & .000     &$-13.22 $ 
+	&$1.8\times 10^{-6}$\\
+   $\mbox{Low}_{1}$ & 124 & 260 && .481 & 1.000 &$-.71$  & .387& .363 & 62&  
+24\\
+   $\mbox{Low}_{2}$ & 159 & 120 && .748 & .000 &  $-.71$  & .387&.251& 42& 
+16\\
+   $\mbox{High}$  & 200 & 260 &&  1.000 & 1.000 &   7.95  & 1.000 & .386& 66&  66  \\
+ \hline
+%------------------------------------------------------------------------------
+\end{tabular}
+\begin{minipage}[t]{4in}
+\end{minipage}
+\label{table:tvalt.volt.temp.opt.details}
+\end{table}
+Using (\ref{equation:diagonal.points}),
+the diagonal
+point $\xivec_{L}$ has components
+\begin{displaymath}
+\xi_{1L}=\xi_{2L}=\frac{.6734 \times [-13.216-(-0.71)]
+		       }
+		       {
+.9163\times (-12.28)+(-7.7511) \times .3878
+		       }=.591
+\end{displaymath}
+%splus (.6734*(-13.216-(-0.71)))/(.9163*(-12.28)+(-7.7511)*.3878)
+Thus the degenerate optimum is $\xivec_{H}=(1,1)$ 
+with allocation $\pi_{H}=.386$,
+and $\xivec_{L}=(.591, \quad .591)$ with allocation $\pi_{L}=.614$, 
+which are the entries for the optimum degenerate plan
+given in Table~\ref{table:tvalt.volt.temp.opt.details}
+
+To split the degenerate optimum plan, use (\ref{equation:north.boundary})
+and (\ref{equation:south.boundary}) with
+$\xi_{1A}=0$ giving
+\begin{eqnarray*}
+\xi_{1L1}&=&
+\frac{
+.6734 \times [-13.216-(-0.71)]- (-7.7511)\times .3878
+     }
+     {
+.9163\times (-12.28)
+     }=.481
+\\
+\xi_{1L2}&=&
+\frac{
+.6734 \times [-13.216-(-0.71)]
+     }
+     {
+.9163 \times (-12.28)
+     }=.748
+\end{eqnarray*}
+%splus (.6734*(-13.216-(-0.71))-(-7.7511)*.3878)/(.9163*(-12.28))
+%splus (.6734*(-13.216-(-0.71)))/(.9163* (-12.28))
+Consequently, the standardized levels for the
+split optimum plan are
+$\xivec_{H}=(1,\quad 1)$,
+$\xivec_{L1}=(.481,\quad 1)$, and
+$\xivec_{L2}=(.748,0)$. 
+The allocation at $\xivec_{H}$ is $\pi_{H}=.386$. 
+From the second equation in (\ref{equation:tvalt.splitL}),
+it follows that the allocation at $\xivec_{L1}$ is
+$\pi_{L1}= \pi_{L} \times .591=.614 \times .591 =.363$.
+Similarly, $\pi_{L2}=.251$.
+
+Table~\ref{table:alt.vpm.temp.comp.plan} compares this optimum plan
+with the traditional plan shown in
+Figure~\ref{figure:nelson.tvalt.ps}.  The variance of the optimum
+plan is about 35\% smaller.  
+%splus (77.3-50.5)/77.3
+The two-variable optimum plan, however, like the
+one-variable optimum plan, has some deficiencies. Tests are run at
+only three combinations of temperature and voltage stress and the
+degree of extrapolation is, perhaps, rather large.
+The optimum plan has no ability to estimate the parameters of
+the model with interaction.
+\end{example}
+
+\begin{table}
+\caption{Comparison of $\Vpm \times \Temp$ ALT plans.}
+\centering\small
+\begin{tabular}{crrrrrr}
+\\[-.5ex]
+\hline
+&&&\multicolumn{2}{c}{No Interaction}&
+\multicolumn{2}{c}{Interaction} \\
+&&&\multicolumn{2}{c}{Model}&
+\multicolumn{2}{c}{Model} \\
+\cline{4-5} \cline{6-7}
+\multicolumn{1}{c}{\rule{0ex}{3ex} Plan} &Figure&\multicolumn{1}{c}{$\zeta^{*}$}&
+\multicolumn{1}{c}{$\frac{n}{\sigma^{2}}\avar[\log(\rvquanhat_{p})]$} &
+\multicolumn{1}{c}{$\frac{\sigma^{2}}{n}|F|$} &
+\multicolumn{1}{c}{$\frac{n}{\sigma^{2}}\avar[\log(\rvquanhat_{p})]$} &
+\multicolumn{1}{c}{$\frac{\sigma^{2}}{n}|F|$} \\[.7ex]
+\hline
+\rule{0mm}{4ex}
+$ 3 \times 3$ &\ref{figure:insul.vpm.temp.factorial.ps}&--& 77.3 & $1.7 \times 10^{-3}$ & 349 & $2.7 \times 10^{-6}$ \\
+Factorial adapted\\
+from Nelson~(1990a)\\
+\hline
+%--------------------------------------------------------------------------
+\rule{0mm}{4ex}
+Optimum split&\ref{figure:insul.vpm.temp.opt.ps}&--&50.5 & $1.3 \times 10^{-3}$ & $\infty$ & 0.0 \\
+[2ex]   \hline
+%--------------------------------------------------------------------------
+\rule{0mm}{4ex}
+20\% Compromise &--& --& 54.7 &$2.0 \times 10^{-3}$  & 430 & $3.0 \times 10^{-6}$ \\
+with no $\zeta^{*}$ constraint\\
+[2ex]   \hline
+%--------------------------------------------------------------------------
+\rule{0mm}{4ex}
+20\% Compromise split&\ref{figure:insul.vpm.temp.20perct.zeta.ps}&
+      5.0& 77.7 &$1.2 \times 10^{-3}$ & 324 &$1.7 \times 10^{-6}$ \\
+with $\zeta^{*}=5.0$ constraint\\
+ \hline
+%--------------------------------------------------------------------------
+\end{tabular}
+\begin{minipage}[t]{4in}
+\end{minipage}
+\label{table:alt.vpm.temp.comp.plan}
+\end{table}
+
+\subsection{Splitting Degenerate Compromise Plans}
+
+A degenerate compromise plan can also be split to develop a
+nondegenerate compromise plan.  Thus one can find a one-variable
+degenerate compromise plan using the methods in
+Section~\ref{section:comptestplan} and then split the plan in a
+manner that is analogous to that used in
+Section~\ref{section:opt.tvalt}.  For example, a two-variable
+degenerate compromise test plan having a middle accelerating
+variable level $\xivec_{M}=(\xi_{1M},\xi_{2M})$ with allocation
+$\pi_{M}$ can be split into two points
+\begin{eqnarray*} 
+\xivec_{M1} &=& (\xi_{1M1},\xi_{2M1})\quad\text{with allocation } \pi_{M1}\\
+\xivec_{M2} &=& (\xi_{1M2},\xi_{2M2})\quad\text{with allocation } \pi_{M2}
+\end{eqnarray*} 
+on the same equal-probability line, where $\pi_{M}=\pi_{M1}+\pi_{M2}$. 
+To maintain the optimality, the split allocations are chosen such that
+\begin{eqnarray} 
+\label{equation:tvalt.splitM}
+\pi_{M1} \, \xi_{1M1} + \pi_{M2} \, \xi_{1M2} &=& \pi_{M} \, \xi_{M}\\
+\nonumber
+\pi_{M1} \, \xi_{2M1} + \pi_{M2} \, \xi_{2M2} &=& \pi_{M} \, \xi_{M}.
+\end{eqnarray}  
+To obtain $\xivec_{M1}$ and
+$\xivec_{M2}$, one uses 
+(\ref{equation:north.boundary})-(\ref{equation:east.boundary})
+with $\zeta_{L}$ replaced by $\zeta_{M}$.
+
+
+When there is a $\zeta^{*}$ constraint [or a $p^{*}$ probability constraint
+where $p^{*}=\Phi(\zeta^{*})$] on the NE corner of the experimental
+region, there are multiple degenerate compromise plans with the same
+$\avar[\log(\rvquanhat_{p})]$. To specify a degenerate plan one
+chooses a line $\sclvec$ passing through $\xivec_{U}$ and
+intersecting the $\zeta^{*}$ constraint line at any point within the
+experimental region.  Then $\xivec_{L},
+\xivec_{M}$, and $\xivec_{H}$ are determined by the intersection of
+$\sclvec$ and the failure probability lines defined by
+$\zeta_{L},\zeta_{M}$ and $\zeta_{H}$ .  Such $\zeta^{*}$ constraint
+compromise plans can also be split in the same way [i.e.,
+$\xivec_{H}$ is split in a manner that is analogous to that used for
+$\xivec_{M}$ in (\ref{equation:tvalt.splitM})].  The freedom of
+choosing the slope of $\sclvec$ allows optimization on another
+criterion.  A desirable property of the split compromise plan is
+that $\pi_{1L}$ and $\pi_{2L}$ be equal if possible or nearly equal
+otherwise.
+
+
+\begin{example}
+{\bf Voltage-stress/temperature 20\% compromise ALT plans for an insulation.} 
+\label{example:tvalt.insulation.volt.temp.comp.plans}
+The circles on the dashed lines in
+Figure~\ref{figure:insul.vpm.temp.20perct.zeta.ps} show a degenerate
+20\% compromise test plan with a $\zeta^{*}=5.0$ constraint.
+Figure~\ref{figure:insul.vpm.temp.20perct.zeta.ps} also shows the
+split plan that maintains the $\avar[\log(\rvquanhat_{p})]$ while
+splitting all three points to the boundaries of the experimental
+region.  Table~\ref{table:tvalt.volt.temp.comp.details} shows the
+numerical values of the standardized and actual levels of the
+experimental variables and the corresponding allocations. The
+starting point for obtaining the two-variable plan in this table is
+the computation of the standardized one-variable compromise test
+plan specified (for a three-level plan) in terms of the standardized
+censoring times $\zeta_{L},\zeta_{M},\zeta_{H}=\zeta^{*}$ and
+corresponding allocations $\pi_{L},\pi_{M},\pi_{H}$.
+
+The criterion $\pi_{1L}=\pi_{2L}$ was used to determine the slope of
+the dashed line in
+Figure~\ref{figure:insul.vpm.temp.20perct.zeta.ps}. Using
+(\ref{equation:north.boundary}) and (\ref{equation:south.boundary})
+with $\zeta_{L}=-.79$ and the other inputs as before, gives
+$\xivec_{L1}=(.477,1)$ and $\xivec_{L2}=(.744,0)$.  To obtain $\xivec_{L}$
+observe that when $\pi_{L1}=\pi_{L2}$, (\ref{equation:tvalt.splitL})
+implies $\xivec_{L}=(\xivec_{L1}+ \xivec_{L2})/2$.  In this case,
+$(\xivec_{L1}+ \xivec_{L2})/2= (.610,.5)$ and the line $\sclvec$
+through $\xivec_{U}$ and $(.610,.5)$ crosses the $\zeta^{*}$
+constraint line within the experimental region. Then we can choose
+$\xivec_{L}=(.610,.5)$ and the corresponding line $\sclvec$ with
+slope equal to $.5/.610$. The intersections of $\sclvec$ with the
+failure probability lines with $\zeta_{M}=2.10$ and $\zeta_{H}=5.00$
+determine the points $\xivec_{M}=(.752,\quad .617)$ and
+$\xivec_{H}=(.895,\quad .733)$.  To obtain $\xivec_{M1}$ and
+$\xivec_{M2}$, we use formulas analogous to
+(\ref{equation:north.boundary}) and (\ref{equation:south.boundary}),
+respectively.  In particular, $\xivec_{M1}=(.650, \quad 1)$, where
+\begin{eqnarray*}
+\xi_{1M1}&=&\frac{
+\sigma (\zeta_{U}-\zeta_{M}) -(x_{2H}-x_{2L})\beta_{2} 
+               }
+               {
+(x_{1H}-x_{1L})\beta_{1} 
+               }\\
+&=&
+\frac{
+.6734 \times (-13.216-2.10)- (-7.7511)\times .3878
+     }
+     {
+.9163\times (-12.28)
+     }=.650.
+\end{eqnarray*}
+%splus (.6734*(-13.216-2.10)-(-7.7511)*.3878)/(.9163*(-12.28))
+Once the design points have been determined, it is simple to find
+the allocations. In this case by choice
+$\pi_{L1}=\pi_{L2}=.535/2=.268$.  The allocations $\pi_{M1}$ and
+$\pi_{M2}$ are obtained using (\ref{equation:tvalt.splitM}) and the
+allocations $\pi_{H1}$ and $\pi_{H2}$ are obtained using 
+an equation similar to (\ref{equation:tvalt.splitM})
+in which the index $M$ is replaced by an $H$.
+
+\begin{table}
+\caption{Accelerating variable levels and
+allocations for 20\% Compromise  degenerate
+and 20\% Compromise split plans with a $\zeta^{*}=5.0$
+NE corner constraint}
+\centering\small
+\begin{tabular}{c*{11}{r}}
+&&&&\multicolumn{3}{c}{Standardized}
+ \\
+\cline{5-7}
+Point&\multicolumn{2}{c}{Levels}& &
+\multicolumn{2}{c}{Levels} & Time& &\multicolumn{2}{c}{Allocation} \\
+\cline{2-3} \cline{5-6} \cline{9-10}
+\multicolumn{1}{c}{$i$} &
+\multicolumn{1}{c}{VPM} &
+\multicolumn{1}{c}{TEMPC} & &
+\multicolumn{1}{c}{$\xi_{1i}$} &
+\multicolumn{1}{c}{$\xi_{2i}$} &
+\multicolumn{1}{c}{$\zeta_{i}$} &
+\multicolumn{1}{c}{$p_{i}$} &
+\multicolumn{1}{c}{$\pi_{i}$}&
+\multicolumn{1}{c}{$n_{i}$}&
+\multicolumn{1}{c}{${\rm E}(r_{i})$} \\
+\hline
+\multicolumn{9}{c}{20\% Compromise  degenerate}\\
+  $\mbox{Use}$ &  80 & 120 & & .000     & .000     &$-13.22 $ \\
+  $\mbox{Low}$ & 140 & 179 & &  .610 &  .500 &$  -.79 $ &  .364 &  .535 &91 & 33 \\
+  $\mbox{Mid}$ & 159 & 196 & &  .752 &  .617 &   2.10   & 1.000 &  .200 &34 & 34 \\
+  $\mbox{High}$ & 182 & 214 & &  .895 &  .733 &   5.00   & 1.000 &  .265 &45 & 45  \\
+\multicolumn{9}{c}{20\% Compromise split}\\
+  $\mbox{Use}$ &  80 & 120 & & .000  & .000  &$-13.22 $ \\
+  $\mbox{Low}_{1}$ & 124 & 260 & &  .477 & 1.000 &$  -.79$ &  .364 &  .268 &46 & 17\\
+  $\mbox{Mid}_{1}$ & 145 & 260 & &  .650 & 1.000 &   2.10  & 1.000 &  .123 &21 & 21 \\
+  $\mbox{High}_{1}$ & 170 & 260 & &  .823 & 1.000 &   5.00  & 1.000 &  .158 &27 & 27\\
+  $\mbox{Low}_{2}$ & 158 & 120 & &  .744 &  .000 &$ -.79$ &  .364 &  .268 &46 & 17\\
+  $\mbox{Mid}_{2}$ & 185 & 120 & &  .917 &  .000 &   2.10  & 1.000 &  .077 &13 & 13\\
+  $\mbox{High}_{2}$ & 200 & 158 & & 1.000 &  .339 &   5.00  & 1.000 &  .107 &18 & 18\\
+ \hline
+%------------------------------------------------------------------------------
+\end{tabular}
+\begin{minipage}[t]{4in}
+\end{minipage}
+\label{table:tvalt.volt.temp.comp.details}
+\end{table}
+
+As shown in Table~\ref{table:alt.vpm.temp.comp.plan} the 20\% split
+compromise plan with no constraint on the NE corner of the
+experimental region provides considerably more precision for
+estimating $\rvquan_{.1}$ than the traditional factorial plan.
+Introducing the constraint allocates more experimental resources to
+lower levels of the accelerating variables, reducing precision
+somewhat, but also reducing extrapolation to use conditions. The
+variance under the interaction model is smaller for the constrained
+compromise plan, indicating a useful degree of robustness. The
+constrained compromise plan has properties that are comparable to
+the traditional factorial plan, but the compromise plan requires
+less extrapolation.
+\end{example}
+
+\subsection{Another example}
+
+\begin{table}
+\caption{Comparison of $\Vpm \times \Thick$ ALT plans.}
+\centering\small
+\begin{tabular}{cc@{\extracolsep{1ex}}ccrrrrr}
+\\[-.5ex]
+\hline
+&&&\multicolumn{2}{c}{No Interaction}&
+\multicolumn{2}{c}{Interaction} \\
+&&&\multicolumn{2}{c}{Model}&
+\multicolumn{2}{c}{Model} \\
+\cline{4-5} \cline{6-7} 
+\multicolumn{1}{c}{\rule{0ex}{3ex} Plan} &Figure& $\zeta^{*}$&
+\multicolumn{1}{c}{$\frac{n}{\sigma^{2}}\avar[\log(\rvquanhat_{p})]$} &
+\multicolumn{1}{c}{$\frac{\sigma^{2}}{n}|F|$} &
+\multicolumn{1}{c}{$\frac{n}{\sigma^{2}}\avar[\log(\rvquanhat_{p})]$} &
+\multicolumn{1}{c}{$\frac{\sigma^{2}}{n}|F|$} \\[.7ex]
+\hline
+\rule{0ex}{4ex}
+$ 3 \times 3$&\ref{figure:nelson.tvalt.ps}& --&  144 & $2.4 \times 10^{-3}$ & 145 & $1.2 \times 10^{-5}$ \\
+Factorial\\
+from Nelson~(1990a)\\
+\\[2ex]  \hline
+%------------------------------------------------------------------------------
+\rule{0ex}{4ex}
+Optimum split & -- & -- & 80.1 &$7.3 \times 10^{-4}$ &$\infty$ & 0.0 \\
+  \hline
+%------------------------------------------------------------------------------
+\rule{0ex}{4ex}
+Optimum split &--& 2.5454 & 131 & $1.6 \times 10^{-3}$  & 138 & $1.7 \times
+10^{-5}$ \\
+with $\zeta^{*}=2.55$ constraint\\
+  \hline
+%------------------------------------------------------------------------------
+\rule{0ex}{4ex}
+20\% Compromise & \ref{figure:insul.vpm.thick.20perct.zeta.ps} & 4.04
+& 96.1 & $7.0 \times 10^{-3}$ & 102 & $1.2 \times 10^{-4}$ \\ with
+$\zeta^{*}=4.04$ constraint\\ \hline
+%------------------------------------------------------------------------------
+\end{tabular}
+\begin{minipage}[t]{4in}
+\end{minipage}
+\label{table:alt.vpm.thick.comp.plan}
+\end{table}
+
+\begin{example}
+{\bf Test plans for a voltage-stress/thickness ALT for an insulation.}
+\label{example:tvalt.insulation.volt.thick.plans}
+This example returns to the setting described in
+Example~\ref{example:tvalt.insulation.volt.thick} where there is one
+accelerating variable and another experimental variable that is not
+expected to be accelerating.  For this experimental setting, the $3
+\times 3$ factorial with unequal allocations (illustrated in
+Figure~\ref{figure:nelson.tvalt.ps}) provides a test
+plan with $\avar[\log(\rvquanhat_{p})] = 144$ and good statistical
+properties across all of the evaluated criteria (see
+Table~\ref{table:alt.vpm.thick.comp.plan}).
+
+In Figure~\ref{figure:insul.vpm.thick.20perct.zeta.ps}, the circles
+on the dashed lines show a degenerate 20\% compromise test plan for
+which the experimental region was extended slightly from a maximum
+of 200 to 217 VPM, but using a standardized censoring time
+constraint $\zeta^{*}=4.04$ (the highest value of $\zeta$ in the
+original experimental region used by Nelson~1990a) on the NE corner
+of the experimental region.  Figure
+\ref{figure:insul.vpm.thick.20perct.zeta.ps} also shows the split plan that
+maintains the $\avar[\log(\rvquanhat_{p})]$ while splitting all
+points to the boundaries of the experimental region.  As in
+Example~\ref{example:tvalt.insulation.volt.temp.comp.plans} (where
+there was a $\zeta^{*}$ constraint), the slope $s$ of the degenerate
+plan was chosen to equalize the allocations at 
+conditions corresponding to the censoring standardized time $\zeta_{L}$.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/insul.vpm.thick.20perct.zeta.ps}
+\caption{Insulation $\Vpm \times \Thick$ 20\% 
+compromise ALT plan with a constraint on the NE corner of the
+experimental region.}
+\label{figure:insul.vpm.thick.20perct.zeta.ps}
+\end{figure}
+%-----------------------------------------------------------------------------
+\end{example}
+%-----------------------------------------------------------------------------
+%-----------------------------------------------------------------------------
+\section{Planning ALT Experiments with More than Two Experimental Variables}
+\label{section:alt.plan.multi.fact}
+
+In some applications it is necessary or useful to conduct an
+accelerated test with more than two experimental variables.  In such
+situations the ideas presented in this chapter can be extended and
+combined with traditional experimental design concepts.  Some
+general ideas along these lines are
+
+\begin{itemize}
+\item
+Consider planning an experiment with just a single accelerating
+variable but with one or more other nonaccelerating experimental
+variables for which the effect on life is expected to be small or
+for which the direction of possible effects is unknown (i.e., the
+best guess of the regression coefficients for these variables is
+0). Such a plan was illustrated in the $\Vpm \times \Thick$
+example. In such situations, a reasonable plan would replicate a
+single-variable ALT experiment at various combinations of the
+nonaccelerating variables (see
+Figure~\ref{figure:insul.vpm.thick.20perct.zeta.ps}). The move away
+from equal allocation can be viewed as a generalization of the
+traditional factorial plan.
+\item
+When the number of nonaccelerating variables is more than two or three,
+complete factorial designs may lead to an unreasonably large number
+of variable-level combinations. In this case, a reasonable strategy
+would be to use a standard
+fraction of a factorial design for the nonaccelerating variables and to
+run a single-variable ALT compromise plan (providing appropriate
+variable levels and allocations for the accelerating variable) at each
+of the combinations in the fraction.
+\end{itemize}
+
+In such situations, as with the examples in this chapter, the ideas
+of evaluation of test plan properties {\em before} running the
+experiment are extremely important. As with the simpler ALTs,
+evaluation of test plan properties is recommended
+and can be done  using eitherlarge-sample approximations or
+simulation methods.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+\section*{Bibliographic Notes}
+Chapter 6 of Nelson~(1990a) reviews much of the literature and
+provides an overview and illustration of the most important methods
+for planning ALTs.  Nelson~(1998) provides an extensive list of
+references on accelerated test plans. Nelson and Kielpinski~(1976)
+and Nelson and Meeker~(1978) develop theory for optimum ALTs.
+Meeker~(1984) compares optimum and compromise ALT plans.  Meeker and
+Hahn~(1985) describe practical aspects of ALT planning and provide
+tables that allow those planning tests to develop and compare
+alternative test plans.  Jensen and Meeker~(1990) describe
+corresponding software.  Escobar and Meeker~(1995) give technical
+details and examples of planning ALTs with two variables. They
+describe statistically optimum plans and show how these can be used
+to develop more practical compromise plans.  Meeter and
+Meeker~(1994) give references and develop methods for planning
+one-variable ALTs when life has a log-location-scale distribution
+and both $\mu$ and $\log(\sigma)$ can be written as linear functions
+of (transformed) accelerating variables.  Escobar and Meeker~(1998d)
+provide the extension to regression models with more than one
+variable.  Chaloner and Larntz~(1992) show how to use a prior
+distribution in place of particular planning values for model
+parameters when planning an ALT.
+
+\section*{Exercises}
+
+%-----------------------------------------------------------------------------
+%-----------------------------------------------------------------------------
+\begin{exercise}
+Consider the ALT described in
+Exercise~\ref{exercise:devicec.analysis}.  The reliability engineers
+who ran that accelerated test want to run another accelerated test
+on a similar device. They have asked you to help them evaluate the
+properties of some alternative test plans.
+\begin{enumerate}
+\item
+Relative to the plan used in Exercise~\ref{exercise:devicec.analysis},
+what modifications would you suggest for evaluation?
+\item
+List the criteria that you would use to compare the plans and make a
+recommendation on how to conduct the accelerated test.
+\end{enumerate}
+\end{exercise}
+
+%-----------------------------------------------------------------------------
+%-----------------------------------------------------------------------------
+\begin{exercise}
+In general, planning values are needed to do test planning and to
+determine the sample size needed to provide a specified degree of
+precision.
+\begin{enumerate}
+\item
+Explain why such planning values are needed.
+\item
+Product or reliability engineers may be able to provide some useful
+information, but they cannot be expected to provide accurate planning
+values (otherwise they would have no reason to run the test!). What
+can be done to protect against the use of potentially misspecified
+planning values?
+\end{enumerate}
+\end{exercise}
+
+%-----------------------------------------------------------------------------
+%-----------------------------------------------------------------------------
+\begin{exercise}
+In planning an ALT, the large-sample approximate variance of the ML
+estimator of a particular quantile of the failure-time distribution
+at use conditions is often used to judge the precision that one
+could expect from a proposed test plan. Suppose that the
+Arrhenius/lognormal model will provide an adequate description of
+the relationship between life and temperature. As described in
+Appendix Section~\ref{asection:asymptotic.covariance}, there are
+computer algorithms that can be used to compute the large-sample approximate 
+covariance matrix $\vcvmat_{\thetavechat}$ of the ML estimates
+$\betahat_{0}$, $\betahat_{1}$, and $\sigmahat$. In this case,
+$\vcvmat_{\thetavechat}$ will be a function of the proposed test
+plan and the parameters $\beta_{0}$, $\beta_{1}$, and $\sigma$.
+\begin{enumerate}
+\item
+Given the individual elements of $\vcvmat_{\thetavechat}$, provide
+an expression for the large-sample approximate variance
+of the ML estimator of the $p$ quantile at use temperature
+$\Temp_{U}$. Do not use matrix algebra.
+\item
+Approximate standard errors of ML estimators from a proposed test
+plan can also be obtained by using Monte Carlo simulation. Explain
+the advantages and disadvantages of this approach relative to using
+the large-sample approximate variance.
+\end{enumerate}
+\end{exercise}
+
+%-----------------------------------------------------------------------------
+%-----------------------------------------------------------------------------
+\begin{exercise}
+An ALT is going to be conducted to investigate the
+effect of size on the life of an insulating material. The accelerating
+variable will be voltage.
+Based on previous experience, for purposes of
+planning
+the experiment, use the model
+\begin{displaymath}
+\Pr[\rv \leq t;\Thick,\Vpm] = \Phi_{\sev} 
+\left[\frac{\log(t)-\mu(\Thick,\Vpm)}{\sigma} \right]
+\end{displaymath}
+where 
+$\mu = \beta_{0}+ \beta_{1} \Thick + \beta_{2} \Vpm$,
+$\Thick$ is the specimen size in cm , $\Vpm$ is voltage stress in
+volts per mm, and $\sigma$ is constant.
+\begin{enumerate}
+\item
+What would be the model relating $\mu$ to the $\Thick$ and voltage (instead
+of volts per mm)?
+\item
+What is an important advantage of modeling and experimenting in terms
+of
+$\Vpm$ and $\Thick$ rather than voltage and $\Thick$?
+\end{enumerate}
+\end{exercise}
+
+%-----------------------------------------------------------------------------
+%-----------------------------------------------------------------------------
+\begin{exercise}
+Consider the planning values given in
+Example~\ref{example:alt.planning.values}.
+\begin{enumerate}
+\item
+Compute the proportion failing after 6 months at 80$\degreesc$.
+\item
+Suppose that there is a simple chemical degradation process that causes
+the adhesive to degrade over time.
+Compute the implied
+activation energy for this degradation process assuming that the
+Weibull shape parameter is $\beta=1/\sigma$=2, and 3.
+\end{enumerate}
+\end{exercise}
+
+%-----------------------------------------------------------------------------
+%-----------------------------------------------------------------------------
+\begin{exercise2}
+\label{exercise:altplan.mulfail.sim}
+Refer to Exercise~\ref{exercise:crisk.alt}.  At use conditions,
+Failure Mode 2 will be dominant. We would not expect to see Failure
+Mode 1, except at higher levels of stress.  Using the parameter values
+given in Exercise~\ref{exercise:crisk.alt} as planning values, and
+assuming that 4000 hours of test time will
+be available, suggest
+an appropriate test plan that could be used to
+estimate $F(10000)$ at use temperature
+of $40\degreesc$.
+\begin{enumerate} 
+\item
+Write a simulation program to evaluate alternative test
+plans and to answer the following questions.  Use the simulation to
+evaluate quantities like $\var(\rvquanhat_{.1})$ at $40\degreesc$
+and the expected number of failures at the different levels of
+temperature.
+\item
+What is an appropriate highest level of temperature for such a
+test?
+\item
+What other levels of temperature would you recommend?
+\item
+Suppose that 100 units are available for an ALT.  How would you
+allocate these units to the different levels of temperature?
+\end{enumerate}
+\end{exercise2}
+
+\begin{exercise1}
+Refer to Exercise~\ref{exercise:altplan.mulfail.sim}.  Develop
+formulas that would allow easy evaluation of the large-sample
+approximate variance
+of $\Fhat(10000)$ and the expected number of failures at the
+different levels of temperature, as a function of the test plan and
+the planning values.
+\end{exercise1}
+
+%-----------------------------------------------------------------------------
+%-----------------------------------------------------------------------------
+\begin{exercise1}
+\label{exercise:devicea.opt.alt}
+Use the ML estimates for Device-A given in
+Table~\ref{table:deva.indiv.mles} as planning values to design an
+ALT for a similar device with a similar failure
+mode. All of the large-sample approximate variances in this problem
+will depend on the values of these planning values.  As in the
+original test plan, 80$\degreesc$ will be the highest temperature.
+\begin{enumerate}
+\item
+\label{exer.part:devicea.opt.alt1}
+For a test plan having three levels of temperature, write down an
+expression for the large-sample approximate variance of $\log(\rvquanhat_{p})$
+at the use temperature of 10$\degreesc$ as a function of the
+standardized levels of test temperature and the proportion of units
+allocated to the different temperatures.
+\item
+An optimum test plan for this problem will have only
+two levels of temperature. For this plan, write the
+large-sample approximate variance of $\log(\rvquanhat_{p})$ as a function
+of $\xi_{L}$, the standardized location of the lowest temperature and
+ $\pi_{L}$, the allocation to this temperature.
+\end{enumerate}
+\end{exercise1}
+
+%-----------------------------------------------------------------------------
+%-----------------------------------------------------------------------------
+\begin{exercise2}
+Refer to Exercise~\ref{exercise:devicea.opt.alt}.
+\begin{enumerate}
+\item
+\label{exer.part:devicea.opt.alt2}
+Write a computer program to compute the large-sample approximate variance
+in part~\ref{exer.part:devicea.opt.alt1} 
+of Exercise~\ref{exercise:devicea.opt.alt}. To do this you will
+need access to the algorithm in Escobar and Meeker~(1994)
+(which is available from Statlib at FTP site {\tt lib.stat.cmu.edu}).
+\item
+\label{exer.part:devicea.opt.alt3}
+Use the computer program requested in part~\ref{exer.part:devicea.opt.alt2} to
+compute the large-sample approximate variance of $\log(\rvquanhat_{.1})$ for
+a grid (say 11 by 11) of values with $\xi_{L}$ and $\pi_{L}$ ranging between
+0 and 1.  Plot these with a contour plot. What does this plot suggest
+for an ``optimum'' test plan?
+\item
+Redo the computation in part~\ref{exer.part:devicea.opt.alt3}, now
+allowing the highest temperature to be at 90$\degreesc$. What effect
+does this have on the test plan and the variance of $\log(\rvquanhat_{.1})$?
+\end{enumerate}
+\end{exercise2}
+
+%-----------------------------------------------------------------------------
+%-----------------------------------------------------------------------------
+\begin{exercise1}
+Here we consider planning of an ALT with
+a single accelerating variable $\xi$, right censored at
+$\censortime$
+for which failure time $\rv \sim \EXP(\theta)$ distribution with 
+$\theta=\exp(\beta_{0}+\beta_{1} \xi)$.
+The testing  will be at two levels of the accelerating variable $\xi_{L}$ and 
+$\xi_{H}$. The use condition is $\xi_{U}=0$.
+\begin{enumerate}
+\item
+Show that the total Fisher information
+matrix, $\fishersd_{\thetavec}$, for $\thetavec=(\beta_{0},\beta_{1})$ is
+$
+\fishersd_{\thetavec}= n F=
+n  \left [
+ \pi_{L} p_{L} \fishersd_{L} +  \pi_{H} p_{H} \fishersd_{H}
+   \right ]
+$
+where $\pi_{L}$ is the proportion of units allocated
+at $\xi_{L}$, $\pi_{H}=1-\pi_{L}$, 
+$p_{i}=1-\exp(-\censortime/\theta_{i})$
+ is the expected
+proportion of failure at $\xi_{i}$  and
+\begin{displaymath}
+\fishersd_{i}=
+\left [
+\begin{array}{ll}
+1  & \xi_{i}
+\\
+ \xi_{i}        & \xi_{i}^{2}
+\end{array}
+\right ].
+\end{displaymath}
+\item
+Show that if the goal is to minimize the large-sample approximate
+variance of the ML estimators of the logarithm of a particular quantile
+of the life distribution at use conditions, then it suffices
+to find a plan that minimizes the large-sample approximate variance
+of $\betahat_{0}$.
+\item
+Show that
+\begin{displaymath}
+\avar(\betahat_{0})=
+\frac{
+\pi_{L} p_{L} \xi_{L}^{2} + \pi_{H} p_{H}\xi_{H}^{2}
+     }
+     {
+(\pi_{L} p_{L} \xi_{L}^{2} + \pi_{H} p_{H} \xi_{H}^{2})
+(\pi_{L} p_{L} + \pi_{H} p_{H} )
+-(\pi_{L} p_{L} \xi_{L}+\pi_{H} p_{H} \xi_{H})^{2}
+     }.
+\end{displaymath}
+\item
+Suppose that the probabilities of failing at $\xi_{U}=0$ and $\xi_{H}=1$ 
+are $p_{U}$ 
+and $p_{H}$, respectively. Then show that the proportion of failures at 
+any value of $\xi$ is
+$p=1-\exp \left \{-
+ \left [-\log(1-p_{U}) \right ]^{1-\xi} \times \left [
+ -\log(1-p_{H}) \right ]^{\xi}
+        \right \}.
+$
+\item
+For fixed values of 
+$p_{U}< p_{H}$, $0<\pi_{L}<1$, $0\le \xi_{L}<1$, draw  plots
+of $\avar(\betahat_{0})$ as function of $\xi_{H}$.
+Observe that the large-sample approximate variance is a decreasing
+function of $\xi_{H}$.
+\item
+In practice is necessary to bound the
+highest level of stress say 
+at $\xi_{H}=1$. Then 
+\begin{displaymath}
+\avar(\betahat_{0})=
+\frac{
+\pi_{L} p_{L} \xi_{L}^{2} + \pi_{H} p_{H}
+     }
+     {
+(\pi_{L} p_{L} \xi_{L}^{2} + \pi_{H} p_{H} )
+(\pi_{L} p_{L} + \pi_{H} p_{H} )
+-(\pi_{L} p_{L} \xi_{L}+\pi_{H} p_{H} )^{2}
+     }.
+\end{displaymath}
+Use the particular fixed values of $p_{U}=.0001$, $p_{H}=.9$
+and construct a contour plot of $\avar(\betahat_{0})$
+as function of $\pi_{L}$, and $\xi_{L}$.
+Do this for other practical choices of $p_{U}$ and
+$p_{H}$.
+\item
+For $p_{U}=.0001$ and $p_{H}=.9$ verify that the optimum test plan is
+$\pi_{L}=.795$, $\xi_{L}=.711$, $\pi_{H}=.205$, and $\xi_{H}=1$.
+\end{enumerate}
+\end{exercise1}

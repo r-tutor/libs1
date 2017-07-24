@@ -1,0 +1,607 @@
+---
+title: "`r SMRD:::info('book')`"
+subtitle: "`r SMRD:::info('chapter10')`"
+author: "`r SMRD:::info('authors')`"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+footer: "`r paste('SMRD: ', SMRD:::info('chapter10'))`"
+output:
+  slidy_presentation:
+    smart: false
+    fig_caption: yes
+
+runtime: shiny
+graphics: yes
+---
+
+```{r intro, echo=FALSE,message=FALSE, warning=FALSE}
+assign('dynamic', TRUE, envir = sys.frame(),immediate = TRUE)
+source('scripts/R/setup.R')
+```
+
+# CHAPTER OVERVIEW
+
+```{r}
+shiny::includeCSS('scripts/css/flat-slidy.css')
+shiny::includeScript(path = "scripts/js/audiojs/audiojs/audio.min.js",
+                     "audiojs.events.ready(function() {audiojs.createAll();});")
+shiny::includeScript("scripts/js/jkf-scroll.js")
+```
+
+## This chapter explains
+ 
+- Basic ideas for planning a life test or field tracking study
+
+- The use of simulation to indicate how the results of a life test might look, to see how the data might be analyzed, and to get an idea of the expected precision for a proposed solution
+
+- The use of large-sample approximate methods to assess the precision of the results obtained from a future reliability study
+
+- How to determine an approximate sample size that provides a specified precision
+
+- How to assess the trade-offs involving sample size and study length
+
+- The use of simulation to check and "calibrate" large-sample approximate methods
+
+- Methods for assessing sensitivity of test planning conclusions to unknown inputs that must be provided
+
+# 10.1 - Introduction
+
+# 10.1.1 - Basic Ideas
+ 
+Every test event must have a clearly defined conclusion, for example:
+
+- The probability of failure after 1000 hours is less that $.02$
+- The expected number of warranty claims after $1$ year is $<5\%$ 
+
+Life testing can be expensive and is nearly always time-constrained
+
+Simulation is an important tool for ensuring the test results support the conclusion and address any test planning concerns
+
+- How many prototypes should be tested?
+- Should we test the full system or just some critical components
+- How precise do the results need to be?
+- How long should the test be run?
+
+It's intuitively understood that 
+
+- Increasing the number of test samples will generate more information
+
+- Increasing the amount of test time will generate more information
+
+- More information allows for more precise estimates
+
+But, it's also known that
+
+- Generating more information always requires more investment
+
+- At some point, the investment required for greater precision becomes disproportionate
+
+Often, information exists about the system to be tested or the data to be gathered 
+
+- Design specifications
+- Prior experience with similar systems or materials
+- Expert knowledge regarding the expected time to failure
+- Explicitly defined total test time or sample size
+
+In the text, these prior data are referred to as "planning values" and are denoted by a $\Box$, e.g. $\mu^{\Box},\sigma^{\Box}$
+
+Simulation uses "planning values" to ensure that a proposed life-test can achieve results to support the desired conclusion.
+
+<div class='example'>
+### Example 10.1 - Insulation Life Test Plan
+
+<font color="blue">__Desired conclusion:__</font>
+
+- Determine if the $t_{0.1}$ lifetime of a new electrical insulation at use-stress conditions is sufficient to meet a reliability requirement
+
+<font color="blue">__Test constraints:__</font>
+
+- Total test time $= 1000$ hours
+- Elevated stress applied to produce failures within the $1000$ hour limit
+
+<font color="blue">__Planning Values:__</font>
+
+$$
+\begin{aligned}
+t_{0.12}^{\Box}&=500\;\;\text{hours}\\
+t_{0.20}^{\Box}&=2000\;\text{hours}\\
+p_{c}^{\Box}&=0.2
+\end{aligned}
+$$
+
+For the initial evaluation, the test planners assume that the insulation lifetimes can be modeled with either a Weibull or lognormal distribution
+
+Using the given planning values and appropriate probability paper, the test planners can graphically estimate the distribution parameters (Figure 10.1)
+
+Weibull distribution
+
+- $\mu^{\Box}=8.774\;\rightarrow\;\eta^{\Box}=6464\;\text{hours}$
+- $\sigma^{\Box}=1.244\;\rightarrow\;\beta^{\Box}=.8037$
+
+Lognormal distribution
+
+- $\mu^{\Box}=8.658$
+- $\sigma^{\Box}=2.079$
+</div>
+
+# 10.1.2 - Simulation of a Proposed Test Plan
+ 
+
+The following steps are often used to evaluate a reliability test plan
+
+(1) Use the chosen model & planning values to simulate data from the proposed life test
+(2) Analyze the data, perhaps fitting more than one distribution
+(3) Assess estimate precision (typically via confidence intervals)
+(4) Simulate and fit distributions to many samples to assess sampling variations.  This assessment does not depend on large sample approximations
+(5) Repeat this simulation-evaluation process with different sample sizes to gauge sample size and test length requirements to achieve the desired precision
+(6) Repeat steps (1) - (5) with different planning values to gauge how sensitive the results may be to errors in our "expert knowledge"
+
+## Figures 10.2 - 10.4
+ 
+```{r}
+if(dynamic) teachingApps:::figure10_4()
+if(dynamic) jkf::teachingApp('figure10_4')
+```
+
+# 10.1.3 - Uncertainty in Planning Values
+ 
+
+# 10.2 - Approximate Variance of ML Estimators
+
+# 10.2.1 - Large-Sample Approximations
+ 
+Motivation - simulation IS a powerful tool for estimating test plan properties, but the results are often open to interpretation
+
+- Difficult to distinguish between distributions
+
+- Hard to gauge estimation precision from simulation plots
+
+In contrast to simulation, large sample approximations have some advantages
+
+- Can directly approximate estimation precision as a function of sample size
+
+- Estimate the required sample size for a desired precision
+
+- Variance factors allow trade-offs in test planning decisions
+
+# 10.2.2 - Basic Large-Sample Approximations
+ 
+
+For $F(t|\mathbf{\underline{\theta}}),\;\mathbf{\underline{\theta}}=(\theta_1,...,\theta_k)$ the following results hold for large sample sizes and the standard regularity conditions (Appendix B.4) 
+
+$$\mathbf{\hat{\underline{\theta}}}_{_{MLE}}\sim MVN(\mathbf{\underline{\theta}}, \Sigma_{\mathbf{\hat{\underline{\theta}}}})$$
+
+and
+
+$$\Sigma_{\mathbf{\hat{\underline{\theta}}}}=\mathcal{I}^{-1}_{\underline{\theta}}=E\left[-\frac{\partial^2\mathcal{L}(\underline{\theta}|\underline{t})}{\partial\underline{\theta}\partial\underline{\theta}^T}\right]^{-1}=\sum_{i=1}^n E\left[-\frac{\partial^2\mathcal{L}_i(\underline{\theta}|\underline{x})}{\partial\underline{\theta}\partial\underline{\theta}^T}\right]^{-1}$$
+
+# 10.2.2 - Basic Large-Sample Approximations
+
+In many cases we're interested in some function of $\mathbf{\underline{\hat{\theta}}}$
+
+For large samples $g(\mathbf{\underline{\hat{\theta}}})\sim NOR\left(g(\mathbf{\underline{\theta}}),\widehat{se}_{g(\mathbf{\underline{\hat{\theta}}})}\right)$ 
+
+where $\widehat{se}_{g(\mathbf{\underline{\hat{\theta}}})}=\sqrt{\widehat{Var}\left[\hat{g}(\mathbf{\underline{\hat{\theta}}})\right]}$
+
+The delta method gives
+
+$$\widehat{Var}\left[\hat{g}(\mathbf{\underline{\hat{\theta}}})\right]=\left[\frac{\partial g(\mathbf{\underline{\theta}})}{\partial \mathbf{\underline{\theta}}}\right]^T\Sigma_{\mathbf{\underline{\hat{\theta}}}}\left[\frac{\partial g(\mathbf{\underline{\theta}})}{\partial \mathbf{\underline{\theta}}}\right]$$
+
+
+If $g(\mathbf{\underline{\theta}}) \in \mathbb{R}^+,\; \forall \mathbf{\underline{\theta}}$ it is generally better to use the $\log$ transform of the function where
+
+$$\log[g(\mathbf{\underline{\hat{\theta}}})]\sim NOR\left(\log[g(\mathbf{\underline{\theta}})],\widehat{se}_{\log[\hat{g}(\mathbf{\underline{\theta}})]}\right)$$
+
+and 
+
+$$\widehat{Var}\left[\log(\hat{g}(\mathbf{\underline{\theta}}))\right]=\left(\frac{1}{g(\mathbf{\underline{\theta}})}\right)^2\widehat{Var}[\hat{g}(\mathbf{\underline{\theta}})]$$
+
+<font color="red">__This is the same procedure presented in previous chapters for strictly positive quantities, but generalized for vector-valued functions__</font>
+
+The approximate standard errors for $\hat{g}(\mathbf{\underline{\theta}})\;\text{and}\;\hat{g}(\mathbf{\log[\underline{\theta}]})$ may be represented as
+
+$$\widehat{se}_{\hat{g}(\mathbf{\underline{\theta}})}=\frac{1}{\sqrt{n}}\sqrt{V_{\hat{g}}}\;\;\text{and}\;\;\widehat{se}_{\hat{g}(\mathbf{\log[\underline{\theta}]})}=\frac{1}{\sqrt{n}}\sqrt{V_{\log(\hat{g})}}$$
+
+Where the variance factors
+
+$$V_{\hat{g}}=n\widehat{Var}_{\hat{g}(\mathbf{\underline{\theta}})}\;\;\text{and}\;\;V_{\log(\hat{g})}=n\widehat{Var}_{\hat{g}(\mathbf{\log[\underline{\theta}]})}$$
+
+depend on the value of $\mathbf{\underline{\theta}}$ but do depend on the sample size $n$
+
+Thus, substituting $\mathbf{\underline{\theta}^{\Box}}$ allows us to choose a sample size $n$ corresponding to an appropriate $\widehat{se}_{(\mathbf{\cdot)}}$
+
+# 10.3 - Sample Size for Unrestricted Functions
+
+## Sample Size for Unrestricted Functions
+ 
+If the goal for a test event is to make conclusions regarding the value of a function of the parameters $g(\mathbf{\underline{\theta}})\in \mathbb{R}$
+
+An approximate $100(1-\alpha)\%$ CI for $g(\mathbf{\underline{\theta}})$ based on the large-sample approximation would be expressed as Equation 10.3
+
+$$
+\begin{aligned}
+\left[\underline{g},\overline{g}\right]&=\hat{g}\pm z_{(1-\alpha/2)}(1/\sqrt{n})\sqrt{\widehat{V}_{\hat{g}}}\\
+&=\hat{g}\pm D
+\end{aligned}
+$$
+
+Where
+
+- $z_{(p)}\equiv$ the $p^{th} quantile of the standard normal distribution
+- $\widehat{V}_{\hat{g}}\equiv V_{\hat{g}}$ evaluated at $\mathbf{\underline{\hat{\theta}}}$
+- $D\equiv$ the half-width of the confidence interval
+
+
+Rearranging Equation 10.3 to solve for $n$ results in Equation 10.4
+
+$$n=\frac{z^2_{(1-\alpha/2)}V^{\Box}_{\hat{g}}}{D^2_T}$$
+
+where
+
+- $V^{\Box}_{\hat{g}}\equiv V_{\hat{g}}$ evaluated at $\mathbf{\underline{\theta}^{\Box}}$
+
+- $D_T\equiv$ the targeted half-width of the confidence interval
+
+- $n\equiv$ the sample size required to compute a $100(1-\alpha)\%$ confidence interval for $\hat{g}$
+
+<div class='example'>
+### Example 10.3
+ 
+The purpose of an upcoming test is to create a $95\%$ CI for the mean life of light-bulbs
+
+Engineers provide the following planning information
+
+- Assume that the lifetime of these lightbulbs $T\sim NOR(\mu,\sigma)$
+
+- Since $\mu \in (-\infty, \infty)$, Equation 10.4 is used to compute $n$
+
+- $\sigma^{\Box}=200\;\text{hours}$
+
+- $D_T=30$ hours
+
+From elementary statistics
+
+- $\hat{\mu}_{_{MLE}}=\bar{t}$
+
+- $Var[\bar{x}]=\sigma^2/n \rightarrow V_{\hat{\mu}}=nVar[\bar{x}]=\sigma$
+
+- $V^{\Box}_{\hat{\mu}}=(\sigma^{\Box})^2=200^2$ 
+
+Substituting these values into Equation 10.4 gives an estimate of the required sample size
+
+$$n=\frac{z^2_{(1-\alpha/2)}V^{\Box}_{\hat{\mu}}}{D_T^2}=\frac{(1.96)^2(200)^2}{30^2}\approx 171$$
+</div>
+
+# 10.4 - Sample Size for Positive Functions
+
+## Sample Size for Positive Functions
+ 
+If the goal for a test event is to make conclusions regarding the value of a function of the parameters $g(\mathbf{\underline{\theta}})\in \mathbb{R}^+$
+
+An approximate $100(1-\alpha)\%$ CI for $\log[g(\mathbf{\underline{\theta}})]$ based on the large-sample approximation would be expressed as Equation 10.5
+
+$$
+\begin{aligned}
+\left[\underline{\log[g]},\overline{\log[g]}\right]&=\log[\hat{g}]\pm (1/\sqrt{n})z_{(1-\alpha/2)}(1/\sqrt{n})\sqrt{\widehat{V}_{\log[\hat{g}]}}\\
+&=\log[\hat{g}]\pm \log[R]
+\end{aligned}
+$$
+
+Where
+
+- $z_{(p)}\equiv$ the $p^{th}$ quantile of the standard normal distribution
+- $\widehat{V}_{log[\hat{g}]}\equiv V_{\log[\hat{g}]}$ evaluated at $\mathbf{\underline{\hat{\theta}}}$
+- $R=\exp\left[\frac{1}{\sqrt{n}}z_{(1-\alpha/2)}\sqrt{\hat{V}_{\log[\hat{g}]}}\right]=\frac{\overline{g}}{\hat{g}}=\frac{\hat{g}}{\underline{g}}=\sqrt{\frac{\overline{g}}{\underline{g}}}$
+
+
+Rearranging Equation 10.5 to solve for $n$ results in Equation 10.6
+
+$$n=\frac{z^2_{(1-\alpha/2)}V^{\Box}_{\log[\hat{g}]}}{(\log[R_T])^2}$$
+
+where
+
+- $V^{\Box}_{\log[\hat{g}]}\equiv V_{\log[\hat{g}]}$ evaluated at $\mathbf{\underline{\theta}^{\Box}}$
+
+- $\log[R_T]\equiv$ the targeted half-width of the confidence interval
+
+- $n\equiv$ the sample size required to compute a $100(1-\alpha)\%$ confidence interval for $\log[\hat{g}]$
+
+<div class='example'>
+### Example 10.4
+ 
+The purpose of a test is to compute a $95\%$ CI for the mean life of a new electrical insulation
+
+Engineers provide the following planning information
+
+- Assume that the lifetime of the insulation $T\sim EXP(\theta)$
+
+- Since $\theta \in [0, \infty)$, Equation 10.6 is used to compute $n$
+
+- $\theta^{\Box}=1000\;\text{hours}$
+
+- $R_T=1.5$ hours
+
+From Section 7.6.3
+
+- $\hat{\theta}_{_{MLE}}=\frac{TTT}{r}$
+
+- $V_{[\hat{\theta}]}=n\widehat{Var}[\hat{\theta}]=\frac{n}{E\left[-\frac{\partial^2 \mathcal{L}(\theta)}{\partial\theta^2}\right]}=\frac{\theta^2}{1-\exp\left(-\frac{t_c}{\theta}\right)}$
+
+- $V^{\Box}_{\log[\hat{\theta}]}=\frac{V^{\Box}_\hat{\theta}}{(\theta^{\Box})^2}=\frac{1}{1-\exp\left(-\frac{t_c}{\theta}\right)}=\frac{1}{1-\exp\left(-\frac{500}{1000}\right)}=2.5415$ 
+
+Substituting these values into Equation 10.4 gives an estimate of the required sample size
+
+$$n=\frac{z^2_{(1-\alpha/2)}V^{\Box}_{\log[\hat{\theta}]}}{(\log[R_T])^2}=\frac{(1.96)^2(2.5415)}{(\log[1.5])^2}\approx 60$$
+</div>
+
+# 10.5 - Sample Sizes for Log-Location-Scale Distributions with Censoring
+
+# 10.5.1 - Large-Sample Approximation for $\Sigma_{(\mu,\sigma)}$
+
+
+For tests where 
+
+- The lifetimes follow a location-scale distribution $T\sim\Phi_{(\cdot)}(t|\mu,\sigma)$
+- The data is singly right censored (Type I) at time $t_c$
+
+The large sample variance-covariance matrix can be computed as
+
+$$\Sigma_{(\hat{\mu},\hat{\sigma})}=\left[\begin{array}{cc} \widehat{Var}[\hat{\mu}] & \widehat{Cov}[\hat{\mu},\hat{\sigma}]\\ \widehat{Cov}[\hat{\mu},\hat{\sigma}] & \widehat{Var}[\hat{\mu}]\end{array}\right]=\frac{1}{n}\left[\begin{array}{cc} V_{\hat{\mu}} & V_{(\hat{\mu},\hat{\sigma})}\\ V_{(\hat{\mu},\hat{\sigma})} & V_{\hat{\sigma}} \end{array}\right]=\mathscr{I}^{-1}_{(\hat{\mu},\hat{\sigma})}$$
+
+Table C.20 lists several measures relative to the standardized censoring time (the number of standard deviations $t_c$ is away from $\mu$)
+
+$$\zeta_c=\frac{\log[t_c]-\mu}{\sigma}$$
+
+<font color="blue">__So, how do we use Table C.20?__</font>
+
+"Expert" knowledge available before the test <u>should</u> help estimate $\mu^{\Box}, \sigma^{\Box}$
+
+The censoring time $t_c$ <u>will</u> be known before testing, then we can compute
+
+$$\zeta_c^{\Box}=\frac{\log[t_c]-\mu^{\Box}}{\sigma^{\Box}}$$
+
+Once $\zeta_c^{\Box}$ is known, we can find the appropriate line on Table C.20 and read off the values  
+
+Or, we can use either the `table.lines` or `lsinf` functions from the SMRD package
+
+Values displayed in Table C.20
+
+- $100\Phi(\zeta_c)\equiv$ the population fraction failing by time $\zeta_c$
+
+- $(1/\sigma^2)V_{\hat{\mu}}\equiv$ the scale large-sample variace-covariance factors
+
+- $\rho(\hat{\mu},\hat{\sigma})\equiv$ the large sample correlation between parameters $\hat{\mu}\;\text{and}\;\hat{\sigma}$
+
+- $f_{11}, f_{22}, f_{12}\equiv$ the scaled Fisher information matrix for a single observation from the corresponding location scale distribution 
+
+<div class='example'>
+### Example 10.5
+
+In Example 10.1 we used the available planning information to find $\mu^{\Box}=8.774$ and $\sigma^{\Box}=1.244$
+
+Now, we're interested in computing a $95\%$ CI for $\beta=1/\sigma, s.t.$ the endpoints are $50\%$ away from $\beta_{_{MLE}}$
+
+This means that
+
+$$R_T=1.5=\frac{\overline{g}=1.5\hat{g}}{\hat{g}}=\frac{\hat{g}=1.5\underline{g}}{\underline{g}}=\sqrt{\frac{1.5\hat{g}}{\frac{\hat{g}}{1.5}}}=\sqrt{(1.5)^2}$$
+
+Under these assumptions, what is the required sample size? 
+
+Since $\beta=1/\sigma$ is strictly positive, Equation 10.6 should be used
+
+$$n=\frac{z^2_{(1-\alpha/2)}V^{\Box}_{\log[\hat{\beta}]}}{(\log[R_T])^2}=\frac{(1.96)^2 V^{\Box}_{\log[\hat{\beta}]}}{(\log[1.5])^2}$$
+
+Thus, the only quantity yet to be computed is 
+
+$$V^{\Box}_{\log[\hat{\beta}]}=\frac{1}{(\sigma^{\Box})^2}V^{\Box}_{\hat{\beta}}$$
+
+Note, this example assumes that the Weibull distribution is correct - therefore Table C.20 should not be used.
+
+However, the SMRD package contains generalized functions to compute these quantities for other location-scale distributions
+
+Chapter 10 shows that
+
+$$\frac{\sigma^2}{n}\mathscr{I}_{(\mu,\sigma)}=\left[\begin{array}{cc}f_{11}&f_{12}\\f_{12}&f_{22}\end{array}\right]$$
+
+and
+
+$$\frac{1}{n}\left[\begin{array}{cc}V_{\hat{\mu}}&V_{\hat{\mu,\hat{\sigma}}}\\V_{\hat{\mu},\hat{\sigma}}&V_{\hat{\sigma}}\end{array}\right]=\mathscr{I}^{-1}_{(\hat{\mu},\hat{\sigma})}$$
+
+Therefore,
+
+$$\frac{1}{\sigma^2}\left[\begin{array}{cc}V_{\hat{\mu}}&V_{\hat{\mu,\hat{\sigma}}}\\V_{\hat{\mu},\hat{\sigma}}&V_{\hat{\sigma}}\end{array}\right]=\left[\begin{array}{cc}f_{11}&f_{12}\\f_{12}&f_{22}\end{array}\right]^{-1}$$
+
+Using `lsinf` we can compute the scaled Fisher information matrix
+
+```{r,comment=NA, results='markup'}
+SMRD::lsinf(-1.5, "right", "sev")
+```
+
+Inverting the matrix gives
+
+```{r,comment=NA, results='markup'}
+solve(SMRD::lsinf(-1.5, "right", "sev")$matrix)
+```
+
+Therefore, $1/(\sigma^{\Box})^2 V^{\Box}_{\hat{\sigma}}\approx 4.74$
+
+and
+
+$$n=\frac{(1.96)^2(4.74)}{[\log(1.5)]^2}\approx 111\;\text{samples}$$
+</div>
+
+# 10.5.3 - Large-Sample Estimate of <font size="6.25"> $\widehat{Var}[g(\hat{\mu},\hat{\sigma})]$</font>
+ 
+For functions of $\hat{\mu}, \hat{\sigma}$ the large sample variance factors are
+
+$$
+\begin{aligned}
+V_{\hat{g}}&=\left(\frac{\partial g}{\partial\mu}\right)^2 V_{\hat{\mu}}+\left(\frac{\partial g} {\partial\sigma}\right)^2 V_{\hat{\sigma}}+\left(\frac{\partial g}{\partial\mu}\right)\left(\frac{\partial g}{\partial\sigma}\right)V_{(\hat{\mu},\hat{\sigma})}\\
+V_{\log[\hat{g}]}&=\left(\frac{1}{g}\right)^2 V_{\hat{g}}, \;\;\;g>0\\
+V_{\exp[\hat{g}]}&=\exp[2g]V_{\hat{g}}
+\end{aligned}
+$$
+
+Where these variance factors depend on 
+
+- The assumed location-scale distribution 
+- The standardized censoring time $\zeta_c=[\log(t_c)-\mu]/\sigma$
+
+# 10.5.4 - Sample size to Estimate $\log[t_p;\mu,\sigma]$
+ 
+Recall, for log-location scale distributions
+
+$$\log(t_p)=\mu+\Phi^{-1}(p)\sigma$$
+
+After taking derivatives, we have
+
+$$V_{\log[t_p]}=V_{\hat{\mu}}+\left[\Phi^{-1}(p)\right]^2 V_{\hat{\sigma}}+2\Phi^{-1}(p) V_{(\hat{\mu},\hat{\sigma})}$$
+
+and
+
+$$n=\frac{z_{(1-\alpha/2)}V^{\Box}_{\log[t_p]}}{(\log[R_T])^2}$$
+
+## Figures 10.5 - 10.6
+
+```{r, echo=FALSE, fig.align='center', fig.width=10, fig.height=5.25}
+par(mfrow = c(1,2), family = 'serif')
+variance.factor('sev', type = 'quantile')
+
+variance.factor('normal', type = 'quantile')
+par(mfrow = c(1,1))
+```
+
+# 10.5.5 - Sample Size to Estimate <font size="6.25">$h(\log[t_e\;\mu,\sigma])$</font>
+
+For log-location scale distributions
+
+$$h(t_e|\mu,\sigma)=\frac{\phi(\zeta_e)}{t_e\sigma[1-\Phi(\zeta_e)]}$$
+
+After taking derivatives, we have
+
+$$V_{\log[\hat{h}]}=\frac{1}{h^2}V_{\hat{h}}=\left[\left(\frac{\partial h}{\partial\mu} \right)^2 V_{\hat{\mu}}+\left(\frac{\partial h}{\partial\sigma}\right)^2 V_{\hat{\sigma}} +2\left(\frac{\partial h}{\partial\mu}\right)\left(\frac{\partial h}{\partial\sigma}\right) V_{(\hat{\mu},\hat{\sigma})}\right]$$
+
+and
+
+$$n=\frac{z_{(1-\alpha/2)}V^{\Box}_{\log[\hat{h}]}}{(\log[R_T])^2}$$
+
+## Figures 10.8 - 10.9
+
+
+```{r, echo=FALSE, fig.align='center', fig.width=10, fig.height=5.25}
+par(mfrow = c(1,2), family = "serif", bg = NA)
+variance.factor("sev", type = 'hazard')
+
+variance.factor("normal", type = 'hazard')
+par(mfrow = c(1,1))
+```
+
+<div class='example'>
+### Example 10.10
+
+Recall the electrical insulation test discussed in Examples 10.1, 10.5, and 10.7
+
+Suppose that we now wish to plan a life test to compute a $95\%$ CI for $h(1000)$ wherein the endpoints are approximately $50\%$ away from $\hat{h}(1000)_{_{MLE}}$
+
+In Example 10.1 we noted 
+
+- $p^{\Box}_c=0.2$ the fraction of units expected to fail when the test is ended 
+- $p_e=0.2$ 
+
+Since $t_e=t_c=1000\;\text{hours}\rightarrow p_e=p^{\Box}_c=0.2$
+
+Observing where the $p_e=0.2$ and $p^{\Box}_c=0.2$ lines intersect in Figure 10.9, we see that 
+
+$$V_{\log[\hat{h}(1000)]}\approx 8.2$$
+
+and
+
+$$n=\frac{z_{(1-\alpha/2)}V^{\Box}_{\log[\hat{h}(1000)]}}{(\log[R_T])^2}=\frac{(1.96)^2(8.2)}{(\log[1.5])^2}\approx 191$$
+</div>
+
+# 10.6 - Test Plans to Demonstrate Conformance with a Reliability Standard
+
+# 10.6.1 - Reliability Demonstration Plans
+
+It's often necessary to plan tests to ___demonstrate___ the reliability performance of a product
+
+Objective: Given a performance specification and desired confidence level, want to specify
+
+- The required test length
+- The required sample size
+
+To ___demonstrate___ if the measure of interest exceeds the specification with the $100(1-\alpha)\%$ confidence
+
+Example: For $t_e=8760\;\text{hours (1 year)}$ want to demonstrate with $100(1-\alpha)\%$ confidence that 
+
+$$\underline{t}_{.01}>t_e\iff \overline{F}(t_e)<.01$$
+
+
+Often a reliability test will conclude without observing any failures
+
+What does this mean?
+
+- How many samples are required to demonstrate that the reliability of the population 
+- How long must the test continue
+
+# 10.6.2 - Weibull $\min(n)$ reliability demonstration plans w/ given $\beta$
+ 
+
+# 10.6.3 - Extensions for Other Reliability Demonstration Test Plans
+ 
+The $f_{ij}$ elements in Appendix C.20 are the elements of the scaled Fisher information matrix, that is
+
+<smaller>
+$$
+\left[\begin{array}{cc}f_{11}&f_{12}\\f_{21}&f_{22}\end{array}\right]=
+\sigma^{2}
+\left[\begin{array}{cc}
+E\left\{-\frac{\partial^{2}\mathscr{L}(\mu,\sigma)}{\partial\mu^{2}}\right\}&
+E\left\{-\frac{\partial^{2}\mathscr{L}(\mu,\sigma)}{\partial 
+ \mu \partial \sigma}\right\}\\
+E\left\{-\frac{\partial^{2}\mathscr{L}(\mu,\sigma)}{\partial   
+ \mu \partial \sigma}\right\}&
+E\left\{-\frac{\partial^{2}\mathscr{L}(\mu,\sigma)}{\partial\sigma^{2}}\right\}
+\end{array}\right]=\left[\begin{array}{cc}.96841&-0.11490\\-0.11490&1.56779\end{array}\right]
+$$
+</smaller>
+
+The variance terms in Table C.20 are then found from
+
+<smaller>
+$$
+\begin{aligned}
+\frac{1}{\sigma^{2}}\left[\begin{array}{cc}V_{\bar{\mu}}&V_{(\bar{\mu},\bar{\sigma})}\\V_{(\bar{\mu},\bar{\sigma})}&V_{\bar{\sigma}}\end{array}\right]&=\frac{n}{\sigma^{2}}\left[\begin{array}{cc}Avar(\bar{\mu})&Acov(\bar{\mu},\bar{\sigma})\\Acov(\bar{\mu},\bar{\sigma})&Avar(\bar{\sigma})\end{array}\right]=\left[\begin{array}{cc}f_{11}&f_{12}\\f_{12}&f_{22}\end{array}\right]^{-1}\\\\
+&=\frac{1}{f_{11}f_{22}-f_{12}^{2}}\left[\begin{array}{cc}f_{22}&-f_{12}\\-f_{12}&f_{11}\end{array}\right]\\\\
+&=\frac{1}{0.96841\times 1.56779-(-0.11490)^{2}}\left[\begin{array}{cc}0.96841&0.11490\\0.11490&1.56779\end{array}\right]\\\\
+&=\left[\begin{array}{cc}1.04168&0.07634\\ 0.7634&0.64344\end{array}\right]
+\end{aligned}
+$$
+</smaller>
+
+The asymptotic correlation is then computed as
+
+<small>
+$$\rho(\bar{\mu},\bar{\sigma})
+=\frac{V_{(\bar{\mu},\bar{\sigma})}}{\sqrt{V_{\bar{\mu}}V_{\bar{\sigma}}}}
+=\frac{0.07634}{\sqrt{1.04168\times 0.64344}}=0.09325$$
+</small>
+Similarly, the scaled asymptotic variances for either a known $\mu$ or a known $\sigma$ are
+
+<small>
+$$
+\begin{aligned}
+\frac{n}{\sigma^{2}}Avar(\bar{\mu}|\sigma)&=\frac{1}{\sigma^{2}}V_{\bar{\mu}|\sigma}=\left[f_{11}\right]^{-1}=\left[0.96841\right]^{-1}=1.03262\\
+\frac{n}{\sigma^{2}}Avar(\bar{\sigma}|\mu)&=\frac{1}{\sigma^{2}}V_{\bar{\sigma}|\mu}=\left[f_{22}\right]^{-1}=\left[1.56779\right]^{-1}=0.63784
+\end{aligned}
+$$
+</small>
+
+# 10.7 - Some Extensions
+
+# 10.7.1 - Failure (Type II) Censoring
+ 
+
+# 10.7.2 - Variance factors for location-scale parameters and multiple censoring
+ 
+
+# 10.7.3 - Test planning for distributions that are not log-location scale

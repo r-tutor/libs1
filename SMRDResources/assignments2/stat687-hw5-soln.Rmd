@@ -1,0 +1,416 @@
+---
+title: 'STAT 687 Homework #5 - Solution'
+author: "Due 0800, 21 July 2014"
+fontsize: 11pt
+output:
+  pdf_document:
+    fig_cap: yes
+    includes:
+      in_header: ../css/jkf.header.tex
+  html_document:
+    css: ../css/homework.css
+    fig_cap: yes
+    highlight: pygments
+    theme: readable
+    toc: yes
+geometry: margin=1in
+citation_package: natbib
+---
+
+```{r,echo=FALSE,message=FALSE, warning=FALSE}
+source('../css/setup.R')
+output <- getYAML('stat687-hw5-soln.Rmd')$output
+if(!    'SMRD'%in%library()$results) install.packages('SMRD')     ; library(SMRD)
+if(!'survival'%in%library()$results) install.packages('survival') ; library(survival)
+if(!  'actuar'%in%library()$results) install.packages('actuar')   ; library(actuar)
+if(!     'evd'%in%library()$results) install.packages('evd')      ; library(evd)
+if(!  'xtable'%in%library()$results) install.packages('xtable')   ; library(xtable)
+```
+
+## From the text problem # 15.2
+
+Revisit the shock absorber data introduced in Example 3.8 and given in Appendix Table C.2.  There were actually two different causes of failure for this product.  The analyses in Chapters 3 and 8 ignored the different "failure modes" in the analysis.  An alternative analysis (important for some purposes) would take into consideration the different failure modes.  Such an analysis is straightforward when the failure times for the two different modes are statistically independent.
+
+(a) Assuming that the failure modes are independent, fit Weibull distributions separately to estimate the time to failure for each mode.  Also fit other parametric distributions to the individual failure modes to see if there are other distributions fit better than the Weibull.
+
+(b) Suppose that the shock absorber is a series system that fails as soon as there is a failure due to one mode or the other.  Combine the results from part (a) to obtain an estimate of the cdf for the shock absorbers with both modes acting together.  Plot these on Weibull probability paper and compare the results with the analyses that ignores the differences between the two different failure modes.
+
+
+(c) Provide an intuitive explanation for the result in part (b)
+
+
+(d) Explain why the agreement between the two methods of analysis is so good in this case (as compared to Example 15.6). In general, when would you expect to see more important differences between the analysis that accounts for the different failure modes and the analysis that does not account for the different failure modes?
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 17.3
+
+McCool (1980) gives the result of a life test on rolling contact fatigue of ceramic ball bearings.  Ten specimens were tested at each of four levels of stress.  The ordered failure times are given in the following table.  McCool indicates that it is customary to model such data with the two-parameter Weibull distribution with a shape parameter that does not depend on stress.
+
+(a) Plot the failure times versus stress on log-log axes (or, alternately take logs and plot on linear axes).
+
+> In R, plotting this data on log-log axes can be accomplished using the following code
+
+```{r echo=TRUE, fig.cap="Results from McCool (1980) ceramic ball bearing rolling contact fatigue test"}
+life17.3 <- matrix(nrow = 4,
+               c(1.67,2.2,2.51,3,3.9,4.7,7.53,14.7,27.8,37.4,
+                 0.80,1,1.37,2.25,2.95,3.70,6.07,6.65,7.05,7.37,
+                 .012,.18,.2,.24,.26,.32,.32,.42,.44,.88,
+                 .073,.098,.117,.135,.175,.262,.270,.350,.386,.456))
+stress17.3 <- matrix(nrow = 4,
+                 rep(c(.87,.99,1.09,1.18),each = 10))
+plot(x = stress17.3,
+     y = life17.3,
+     xaxt = 'n',
+     xlab = expression("Contact Stress x"~10^-6~"psi"),
+     ylab = expression("Revolutions x"~~10^-6),
+     log="xy")
+axis(side = 1, tck = .015, at=(c(.87,.99,1.09,1.18)))
+```
+
+(b) It is often suggested that median failure time is proportional to a power transformation of stress: that is, $t_{.5}=e^{\beta_{0}}\times(\text{stress})^{\beta_{1}}$ or $\log(t_{.5})=\beta_{0}+\beta_{1}\text{log(stress)}.$  Is the suggestion reasonable in this case?  Plot the sample medians on the graph in part (a) to help answer this question.
+
+> The median failure times for the observations obtained at each level of contact stress can be found using the "median" function. Copying the R code shown below and pasting it just after the preceding code shown for part (a) results in the requested figure.
+
+```{r echo=15:27,fig.cap="Results from McCool (1980) ceramic ball bearing rolling contact fatigue test"}
+life17.3 <- matrix(nrow = 4,byrow = TRUE,
+                   c(1.67,2.2,2.51,3,3.9,4.7,7.53,14.7,27.8,37.4,
+                     0.80,1,1.37,2.25,2.95,3.70,6.07,6.65,7.05,7.37,
+                     .012,.18,.2,.24,.26,.32,.32,.42,.44,.88,
+                     .073,.098,.117,.135,.175,.262,.270,.350,.386,.456))
+stress17.3 <- matrix(nrow = 4,
+                     rep(c(.87,.99,1.09,1.18),each = 10),
+                     byrow = TRUE)
+plot(x = stress17.3,
+     y = life17.3,
+     xaxt = 'n',
+     xlab = expression("Contact Stress x"~10^-6~"psi"),
+     ylab = expression("Revolutions x"~~10^-6),
+     log="xy")
+axis(side = 1, tck = .015, at=(c(.87,.99,1.09,1.18)))
+points(x = stress17.3[,1],
+       y = apply(life17.3,1,median),
+       pch = 4,
+       col = 2,
+       cex = 2)
+legend("bottomleft",
+       expression("Median failure times"),
+       pch = 4,
+       lwd = 1.5,
+       col = 2,
+       cex = 1.25,
+       bty = "n",
+       xjust = 0.5)
+```
+
+(c) Use a hand drawn line through the sample medians versus stress points to obtain a graphical estimate of the exponent (or slope) $\beta_{1}$.
+
+> A best fit line through these points may be drawn using
+
+```{r echo=28,fig.cap="Results from McCool (1980) ceramic ball bearing rolling contact fatigue test"}
+life17.3 <- matrix(nrow = 4,byrow = TRUE,
+                   c(1.67,2.2,2.51,3,3.9,4.7,7.53,14.7,27.8,37.4,
+                     0.80,1,1.37,2.25,2.95,3.70,6.07,6.65,7.05,7.37,
+                     .012,.18,.2,.24,.26,.32,.32,.42,.44,.88,
+                     .073,.098,.117,.135,.175,.262,.270,.350,.386,.456))
+stress17.3 <- matrix(nrow = 4,
+                     rep(c(.87,.99,1.09,1.18),each = 10),
+                     byrow = TRUE)
+plot(x = stress17.3,
+     y = life17.3,
+     xaxt = 'n',
+     xlab = expression("Contact Stress x"~10^-6~"psi"),
+     ylab = expression("Revolutions x"~~10^-6),
+     log = 'xy')
+axis(side = 1, 
+     tck = .015, 
+     at = c(.87,.99,1.09,1.18)) 
+points(x = stress17.3[,1],
+       y = apply(X = life17.3,1,FUN = median),
+       pch = 4,
+       col = 2,
+       cex = 2)
+legend("bottomleft",
+       expression("Median failure times"),
+       pch = 4,
+       lwd = 1.5,
+       col = 2,
+       cex = 1.25,
+       bty = "n",
+       xjust = 0.5)
+abline(coef(lm(log(apply(life17.3,1,median))~log(stress17.3[,1]))))
+```
+
+> which when added to the end of the previous codes for parts (a) and (b) results in the following plot of the failure times observed at each level of contact stress along with the median failure times at each stress level and the best fit line through these median values
+
+(d) Make separate Weibull probability plots for the data at each level of stress, plotting them all on the same graph.  What does this plot suggest about the customary assumption that the Weibull shape parameter is the same for all levels of stress?  Provide possible explanations for the observed differences in teh estimates of the Weibull shape parameter at each level of stress
+
+> The requested plot may be produced using the R code below
+
+```{r echo=TRUE,fig.cap='Weibull probability plot of McCool (1980) ceramic \n ball bearing rolling contact fatigue test'}
+plot(x = log(life17.3[1,]),
+     y = log(-log(1-(seq(1,10,1)-.5)/10)),
+     xlim = range(log(life17.3)),
+     ylab = expression(Standard~Weibull~Quantile~-~F(t)),
+     xlab = expression('log(Revolutions x'~~10^-6~')'),
+     col = 2)
+points(log(life17.3[2,]),log(-log(1-(seq(1,10,1)-.5)/10)),col=12)
+points(log(life17.3[3,]),log(-log(1-(seq(1,10,1)-.5)/10)),col=22)
+points(log(life17.3[4,]),log(-log(1-(seq(1,10,1)-.5)/10)),col=32)
+abline(coef(lm(log(-log((1-(seq(1,10,1)-.5)/10)))~log(life17.3[1,]))),col=2)
+abline(coef(lm(log(-log((1-(seq(1,10,1)-.5)/10)))~log(life17.3[2,]))),col=12)
+abline(coef(lm(log(-log((1-(seq(1,10,1)-.5)/10)))~log(life17.3[3,]))),col=22)
+abline(coef(lm(log(-log((1-(seq(1,10,1)-.5)/10)))~log(life17.3[4,]))),col=32)
+legend("topleft",c(expression("0.87 X "*10^6*" psi"),
+                   expression("0.99 X "*10^6*" psi"),
+                   expression("1.09 X "*10^6*" psi"),
+                   expression("1.18 X "*10^6*" psi")),
+                   pch=1,lwd=1.5,col=c(2,12,22,32),bty="n",y.intersp = .8)
+```
+
+> Upon first observing the plot, it is clear that the lines representing the best-fit Weibull distributions at each stress level are not parallel.  Thus, one might conclude that assuming the value of the Weibull shape parameter is independent of stress should not be used to analyze this data set.
+>
+> After a closer inspection, however, it is observed that the lines for  
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 17.5
+
+Refer to Exercise 17.3.  Suppose that log life can be described adequately by a normal distribution.  Consider the regression model $\mu=\beta_0+\beta_1\times\text{log}(stress)$ with constant $\sigma,$ where $\sigma$ is the standard deviation of log life, the same for any fixed level of stress.
+
+(a) Use ordinary least squares to fit this model to the rolling contact fatigue data.  Compare your answer to the graphical estimate from part (c) of Exercise 17.3.
+
+> In part (c) of Exercise 17.3 an ordinary least squares fit for the median failure times at each stress level was produced.  Here, we are asked to produced an OLS fit for the mean times to failure at each stress level, this plot may be produced using the following code.
+
+```{r echo=TRUE,fig.cap="Results from McCool (1980) ceramic ball bearing rolling contact fatigue test"}
+plot(x = stress17.3,
+     y = life17.3,
+     xlab = expression("Contact Stress x "*10^-6*" psi"),
+     ylab = expression("Revolutions x "~10^-6),
+     log = "xy",
+     las = 1)
+points(x = stress17.3[,1],
+       y = apply(life17.3,1,median),
+       pch = 4,
+       col = 2,
+       cex = 2,
+       lwd = 2)
+abline(coef(lm(log(apply(life17.3,1,median))~log(stress17.3[,1]))),col=2)
+abline(coef(lm(log(as.vector(life17.3))~log(as.vector(stress17.3)))),col=12)
+legend("bottomleft",
+       c(expression("Median failure times"),
+         expression("Mean failure times")),
+       pch = 4,
+       col = c(2,12),
+       cex = 1.25,
+       bty = "n",
+       xjust = 0.5)
+```
+
+> The coefficients $\beta_{0} \text{ and } \beta_{1}$ for this model are
+
+```{r echo=TRUE,results='markup'}
+OLS <- lm(log(as.vector(life17.3))~log(as.vector(stress17.3))) ; coef(OLS)
+```
+
+> and the ordinary least squares estimate for ${\sigma}$ related to the mean squared error, where $(MSE)$ is found by taking the square root of the sum of the squared residuals, divided by the number of degrees of freedom for the model.  For this model,
+>
+$$\hat{\sigma}=\sqrt{MSE}=\sqrt{\frac{SSE}{n-2}}$$
+>
+> which can be computed in R using the following
+
+```{r echo=TRUE, results='markup'}
+sqrt(sum((OLS$res)^2)/OLS$df)
+```
+
+(b) Use a computer that does maximum likelihood estimation and fit the lognormal regression model (17.7) to the rolling contact fatigue data
+
+> The likelihood function for this set of $40$ exact failure observations is expressed as
+>
+$$\mathcal{L}(\beta_{0},\beta_{1},\sigma|DATA)=\prod_{i=1}^{40}\frac{1}{t_{i}\sigma}\phi_{nor}\left(\frac{\text{log}(t_{i})-\beta_{0}+\beta_{1}\text{log}(stress)}{\sigma}\right)$$
+>
+> Computing the values for $(\beta_{0})_{_{MLE}},(\beta_{1})_{_{MLE}},\sigma_{_{MLE}}$ may be accomplished using the "survreg" function in the R package Survival.
+
+```{r echo=TRUE,results='markup'}
+survreg(Surv(as.vector(life17.3),rep(1,40))~log(as.vector(stress17.3)),dist="lognormal")
+```
+
+(c) Compute and compare estimates from these two different methods of estimation for the median time to failure at $1.05\times10^{6}$ psi, the $.01$ quantile at $1.05 \times 10^{6}$ psi and the $.01$ quantile at $0.85\times10^{6}$ psi.  Comment on the results of this comparison.
+
+> Comparing the coefficients $\beta_{0},\beta_{1}$ computed in part (a) with those computed here shows that they are equivalent.  This is expected as ordinary least squares and maximum likelihood estimation provide identical results for these values when the data are normally distributed with no censoring.  Note the small difference between the variance terms computed using the approaches
+>
+> To compute the requested values, note that the quantile function for this regression model may be expressed as
+>
+$$\text{log}(t_{i})=(\beta_{0})_{_{MLE}}+(\beta_{1})_{_{MLE}}\times\text{log}(stress)+\Phi^{-1}(p)\sigma_{_{MLE}}$$
+>
+> Using ordinary least squares resulted in the following values
+>
+$$
+\begin{aligned}
+t_{.50}(1.05\times10^{6})&=exp\left[.2703-12.573\times\text{log}(1.05)+\Phi_{nor}^{-1}(.50)(1.054)\right]=.709\times10^{6} \text{ Revolutions}\\
+t_{.01}(1.05\times10^{6})&=exp\left[.2703-12.573\times\text{log}(1.05)+\Phi_{nor}^{-1}(.01)(1.054)\right]=.061\times10^{6} \text{ Revolutions}\\
+t_{.01}(0.85\times10^{6})&=exp\left[.2703-12.573\times\text{log}(0.85)+\Phi_{nor}^{-1}(.01)(1.054)\right]=.872\times10^{6} \text{ Revolutions}
+\end{aligned}
+$$
+>
+> while the values computed using maximum likelihood were found to be
+>
+$$
+\begin{aligned}
+t_{.50}(1.05\times10^{6})&=exp\left[.2703-12.573\times\text{log}(1.05)+\Phi_{nor}^{-1}(.50)(1.027)\right]=.709\times10^{6} \text{ Revolutions}\\
+t_{.01}(1.05\times10^{6})&=exp\left[.2703-12.573\times\text{log}(1.05)+\Phi_{nor}^{-1}(.01)(1.027)\right]=.065\times10^{6} \text{ Revolutions}\\
+t_{.01}(0.85\times10^{6})&=exp\left[.2703-12.573\times\text{log}(0.85)+\Phi_{nor}^{-1}(.01)(1.027)\right]=.927\times10^{6} \text{ Revolutions}
+\end{aligned}
+$$
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 18.2
+
+Based on previous experience with similar products, the failure time of a particular field effect transistor on a monolithic microwave GaAs integrated circuit, operating at $100^{o}C$ (channel temperature), is expected to have a lognormal distribution with a median time to failure of $30$ years.  The  primary failure mode is caused by a chemical reaction that has an activation energy of $E_{a}=.6 eV.$ The value of the lognormal scale parameter for this failure mode is expected to be $\sigma=.7$.
+
+(a) What are the lognormal parameters $\mu$ and $\sigma$ if time is recorded in hours?
+
+> For the lognormal distribution $t_{.5}=\text{exp}(\mu)$, thus
+>
+$$\mu=\text{log}(t_{.5})=\text{log}\left(30\text{ years}\times 365\frac{\text{days}}{\text{year}}\times 24\frac{\text{hours}}{\text{day}}\right)=12.479 \text{ hours}$$
+>
+> The problem statement gives no indication that the variance for this data set is dependent on the level of stress, therefore changing the measure of usage will not affect $\sigma$.
+
+(b) For operation at $100^{o}C$ channel temperature, what is the time at which $5\%$ of the units would fail? $10\%?, 90\%$?
+
+> Since $100^{o}C$ is the nominal (use) temperature, the requested quantile values may be computed from the $LOGNOR(12.479,.7)$ distribution as
+>
+$$
+\begin{aligned}
+t_{.05}&=\text{exp}\left(12.479+\Phi^{-1}_{nor}(.05)\times.7\right)=\hspace{5pt}83,083.6\text{ hours}\\
+t_{.10}&=\text{exp}\left(12.479+\Phi^{-1}_{nor}(.10)\times.7\right)=107,142.4\text{ hours}\\
+t_{.90}&=\text{exp}\left(12.479+\Phi^{-1}_{nor}(.90)\times.7\right)=644,407.2\text{ hours}
+\end{aligned}
+$$
+
+(c) Calculate the time-acceleration factor for testing at $250^{o}C$, $200^{o}C,$ and $150^{o}C$ channel temperature.  Use Table 18.2 and Figure 18.3 and check with equation (18.2).
+
+> The acceleration factor values obtained using both Table 18.2 and Figure 18.3 result from reading off the temperature differential factor value and then using the equation 
+>
+$$\mathcal{AF}(T_{low},T_{high},E_{a})=\text{exp}\left[E_{a}\times TDF(T_{low},T_{high})\right]$$
+>
+> Using Equation 18.2 (Arrhenius Relationship) the acceleration factor values are computed from
+$$\mathcal{AF}(T_{low},T_{high},E_{a})=\text{exp}\left[E_{a}\left(\frac{11605}{T_{low}K}-\frac{11605}{T_{high}K}\right)\right]$$
+
+```{r echo=TRUE}
+eq18.2  <- round(exp(.6*11605*((1/373.15)-(1/(273.15+c(150,200,250))))),3)
+tab18.2 <- round(exp(.6*c(3.67,6.57,8.92)),3)
+temp    <- c(150,200,250)+273.15
+fig18.3 <- exp(.6*c(3.67,6.57,8.92))
+
+df        <- data.frame(temp,tab18.2,fig18.3,eq18.2)
+names(df) <- c("Temp (K)","Table 18.2", "Figure 18.3", "Equation 18.2")
+
+print(xtable(df),
+      caption="Acceleration factor values for Exercise 18.2",
+      caption.placement = 'top',
+      include.rownames = F,
+      type = switch(output, 'html' = 'html', 'pdf' = 'latex'),
+      table.position = 'h',
+      comment = F)
+```
+
+(d) Obtain an expression for the temperature at which $100p\%$ of tested units would be expected to fail in a $6000$ hour test.  Use this expression to compute the temperatures at which $90\%$ and $10\%$ would be expected to fail.
+
+> The requested function is the cdf of the lognormal distribution wherein $\mu$ is replaced by the Arrhenius relationship to reflect the effect that changing the applied temperature above or below the use temperature has on the mean of the distribution. The Arrhenius-lognormal cdf is expressed as
+>
+$$
+\begin{aligned}
+F(t|T)&=\Phi_{nor}\left(\frac{\text{log}(t)-\mu(T)}{\sigma}\right)\\
+&=\Phi_{nor}\left(\frac{\text{log}(t)-\beta_{0}+\beta_{1}\left[\frac{11605}{273.15+T_{U}}-\frac{11605}{273.15+T}\right]}{\sigma}\right)
+\end{aligned}
+$$
+>
+> where $\beta_{0}=\mu(T_{use})$ and $\beta_{1}=E_{a}$.  Substituting these values and $t=6000$ results in
+>
+$$
+\begin{aligned}
+F(t=6000|T=\text{Temp})&=\Phi_{nor}\left(\frac{8.7-12.479+.6\left[\frac{11605}{373.15}-\frac{11605}{273.15+T}\right]}{.7}\right)\\
+F(t=6000|T=\text{Temp})&=\Phi_{nor}\left(21.26-\frac{9947.143}{273.15+T}\right)
+\end{aligned}
+$$
+>
+> Rearranging this equation results in the requested function
+>
+$$Temp+273.15=-\frac{9947.143}{\Phi^{-1}_{nor}(p)-21.26}$$
+>
+> For $p=10\%$, $\text{Temp}=441.28\text{ Kelvin } (168.13^{o}C)$.
+>
+> For $p=90\%$, $\text{Temp}=497.89\text{ Kelvin } (224.74^{o}C)$
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 18.3
+
+Refer to Exercise 18.2.  Obtain an expression for the (average) FIT rate (in standard units of failures per hour in parts per billion) for the first 10 years of operation at $100^{o}C$.  How much would this improve if the operating channel temperature is changed to only $90^{o}C?$
+
+> Recall that $FIT=AHR(t)\times10^{9}$ where $AHR(t)$ is the average hazard rate at time $t$ expressed as
+>
+$$AHR(t)=\frac{H(t)}{t}=\frac{-\text{log}(1-F(t))}{t}=\frac{-\text{log}\left[1-\Phi\left(\frac{\text{log}(t)-\mu}{\sigma}\right)\right]}{t}$$
+>
+> At the use temperature of $100^{o}C$ the $FIT$ rate is computed as 
+>
+$$
+\begin{aligned}
+FIT&=\frac{-\text{log}\left[1-\Phi\left(\frac{\text{log}(10\times365\times24)-\text{log}(30\times365\times24)}{\sigma}\right)\right]}{(10\times365\times24)}\times 10^{9}\\
+&=\frac{-\text{log}\left[1-\Phi\left(\frac{11.38-12.479}{.7}\right)\right]}{87600}\times 10^{9}\\
+&=684.6 \text{ FITS}
+\end{aligned}
+$$
+>
+> Computing the $FIT$ rate at $T\ne100^{o}C$ requires substituting the Arrhenius relationship for $\mu$ giving
+>
+$$
+\begin{aligned}
+FIT&=\frac{-\text{log}\left[1-\Phi\left(\frac{11.38-12.479+.6\left[\frac{11605}{373.15}-\frac{11605}{363.15}\right]}{.7}\right)\right]}{87600}\times 10^{9}\\
+&=121.8 \text{ FITS}
+\end{aligned}
+$$
+>
+> Comparing the FIT rate at each temperature reveals that at $t=10 \text{ years}$ we would expect a $5x-6x$ reduction in the number of failures by reducing the channel temperature from $100^{o}C$ to $90^{o}C$. 
+
+`r if(output=='pdf') '\\newpage'`
+
+## From the text problem # 19.2
+
+The following table contains data from an accelerated life test on Device-C, an integrated circuit.  Failures were caused by a chemical reaction inside the circuit package.  Reliability engineers tested 10 circuits at each temperature over a period of $3000$ hours.  The purpose of the experiment was to estimate the activation energy of the failure causing reaction and to obtain an estimate of the integrated circuit life distribution at $80^{o}C$ junction temperature.
+
+```{r}
+Jtemp <- c("80 C","125 C","150 C","175 C","200 C")
+ntest <- c(rep(10,5))
+Fail  <- c("None by 3000 hours",
+           "None by 3000 hours",
+           "2.35,2.56,2.98",
+           ".80,1.13,1.21,1.31,1.35,1.37,1.42,1.77,1.96",
+           ".22,.25,.28,.33,.38,.46,.46,.51,.61")
+
+      dat.f  <- data.frame(Jtemp,ntest,Fail)
+names(dat.f) <- c("Junction Temperature", 
+                  "# of Units Tested",
+                  "Recorded Failure Times in Thousands of Hours")
+
+print(xtable(dat.f, caption = 'Stuff'),
+      caption.placement = 'top',
+      type = switch(output, 'html' = 'html', 'pdf' = 'latex'),
+      table.position = 'h',
+      include.rownames = F,
+      comment = F)
+```
+
+
+(a) For each temperature with failures, plot the ordered failure times $t_{(i)}$ versus $(i-.5)/10$ on lognormal probability paper
+(b) Repeat part (a) but use Weibull probability paper
+(c) Make a judgement as to whether the lognormal or the Weibull distribution is a more adequate distribution for these data
+(d) Using the lognormal probabilty plot, draw a set of parallel straight lines through the plotted points, one line for each temperature having failures
+(e) Use each line on the probability plot to obtain graphical estimates of the $.5$ quantiles at the corresponding temperatures.
+(f) Use each line on the probability plot to obtain graphical estimates of the $.01$ quantiles at the corresponding temperatures.  Describe the nature of the extrapolation in these estimates
+(g) Plot the estimates of the $.5$ quantile versus temperature on Arrhenius paper.  Draw a straight line to estimate the relationship between life and temperature.  Do the same with the graphical estimates of the $.01$ quantile.
+(h) Graphically estimate the slope of the lines drawn in part (g), and use these to obtain a graphical estimate of the failure mode's activation energy.
+(i) Use the lines drawn in part (g) to obtain estimates of the $.01$ and the $.5$ quantiles of the life distribution of Device-C at $80^{o}C$.  Describe the nature of the extrapolation in these estimates.
+(j) Predict the effect on the estimates of the Arrhenius relationship in the data at $80^{o}C$ and $125^{o}C$ were omitted from the analysis.  Explain.
