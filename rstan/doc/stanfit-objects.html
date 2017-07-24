@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Stan Development Team" />
+
+<meta name="date" content="2017-07-03" />
+
+<title>Accessing the contents of a stanfit object</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Accessing the contents of a stanfit object</h1>
+<h4 class="author"><em>Stan Development Team</em></h4>
+<h4 class="date"><em>2017-07-03</em></h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#posterior-draws">Posterior draws</a></li>
+<li><a href="#posterior-summary-statistics-and-convergence-diagnostics">Posterior summary statistics and convergence diagnostics</a></li>
+<li><a href="#sampler-diagnostics">Sampler diagnostics</a></li>
+<li><a href="#model-code">Model code</a></li>
+<li><a href="#initial-values">Initial values</a></li>
+<li><a href="#prng-seed">(P)RNG seed</a></li>
+<li><a href="#warmup-and-sampling-times">Warmup and sampling times</a></li>
+</ul>
+</div>
+
+<p>This vignette demonstrates how to access most of data stored in a stanfit object. A stanfit object (an object of class <code>&quot;stanfit&quot;</code>) contains the output derived from fitting a Stan model using Markov chain Monte Carlo or one of Stan’s variational approximations (meanfield or full-rank). Throughout the document we’ll use the stanfit object obtained from fitting the Eight Schools example model:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rstan)
+fit &lt;-<span class="st"> </span><span class="kw">stan_demo</span>(<span class="st">&quot;eight_schools&quot;</span>, <span class="dt">refresh =</span> <span class="dv">0</span>)</code></pre></div>
+<pre><code>Warning: There were 4 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
+http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</code></pre>
+<pre><code>Warning: Examine the pairs() plot to diagnose sampling problems</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(fit)</code></pre></div>
+<pre><code>[1] &quot;stanfit&quot;
+attr(,&quot;package&quot;)
+[1] &quot;rstan&quot;</code></pre>
+<div id="posterior-draws" class="section level2">
+<h2>Posterior draws</h2>
+<p>There are several functions that can be used to access the draws from the posterior distribution stored in a stanfit object. These are <code>extract</code>, <code>as.matrix</code>, <code>as.data.frame</code>, and <code>as.array</code>, each of which returns the draws in a different format.</p>
+<p><br></p>
+<div id="extract" class="section level4">
+<h4>extract()</h4>
+<p>The <code>extract</code> function (with its default arguments) returns a list with named components corresponding to the model parameters.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">list_of_draws &lt;-<span class="st"> </span><span class="kw">extract</span>(fit)
+<span class="kw">print</span>(<span class="kw">names</span>(list_of_draws))</code></pre></div>
+<pre><code>[1] &quot;mu&quot;    &quot;tau&quot;   &quot;eta&quot;   &quot;theta&quot; &quot;lp__&quot; </code></pre>
+<p>In this model the parameters <code>mu</code> and <code>tau</code> are scalars and <code>theta</code> is a vector with eight elements. This means that the draws for <code>mu</code> and <code>tau</code> will be vectors (with length equal to the number of post-warmup iterations times the number of chains) and the draws for <code>theta</code> will be a matrix, with each column corresponding to one of the eight components:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(list_of_draws$mu)</code></pre></div>
+<pre><code>[1] 4.178689 7.896903 5.230637 9.477452 5.166316 5.575505</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(list_of_draws$tau)</code></pre></div>
+<pre><code>[1]  1.8210255  0.3198835  3.5427238 10.9788963  1.5416283  6.5294129</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(list_of_draws$theta)</code></pre></div>
+<pre><code>          
+iterations      [,1]      [,2]      [,3]      [,4]      [,5]     [,6]
+      [1,]  4.328065  2.035497  2.687295  4.830606  2.591323 3.415279
+      [2,]  7.701131  8.079618  7.415463  8.012570  7.721320 8.004710
+      [3,] 12.080879  6.458229  4.256499  3.626688  6.189494 7.787423
+      [4,] 15.436545 15.575352 -1.666966  8.823516 -6.225512 6.897776
+      [5,]  5.427178  5.698364  5.923378  4.087328  5.174217 2.535239
+      [6,] 14.797413  2.227443  1.963443 13.695857 13.611430 3.288641
+          
+iterations      [,7]      [,8]
+      [1,]  5.631401  4.327563
+      [2,]  7.843496  7.791768
+      [3,]  3.987610  1.214433
+      [4,]  8.292774 13.447035
+      [5,]  6.470211  8.030746
+      [6,] 13.736938  2.483708</code></pre>
+<p><br></p>
+</div>
+<div id="as.matrix-as.data.frame-as.array" class="section level4">
+<h4>as.matrix(), as.data.frame(), as.array()</h4>
+<p>The <code>as.matrix</code>, <code>as.data.frame</code>, and <code>as.array</code> functions can also be used to retrieve the posterior draws from a stanfit object:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">matrix_of_draws &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(fit)
+<span class="kw">print</span>(<span class="kw">colnames</span>(matrix_of_draws))</code></pre></div>
+<pre><code> [1] &quot;mu&quot;       &quot;tau&quot;      &quot;eta[1]&quot;   &quot;eta[2]&quot;   &quot;eta[3]&quot;   &quot;eta[4]&quot;  
+ [7] &quot;eta[5]&quot;   &quot;eta[6]&quot;   &quot;eta[7]&quot;   &quot;eta[8]&quot;   &quot;theta[1]&quot; &quot;theta[2]&quot;
+[13] &quot;theta[3]&quot; &quot;theta[4]&quot; &quot;theta[5]&quot; &quot;theta[6]&quot; &quot;theta[7]&quot; &quot;theta[8]&quot;
+[19] &quot;lp__&quot;    </code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df_of_draws &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(fit)
+<span class="kw">print</span>(<span class="kw">colnames</span>(df_of_draws))</code></pre></div>
+<pre><code> [1] &quot;mu&quot;       &quot;tau&quot;      &quot;eta[1]&quot;   &quot;eta[2]&quot;   &quot;eta[3]&quot;   &quot;eta[4]&quot;  
+ [7] &quot;eta[5]&quot;   &quot;eta[6]&quot;   &quot;eta[7]&quot;   &quot;eta[8]&quot;   &quot;theta[1]&quot; &quot;theta[2]&quot;
+[13] &quot;theta[3]&quot; &quot;theta[4]&quot; &quot;theta[5]&quot; &quot;theta[6]&quot; &quot;theta[7]&quot; &quot;theta[8]&quot;
+[19] &quot;lp__&quot;    </code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">array_of_draws &lt;-<span class="st"> </span><span class="kw">as.array</span>(fit)
+<span class="kw">print</span>(<span class="kw">dimnames</span>(array_of_draws))</code></pre></div>
+<pre><code>$iterations
+NULL
+
+$chains
+[1] &quot;chain:1&quot; &quot;chain:2&quot; &quot;chain:3&quot; &quot;chain:4&quot;
+
+$parameters
+ [1] &quot;mu&quot;       &quot;tau&quot;      &quot;eta[1]&quot;   &quot;eta[2]&quot;   &quot;eta[3]&quot;   &quot;eta[4]&quot;  
+ [7] &quot;eta[5]&quot;   &quot;eta[6]&quot;   &quot;eta[7]&quot;   &quot;eta[8]&quot;   &quot;theta[1]&quot; &quot;theta[2]&quot;
+[13] &quot;theta[3]&quot; &quot;theta[4]&quot; &quot;theta[5]&quot; &quot;theta[6]&quot; &quot;theta[7]&quot; &quot;theta[8]&quot;
+[19] &quot;lp__&quot;    </code></pre>
+<p>The <code>as.matrix</code> and <code>as.data.frame</code> methods essentially return the same thing except in matrix and data frame form, respectively. The <code>as.array</code> method returns the draws from each chain separately and so has an additional dimension:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">dim</span>(matrix_of_draws))
+<span class="kw">print</span>(<span class="kw">dim</span>(df_of_draws))
+<span class="kw">print</span>(<span class="kw">dim</span>(array_of_draws))</code></pre></div>
+<pre><code>[1] 4000   19
+[1] 4000   19
+[1] 1000    4   19</code></pre>
+<p>By default all of the functions for retrieving the posterior draws return the draws for <em>all</em> parameters (and generated quantities). The optional argument <code>pars</code> (a character vector) can be used if only a subset of the parameters is desired, for example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mu_and_theta1 &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(fit, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">&quot;mu&quot;</span>, <span class="st">&quot;theta[1]&quot;</span>))
+<span class="kw">head</span>(mu_and_theta1)</code></pre></div>
+<pre><code>          parameters
+iterations         mu  theta[1]
+      [1,]  8.7078861  7.698465
+      [2,]  0.8769045  3.818568
+      [3,] 14.8421405 12.974890
+      [4,] 13.2551953 21.464781
+      [5,] 10.9892924  4.396455
+      [6,]  1.0052114 28.014937</code></pre>
+<p><br></p>
+</div>
+</div>
+<div id="posterior-summary-statistics-and-convergence-diagnostics" class="section level2">
+<h2>Posterior summary statistics and convergence diagnostics</h2>
+<p>Summary statistics are obtained using the <code>summary</code> function. The object returned is a list with two components:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit_summary &lt;-<span class="st"> </span><span class="kw">summary</span>(fit)
+<span class="kw">print</span>(<span class="kw">names</span>(fit_summary))</code></pre></div>
+<pre><code>[1] &quot;summary&quot;   &quot;c_summary&quot;</code></pre>
+<p>In <code>fit_summary$summary</code> all chains are merged whereas <code>fit_summary$c_summary</code> contains summaries for each chain individually. Typically we want the summary for all chains merged, which is what we’ll focus on here.</p>
+<p>The summary is a matrix with rows corresponding to parameters and columns to the various summary quantities. These include the posterior mean, the posterior standard deviation, and various quantiles computed from the draws. The <code>probs</code> argument can be used to specify which quantiles to compute and <code>pars</code> can be used to specify a subset of parameters to include in the summary.</p>
+<p>For models fit using MCMC, also included in the summary are the Monte Carlo standard error (<code>se_mean</code>), the effective sample size (<code>n_eff</code>), and the R-hat statistic (<code>Rhat</code>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(fit_summary$summary)</code></pre></div>
+<pre><code>                  mean    se_mean        sd        2.5%         25%
+mu         8.048679487 0.10855021 4.8844478  -1.5270458   4.7956486
+tau        6.557081758 0.14082445 5.4953624   0.2443783   2.4172257
+eta[1]     0.352512349 0.01456519 0.9211836  -1.4828920  -0.2395504
+eta[2]     0.001035813 0.01391937 0.8803384  -1.7609156  -0.5578358
+eta[3]    -0.210298411 0.01451442 0.9179728  -2.0459843  -0.8182240
+eta[4]    -0.046330692 0.01399663 0.8852245  -1.7858954  -0.6395271
+eta[5]    -0.354773627 0.01389684 0.8789130  -2.0387730  -0.9241866
+eta[6]    -0.242147628 0.01406086 0.8892870  -1.9917021  -0.8297227
+eta[7]     0.344116861 0.01528489 0.9006204  -1.4912825  -0.2527849
+eta[8]     0.054117112 0.01476876 0.9340583  -1.7048651  -0.5703094
+theta[1]  11.179939131 0.14049641 7.9699140  -2.5322883   6.0314217
+theta[2]   8.139112021 0.10033489 6.3457354  -4.0253160   4.1476907
+theta[3]   6.157855087 0.11955944 7.5616029 -10.4333424   2.0474438
+theta[4]   7.706870487 0.10183980 6.4409143  -5.4322317   3.8157935
+theta[5]   5.169066290 0.10015811 6.3345549  -8.7036114   1.5443474
+theta[6]   6.109612619 0.10500089 6.6408396  -8.5017959   2.3172212
+theta[7]  10.811708319 0.10782097 6.8191970  -0.9882565   6.0876259
+theta[8]   8.424636902 0.12081343 7.6409122  -7.2523268   4.0548291
+lp__     -39.503782098 0.07847223 2.6924066 -45.5837397 -41.1328365
+                   50%         75%      97.5%    n_eff      Rhat
+mu         7.994847396  11.2254151  17.658561 2024.741 1.0019591
+tau        5.356981530   9.0604728  20.124940 1522.778 1.0033007
+eta[1]     0.359401600   0.9678725   2.151131 4000.000 1.0007800
+eta[2]    -0.005405507   0.5806379   1.754201 4000.000 1.0013342
+eta[3]    -0.194855108   0.3980163   1.574262 4000.000 1.0002214
+eta[4]    -0.050960318   0.5300522   1.681861 4000.000 1.0004579
+eta[5]    -0.373137019   0.2164363   1.431801 4000.000 0.9999436
+eta[6]    -0.242018489   0.3228345   1.507530 4000.000 1.0007736
+eta[7]     0.377271785   0.9532751   2.046999 3471.835 1.0013864
+eta[8]     0.033099352   0.6799525   1.875869 4000.000 0.9992675
+theta[1]  10.046211535  15.3792620  29.470367 3217.932 1.0012703
+theta[2]   7.999553815  12.0080307  21.110053 4000.000 0.9996522
+theta[3]   6.698712608  10.8766773  20.326054 4000.000 0.9999629
+theta[4]   7.775685400  11.6781117  20.492719 4000.000 0.9998420
+theta[5]   5.542552626   9.4562901  16.385787 4000.000 0.9998813
+theta[6]   6.499023855  10.2922662  18.184320 4000.000 0.9996696
+theta[7]  10.172402385  14.7617284  26.181687 4000.000 1.0000294
+theta[8]   8.302620439  12.6568257  24.369944 4000.000 1.0001679
+lp__     -39.297076824 -37.5638248 -35.020254 1177.198 1.0035031</code></pre>
+<p>If, for example, we wanted the only quantiles included to be 10% and 90%, and for only the parameters included to be <code>mu</code> and <code>tau</code>, we would specify that like this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mu_tau_summary &lt;-<span class="st"> </span><span class="kw">summary</span>(fit, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">&quot;mu&quot;</span>, <span class="st">&quot;tau&quot;</span>), <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>))$summary
+<span class="kw">print</span>(mu_tau_summary)</code></pre></div>
+<pre><code>        mean   se_mean       sd      10%      90%    n_eff     Rhat
+mu  8.048679 0.1085502 4.884448 1.987987 14.03885 2024.741 1.001959
+tau 6.557082 0.1408245 5.495362 1.030037 13.46754 1522.778 1.003301</code></pre>
+<p>Since <code>mu_tau_summary</code> is a matrix we can pull out columns using their names:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mu_tau_80pct &lt;-<span class="st"> </span>mu_tau_summary[, <span class="kw">c</span>(<span class="st">&quot;10%&quot;</span>, <span class="st">&quot;90%&quot;</span>)]
+<span class="kw">print</span>(mu_tau_80pct)</code></pre></div>
+<pre><code>         10%      90%
+mu  1.987987 14.03885
+tau 1.030037 13.46754</code></pre>
+<p><br></p>
+</div>
+<div id="sampler-diagnostics" class="section level2">
+<h2>Sampler diagnostics</h2>
+<p>For models fit using MCMC the stanfit object will also contain the values of parameters used for the sampler. The <code>get_sampler_params</code> function can be used to access this information.</p>
+<p>The object returned by <code>get_sampler_params</code> is a list with one component (a matrix) per chain. Each of the matrices has number of columns corresponding to the number of sampler parameters and the column names provide the parameter names. The optional argument inc_warmup (defaulting to <code>TRUE</code>) indicates whether to include the warmup period.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sampler_params &lt;-<span class="st"> </span><span class="kw">get_sampler_params</span>(fit, <span class="dt">inc_warmup =</span> <span class="ot">FALSE</span>)
+sampler_params_chain1 &lt;-<span class="st"> </span>sampler_params[[<span class="dv">1</span>]]
+<span class="kw">colnames</span>(sampler_params_chain1)</code></pre></div>
+<pre><code>[1] &quot;accept_stat__&quot; &quot;stepsize__&quot;    &quot;treedepth__&quot;   &quot;n_leapfrog__&quot; 
+[5] &quot;divergent__&quot;   &quot;energy__&quot;     </code></pre>
+<p>To do things like calculate the average value of <code>accept_stat__</code> for each chain (or the maximum value of <code>treedepth__</code> for each chain if using the NUTS algorithm, etc.) the <code>sapply</code> function is useful as it will apply the same function to each component of <code>sampler_params</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mean_accept_stat_by_chain &lt;-<span class="st"> </span><span class="kw">sapply</span>(sampler_params, function(x) <span class="kw">mean</span>(x[, <span class="st">&quot;accept_stat__&quot;</span>]))
+<span class="kw">print</span>(mean_accept_stat_by_chain)</code></pre></div>
+<pre><code>[1] 0.9503392 0.6811747 0.8134112 0.9048823</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">max_treedepth_by_chain &lt;-<span class="st"> </span><span class="kw">sapply</span>(sampler_params, function(x) <span class="kw">max</span>(x[, <span class="st">&quot;treedepth__&quot;</span>]))
+<span class="kw">print</span>(max_treedepth_by_chain)</code></pre></div>
+<pre><code>[1] 4 5 5 5</code></pre>
+<p><br></p>
+</div>
+<div id="model-code" class="section level2">
+<h2>Model code</h2>
+<p>The Stan program itself is also stored in the stanfit object and can be accessed using <code>get_stancode</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">code &lt;-<span class="st"> </span><span class="kw">get_stancode</span>(fit)</code></pre></div>
+<p>The object <code>code</code> is a single string and is not very intelligible when printed:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(code)</code></pre></div>
+<pre><code>[1] &quot;data {\n  int&lt;lower=0&gt; J;          // number of schools \n  real y[J];               // estimated treatment effects\n  real&lt;lower=0&gt; sigma[J];  // s.e. of effect estimates \n}\nparameters {\n  real mu; \n  real&lt;lower=0&gt; tau;\n  vector[J] eta;\n}\ntransformed parameters {\n  vector[J] theta;\n  theta = mu + tau * eta;\n}\nmodel {\n  target += normal_lpdf(eta | 0, 1);\n  target += normal_lpdf(y | theta, sigma);\n}&quot;
+attr(,&quot;model_name2&quot;)
+[1] &quot;schools&quot;</code></pre>
+<p>A readable version can be printed using <code>cat</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cat</span>(code)</code></pre></div>
+<pre><code>data {
+  int&lt;lower=0&gt; J;          // number of schools 
+  real y[J];               // estimated treatment effects
+  real&lt;lower=0&gt; sigma[J];  // s.e. of effect estimates 
+}
+parameters {
+  real mu; 
+  real&lt;lower=0&gt; tau;
+  vector[J] eta;
+}
+transformed parameters {
+  vector[J] theta;
+  theta = mu + tau * eta;
+}
+model {
+  target += normal_lpdf(eta | 0, 1);
+  target += normal_lpdf(y | theta, sigma);
+}</code></pre>
+<p><br></p>
+</div>
+<div id="initial-values" class="section level2">
+<h2>Initial values</h2>
+<p>The <code>get_inits</code> function returns initial values as a list with one component per chain. Each component is itself a (named) list containing the initial values for each parameter for the corresponding chain:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inits &lt;-<span class="st"> </span><span class="kw">get_inits</span>(fit)
+inits_chain1 &lt;-<span class="st"> </span>inits[[<span class="dv">1</span>]]
+<span class="kw">print</span>(inits_chain1)</code></pre></div>
+<pre><code>$mu
+[1] -1.461743
+
+$tau
+[1] 0.1964472
+
+$eta
+[1] -0.8751053 -1.7047613 -0.9337199  1.3190496  0.4229845 -0.7018442
+[7]  0.2604412  1.1808317
+
+$theta
+[1] -1.633655 -1.796638 -1.645169 -1.202619 -1.378649 -1.599618 -1.410580
+[8] -1.229772</code></pre>
+<p><br></p>
+</div>
+<div id="prng-seed" class="section level2">
+<h2>(P)RNG seed</h2>
+<p>The <code>get_seed</code> function returns the (P)RNG seed as an integer:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">get_seed</span>(fit))</code></pre></div>
+<pre><code>[1] 308838208</code></pre>
+<p><br></p>
+</div>
+<div id="warmup-and-sampling-times" class="section level2">
+<h2>Warmup and sampling times</h2>
+<p>The <code>get_elapsed_time</code> function returns a matrix with the warmup and sampling times for each chain:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">get_elapsed_time</span>(fit))</code></pre></div>
+<pre><code>          warmup   sample
+chain:1 0.059357 0.061835
+chain:2 0.051969 0.034312
+chain:3 0.059145 0.053630
+chain:4 0.058807 0.057540</code></pre>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
