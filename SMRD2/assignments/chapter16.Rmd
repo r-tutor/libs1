@@ -1,0 +1,123 @@
+---
+output: html_document
+---
+
+```{r echo=FALSE}
+ex <- 0
+```
+
+
+# From the Text Exercise 16.`r ex = ex+1; ex`
+
+ A small un-monitored computer laboratory contains 10 networked microcomputers. Users who notice a hardware or software problem with a computer are supposed to report the problem to a technician who will fix the problem.  The following table gives, for each computer, the days in which trouble calls were received. Most of the trouble reports were easy to address (replace a defective mouse, reboot the computer, remake the computer's file system from the server, remove stuck floppy disk, tighten loose connector, etc.). Calls reporting network problems or problems in the remote file server (which would affect all of the computers in the laboratory) were eliminated from the data base. All of the computers were in operation for the entire semester (day 1 through 105). \\[3ex] 
+ 
+$$
+\begin{array}{cl} 
+\hline
+ Unit Number &  Day Trouble Reported\\ 
+\hline
+ 401 & 18, 22, 45, 52, 74, 76, 91, 98, 100, 103\\ 402 & 11,  17,  19,  26,  27,  38,  47,  48,  53, 86,  88\\ 403  & 2, 9,  18,  43,  69,  79,  87,  87,  95, 103, 105\\ 404 & 3,  23,  47,  61,  80,  90\\ 501 & 19,  43,  51,  62,  72,  73,  91,  93, 104, 104, 105\\ 502 & 7,  36, 40,  51,  64,  70,  73,  88,  93,  99, 100, 102\\ 503 & 28,  40,  82,  85,  89,  89,  95, 97, 104\\ 504 & 4,  20, 31,  45,  55,  68,  69,  99, 101, 104\\ 601 & 7,  34,  34,  79,  82,  85, 101 \\ 602 & 9,  47, 78,  84 \\ 
+\hline
+ \\[2ex] 
+\end{array}
+$$
+ 
+ 
+ 
+
+a. Plot the trouble reports on a time-event chart. 
+
+a. Compute an estimate of the mean cumulative number of trouble reports, as a function of days. 
+
+a. What do you notice about the pattern of trouble reports over the semester? What could explain this pattern? 
+
+a. What information could be added to the table above to make the data on computer trouble reports more informative and more useful? 
+
+a. Could these data be used to predict the number of trouble reports next semester for the same lab?  
+
+a. Could these data be used to predict the number of trouble reports next semester for a different computer lab in the same building? Explain.  
+
+
+# From the Text Exercise 16.`r ex = ex+1; ex`
+
+ Show that substituting (\ref{equation:var.deadin}) and (\ref{equation:cov.deadin}) into (\ref{equation:varhat.mcf.gen}) and simplifying gives (\ref{equation:varhat.mcf}). 
+
+
+# From the Text Exercise 16.`r ex = ex+1; ex`
+
+ Consider the  power-loglinear recurrence rate given by 
+$$
+\begin{eqnarray*}
+ \rocof(t;\gamma_{0},\gamma_{1},\gamma_{2},\gamma_{3})&=&\frac{\gamma_{3}} 		         {\gamma_{2}} \left ( 	 \frac{t} {\gamma_{2}} \right )^{\gamma_{3}-1} \exp(\gamma_{0}+\gamma_{1} t). 
+\end{eqnarray*}
+$$
+ 
+ 
+
+a. Show that this model includes as special cases the power and the loglinear models. 
+
+a. Show that under the NHPP model, the mean cumulative number of system events over $(0, t]$ is 
+$$
+\begin{eqnarray*}
+ \mu(t;\gamma_{0},\gamma_{1}, \gamma_{2},\gamma_{3} ) &=& \gamma_{3} \, \left ( \frac{t}      {\gamma_{2}} \right )^{\gamma_{3}} \exp(\gamma_{0}) \left [ \frac{1}{\gamma_{3}} +  \sum_{i=1}^{\infty} \frac{  (\gamma_{1} t)^{i}      }      { (\gamma_{3}+i) \times i!      } \right ]. 
+\end{eqnarray*}
+$$
+ 
+
+a. Derive expressions for $\mcf(t)$ for the  power and loglinear models from the general expression given above.  
+
+
+# From the Text Exercise 16.`r ex = ex+1; ex`
+
+ \label{exercise:grampus.renewal.dist} Example~\ref{example:grampus.nhpp} showed that the times between unscheduled  maintenance actions were consistent with a renewal process. Use exponential and Weibull probability plots to explore the form of the distribution of the times between unscheduled  maintenance actions. 
+
+
+# From the Text Exercise 16.`r ex = ex+1; ex`
+
+ Verify the computation of  $\widehat{Var}[\hat{\mu}(t_{2})]$ and $\widehat{Var}[\hat{\mu}(t_{3})]$ given in Example~\ref{example:simple.var.mcf}. 
+
+
+# From the Text Exercise 16.`r ex = ex+1; ex`
+
+ A company that runs a fleet of passenger automobiles would like to do a retrospective study to compare two different brands of automobile batteries.  The fleet contains 55 automobiles. All  of the automobiles started with brand B, but during the life of the automobiles, when a battery failed, it was replaced with either Brand A or Brand B. The available data show the date of purchase of the original automobile and the date and brand of replacement for batteries that were replaced. 
+ 
+
+a. How would you organize the data for analysis? What kind of questions could you answer from an analysis focusing on the mean cumulative number of failures? 
+
+a. Describe some of the potential pitfalls involved in drawing inferences from a retrospective study like this. What advantages would there be for doing a prospective study where the failure times of future batteries would be studied? 
+
+a. What assumptions would you have to make about the battery failures in order to be able to use the times between battery failures to estimate such a failure-time distribution for the batteries?  How could you use the available data to check the assumptions?  
+
+
+# From the Text Exercise 16.`r ex = ex+1; ex`
+
+ \label{exercise:mcf.special.cases} Suppose that $n$ repairable systems were put into service at the same time and that, up to time  $t_{j}$, all systems are still being monitored. 
+ 
+
+a. \label{exer.part:naive.mcf.estimate} Show that, in this case, the estimator of the MCF at $t_{j}$  in (\ref{equation:mcfhat}) reduces to the sample mean of the $N_{i}(t_{j})$ values: \begin{displaymath} \mcfhat(t_{j})=\bar{N}_{i}(t_{j})= \frac{ \sum_{i=1}^{n} N_{i}(t_{j})} {n}. \end{displaymath} 
+
+a. \label{exer.part:naive.mcf.var.estimate} Show that the estimator of $Var[\hat{\mu}(t_{j})]$  in (\ref{equation:var.deadin}) reduces to \begin{displaymath} \widehat{Var}[\hat{\mu}(t_{j})]=\frac{\widehat{Var}[N(t_{j})]} 			            {n} = \frac{\sum_{i=1}^{n} [N_{i}(t_{j})-\bar{N}_{i}(t_{j})]^{2} }{n^{2}}. \end{displaymath} 
+
+a. \label{exer.part:naive.mcf.var.0} Show why $\widehat{Var}[\hat{\mu}(t_{j})]=0$ when $N_{1}(t_{j})=N_{2}(t_{j})=\dots=N_{n}(t_{j})$. 
+
+a. Give the formula for the unbiased  estimator of $Var[\hat{\mu}(_{j})]$.  
+
+
+# From the Text Exercise 16.`r ex = ex+1; ex`
+
+ \label{exercise:nhpp.simulation} Consider an NHPP model with a strictly positive recurrence rate $\rocof(t)$, [i.e.,$\nu(t)>0$ for all $t$ in $[0,\infty)$].  Let $\rv_{1},\rv_{1},\dots $ be the random times at which the recurrent events occur in the stochastic process.  Let $W_{1}=\mu(\rv_{1}),W_{2}=\mu(\rv_{2}) $ denote transformed times, where $\mu(t)$ is the process MCF. 
+ 
+
+a. Show that the time transformation $w=\mu(t)$ is monotone increasing. This implies that  the inverse transformation $t=\mu^{-1}(w)$ is well defined. 
+
+a. \label{exer.part:time.transform.hpp} Let $N_{W}(a)$ be the number of events in the interval $[0,a)$ in the $W$ time scale. Show that events in nonoverlapping intervals  are independent and that 
+$$
+\begin{eqnarray*}
+ N_{W}(0)&=&0 \\ \Pr \left [N_{W}(a,b)=\deadin \right ]&=&\Pr\{N \left [ \mu^{-1}(a),\mu^{-1}(b) \right ]=\deadin\} \\ &=& \frac{\left ( b-a  \right )^{\deadin}}                   {\deadin !} 	     \exp \left [ -(  b-a) 		  \right ], \, \deadin=0,1,2, \dots . 
+\end{eqnarray*}
+$$
+ This implies that in the $W$ time scale, the point process is HPP with a constant  recurrence rate equal~to~1. 
+
+a. Using the result in part~\ref{exer.part:time.transform.hpp}, show that the interrecurrence transformed times  $W_{i}-W_{i-1}=\mu(\rv_{i-1}, \rv_{i})$, $i=1,2, \dots$, (where  $W_{0}=0$) are $\rm iid$ with an $\EXP(1)$ distribution.     
+
+

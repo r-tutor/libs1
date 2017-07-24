@@ -1,0 +1,864 @@
+---
+title: "`r SMRD:::info('book')`"
+subtitle: "Syllabus & Course Overview"
+author: "`r SMRD:::info('authors')`"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+footer: "`r paste('SMRD: ', 'Syllabus & Course Overview')`"
+output:
+  slidy_presentation:
+    smart: false
+    fig_caption: yes
+graphics: yes
+---
+
+# Why Are We Here?
+
+```{r echo=FALSE,message=FALSE, warning=FALSE}
+source('scripts/R/setup.R')
+
+shiny::includeCSS('scripts/css/flat-slidy.css')
+shiny::includeScript(path = "scripts/js/audiojs/audiojs/audio.min.js",
+                     "audiojs.events.ready(function() {audiojs.createAll();});")
+shiny::includeScript('scripts/js/jquery.min.js')
+shiny::includeScript("scripts/js/jkf-scroll.js")
+```
+
+## To demonstrate how open-source computing tools can help you to...
+
+- Significantly speed-up your workflow for producing papers & presentations
+
+- Create dramatically better learning experiences for your students 
+
+- Make course planning, updating, and teaching both faster and easier for you
+
+- Teach course content, scripting, and $\LaTeX$ typesetting - <u>at the same time</u>
+
+- Give in-res and DL students the exact same learning experience
+
+    + Publish lectures online as stand-alone websites
+
+    + Let students run scripts within your presentations even if R isn't installed
+    
+    + Avoid using ~~<red>recorded lectures</red>~~ ![](images/boring.gif)
+
+## How this presentation is arranged
+
+```{r}
+teachingApps::includeApp('overview_network')
+```
+
+- Describe why I moved to open-source tools
+
+- Detail how I link open-souce tools together to form an integrated toolchain 
+
+    + The R Progamming Language
+    
+    + RStudio
+    
+    + $\LaTeX$
+    
+    + Git/GitHub (optional)
+    
+    + shinyapps.io/Shiny Server (optional)
+
+- Demonstrate the benefits of this toolchain 
+
+## Notes
+
+1) <focus>This presentation was built entirely in RStudio - using several R packages</focus>
+
+    + `rmarkdown` - R interface to Pandoc-flavored Markdown
+    
+    + `shiny` - Interactive/reactive web applicatios with R
+    
+    + `RJSONIO` - R to JSON interface
+    
+    + `shinythemes` - Bootswatch color themes for shiny apps
+    
+    + `shinyAce` - Shiny interface to the Ace Editor
+    
+    + `htmlwidgets` - infrastructure for building htmlwidgets
+    
+    + `DT` - htmlwidget for interactive HTML5-based tables
+    
+    + `metricsgraphics` - htmlwidget for interactive time-series plots
+    
+    + `dplyr` - grammar of data manipulation
+    
+    + `tidyr` - easily tidy data with functions
+    
+    + `xtable` - for building $\LaTeX$ typeset tables 
+
+2) The methods described here probably aren't applicable for all circumstances
+
+3) Other open-source languages (Python, Julia?, Ruby?) may be able to replicate some of the same capabilities
+
+## What I want <red><u>you</u></red> to take away from his presentation
+
+- Tools are available to drastically reduce the amount of time you spend on tedious 'information-management' tasks
+
+    + Producing research papers & presentations
+    
+    + Creating course materials
+    
+    + Teaching in class
+
+- Tools are available to embed animated & interavtive plots/tables/images directly within your documents and presentations    
+
+## What <red><u>I want</u></red> to take away from his presentation
+
+- Greater AFIT support for the WPAFB R users group
+
+- Opportunity for collaborate with Python users
+
+- Find contributors to a repository of data visualizations and shiny apps
+
+    + Share among AFIT faculty to use in their courses
+    
+    + Make available to AF personnel to explore numerical concepts   
+
+# Why I Moved To An Open-Source Toolchain
+
+## During my first year of teaching 
+
+- My workflow for writing papers and presentations was extremely slow and tedious
+
+- Included a typical mix of open-source and proprietary-source tools
+
+    + Presentation materials & slides (PowerPoint, PDF, whiteboard)
+    
+    + Research papers (MS Word, $\LaTeX$, Excel, PDF)
+
+    + Teaching notes (MS Word, handwritten)
+
+    + Analysis results and plots from software packages (Excel, R)
+
+    + Files for sharing computer code (MS Word, notepad)
+
+    + Homework assignments & solutions (MS Word, $\LaTeX$, PDF, handwritten)
+
+- The results looked something like [this](https://afit.blackboard.com/bbcswebdav/users/jfreels/Rworkflow/inst/examples/HW-Examples.pdf) or [this](https://afit.blackboard.com/bbcswebdav/users/jfreels/Rworkflow/inst/examples/Lecture-Example.pdf)
+
+- Tedious for me to ensure resources were updated/synced/emailed/posted
+
+- Hard for students to follow multiple transitions in class
+
+- Easy to lose track of how values in plots or tables were computed
+
+- <focus>The problem was that my tools weren't connected</focus>
+
+## I needed a workflow to make research/teaching both easier & faster
+
+- <red>Manipulating</red> and <red>Cleaning</red> real-world data 
+
+- <blue>Applying</blue> statistical techniques to extract knowledge from the data
+
+- <purple>Creating</purple> data visualizations to present results and support conclusions
+
+- <green>Building</green> reports and presentations
+
+- <orange>Typesetting</orange> $\LaTeX$ and HTML~<orange>5</orange>~ equations and tables
+
+- And it needed to something my students could get up to speed on <font color="brown">__fast__</font>
+
+## However, many of my students...
+
+- Have limited experience with command-line scripting
+    
+- Have never used R before
+    
+- Aren't familiar with using $\LaTeX$ for typesetting equations
+
+- Might be a part-time DL student who can't even install R on their work computer
+
+## I needed to find/build a workflow that would allow me to teach
+
+- On multiple content levels <focus>simultaneously</focus>
+
+    + R programming
+
+    + $\LaTeX$ equation typesetting
+
+    + Markdown 
+
+    + Shiny app development
+    
+- To students who may have never done R Programming or $\LaTeX$ typesetting
+
+- Without making R or $\LaTeX$ the focus of the course
+
+- Faster and easier 
+
+# The R/RStudio Open-Source 'Toolchain'
+
+## These tools link together - and each one is
+
+- <green>Free</green> 
+
+- Open-source
+
+- Available for download on AFIT machines from the R: drive
+
+- Available for students to continue using after they leave AFIT
+
+## [RStudio](http://www.rstudio.com) - Integrates everything into one, seamless interface
+
+- An integrated development environment that installs with several third-party, open-source applications
+
+    + Pandoc
+    
+    + Markdown
+    
+    + MathJax
+    
+    + Git
+    
+    + Several JavaScript libraries
+    
+- Provides <red>syntax highlighting</red>, <blue>code completion suggestions</blue>, and <purple>diagnostics</purple> for many programming languages
+
+    + R (*.R)
+    
+    + Matlab (*.m)
+    
+    + Python (*.py)
+    
+    + Julia (*.julia)
+    
+    + C++ (*.cpp)
+    
+    + JavaScript (*.js) 
+    
+    + JSON (*.json)
+    
+    + CSS3 (*.css)
+    
+    + HTML~<font color="orange" size="5.75">__5__</font>~ (*.html)
+    
+    + YAML (*.yml)
+
+    + Markdown (*.md)
+
+## [R Programming Language](https://www.r-project.org/)
+
+- A <font color="blue">__general-purpose__</font>, <font color="orange">__interpreted__</font> computing language and suite of statistical operators for calculations on vectors, matrices, and arrays
+
+- A large, coherent and integrated collection of tools and graphical facilities for data analysis and reproducible research
+
+- A well-developed programming language which includes conditionals, loops, user-defined recursive functions and input and output facilities
+
+- Has more than 10,000 add-on packages available at the CRAN, GitHub, and BioConductor repositories  
+
+- One of the fastest growing technical programming languages in the world
+
+<center>[<img src="media/images/languages.png" width="50%">](http://spectrum.ieee.org/static/interactive-the-top-programming-languages-2015)</center>
+
+## $\LaTeX$ - A <red>complete</red> installation is required to build pdf documents
+
+- MikTeX for Windows 7/8/10 
+    
+- MacTeX for Mac OS X
+    
+- TeX Live 2013+ for Linux
+
+# Benefit $\#1$ - A Simpler Workflow
+
+## You can merge ALL of your content into a single file
+
+- ~~Text~~
+
+- HTML~5~, CSS^3^ and <u>JavaScript</u> code
+    
+- Images from a local file...or from the web
+
+<br>
+
+<div class="columns-2">
+<center><img src='images/bridge-failure.jpg' style='height: 281px;'></center>
+
+<br>
+
+<center><img src="https://media.giphy.com/media/PoYRFr8s9CRIA/giphy.gif" width="500px"></center>
+</div>
+
+- Videos
+
+<center> <video src="media/videos/fedex.mp4" controls></video> </center>
+
+- Audio 
+
+<center><audio src="media/audio/bazinga.mp3"></audio></center>
+
+- <font color="blue">Tables</font>
+    
+Censoring type                                             | Range               |  Likelihood                   
+----------------------------------------------------------:|:-------------------:|:------------------------------
+$d_{i}$ observations interval censored in $[t_{i-1},t_{i})$| $t_{i-1}<T\le t_{i}$| $[F(t_{i})-F(t_{i-1})]^{d_{i}}$
+$l_{i}$ observations left censored at $t_{i}$              | $T\le t_{i}$        | $[F(t_{i})]^{l_{i}}$
+$r_{i}$ observations right censored at $t_{i}$             | $T>t_{i}$           | $[1-F(t_{i})]^{r_{i}}$         
+
+
+- <focus>More tables</focus>
+
+<smaller>
+$$
+`r gsub('\n', ' ', print(xtable(head(mtcars), digits = c(0,1,0,0,0,2,2,2,0,0,0,0)), comment = F, tabular.environment = 'array', floating = F, print.results = F))`
+$$
+</smaller>
+
+- `And More tables`
+
+```{r}
+shinyApp(options = list(height = '550px'),
+         
+  ui = fluidPage(theme = shinythemes::shinytheme('flatly'),
+                 try(includeCSS(system.file('css',
+                                           'my-shiny.css', 
+                                           package = 'teachingApps')), silent = T),
+        mainPanel(width = 12, DT::dataTableOutput('amt'))),
+        
+  server = function(input, output, session){
+    
+    output$amt <- DT::renderDataTable({DT::datatable(mtcars, 
+                                                     options = list(pageLength = 8))})
+})
+```
+
+- ***Plots*** and analysis results with <img src="media/images/Rlogo.png" height="30px"> code chunks
+
+```{r share,fig.show='asis',fig.align='center'}
+par(family='serif', font=2,bg=NA)
+x<-seq(0,2.4,by=.01)
+y<-dweibull(seq(0,2.4,by=.01),shape=1.7,scale=1)
+plot(x, y, type = 'l', lwd = 1.25, xlab = 't', ylab = 'f(t)', las = 1,
+     sub = 'Figure 2.6 - Likelihood contributions for different kids of censoring')
+polygon(c(  seq(0,0.5,.01),0.5),c(  dweibull(seq(0,0.5,.01),shape = 1.7,scale = 1),0), col = 1)
+polygon(c(1,seq(1,1.5,.01),1.5),c(0,dweibull(seq(1,1.5,.01),shape = 1.7,scale = 1),0), col = 1)
+polygon(c(2,seq(2,2.4,.01),2.4),c(0,dweibull(seq(2,2.4,.01),shape = 1.7,scale = 1),0), col = 1)
+text(.16,.75,'Left Censoring')
+text(1.3,.65,'Interval Censoring')
+text(2.2,.15,'Right Censoring')
+box(lwd=1.25)
+```
+
+```{r share,eval=FALSE, echo=TRUE}
+```
+
+## Then, output the file to many different document/presentation formats
+
++ <red>W3C Slidy presetation</red> 
+    
++ <blue>Google ioSlides presentation</blue> 
+
++ <purple>$\LaTeX$ Beamer presentation</purple>
+
++ <green>reveal.js presentation</green> 
+
++ <orange>shwr.me presentation</orange> `devtools::install_github('MangoTheCat/rmdshower')`
+    
++ <red>HTML documents</red> 
+    
++ <blue>Microsoft Word documents</blue> 
+    
++ <purple>pdf documents</purple> 
+
++ <green>Tufte handout</green> 
+
++ <orange>Package vignette</orange>
+
++ <brown>Journal of Statistical Software submission</brown> `install.packages('rticles')`
+
++ <black>Elsevier journal article submission</black> `install.packages('rticles')`
+
++ <pink>R Journal article submission</pink> `install.packages('rticles')`
+
+# How Does This Work?
+
+## [Pandoc](http://www.pandoc.org) - Brings your resources together
+
+- 'Swiss Army Knife' for converting files from one markup format into another
+
+- Written in Haskell by John MacFarlane, a Philosophy Professor from UC-Berkeley
+
+- Installs with RStudio - works in the background 
+
+## [Markdown](http://rmarkdown.rstudio.com/) - Easy authoring of dynamic documents and presentations
+
+- Markup syntax that is simple like Word, yet professional like $\LaTeX$
+
+- Originally created for creating web content, later adapted for research documents
+
+- Used on [StackOverflow](http://stackoverflow.com/questions/4520865/projective-transformation-fitting/7432253#7432253), WordPress, and GitHub
+
+- Installs with the `rmarkdown` package
+
+## [MathJax](http://www.mathjax.com) - equation typesetting for web applications
+
+- Supports both $\LaTeX$ and MathML equations
+
+- Installs with RStudio and <u>does not</u> require an internet connection
+
+- Base intall uses the AMSMath package, but additional $\LaTeX$ packages can be added
+    
+- MathJax [documentation](http://docs.mathjax.org/en/latest/tex.html) lists which functions are supported
+
+- MathJax is used on several websites
+
+    + [math.stackexchange](http://math.stackexchange.com/questions/1527165/homework-limit-of-frac1n-sqrtn-prod-k-1nnk-as-n-to-infty)
+    
+    + [University of Alabama-Huntsville](http://www.math.uah.edu/stat/markov/Reliability.html)
+    
+    + [NIST Engineering Handbook](http://itl.nist.gov/div898/handbook/eda/section3/eda35b.htm)
+
+- <focus>The cool part happens when you right-click on a MathJax equation</focus>
+
+<div class='example'>
+### MathJax Equation Examples
+
+## Display equations 
+
+- The general delta method equation is 
+
+<small>
+$$ 
+Var\left[g(\hat{\theta})\right]\approx \sum_{i=1}^{r} \left[\frac{\partial g(\mathbf{\theta})}{\partial \theta_{i}}\right]^{2} Var(\hat{\theta_{i}})+\sum_{i=1}^r \mathop{\sum^{r}_{j=1}}_{i\ne j}\left[\frac{\partial g(\mathbf{\theta})}{\partial \theta_{i}}\right]\left[\frac{\partial g(\mathbf{\theta})}{\partial \theta_{j}}\right] Cov(\hat{\theta}_{i}, \hat{\theta}_{j})
+$$
+</small>
+
+## In-line equations 
+
+- Since $\hat{F}(t_{i})=1-\hat{S}(t_{i})$, we know that $Var[\hat{F}(t_{i})]=Var[\hat{S}(t_{i})]$ 
+
+## Aligned equations
+
+$$
+\begin{aligned}
+Var[S(t_{i})]&=\sum_{j=1}^{i}\left[\frac{\partial S(t_{i})}{\partial q_{j}}\right]^{2}Var(q_{j})\\
+&=\sum_{j=1}^{i}\left[\frac{S(t_{i})}{q_{j}}\right]^{2}\frac{p_{j}(1-p_{j})}{n_{j}}\\
+&=S(t_{i})^{2}\sum_{j=1}^{i}\frac{p_{j}(1-p_{j})}{n_{j}(1-p_{j})^{2}}\\
+&=S(t_{i})^{2}\sum_{j=1}^{i}\frac{p_{j}}{n_{j}(1-p_{j})}\\
+\end{aligned}
+$$
+</div>
+
+# Benefit $\#1$ - A Simpler Workflow
+
+## Stand alone code chunks 
+
+- Multi-line blocks of code used to carry out analyses or creating plots 
+
+- Begin with three ticks and a list of chunk arguments `'```{r, chunk arguments}'`
+
+- Chunk arguments include (See the [Full List](http://yihui.name/knitr/options))
+
+    + `echo=TRUE` shows the entire code chunk in the output 
+    
+    + `echo=c(2,3)` shows lines 2 & 3 only
+    
+    + `eval=FALSE` does not run the code chunk
+
+    + `message=FALSE` suppresses messages (helpful when loading packages)
+
+    + `comment=###`  Inserts ### at beginning of each line of R output  
+
+    + `fig.align='center'` Sets the horizontal position of a plot 
+
+## Inline code chunks (are `&*$@#!%` amazing)
+
+- Small bits of code for printing objects within a sentence or an equation
+
+- Begin and end with a single tick mark
+
+- Adding `r` after the initial tick treats what follows as R code to be evaluated
+
+- Removing the `r` simply prints the `text as code` (without running it)
+
+- <red>In-line code chunks can go almost anywhere!</red>
+
+    + Automatically edit text if one or more conditions are met (i.e. hypothesis testing)
+    
+    + Automatically update $\LaTeX$ equations when new data are added or errors are fixed
+
+<div class='example'>
+### Example 1 - Using in-line code chunks for hypothesis testing 
+
+- Suppose for each batch of $20$ items produces we test 
+    
+    + $\displaystyle H_0:\bar{b}=\frac{\sum_{i=1}^{20} b_i}{N}=45cm$
+    
+    + $\displaystyle H_A:\bar{b}=\frac{\sum_{i=1}^{20} b_i}{N}\ne 45cm$
+    
+    + Significance level $\alpha=0.05$
+
+- In-line code chunks can be used to insert the results of the test into a final report 
+
+```{r,echo=TRUE}
+### Read data from a local file or from the internet
+lengths <- c(36, 37, 38, 38, 39, 39, 40, 40, 40, 40, 41, 41, 41, 41, 41, 41, 42, 42, 42, 42,
+             42, 42, 42, 43, 43, 43, 43, 43, 43, 43, 43, 44, 44, 44, 44, 44, 44, 44, 44, 44,
+             45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46,
+             47, 47, 47, 47, 47, 47, 47, 47, 47, 48, 48, 48, 48, 48, 48, 48, 48, 49, 49, 49,
+             49, 49, 49, 49, 50, 50, 50, 50, 50, 50, 51, 51, 51, 51, 52, 52, 53, 53, 54, 55) 
+
+### Data from 'http://www.seattlecentral.edu/qelp/sets/057/s057.txt'
+### analyze data
+
+batch <- sample(lengths, size = 20)
+test.stat <- (mean(batch)-45)/(sd(batch)/sqrt(length(batch)))
+p <- 1-pt(test.stat, df = 19)
+### perform hypothesis test and give result as p value
+if (p  > 0.05) null <- "we cannot reject the null hypothesis"
+if (p <= 0.05) null <- "we reject the null hypothesis"
+```
+
+- For this batch, the value of the test statistic is
+
+$$t = \frac{`r mean(batch)`-45}{\frac{`r sd(batch)`}{\sqrt{`r length(batch)`}}}=`r test.stat`.$$
+
+- As result $p=`r p`$ and thus `r null`.
+</div>
+
+<div class='example'>
+### Example 2 - Using in-line code chunks for matrix operations
+
+```{r, results='hide'}
+A <- matrix(sample(1:50, size = 25), nrow = 5, byrow = T)
+```
+
+$$[A] = \left[`r xarray(A, matrix = TRUE)`\right]$$
+
+- Refreshing this page will re-run the code, producing a new matrix $[A]$
+
+- If you view this page on different computers, the matrix $[A]$ and the following values will be different on each machine
+
+```{r, results='hide'}
+diag(A)  ### Diagonal elements [A]
+```
+$$diag[A] = \left[`r diag(A)`\right]$$
+
+
+```{r, results='hide'}
+det(A)   ### Determinant of [A]
+```
+$$det[A]=\left[`r det(A)`\right]$$
+
+
+```{r, results='hide'}
+solve(A) ### Find the inverse of [A]
+```
+$$[A]^{-1}=\left[`r xarray(solve(A), matrix = TRUE)`\right]$$
+
+
+```{r, results='hide'}
+t(A) ### Find the transpose of [A]
+```
+$$[A]^T=\left[`r xarray(t(A), matrix = TRUE)`\right]$$
+</div>
+
+<div class='example'>
+###Example 3 - Using in-line code chunks to build $\LaTeX$ tables really fast 
+
+- Suppose you have a `data.frame`, a `matrix`, or several vectors containing the results of an analysis
+    
+- You want to turn convert these results into a $\LaTeX$ typeset table
+    
+- For a large tables, this process can take up to half a day to write and debug the code
+    
+- With either the [xtable](http://cran.r-project.org/web/packages/xtable/index.html) (or [stargazer](http://cran.r-project.org/web/packages/stargazer/index.html) or [pander](http://cran.r-project.org/web/packages/pander/) packages you could create the table instantly
+
+```{r table, comment=NA, echo=TRUE, results='markup'}
+head(mtcars)
+```
+
+```{r, eval=FALSE, echo=TRUE}
+xtable::xtable(head(mtcars), digits = c(0,1,0,1,0,2,2,2,0,0,0,0))
+```
+
+<smaller>
+$$
+`r xarray(head(mtcars), digits = c(0,1,0,1,0,2,2,2,0,0,0,0))`
+$$
+</smaller>
+</div>
+
+# Benefit $\#2$ - Adding Animation And Interactivity
+
+## Static vs. Dynamic plots 
+
+- Static plots and static tables will be as outdated as transparencies 
+
+- Plots & tables will be expected to provide multiple layers of information
+
+- Animated figures will illustrate complex processes - without having to "visualize" the changes
+
+- R has two frameworks to customize how users interact with your presentations
+
+    + shiny
+
+    + htmlwidgets
+
+## [shiny](http://shiny.rstudio.com/) is a package for developing web-applications in R
+
+- Coverts R code to JavaScript - no experience programming in JavaScript is required
+
+- Build a custom UI - Lots of options check out the <a target='top' href='http://shiny.rstudio.com/gallery/'><b>gallery</b></a> 
+
+- Define what events will occur based on a user's input in the UI
+    
+- Several shiny sub-packages have been created for specific purposes
+
+    + shinyDashboard - Create realtime dashboards in R [Example](https://gallery.shinyapps.io/087-crandash)
+
+    + shinyStan - Interactively explore Bayesian model fit using MCMC [Example](https://jsg2201.shinyapps.io/shinyStan_demo/)
+
+    + shinyAce - Interactive interface to the Ace text editor 
+
+- I've created many shiny apps and found them to be helpful for three primary reasons
+
+<div class='example'>
+### To easily illustrate complex ideas
+
+```{r}
+if(dynamic) {teachingApps:::complex_ideas() }
+```
+</div>
+
+<div class='example'>
+### To teach content and coding skills at the same time
+
+```{r}
+if(dynamic) { teachingApps:::simultaneous_skills() }
+```
+</div>
+
+<div class='example'>
+### To replace hundreds of static plots
+
+```{r}
+if(dynamic) { teachingApps:::replace_plots() }
+```
+</div>
+
+## htmlwidgets are a family of R packages for built around <u>specific</u> JavaScript libraries
+
+- The 'showcase' widgets can be explored on the [htmlwidgets showcase](http://www.htmlwidgets.org/showcase_leaflet.html) page
+
+    + `metricsgraphics` - Dynamic scatterplots, line charts, and histograms with D3.js
+
+    + `leaflet` - Dynamic maps with support for panning, zooming, and annotations
+
+    + `threejs` - Interactive 3D scatterplots and globes
+
+    + `heatmapD3` - Interactive heatmaps with D3.js
+
+    + `networkD3` - Iinteractive network graphs with D3.js
+
+    + `dygraphs` - Interactive charting for time-series data
+
+    + `DT` - Interactive tables that support filtering, pagination, and sorting
+
+    + `DiagrammeR` - Create diagrams and flowcharts using Graphviz.js and Mermaid.js
+
+- Many, many more widgets are available on the [Widget-A-Week Project](http://www.buildingwidgets.com/blog/2015/10/22/week-42-adjacency-matrix) page
+
+<div class = 'example'>
+### htmlwidgets can be combined with shiny
+
+```{r}
+if(dynamic) { teachingApps:::htmlwidgets_shiny() }
+```
+</div>
+
+# Benefit $\#3$ - Collaborate With Anyone...Anywhere
+
+## Share your Shiny apps and interactive documents on the web
+
+- In-res and DL students can get the same experience
+
+- Collaborate with researchers or co-authors
+
+## [Shinyapps.io](https://www.shinyapps.io)
+
+- Provides a secure server to host the active content
+
+- RStudio provides the logistical and technical support 
+
+- Built on Linux servers
+
+- Free for up to 25 hours/month/application
+
+## [Shiny Server Pro](https://www.rstudio.com/products/shiny/shiny-server/) let you 
+
+- Provides a secure server to host the active content
+
+- Purchaser is responsible for logistical and technical support 
+
+- Built on Linux servers
+
+- $10,000 one-time cost (Free for academic institutions)
+ 
+## [Git/GitHub](http://www.github.com) is free and open source distributed version control system
+
+- Millions of users - Github.com is currently the [87<sup>th</sup>](http://www.alexa.com/siteinfo/github.com) most visited website in the world
+
+- Designed to handle small projects to very large projects with speed and efficiency
+
+    + Writing and sharing software packages
+
+    + Writing [books](https://www.gitbook.com/) with collaborators from around the world
+
+    + View all changes to the entire volume of [German Federal Laws](https://github.com/bundestag/gesetze)
+
+# Questions & Concerns?
+
+## What about security?
+
+- Using terms like <blue>open-source</blue>, <red>third-party</red>, and <green>free</green> to describe software makes me nervous
+
+- In 2013, the Office of the CJCS reviewed RStudio for security vulnerabilities
+
+    + Found one JavaScript library that contained a link to a url hosted in Russia 
+
+    + RStudio subsequently removed the JavaScript library
+
+## I don't like scripting or I don't want to start a new language from scratch
+
+- I've created & posted several presentations to [my GitHub page](http://auburngrads.github.io) to get you started
+
+    + Installing the toolchain on AFIT and home computers
+    
+    + Creating and manipulating R objects 
+    
+    + Working with Markdown
+    
+    + Plotting in R
+    
+    + Getting Started with shiny & htmlwidgets
+    
+    + Building R Packages (still in work)
+    
+## Still Confused? Contact me!
+
+<br>
+
+<center><img src='images/confused.gif' style = 'width: 40%; height: 50%'/></center>
+
+- 937.255.3636 ext. 4676
+
+- <b>jason.freels@afit.edu</b>
+
+
+```{r, eval=FALSE}
+
+library(shiny)
+shinyApp(options = list(height = '800px', width = '100%'),
+        
+  ui = navbarPage(theme = shinythemes::shinytheme('flatly'), 
+                  try(includeCSS(system.file('css',
+                                           'my-shiny.css', 
+                                           package = 'teachingApps')), silent = T),
+        
+        tabPanel(h4('Basic Idea'),
+                 sidebarLayout(
+           sidebarPanel(
+             shinyAce::aceEditor("shinybasic", 
+                                 mode = "r", 
+                                 theme = "github", 
+                                 height = "450px", 
+                                 fontSize = 16,
+                                 value = "
+par(family = 'serif', mfrow = c(1,2), las = 1, cex = 1.25)
+
+library(SMRD)
+
+zoom <- 1.5
+
+Berkson200.ld <- 
+frame.to.ld(berkson200,
+            response.column = c(1,2), 
+            censor.column = 3,
+            case.weight.column = 4,
+            time.units = 'Kilometers')
+
+simple.contour(Berkson200.ld, 
+               distribution = 'exponential', 
+               show.confidence = T,
+               xlim = c(200,800),
+               zoom.level = zoom,
+               original.par = F)
+
+simple.contour(Berkson200.ld, 
+               distribution = 'weibull', 
+               show.confidence = F, 
+               zoom.level = zoom)
+
+par(mfrow = c(1,1))"),
+actionButton("basic", h4("Evaluate"),width = '100%'), width = 4),
+        
+        mainPanel(plotOutput("shinybasics", height = "600px"), width = 8)))),
+
+server = function(input, output, session) {
+
+  library(SMRD)
+    
+  output$shinybasics <- renderPlot({
+      input$basic
+      return(isolate(eval(parse(text=input$shinybasic))))
+})
+})
+```
+
+
+```{r,eval=FALSE}
+par(family = 'serif', font = 1, mar = c(4.5,6,1,1))
+
+library(scales)
+
+xlim = c(0,130)
+
+polygon(curve(dweibull(x, 2.5,50), 
+              xlim = xlim, 
+              ylab = '', xlab = '', 
+              col = alpha('blue', 1),
+              yaxt = 'n', xaxt = 'n', 
+              ylim = c(0,.03), 
+              yaxs = 'i', xaxs = 'i',
+              lwd = 2), 
+        col = alpha('blue', 0.25), 
+        border = NA)
+
+  polygon(curve(dweibull(x, 2.5,40),
+                col = alpha('darkgreen', 1),
+                xlim = xlim,
+                add = TRUE, 
+                lwd = 2), 
+          col = alpha('green', 0.25), 
+          border = NA)
+  
+  polygon(curve(dweibull(x, 2.0,50), 
+                col = alpha('red', 1),
+                xlim = xlim,
+                add = TRUE, 
+                lwd = 2), 
+          col = alpha('pink', 0.25), 
+          border = NA)
+  box(lwd = 1.5)
+  mtext(side = 3, 'f(t)', line = -2, at = -1, adj = 1, font = 2, cex = 1.5)
+  
+text(x = rep(c(55, 69), each = 3), 
+     y = rep(c(0.025,0.0225, 0.02), 2), 
+     rep(c('Blue', 'Green', 'Red', rep('=',3)), 2), 
+     col = rep(c('blue', 'darkgreen', 'red'), 2),
+     adj = 0, 
+     font = 2,
+     cex = 1.5)
+
+text(x = c(100,55), 
+     y = c(.005,0.028), 
+     c(paste('total samples =', 5, sep = " "), 
+       expression(bold(prod(f(t[i]~symbol('|')~theta),i==1,n)==sum(log~bgroup('[',f(t[i]~symbol('|')~theta),']'), i==1,n)%->%Log-likelihood))), 
+     font = 2,
+     adj = 0,
+     cex = 2)
+```
+

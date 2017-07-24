@@ -1,0 +1,1967 @@
+%chapter 11
+%\batchmode
+%original by wqmeeker  12 Jan 94
+%edited by wqmeeker 20 March 94
+%edited by wqmeeker 17 April 94
+%edited by wqmeeker  1 june 94
+%edited by wqmeeker  30 nov 94 minor changes
+%edited by wqmeeker  5 sept 95 minor changes
+%edited by driker 11 nov 95
+%edited by wqmeeker  1 dec 96 merging trunc, thresh and other dists
+%edited by driker 22 apr 97
+%edited by wqmeeker 28 apr 97
+%edited by wqmeeker 14 may 97
+
+\setcounter{chapter}{10}
+
+
+
+\chapter{Parametric Maximum Likelihood:
+Other Models}
+\label{chapter:ml.other.parametric}
+
+\input{\chapterhome/common_heading.tex}
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Objectives}
+This chapter explains
+\begin{itemize} 
+\item 
+ML estimation for the gamma and
+the extended generalized gamma (EGENG) distributions. 
+\item 
+ML estimation for the Birnbaum-Saunders (BISA) and 
+the inverse Gaussian (IGAU) distributions.
+\item 
+ML estimation for the limited failure population (LFP) model.
+\item 
+How truncation arises in reliability data applications and ML
+estimation for truncated data (or data from truncated distributions).
+\item 
+ML estimation for distributions with a threshold parameter like the
+three-parameter lognormal and the three-parameter Weibull
+distributions [using the generalized threshold-scale (GETS)
+distribution].
+\item 
+Potential difficulties involved in using distributions with
+threshold parameters and how to avoid them.
+\end{itemize}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Overview}
+This is an advanced chapter that can be skipped without loss of
+continuity.  Section~\ref{section:other.dist.ml} describes the
+extension of ML methods, introduced in
+Chapter~\ref{chapter:parametric.ml.ls}, to distributions that are
+not location-scale or log-location-scale.
+Chapter~\ref{chapter:other.parametric.models} provides background
+and technical details for the non-location-scale distributions used
+in this chapter. Section~\ref{section:gamma.mle} illustrates ML
+methods for the gamma distribution and
+Section~\ref{section:ml.gen.gamma} shows how to fit the extended
+generalized gamma distribution.  Section~\ref{section:bisa.igau.fit}
+uses ML methods to fit and compare the Birnbaum-Saunders and inverse
+Gaussian distributions.  Section~\ref{section:using.the.lfp.model}
+shows how to fit and interpret the limited failure population (LFP)
+distribution, a kind of mixture model.
+Section~\ref{section:truncated.data} describes various applications
+where truncated data arise and illustrates methods for analyzing
+such data.  Section~\ref{section:threshold.dist.ml} illustrates
+methods for fitting distributions with threshold parameters, showing
+how to avoid potential difficulties.
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Introduction}
+\label{section:other.dist.ml}
+
+The methods presented in Chapter~\ref{chapter:parametric.ml.ls} were
+based on fitting log-location-scale distributions. This chapter
+describes the fitting of some important distributions that are not
+log-location-scale.  For such distributions, things may be nearly as
+simple, but they can also be considerably more complicated.
+
+%----------------------------------------------------------------------
+\subsection{Likelihood for other distributions and models}
+General likelihood principles for fitting distributions and models
+are as described in
+Chapters~\ref{chapter:np.models.censoring.likelihood} and
+\ref{chapter:parametric.ml.one.par}. 
+For most distributions,
+with data consisting of independent observations with exact failures
+and right-censored observations, the standard density-approximation
+form of the likelihood
+\begin{equation}
+\label{equation:general.parametric.den.likelihood}
+\like(\thetavec) = \prod_{i=1}^{n} \like_{i}(\thetavec;\data_{i}) 
+=
+  \prod_{i=1}^{n}    
+ \left [ 
+ f(\realrv_{i};\thetavec)
+\right ]^{\delta_{i}} 
+\left [1- F(\realrv_{i};\thetavec) \right]^{1-\delta_{i}}
+\end{equation}
+works well. Here, as in previous chapters, 
+data$_{i}=(t_{i}, \delta_{i})$,
+\begin{eqnarray*}
+\delta_{i}= \left \{
+     \begin{array}{lll}
+	1 & \quad \mbox{if $t_{i}$ is an exact failure} \\
+        0 & \quad \mbox{if $t_{i}$ is a right censored  observation} \\
+     \end{array}
+            \right .
+\end{eqnarray*}
+and $F(\realrv;\thetavec)$ and
+$f(\realrv;\thetavec)$ are the cdf and pdf, respectively, of the
+specified distribution.
+
+The likelihood can be adapted easily to accommodate left-censored
+and interval-censored observations, as described in
+Chapter~\ref{chapter:np.models.censoring.likelihood}.  As mentioned
+in Section~\ref{section:loglikelihood}, operationally, it is usually
+the log likelihood that is computed as the sum of log likelihoods for
+individual independent observations. As illustrated in
+Section~\ref{section:like.methods}, for some non-location-scale
+distributions (e.g., GETS) the density approximation breaks down and
+one should use instead the actual interval probability or ``correct
+likelihood'' given in
+(\ref{equation:general.parametric.likelihood}).
+
+In some cases, the likelihood function can be poorly behaved and,
+particularly in unfamiliar data/model situations, it is important to
+investigate $\like(\thetavec)$ graphically.  Graphical exploration
+of $\like(\thetavec)$ [or
+$R(\thetavec)=\like(\thetavec)/\like(\thetavechat)$] is simple to do
+when $\thetavec$ has length 1 or 2.  When the length of $\thetavec$
+is 3 or more it is useful to view 1 (and 2) dimensional ``profiles''
+of $\like(\thetavec)$. The needed computations can, however, become
+quite demanding.
+
+\subsection{Confidence intervals for other distributions and models}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+Methods for computing confidence intervals and confidence regions
+can be used in a manner that is similar to that used for
+log-location-scale distributions in
+Chapters~\ref{chapter:parametric.ml.ls}.  Normal-approximation
+confidence intervals (using the delta method and appropriate
+transformations) are simple and are adequate in large samples.  In
+other situations these easy-to-compute intervals provide quick
+analyses, but approximations can be a bit rough. Profile likelihoods
+provide useful insight into the information available about a
+particular parameter or function of a distribution's parameters.
+Confidence limits based on the profile likelihood, as well as
+bootstrap and simulation-based intervals described in
+Chapter~\ref{chapter:bootstrap}, generally provide confidence
+intervals with reasonably good approximations to nominal coverage
+probabilities. The approximations will be adequate even with
+moderately small samples (say samples large enough to yield at least
+10 to 15 failures).  Such intervals will, however, require more
+computer time (and may not be available in commercial software).
+
+\section{Fitting the Gamma Distribution}
+\label{section:gamma.mle}
+The gamma distribution, introduced in
+Section~\ref{section:gamma.distribution}, is
+a commonly used failure-time distribution.  The gamma
+distribution likelihood is obtained by substituting
+(\ref{equation:gamma.pdf}) and (\ref{equation:gamma.cdf}) into
+(\ref{equation:general.parametric.den.likelihood}).  For given
+$\DATA$, the likelihood is a function of the scale parameter $\theta$
+and the shape parameter $\gammashape$.
+
+
+\begin{example}
+\label{example:lzbearing.gamma}
+{\bf Gamma distribution fit to the ball bearing fatigue data.}  This
+example uses the ball bearing data from
+Example~\ref{example:ball.bearing.data}.
+Figure~\ref{figure:bearing.gamma.gmleprobplot.ps} shows a lognormal
+probability plot of the bearing failure data, comparing ML estimates
+of the gamma, lognormal, and Weibull distributions.  The gamma ML
+estimates are $\thetahat=17.94$ and $\gammashapehat=4.025$.
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/bearing.gamma.gmleprobplot.ps}
+\caption{Lognormal probability plot of the ball bearing failure data, 
+comparing gamma, lognormal, and Weibull ML estimates.  Approximate
+95\% pointwise confidence intervals for the gamma $F(t)$ are also
+shown.}
+\label{figure:bearing.gamma.gmleprobplot.ps}
+\end{figure}
+%----------------------------------------------------------------------
+%splus Orig-Parameters:
+%splus  theta kappa 
+%splus  17.94 4.025
+Figure~\ref{figure:bearing.gamma.gmleprobplot.ps} also
+shows approximate 95\% pointwise confidence intervals for $F(t)$,
+based on the gamma ML estimates. The gamma distribution fits well.
+Within the range of the data, however, there is very little difference
+among these three different distributions.
+\end{example}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Fitting the Extended Generalized Gamma Distribution}
+\label{section:ml.gen.gamma}
+The extended generalized gamma (EGENG) distribution, introduced in
+Section~\ref{section:gng.distribution}, includes the gamma,
+generalized gamma, Weibull, exponential, and lognormal distributions
+as special cases.  As such, it provides a flexible distribution
+structure for modeling data and comparing among these widely-used
+distributions. The EGENG distribution likelihood is obtained by
+substituting (\ref{equation:egeng.pdf}) and
+(\ref{equation:egeng.cdf}) into
+(\ref{equation:general.parametric.den.likelihood}).  For given
+$\DATA$, the likelihood is a function of the parameters $\mu$, $\sigma$, and
+$\egengshape$.
+
+\begin{example}
+{\bf EGENG distribution fit to the ball bearing fatigue data.}
+This example uses the ball bearing data from
+Examples~\ref{example:ball.bearing.data} and
+\ref{example:lzbearing.gamma}.
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/bearing.egeng.gmleprobplot.ps}
+\caption{Weibull probability plot of the bearing
+failure data showing the exponential, Weibull, lognormal, and EGENG
+ML estimates of $F(t)$.}
+\label{figure:bearing.egeng.gmleprobplot.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Figure~\ref{figure:bearing.egeng.gmleprobplot.ps} is a Weibull
+probability plot of the bearing failure data showing exponential,
+Weibull, lognormal, and EGENG ML estimates of $F(t)$.  The EGENG ML
+estimates are $\muhat=4.23$, $\sigmahat=.51$, and $\egengshapehat=.3076$.
+Figure~\ref{figure:bearing.egeng.gmleprobplot.ps} illustrates that the EGENG
+distribution provides a compromise between the lognormal and Weibull
+distributions.
+%splus Orig-Parameters:
+%splus    mu sigma  delta 
+%splus  4.23  0.51 0.3076
+Figure~\ref{figure:bearing.egeng.delta.profile.ps}
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/bearing.egeng.delta.profile.ps}
+\caption{Profile likelihood plot for the EGENG shape parameter
+$\egengshape$ for the bearing
+failure data. The Weibull and lognormal distributions are shown as special
+cases.}
+\label{figure:bearing.egeng.delta.profile.ps}
+\end{figure}
+%----------------------------------------------------------------------
+is a profile likelihood plot for the EGENG shape parameter
+$\egengshape$ for the bearing failure data. The Weibull and lognormal
+distributions are shown as special cases. This figure shows that the
+lognormal relative likelihood is slightly higher than the Weibull.
+The data, however, do not indicate a strong preference for one or the
+other of these distributions.
+\end{example}
+
+The previous example illustrated the fitting of the EGENG distribution
+to a moderate-size sample with {\em no} censoring.  The EGENG
+distribution can also be fit to censored data, but the fitting can be
+more delicate because of difficulty statistically separating the three
+different parameters in (\ref{equation:egeng.cdf}).  Using a robust
+optimization algorithm and/or a reparameterization to stable
+parameters will, however, allow this distribution to be fit to
+censored data, even with very heavy censoring (see the comments in the
+bibliographic notes at the end of this chapter).
+
+\begin{example}
+{\bf EGENG distribution fit to the fan data.}
+This example fits the EGENG distribution to the fan data from
+Example~\ref{example:fan.data}.  
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/fan.egeng.gmleprobplot.ps}
+\caption{Lognormal probability plot of the fan
+failure data showing EGENG ML estimates and corresponding 95\% pointwise 
+confidence intervals for $F(t)$. Exponential, Weibull, and
+lognormal ML estimates of $F(t)$ are also shown.}
+\label{figure:fan.egeng.gmleprobplot.ps}
+\end{figure}
+%----------------------------------------------------------------------
+During the period of observation there were 12 failures
+out of 70 units.  Due to multiple censoring, however, the
+nonparametric estimate extends to .29. 
+Figure~\ref{figure:fan.egeng.gmleprobplot.ps} shows a lognormal
+probability plot of the fan failure data showing EGENG ML estimates
+and corresponding 95\% pointwise confidence intervals for $F(t)$. 
+%splus Orig-Parameters:
+%splus     mu sigma  delta 
+%splus  9.332 2.375 -1.764 
+The EGENG ML estimates are $\muhat=9.332$, $\sigmahat=2.375$, and
+$\egengshapehat=-1.764$.  The pointwise confidence intervals for the
+EGENG $F(t)$ become extremely wide outside the range of the data.
+Exponential, Weibull, and lognormal ML estimates of $F(t)$ are also
+shown.  These distributions,
+and especially the lognormal distribution, also fit the data
+reasonably well. Note that the EGENG departs quite strongly from the
+other
+distributions outside the range of the data.
+Except for missing the first point,
+the EGENG estimate also goes well with the nonparametric
+estimate. To assess the strength
+of the evidence in the data for choosing among these distributions,
+consider the profile likelihood plot for EGENG $\egengshape$ for the
+fan failure data in Figure~\ref{figure:fan.egeng.delta.profile.ps}.
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/fan.egeng.delta.profile.ps}
+\caption{Profile likelihood plot for the EGENG shape parameter
+$\egengshape$ for the fan
+failure data showing the Weibull and lognormal distributions as special
+cases.}
+\label{figure:fan.egeng.delta.profile.ps}
+\end{figure}
+%----------------------------------------------------------------------
+The EGENG has a larger likelihood than the other distributions, but the
+difference is statistically unimportant (the approximate 95\%
+likelihood-based confidence interval endpoints for $\egengshape$
+ranges from something less than $-8$ to something greater than 2, as
+shown in Figure~\ref{figure:fan.egeng.delta.profile.ps}). Because of
+the small number of failures, fitting a
+three-parameter distribution to these data could be considered to be
+``overfitting.''  Generally one should use the simplest model that
+provides an adequate fit to the data. Overfitting such as this,
+however, is useful to help demonstrate uncertainty 
+in distribution choice when
+the decision is to be based on data alone.
+\end{example}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Fitting the BISA and IGAU Distributions}
+\label{section:bisa.igau.fit}
+Fitting the Birnbaum-Saunders (BISA) or the inverse-Gaussian (IGAU)
+distributions is very similar to fitting the gamma distribution (all
+of these distributions have one scale and one shape parameter). The
+likelihood function for the BISA and IGAU distributions can be
+obtained by substituting the corresponding pdf and cdf from
+Sections~\ref{section:igau.pdfcdf} or \ref{section:bisa.pdfcdf} into
+(\ref{equation:general.parametric.den.likelihood}).  As described in
+Section~\ref{section:bias.properties}, the BISA and IGAU
+distributions were motivated by particular degradation models.
+
+\begin{example}
+\label{example:bkfat10.bisa.igau}
+{\bf BISA and IGAU distributions fit to fatigue-fracture data.}
+Yokobori~(1951) describes a fatigue-fracture test on .41\% carbon
+steel cylindrical specimens, tested at $\pm 37.1 \mbox{kg/mm}^2$ stress
+amplitude.  The data are given on page 224-225 of Bogdanoff and Kozin
+(1985). Figure~\ref{figure:bkfat10.cf.ln.bisa.igau.gmleprobplot.ps} is
+a lognormal probability plot of Yokobori's fatigue failure data.
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/bkfat10.cf.ln.bisa.igau.gmleprobplot.ps}
+\caption{Lognormal probability plot of 
+Yokobori's fatigue failure data showing lognormal, BISA, and IGAU
+distribution ML estimates.}
+\label{figure:bkfat10.cf.ln.bisa.igau.gmleprobplot.ps}
+\end{figure}
+%----------------------------------------------------------------------
+The plot also shows ML estimates of $F(t)$ for the lognormal, BISA, and IGAU
+distributions. 
+%splus bisa Orig-Parameters:
+%splus     theta     beta 
+%splus  109.2444 1.129053
+%splus igau Orig-Parameters:
+%splus     theta      beta 
+%splus  179.9206 0.5949112
+%splus 
+%splus ML Estimates for lognormal
+%splus            MLE         se  t.ratio 95% lower 95% upper 
+%splus   mu 4.721612 0.12920139 36.54460 4.4683824  4.974843
+%splus sigma 1.025504 0.09135918 11.22497 0.8612047  1.221149
+The ML estimates for the BISA distribution are $\thetahat=109.24$ and
+$\betahat=1.129$. The ML estimates for the IGAU distribution are
+$\thetahat=179.9$ and $\betahat=.595$. The ML estimates for the
+lognormal distribution are $\muhat=4.72$ and $\sigmahat=1.026$.
+The closeness of the $F(t)$ estimates
+from these three different distributions in
+Figure~\ref{figure:bkfat10.cf.ln.bisa.igau.gmleprobplot.ps} is
+striking.  This is not too surprising, given the correspondence
+between the hazard shapes that can be seen in
+Figures~\ref{figure:distplot.lnor.ps}, \ref{figure:distplot.igau.ps},
+and \ref{figure:distplot.bisa.ps}.
+\end{example}
+
+Figure~\ref{figure:bisa.ln.cf.ps} is a plot of cdfs of the BISA
+distribution with $\theta=1$ and different shape parameters on lognormal 
+probability paper.
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/bisa.ln.cf.ps}
+\caption{Comparison of BISA cdfs on lognormal probability paper.}
+\label{figure:bisa.ln.cf.ps}
+\end{figure}
+%----------------------------------------------------------------------
+The approximate linearity of the cdfs, especially for small $\beta$
+(small coefficient of variation) suggests that the lognormal and
+BISA distributions will often give very similar results in the
+center of the distribution.  It was noted in
+Section~\ref{section:lognormal.distribution.def} that the lognormal
+distribution is widely used to describe time to fracture from
+fatigue crack growth in metals.  The similarity of the lognormal and
+BISA distributions and the fatigue-fracture justification for the
+BISA distribution (see Section~\ref{section:bisa.dist}) suggest why
+the lognormal distribution has been found to be a useful model for
+fatigue-fracture data.  Figure~\ref{figure:bisa.ln.cf.ps} indicates
+that the lognormal distribution, when used to extrapolate into the
+lower tail of a distribution, will give more conservative (i.e.,
+smaller) estimates of distribution quantiles. Such extrapolation is
+common, for example, when it is desired to estimate $t_{.001}$ on
+the basis of tests on 300 specimens.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Fitting a Limited Failure Population Model}
+\label{section:using.the.lfp.model}
+
+%----------------------------------------------------------------------
+\subsection{Example and data}
+\begin{example}
+\label{example:lfp.ic.data}
+{\bf The IC failure time data.}
+We now return to the IC failure-time data 
+from Example~\ref{example:lfp.data}, given in Table~\ref{table:lfp.data}.
+Figure~\ref{figure:lfp.probability.plot.ps} is a Weibull probability
+plot of the right-censored failure data. The last failure occurred at
+593 hours and the test was stopped at 1370 hours.  We see that the
+points on the probability plot are leveling off, apparently to
+something less than 1\% failing.  The failures were caused by
+manufacturing defects that could not be detected without a life test.
+The reliability engineers responsible for this product wanted to
+estimate $p$, the proportion of defects being manufactured by the
+process, in its current state. Moreover, they were attempting to
+make improvements to the process and wondered if informative life tests
+could, in the future, be run without waiting so long.
+\end{example}
+
+%-------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/lfp.probability.plot.ps}
+\caption{A Weibull probability plot of integrated circuit failure time
+data with ML estimates of the Weibull/LFP model after 1370 hours and
+after 100 hours of testing.  The asymptotes for the ML fits in the
+plot correspond to the ML estimates for $p$, the proportion in the
+process susceptible to failure.}
+\label{figure:lfp.probability.plot.ps}
+\end{figure}
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+\subsection{The limited failure population model}
+\label{section:lfp.model}
+The Limited Failure Population (LFP) model has a proportion $p$ of
+units from a population or process that is defective and will fail
+according to a distribution $F(\realrv;\mu,\sigma)$; the remaining
+proportion $(1-p)$ will never fail.  This model has been found to be
+useful for modeling the reliability of integrated circuit infant
+mortality. Its use will be illustrated with the IC life test data
+from Example~\ref{example:lfp.ic.data}. If $F(\realrv;\mu,\sigma)$
+is Weibull, then the LFP failure-time model is
+\begin{equation}
+\label{equation:lfp.cdf}
+\Pr(\rv \leq \realrv) = G(\realrv;\mu,\sigma,p) = pF(\realrv;\mu,\sigma)
+= p \Phi_{\sev}\left[\frac{ \log(\realrv) - \mu}{\sigma}
+\right].
+\end{equation}
+Note that as $\realrv \rightarrow \infty$, $G(\realrv) \rightarrow p$. The 
+lognormal LFP model is obtained by using  $\Phi_{\nor}$
+instead of $\Phi_{\sev}$ in (\ref{equation:lfp.cdf}).
+
+
+%----------------------------------------------------------------------
+\subsection{The likelihood function and its maximum}
+
+The likelihood function for the Weibull LFP model is
+\begin{equation}
+\like(\mu,\sigma,p)=  \prod_{i=1}^{n}
+\left\{ \frac{p}{t_{i}\sigma} \phi_{\sev}
+\left[\frac{ \log(\realrv_{i}) -\mu}{\sigma}
+\right]
+\right\}^{\delta_{i}}
+ \left\{ 1-p \Phi_{\sev}\left[\frac{ \log(\realrv_{i}) -\mu}{\sigma}
+\right] \right\}^{1-\delta_{i}}
+\label{equation:lfp.likelihood}
+\end{equation}
+where the notation is similar to that used in
+Section~\ref{section:likelihood.for.locscale}.  In some situations it
+will be difficult to estimate the parameters of this model. In
+particular if the censoring time is before the nonparametric estimate
+of $G(\realrv;\mu,\sigma,p)$ begins to level off, one cannot tell the
+difference between a population with $p=1$ in which defective units
+fail slowly and a population with small $p$ in which defective units
+fail rapidly.
+
+\begin{example}
+{\bf Comparison of IC failure time data analyzed at 100 and at 1370 hours.}
+Table \ref{table:lfp.results} summarizes and compares
+the results of the analyses for the data that were available at 1370
+hours and the data that would have been available after only 100
+hours.  Figure~\ref{figure:lfp.probability.plot.ps} shows the ML
+estimates and 95\% pointwise normal-approximation confidence intervals
+for $G(\realrv)$.  As might be expected, there is close agreement
+until approximately 100 hours, when the estimates of $G(\realrv)$
+begin to differ importantly. The upper bounds of the pointwise
+normal-approximation confidence intervals for $G(\realrv)$ are larger
+for $\realrv > 100$.  As suggested below, however, similar confidence
+intervals for the 100-hour data, computed with the likelihood-based
+method, would be {\em much} wider.
+
+The nonparametric estimate of $G(\realrv;\mu,\sigma,p)$ in
+Figure~\ref{figure:lfp.probability.plot.ps} (i.e., the plotted
+points) portends the LFP model estimation difficulties with the
+100-hour data. Note that the curvature in the Weibull probability
+plot becomes much more pronounced after 100 hours.
+\end{example}
+%-------------------------------------------------------------------
+\begin{table}
+\caption{Comparison of LFP model integrated circuit failure
+data analyses.}
+\centering\small
+\begin{tabular}{*{4}{r}}
+\hline
+\multicolumn{2} {c} {}&
+\multicolumn{2} {c} {Analysis with Test Run Until} \\
+\multicolumn{2} {c} {}&
+\multicolumn{1} {c} {1370 Hours}&
+\multicolumn{1} {c} {100 Hours} \\
+\cline{3-4}\\
+\multicolumn{1} {c} {ML Estimate $\muhat$}
+&&  3.34 &  4.05\\[1ex]
+\multicolumn{1} {c} {Standard Error $ \sehat_{\muhat}$}
+&&  .41 & 1.70 \\[1ex]
+\multicolumn{1} {l} {95\% Confidence Intervals}
+&&& \\
+\multicolumn{1} {l} {for $\mu$ based on:}
+&&& \\
+\multicolumn{1} {l} {\hspace{1em} the Likelihood}
+&& [2.50, 4.20] & [2.43, 24.99]  \\
+\multicolumn{1} {l} {\hspace{1em}
+        $Z_{\muhat} \approxdist \NOR(0,1)$ }
+&& [2.55, 4.12] & [.72, 7.38]  \\[2ex]
+\multicolumn{1} {c} {ML Estimate $\sigmahat$}
+&& 2.02 & 2.12 \\[1ex]
+\multicolumn{1} {c} {Standard Error $ \sehat_{\sigmahat}$}
+&& .31 & .55 \\[1ex]
+\multicolumn{1} {l} {95\% Confidence Intervals}
+&&& \\
+\multicolumn{1} {l} {for $\sigma$ based on:}
+&&& \\
+\multicolumn{1} {l} {\hspace{1em} the Likelihood}
+&& [1.53, 2.82] & [1.40, 3.96]  \\
+\multicolumn{1} {l} {\hspace{1em}
+        $Z_{\log(\sigmahat)} \approxdist \NOR(0,1)$ }
+&& [1.50, 2.71] & [1.28, 3.51]  \\
+\multicolumn{1} {l} {\hspace{1em}
+        $Z_{\sigmahat} \approxdist \NOR(0,1)$ }
+&& [1.42, 2.62] & [1.05, 3.19]  \\[2ex]
+\multicolumn{1} {c} {ML Estimate $\phat$}
+&& .00674 & .00827 \\[1ex]
+\multicolumn{1} {c} {Standard Error $ \sehat_{\phat}$}
+&& .00127 & .00380 \\[1ex]
+\multicolumn{1} {l} {95\% Confidence Intervals}
+&&& \\
+\multicolumn{1} {l} {for $p$ based on:}
+&&& \\
+\multicolumn{1} {l} {\hspace{1em} the Likelihood}
+&& [.00455, .00955] & [.00463, 1.0000]  \\
+\multicolumn{1} {l} {\hspace{1em}
+        $Z_{\logit(\phat)} \approxdist \NOR(0,1)$ }
+&& [.00466, .00975] & [.0033, .0203]  \\
+\multicolumn{1} {l} {\hspace{1em}
+        $Z_{\phat} \approxdist \NOR(0,1)$ }
+&& [.00426, .00923] & [.00081, .0157]  \\
+\hline
+\end{tabular}
+\label{table:lfp.results}
+\end{table}
+%-------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------
+\subsection{Profile likelihood functions and likelihood-based
+confidence intervals for $\mu$, $\sigma$, and $p$}
+\label{section:lfp.ci}
+\begin{example}
+{\bf Likelihood-based confidence intervals for the IC data.}  Table
+\ref{table:lfp.results} gives numerical values for the
+likelihood-based confidence intervals for $\mu, \sigma$, and $p$
+based on these and other profiles (not shown here). The table also
+gives confidence intervals based on the normal
+approximation. Figure~\ref{figure:lfp.psigma.conf.contour.ps} shows
+approximate joint confidence regions for $p$ and $\sigma$ based on a
+two-dimensional profile likelihood for $p$ and $\sigma$ for the
+100-hour data. Figure~\ref{figure:lfp.p.profile.comparison.ps}
+provides a comparison of the one-dimensional profiles for $p$ for
+the 1370 and the 100-hour data.  The results of this comparison show
+that for the 1370-hour data, the log likelihood is approximately
+quadratic and the different methods of computing confidence
+intervals give similar results.  For the 100-hour data, however, the
+situation is quite different.  In particular, the leveling off of
+the 100-hour profile likelihood for $p$ tells us that the data
+available after 100 hours could reasonably have come from a
+population with $p=1$. That is, the 100-hour data do not allow us to
+clearly distinguish between a situation where there are many
+defectives failing slowly and a situation with just a few defectives
+failing rapidly.  The 1370-hour data, however, allow us to say with
+a high degree of confidence, that $p$ is small.
+
+For the 100-hour data, the likelihood and normal-approximation
+confidence intervals for $p$ are vastly different.
+This is because the log likelihood is not well approximated
+by a quadratic function over the range of the
+confidence interval. The approximate confidence intervals based 
+on the likelihood can be expected to provide coverage probabilities
+closer to the nominal values.
+\end{example} 
+
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/lfp.psigma.conf.contour.ps}
+\caption{Approximate joint confidence
+regions for  the LFP parameters $p$ and $\sigma$ based on
+a two-dimensional profile likelihood after 100 hours of testing.}
+\label{figure:lfp.psigma.conf.contour.ps}
+\end{figure}
+%-------------------------------------------------------------------
+
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/lfp.p.profile.comparison.ps}
+\caption{Comparison of profile 
+likelihoods for $p$, the LFP proportion
+defective after 1370 and 100 hours of testing.}
+\label{figure:lfp.p.profile.comparison.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Truncated Data and Truncated Distributions}
+\label{section:truncated.data}
+
+It is important to distinguish between truncated data and censored
+data.  They are sometimes confused. Censoring occurs when there is a
+bound on an observation (lower bound for observations censored on the
+right, upper bound for observations censored on the left, and both
+upper and lower bounds for observations that are interval censored).
+Truncation, however, arises when even the {\em existence} of a
+potential observation would be unknown if its value were to lie in a
+certain range. Usually, truncation occurs to the left of a specified
+point $\tau^{L}$ or to the right of a specified point $\tau^{U}$.
+
+
+%-------------------------------------------------------------------
+\subsection{Examples of left truncation}
+
+\begin{example}
+\label{example:ut.trun}
+{\bf Ultrasonic inspection of material.} Ultrasonic inspection is
+used to detect flaws in titanium alloys during several stages of
+manufacturing of jet engine turbine disks.  Undetected flaws in such
+parts could cause early initiation of a fatigue crack and thus
+increase the risk of failure.  Ultrasonic signal amplitude is
+generally positively correlated with flaw size. Thus the
+distribution of signal amplitudes reflected from flaws provides
+information on the distribution of flaw sizes. Titanium is a
+``noisy'' material.  Titanium grain-boundaries reflect about as well
+as small flaws.  Thus below a specified threshold $\tau^{L}$, it is
+impossible to be sure whether a signal is from a flaw or a grain
+boundary.  Suppose that interest centers on the distribution of
+signal strengths (including signals below $\tau^{L}$ that would be
+observed in the absence of material noise). Consider the following
+two possibilities.
+
+\begin{itemize}
+\item
+In a laboratory test of the inspection process, specimens with
+seeded flaws of known size are inspected. In this case when a
+reading is taken, it is known that a flaw is present. The signal's
+amplitude is, however, measured only when the amplitude is above the
+threshold $\tau^{L}$.  In some applications, $\tau^{L}$ will change
+from time to time (depending on the local material noise level), but
+generally the value $\tau^{L}$ can be recorded. Then the number of
+signals that were below $\tau^{L}$ is known, and these are
+left-censored observations.
+\item
+In an operating inspection process, a flaw is not detected when the
+signal's amplitude lies below the threshold $\tau^{L}$. Then we
+observe only the signals that are greater than $\tau^{L}$ in
+amplitude. The number of flaws that were present with signals below
+$\tau^{L}$ is unknown.  The observations recorded as being above
+$\tau^{L}$ are known as left-truncated observations, or observations
+from a left-truncated distribution (in the case where $\tau^{L}$ is
+the same for all readings).
+\end{itemize}
+\end{example}
+
+
+If all units below $\tau^{L}$ in a population or process are screened
+out before observation, the remaining data are from a
+``left-truncated'' distribution.  Depending on the application,
+interest could center on either the original untruncated distribution
+or on the truncated distribution.  For most problems the additional
+information provided by the proportion of observations truncated
+(either in the population or the sample) would lead to censoring
+instead of truncation and importantly improve estimation precision of
+the original (unconditional) distribution's parameters.
+
+
+\begin{example}
+\label{example:pretest.and.left.trun}
+{\bf Life data with pre-test screening.}
+Table~\ref{table:cirpack.track.data}, described in
+Example~\ref{example:electronic.subsystem.data}, gives the number of
+observed failures from a field-tracking study of circuit packs.  The
+Vendor 2 units had already seen 1000 hours of burn-in testing at the
+manufacturing plant, but no information was available on the number of
+units that had failed in that test. Thus the Vendor 2 circuit packs
+are left-truncated.
+If the number of circuit packs that failed in the burn-in period
+were known, then the data could be treated as censored.
+\end{example}
+
+\begin{example}
+\label{example:brake.pad.trun}
+{\bf Distribution of brake pad life from observational data.}
+Kalbfleisch and Lawless (1992) give data on brake pad life from a
+study of automobiles. For each automobile in the study (where $i$ is
+used to index the individual automobiles), the number of kilometers
+($v_{i}$) driven and a wear measurement ($w_{i}$) were taken at a
+point in time when the automobiles were being serviced (for
+something other than brake problems). The wear measurement is such
+that $w_{i}=0$ represents no wear and $w_{i}=1$ is the level of
+brake wear that requires replacement of the pads. Suppose, for a
+given automobile, that wear is proportional to accumulated driven
+kilometers, which suggests a brake pad life estimate of
+$t_{i}=v_{i}/w_{i}$.  The important assumption being used here is
+that the main source of variability in brake pad life is the
+automobile-to-automobile variability in the $t_{i}$ values and that
+failure time could be predicted accurately from these observed
+ratios. Automobiles that had previously had brake pads replaced were
+not included in the study. For this reason, high-wear-rate
+automobiles are under-represented in the study. To correct for this,
+Kalbfleisch and Lawless treat the life prediction $t_{i}$ as
+left-truncated at $\tau^{L}_{i}=v_{i}$, the number of kilometers of
+service at the time of the prediction. The idea is that if the wear
+rate had been high enough to cause failure before the regularly
+scheduled service call at $\tau_{i}^{L}$, the automobile would not
+have been included in the study.
+\end{example}
+
+
+
+\subsection{Likelihood with left truncation}
+\label{section:likemeth.le}
+Following the general development in
+Section~\ref{section:general.likelihood.terms}, if a random variable
+$\rv_{i}$ is truncated on the left at $\tau^{L}_{i}$, then the
+likelihood (probability) of an observation in the interval
+$(\realrv^{L}_{i}, \realrv_{i}]$ is the conditional probability
+\begin{displaymath}
+\like_{i}(\thetavec)=\Pr(\realrv^{L}_{i} <  \rv_{i} \leq \realrv_{i} |
+\rv_{i} > \tau^{L}_{i}) =
+\frac{F(\realrv_{i};\thetavec)-F(\realrv^{L}_{i};\thetavec)}
+{1-F(\tau^{L}_{i};\thetavec)},\quad \realrv_{i} > \realrv_{i}^{L} \geq \tau_{i}^{L}.
+\end{displaymath}
+For an observation reported as an exact failure at time $t_{i}$, the
+corresponding density approximation form of the likelihood is
+\begin{equation}
+\label{equation:trun.den.like}
+\like_{i}(\thetavec)=
+\frac{f(\realrv_{i};\thetavec)}
+{1-F(\tau^{L}_{i};\thetavec)}, \quad \realrv_{i} > \tau^{L}_{i}.
+\end{equation}
+It is possible to have either right or left censoring when sampling
+from a left truncated distribution. The recorded censoring time will
+exceed $\tau_{i}^{L}$.  As in
+Table~\ref{table:general.likelihood.terms}, to obtain
+$\like_{i}(\thetavec)$ for a censored observation, one simply replaces
+the numerator in (\ref{equation:trun.den.like}) by
+$F(\realrv_{i};\thetavec)-F(\tau^{L}_{i};\thetavec)$ for an observation that is left censored at
+$\realrv_{i} > \tau^{L}_{i}$ and by $1-F(\realrv_{i};\thetavec)$ for an observation
+that is right censored at $\realrv_{i} > \tau^{L}_{i} $.
+
+\subsection{Nonparametric estimation with left truncation}
+\label{section:cond.left.trun.prob}
+Section~\ref{section:arbitrary.censoring} presents a general method,
+due to Turnbull~(1976), for nonparametric estimation that can be
+extended to the analysis of arbitrarily censored and truncated data.
+When there is left truncation, Turnbull's method
+provides a nonparametric estimate of
+conditional distribution
+\begin{equation}
+\label{equation:cond.left.trun.prob}
+F_{C}(t) = \Pr( \rv \leq \realrv |\rv > \tau^{L}_{\min}) =
+       \frac{\Pr(\tau^{L}_{\min} < \rv \leq \realrv)}{\Pr( \rv >
+       \tau^{L}_{\min} ) } = \frac{F(\realrv) -F(\tau^{L}_{\min})
+       }{1-F(\tau^{L}_{\min})},\quad \realrv > \tau^{L}_{\min}
+\end{equation}
+where $\tau^{L}_{\min}$ is the smallest left truncation time in the
+sample.  Without a parametric assumption, the data contain no
+information about $F(t)$ below $\tau^{L}_{\min}$.
+
+For purposes of probability plotting to assess the adequacy of a
+parametric assumption for $F(\realrv;\thetavec)$, one must have,
+instead, an estimate of the unconditional distribution of $\rv$.  In
+this case we use a parametric model to estimate $\Pr( \rv >
+\tau^{L}_{\min} )$ and then compute a parametrically-adjusted
+nonparametric estimate of $F(\realrv)$. Let $\Fhat_{NPC}(t)$ denote
+the nonparametric estimate of the conditional distribution
+$F_{C}(t)$. Then a parametrically-adjusted unconditional
+nonparametric estimate of $F(\realrv)$ will be denoted by
+$\Fhat_{NPU}(t)$.  This estimate is obtained by substituting
+$\Fhat_{NPC}(t)$ for $F_{C}(t)$ and
+$F(\tau^{L}_{\min};\thetavechat)$ for $F(\tau^{L}_{\min})$ in
+(\ref{equation:cond.left.trun.prob}) and solving for $F(\realrv)$.
+This gives
+\begin{equation}
+\label{equation:uncond.left.trun.prob}
+\Fhat_{NPU}(t) = F(\tau^{L}_{\min};\thetavechat) +  
+	\Fhat_{NPC}(t)[1 - F(\tau^{L}_{\min};\thetavechat) ] , \quad
+\realrv > \tau^{L}_{\min}
+\end{equation}
+where $\thetavechat$ is a parametric estimate of the parameters in
+$F(\realrv;\thetavec)$.
+
+\subsection{ML estimation with left truncated data}
+\begin{example}
+\label{example:pretest.mle}
+{\bf Analysis of life data with pre-test screening.} As described in
+Example~\ref{example:pretest.and.left.trun}, because they had already
+seen 1000 hours of burn-in testing, the Vendor 2 data in
+Table~\ref{table:cirpack.track.data} are left truncated at 1000 hours.
+Figures~\ref{figure:cirpak6.cfmleprobplot.lnor.weib.ps} is a lognormal
+probability plot of the Vendor 2 failure data,
+parametrically-adjusted with a lognormal ML fit to the data.
+The plot also shows the lognormal (straight line) and Weibull (curved
+line) ML estimates, and approximate 95\% pointwise lognormal
+confidence intervals.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/cirpak6.cfmleprobplot.lnor.weib.ps}
+\caption{Parametrically-adjusted lognormal probability plot of Vendor 2 
+circuit pack data comparing Weibull and lognormal ML estimates.}
+\label{figure:cirpak6.cfmleprobplot.lnor.weib.ps}
+\end{figure}
+%-------------------------------------------------------------------
+In this example, the estimated proportion truncated on the left of
+1000 hours appears to be (through parametric estimation) very
+small [$\Fhat(1000) = .95\times 10^{-5}$ for the lognormal and
+$.38\times 10^{-4}$ for the Weibull distribution] and so the
+parametric adjustment to the nonparametric estimate used in making the
+probability plot was extremely small. If the failure mode before 1000
+hours was different than that after 1000 hours, however, this kind of
+extrapolation into the lower tail of the distribution would give a
+misleading view of what happened up to 1000 hours (analysis of the
+Vendor 1 data described in Exercise~\ref{exercise:vendor1.trun} and
+Section~\ref{section:crisk.mixture.model} suggests that there well
+might have been such a change). In any case, the available data can be
+used to estimate failure probabilities beyond 1000 hours, conditional
+on the burn-in test results.
+
+For extrapolation beyond the range of the data, the lognormal
+distribution gives much more optimistic (i.e., lower) estimates of
+failure probabilities than the Weibull distribution. This
+lognormal/Weibull contrast is common, and leads to the
+question``which distribution is most appropriate for
+extrapolation?''  The data have little to say about differentiating
+between these two distributions. If there is an answer to the
+question it would be in knowledge about the physics of failure for
+the observed failure mode(s). In the absence of such knowledge,
+reported uncertainty would have to encompass not only the sampling
+variability quantified in the confidence intervals, but also the
+distribution uncertainty.  As illustrated in
+Section~\ref{section:ml.gen.gamma}, fitting the extended generalized
+gamma will help to quantify and illustrate such distributional
+uncertainty.
+\end{example}
+
+
+\subsection{Examples of right truncation}
+Right truncation is similar to left truncation, and occurs when the
+values in the upper tail of the distribution are removed. 
+ 
+\begin{example}
+\label{example:Inspection of castings to improve reliability.}
+{\bf Screening out units with large flaws.} Degree of porosity is an
+important quality metric in casting processes. The distribution of
+pore sizes is closely related to the failure time of a component
+in a particular application. If large pores or other voids occur
+inside a casting, fatigue cracks will initiate more rapidly, leading
+to premature failure.  In a particular manufacturing process, castings
+for automobile engine mounts are inspected by x-ray to make sure that
+there are no large internal voids or pores.  Pores larger than 10
+microns can be detected with high probability. The casting process 
+output has a
+distribution of pore sizes. The inspection process truncates off the
+upper tail of the pore-size distribution (i.e., units containing
+pores greater than 10 microns are eliminated). Thus the distribution of
+pore size in units passing inspection could be described by a
+right-truncated distribution.
+\end{example}
+
+
+\begin{example}
+\label{example:warranty.and.right.trun}
+{\bf Warranty data with limited information for unfailed units.} A
+particular home appliance, after purchase, is either used regularly or
+not at all. The percentage of units actually put into regular use is
+unknown. During a particular production period, an incorrect component
+(i.e., one that did not have the specified power rating) was installed
+in all of the units that were produced. When failures occur among
+these regularly-used units, the units are returned to the manufacturer
+for repair or replacement under a long-term warranty program. The manufacturer
+learns about failures from this group of units only if the unit is
+actually put into service and if the unit fails before the analysis
+time.  In this case, the observed failure times can be viewed as a
+sample from a distribution right truncated at a time equal to the difference
+between the time of analysis and the time at which the unit was put
+into service.
+\end{example}
+
+
+\begin{example}
+\label{example:lfp.trunc}
+{\bf Limited failure population data.} Similar to the situation in
+Example~\ref{example:warranty.and.right.trun}, the 28 IC failure times
+in Example~\ref{example:lfp.ic.data} can be viewed as a sample from a
+distribution right truncated at $\tau^{U}=\censortime=1370$ hours.
+Intuitively this is because, although 4156 ICs were tested, the number
+of potential susceptible units in the population was unknown.
+Susceptible units become known as such only if they failed within the
+1370-hour long life test.
+Exercise~\ref{exercise:lfp.factor.likelihood} provides technical
+justification for this.
+\end{example}
+
+As shown in the analysis of the LFP data in
+Section~\ref{section:using.the.lfp.model} it will be impossible to
+estimate the unconditional failure-time distribution from
+right-truncated data unless a parametric form is specified for the
+distribution. Even with a specified failure-time distribution, there
+are serious estimability problems (leading to wide confidence
+intervals on quantities of interest) unless the proportion truncated
+is very small (say less than 5\%). This problem is also described in
+Kalbfleisch and Lawless~(1988).
+
+%-------------------------------------------------------------------
+\subsection{Likelihood with right (and left) truncation}
+
+If the random variable $\rv_{i}$ is truncated when it lies above
+$\tau^{U}_{i}$ then the likelihood (probability) of an interval
+observation is
+\begin{displaymath}
+\like_{i}(\thetavec)=\Pr(\realrv^{L}_{i} < \rv_{i} 
+\leq \realrv_{i}|\rv_{i} \leq
+\tau^{U}_{i}) =
+\frac{F(\realrv_{i};\thetavec)-F(\realrv^{L}_{i};\thetavec)}
+{F(\tau^{U}_{i};\thetavec)}, \quad 0 \leq \realrv_{i}^{L} < 
+\realrv_{i} \leq \tau_{i}^{U}.
+\end{displaymath}
+For an observation reported as an exact failure at time $t_{i}$, the
+corresponding density-approximation form of the likelihood is
+\begin{displaymath}
+\like_{i}(\thetavec)=
+\frac{f(\realrv_{i};\thetavec)}
+{F(\tau^{U}_{i};\thetavec)}.
+\end{displaymath}
+As with left truncation, it is possible to have either left or right
+censoring when sampling from the right truncated distribution.
+With both left and right truncation, the appropriate likelihood for an
+interval-censored observation is
+\begin{displaymath}
+\like_{i}(\thetavec) = \Pr(\realrv^{L}_{i} <  \rv_{i} 
+\leq \realrv_{i}|\tau^{L} \leq \rv < \tau^{U}) =
+\frac{F(\realrv_{i};\thetavec)-F(\realrv^{L}_{i};\thetavec)}
+{F(\tau^{U}_{i};\thetavec) - F(\tau^{L}_{i};\thetavec)}, \quad \tau_{i}^{L} 
+\leq \realrv_{i}^{L} < \realrv_{i} \leq \tau_{i}^{U}.
+\end{displaymath}
+The likelihood for censored observations is obtained in a manner similar
+to that described in Section~\ref{section:likemeth.le}.
+
+%-------------------------------------------------------------------
+\subsection{Nonparametric estimation with right (and left) truncation}
+\label{section:np.par.corr.right.trun}
+Section~\ref{section:cond.left.trun.prob} showed how to parametrically
+adjust a truncated-data nonparametric estimator so that it could be
+used to for making a probability plot. This approach can be extended
+to work in situations with right or both left and right truncation.
+In particular, the nonparametric estimate is for the conditional probability
+\begin{equation}
+\label{equation:cond.right.trun.prob}
+F_{C}(t) = \Pr(\rv\leq\realrv |  \tau^{L}_{\min} \leq\rv<\tau^{U}_{\max}) =
+	\frac{F(\realrv)-F(\tau_{\min}^{L})}{  F(\tau^{U}_{\max})  -  
+	F(\tau^{L}_{\min})},\quad \tau^{L}_{\min} < \realrv\leq\tau^{U}_{\max}
+\end{equation}
+where $\tau_{\max}$ is the largest right-censoring time in the
+sample.  Then, as in (\ref{equation:uncond.left.trun.prob}) a
+parametrically-adjusted unconditional nonparametric estimate of
+$F(\realrv)$ is obtained from
+\begin{equation}
+\label{equation:uncond.right.trun.prob}
+\Fhat_{NPU}(t) = F(\tau^{L}_{\min};\thetavechat) +  
+	\Fhat_{NPC}(t)[F(\tau^{U}_{\max};\thetavechat) -
+F(\tau^{L}_{\min};\thetavechat) ] , \quad
+ \tau^{L}_{\min} < \realrv \leq \tau^{U}_{\max}.
+\end{equation}
+
+
+\begin{example}
+\label{example:lfp.trunc.mle}
+{\bf Using right truncation to estimate the failure-time distribution
+from limited failure population data.} Following
+Example~\ref{example:lfp.trunc},
+Figure~\ref{figure:lfptrunc.uncorrprobplot.lognor.ps} is a lognormal
+probability plot of the 25 pre-100 hour IC failure times from
+Table~\ref{table:lfp.data}.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/lfptrunc.uncorrprobplot.lognor.ps}
+\caption{Lognormal probability plot of the (unadjusted) nonparametric
+estimate of the IC failure time distribution, conditional on failure
+in the first 100 hours.}
+\label{figure:lfptrunc.uncorrprobplot.lognor.ps}
+\end{figure}
+%-------------------------------------------------------------------
+In contrast to the probability plot in
+Figure~\ref{figure:lfp.probability.plot.ps}, the 4131 units that were
+unfailed (censored) at 100 hours are ignored. The plotted estimate in
+Figure~\ref{figure:lfptrunc.uncorrprobplot.lognor.ps}, as described in
+Section~\ref{section:np.par.corr.right.trun}, is really an estimate of
+$\Pr(\rv \leq \realrv | \rv \leq 100)$.  Treating the 25 failures as right
+truncated at 100 hours (or estimating the parameters of a
+lognormal distribution truncated at 100 hours) gives $\muhat=4.44$ and
+$\sigmahat=3.44$.  From this, $F(100; \muhat,\sigmahat)=\Pr(\rv \leq 100)
+= \Phi[(\log(100)-4.44)/3.44]= .5191$.  This can be used in
+(\ref{equation:uncond.right.trun.prob}) to parametrically adjust the
+nonparametric estimate of $\Pr(\rv \leq \realrv | \rv \leq 100)$ for
+purposes of probability plotting. The parametrically adjusted
+probability plot is shown in
+Figure~\ref{figure:lfptrunc.corrprobplot.lognor.ps} along with the ML
+estimate $F(t; \muhat,\sigmahat)$ based on the truncated data. 
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/lfptrunc.corrprobplot.lognor.ps}
+\caption{Lognormal probability plot of 
+the lognormal-adjusted (unconditional) nonparametric estimate of the
+IC failure time distribution with pointwise 95\%
+normal-approximation confidence intervals for the lognormal $F(t)$.}
+\label{figure:lfptrunc.corrprobplot.lognor.ps}
+\end{figure}
+%-------------------------------------------------------------------
+The
+pointwise confidence intervals are very wide because of the important
+amount of information lost by not having direct information about
+$\Pr(\rv \leq  100)$. If we knew the actual number of defectives in the
+sample of 4156 ICs, and used this to determine the number of censored
+susceptible ICs, the intervals would be much tighter (see
+Exercise~\ref{exercise:lfp.sen.anal}).
+%splus>  pnorm((log(100)-4.44)/3.44)=.5191
+%splus> 
+%splus> ML Estimates
+%splus>            MLE       se  t.ratio 95% lower 95% upper 
+%splus>    mu 4.441958 3.091394 1.436879 -1.617063 10.500980
+%splus> sigma 3.442543 1.349368 2.551226  1.596744  7.422043
+%splus> 
+\end{example}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Fitting Distributions that have a Threshold Parameter}
+\label{section:threshold.dist.ml}
+
+In many areas of application, analysts wish to fit distributions with a
+``threshold parameter'' $\threshold$ that shifts the distribution of a
+positive random variable (usually to the right) by an amount $\threshold$.
+Recall from Section~\ref{section:intro.to.threshold.distributions}
+that the three-parameter lognormal cdf and pdf can be written as
+\begin{eqnarray*}
+ 	F(\realrv;\mu,\sigma,\threshold)&=&
+		\Phi_{\nor}\left [\frac{\log(\realrv-\threshold)-\mu}{\sigma}
+		\right ] \\
+ f(\realrv;\mu,\sigma,\threshold)&=&	
+		\frac{1}{\sigma (\realrv-\threshold)}\, \phi_{\nor}
+	\left [ 
+	\frac{\log(\realrv-\threshold)-\mu}{\sigma} \right], 
+	\quad \realrv> \threshold.
+\end{eqnarray*}
+Threshold versions of any other distribution with support on
+$[0,\infty)$ (e.g., exponential, Weibull, loglogistic,
+gamma, inverse Gaussian, and Birnbaum-Saunders) can be defined in
+this manner.  Although the discussion in the following sections
+uses the three-parameter lognormal and Weibull distributions,
+the basic ideas hold also for the other threshold distributions.  In
+some physical applications it makes sense to constrain
+$\threshold>0$, but there is no theoretical need to do this.
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\subsection{Estimation with a given threshold parameter}
+%----------------------------------------------------------------------
+If the threshold parameter $\threshold$ is given,
+one can subtract $\threshold$ from all reported failure, inspection,
+and censoring times and then use the simpler methods for the base
+distribution without the threshold parameter (e.g., the one-parameter
+exponential distribution methods in
+Chapter~\ref{chapter:parametric.ml.one.par} and the two-parameter
+Weibull and lognormal distribution methods in
+Chapter~\ref{chapter:parametric.ml.ls} ).  Of course one needs to
+adjust inferences accordingly. For example, the given value of
+$\threshold$ must be added back into estimates of quantiles and one
+must subtract $\threshold$ from times before computing failure
+probabilities, hazard function values, or other functions of time.
+Using a specified value of $\threshold$ that is seriously incorrect
+can lead to seriously incorrect conclusions.
+
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\subsection{Probability plotting methods}
+With three-parameter log-location-scale distributions,
+$\log(\rv-\threshold)$ has a location-scale distribution with
+parameters $\mu$ and $\sigma$.  For such distributions, there are two
+different method of probability plotting. These methods do not
+compete, but rather complement each other.
+\begin{itemize}
+\item
+One can make log-location-scale distribution probability plots
+(e.g., standard Weibull or lognormal probability plots) using
+$T-\threshold$ over a range of different $\threshold$
+values. Choosing a value that linearizes the probability plot (as
+discussed in Section~\ref{section:probplot.weibull}) provides a
+graphical estimate of $\threshold$.  Then, conditional on the fixed
+value of $\threshold$, one can obtain graphical estimates of $\mu$
+and $\sigma$.
+\item
+As illustrated in Section~\ref{section:probplot.extensions}, with a
+specified value for the shape parameter $\sigma$, a
+log-location-scale distribution with a threshold parameter can be
+treated as a location-scale distribution with a location parameter
+$\threshold$ and scale parameter $\exp(\mu)$. One can either use ML
+to estimate the shape parameter $\sigma$ or try different values of
+$\sigma$ to find one that provides a reasonably straight probability
+plot.  Conditional on the fixed value of $\sigma$, one can obtain
+graphical estimates of $\threshold$ and $\exp(\mu)$.
+\end{itemize}
+Both of these approaches are easy to implement with flexible computer
+programs.
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\subsection{Likelihood methods}
+\label{section:like.methods}
+The likelihood for a three-parameter log-location-scale distribution
+using the ``density approximation'' for exact failures, and allowing
+for right-censored observations, has the form
+\begin{eqnarray*}
+\like(\mu,\sigma,\threshold) &=& \prod_{i=1}^{n} 
+\like_{i}(\mu, \sigma,\threshold;\data_{i}) \\
+&=&
+  \prod_{i=1}^{n}    
+ \left\{ 
+ f(\realrv_{i};\mu,\sigma,\threshold)
+\right\}^{\delta_{i}} 
+\left\{1- F(\realrv_{i};\mu,\sigma,\threshold) \right\}^{1-\delta_{i}}
+\\
+&=&  \prod_{i=1}^{n}
+\left\{ \frac{1}{\sigma (\realrv_{i}-\threshold)} \, \phi
+\left[\frac{ \log(\realrv_{i}-\threshold) -\mu}{\sigma}
+\right]
+\right\}^{\delta_{i}}
+\left\{1- \Phi \left[\frac{ \log(\realrv_{i}-\threshold) -\mu}{\sigma}
+\right] \right\}^{1-\delta_{i}} 
+\end{eqnarray*}
+where data$_{i}=(t_{i}, \delta_{i})$ is defined as in
+(\ref{equation:general.parametric.den.likelihood}).  This is a
+classic example for which density approximation defined in
+equation~(\ref{equation:density.approximation}) can cause serious
+numerical and statistical problems in the application of ML
+estimation. The problem is that when this approximation is used,
+there can be, for some model/data combinations, a path in the
+parameter space for which the likelihood goes to $\infty$.  In
+particular, when $\threshold \rightarrow t_{(1)}$ (the smallest
+observation) and $\sigma \rightarrow 0$, the likelihood
+$\like(\mu,\sigma,\threshold)$ approaches $\infty$.  The likelihood
+approaches $\infty$ {\em not} necessarily because the probability of
+the data is large in that region of the parameter space, but rather
+because of a breakdown in the density approximation in
+(\ref{equation:density.approximation}).  For some (but not all) data
+sets there is a local maximum for $\like(\mu,\sigma,\threshold)$,
+corresponding to the maximum of the correct likelihood (probability
+of the data).  Although it has been suggested that one could ignore
+the part of the likelihood surface where
+$\like(\mu,\sigma,\threshold) \rightarrow
+\infty$
+and use the local maximum to provide the ML estimates, this practice
+can lead to numerical difficulties and it is possible for the local
+maximum to be masked by the breakdown of the density approximation. 
+A better solution is to 
+use the correct likelihood contributions, 
+\begin{equation}
+\like_{i}(\mu, \sigma,\threshold;\data_{i})
+=[F(\realrv_{i}+\Delta_{i};\thetavec)-
+        F(\realrv_{i}-\Delta_{i};\thetavec)]
+\label{equation:threshold.interval.likelihood}
+\end{equation}
+(based on small intervals implied by the data's precision) instead of
+the density approximation.  The correct likelihood will always be
+bounded (because probabilities can be no larger than 1). Using the correct
+likelihood eliminates the problem of an unbounded likelihood and helps
+simplify the
+process of finding the ML estimates. The values
+of $\Delta_{i}$ should be chosen to reflect the round off in the data
+(which often depends on the magnitude of the observations within a
+data set). Generally the shape and position of the likelihood (and
+thus the ML estimates) are not very 
+sensitive to the value of $\Delta_{i}$ used here.
+
+Numerical problems with fitting threshold parameter distributions can
+also arise from the embedded distributions problem described in
+Section~\ref{section:embedded.models}. In order to circumvent this
+problem, one can fit, instead, the generalized threshold-scale (GETS)
+distribution introduced in Section~\ref{section:gets.dist}.  When
+$\sigmahat>0$, the ML estimates for this model are equivalent to what
+one would get with the corresponding threshold parameter distribution.
+When $\sigmahat < 0$, it is an indication that the ML estimates for
+the corresponding threshold parameter distribution would be on the
+boundary of the parameter space (i.e., the limiting embedded
+distribution) and careful consideration should be given to using the
+GETS or some other alternative to the corresponding
+threshold-parameter distribution.
+
+\begin{example}
+{\bf Fitting the
+three-parameter Weibull distributions to the Alloy-C strength data.}
+Table~\ref{table:alloy.c} gives interval data
+for tensile strength (in ksi) from a sample of 84 specimens of Alloy-C.
+\begin{table}
+\caption{Alloy-C Strength Data.}
+\centering\small
+\begin{tabular}{ccr}
+\\[-.5ex]
+\hline
+\multicolumn{2} {c} {Strength (ksi)} &\multicolumn{1}{c}{Number} \\
+\cline{1-2} 
+\multicolumn{2} {c} {Interval Endpoint}&\multicolumn{1}{c}{of}\\
+\cline{1-2} 
+\multicolumn{1} {c} {Lower}&
+\multicolumn{1} {c} {Upper}&
+\multicolumn{1} {c} {Failures} \\
+\cline{1-3} 
+79  & 80  &    1\\
+80  & 81  &    0\\
+81  & 82  &    4\\
+82  & 83  &    4\\
+83  & 84  &    9\\
+84  & 85  &   25\\
+85  & 86  &   21\\
+86  & 87  &   18\\
+87  & 88  &    2\\
+\hline
+\end{tabular}\\
+\begin{minipage}[t]{2in}
+\end{minipage}
+\label{table:alloy.c}
+\end{table}
+%-------------------------------------------------------------------
+%----------
+%-------------------------------------------------------------------
+The test was run to obtain information on the strength of the alloy
+when produced with a modified process.  Figure~\ref{figure:alcoa4.hist.ps}
+gives a histogram of the data. 
+%------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/alcoa4.hist.ps}
+\caption{Histogram for binned 
+strength readings on 84 specimens of Alloy-C.}
+\label{figure:alcoa4.hist.ps}
+\end{figure}
+%-------------------------------------------------------------------
+The distribution is skewed to the left and the lowest values of
+strength seem far from the origin, relative to the spread in the
+data. This figure indicates that a threshold-parameter distribution
+could provide an adequate description for the data.
+
+%-------------------------------------------------------------------
+Figure~\ref{figure:alcoa4.var.profile.weib.ps} shows a sequence of
+fitted three-parameter Weibull distributions in which $\threshold$ 
+was fixed at a set of values between $-20$ and $79$.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/alcoa4.var.profile.weib.ps}
+\caption{Profile and Weibull probability plots of the Alloy-C
+strength data with $\threshold$ varying between $-20$ and 79. Also shown
+are approximate 95\% pointwise confidence intervals for $F(t)$ for the
+given value of $\threshold$.}
+\label{figure:alcoa4.var.profile.weib.ps}
+\end{figure}
+%-------------------------------------------------------------------
+The probability plot in which $\threshold=0$ illustrates the fitting
+of a two-parameter Weibull distribution.  As $\threshold$ gets larger
+than 70, the likelihood drops off rapidly and, simultaneously, the fit
+in the probability plots becomes poorer.  We see, however, that as
+$\threshold$ gets smaller, the profile levels off and the fit remains
+good. This is an example in which the three-parameter Weibull is
+approaching the embedded SEV distribution.  The scales on the
+probability plot suggest an intuitive explanation for the embedding
+behavior. As $\threshold$ becomes smaller and smaller, we are adding a
+larger and larger number to the original strength values. With the
+plot running over a range of strength values
+that is relatively small, the log axis on
+the strength scale is approximately linear and further shifting will
+act as a location shift and thus have little effect on the fit of the
+distribution to the data.  
+
+Figure~\ref{figure:alcoa4.getssev.gmleprobplot.ps} shows a $\SEV$
+probability plot of the Alloy-C strength data nonparametric estimate
+of $F(t)$ along with straight lines depicting ML estimates of the
+three-parameter Weibull (SEV-GETS with $\sigma>0$) and the SEV
+distributions (corresponding to the limiting embedded SEV
+distribution with $\threshold=-\infty$ where $\muhat=85.512$ and
+$\sigmahat=1.159$).
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/alcoa4.getssev.gmleprobplot.ps}
+\caption{Smallest extreme value probability plot of the 
+Alloy-C strength data showing the three-parameter Weibull (i.e., SEV-GETS
+distribution with $\sigma>0$) (solid line)
+along with the SEV distribution (dotted line).}
+\label{figure:alcoa4.getssev.gmleprobplot.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Either distribution fits the data very well.  The SEV-GETS ML
+estimates are $\alphahat=85.503,$ $\sigmahat=.015$, and $\varsigmahat=1.166$.
+Then using the relationships in
+Section~\ref{section:gets.special.cases}, with $\sigmahat >0$, yields the
+three-parameter Weibull distribution ML estimates as
+$\thresholdhat=\alphahat-\varsigmahat/\sigmahat=7.77$ and
+$\muhat=\log(\varsigmahat/\sigmahat)=4.35$.
+%splus> Orig-Parameters:
+%splus>   alpha sigma varsigma 
+%splus>  85.503 0.015   1.166
+%splus> $thetainterp:
+%splus>   gamma     mu sigma 
+%splus>  7.7686 4.3533 0.015
+This plot confirms that the embedded SEV distribution fits well, but
+there may be an objection to the use of such a distribution because
+there is a positive probability (albeit extremely small) of a negative
+strength. In this example, two-parameter Weibull fit, illustrated in
+the $\threshold=0$ plot in
+Figure~\ref{figure:alcoa4.var.profile.weib.ps}, is indistinguishable
+over the range of the data from the three-parameter Weibull fit in
+Figure~\ref{figure:alcoa4.getssev.gmleprobplot.ps}.  Thus the
+two-parameter Weibull fit provides a physically reasonable,
+parsimonious description of the data.
+\end{example}
+
+
+%-------------------------------------------------------------------
+\begin{example}
+{\bf Fan data and the three-parameter lognormal distribution.} This
+example fits the three-parameter lognormal distribution to the fan
+data that were introduced in Section~\ref{example:fan.data} and are
+given in Appendix Table~\ref{atable:fan.data}. The profile plot in
+Figure~\ref{figure:fan.thresh.profile.lnor.d0.ps} shows the breakdown
+in the density approximation for the likelihood. 
+As $\threshold \rightarrow x_{(1)}$ (the smallest observation),
+the profile likelihood for $\threshold$ blows up. To eliminate this
+problem, use the correct likelihood. For these data we use
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/fan.thresh.profile.lnor.d0.ps}
+\caption{Density-approximation profile and three-parameter 
+lognormal probability plots of the fan data with $\threshold$ varying
+between $-100$ and $449.99$. Also shown are approximate 95\%
+pointwise confidence intervals for $F(t)$ for the given value of
+$\threshold$.}
+\label{figure:fan.thresh.profile.lnor.d0.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/fan.thresh.profile.lnor.d01.ps}
+\caption{Correct likelihood $(\Delta=.01)$ profile and three-parameter 
+lognormal probability plots of the fan data with $\threshold$ varying
+between $-100$ and $449.99$. Also shown are approximate 95\%
+pointwise confidence intervals for $F(t)$ for the given value of
+$\threshold$.}
+\label{figure:fan.thresh.profile.lnor.d01.ps}
+\end{figure}
+%-------------------------------------------------------------------
+the likelihood based on recognizing that data were recorded to a
+precision of $\pm5$ hours and choose $\Delta_{i}=5$ in
+(\ref{equation:threshold.interval.likelihood}).
+Figure~\ref{figure:fan.thresh.profile.lnor.d01.ps} shows that, with
+the correct likelihood, the profile plot is well behaved with a
+clear maximum at a value of $\threshold$ that is a little less than
+400.  Figure~\ref{figure:fan.getsnormal.gmleprobplot.ps} is a
+lognormal probability plot of the fan data comparing the
+three-parameter lognormal and the three-parameter Weibull
+distributions with the two-parameter lognormal distribution.  The
+NOR-GETS ML estimates in this example are
+$\alphahat=41261.2588$, $\sigmahat =2.27164389$, and
+$\varsigmahat=92853.2782$ which, because $\sigmahat>0$, yields the
+three-parameter lognormal distribution ML estimates as
+$\thresholdhat=\alphahat-\varsigmahat/\sigmahat=386.33$ and
+$\muhat=\log(\varsigmahat/\sigmahat)=10.618$ and $\sigmahat$ as above.
+
+%splus>$origparam:
+%splus>      alpha      sigma    varzeta 
+%splus> 41261.2588 2.27164389 92853.2782
+%splus>
+%splus> $thetainterp:
+%splus>  gamma     mu  sigma 
+%splus> 386.33 10.618 2.2716
+%splus> 
+%splus> 41261.2588 -   92853.2782/2.27164389 = 386.331788
+%splus> log(92853.2782/2.27164389) =  10.618 
+%splus> 
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/fan.getsnormal.gmleprobplot.ps}
+\caption{Lognormal probability plot of the fan data comparing
+the three-parameter lognormal and Weibull distributions with the
+two-parameter lognormal distribution.}
+\label{figure:fan.getsnormal.gmleprobplot.ps}
+\end{figure}
+%-------------------------------------------------------------------
+ 
+These analyses give a strong indication that fitting a
+threshold-parameter distribution to these data would be overfitting,
+unless there were strong physical reasons to suggest that such a
+threshold exists. Visually, the two-parameter lognormal distribution
+($\mu=10.14$, $\sigma=1.68$) provides a reasonably adequate and
+parsimonious fit to the data.
+\end{example}
+
+
+
+%-------------------------------------------------------------------
+\begin{example}
+\label{example:alloy.t7987.gets.mle}
+{\bf Fitting the
+threshold-parameter distributions to the Alloy T7987 data.}
+Example~\ref{example:alloy.t7987.weibull.plot.compare} 
+suggested that a threshold-parameter distribution might be appropriate
+for the Alloy T7987 data given in
+Table~\ref{table:alloy.t7987}.
+Figure~\ref{figure:at7987.sevgets.gmleprobplot.ps}
+is a Weibull probability plot comparing 
+the three-parameter lognormal and three-parameter
+Weibull distributions for the Alloy T7987 data.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/at7987.sevgets.gmleprobplot.ps}
+\caption{Lognormal probability plot comparing 
+the three-parameter lognormal and three-parameter
+Weibull distributions and the two-parameter
+Weibull distribution for the Alloy T7987 data.}
+\label{figure:at7987.sevgets.gmleprobplot.ps}
+\end{figure}
+%-------------------------------------------------------------------
+The SEV-GETS ML estimates are $\alphahat=186.3$, $\sigmahat =.76$, and
+$\varsigmahat=70.64$ 
+which, because $\sigmahat>0$, yields the three-parameter Weibull
+distribution ML estimates as
+$\thresholdhat=\alphahat-\varsigmahat/\sigmahat=92.99$
+and $\muhat=\log(\varsigmahat/\sigmahat)=4.54$.
+%splus> Orig-Parameters:
+%splus>     alpha     sigma  varzeta 
+%splus>  186.2569 0.7574889 70.64656
+%splus> $thetainterp:
+%splus>     gamma       mu     sigma 
+%splus>  92.99275 4.535436 0.7574889
+The NORMAL-GETS ML estimates are $\alphahat=162.25$, $\sigmahat=.613$, and
+$\varsigmahat=55.28$. Using the relationships in
+Section~\ref{section:gets.special.cases}, with $\sigma>0$, yields the
+three-parameter lognormal distribution ML estimates as
+$\thresholdhat=\alphahat-\varsigmahat/\sigmahat=72.03$ and
+$\mu=\log(\varsigmahat/\sigmahat)=4.50$.
+%splus> $origparam:
+%splus>     alpha     sigma  varzeta 
+%splus>  162.2469 0.6127742 55.28317
+%splus> $thetainterp:
+%splus>   gamma       mu     sigma 
+%splus>  72.029 4.502227 0.6127742
+In this case there is strong evidence that the threshold parameter is
+important for describing the failure-time distribution.  The data do
+not suggest a preference for either the three-parameter lognormal or
+three-parameter Weibull distribution.
+\end{example}
+%-------------------------------------------------------------------
+
+
+
+%-------------------------------------------------------------------
+\subsection{Summary of results  of fitting models to
+skewed distributions}
+
+The results in this section indicate some general guidelines for
+fitting parametric distributions to skewed data.  We have seen that
+as $\threshold \rightarrow -\infty$ and $\sigma
+\rightarrow 0$, the shape of the three-parameter threshold
+distribution approaches that of the underlying embedded distribution.
+The Weibull approaches the form of a smallest extreme value (which is
+left-skewed) and the lognormal approaches the form of a normal
+distribution (symmetric).  These results indicate that, for purposes
+of fitting parametric distributions to data,
+\begin{itemize}
+\item
+If data are left-skewed, even if far from the origin, it is
+generally possible to fit a three-parameter Weibull distribution and
+achieve a good fit to the data. In many cases, however, it will be
+possible to fit the simpler two-parameter Weibull or smallest
+extreme value distributions and get, effectively, the same results.
+The typical profile likelihood shape for such data is shown in
+Figure~\ref{figure:alcoa4.var.profile.weib.ps}.
+\item
+If data are approximately symmetric, one can generally fit a
+three-parameter Weibull, a three-parameter lognormal model, or
+two-parameter versions of the distribution and get a reasonably good
+fit to the data. In many cases, however, it will be possible to fit
+the simpler two-parameter normal or logistic distributions
+(depending on the heaviness of the tails) and get, effectively, the
+same results.  Often, unless there is a large amount of data
+(hundreds of observations), it will be difficult to distinguish
+among these alternative distributions.
+\item
+If the data are right-skewed, it is often possible to fit either the
+three-parameter Weibull or the three-parameter lognormal distribution and get
+a good fit to the data.
+\item
+The use of a threshold parameter can be viewed from two different
+directions.  Sometimes it might be viewed as a physical parameter---a
+time before which probability of failure is zero or a threshold
+strength. In such cases it may be important to constrain
+$\threshold>0$ or some other number.  In other cases, $\threshold$ is
+one of several parameters of a curve being fit to data. In such cases,
+the ML estimate of $\threshold$ may be negative, yielding a positive
+probability of negative failure time or strength. Generally, however,
+the estimated probability of such small events is small enough to ignore.
+\end{itemize}
+
+When one of the simpler distributions (e.g., two-parameter
+lognormal or two-parameter Weibull) fits ones data well, the simpler
+description will be preferred to a threshold distribution,
+especially when the amount of data available is limited. When one of
+the simpler distributions do not fit, however, using a threshold
+parameter may provide an important improvement in data
+description. As usual, however, it is important to be especially
+cautious when making inferences outside the range of ones data,
+especially when the fitted distribution is chosen purely on the
+basis of its fit to the data.
+
+
+\section*{Bibliographic Notes}
+Farewell and Prentice~(1977) show that a judicious choice of
+parameters for the GENG model can make an important difference in
+one's ability to apply ML methods.  They suggest the parameterization
+given in Section~\ref{section:egeng.parameterization}.  Lawless~(1982,
+Chapter~5) shows how to use likelihood-based methods with the
+generalized gamma distribution to assess and compare results from the
+special case distributions. Liu, Meeker, and Escobar~(1998) suggest
+and illustrate the use of an EGENG parameterization that is stable
+even for heavy censoring.
+
+Engelhardt, Bain, and Wright~(1981) describe methods for ML estimation
+for the Birnbaum-Saunders distribution. Cohen and Whitten~(1988)
+describe estimation methods, including ML, for a wide variety of life
+distributions including the Weibull, lognormal, inverse Gaussian,
+gamma, and generalized gamma distributions.
+
+
+Meeker~(1987) provides a more complete analysis and more technical
+details for the LFP model described in
+Section~\ref{section:using.the.lfp.model}.  Also, Monte Carlo
+simulation showed that the likelihood-based confidence intervals
+provide a much better approximation to the nominal confidence levels
+over a wide range of parameter values for the LFP
+model. Trindade~(1991) also uses this model in a similar
+application.
+
+In general, fitting mixture distributions with maximum likelihood
+presents some difficult and challenging issues.  See, for example,
+Day~(1969), Falls~(1970), Hosmer~(1973), Titterington, Smith, and
+Makov~(1985), and Gelman, Carlin, Stern, and Rubin~(1995, Chapter 16).
+Also Everitt and Hand~(1981) review the pertinent literature.
+
+
+Turnbull~(1976) presents a generalization of the Kaplan-Meier estimate
+for arbitrarily censored and  
+truncated data.  Kalbfleisch and Lawless~(1988) describe examples of
+field reliability data that can be analyzed using truncated data
+methods.  Nelson~(1990b) describes examples of truncated reliability
+data and shows how adapt the method of hazard plotting to such data.
+Kalbfleisch and Lawless~(1992) provide further examples and methods.
+Woodroofe~(1972, 1974),
+Schneider~(1986), and Cohen~(1991) are useful references for the
+theoretical aspects of truncated data and estimating the parameters of
+truncated distributions.  Escobar and Meeker~(1998d) show how to
+compute the Fisher information matrix and asymptotic variances for
+truncated distributions and the LFP model.
+
+
+Serious numerical and statistical problems can arise when estimating
+the parameters of threshold-parameter distributions, especially when
+using the density approximation for the likelihood contributions of
+observations reported as exact failures (see Kempthorne and
+Folks~1971, Giesbrecht and Kempthorne~1976, and Cheng and Iles~1987
+for more details and other references).  Griffiths~(1980) and Smith
+and Naylor~(1987) describe likelihood-based inferences for the
+three-parameter lognormal and Weibull distributions, respectively.
+Also, the asymptotic ML theory for this approach is complicated (e.g.,
+see Smith~1985) and, arguably, inappropriate for data with finite
+precision.  Cheng and Iles~(1990) noted that the smallest extreme
+value (normal) distribution is a limiting case of the three-parameter
+Weibull (lognormal) distribution when the threshold parameter
+$\rightarrow -\infty$.  Hirose and Lai~(1997) use an example to
+illustrate the problems in inference created by embedded models when
+fitting a threshold Weibull model with binned data. They propose a
+solution to the those problems by embedding the Weibull model in
+SEV-$\GETS$ family and using ML methods.
+
+\section*{Exercises}
+
+
+\begin{exercise}
+Wilk, Gnanadesikan, and Huyett~(1962b) give the number of weeks
+until failure for a sample of 34 transistors subjected to
+accelerated conditions. The reported times, with 
+the number of ties shown in parentheses,
+were 3, 4, 5, $ 6 (2) $, 7, $8 (2) $, $9 (3)$, $ 10 (2) $, $ 11 (3) $,
+$ 13 (5) $, $ 17 (2)$, $19 (2) $, 25, 29, 33, $42 (2)$, 52.  The other 3
+transistors had not failed at the end of 52 weeks.
+\begin{itemize}
+\item
+Use ML to estimate the parameters of the BISA, IGAU, gamma, and
+lognormal distributions to these data using a discrete-data
+likelihood. Plot all of these estimates on lognormal probability paper
+and compare the different estimates.  Describe any important
+differences that you see in the estimates.
+\item
+Redo the gamma distribution analyses assuming that the failures
+occurred at exactly the reported time.  Are the differences of
+practical importance in this example?
+\end{itemize}
+\end{exercise}
+
+
+\begin{exercise}
+\label{exercise:lfp.sen.anal}
+The engineers who collected the IC data from
+Example~\ref{example:lfp.trunc} felt that if the life test had been
+extended for another 50,000 hours (corresponding to the
+technological life of the application system), only another 2 or 3
+failures might have been observed.  Use this information to
+construct several Weibull and lognormal probability plots for the
+failure-time distribution for the defective subpopulation.
+\end{exercise}
+
+
+
+\begin{exercise}
+\label{exercise:lfp.reparameterization}
+For the Weibull LFP (limited failure population) model with cdf
+given in (\ref{equation:lfp.cdf}),
+a proportion $p$ of the units in the 
+population is defective and will eventually
+fail (according to a Weibull distribution)
+and all other units are immune to failure.
+\begin{enumerate}
+\item
+What is the practical interpretation of the parameter $\mu$ in this model?
+\item
+Generally in a life test of a limited failure population, if
+the test is stopped far before all of the units in the population
+have failed, the parameters $\mu$ and $p$ will be highly correlated.
+Give an intuitive explanation for this.
+\item
+The expected proportion of units failing in a life test of length
+$\censortime$ might be a more ``stable'' parameter to estimate.
+Explain why. Write down the reparameterized model, and describe
+the steps that you would use to find the ML estimates of this
+new parameter as well as $\mu$ and $\sigma$.
+\end{enumerate}
+\end{exercise}
+
+
+\begin{exercise}
+\label{exercise:lfp.factor.likelihood}
+Refer to Exercise~\ref{exercise:lfp.reparameterization}.  Show that
+the likelihood for the LFP model with a single censoring time can be
+factored into two components, one a binomial with parameter $\pi=p
+\times \Phi\{[\log(\censortime)-\mu]/\sigma\}$ and another consisting
+of a right-truncated failure time distribution with truncation time
+$\tau_{i}^{U}=\censortime$.
+\end{exercise}
+
+
+\begin{exercise1}
+Comment on the statistical implications of the factoring in
+Exercise~\ref{exercise:lfp.factor.likelihood}.
+\end{exercise1}
+
+
+\begin{exercise}
+\label{exercise:trun.dist}
+Suppose that $\rv$ has a $\WEIB(\mu, \sigma)$ distribution.
+Show that
+\begin{enumerate}
+\item
+\label{exer.part:left.truncated.cdf}
+The cdf of the left-truncated Weibull distribution is 
+\begin{displaymath}
+F(\realrv;\tau^{L}; \mu,\sigma)=
+1-\exp
+\left [
+(\tau^{L}/\weibscale)^{\beta}-(\realrv/\weibscale)^{\beta}
+\right ], \quad \realrv>\tau^{L} \ge 0
+\end{displaymath}
+where $\weibscale=\exp(u)$ and $\beta=1/\sigma$.
+\item
+\label{exer.part:right.truncated.cdf}
+The cdf of the right-truncated Weibull distribution is 
+\begin{displaymath}
+F(\realrv; \tau^{U}; \mu,\sigma)=
+\frac{
+1-\exp \left [-(\realrv/\weibscale)^{\beta} \right ]
+    }
+    {
+1-\exp \left [-(\tau^{U}/\weibscale)^{\beta} \right ]
+    },\quad 0< \realrv \le \tau^{U}.
+\end{displaymath}
+\item
+\label{exer.part:left.right.truncated.cdf}
+The cdf of the left-truncated and right-truncated Weibull
+distribution is
+\begin{displaymath}
+F(\realrv; \tau^{L},\tau^{U}; \mu,\sigma)=
+\frac{
+ \exp \left [-(\tau^{L}/\weibscale)^{\beta} \right ]
+-\exp \left [-(\realrv/\weibscale)^{\beta} \right ]
+    }
+    {
+ \exp \left [-(\tau^{L}/\weibscale)^{\beta} \right ]
+-\exp \left [-(\tau^{U}/\weibscale)^{\beta} \right ]
+    },\quad \tau^{L}< \realrv \le \tau^{U}.
+\end{displaymath}
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+Refer to Exercise~\ref{exercise:trun.dist},
+part~\ref{exer.part:left.truncated.cdf}.  What is the cdf of the
+truncated distribution when $\sigma=1$?
+\end{exercise}
+
+\begin{exercise1}
+Derive the expressions given in
+parts~\ref{exer.part:left.truncated.cdf} and
+\ref{exer.part:right.truncated.cdf} of
+Exercise~\ref{exercise:trun.dist} as limiting cases of the
+expression in part~\ref{exer.part:left.right.truncated.cdf} when
+$\tau \to 0$ and $\tau \to \infty$, respectively.
+\end{exercise1}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{exercise1}
+\label{exercise:trunc.releff.avar}
+Consider ML estimation from a random sample of size $n$
+from 
+an $\EXP(\expmean)$ distribution. Denote by $\thetahat_{n}$, $\thetahat_{c}$
+and $\thetahat_{t}$ the ML estimates of $\theta$ from 
+complete, right-censored, and right-truncated samples,
+respectively. 
+Define
+the asymptotic relative efficiency of the
+estimator $\thetahat_{a}$  with respect to the 
+estimator $\thetahat_{b}$ as
+$\mbox{RE}(\thetahat_{a},\thetahat_{b})=\avar(\thetahat_{b})/
+\avar(\thetahat_{a})$.
+\begin{enumerate}
+\item
+\label{exer.part:avar.com.cen.tru}
+Write the Fisher information matrix for the estimators and show that
+\begin{eqnarray*}
+\avar(\thetahat_{n})&=&\theta^{2}/n
+\\
+\avar(\thetahat_{c})&=&\avar(\thetahat_{n})/(1-\censorprop)
+\\
+\avar(\thetahat_{t})&=&\frac{\avar(\thetahat_{n})}
+		            {
+(1-\truncatedprop) \left \{
+                   1-\truncatedprop [\log(\truncatedprop)]^{2}/
+	           (1-\truncatedprop)^{2}
+		   \right \}
+                            }
+\end{eqnarray*}
+where $\censorprop=\exp(-\censortime/\theta)$ is the
+proportion of right censoring and 
+$\truncatedprop=\exp(-\tau^{U}/\theta)$ is the proportion
+of right truncation.
+\item
+Use the results in part~\ref{exer.part:avar.com.cen.tru} 
+with $\truncatedprop=\censorprop$ to
+show that
+\begin{eqnarray*}
+\mbox{RE}(\thetahat_{c},\thetahat_{n})&=&(1-\censorprop)
+\\
+\mbox{RE}(\thetahat_{t},\thetahat_{n})&=&(1-\truncatedprop) \left \{
+                   1-\truncatedprop [\log(\truncatedprop)]^{2}/
+	           (1-\truncatedprop)^{2}
+		   \right \}
+\\
+\mbox{RE}(\thetahat_{t},\thetahat_{c})&=&
+                   1-\truncatedprop [\log(\truncatedprop)]^{2}/
+	           (1-\truncatedprop)^{2}.
+\end{eqnarray*}
+When $\truncatedprop=\censorprop=.1$ evaluate the
+relative efficiencies and show that
+$\mbox{RE}(\thetahat_{t},\thetahat_{n})=.31$
+and
+$\mbox{RE}(\thetahat_{c},\thetahat_{n})=.90$.
+Comment on these efficiencies.
+\item
+Again suppose that $\truncatedprop=\censorprop$.
+In the same plot draw 
+$\mbox{RE}(\thetahat_{c},\thetahat_{n})$ and 
+$\mbox{RE}(\thetahat_{t},\thetahat_{n})$ as
+a function of $\truncatedprop$. Comment
+on the effect of right censoring a proportion 
+$p$ of units when compared with right truncating
+the same proportion of units.
+\end{enumerate}
+\end{exercise1}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+
+\begin{exercise}
+\label{exercise:vendor1.trun}
+Consider the data in Examples~\ref{example:electronic.subsystem.data},
+\ref{example:pretest.and.left.trun},
+and \ref{example:pretest.mle}. Truncate the Vendor 1 data at 1000
+hours and compare the resulting fit with that for Vendor 2. Can you
+detect any difference that might be considered to be important?
+\end{exercise}
+
+
+\begin{exercise}
+Consider the results from either
+Exercise~\ref{exercise:trunc.releff.avar} or from
+Exercise~\ref{exercise:trun.cens.sim}. Provide an intuitive
+explanation for the reason that precision from the censored
+distribution is much better than from the truncated distribution.
+\end{exercise}
+
+\begin{exercise}
+During a single month a company sold 2341 modems.  These modems have
+a 36-month warranty. During the first 24 months, 75 of these modems
+had been returned for warranty service.  Suppose that it is
+reasonable to assume that this is the number failing out of the 2341
+modems that were sold.  From previous experience with similar
+products, it is known that a Weibull distribution with a shape
+parameter of $\beta=.85$ provides an adequate description of the
+failure time distribution.
+\begin{enumerate}
+\item
+Show that the conditional probability of failing in the third year
+of life, given survival up to two years, can be expressed as a
+truncated distribution.
+\item
+\label{exer.part:modem.warranty1}
+Although the times to failure for the returned modems were not
+available, it is still possible to compute an estimate of the
+Weibull cdf using the given value of $\beta=.85$.  Show how to do
+this.
+\item
+Use the estimate from part~\ref{exer.part:modem.warranty1}
+to compute an estimate for the number of units that will fail
+in the third year of operation.
+\item
+Suppose that you had learned that two years after being sold,
+between 5\% and 10\% of the purchased modems had never been put into service.
+How would you do part\ref{exer.part:modem.warranty1}?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise1}
+Consider the discrete data likelihood
+\begin{displaymath}
+\like(\thetavec)=\prod_{i=1}^{m} [F(\realrv_{i}+\Delta_{i};\eta,\sigma,\zeta)-
+        F(\realrv_{i}-\Delta_{i};\eta,\sigma,\zeta)]^{\deadin_{i}}
+\end{displaymath}
+where $F(\realrv; \eta,\sigma,\zeta)$ is the $\GETS$ cdf 
+in (\ref{equation:gets.cdf}).
+\begin{enumerate}
+\item
+Suppose that the $\GETS$ cdf is Weibull based (i.e.,
+$\Phi=\Phi_{\sev}$) and that $\sigma>0$. 
+Show that the derivatives of the
+log likelihood with respect to the parameters are
+discontinuous at $\realrv_{0}$ when 
+$\realrv_{0}=(\eta/\zeta-1/\sigma)$ and $\sigma>1$.
+\item
+Suppose that the $\GETS$ cdf is Weibull based with
+$\sigma<0$. 
+Show that the derivatives of the
+log likelihood with respect to the parameters are
+discontinuous at $\realrv_{m}$ when 
+$\realrv_{m}=(\eta/\zeta-1/\sigma)$ and $|\sigma|>1$.
+\item
+Show that if the $\GETS$ cdf is lognormal based,
+then the derivatives of the log likelihood
+with respect to the parameters are
+continuous everywhere.
+\end{enumerate}
+\end{exercise1}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+\begin{exercise2}
+\label{exercise:trun.cens.sim}
+Conduct the following simulation to compare 
+the effects of censoring and truncation on estimation precision.
+\begin{enumerate}
+\item
+Generate a sample from a Weibull distribution with $\weibscale=100$
+hours and $\beta=2$.
+\item
+Find the ML estimates of the
+parameters and $t_{.1}$, treating any
+observations beyond 150 hours as right censored.
+\item
+Find the ML estimates of the
+parameters and $t_{.1}$, truncating observations beyond 150 hours.
+\item
+Repeat the simulation 500 times.  Make appropriate plots of the
+sample estimates (including scatter plots to see correlation).
+Compute and use histograms or other graphical displays to compare
+the estimates from the censored and the truncated samples.
+Also compute the sample variances for the parameter estimates
+and for the estimates of $t_{.1}$.
+\item
+What can you conclude from this simulation experiment?
+\end{enumerate}
+\end{exercise2}

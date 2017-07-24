@@ -1,0 +1,1539 @@
+%chapter 9
+%original by wqmeeker  12 Jan 94
+%edited by wqmeeker  16 june 95 breaking out new  bootstrap
+%edited by driker 27 june 95
+%edited by driker august 3 1995
+%edited by wqmeeker  6 aug 95 
+%edited by wqmeeker  11 aug 95 
+%edited by driker 4 april 97
+
+\setcounter{chapter}{8}
+
+
+\chapter{Bootstrap  Confidence Intervals}
+\label{chapter:bootstrap}
+
+\input{\chapterhome/common_heading.tex}
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Objectives}
+This chapter explains
+\begin{itemize} 
+\item 
+The use of computer simulation
+to obtain confidence intervals. Such intervals
+are known as bootstrap confidence intervals.
+\item
+Methods for generating bootstrap samples.
+\item 
+How to obtain and interpret simulation-based 
+{\em parametric pointwise} bootstrap confidence intervals.
+\item 
+How to obtain and interpret simulation-based {\em nonparametric 
+pointwise} bootstrap confidence intervals.
+\end{itemize}
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Overview}
+This chapter describes and illustrates simulation-based bootstrap
+methods of finding confidence intervals. Especially with limited
+data, these intervals generally provide procedures with coverage
+probabilities that are closer to the nominal confidence level, when
+compared with the commonly-used normal-approximation methods.
+Section~\ref{section:bootstrap.sampling} provides a general overview
+of bootstrap sampling methods.
+Sections~\ref{section:exponential.bootstrap} and
+\ref{section:ls.bootstrap},
+covering parametric bootstrap methods, build heavily on the confidence
+interval methods presented in
+Chapters~\ref{chapter:parametric.ml.one.par} and
+\ref{chapter:parametric.ml.ls}. An understanding of the basic ideas
+in these chapters is important. The methods in this chapter can,
+however, be applied in a straightforward manner to parametric
+models used in the other chapters of this book. Correspondingly, the
+nonparametric bootstrap methods in
+Section~\ref{section:np.bootstrap} build on material from
+Chapter~\ref{chapter:nonparametric.estimation}.
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Introduction}
+%----------------------------------------------------------------------
+The normal-approximation confidence intervals described in earlier
+chapters are adequate for most casual or informal analyses,
+particularly when the sample size is large (or, with right censored data,
+when the number of failures is large). There are, however,
+computationally intensive methods that can provide better approximate
+confidence intervals. We have seen (in
+Chapters~\ref{chapter:parametric.ml.one.par} and
+\ref{chapter:parametric.ml.ls}) that likelihood-based methods can
+be expected to out-perform the normal-approximation intervals. Simulation
+provides another important method to obtain exact or more accurate
+approximate confidence intervals. This chapter shows how to use bootstrap
+methods to obtain bootstrap confidence intervals for the
+inferential models used in
+Chapters~\ref{chapter:nonparametric.estimation},
+\ref{chapter:parametric.ml.one.par} and
+\ref{chapter:parametric.ml.ls}. 
+
+Bootstrap intervals, when used properly, can be expected to be more
+accurate than the normal-approximation methods and competitive with
+the likelihood-based methods.  In subsequent chapters we will apply
+bootstrap methods for models where other reasonable alternatives do
+not exist (e.g., when likelihood-based methods are too demanding
+computationally).
+
+
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Bootstrap Sampling}
+\label{section:bootstrap.sampling}
+%----------------------------------------------------------------------
+\subsection{General idea}
+As explained in Section~\ref{section:confidence.intervals}, a
+confidence interval procedure is judged on the basis of how well the
+procedure would perform if it were repeated over and over again. In
+particular, a confidence interval should (on the average) not be too
+wide (for a one-sided bound we can say that the bound should not be
+too far away from a point estimate) and the coverage probability
+(probability that the interval contains the quantity of interest)
+should be equal or close to the nominal
+coverage probability $1-\alpha$. The idea of bootstrap sampling is
+to simulate the repeated sampling process and use the information
+from the distribution of appropriate statistics in the bootstrap
+samples to compute the needed confidence interval (or intervals),
+reducing the reliance on large-sample approximations.
+
+For example, let $\theta$ be a parameter of interest.  When
+computing a confidence interval for $\theta$, instead of assuming
+that $Z_{\log(\thetahat)}$ in (\ref{equation:expmean.pivotal.like}) has
+a $\NOR(0,1)$ distribution, we can use computer simulation to get an
+approximation to the {\em actual} distribution of $Z_{\log(\thetahat)}$
+(for estimating a positive parameter, the log transformation can
+also provide an important advantage when using this simulation-based
+method).  If the approximation is better, the coverage probability
+will be closer to the nominal $1-\alpha$. For some simple
+situations (complete data or Type~II censored data from a location-scale
+or a log-location-scale distribution) the distribution of statistics
+like $Z_{\log(\thetahat)}$ does not depend on the unknown value of
+$\theta$. Then the resulting confidence intervals are ``exact'' in
+the sense that the actual coverage probability is the same as the
+nominal $1-\alpha$; otherwise the coverage probability is
+approximately equal to $1-\alpha$, but the approximation, in most
+cases, is better than assuming that $Z_{\log(\thetahat)}$ has a
+$\NOR(0,1)$ distribution and the approximation improves as the
+sample size increases.
+
+
+We would like to obtain the distribution of appropriate statistics 
+like $Z_{\log(\thetahat)}$ by
+simulating from the actual population (or generating data from the
+actual process). Not being able to do this (because we do not know the
+exact character of the true population or process), we generate data
+based on information in the sample data.  It is necessary to
+generate a large number (denoted by $B$) of ``bootstrap samples'' that
+can be used to approximate sampling distributions of interest.  Due to
+the use of random (actually pseudorandom) samples, if the
+bootstrap method is applied twice to the same problem, there will be
+some differences between the answers obtained. With $B$ chosen large
+enough, such differences will be negligible.  When the goal is to
+compute confidence intervals, the usual recommendation is to use
+between $B$=2000 and $B$=5000 bootstrap samples (larger values of
+$B$ are recommended for estimating the more extreme quantiles of the
+bootstrap distribution that are required for higher confidence
+levels).  To reduce possible effects of simulation variability in our
+examples we have used $B$=10,000, but such a large number should not
+be necessary for most practical applications.
+
+%----------------------------------------------------------------------
+\subsection{Bootstrap sampling methods}
+There are several different methods for generating the needed bootstrap
+samples $\DATAboot_{j}, j=1,\dots,B$. 
+\begin{itemize}
+\item
+
+Figure~\ref{figure:parboot1fig.ps} illustrates the fully ``parametric''
+bootstrap sampling procedure. This method simulates 
+each sample of size $n$ from the assumed
+parametric distribution, using the ML estimates computed from the
+actual data to replace the unknown parameters. That is, sampling is
+from $F(t;\thetahat)$. Observations are
+censored according to the specified censoring mechanism. The
+disadvantage of this method is that it requires complete
+specification of the censoring process.  In simple problems (when
+all units will be run to failure or with Type~I or Type~II
+censoring) this presents no difficulties.
+%-------------------------------------------------------------------
+\begin{figure}
+\xfigbookfigure{\figurehome/parboot1fig.ps}
+\caption{Illustration of parametric bootstrap (simulation) sampling
+for parametric inference.}
+\label{figure:parboot1fig.ps}
+\end{figure}
+%-------------------------------------------------------------------
+The specification is, however, more difficult for complicated
+systematic or random censoring. Often the needed information (like the
+times that failed units would have been censored or inspected had they
+not failed) may be unknown.
+
+\item
+Figure~\ref{figure:parboot2fig.ps} illustrates the simpler
+``nonparametric'' bootstrap sampling scheme. In this method, each
+sample of size $n$ is obtained by sampling, with replacement, from
+the actual data cases in the original data set.  Specifically, to
+obtain $\DATAboot_{j}$, sample {\em with} replacement from the data
+cases in $\DATA$ until $n$ (the sample size) cases have been
+selected. In each draw, each data case in $\DATA$ has an equal
+probability of being chosen. New ``bootstrap estimates'' are
+computed for each sample of size $n$. The entire process is repeated
+for $j=1, \ldots, B$ bootstrap samples.
+%-------------------------------------------------------------------
+\begin{figure}
+\xfigbookfigure{\figurehome/parboot2fig.ps}
+\caption{Illustration of nonparametric bootstrap sampling
+for parametric inference.}
+\label{figure:parboot2fig.ps}
+\end{figure}
+%-------------------------------------------------------------------
+This method is simple to use (because the method depends only on the
+censored data and does not require explicit specification of the
+censoring mechanism) and generally, with moderate to large samples,
+provides results that are close to the fully parametric approach.
+When the number of distinct sample observations in $\DATA$ is very
+small (say less than 7), however, the distribution of the bootstrap
+statistics will be noticeably discrete and the fully parametric
+approach would be preferable.
+\end{itemize}
+Unless otherwise noted, the nonparametric bootstrap sampling method
+illustrated in Figure~\ref{figure:parboot2fig.ps} will be used.
+
+It is useful to save the bootstrap estimates $\thetahat^{*}_{j}$,
+$j=1,\ldots , B$ and the corresponding bootstrap standard error
+estimates (or the variance-covariance matrix when there is more than
+one model parameter) in a computer file so that they can be used
+subsequently in different ways without having to recompute the ML
+estimates (the computationally intensive part of bootstrap
+methods). In new and unfamiliar situations it can be useful to
+examine graphically the distribution of bootstrap statistics, as we
+will do in the following examples.
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Exponential Distribution Confidence Intervals}
+\label{section:exponential.bootstrap}
+
+This section shows how to apply bootstrap methods to the exponential
+distribution used in Chapter~\ref{chapter:parametric.ml.one.par}.
+Table~\ref{table:berkson.bootstrap.results} provides a comparison of
+the results for the three different sample sizes for the
+$\alpha$-particle data from
+Example~\ref{example:alpha.likelihood}. Because there is a more
+interesting contrast among the methods for small sample sizes, the
+following examples give details of the application of the bootstrap
+methods for the $n=20$ sample. As predicted by theory, with large
+samples, the different methods result in similar intervals.
+
+For the exponential distribution,
+instead of assuming $Z_{\log(\expmeanhat)}
+\approxdist \NOR(0,1)$, Monte Carlo simulation-based 
+methods can be used to obtain a better approximation to the
+distribution of $Z_{\log(\expmeanhat)}$.
+For example, the bootstrap approximation for the distribution of
+$Z_{\log(\expmeanhat)}$ in (\ref{equation:expmean.pivotal.like}) can be
+obtained by simulating $B$ bootstrap samples of size $n$ and
+computing ML estimates for each bootstrap sample. Then, for each
+bootstrap sample, compute
+$Z_{\log(\expmeanhat^{*}_{j})}=[\log(\expmeanhat^{*}_{j}) -
+\log(\expmeanhat)]/\sehat_{\log(\expmeanhat^{*}_{j})}$ where
+$\log(\expmeanhat^{*}_{j})$ is the $j$th bootstrap ML estimate of
+$\log(\expmeanhat)$ and $\sehat_{\log(\expmeanhat^{*}_{j})}$ is the
+corresponding standard error estimate. The bootstrap ML estimates
+$\log(\expmeanhat^{*})$ and
+$\sehat_{\log(\expmeanhat^{*})}$ are computed as in
+Section~\ref{section:normal.theory.exponential}, but from the
+bootstrap samples $\DATA^{*}_{j}, j=1, \ldots ,B$. Because such
+intervals are based on the distribution of $t$-like statistics
+(i.e., statistics computed in a manner that is similar to
+$t$-statistics
+used with normal distribution models with no censoring),
+the method is called the ``bootstrap-$t$'' method.
+
+
+\begin{example}
+{\bf Bootstrap sample for the $\boldsymbol{\alpha}$-particle mean
+time between arrivals.} Following
+Example~\ref{example:alpha.likelihood},
+Figure~\ref{figure:alpha.boot.mleprobplot.ps} is an exponential
+probability plot showing $F(t;\expmeanhat)$ from the original $n=20$
+sample (the thicker, longer line) and 50 (out of $B=$10,000) of the
+bootstrap estimates $F(t;\expmeanhat^{*})$, each computed from
+bootstrap samples of size $n=20$, fit to the exponential
+distribution. As explained in
+Section~\ref{section:linearizing.exponential.probplot}, each
+bootstrap estimate of $\expmeanhat^{*}$ gives a line on the
+exponential probability
+plot. Figure~\ref{figure:alpha.boot.mleprobplot.ps} provides insight
+into the amount of variability that one would expect to see in
+estimates of various different quantities of interest (e.g., failure
+probabilities at given times), based on repeated samples of size
+$n=20$.
+\end{example}
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/alpha.boot.mleprobplot.ps}
+\caption{Exponential plot of $F(t;\expmeanhat)$ from 
+the original sample (shown with the thicker, longer line)
+and 50 (out of $B=$10,000) $F(t;\expmeanhat^{*})$
+computed from exponential bootstrap samples for the $\alpha$-particle
+data.}
+\label{figure:alpha.boot.mleprobplot.ps}
+\end{figure}
+%-------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+\subsection{Bootstrap confidence intervals for $\expmean$ } 
+An approximate $100(1-\alpha)\%$ confidence
+interval for $\expmean$ based on the assumption that the simulated
+distribution of $Z_{\expmeanhat^{*}}$ provides a good approximation to the
+distribution of $Z_{\expmeanhat}$ is
+\begin{equation}
+\label{equation:bootstrap.ci.nolog.for.expmean}
+ [\undertilde{\expmean}, \quad \tilde{\expmean}] = [\expmeanhat -
+z_{\expmeanhat^{*}_{(1-\alpha/2)}}\sehat_{\expmeanhat},
+\quad
+\expmeanhat -  z_{\expmeanhat^{*}_{(\alpha/2)}}\sehat_{\expmeanhat}]
+\end{equation}
+where $z_{\expmeanhat^{*}_{(p)}}$ is the $p$ quantile of
+the distribution of $Z_{\expmeanhat^{*}}$ and
+$\expmeanhat$ and $\sehat_{\expmeanhat}$ are the estimates from the
+original sample [same as those used in
+(\ref{equation:exponential.interval.nolog}) 
+and (\ref{equation:exponential.interval.log})].
+The justification for (\ref{equation:bootstrap.ci.nolog.for.expmean})
+is similar to the justification of (\ref{equation:exponential.interval.nolog})
+given in Section~\ref{section:normal.theory.exponential}
+except that, unlike $\NOR(0,1)$, the distribution
+of $Z_{\expmeanhat^{*}}$ is not symmetric.
+
+
+Because $\expmean$ is a positive parameter and because the estimated
+standard error of $\thetahat$ is proportional to $\expmeanhat$, a
+better bootstrap procedure can be expected by basing confidence
+intervals on the assumption that the simulated distribution of
+$Z_{\log(\expmeanhat^{*})}$ provides a good approximation to the
+distribution of $Z_{\log(\expmeanhat)}$. In particular, analogous to
+(\ref{equation:exponential.interval.log}),
+\begin{equation}
+\label{equation:bootstrap.ci.log.for.expmean}
+[ \undertilde{\expmean}, \quad \tilde{\expmean}]=
+[\expmeanhat/\wlower, \quad \expmeanhat/\wupper]
+\end{equation}
+where $\wlower=\exp[ z_{\log(\expmeanhat^{*})_{(1-\alpha/2)}} 
+\sehat_{\expmeanhat}/\expmeanhat]$, $\wupper=
+\exp[z_{\log(\expmeanhat^{*})_{(\alpha/2)}} \sehat_{\expmeanhat}/
+\expmeanhat]$, and
+$z_{\log(\expmeanhat^{*})_{(p)}}$ is the $p$ quantile of the
+distribution of $Z_{\log(\expmeanhat^{*})}$.  Again, the
+justification for (\ref{equation:bootstrap.ci.log.for.expmean}) is
+similar to the justification of
+(\ref{equation:exponential.interval.log}) given in
+Section~\ref{section:normal.theory.exponential} except that $\wlower
+\ne \wupper$ because, unlike the $\NOR(0,1)$, the distribution of
+$Z_{\log(\expmeanhat^{*})}$ is not symmetric.
+
+\begin{example}
+{\bf Bootstrap confidence interval for
+$\boldsymbol{\alpha}$-particle mean time between arrivals.}
+Figure~\ref{figure:alpha.boot.summary.ps} gives histograms of the
+$B$=10,000 values of $\expmeanhat^{*}$, $Z_{\expmeanhat^{*}}$, and
+$Z_{\log(\expmeanhat^{*})}$.
+Figure~\ref{figure:alpha.boot.summary.ps} also shows the cumulative
+distribution of $Z_{\log(\expmeanhat^{*})}$ indicating, with the
+dashed lines, the .025 and .975 quantiles of the distribution of
+$Z_{\log(\expmeanhat^{*})}$. Numerically these quantiles are
+$z_{\log(\expmeanhat^{*})_{(.025)}} = -1.9858$ and
+$z_{\log(\expmeanhat^{*})_{(.975)}}=1.5483$, respectively.
+Substituting these quantiles and the values of $\expmeanhat$ and
+$\sehat_{\expmeanhat}$ obtained from the original
+$n=20$ sample (see Table~\ref{table:berkson.results}) into
+(\ref{equation:bootstrap.ci.log.for.expmean}) gives
+\begin{eqnarray*}
+[ \undertilde{\expmean}, \quad \tilde{\expmean}] &=&
+[440.2/1.4265, \quad
+440.2/.6341]= [ 309    , \quad  694 ]
+% splus  440.2/exp(1.5483*(101.0)/440.2)  =  308.5813
+% splus  440.2/exp(-1.9858*(101.0)/440.2)  =  694.2648
+\end{eqnarray*}
+where $\wlower=\exp( 1.5483 (101.0)/440.2) = 1.4265$ and
+$\wupper=\exp( -1.9858 (101.0)/440.2) = .6341$.
+Table~\ref{table:berkson.bootstrap.results} compares this interval
+with the interval based on the likelihood-ratio method.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/alpha.boot.summary.ps}
+\caption{Histograms of exponential
+bootstrap samples of $\thetahat^{*}$,
+$Z_{\thetahat^{*}}$ and $Z_{\log(\thetahat^{*})}$ for the $\alpha$-particle
+data and the empirical cdf of $Z_{\log}(\thetahat^{*})$.}
+\label{figure:alpha.boot.summary.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Bootstrap confidence 
+intervals for functions of $\expmean$} For the exponential
+distribution (or other distributions with just one unknown parameter),
+the simple method given in Section~\ref{section:one.par.ci.functions}
+provides a method for obtaining confidence intervals for monotone functions of
+$\expmean$.  As with the intervals in 
+Chapter~\ref{chapter:parametric.ml.one.par}, 
+the resulting confidence interval(s) inherit the
+coverage properties of the particular interval that was used for
+$\expmean$.
+\begin{example} 
+{\bf Bootstrap confidence intervals for the arrival rate of
+$\boldsymbol{\alpha}$-particles.} Using the bootstrap confidence interval for
+$\boldsymbol{\expmean}$ from the $n=20$ sample in
+Table~\ref{table:berkson.results},
+\begin{displaymath}
+ [ \undertilde{\lambda}, \quad  \tilde{\lambda} ] = 
+ [1/ \tilde{\expmean}, \quad  1/ \undertilde{\expmean} ] =  [.00144,
+\quad  .00324].
+%splus  1/308.5813;  1/309
+%splus  
+%splus  1/694.2648;   1/694
+%splus  
+%splus  
+\end{displaymath}
+Although this interval is for $\lambda$, the method
+is based on the assumption that $Z_{\log(\expmeanhat)} \approxdist
+Z_{\log(\expmeanhat^{*})}$.
+\end{example}
+
+
+
+%----------------------------------------------------------------------
+\subsection{Comparison of confidence interval methods}
+\label{section:bootstrap.exponential.ci.comparison}
+%-------------------------------------------------------------------
+\begin{table}
+\caption{Comparison of likelihood and bootstrap approximate
+confidence intervals for the $\alpha$-particle interarrival times.}
+\centering\small
+\begin{tabular}{*{6}{r}}
+\hline
+\multicolumn{2} {c} {}&
+\multicolumn{1} {c} {All Times}&
+\multicolumn{3} {c} {Sample of Times} \\
+\cline{4-6}
+\multicolumn{1} {c} {}&
+\multicolumn{1} {c} {}&
+\multicolumn{1} {c} {$n=$10,220}&
+\multicolumn{1} {c} {$n=$2000}&
+\multicolumn{1} {c} {$n=$200}&
+\multicolumn{1} {c} {$n$=20}\\
+\cline{1-2} \cline{3-6}\\[-1ex]
+\multicolumn{1} {l} {Approximate 95\%}\\
+\multicolumn{1} {l} {Confidence Intervals}
+&&&&& \\
+\multicolumn{1} {l} {for $\expmean$ Based on}
+&&&&& \\
+\multicolumn{1} {l} {\hspace{1em}  Likelihood}
+&& [584, 608] & [586, 641] & [498, 662] & [289, 713]  \\
+\multicolumn{1} {l} {\hspace{1em}
+        $Z_{\log(\expmeanhat)} \approxdist Z_{\log(\expmeanhat^{*})}$ }
+&& [584, 608] & [586, 641] & [496, 670] & [309, 694]  \\[2ex]
+\multicolumn{1} {l} {\hspace{1em}
+        $Z_{\expmeanhat} \approxdist Z_{\expmeanhat^{*}}$ }
+&& [584, 608] & [586, 641] & [496, 670] & [309, 694]  \\[2ex]
+\multicolumn{1} {l} {Approximate 95\%}\\
+\multicolumn{1} {l} {Confidence Intervals}
+&&&&& \\
+\multicolumn{1} {l} {for $\lambda\times 10^{5}$ Based on}
+&&&&& \\
+\multicolumn{1} {l} {\hspace{1em} Likelihood}
+&& [164, 171] & [156, 171] & [151, 201]& [140, 346] \\
+\multicolumn{1} {l} {\hspace{1em}
+        $Z_{\expmeanhat} \approxdist Z_{\expmeanhat^{*}}$ }
+&& [164, 171] & [156, 171] & [149, 202]& [144, 324] \\
+\multicolumn{1} {l} {\hspace{1em}
+        $Z_{\log(\expmeanhat)} \approxdist Z_{\log(\expmeanhat^{*})}$ }
+&& [164, 171] & [156, 171] & [149, 202]& [144, 324] \\[1ex]
+\hline
+\end{tabular}
+\label{table:berkson.bootstrap.results}
+\end{table}
+%-------------------------------------------------------------------
+
+For the $\alpha$-particle arrival data, Table
+\ref{table:berkson.bootstrap.results} compares 95\% approximate
+confidence intervals for $\expmean$ based on
+\begin{itemize}
+\item
+The likelihood-ratio method. 
+\item
+The bootstrap approximation 
+$Z_{\log(\expmeanhat)} \approxdist Z_{\log(\expmeanhat^{*})}$.
+\item
+The bootstrap approximation 
+$Z_{\expmeanhat} \approxdist Z_{\expmeanhat^{*}}$.
+\end{itemize}
+
+For this example, there is almost no
+difference between the bootstrap methods based on $Z_{\expmeanhat}
+\approxdist Z_{\expmeanhat^{*}}$ and $Z_{\log(\expmeanhat)}
+\approxdist Z_{\log(\expmeanhat^{*})}$ 
+(but this will not be true in general). 
+The comparison shows that, in this case, the likelihood-ratio method
+and the bootstrap methods are in close agreement for all sample
+sizes except
+$n$=20.  For $n$=20, the likelihood-based intervals are wider and
+simulation results (details not shown here) indicate that their coverage
+probability is larger than nominal.
+
+
+%----------------------------------------------------------------------
+\section{Weibull, Lognormal,
+and Loglogistic Distributions Confidence Intervals}
+\label{section:ls.bootstrap}
+Because of its simple specification, we continue to use the
+bootstrap resampling scheme illustrated in
+Figure~\ref{figure:parboot2fig.ps}. For samples with very small
+numbers failing (say less than 7), it would be better to use the fully
+parametric method illustrated in Figure~\ref{figure:parboot1fig.ps}.
+Similar to the normal-approximation intervals in
+Section~\ref{section:location.scale.normal.theory.ci}, it is important
+to base the bootstrap-$t$ confidence intervals on bootstrap evaluations
+of the distributions of $t$-like statistics employing transformations
+that transform statistics to an unlimited range:
+$Z_{\muhat}$,
+$Z_{\log(\sigmahat)}$, $Z_{\log(\rvquanhat_{.1})}$,
+$Z_{\logit[\Fhat(t)]}$, and $Z_{\log(\hhat)}$\footnote{Actually
+what is really needed is a transformation that will make the studentized
+bootstrap statistic behave approximately like a pivotal statistic.}.
+
+\begin{example}
+\label{example:shock.abs.bs.sample}
+{\bf Bootstrap sample for the shock absorber example.} 
+Following Example~\ref{example:shockabs.likelihood}, for each of
+$B$=10,000 bootstrap samples, bootstrap estimates $\muhat^{*}$,
+$\sigmahat^{*}$ were computed.
+Figure~\ref{figure:shockabsB.weib.boot.mu.vs.sigma.ps} shows the first
+1000 $(\muhat^{*},\sigmahat^{*})$ pairs, as well as the most extreme
+pair (which happened not to be among the first 1000). The correlation
+between $\muhat^{*}$ and $\sigmahat^{*}$
+is evidence of positive correlation between $\muhat$ and
+$\sigmahat$ (which we also saw in Example~\ref{example:shockabs.vcv.estimate}). 
+Estimates $\vcvmathat_{\muhat^{*},\sigmahat^{*}}$ of the
+variance-covariance matrix also were obtained so that bootstrap standard
+errors could be computed. All results were stored in a computer file
+to allow rapid computation of the various bootstrap confidence intervals to
+be described in this section.
+
+Figure~\ref{figure:shockabsB.weib.boot.mleprobplot.ps} shows the
+Weibull cdf ML estimate for the original sample (thick longer line) and for
+the first 50 bootstrap samples.  Studying this plot (even with
+the relatively small number of bootstrap samples shown) provides a
+clear picture of the precision with which it will be possible to
+estimate different quantiles and failure probabilities.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.weib.boot.mu.vs.sigma.ps}
+\caption{Scatter plot of 1000 (out of $B=$10,000) bootstrap Weibull
+estimates $\muhat^{*}$ and $\sigmahat^{*}$ for the shock absorber example.}
+\label{figure:shockabsB.weib.boot.mu.vs.sigma.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.weib.boot.mleprobplot.ps}
+\caption{Weibull plot of 
+$F(t;\muhat,\sigmahat)$ from the original sample 
+(shown with the thicker, longer line)
+and 50 (out of $B=$10,000) $F(t;\muhat^{*},\sigmahat^{*})$ bootstrap
+Weibull estimates computed from bootstrap samples for the shock
+absorber example.}
+\label{figure:shockabsB.weib.boot.mleprobplot.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Construction of confidence 
+intervals for parameters} 
+\label{section:bootstrap.ci.for.loc.scale.parameters}
+Following the approach used in
+Section~\ref{section:exponential.bootstrap}, the bootstrap
+approximation for the
+distribution of $Z_{\muhat}$ can be obtained by using the bootstrap
+samples to compute $B$ values
+of $Z_{\muhat^{*}_{j}}=(\muhat^{*}_{j} - \muhat)/\sehat_{\muhat^{*}_{j}}$
+where $\muhat^{*}_{j}$ is the $j$th bootstrap estimate of $\muhat$ and
+$\sehat_{\muhat^{*}_{j}}$ is the corresponding standard error estimate.
+Generally, $B$ should be between 2000 and 4000 (but we continue to
+use $B$=10,000 in our examples to further reduce the effects of
+Monte-Carlo variability).  The needed bootstrap estimates are computed
+as in Section~\ref{section:location.scale.normal.theory.ci}, but from
+the bootstrap samples $\DATA^{*}_{j}, j=1, \ldots ,B$.  
+An approximate $100(1-\alpha)\%$ confidence
+interval for $\mu$ based on the assumption that the simulated
+distribution of $Z_{\muhat^{*}}$ provides a good approximation to the
+distribution of $Z_{\muhat}$ is
+\begin{equation}
+\label{equation:bootstrap.ci.for.mu}
+ [\undertilde{\mu}, \quad \tilde{\mu}] = [\muhat -
+z_{\muhat^{*}_{(1-\alpha/2)}}\sehat_{\muhat},
+\quad
+\muhat -  z_{\muhat^{*}_{(\alpha/2)}}\sehat_{\muhat}]
+\end{equation}
+where $z_{\muhat^{*}_{(p)}}$ is the $p$ quantile of the distribution
+of $Z_{\muhat^{*}}$ and $\muhat$ and $\sehat_{\muhat}$ are the
+estimates from the original sample [same as those used in
+(\ref{equation:normal.theory.ci.for.mu})].  The justification for
+(\ref{equation:bootstrap.ci.for.mu}) is similar to the justification
+of (\ref{equation:np.normal.theory.ci}) given in
+Section~\ref{section:np.pointwise.ci}.
+
+
+
+
+\begin{example}
+{\bf Bootstrap confidence interval for the shock absorber Weibull
+$\mu$ parameter.} Following Example~\ref{example:shock.abs.bs.sample},
+Figure~\ref{figure:shockabsB.weib.boot.summary.mu.ps} gives histograms
+of the $B$=10,000 values of $\muhat^{*}$ and $Z_{\muhat^{*}}$. Also
+shown is the cumulative distribution of $Z_{\muhat^{*}}$ indicating,
+with the dashed lines, the  .025 and  .975 quantiles of the
+distribution of $Z_{\muhat^{*}}$. Numerically
+these quantiles are $z_{\muhat^{*}_{(.025)}} =
+-2.363$ and $z_{\muhat^{*}_{(.975)}}=1.252$, respectively.  From this,
+using some previous results from
+Example~\ref{example:normal.theory.ci.for.shock.mu} and substitution
+into (\ref{equation:bootstrap.ci.for.mu}) gives
+\begin{displaymath}
+ [\undertilde{\mu},\quad \tilde{\mu}] =
+[10.23 -  1.252 (.1099), \quad 10.23 +  2.363 (.1099)] = 
+	[10.09, \quad 10.49].
+%splus   10.23 - 1.252*.1099 = 10.09241
+%splus   10.23 + 2.363*.1099 = 10.48969
+\end{displaymath}
+Table~\ref{table:shockabsB.bootstrap.results} shows that these values
+are consistent with the likelihood-based interval.  The corresponding
+confidence interval for the Weibull scale parameter
+$\weibscale=\exp(\mu)$ can be computed by exponentiating the endpoints
+of this interval, as shown in
+Example~\ref{example:normal.theory.ci.for.shock.mu}.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.weib.boot.summary.mu.ps}
+\caption{Bootstrap distributions of Weibull
+$\muhat^{*}$ and $Z_{\muhat^{*}}$
+based on $B$=10,000 bootstrap samples for the shock absorber example.}
+\label{figure:shockabsB.weib.boot.summary.mu.ps}
+\end{figure}
+\end{example}
+
+An approximate $100(1-\alpha)\%$ confidence interval for $\sigma$
+can be computed in a
+manner that is similar to
+(\ref{equation:normal.theory.ci.for.sigma}). In particular
+$[ \undertilde{\sigma}, \quad \tilde{\sigma}]=
+[\sigmahat/\wlower, 
+\quad \sigmahat/\wupper]$
+where $\wlower=\exp[ z_{\log(\sigmahat^{*})_{(1-\alpha/2)}} 
+\sehat_{\sigmahat}/\sigmahat]$ and $\wupper=\exp[ z_{\log(\sigmahat^
+{*})_{(\alpha/2)}} \sehat_{\sigmahat}  /\sigmahat]$
+and $z_{\log(\sigmahat^{*})_{(p)}}$ is the $p$ quantile of
+the distribution of $Z_{\log(\sigmahat^{*})}$. This interval is
+based on the assumption that the simulated distribution of
+$Z_{\log(\sigmahat^{*})}$ provides a good approximation to the
+distribution of $Z_{\log(\sigmahat)}$. 
+
+\begin{example}
+{\bf Bootstrap confidence interval for the shock absorber Weibull
+$\sigma$ parameter.} Following Example~\ref{example:shock.abs.bs.sample},
+%Bill-none of the examples have labels-Denise
+Figure~\ref{figure:shockabsB.weib.boot.summary.sigma.ps} gives
+histograms of the $B$=10,000 values of $\sigmahat^{*}$,
+$Z_{\sigmahat^{*}}$, and $Z_{\log(\sigmahat^{*})}$.
+Figure~\ref{figure:shockabsB.weib.boot.summary.sigma.ps} also shows the
+cumulative distribution of $Z_{\log(\sigmahat^{*})}$ indicating, with
+the dashed lines, the .025 and .975 quantiles of the
+distribution of $Z_{\log(\sigmahat^{*})}$. Numerically these values
+are $z_{\log(\sigmahat^{*})_{(.025)}} = -2.458$ and
+$z_{\log(\sigmahat^{*})_{(.975)}}=1.589$, respectively.  From this,
+using some previous results from
+Example~\ref{example:normal.theory.ci.for.shock.sigma},
+$[ \undertilde{\sigma}, \quad \tilde{\sigma}] =
+[.3164/\wlower, \quad
+.3164/\wupper] = [ .2191    , \quad  .5585 ]$
+% splus  .3164/exp(1.589*(.07316)/.3164)  =  .21906
+% splus  .3164/exp(-2.458*(.07316)/.3164)  =  0.5585597
+where $\wlower=\exp[1.589(.07316)/.3164]=1.4440$ and 
+$\wupper=\exp[ -2.458  (.07316)/.3164] =.56645$.
+%splus  exp(1.589*(.07316)/.3164) = 1.444002
+%splus  exp( -2.458*(.07316)/.3164) = .5664569
+Table~\ref{table:shockabsB.bootstrap.results} also shows the
+bootstrap interval based on $Z_{\sigmahat^{*}}$. Both
+bootstrap methods deviate somewhat from the normal-approximation
+methods, but
+agreement is best with the likelihood method. The corresponding
+confidence interval for the Weibull shape parameter $\beta=1/\sigma$
+can be computed as shown in
+Example~\ref{example:normal.theory.ci.for.shock.sigma}.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.weib.boot.summary.sigma.ps}
+\caption{Bootstrap distributions of $\sigmahat^{*}$,
+$Z_{\sigmahat^{*}}$, and $Z_{\log(\sigmahat^{*})}$ based on $B$=10,000
+bootstrap samples for the shock absorber example.}
+\label{figure:shockabsB.weib.boot.summary.sigma.ps}
+\end{figure}
+\end{example}
+
+%-------------------------------------------------------------------
+\subsection{Confidence intervals for functions of parameters}
+\label{section:par.boot.ci.f}
+Bootstrap confidence intervals for functions of parameters can be
+computed by following the general approach used in
+Section~\ref{section:norm.conf.int.for.ls.fun} for
+normal-approximation intervals, but using quantiles of the bootstrap
+estimates of appropriate $Z$ distributions, as illustrated in
+Section~\ref{section:bootstrap.ci.for.loc.scale.parameters}.  The
+following examples describe and illustrate this procedure.
+
+\begin{example}
+{\bf Bootstrap confidence intervals for the shock absorber Weibull
+$\boldsymbol{F(t)}$.} Following Example~\ref{example:shock.abs.bs.sample},
+Figure~\ref{figure:shockabsB.weib.boot.summary.fhat10k.ps}
+gives histograms of the $B$=10,000 values of
+$\Fhatboot(\estimtime)$, $Z_{\Fhatboot}$, and
+$Z_{\logit(\Fhatboot)}$ for $\estimtime$=10,000 km.
+Figure~\ref{figure:shockabsB.weib.boot.summary.fhat10k.ps} also shows
+the cumulative distribution of $Z_{\logit(\Fhatboot)}$
+indicating, with the dashed lines, the .025 and .975 quantiles of the
+distribution of $Z_{\logit(\Fhatboot)}$.  Numerically these
+values are $z_{\logit(\Fhatboot)_{(.025)}} = -1.845$ and
+$z_{\logit(\Fhatboot)_{(.975)}}=2.045$, respectively.  From
+this, using $\Fhat(\estimtime)=.03908$ and
+$\sehat_{\Fhat}=.02480$ (from
+Table~\ref{table:shockabsB.results}) and substituting the bootstrap
+distribution quantiles for the $\NOR(0,1)$ quantiles in
+(\ref{equation:normal.theory.ci.on.cdf}) gives the values in
+Table~\ref{table:shockabsB.bootstrap.results}.
+
+Table~\ref{table:shockabsB.bootstrap.results} shows
+that the confidence intervals based on the distribution of
+$Z_{\logit(\Fhatboot)}$ are generally close to those obtained with
+the likelihood-based method. Intervals based on the distribution
+of $Z_{\Fhatboot}$ are, however, quite different from {\em any} of the
+other intervals. The primary reason for this is the extreme lower
+tail of the $Z_{\Fhatboot(\estimtime)}$ distribution, shown in
+Figure~\ref{figure:shockabsB.weib.boot.summary.fhat10k.ps} (the
+minimum value of $Z_{\Fhatboot(\estimtime)}$ being approximately
+$-20$).  In particular, $z_{\Fhatboot(\estimtime)_{(.025)}}
+=-7.411$. This indicates the importance, particularly for
+restricted quantities like $0 \leq \Fhat(t) \leq 1$, of using an
+appropriate transformation that will cause the distribution of the
+$Z^{*}$ bootstrap-$t$ statistics to be less sensitive to the unknown
+actual parameters of the underlying model.
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.weib.boot.summary.fhat10k.ps}
+\caption{Weibull model bootstrap distributions of $\Fhatboot(\estimtime)$,
+$Z_{\Fhatboot(\estimtime)}$, and $Z_{\logit[\Fhatboot(\estimtime)]}$
+for $\estimtime$=10,000 km based on $B$=10,000 bootstrap samples for
+the shock absorber example.}
+\label{figure:shockabsB.weib.boot.summary.fhat10k.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+\begin{table}
+\caption{Comparison of likelihood and parametric bootstrap approximate
+confidence interval methods for the shock absorbers.}
+\centering\small
+\begin{tabular}{*{4}{r}}
+\hline
+\multicolumn{2} {c} {}&
+\multicolumn{2} {c} {Distribution} \\
+\multicolumn{2} {c} {}&
+\multicolumn{1} {c} {Weibull}&
+\multicolumn{1} {c} {Lognormal} \\
+\cline{3-4}\\
+\multicolumn{1} {l} {Approximate 95\%}\\
+\multicolumn{1} {l} {Confidence Intervals for $\mu$}
+&&& \\
+\multicolumn{1} {l} {\hspace{1em} Based on the Likelihood}
+&& [10.06, 10.54] & [9.91, 10.53]\\
+\multicolumn{1} {l} {\hspace{1em} Based on \quad
+        $Z_{\muhat} \approxdist Z_{\muhat^{*}}$ }
+&& [10.09, 10.49] & [9.96, 10.47]  \\[2ex]
+\multicolumn{1} {l} {Approximate 95\%}\\
+\multicolumn{1} {l} {Confidence Intervals for $\sigma$}
+&&& \\
+\multicolumn{1} {l} {\hspace{1em} Based on the Likelihood}
+&& [.210, .527] & [.367, .858]\\ 
+\multicolumn{1} {l} {\hspace{1em} Based on \quad
+        $Z_{\log(\sigmahat)} \approxdist Z_{\log(\sigmahat^{*})}$ }
+&& [.219, .559] & [.383, 1.01]  \\
+\multicolumn{1} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\sigmahat} \approxdist Z_{\sigmahat^{*}}$ }
+&& [.220, .560] & [.387, .999]  \\[2ex]
+%-------------------------
+%-------------------------
+%-------------------------
+\multicolumn{1} {l} {Approximate 95\%}\\
+\multicolumn{1} {l} {Confidence Intervals for $\rvquan_{.1}$}
+&&& \\
+\multicolumn{1} {l} {\hspace{1em} Based on the Likelihood}
+&& [9400,     17300] & [9400, 16300] \\
+%splus lognormal 12910 -1.96*(1667)=9643
+%splus lognormal 12910 +1.96*(1667)=16177
+%splus weibull 13602 -1.96*(1982)=9717
+%splus weibull 13602 +1.96*(1982)=17487
+\multicolumn{1} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\log(\rvquanhat_{.1})} \approxdist Z_{\log(\rvquanhat_{.1}^{*})}$ }
+&& [8700, 17200] & [8100, 16100]  \\
+\multicolumn{1} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\rvquanhat_{.1}} \approxdist Z^{*}_{\rvquanhat_{.1}}$ }
+&& [8300, 17300] & [7800, 16200]  \\[2ex]
+%-------------------------
+%-------------------------
+%-------------------------
+\multicolumn{1} {l} {Approximate 95\%}\\
+\multicolumn{1} {l} {Confidence Intervals for $F(10000)$}
+&&& \\
+\multicolumn{1} {l} {\hspace{1em} Based on the Likelihood}
+&& [.0092, .1136] & [.0085, .1159]  \\
+%splus lognormal 
+%splus lognormal 
+%splus weibull 
+%splus weibull 
+\multicolumn{1} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\logit(\Fhat)} \approxdist Z_{\logit(\Fhatboot)}$ }
+&& [.0104, .1209] & [.0091, .1292]  \\
+\multicolumn{1} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\Fhat} \approxdist Z_{\Fhatboot}$ }
+&& [.0044, .2229] & [.0015, .6128]  \\
+\hline
+\end{tabular}
+\label{table:shockabsB.bootstrap.results}
+\end{table}
+%-------------------------------------------------------------------
+
+%-------------------------------------------------------------------
+\subsection{Comparison of confidence interval methods}
+\label{section:bootstrap.loc.scale.comparison.of.ci}
+Table~\ref{table:shockabsB.bootstrap.results} contains numerical
+values of approximate 
+confidence intervals for $\mu$, $\sigma$, $F(10000)$, and
+$\rvquan_{.1}$ based on the likelihood and bootstrap methods.
+Relative to the width of the intervals, the differences among the
+methods are not large, except that the use of the logit transformation
+on the interval for $F(10000)$ has a big effect. Comparison with
+the likelihood-based interval makes it clear that the use of the logit
+transformation provides an important improvement in this case.
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+ \section{Nonparametric Bootstrap Confidence Intervals}
+\label{section:np.bootstrap}
+
+%----------------------------------------------------------------------
+ \subsection{Nonparametric bootstrap sampling}
+%-------------------------------------------------------------------
+\label{section:nonpar.bootstrap}
+%----------------------------------------------------------------------
+\begin{figure}
+\xfigbookfigure{\figurehome/npbootfig.ps}
+\caption{Illustration of the nonparametric bootstrap
+resampling method.}
+\label{figure:npbootfig.ps}
+\end{figure}
+%----------------------------------------------------------------------
+As explained in Section~\ref{section:bootstrap.sampling}, to use the
+bootstrap method, it is necessary to generate a large number (denoted
+by $B$) of bootstrap-samples that can be used to approximate the
+sampling distributions of interest.
+%----------------------------------------------------------------------
+\begin{example}
+\label{example:heatex.boot.samples}
+{\bf Bootstrap samples for $\boldsymbol{F(t)}$ from
+the heat exchanger tube data.}  
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/heatexch.boot.cdfplot.ps}
+\caption{Plot of 
+$\Fhat(t)$ (large dots) and $\Fhatboot(t)$ values 
+for the first 50 of the
+$B$=10,000 bootstrap samples (small dots) for the pooled-data 
+heat exchanger tube example.}
+\label{figure:heatexch.boot.cdfplot.ps}
+\end{figure}
+%-------------------------------------------------------------------
+For this example $B$=10,000 bootstrap samples were generated. For
+each of the $B$ bootstrap samples, bootstrap estimates
+$\Fhatboot(t)$ and $\sehat_{\Fhatboot}$ were computed.
+Figure~\ref{figure:heatexch.boot.cdfplot.ps} shows $\Fhatboot(t)$
+values for the first 50 of the $B$=10,000 bootstrap samples. Notice
+the discreteness (limited number of outcomes) in the bootstrap
+estimates, especially at the end of the first year of operation.
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{A limitation and warning on the application of
+bootstrap methods for nonparametric estimation}
+\label{section:limitation.nonpar.boot.dist}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+The justification for the bootstrap is based on large-sample
+theory. Even with large samples, however, there can be difficulties
+in the tails of the sample.  For the nonparametric bootstrap, there
+will be a separate bootstrap distribution at each $\realrv_{i}$ for
+which there was one or more failures in the original sample.  These
+bootstrap distributions are approximately continuous outside of the
+tails of the sample data (because the number of different possible
+outcomes in the bootstrap sampling process is large). In the lower
+tail of the observed sample (i.e., at smaller $\realrv_{i}$ values),
+however, the bootstrap distribution can be far from continuous. As
+we will see in the examples, the standard bootstrap methods are not
+useful at such points on the distribution; plotting the observed
+bootstrap distribution identifies potential problems of this kind.
+
+%----------------------------------------------------------------------
+\begin{example}
+\label{example:heatex.boot.sample.dist}
+{\bf Bootstrap sampling distributions from the heat exchanger tube data.}
+After 1 year of operation, there were only 4 failed tubes across the
+heat exchangers. As shown in
+Figure~\ref{figure:heatexch.boot.cdfplot.ps} and
+\ref{figure:heatexch.cdfboot.t1.ps} the number of different outcomes
+in the bootstrap sampling at 1-year is small.  At 2 years, the number
+of possible outcomes is large enough for the distribution to be
+approximately continuous.
+\end{example}
+ 
+%----------------------------------------------------------------------
+\subsection{Distribution of bootstrap statistics}
+\label{section:nonpar.boot.dist}
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/heatexch.cdfboot.t1.ps}
+\caption{Nonparametric bootstrap distributions of 
+$\Fhatboot(\realrv_{i})$, $Z_{\Fhatboot}$, and
+$Z_{\logit(\Fhatboot)}$ at $\realrv_{i}=1$ year for $B$=10,000 bootstrap
+samples from the pooled heat exchanger tube data.  There were 167 occurrences of
+$\Fhatboot(1)=0$ that were adjusted to $.5/n_{i}$
+where $n_{1}=300$ is the size of the risk set at the beginning of year 1.}
+\label{figure:heatexch.cdfboot.t1.ps}
+\end{figure}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/heatexch.cdfboot.t2.ps}
+\caption{Nonparametric bootstrap distributions of 
+$\Fhatboot(t_{i})$, $Z_{\Fhatboot}$, and $Z_{\logit(\Fhatboot)}$ at
+$t_{i}=2$ years for $B$=10,000 bootstrap samples from the pooled
+heat exchanger tube data.  There were 3 occurrences of $\Fhatboot(2)=0$
+that were adjusted to $.5/n_{2}$ where $n_{2}=197$ is the size of
+the risk set at the beginning of year 2.}
+\label{figure:heatexch.cdfboot.t2.ps}
+\end{figure}
+%----------------------------------------------------------------------
+
+The accuracy of bootstrap approximation confidence intervals, like the
+normal-approximation intervals, will, in general, depend on the
+transformation used in the procedure.  To allow use of the logit
+transformation and plotting of the bootstrap estimates one can adjust
+any $\Fhatboot(t_{i})=0$ to $\Fhatboot(t_{i})=.5/n_{i}$ and any
+$\Fhatboot(t_{i})=1$ to $\Fhatboot(t_{i})=(n_{i}-.5)/n_{i}$ where
+$n_{i}$ is the size of the risk set at the beginning of interval $i$.
+These adjustments will have no effect on confidence intervals unless
+the frequency of such events exceeds $\alpha/2$ (in which case, the
+nonparametric bootstrap method should not be used anyway because of
+the extreme discreteness in the distribution).
+
+\begin{example}
+{\bf Distribution of bootstrap statistics for the heat exchanger
+tube data.}
+Figure~\ref{figure:heatexch.cdfboot.t1.ps} gives histograms of the
+$B$=10,000 values of $\Fhatboot(t_{i})$,
+$Z_{\Fhatboot}=(\Fhatboot-\Fhat)/
+\sehat_{\Fhatboot}$, and
+$Z_{\logit(\Fhatboot)}=
+[\logit(\Fhatboot)-\logit(\Fhat)]/
+\sehat_{\logit(\Fhatboot)}$
+at $t_{i}$=1 year of operation. Also shown is the cumulative
+distribution of $Z_{\logit(\Fhatboot)}$ indicating, with the dashed
+lines, the .025 and .975 quantiles of the distribution of
+$Z_{\logit(\Fhatboot)}$. Numerically these quantiles are
+$z_{\logit(\Fhatboot)_{(.025)}} = -1.394$ and
+$z_{\logit(\Fhatboot)_{(.975)}}=1.972$, respectively.
+Figure~\ref{figure:heatexch.cdfboot.t2.ps} does the same for
+$t_{i}=2$ years of operation.  Because of the relatively small
+number of possible outcomes at $t_{i}=1$, the bootstrap
+distributions there are far from continuous.  At $t_{i}=2$, however,
+the distribution has the appearance of being approximately
+continuous. Corresponding plots for $t_{i}=3$ were very similar to
+the plots for $t_{i}=2$.  Comparing across the three time points, the bootstrap
+distribution of $Z_{\logit(\Fhatboot)}$ is much more stable [i.e.,
+has a more consistent shape and spread for different values of
+$F(t_{i})$] than that of $Z_{\Fhatboot}$. For this reason, a
+procedure based on the $Z_{\logit(\Fhat)} \approxdist
+Z_{\logit(\Fhatboot)}$ can be expected to provide better approximate
+confidence intervals.
+\end{example}
+
+
+%----------------------------------------------------------------------
+\subsection{Pointwise nonparametric bootstrap confidence 
+intervals for $\boldsymbol{F(t_{i})}$} 
+\label{section:pointwise.np.boot}
+To obtain nonparametric bootstrap confidence 
+intervals for $F=F(t_{i})$ at $t_{i}$, we modify the
+approach in Section~\ref{section:np.pointwise.ci},
+substituting bootstrap estimates of the quantiles of
+the distribution of $Z_{\logit(\Fhatboot)}$ in place of the
+$\NOR(0,1)$ quantiles.
+Specifically, a two-sided approximate $100(1-\alpha)\%$ 
+bootstrap confidence interval based on 
+$Z_{\logit(\Fhat)} \approxdist Z_{\logit(\Fhatboot)}$
+is
+\begin{equation}
+\label{equation:fhat.logit.boot.ci}
+[\undertilde{F}(t_{i}), \quad \tilde{F}(t_{i})] = 
+\left[\frac{\Fhat}{\Fhat
++(1-\Fhat) \times \undertilde{w}},  \quad \frac{\Fhat}{\Fhat+
+(1-\Fhat) \times \tilde{w}}
+\right]
+\end{equation}
+where
+$\undertilde{w}=\exp\{z_{\logit(\Fhatboot)_{(1-\alpha/2)}}\sehat_{\Fhat}/
+[\Fhat(1-\Fhat)]\}$ and
+$\tilde{w}=\exp\{z_{\logit(\Fhatboot)_{(\alpha/2)}}\sehat_{\Fhat}/
+[\Fhat(1-\Fhat)]\}$.  This formula is similar to
+(\ref{equation:fhat.logit.ci}), with an important difference. For
+the bootstrap interval, there are separate values of $w$ for the
+upper and lower tails of the distribution. This is because the
+distribution of $Z_{\logit(\Fhatboot)}$, unlike the $\NOR(0,1)$
+distribution, is not symmetric.
+%----------------------------------------------------------------------
+
+\begin{example}
+{\bf Nonparametric bootstrap confidence interval for the heat
+exchanger time-to-crack cdf.}  Consider estimating the fraction of
+heat exchanger tubes that crack after one year of operation (i.e.,
+$t_{i}=1$). Using the quantiles of the distribution of
+$Z_{\logit(\Fhatboot)}$, previous results from
+Example~\ref{example:heat.ex.nonpar.nor}, and substituting into
+(\ref{equation:fhat.logit.boot.ci}) gives
+\begin{displaymath}
+[\undertilde{F}(t_{i}), \quad \tilde{F}(t_{i})] = 
+\left[\frac{.0133}{.0133
++(1-.0133) \times \undertilde{w}},  \quad \frac{.0133}{.0133+
+(1-.0133) \times \tilde{w}}\right] = [.0050, \quad .0266]
+\end{displaymath}
+where
+\begin{eqnarray*}
+\undertilde{w}  &=&  \exp\{1.972(.00662)/[.0133 (1-.0133)]\}= 2.704\\
+\tilde{w}  &=&  \exp\{-1.394(.00662)/[.0133 (1-.0133)]\}= .4950.
+\end{eqnarray*}
+%splus:lower  .01333/( .01333+ (1-.0133) * 2.7041) = 0.004971162
+%splus:upper  .01333/( .01333+ (1-.0133) * 0.4950) = 0.0265672
+%splus:lower    exp(1.972*(.00662)/(.0133* (1-.0133))) = 2.7041
+%splus:upper    exp(-1.394*(.00662)/(.0133* (1-.0133))) =0.4950
+Nonparametric bootstrap confidence interval based on
+$Z_{\Fhat} \approxdist Z_{\Fhatboot}$ are computed
+similarly.
+
+Table~\ref{table:bootstrap.conf.interval.heat.exch} gives the numerical results
+for bootstrap and normal-approximation methods for $\estimtime=1,2,3$.
+Comparison shows that the $Z_{\logit(\Fhat)} \approxdist
+\NOR(0,1)$ and $Z_{\logit(\Fhat)} \approxdist
+Z_{\logit(\Fhatboot)} $ methods are not too different.  Because
+it is based on a more precise evaluation, the bootstrap interval
+procedure based on $Z_{\logit(\Fhat)} \approxdist
+Z_{\logit(\Fhatboot)}$ can be expected to have better coverage
+properties.   
+
+For this example, the observed frequencies of $\Fhatboot=0$
+were much less than $\alpha/2=.025$ for all values of $\realrv_{i}$ and so
+the continuity adjustment described in
+Section~\ref{section:nonpar.boot.dist} has no effect
+on the confidence intervals.
+\end{example}
+%-------------------------------------------------------------------
+\begin{table}
+\caption{Results of calculations for nonparametric confidence intervals
+for $F$ and comparison with normal-approximation intervals
+for the heat exchanger tube data.}
+\centering\small
+\begin{tabular}{rrrrc}
+Year & $\estimtime$ &  $\Fhat(\estimtime)$
+&$\sehat_{\Fhat}$&
+\multicolumn{1} {c} {Pointwise Confidence Intervals}\\
+\cline{1-5}\\
+$ (0-1]$ & 1 & .0133 & .00662 \\[1ex]
+\multicolumn{4} {l} {Approximate  95\% Confidence Intervals for $F(1)$} \\
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\logit(\Fhat)} \approxdist \NOR(0,1)$ }
+& [.0050, .0350] \\[.1ex]
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\Fhat} \approxdist \NOR(0,1)$ }
+& [.0003, .0263] \\[.1ex]
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\logit(\Fhat)} \approxdist Z_{\logit(\Fhatboot)}$}
+& [.0050, .0266] \\[.1ex]
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\Fhat} \approxdist Z_{\Fhatboot}$ }
+& [.0038, .0332] \\[3ex]
+
+$ (1-2]$&2&.0384&.0128\\[1ex]
+\multicolumn{4} {l} {Approximate  95\% Confidence Intervals for $F(2)$} \\
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\logit(\Fhat)} \approxdist \NOR(0,1)$ }
+& [.0198, .0730] \\[.1ex]
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\Fhat} \approxdist \NOR(0,1)$ }
+& [.0133, .0635] \\[.1ex]
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\logit(\Fhat)} \approxdist
+Z_{\logit(\Fhatboot)} $}
+& [.0188, .0702] \\[.1ex]
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\Fhat} \approxdist Z_{\Fhatboot}$ }
+& [.0171, .0770] \\[3ex]
+
+
+
+$ (2-3]$&3&.0582&.0187\\[1ex]
+\multicolumn{4} {l} {Approximate  95\% Confidence Intervals for $F(3)$} \\
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\logit(\Fhat)} \approxdist \NOR(0,1)$ }
+& [.0307, .1076] \\
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\Fhat} \approxdist \NOR(0,1)$ }
+& [.0216, .0949] \\[.1ex]
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\logit(\Fhat)} \approxdist Z_{\logit(\Fhatboot)}$}
+& [.0302, .1097] \\[.1ex]
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\Fhat} \approxdist Z_{\Fhatboot}$ }
+& [.0282, .1168] \\[.1ex]
+\\[1ex] \hline
+\end{tabular}
+\label{table:bootstrap.conf.interval.heat.exch}
+\end{table}
+
+%----------------------------------------------------------------------
+\begin{example}
+{\bf Bootstrap confidence intervals for $\boldsymbol{F(t)}$ from the shock
+absorber data.} 
+\label{example:shock.abs.boot.samples}
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.boot.cdfplot.ps}
+\caption{Nonparametric $\Fhat(t)$ (thick solid line)
+and $\Fhatboot(t)$ for 50 of the $B$=10,000
+bootstrap samples from the shock absorber data (thin dashed lines).}
+\label{figure:shockabsB.boot.cdfplot.ps}
+\end{figure}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.cdfboot.t2.ps}
+\caption{Nonparametric bootstrap distributions of 
+$\Fhatboot(\estimtime)$, $Z_{\Fhatboot}$, and
+$Z_{\logit(\Fhatboot)}$ at $\estimtime=$6700
+km (the $1$st failure time) for $B$=10,000
+bootstrap samples from the shock absorber data.  There were 3635
+occurrences of $\Fhatboot(\estimtime)=$0 that were adjusted to $.5/n_{1}$.}
+\label{figure:shockabsB.cdfboot.t2.ps}
+\end{figure}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.cdfboot.t4.ps}
+\caption{Nonparametric bootstrap distributions of 
+$\Fhatboot(\estimtime)$, $Z_{\Fhatboot}$, and
+$Z_{\logit(\Fhatboot)}$ at $\estimtime=$12,200 km (the $3$rd failure time)
+for $B$=10,000 bootstrap samples from the shock absorber data.  There
+were 446 occurrences of $\Fhatboot(\estimtime)=0$ that were adjusted to
+$.5/n_{3}$.}
+\label{figure:shockabsB.cdfboot.t4.ps}
+\end{figure}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.cdfboot.t8.ps}
+\caption{Nonparametric bootstrap distributions of 
+$\Fhatboot(\estimtime)$, $Z_{\Fhatboot}$, and
+$Z_{\logit(\Fhatboot)}$ at $\estimtime=$20,100 km (the $7$th failure time)
+for $B$=10,000 bootstrap samples from the shock absorber data.  There
+was one occurrence of $\Fhatboot(\estimtime)=0$ that was adjusted to
+$.5/n_{7}$.}
+\label{figure:shockabsB.cdfboot.t8.ps}
+\end{figure}
+%----------------------------------------------------------------------
+The application of the bootstrap method for this
+example is similar to the approach used in
+Section~\ref{section:nonpar.bootstrap}.  There are, however, important
+differences in the character of the bootstrap distributions because
+the shock absorber failure times were reported as exact failures (i.e.,
+not grouped into inspection intervals). Thus we could take as $\estimtime$,
+any particular time of interest out to 28,100 km, the last time of
+observation.
+
+Again, $B$=10,000 bootstrap samples were generated. For each of the
+$B$ bootstrap samples, nonparametric bootstrap estimates $\Fhatboot$
+and $\sehat_{\Fhatboot}$ were computed.
+Figure~\ref{figure:shockabsB.boot.cdfplot.ps} shows
+$\Fhat(\estimtime)$ as thick solid lines and $\Fhatboot(\estimtime)$
+for the first 50 of the $B$=10,000 bootstrap samples as thin dashed
+lines.  Note the discreteness in the $\Fhatboot(\estimtime)$
+bootstrap estimates at the earlier points in time. This figure alone
+gives a sense of the sampling variability in both
+$\Fhatboot(\estimtime)$ and $\Fhat(\estimtime)$.
+
+Figures~\ref{figure:shockabsB.cdfboot.t2.ps},
+\ref{figure:shockabsB.cdfboot.t4.ps}, and 
+\ref{figure:shockabsB.cdfboot.t8.ps} show more detail at three
+particular points in time (time of the 1st, 3rd, and 7th failures).
+In this sequence of figures we see the bootstrap distributions of
+$\Fhatboot(\estimtime)$ and $Z_{\logit(\Fhatboot)}$ become
+progressively closer to continuous as we move from
+$t=$6700 to $t$=20,100. The distribution of
+the untransformed $Z_{\Fhatboot}$ is somewhat more erratic, again
+indicating the importance of using a transformation to make the
+distribution of the $Z$ statistic more stable over the possible values
+of the underlying model.
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.cdf.boot.nor.pw.ps}
+\caption{Plot of the nonparametric estimate
+for the shock absorber data comparing the normal approximation
+$Z_{\logit(\Fhat)} \approxdist \NOR(0,1)$ (dashed lines) from
+Chapter~\ref{chapter:nonparametric.estimation} and the bootstrap
+$Z_{\logit(\Fhat)} \approxdist Z_{\logit(\Fhatboot)}$ (dotted lines)
+pointwise 95\% approximate confidence intervals for
+$F(\estimtime)$.}
+\label{figure:shockabsB.cdf.boot.nor.pw.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Figure~\ref{figure:shockabsB.cdf.boot.nor.pw.ps} is similar to
+Figure~\ref{figure:shockabsB.cdf.pw.ps}, but also shows the set of
+approximate 95\% pointwise bootstrap confidence intervals for
+$F(\estimtime)$ as dotted lines, to compare with the normal-approximation
+intervals shown with dashed lines. 
+\end{example}
+Because of the highly discrete distribution for the first two
+segments, the bootstrap confidence intervals there are not credible.
+Beyond this point, however, the differences between the two methods
+are not large. The bootstrap intervals are, for some time points,
+narrower (this will not be true in general, however) and sometimes
+shifted up somewhat.  The important advantage of bootstrap intervals
+is that, except for the first few segments, they provide intervals
+based on approximations that are generally better than the simpler
+normal-approximation approach.
+
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\section{Percentile Bootstrap Method}
+\label{section:percentile.bootstrap}
+Sections~\ref{section:exponential.bootstrap} through
+\ref{section:np.bootstrap} describe and illustrate the
+use of the ``bootstrap-$t$'' method.  When it is not
+easy to compute the standard error for an estimate, the percentile
+bootstrap, as described in Efron and Tibshirani~(1993), provides a
+simple useful alternative. In its simplest form, the percentile
+method uses appropriate percentiles of the bootstrap distribution to
+define the confidence interval.  Suppose that $\thetahat^{*}_{j}$,
+$j=1,\ldots , B$ is the bootstrap sample for a parameter
+$\theta$. Then the 100$(1-\alpha)$\% percentile bootstrap interval
+for $\theta$ is
+\begin{displaymath}
+\left[ \wideundertildex{\theta}, \quad
+\wideovertildex{\theta} \right] = 
+\left[\thetahat^{*}_{[l]},  \quad
+\thetahat^{*}_{[u]} \right]
+\end{displaymath}
+where $\thetahat^{*}_{[j]}$, $j=1,\ldots , B$ is the bootstrap sample
+ordered from smallest to largest, $l=B \times (\alpha/2)$ and $u=B
+\times (1-\alpha/2)$. Generally $l$ and $u$ would be rounded to the
+next lowest and next highest integer, respectively. Alternatively, $B$
+can be chosen so that $l$ and $u$ are integers.
+
+The percentile bootstrap method has the advantage that the interval
+provided by the procedure does not depend on the transformation scale
+of the parameter 
+(this property is called
+``transformation preserving'' in Efron and Tibshirani~1993).  In small
+samples the percentile method is generally not as accurate as the
+bootstrap-$t$ with an appropriate transformation. Efron and
+Tibshirani~(1993) give methods for adjusting the percentile method for
+bias and nonconstant variance, generally providing accuracy comparable
+with the bootstrap-$t$ method. Section~\ref{section:degrad.ci} gives a
+detailed algorithm for the bias-corrected percentile method and an
+example of its use.  In Section~\ref{section:adt.bootstrap} the
+percentile method is used to obtain confidence intervals for
+accelerated degradation test analysis.
+%-------------------------------------------------------------------
+\section*{Bibliographic Notes}
+With complete data or Type~II censoring (including progressive
+censoring) and location-scale distributions, the distribution of the
+$t$-like statistics, such as $Z_{\muhat}$, $Z_{\log(\sigmahat)}$, and
+$Z_{\log(\rvquanhat_{.1})},$ depend only on the sample size and the
+fixed number of failures. This implies that the parametric bootstrap
+approach, using the bootstrap sampling approach illustrated in
+Figure~\ref{figure:parboot1fig.ps}, provides confidence intervals that
+have exactly the nominal level of confidence. This approach to
+computing confidence intervals is described, for example, in
+Robinson~(1983). For Type~I censoring, in general, ``exact'' methods
+do not exist.
+
+
+Bootstrap methods for obtaining confidence intervals have become
+extremely popular in recent years.  The early work of Efron (e.g.,
+Efron~1982) generated a large amount of research activity.  The books
+by Hall~(1992) and Efron and Tibshirani~(1993) describe and illustrate
+most of the important theory and methods. Shao and Tu~(1995) is
+another important reference providing theory upon which bootstrap
+methods are based. Nonparametric methods for censored data are
+described in Efron~(1981) and Akritas~(1986).
+
+Jeng and Meeker~(1998) describe a large simulation that was used to
+compare various methods of constructing confidence bounds for
+Weibull distribution parameters and quantiles based on Type~I
+censored data (with Type~II censored data, the parametric bootstrap
+method procedure has exact coverage probabilities).  Their
+conclusions indicate that simulation-based methods, for most
+situations, provide important improvements over normal-approximation
+methods, especially when interest is primarily on one side or the
+other of an interval, as is generally the case in reliability
+applications.
+
+An appendix of Efron and Tibshirani~(1993) provides \splus functions
+for computing bootstrap intervals. If \splus is not available, or
+for special problems the needed computations can be programmed by the
+analyst. Buckland~(1985) provides a Fortran algorithm. Other
+programming languages or high-level programming environment can be
+used, but efficiency may suffer with simulations programmed largely in
+interpretive languages.
+
+%-------------------------------------------------------------------
+\section*{Exercises}
+
+\begin{exercise1}
+\label{exercise:shock.boot.time1}
+Consider the bootstrap sampling distribution described in
+Example~\ref{example:shock.abs.boot.samples}. Consider the bootstrap
+distribution of events at the point $\estimtime$=6700 km (the $1$st
+failure time). Refer to Figure~\ref{figure:shockabsB.cdfboot.t2.ps}.
+\begin{enumerate}
+\item
+\label{exercise.part:shock.boot.time1.timedist}
+The number of observed failures before $t_{e}=$6700 km
+in a bootstrap sample has a
+binomial distribution. What are the parameters of this distribution?
+\item
+\label{exercise.part:shock.boot.time1.eventdist}
+List all of the possible outcomes in the sample space of
+part~\ref{exercise.part:shock.boot.time1.timedist} and compute the
+probability associated with each event.  This will require the use of
+a computer package for computing binomial probabilities.
+\item
+Use the result in
+parts~\ref{exercise.part:shock.boot.time1.timedist} 
+and \ref{exercise.part:shock.boot.time1.eventdist} to
+compute the true distribution of $\Fhatboot(\estimtime)$,
+$Z_{\Fhatboot}$, and $Z_{\logit(\Fhatboot)}$ at $\estimtime=$6700.
+(As we did in these examples, substitute $\Fhatboot=.5/38$
+for the event of 0 failures.)
+Compare your answers with the histograms in
+Figure~\ref{figure:shockabsB.cdfboot.t2.ps}.
+\end{enumerate}
+\end{exercise1}
+
+
+\begin{exercise1}
+\label{exercise:shock.boot.time2}
+Refer to Exercise~\ref{exercise:shock.boot.time1}.  Do the same things
+for $\estimtime=$9120 km (the $2$nd failure time).  Note that 
+for this exercise a generalization of the binomial distribution is
+required. This is because it is important
+to take into consideration the number of censored observations between
+$\estimtime=$6700 and $\estimtime=$9120.
+\end{exercise1}
+
+
+\begin{exercise2}
+Write a computer program to do the following, using
+the shock absorber data
+from Example~\ref{example:shock.abs.bs.sample} to illustrate the
+program's use.
+\begin{enumerate}
+\item
+\label{part:boot.sa1}
+Sample with replacement to obtain a sample of size $n=38$ shock
+absorbers from the 38 rows of Appendix
+Table~\ref{atable:shockabs.data}.
+\item
+Compute the Weibull distribution ML bootstrap estimates
+$(\muhat^{*},\sigmahat^{*})$ for this sample.
+\item
+\label{part:boot.sa3}
+Compute the bootstrap studentized quantile estimate
+$Z_{\log(\rvquanhat_{.1}^{*})} =
+[\log(\rvquanhat^{*}_{.1})-\log(\rvquanhat_{.1})]/\sehat_{\log(\rvquanhat^{*}_{.1})}$.
+\item
+\label{part:boot.sa4}
+Repeat steps \ref{part:boot.sa1} to \ref{part:boot.sa3}
+2000 times to get 2000 values of
+$Z_{\log(\rvquanhat_{.1}^{*})}$.
+Make a histogram of these values to see the
+bootstrap distribution of $Z_{\log(\rvquanhat_{.1}^{*})}$.
+Find the .025 and .975 quantiles of this distribution.
+\item
+Use the results in part~\ref{part:boot.sa4} to compute a bootstrap
+confidence interval for $\rvquan_{.1}$.  Compare with the interval in
+Table~\ref{table:shockabsB.bootstrap.results}.  Why are they not
+exactly the same? What could be done to assure better agreement in
+such a comparison?
+\end{enumerate}
+\end{exercise2}
+
+
+\begin{exercise}
+Explain the possible advantages and disadvantages of using the
+bootstrap sampling methods illustrated
+in Figures~\ref{figure:parboot1fig.ps} and \ref{figure:parboot2fig.ps}
+when the goal is to obtain a confidence interval for 
+the quantile of a Weibull distribution under the following conditions
+with $n$ small (say 10) and $n$ large (say 100):
+\begin{enumerate}
+\item
+A complete sample of $n$ failure times.
+\item
+A Type~II sample consisting of $r=n/2$ failures out of $n$
+units.
+\item
+A Type~I censored sample, starting with $n$ units
+and censored at a point in time
+close to the median of the distribution.
+\item
+A randomly censored sample, starting with $n$ units
+where units are censored at random points  in time
+such that about 50\% of the units will be observed to fail and the
+others will be censored.
+\end{enumerate}
+\end{exercise}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+
+\begin{exercise1}
+Let $\realrv_{(1)}< \dots < \realrv_{(r)}$
+denote the observed failure times from a 
+life test that was censored at time
+$\censortime$. Suppose that the underlying failure time
+distribution is a log-location-scale distribution so that
+$\rv \sim \Phi \left \{ [\log(\realrv)-\mu]/\sigma \right \}$,
+where $\Phi$ is a standardized location-scale cdf.
+Suppose that $1 \leq r \leq n$ (at least one failure) and
+let $\muhat$ and $\sigmahat$ be the ML 
+estimators of the parameters.
+Show that the distributions of $\sigmahat/\sigma$,
+$(\muhat-\mu)/\sigma$, and $(\muhat-\mu)/\sigmahat$ 
+depend only on the cdf $\Phi$, the
+sample size $n$, and the proportion of censoring, 
+$q_{c}=1-\Phi \left \{ [\log(\censortime)-\mu]/\sigma \right \}$.
+
+This can be accomplished with the following steps (as illustrated
+for the distribution of $\sigmahat/\sigma$).
+\begin{enumerate}
+\item
+Denote by $R$ the random number of failures in the life test.
+Show that conditional
+on having one or more failures the
+distribution of $R$ is
+\begin{displaymath}
+\Pr(R=r)=\frac
+         { 	
+{n \choose r }
+(1-q_{c})^{r} q_{c}^{n-r} } 	 {
+1-q_{c}^{n}}, \qquad r=1,\cdots, n.
+\end{displaymath}
+\item
+Show that conditional
+on having one or more failures the distribution of
+$\sigmahat/\sigma$ is
+\begin{eqnarray*}
+\Pr \left (
+     \frac{\sigmahat} 	 {\sigma} 	\le v \right )&=&
+\sum_{r=1}^{n}
+\Pr\left [
+     \left ( \frac{\sigmahat} 	 {\sigma} 	\le v \right ) \,\,
+\mbox{and} 	 \,\, \left ( R=r \right ) \right ]
+\\
+&=&
+\sum_{r=1}^{n}
+\Pr\left [
+     \left.  \left ( \frac{\sigmahat} 	 {\sigma} 	\le v \right )
+\right | R=r \right ]
+\Pr (R=r).
+\end{eqnarray*}
+\item
+Write the likelihood for the censored sample of $r$ failures and
+show that for each fixed $r\, (r=1, \dots, n)$ and $n$, the ML estimator is
+a function of $\realrv_{(j)},\, j=1,\dots,r$ and
+$\censortime$, say $\sigmahat = H_{n:r}[\log(\realrv_{(1)}), \dots,
+\log(\realrv_{(r)}),
+\censortime]$.  
+\item
+Use the location-scale property of the distribution of $T$ to 
+show that for each fixed 
+$r$ and $n$, the estimator is ``equivariant'' in the
+sense that 
+\begin{displaymath}
+(\sigmahat/\sigma) =  H_{n:r}[z_{(1)}, \dots,z_{(r)} , q_{c}]
+\end{displaymath}
+where
+$z_{(j)}=[\log(\realrv_{(j)})-\mu]/\sigma$ is the $j$th order statistic
+from a random variable with cdf,
+$
+\Phi(z)/(1-q_{c}), \, z \le [\log(\censortime)-\mu]/\sigma.
+$
+\end{enumerate}
+\end{exercise1}
+
+\begin{exercise}
+Refer to Figure~\ref{figure:shockabsB.weib.boot.mleprobplot.ps}.
+Using the ideas of the percentile bootstrap discussed in
+Section~\ref{section:percentile.bootstrap}, determine,
+approximately, a 95\% confidence interval for $t_{.2}$ of the shock
+absorber failure-time distribution.
+\end{exercise}
+
+\begin{exercise}
+Refer to Figure~\ref{figure:shockabsB.weib.boot.mleprobplot.ps}.
+Using the ideas of the percentile bootstrap discussed in
+Section~\ref{section:percentile.bootstrap}, determine,
+approximately, a 95\% confidence interval for $F(10000)$ of the shock
+absorber failure-time distribution.
+\end{exercise}

@@ -1,0 +1,1034 @@
+---
+title: "`r SMRD:::info('book')`"
+subtitle: "`r SMRD:::info('chapter7')`"
+author: "`r SMRD:::info('authors')`"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+footer: "`r paste('SMRD: ', SMRD:::info('chapter7'))`"
+output:
+  slidy_presentation:
+    smart: false
+    fig_caption: yes
+runtime: shiny
+graphics: yes
+---
+
+```{r intro, echo=FALSE,message=FALSE, warning=FALSE}
+source('scripts/R/setup.R')
+library(SMRD)
+```
+
+# CHAPTER OVERVIEW
+
+```{r}
+shiny::includeCSS('scripts/css/flat-slidy.css')
+shiny::includeScript(path = "scripts/js/audiojs/audiojs/audio.min.js",
+                     "audiojs.events.ready(function() {audiojs.createAll();});")
+shiny::includeScript("scripts/js/jkf-scroll.js")
+```
+
+## This chapter explains...
+
+- Likelihood for a parametric model using discrete data
+
+- Likelihood for samples containing right and left consored observations
+
+- Use of parametric likelihood as a tool for data analysis and inference about a single population or process
+
+- The use of likelihood and normal-approximation confidence intervals for model parameters and other quantities of interest
+
+- The density approximation to the likelihood for observations reported as exact failures
+
+# 7.1 - INTRODUCTION
+
+## Maximum Likelihood Estimation
+
+
+
+## stuff
+
+- where $f(\underline{x}|\underline{\theta})$ is...
+>
+- The probability (probability density, actually) of... 
+>
+- ...observing data $\underline{x}=x_1,...,x_n, \;\;n\in[1,\infty)$... 
+>   
+- ...from a distribution with density function of the form $f(x|\theta)$ 
+
+- Is a function of $\underline{x}$ assuming $\underline{\theta}=\theta_{1},\theta_{2},...$ are <focus>known</focus>
+
+- What data $\underline{x}$ are most likely to be produced by a distribution with parameters $\underline{\theta}$?
+
+
+- $f(x_i|\underline{\theta})$ is the probability density associated with observation $x_i$
+
+- But, this statement comes with the following assumptions
+
+    1) We know (or at least have specified) a functional form values for $\theta$
+    
+    2) We know (or at least have specified) values for $\theta$
+
+$\mathscr{L}(\underline{\theta}|\underline{x})$ 
+
+- Is a function of $\underline{\theta}$ assuming $\underline{x}=x_{1},...,x_{n}$ has already been observed
+
+- What values of $\underline{\theta}$ are most likely to have produced $\underline{x}$?
+
+
+
+## Properties of MLE's
+
+- If the ML regularity conditions are met
+
+$$\sqrt{n}\left(\hat{\theta}_{_{MLE}}-\theta\right)\xrightarrow{L}N\left(0,\mathscr{I}^{-1}_{\theta}\right)$$
+
+- where $\mathscr{I}_{\theta}$ is the Fisher Information matrix evaluated at $\theta$ which is expressed as
+
+$$\mathscr{I}_{\theta}=-E\left[\frac{\partial^2\mathscr{L}(\underline{\theta}|\underline{x})}{\partial\underline{\theta}(\partial\underline{\theta})^T}\right]=-E\left[\frac{\partial^2\mathscr{L}(\underline{\theta}|\underline{x})}{\partial\theta_i\partial\theta_j}\right]$$\
+
+- Functions of MLE's are also MLE's and are asymptotocally normally distributed
+
+    + We can use the Delta Method to find these asymptotic distributions
+
+
+<div class='example'>
+### Example 7.1 - Time Between $\alpha$-Particle Emissions
+
+## Background
+
+- Berkson investigated the time between $\alpha$-particle emissions from AM-241
+
+- Physics suggests that the interarrival times of the $\alpha$ particles are $iid\; EXP(\theta)$
+
+## Data set
+
+- The data are $10,220$ observed interarrival times (measured in units of $1/5000$ seconds)
+
+    + The times have been "binned" into intervals as shown in Table 7.1
+
+    + To illustrate the effect of sample size, random samples of size $n=20, 200,\;\&\;2000$ were drawn from the original data set, these samples are shown in Table 7.1
+
+## Figure 7.1 & Table 7.1
+```{r}
+teachingApps::includeApp('figure7_1')
+```
+</div>
+
+# 7.2 - PARAMETRIC LIKELIHOOD
+
+## Total likelihood is equal to the joint probability of the data
+
+- Mathematically this means...
+
+$$\mathscr{L}(\underline{\theta}|\underline{x})=\sum_{i=1}^{n}\mathscr{L}_{i}(\underline{\theta}|x_i)=f(\underline{x}|\underline{\theta})=\prod_{i=1}^{n}f(x_{i}|\underline{\theta}),\;\;\text{if}\;x_{i}\; iid$$
+
+- So...what does that mean?
+
+<div class='center'>![](images/confused2.gif)</div>
+
+- Ok, let's walk through it...<focus>using a real-world example</focus>
+
+<div class='example'>
+### Example - Maximum Likelihood...
+
+## Tell Me If You've Heard This One Before...
+
+- Four distributions walk into a bar
+
+    + <purple>An exponential</purple>
+
+    + <green>A normal</green>
+
+    + <red>A lognormal</red>
+
+    + <blue>A Weibull</blue>
+
+```{r, results='hide'}
+obs <- c(4.2564, 0.5319)
+```
+
+- Once inside, they observe $4.2564$ and $0.5319$ laying on the floor
+
+    + The <purple>exponential</purple> says: 'Those are mine, they came from an exponential distribution'
+
+    + The <green>normal</green> says: 'Those are mine, they came from a normal distribution'
+
+    + The <red>lognormal</red> says: 'Those are mine, they came from a lognormal distribution'
+
+    + The <blue>Weibull</blue> says: 'Those are mine, they came from a Weibull distribution'
+
+- What steps are required to show which distribution is correct?
+
+    1) Determine which <purple>Exponential</purple> distribution best fits the data
+
+    2) Determine which <green>Normal</green> distribution best fits the data
+
+    3) Determine which <red>Lognormal</red> distribution best fits the data
+
+    4) Determine which <blue>Weibull</blue> distribution best fits the data
+
+    5) Determine which of these best-fit distributions best fits the data   
+
+- We could perform each of these steps analytically, but...
+
+    + That would be painful and time-consuming
+
+    + It would be of little benefit, since few real problems can be solved analytically 
+
+    + <focus>I really don't want to</focus>
+
+    + Instead, we'll find MLE's for the <purple>exponential</purple> distribution analytically and find them numerically for the others 
+
+## The <purple>Exponential</purple> distribution
+
+```{r}
+exp.mle <- round(sum(obs)/2, digits = 4)
+EXP.MLE <- round(dexp(obs[1],rate = 1/exp.mle)*dexp(obs[2], rate = 1/exp.mle), digits = 4)
+```
+
+
+
+    + Setting this derivative equal to zero and solving for $\theta$ reveals that
+$$\hat{\theta}_{_{MLE}}=\frac{\sum_{i=1}^n t_i}{n}$$
+
+    + <focus>NOTE:</focus> For completeness, we should have also found the second derivative to ensure that the critical value is in fact a maximum and not a minimum.
+
+    + Substituting the two observations results in the following value
+$$\hat{\theta}_{_{MLE}}=\frac{4.2564+0.5319}{2}=2.3942$$
+
+    + Finally, (<red>whew!</red>) we can compute the maximum joint probability/likelihood of observating $(4.2564, 0.5319)$ - assuming the exponential distribution is correct)
+
+<small>
+$$\begin{aligned}
+\prod_{i=1}^2 f(t_i|\theta=2.3942)&=\left(\frac{1}{2.3942}\right)\exp\left[-\frac{4.2564}{2.3942}\right]\times\left(\frac{1}{2.3942}\right)\exp\left[-\frac{0.5319}{2.3942}\right]\\\\
+&=\mathbf{0.0236}
+\end{aligned}
+$$</small>
+
+- To summarize - we determined (<red>analytically</red>) that...
+
+    + The member of the exponential distribution family that best-fits the data $(`r obs[1:2]`)$ was the member for which $\theta=2.3942$
+
+    + The joint probability/likelihood of this model is $0.0236$ 
+
+    + The value $0.0236$ represents the best that the exponential distribution can do to model this data and will be used to compare with the other distributions
+
+- <focus>The graphical solution</focus>
+
+    + The plot below shows the joint prabability/likelihood of the <purple>exponential</purple> distribution to model the observations $(`r obs`)$ for various values of $\hat{\theta}$
+
+    + The vertical line shows the value of $\hat{\theta}_{_{MLE}}$ that we computed analytically correndonds to the value of $\theta$ that maximizes the joint probability on the plot
+
+    + It should be clear that graphical solutions can be faster and easier than analytical solutions, but they can also be less accurate
+
+```{r}
+teachingApps::includeApp('exp_mle')
+```
+
+- <focus>The numerical solution</focus>
+
+    + <focus>Remember</focus> the goal of maximum likelihood estimation is to <u>maximize the likelihood function</u>
+
+    + The most straight-forward way to do this is through numerical optimization
+
+    + Numerical optimization can be as fast as graphical methods and as accurate as analytical methods
+    
+    + R has [several functions](https://afit.shinyapps.io/r-intro-stats) for optimizing/maximizing functions
+
+    + Here, we'll use my favorite - `nlminb( )`
+    
+```{r}
+teachingApps::includeApp('exp_numerical')
+```
+
+## The <green>normal</green>, <red>lognormal</red>, and <blue>Weibull</blue> distributions
+
+- Each of these distributions have two parameters
+
+- Analytic solutions for find MLE's <focus>do not</focus> exist for all two-parameter distributions 
+
+- Graphical approaches for two-parameter distributions result in three dimensional likelihood surfaces - can be difficult to interpret 
+
+- Numerical techniques are preferred <focus>and are often required</focus> to find the MLE's for distributions with 2 or more unknown parameters 
+
+- The shiny app below shows the likelihood surfaces and the numerical solutions for each of these three distributions
+
+```{r}
+teachingApps::includeApp('soln_numerical')
+```
+</div>
+
+# 7.2.2 - Likelihood Function and Its Maximum
+
+## Every Observation Contributes to the Likelihood Function
+
+- The value of the likelihood function $\mathscr{L}(\underline{\theta}|\underline{x})$ depends on
+
+    1) The assumed parametric model
+
+    2) The observed data
+
+- The total likelihood is comprised of the contributions from every observation
+
+    + For observation $x_i$, the model with the highest probability provides the greatest contribution to the total likelihood
+
+    + For a single observation, the model providing the greatest contribution to the total likelihood may not be the correct model
+
+    + As the number of observatons is increased, more information is obtained and it becomes easier to differentiate which model best-fits the data
+
+- The shiny app below shows how increasing the number of observations makes it easier to tell which model best-fits a data set
+
+```{r}
+teachingApps::includeApp('maximum_likelihood')
+```
+
+## Contributions to the Likelihood Function For Reliability Data
+
+- For failure-time data, observations make one of four contributions to the likelihood function
+
+<small>
+$$\mathscr{L}_{i}(\underline{\theta}|t_{i})=\begin{cases} S(t_{i}) &\mbox{for a right censored observation}\\\\F(t_{i}) &\mbox{for a left censored observation}\\\\F(t_{i})-F(t_{i-1}) &\mbox{for an interval censored observation}\\\\\lim\limits_{\Delta_i\rightarrow 0} \frac{(F(t_{i})-\Delta_{i})-F(t_{i})}{\Delta_{i}} &\mbox{for an "exact" observations}\end{cases}$$
+</small>
+
+- Thus, from Eq 2.14, the total likelihood function may be expressed as
+
+$$
+\begin{aligned}
+\mathscr{L}(\underline{\theta}|\underline{x})&=C\prod_{i=1}^{n} \mathscr{L}_{i}(\underline{\theta}|x_i)\\
+&=C\prod_{i=1}^{m+1}[F(t_{i})]^{l_{i}}[F(t_{i})-F(t_{i-1})]^{d_{i}}[1-F(t_{i})]^{r_{i}}
+\end{aligned}
+$$
+
+- where
+
+    + $l_i=1$ if $t_i$ is a left censored observation (0 otherwise)
+
+    + $d_i=1$ if $t_i$ is an interval censored observation (0 otherwise)
+
+    + $r_i=1$ if $t_i$ is a right censored observation (0 otherwise)
+
+    + $n = \sum_{j=1}^{m+1}(l_{j}+d_{j}+r_{j})$
+
+# 7.2.3 - Comparison of $\alpha$-Particle Data Analyses
+
+<div class='example'>
+### Example 7.3 - Likelihood for the $\alpha$ Particle Data
+
+## Background
+
+- Berkson modeled the times between $\alpha$-particle arrivals using an $EXP(\theta)$ distribution.
+
+- This example demonstrates the effect of sample size on the value of $\hat{\theta}_{_{MLE}}$ 
+
+## Data Set
+
+- The original data set contained $10,220$ observations binned into $m+1=8$ time intervals
+
+- The random samples of size $n = 20, 200, 2000$ that were generated from the original data are shown below
+
+- Note that all four of these data sets are available in the `SMRD` package and may be called using
+
+    + `berkson20`
+
+    + `berkson200`
+
+    + `berkson2000`
+
+    + `berkson10200`
+
+```{r,echo=1:3, comment=NA, results='markup'}
+data <- matrix(c(3,7,4,1,3,2,0,0,
+                 41,44,24,32,29,21,9,0,
+                 292,494,332,236,261,308,73,4,
+                 1609,2424,1770,1306,1213,1528,354,16),
+               nrow  = 4, 
+               byrow = TRUE)
+
+rownames(data) <- c("n = 20","n = 200","n = 2000","n = 10220")
+data
+```
+
+## Additional Information
+
+- Regardless of which sample size we wish to use, the form of the likelihood function will be the same
+
+- <focus>The form of the likelihood function would change if</focus>
+
+    + We chose to model the data with a distribution other than the <purple>exponential</purple>
+
+    + We chose to inspect the samples more (less) often - resulting in a higher (lower) number of intervals
+
+- The form of the likelihood function for these data (<purple>assuming the exponential distribution is correct</purple>) is expressed as
+
+$$
+\begin{aligned}
+\mathscr{L}(\underline{\theta}|\underline{x})&=C\prod_{j=1}^{8}[F(t_{j}|\theta)-F(t_{j-1}|\theta)]^{d_{j}}\\
+&=C\prod_{j=1}^{8}\left[1-\exp\left(-\frac{t_{j}}{\theta}\right)-1-\exp\left(-\frac{t_{j-1}}{\theta}\right)\right]^{d_{j}}\\
+&=C\prod_{j=1}^{8}\left[\exp\left(-\frac{t_{j-1}}{\theta}\right)-\exp\left(-\frac{t_{j}}{\theta}\right)\right]^{d_{j}}
+\end{aligned}
+$$
+
+- In R, this likelihood function may be assigned shown below
+
+- Where
+
+    + `theta` represents the exponential parameter value $\theta$ the value of which we are looking to find
+
+    + `d` is a vector-valued variable of size $1\times 8$ representing the number of observations in each of the eight time intervals 
+
+```{r,echo=TRUE}
+Like7.3 <- function(theta,d) {
+
+F <- log(exp(   -0/theta)-exp( -100/theta))*d[1]+
+     log(exp( -100/theta)-exp( -300/theta))*d[2]+
+     log(exp( -300/theta)-exp( -500/theta))*d[3]+
+     log(exp( -500/theta)-exp( -700/theta))*d[4]+
+     log(exp( -700/theta)-exp(-1000/theta))*d[5]+
+     log(exp(-1000/theta)-exp(-2000/theta))*d[6]+
+     log(exp(-2000/theta)-exp(-4000/theta))*d[7]+
+     log(exp(-4000/theta)-exp( -Inf/theta))*d[8] 
+
+return(-F)  ### Remember: we're minimizing the negative of our function  
+}
+```
+
+- We'll use `nlminb` to find the value of `theta` that maximizes the function `Like7.3` for each of the four data sets
+
+    + For each sample, a start value of 400 was used, this was based on trial and error
+
+    + Choosing start values that are too far away from the critical value can sometimes cause convergence failures
+
+    + Note that the `upper` and `lower` arguments were used to limit the range of values in which `nlminb` will search
+
+- Verify that the values returned by `nlminb` below for $\hat{\theta}_{_{MLE}}$ match those shown in the top of Table 7.2
+
+```{r,echo=1:9, comment=NA, results='markup'}
+P.1 <- nlminb(start = 400, obj = Like7.3, d = data[1,], lower = 100, upper = 800)$par 
+P.2 <- nlminb(start = 400, obj = Like7.3, d = data[2,], lower = 100, upper = 800)$par
+P.3 <- nlminb(start = 400, obj = Like7.3, d = data[3,], lower = 100, upper = 800)$par
+P.4 <- nlminb(start = 400, obj = Like7.3, d = data[4,], lower = 100, upper = 800)$par
+
+MLE <- data.frame(P.1,P.2,P.3,P.4)
+
+colnames(MLE) <- c("n = 20","n = 200","n = 2000","n = 10220")
+rownames(MLE) <- c("MLE")
+MLE
+```
+
+## Figure 7.3 - Exponential MLE Probability Plots
+
+```{r}
+teachingApps::includeApp('figure7_3')
+```
+</div>
+
+# 7.3 - Confidence Intervals for $\theta$
+
+# 7.3.1 - Likelihood Confidence Interval for $\theta$
+
+## The Relative Likelihood Function $R(\theta)$
+
+- The likelihood function $\mathscr{L}(\underline{\theta}|\underline{x})$ provides a useful method for computing approximate CI's for
+
+    + Parameters
+
+    + Functions of parameters
+
+- We know that $\mathscr{L}(\underline{\theta}|\underline{x})$ attains its maximum value at $\hat{\theta}_{_{MLE}}$ 
+
+- We also know that for $\theta \ne \hat{\theta}_{_{MLE}}$,   $\mathscr{L}(\theta|\underline{x})<\mathscr{L}(\hat{\theta}_{_{MLE}}|\underline{x})$
+
+- By rearranging this relationship, we can define the <red>relative likelihood function</red> as 
+
+$$R(\theta)=\frac{\mathscr{L}(\theta|\underline{x})}{\mathscr{L}(\hat{\theta}_{_{MLE}}|\underline{x})} \in (0,1)$$
+
+## Likelihood-Based Confidence Intervals
+
+- An approximate $100(1-\alpha)\%$ CI for $\theta$ is the set of values for which
+
+$$-2\log[R(\theta)]\le \chi^2_{(1-\alpha;df)}$$
+
+- Or, equivalently, the values for which
+
+$$R(\theta)\ge\exp\left[-\chi^2_{(1-\alpha;df)}/2\right]$$
+
+- Where $df$ is equal to the number of unknown parameters
+
+- <focus>Note the following equivalence relationship</focus> 
+
+$$\frac{\mathscr{L}(\theta|\underline{x})}{\mathscr{L}(\hat{\theta}_{_{MLE}}|\underline{x})}=\exp\left[\frac{\log(\mathscr{L}(\theta|\underline{x}))}{\log(\mathscr{L}(\hat{\theta}_{_{MLE}}|\underline{x})})\right]\ne\frac{\log(\mathscr{L}(\theta|\underline{x}))}{\log(\mathscr{L}(\hat{\theta}_{_{MLE}}|\underline{x}))}$$
+
+<div class='example'>
+### Example: Finding Relative-Likelihood Based CI's
+
+## Background
+
+- For the $\alpha$-particle data set $(n=20)$, a $95\%$ CI for $\theta$ may be found using the relative likelihood in two ways
+
+    + Analytically - <red>The Hard Way</red>
+
+    + Numerically - <green>The Easy Way</green>
+
+- This example walk through both processes
+
+## Finding Likelihood Based CI's <red>Analytically</red>
+
+- Step 1: Find $\hat{\theta}_{_{MLE}}$ by maximizing $\mathscr{L}(\theta|\underline{x})$
+ 
+$$
+\begin{aligned}
+\mathscr{L}(\theta|\underline{x})&=C\prod^{20}_{i=1}\frac{1}{\theta}\exp\left[-\frac{t}{\theta}\right]\\
+&=C\prod_{j=1}^{8}\left[\exp\left(-\frac{t_{j-1}}{\theta}\right)-\exp\left(-\frac{t_{j}}{\theta}\right)\right]^{d_{j}}\\
+&=C\sum_{j=1}^{8}d_{j}\times \log\left[\exp\left(-\frac{t_{j-1}}{\theta}\right)-\exp\left(-\frac{t_{j}}{\theta}\right)\right]
+\end{aligned}
+$$ 
+
+- Step 2: Identify the critical values for $R(\theta)$
+
+    + For this example the only unknown parameter is $\theta,\;(df=1)$ 
+
+    + Therefore, a two-sided $95\%$ CI for $\hat{\theta}_{_{MLE}}$ is all values of $\hat{\theta}$ for which
+
+$$
+\begin{aligned}
+R(\theta)=\frac{\mathscr{L}(\hat{\theta}|\underline{x})}{\mathscr{L}(\hat{\theta}_{_{MLE}}|\underline{x})}&\ge \exp\left[-\chi^{2}_{(1-.05;1)}/2\right]\\
+&\ge 0.147
+\end{aligned}
+$$
+
+```{r echo=TRUE, results='markup'}
+exp(-qchisq(.95,1)/2)
+```
+
+- Step 3: Using the critical values of $R(\theta)$, find the associated critical values for $\theta$
+
+    + If $\hat{\theta}_{_{MLE}}$ is known, the value of $\mathscr{L}(\hat{\theta}_{_{MLE}}|\underline{x})$ can easily be found.
+
+    + The critical value for $R(\theta)$ has already been determined
+
+    + Thus, the critical values for $\theta$ may then be found by recursively substituting values in
+$$\mathscr{L}(\theta|\underline{x})\ge R(\theta_c) \times\mathscr{L}(\hat{\theta}_{_{MLE}}|\underline{x})$$
+
+    + For all but the most basic likelihood functions, Step 3 is hard and time consuming
+
+    + Thankfully, computers can do this for us
+
+## Finding The Relative-Likelihood Based CI <green>Numerically</green>
+
+- Plotting $R(\theta) \sim \theta$ gives a normalized profile of $\mathscr{L}(\theta)$ that can be used to compute CI's for $\theta$
+
+- The SMRD package makes this really easy
+
+```{r}
+teachingApps::includeApp('berkson200_profile')
+```
+
+## Figure 7.2 - Relative Likelihood Functions
+
+- Figure 7.2 shows the relative likelihood functions for each of the four samples from the Berkson data
+
+- Note how the shape of the relative likelihood function changes with differing amounts of information
+
+    + What does this mean mathematically?
+
+    + What does this mean conceptually?
+
+    + The text talks about the 'curvature of the likelihood function' Figure 7.2 is graphically showing this
+
+    + We'll discuss this figure more in a later example
+
+- The Shiny app below allows you to interact with Figure 7.2
+
+```{r}
+teachingApps::includeApp('figure7_2')
+```
+</div>
+
+# 7.3.2 - Confidence Interval - Significance Test Relationship
+
+## Significance Tests (aka hypothesis tests) 
+
+- Consider the region of the parameter space that is the mathematical complement to the region enclosed by the confidence interval
+
+<div class="columns-2">
+<blue>
+<center>Confidence Intervals</center>
+</blue>
+
+- We observe data
+- Attempt to fit many distributions
+- Find the "most likely" parameters 
+- Identify the critial values
+- Values inside critical values bound our uncertainty on the parameter value
+
+
+<blue>
+<center>Significance Test</center>
+</blue>
+
+- We observe data
+- Assume one distribution is correct
+- Test a single parameter value
+- Identify the critical values
+- Values outside critical values indicate the data is inconsitent with our hypothesis
+</div>
+
+- The significance test associated with likelihood-based CI's is known as the <red>Likelihood Ratio Test</red>
+
+- In the $\alpha$-particle example, our uncertaintly about the value of $\hat{\theta}_{_{MLE}}$ was expressed as all values of $\theta$ for which
+
+$$R(\theta|\underline{x})\ge\exp\left[-\chi^2_{(1-\alpha;1)}/2\right]$$
+
+- In the likelihood ratio test (LRT)
+
+    + A single value of $\theta$ is hypothesized, denoted by $\theta_{0}$
+
+    + The LRT tests whether the observed data provides sufficient evidence to reject the hypothesized value $\theta_0$ or not 
+
+<div class='example'>
+### Example 7.7 LRT for the $\alpha$-Particle Data Set
+
+## Background 
+
+- Investigators believe that the true value for $\theta=650 \left(\frac{1}{5000}\;\text{seconds}\right)$ 
+
+- They wish to use an LRT to test the hypothesis:
+
+$$
+\begin{aligned}
+H_{0}: \theta &= 650\\
+H_{1}: \theta &\ne 650
+\end{aligned}
+$$
+
+## Analysis
+
+- For the sample with $n=200$ observations, the LRT critical values for $\alpha=.05$ would be 
+
+$$
+\begin{aligned}
+-2\log\left[R(\theta_{0}|\underline{x})\right]&>\chi^2_{(.95,1)}\\
+-2\log\left[\frac{\mathscr{L}(\theta_0|\underline{x})}{\mathscr{L}(\hat{\theta}_{_{MLE}}|\underline{x})}\right]&>3.84
+\end{aligned}
+$$
+
+- For the data set with $n=200$ observations, $\hat{\theta}_{_{MLE}}=572.3$, therefore
+
+$$\frac{\mathscr{L}(650|\underline{x})}{\mathscr{L}(572.3|\underline{x})}=2.94$$ 
+
+- The value of the test statistic $2.94$ is less that the critical value of $3.84$ 
+
+- As this value is not in the rejection region, insufficient evidence exists to reject the null hypothesis that $\theta=650$ at the $.05$ significance level.
+
+## Additional Information
+
+- Meeker notes that the sample with $n=2000$ observations does provide sufficient evidence to reject the null hypothesis that $\theta=650$ at the $.05$ significance level
+
+    + How is this possible
+</div>
+
+# 7.3.3 - Normal Approximation CI for $\theta$
+
+## The Fisher Information Matrix
+
+- A two-sided $100(1-\alpha)\%$ CI for $\theta$ based on the normal approximation is expressed as
+
+$$\left[\underline{\theta},\overline{\theta}\right]=\hat{\theta}\pm z_{(1-\alpha/2)} \hat{se}_{\hat{\theta}}$$
+
+- Where
+
+    + $\hat{\theta}$ is our point estimate for $\theta$ using the available data<br><red>This quantity is known</red>
+
+    + $z_{(1-\alpha/2)}$ is the quantile value $NOR(p=1-\alpha/2|\mu=0, \sigma=1)$<br><red>This quantity is known</red>
+
+    + $\hat{se}_{\hat{\theta}}=\sqrt{\widehat{Var}[\theta]}$<br><red>This term has yet to be determined and will require the most of our efforts</red> 
+
+- In general, the variance & covariance values for the parameters are computed from the <focus>Fisher Information Matrix</focus> expressed as 
+
+$$\mathscr{I}_{\theta}=-E\left[\frac{\partial^2\mathscr{L}(\underline{\theta}|\underline{x})}{\partial\theta_i\partial\theta_j}\right]=E\left[\mathcal{I}_{\hat{\theta}}\right]$$
+
+- The Fisher Information Matrix 
+
+    + Gives the <blue>expected</blue> amount of information <u>before any data has been collected</u> 
+
+    + Is primarily a theoretical measure
+
+- Once data has been observed the estimated variances & covariances may be computed from the <focus>observed information matrix</focus> $\mathcal{I}_{\hat{\theta}}$
+
+## Observed Information Matrix
+
+- The observed information matrix is expressed as
+
+$$\mathcal{I}_{\theta}=-\frac{\partial^2\mathscr{L}(\underline{\theta}|\underline{x})}{\partial\theta_i\partial\theta_j}$$
+
+- Recall, the log-likelihood function for the $\alpha$-particle example
+$$\mathcal{L}(\theta|\underline{t})=\sum_{j=1}^8 d_j \log\left[\exp\left(-\frac{t_{j-1}}{\theta}\right)-\exp\left(-\frac{t_j}{\theta}\right)\right]$$
+
+- The first and second derivatives for this log-likelihood function are expressed as
+
+<smaller>
+$$
+\begin{aligned}
+\frac{d\mathcal{L}(\theta)}{d\theta}&=\sum_{j=1}^8 d_j\frac{\frac{t_{j-1}}{\theta^2}\exp\left(-\frac{t_{j-1}}{\theta}\right)-\frac{t_{j}}{\theta^2}\exp\left(-\frac{t_{j}}{\theta}\right)}{\exp\left(-\frac{t_{j-1}}{\theta}\right)-\exp\left(-\frac{t_{j}}{\theta}\right)}\\\\\\\\
+\frac{d^2\mathcal{L}(\theta)}{d\theta^2}&=\sum_{j=1}^8 d_j\left[\frac{\frac{t_{j-1}}{\theta^2}\exp\left(-\frac{t_{j-1}}{\theta}\right)-\frac{t_{j}}{\theta^2}\exp\left(-\frac{t_{j}}{\theta}\right)}{\exp\left(-\frac{t_{j-1}}{\theta}\right)-\exp\left(-\frac{t_{j}}{\theta}\right)}\right]^2+
+\frac{\frac{-2t_{j-1}}{\theta^3}\exp\left(-\frac{t_{j-1}}{\theta}\right)+\frac{t_{j}^4}{\theta^4}\exp\left(-\frac{t_{j}}{\theta}\right)}{\exp\left(-\frac{t_{j-1}}{\theta}\right)-\exp\left(-\frac{t_{j}}{\theta}\right)}
+\end{aligned}
+$$
+</smaller>
+
+- The information observed from a data set may be found by substituting any value for $\hat{\theta}$ into $\frac{\partial^2\mathcal{l}(\theta)}{\partial\theta^2}$  
+
+- Substituting $\hat{\theta}_{_{MLE}}$ maximizes the observed information and is typically the value of $\theta$ used 
+
+- Substituting $\hat{\theta}_{_{MLE}}$ for $\theta$ in $\frac{\partial^2\mathcal{l}(\theta)}{\partial\theta^2}$ gives 
+
+$$\mathcal{I}_{\hat{\theta}_{_{MLE}}} = 0.000574$$
+
+- The parameter variance-covariance matrix, denoted by $\Sigma_{\hat{\theta}}$, is found by inverting the observed information matrix
+
+$$\Sigma_{\hat{\theta}_{_{MLE}}}=\left[\mathcal{I}_{\hat{\theta}_{_{MLE}}}\right]^{-1}$$
+
+- For the $\alpha$-particle data set $T\sim EXP(\theta)$, $\mathcal{I}_{\hat{\theta}}$ is a single element matrix
+
+- The inverse of a single-element matrix is found by simply taking reciprocal, thus 
+
+$$\Sigma_{\hat{\theta}_{_{MLE}}}=\frac{1}{0.000574}=1742.2$$
+
+### Using R to Compute $\mathcal{I}_{\hat{\theta}_{MLE}}$ Numerically
+
+- Recall, we found $\hat{\theta}_{_{MLE}}$ by defining the likelihood function as 
+
+```{r,echo=TRUE}
+Like7.3<-function(theta,d) {
+
+F<-log(exp(   -0/theta)-exp( -100/theta))*d[1]+
+   log(exp( -100/theta)-exp( -300/theta))*d[2]+
+   log(exp( -300/theta)-exp( -500/theta))*d[3]+
+   log(exp( -500/theta)-exp( -700/theta))*d[4]+
+   log(exp( -700/theta)-exp(-1000/theta))*d[5]+
+   log(exp(-1000/theta)-exp(-2000/theta))*d[6]+
+   log(exp(-2000/theta)-exp(-4000/theta))*d[7]+
+   log(exp(-4000/theta)-exp( -Inf/theta))*d[8] 
+
+return(-F)      }
+```
+
+- We then used the `nlminb` function to compute a value for $\hat{\theta}_{_{MLE}}$ assuming $n=200$
+
+```{r,echo=3, comment=NA, results='markup'}
+data<-matrix(c(3,7,4,1,3,2,0,0,
+               41,44,24,32,29,21,9,0,
+               292,494,332,236,261,308,73,4,
+               1609,2424,1770,1306,1213,1528,354,16),
+             nrow=4, byrow=TRUE)
+dimnames(data)[[1]]<-c("n = 20","n = 200","n = 2000","n = 10220")
+data[2,]
+```
+
+```{r,echo=1, comment=NA, results='markup'}
+nlminb(start = 400, 
+       obj = Like7.3, 
+       d = data[2,], 
+       lower = 100, 
+       upper = 800)$par
+```
+
+- We could have also used the `optim` function and arrived at the same solution
+
+```{r, echo=TRUE, comment=NA, results='markup'}
+optim(par = 400, 
+      fn = Like7.3, 
+      d = data[2,], 
+      lower = 100, 
+      upper = 800, 
+      method = "L-BFGS-B")$par
+```
+
+- Note - `nlminb` is actually a wrapper function for `optim`
+
+- However, `optim` includes an argument to return a numerical estimate of the Observed Information Matrix (known as the Hessian matrix in some contexts)
+
+```{r, echo=TRUE, comment=NA, results='markup'}
+optim(par = 400, 
+      fn = Like7.3, 
+      d = data[2,], 
+      lower = 100, 
+      upper = 800,
+      method = "L-BFGS-B", 
+      hessian = TRUE)$hessian
+```
+
+- To compute the the variance-covariance matrix $\Sigma_{\hat{\theta}_{MLE}}$ 
+
+    + Use `solve()` to invert $\mathcal{I}_{\hat{\theta}_{MLE}}$
+
+    + Take the reciprocal (only for $1\times 1$ matrices)
+
+- Note: the accuracy of this numerical estimate can decrease as the number of unknown parameters increases
+
+### Using R to Compute $\mathcal{I}_{\hat{\theta}_{MLE}}$ Numerically
+
+- The SMRD package makes this really easy
+
+```{r, comment=NA, results='markup'}
+berkson200.ld <- frame.to.ld(berkson200, 
+                             response.column = 1:2, 
+                             censor.column = 3, 
+                             case.weight.column = 4)
+
+berkson200.mlest <- mlest(berkson200.ld, distribution = "Exponential")
+
+print(berkson200.mlest)$mle.table
+print(berkson200.mlest)$vcv.matrix
+```
+
+
+- In general, the diagonal elements of $\Sigma_{\hat{\theta}_{_{MLE}}}$ represent the variances of the parameters $\widehat{Var}\left[\hat{\theta_1}\right],\widehat{Var}\left[\hat{\theta_2}\right],...$
+
+- While the off-diagonal elements represent the covariances $\widehat{Cov}\left[\hat{\theta_i}\hat{\theta_j}\right],\; i\ne j$  
+
+- For the $\alpha$-particle example $\widehat{Var}\left[\hat{\theta}_{_{MLE}}\right]=1742.2$ 
+
+- and
+
+$$\widehat{se}\left[\hat{\theta}_{_{MLE}}\right]=\sqrt{\widehat{Var}\left[\hat{\theta}_{_{MLE}}\right]}=\sqrt{1742.2}=41.72$$
+
+
+## Returning to Eq 7.6 
+
+- The $95\%$ confidence bounds for the $\alpha$-particle assuming that
+
+$$\frac{\hat{\theta}-\theta}{\hat{se}_{\hat{\theta}}}\sim NOR(0,1)$$
+
+- can be expressed as
+
+$$\left[\underline{\theta}, \overline{\theta}\right]=572.3\pm 1.960\times 41.72=\left[ 490,653 \right]$$
+
+- where
+
+    + $572.3=\hat{\theta}_{_{MLE}}, n=200$
+
+    + $1.960=\Phi^{-1}_{_{NOR}}(p=1-0.05/2)$
+
+- <focus>Recall from Chapter 2</focus> confidence bands computed using the normal approximation...
+
+    + Should work well for large samples $n>30$
+
+    + May give poor results for small samples $n<30$
+
+- An alternative method to compute $100(1-\alpha)\%$ CI's <focus>For positive quantities</focus> assumes that
+
+$$\frac{\log(\hat{\theta})-\log(\theta)}{\hat{se}_{\log(\hat{\theta})}}\sim NOR(0,1)$$
+
+- This method has been shown to produce better confidence intervals <focus>For positive quantities</focus> when the sample size is small
+
+- Using this alternative method the upper and lower confidence limits are expressed as
+
+$$\left[\underline{\log(\theta)},\overline{\log(\theta)}\right]=\log(\hat{\theta}) \pm z_{(1-\alpha/2)}\hat{se}_{\log(\hat{\theta})}$$
+
+- These confidence limits may also be expressed as
+
+$$\left[\underline{\theta},\overline{\theta}\right]=\left[\hat{\theta}/w,\hat{\theta}\times w\right]$$
+
+- where 
+
+    + $w = \exp(z_{(1-\alpha/2)}\hat{se}_{\hat{\theta}}/\hat{\theta})$
+
+    + $\hat{se}_{\log(\hat{\theta})}=\hat{se}_{\hat{\theta}}/\hat{\theta})$
+
+- $\hat{se}_{\log(\hat{\theta})}$ is found from the delta method where
+
+    + $\hat{\theta}\equiv$ the estimator for which we already know the variance
+    
+    + $\log(\hat{\theta})\equiv$ the estimator for which we want to know the variance
+
+- Using the delta method gives
+
+$$
+\begin{aligned}
+\widehat{Var}\left[\log(\hat{\theta})\right]&=\sum_{i=1}^n\left[\frac{\partial(\log(\hat{\theta}))}{\partial\hat{\theta}}\right]^2 \widehat{Var}\left[\hat{\theta}\right]
+=\frac{\widehat{Var}\left[\hat{\theta}\right]}{\hat{\theta}^2}\\\\
+\text{therefore}\;\;\hat{se}_{\log(\hat{\theta})}&=\sqrt{\frac{\widehat{Var}\left[\hat{\theta}\right]}{\hat{\theta}^2}}=\sqrt{\frac{\hat{se}_{\hat{\theta}}}{\hat{\theta}}}
+\end{aligned}
+$$
+
+- Look again at the results produced by the SMRD package
+
+```{r, comment=NA, results='markup'}
+print(berkson200.mlest)$mle.table
+print(berkson200.mlest)$vcv.matrix
+```
+
+- Note that $\Sigma_{\hat{\log(\theta)}_{MLE}}$ is returned, not $\Sigma_{\hat{\theta}_{MLE}}$
+
+## Table 7.3 - Comparison of $\alpha$-Particle ML Results
+
+```{r,results='hide'}
+a<-c("596.3","6.084","",rep("[584,608]",3),"168","1.7","",rep("[164,171]",3))
+b<-c("612.8","14.13","",rep("[586,641]",2),"[585,640]","163","3.8","",rep("[156,171]",3))
+c<-c("572.3","41.72","","[498,662]","[496,660]","[490,653]","175","13","","[151,201]","[152,202]","[149,200]")
+d<-c("440.2","101.0","","[289,713]","[281,690]","[242,638]","227","52","","[140,346]","[145,356]","[125,329]")
+Tab.7.2<-data.frame(a,b,c,d)
+colnames(Tab.7.2)<-c("n=10220","n=2000","n=200","n=20")
+rownames(Tab.7.2)<-c("ML estimate hat{theta}","Standard error hat{se}_{hat{theta}}",
+                  "Approximate 95% CI for theta",
+                  "Based on the likelihood","Based on Z_{log(hat{theta}}sim NOR(0,1)","Based on Z_{hat{theta}}simNOR(0,1)",
+                  "ML estimate hat{lambda}times10^{5}","Standard error hat{se}_{hat{lambda}times10^{5}}",
+                  "Approximate 95% CI for lambdatimes10^{5}",
+                  "Based on the likelihood1","Based on Z_{log(hat{lambda}}sim NOR(0,1)","Based on Z_{hat{lambda}}simNOR(0,1)")
+```
+
+<small>
+$$
+\begin{array}{lcccc}
+  \hline
+ & n=10220 & n=2000 & n=200 & n=20 \\ 
+  \hline
+\text{ML estimate } \hat{\theta} & 596.3 & 612.8 & 572.3 & 440.2 \\ 
+  \text{Standard error } \hat{se}_{\hat{\theta}} & 6.084 & 14.13 & 41.72 & 101.0 \\
+  \hline
+  \text{Approximate }95\% \text{ CI for } \theta &  &  &  &  \\ 
+  \hline
+  \text{Based on the likelihood} & [584,608] & [586,641] & [498,662] & [289,713] \\ 
+  \text{Based on } Z_{\log(\hat{\theta})}\sim NOR(0,1) & [584,608] & [586,641] & [496,660] & [281,690] \\ 
+  \text{Based on } Z_{\hat{\theta}}\sim NOR(0,1) & [584,608] & [585,640] & [490,653] & [242,638] \\ 
+  \hline
+\end{array}
+$$
+</small>
+
+# 7.4 - Confidence intervals for functions of $\theta$
+
+# 7.4.1 - Confidence Intervals for the Arrival Rate
+
+- The rate of occurrence for events distributed $EXP(\theta)$ is $\lambda =\frac{1}{\theta}$
+
+- Since $\lambda\propto \frac{1}{\theta}$ the following statements can be made
+
+$$
+\begin{aligned}
+\overline{\theta}&=\underline{\lambda}\\
+\underline{\theta}&=\overline{\lambda}
+\end{aligned}
+$$
+
+- And, note that 
+
+$$\lambda \in \left(\underline{\lambda},\overline{\lambda}\right)\;\;\iff \theta \in \left(\underline{\theta},\overline{\theta}\right)$$
+
+# 7.4.2 - Confidence intervals for $F(t;\theta)$
+
+- Like $\lambda,\;F(t|\theta) \propto \frac{1}{\theta}$, therefore
+
+$$\left[\underline{F(t|\theta)},\overline{F(t|\theta)}\right]=\left[F(t|\overline{\theta}),F(t\underline{\theta}\right]$$
+
+- Unlinke what was shown in $\S$ 3.8, these confidence bands are simultaneous since $\theta$ is the only unknown parameter. 
+
+- And again 
+
+$$F(t) \in \left(\underline{F(t)},\overline{F(t)}\right)\;\;\iff \theta \in \left(\underline{\theta},\overline{\theta}\right)$$
+
+
+## Table 7.3 - Comparison of $\alpha$-Particle ML Results
+
+<small>
+$$
+\begin{array}{lcccc}
+ \hline
+ & n=10220 & n=2000 & n=200 & n=20 \\ 
+ \hline
+  \text{ML estimate } \hat{\lambda}\times10^{5} & 168 & 163 & 175 & 227 \\ 
+  \text{Standard error } \hat{se}_{\hat{\lambda}\times10^{5}} & 1.7 & 3.8 & 13 & 52 \\ 
+  \hline
+  \text{Approximate } 95\% \text{ CI for } \lambda\times10^{5}\ &  &  &  &  \\ 
+  \hline
+  \text{Based on the likelihood } & [164,171] & [156,171] & [151,201] & [140,346] \\ 
+  \text{Based on } Z_{\log(\hat{\lambda})}\sim NOR(0,1) & [164,171] & [156,171] & [152,202] & [145,356] \\ 
+  \text{Based on } Z_{\hat{\lambda}}\sim NOR(0,1) & [164,171] & [156,171] & [149,200] & [125,329] \\ 
+   \hline
+\end{array}
+$$
+</small>
+
+# 7.5 - Comparison of Confidence Interval Prodcedures
+
+- Simulation studies have shown that better confidence intervals are produced by 
+
+    1) Likelihood methods
+
+    2) <font color="red">__Bootstrap methods (Chapter 9)__</font>
+
+    3) Normal approximation method based on $\log(\hat{\theta})$
+
+    4) Normal approximation method based on $\hat{\theta}$
+
+- These CI techniques are in order of their coverage probability
+
+- "Better" CI $\equiv$ coverage probability closer to the nominal confidence level
+
+# 7.6 - Likelihood for Exact Failure Times
+
+# 7.6.3 - $\hat{\theta}_{_{MLE}}$ based on density approximation
+
+- As previously discussed, the contribution of "exact" failures to $\mathscr{L}$ may be approximated as
+
+$$\lim\limits_{\Delta_i\rightarrow 0^+}\left[F(t_i|\theta)-F(t_i-\Delta_i|\theta\right]\approx f(t_i|\theta)\Delta_i$$
+
+- This approximation works well for data that
+
+    + Is right-censored only (no left-censoring or interval-censoring)
+
+    + Is exponentially distributed
+- $\theta$ is estimated by
+
+$$\hat{\theta}=\frac{TTT}{r}$$
+
+- where
+
+    + $r \equiv$ the number of failures
+    
+    + $\displaystyle TTT =\sum_{i=1}^n t_{i}$ is the total time on test
+
+## Calculating Total Time on Test
+
+```{r prob, echo=FALSE, fig.align='center', fig.height=5.25}
+par(family = "serif")
+lzbearing.ld <- frame.to.ld(lzbearing, response.column = 1, time.units = "Kilocycles")
+event.plot(lzbearing.ld)
+```
+
+# 7.6.4 - CI for $\hat{\theta}_{_{MLE}}$ with complete data or Type II censoring
+
+# 7.7 - Data analysis with no failures
+
+```{r}
+berkson200.ld <- frame.to.ld(berkson200,
+                             response.column =c(1,2), 
+                             censor.column=3, 
+                             case.weight.column=4, 
+                             time.units = "1/5000 Seconds")
+berkson200.ld
+```
+
+```{r}
+berkson200.gmle.out <- expon.mle(berkson200.ld)
+one.dim.profile(berkson200.gmle.out, 
+                size=200,
+                range.list=list(log(c(450,800))),
+                print.ci = F)
+```
+
+### comptime
+
+```{r}
+Snubber.ld <- frame.to.ld(snubber, 
+                          response.column = "cycles", 
+                          censor.column = "event", 
+                          time.units = "Toaster Cycles",
+                          case.weight.column = "count", 
+                          x.columns = "design")
+
+groupm.mleprobplot(Snubber.ld, 
+                   distribution ="Lognormal", 
+                   group.var = 1, 
+                   relationships = "linear")
+```

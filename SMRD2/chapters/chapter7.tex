@@ -1,0 +1,1455 @@
+%chapter 7
+%original by wqmeeker  12 Jan 94
+%edited by wqmeeker  27/31 Jan 94
+%edited by wqmeeker  6/7 feb 94
+%edited by driker 2/17/94
+%edited by driker 3/11/94
+%edited by wqmeeker  11 mar 94
+%edited by driker 3/18/94
+%edited by wqmeeker  19 mar 94 removed censoring contribution to chap2
+%edited by wqmeeker  26 mar 94
+%edited by wqmeeker  1 june 94
+%edited by driker 18 june 94  europe changes
+%edited by wqmeeker  2 aug 94
+%edited by wqmeeker  7 aug 94
+%edited by wqmeeker  5 oct 94  smoothing
+%edited by wqmeeker  22 oct 94  more smoothing
+%edited by wqmeeker  01/04 jan 94 bootstrap
+%edited by wqmeeker  07 jan 94  zero failures
+%edited by driker 3 feb 95
+%edited by driker 7 feb 95
+%edited by wqmeeker 12 feb 94  ci comparison
+%edited by driker 15 feb 94 
+%edited by wqmeeker  17 june 95 moving bootstrap
+%edited by driker 20 june 95
+%edited by driker 27 june 95
+%edited by driker 4 nov 95
+%edited by driker 11 nov 95
+%edited by wqmeeker 3 jan 96 likelihood ratio
+%edited by driker 5 jan 96
+%edited by driker 1 july 96
+%edited by driker 20 nov 96
+\setcounter{chapter}{6}
+
+\chapter{Parametric Likelihood Fitting Concepts: Exponential Distribution}
+\label{chapter:parametric.ml.one.par}
+
+\input{\chapterhome/common_heading.tex}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Objectives}
+This chapter explains
+\begin{itemize} 
+\item 
+Likelihood for a parametric model using discrete
+data.
+\item
+Likelihood for samples containing right 
+and left censored observations.
+\item 
+Use of parametric likelihood as a tool for data
+analysis and inference about a single population or process.
+\item
+The use of likelihood and normal-approximation
+confidence intervals for model parameters and
+other quantities of interest.
+\item 
+The density approximation to the 
+likelihood for observations reported as exact failures.
+\end{itemize}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Overview}
+This chapter introduces some basic ideas of parametric maximum
+likelihood (ML) methods.  The ideas presented here are used
+throughout the rest of the book.  Section~\ref{section:param.like}
+shows how to construct the likelihood (probability of the data)
+function and describes the basic ideas behind using this function to
+estimate a parameter.  Sections~\ref{section:one.par.ci.expmean} to
+\ref{section:exponential.ci.comparison} describe methods for computing
+confidence intervals for parameters and functions of parameters.
+Section~\ref{section:exact.fail.like} describes the commonly used
+probability density in the construction of a likelihood function.
+Section~\ref{section:expon.zero.fail} shows how to get a confidence
+bound on the exponential distribution parameter even if there are no
+failures.
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+\section{Introduction}
+\label{section:ml.intro}
+As explained in Chapter 4, parametric distributions, when used 
+appropriately, can provide a simple, parsimonious, versatile, visually
+appealing failure-time model.
+ML is perhaps the most versatile method for
+fitting statistical models to data.  The appeal of ML stems from the
+fact that it can be applied to a wide variety of statistical models
+and kinds of data (e.g., continuous, discrete, categorical, censored,
+truncated, etc.), where other popular methods, like least squares, are 
+not, in general, satisfactory. In
+typical applications, the goal is to use a parametric statistical
+model to describe a set of data or a process or population that
+generated a set of data. Modern computing hardware and software have
+tremendously expanded the feasible areas of application for ML
+methods.
+
+Statistical theory (see the bibliographic notes at the end of this
+chapter and Appendix Section~\ref{asection:asymptotic.theory.mle}
+for some references) shows that, under standard regularity
+conditions, ML estimators are ``optimal'' in large samples. More
+specifically, this means that
+ML estimators are consistent and asymptotically (as the
+sample size increases) efficient. That is, among consistent
+competitors to ML estimators, none has a smaller asymptotic variance.
+
+Chapter~\ref{chapter:singledist.bayes} 
+describes and illustrates the use of the closely related Bayesian
+methods that allow one to incorporate prior information into the
+model fitting and estimation process. Besides the Bayesian methods
+(which require specification of a prior distribution for the unknown
+parameters), there is no general theory that suggests alternatives to
+ML that will be optimal in finite samples. Comparisons in specific
+cases have shown that, for practical purposes, and without
+incorporating prior information, it is difficult to improve on ML
+methods.
+
+
+This chapter emphasizes methods, concepts, examples, and
+interpretation of data.  Appendix Section~\ref{asection:general.theory}
+outlines the general theory.
+
+%----------------------------------------------------------------------
+\begin{example}
+{\bf Time between $\alpha$-particle emissions of americium-241.}
+\label{example:alpha.particle.data}
+Although not from the area of reliability, this example is analogous
+to certain special reliability applications in which the distribution
+of time between events can be described with an exponential
+distribution.
+
+Berkson~(1966) investigates the randomness of $\alpha$-particle
+emissions of americium-241 (which has a half-life of about 458 years).
+Physical theory suggests that, over a short period of time, the
+interarrival times of observed particles would be independent and
+come from an exponential distribution
+\begin {equation}
+\label{equation:exponential.cdf}
+F(\realrv;\expmean) = 1 - \exp 
+\left( - \frac{\realrv}{\expmean} \right)
+\end {equation}
+where $\expmean$ is the mean time between arrivals. The corresponding 
+homogeneous Poisson process that counts the number of emissions on the
+real-time line (see Section~\ref{section:exponential.distribution} for
+more information on the exponential distribution and
+Chapter~\ref{chapter:repairable.system} for more information on the
+Poisson process) has arrival rate or the intensity $\lambda=1/\expmean$. 
+For the interarrival times of $\alpha$ particles,
+$\lambda$ is proportional to the americium-241 decay rate, size of the 
+sample, the counter size and efficiency, etc.
+
+The data consisted of 10,220 observed interarrival
+times of $\alpha$ particles (time unit equal to 1/5,000 second). The
+observed interarrival times were put into intervals (or bins) running
+from 0 to 4,000 time units with interval lengths ranging from 25 to
+100 time units, with one additional interval for observed times exceeding
+4,000 time units.  To save space in our analysis, this example uses a
+smaller number of larger bins; reducing the number of bins in this way
+will not seriously affect the precision of ML estimates.  These data
+are shown in Table~\ref{table:berkson.alpha.particle}.
+
+To illustrate the effects of sample size on the inferences, simple
+random samples (i.e., each interval-censored interarrival time having
+equal probability) of sizes $n$ = 2,000, 200, and 20 were drawn 
+with replacement from
+these interarrival times.  The following examples compare the results
+that one obtains with these different sample sizes.  When focusing
+on just one sample, the sample of size $n=200$ interarrival times is
+used.
+%----------------------------
+\begin{table}
+\caption{Binned $\alpha$-particle interarrival time data in 1/5,000 seconds.}
+\centering\small
+\begin{tabular}{*{6}{r}}
+\\[-.5ex]
+\hline
+\multicolumn{2} {c} {}&
+\multicolumn{4} {c} {Interarrival Times} \\
+\multicolumn{2} {c} {Time}&
+\multicolumn{4} {c} {Frequency of Occurrence} \\
+\cline{1-2} \cline{3-6}
+\multicolumn{2} {c} {Interval Endpoint}&
+\multicolumn{1} {c} {All Times}&
+\multicolumn{3} {c} {Random Samples of Times} \\
+\cline{1-2} \cline{4-6}
+\multicolumn{1} {c} {lower}&
+\multicolumn{1} {c} {upper}&
+\multicolumn{1} {c} {$n=10220$}&
+\multicolumn{1} {c} {$n=2000$}&
+\multicolumn{1} {c} {$n=200$}&
+\multicolumn{1} {c} {$n$=20}\\
+\cline{1-2} \cline{3-6}
+ 0 & 100 & 1609 & 292 & 41 & 3 \\ 100 & 300 & 2424 & 494 & 44 & 7 \\ 300 & 500
+& 1770 & 332 & 24 & 4 \\ 500 & 700 & 1306 & 236 & 32 & 1 \\ 700 & 1000 & 1213
+& 261 & 29 & 3 \\ 1000 & 2000 & 1528 & 308 & 21 & 2 \\ 2000 & 4000 & 354 & 73
+& 9 & 0 \\ 4000& $ \infty$ & 16 & 4 & 0 & 0
+\\
+\hline
+\end{tabular}
+\label{table:berkson.alpha.particle}
+\end{table}
+\end{example}
+
+
+Statistical modeling, in practice, is an iterative procedure of fitting
+proposed models in search of a model that provides an adequate
+description of the population or process of interest,
+without being unnecessarily complicated.  Application of
+ML methods generally starts with a set of data and a tentative
+statistical model for the data.  The tentative model is often
+suggested by the initial graphical analysis
+(Chapter~\ref{chapter:probability.plotting}), physical theory,
+previous experience with similar data, or other expert knowledge.
+
+%----------------------------------------------------------------------
+\begin{example}
+{\bf Probability plot for the $\alpha$-particle data.}
+Figure~\ref{figure:alpha.nppp.exp.ps} shows an exponential
+probability plot of the sample with $n=200$.  The approximate
+linearity of the plot indicates that the exponential distribution
+provides a good fit to these data. This is reinforced by the
+simultaneous nonparametric confidence bands.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/alpha.nppp.exp.ps}
+\caption{Exponential probability plot of
+the $n = $ 200 sample of $\alpha$-particle interarrival time
+data. The plot also shows 
+simultaneous nonparametric approximate 95\% confidence bands.}
+\label{figure:alpha.nppp.exp.ps}
+\end{figure}
+%----------------------------------------------------------------------
+\end{example}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Parametric Likelihood}
+\label{section:param.like}
+%----------------------------------------------------------------------
+\subsection{Probability of the data}
+
+Proceeding from the ideas introduced in
+Section~\ref{section:probability.of.data}, but now using a parametric
+model (as described in
+Chapter~\ref{chapter:ls.parametric.models}), the likelihood function can be
+viewed as the {\em probability of the observed data}, written as a
+function of the model's parameters.  For a parametric model, the
+number of parameters is usually small relative to the
+nonparametric models described and used in
+Chapters~\ref{chapter:np.models.censoring.likelihood} and
+\ref{chapter:nonparametric.estimation}. The exponential distribution
+in (\ref{equation:exponential.cdf}) has only one parameter.
+
+For a set of $n$ independent observations, the likelihood function
+can be written as the following joint probability
+\begin{equation}
+\label{equation:general.parametric.likelihood}
+\like(\theta)=\like(\theta;\DATA)= \likeconstant \prod_{i=1}^{n}
+\like_{i}(\theta;\data_{i}).
+\end{equation}
+As described in Section~\ref{section:form.of.constant}, the quantity
+$\likeconstant$ in (\ref{equation:general.parametric.likelihood}) is a
+constant term that does not depend on the data or on $\theta$
+(in general $\theta$ can be a vector, but in this chapter it is a 
+scalar).  As
+in Chapter~\ref{chapter:nonparametric.estimation}, for computational
+purposes, let $\likeconstant=1$.  The likelihood contribution terms
+$\like_{i}(\theta;\data_{i})$ were explained in detail in
+Section~\ref{section:likelihood.contributions}. For example, if a
+failure time is known to have occurred between times $\realrv_{i-1}$
+and $\realrv_{i}$, the probability of this event is
+\begin{equation}
+\label{equation:parametric.interval.likelihood}
+\like_{i}(\theta;\data_{i})=\like_{i}(\theta)=
+\int_{t_{i-1}}^{t_{i}} f(t;\theta) \, dt = 
+F(\realrv_{i};
+\theta)-F(\realrv_{i-1};\theta).
+\end{equation}
+For a given set of data, $\like(\theta)$ can be viewed as a function
+of $\theta$.  The dependence of $\like(\theta)$ on the data will
+be understood and is usually suppressed in notation.  The values
+of $\theta$ for which $\like(\theta)$ is relatively large are
+more plausible than values of $\theta$ for which the probability of
+the data is relatively small.  There may or may not be a unique value
+of $\theta$ that maximizes $\like(\theta)$.  Regions in the
+space of $\theta$ with relatively large $\like(\theta)$ can be
+used to define confidence regions for $\theta$.  One can also use ML
+to estimate {\em functions} of $\theta$.
+The rest of this chapter shows how to make these concepts
+operational for the single-parameter exponential distribution,
+using simple examples for illustration. Subsequent chapters treat
+models with two or more parameters.
+
+
+%----------------------------------------------------------------------
+\subsection{Likelihood function and its maximum}
+\label{section:loglikelihood}
+Given a sample of $n$ independent observations, denoted generically by
+$\data_{i}$, $i=1, \ldots , n$, and a specified model, the total
+likelihood $\like(\theta)$ for the sample is given by
+equation~(\ref{equation:general.parametric.likelihood}).  
+For some purposes, it is convenient to use the log
+likelihood $\loglike_{i}(\theta) = \log[\like_{i}(\theta)]$.
+For all practical problems $\loglike(\theta)$ will be
+representable in computer memory without special scaling (which is not
+so for $\like(\theta)$ because of possible extreme exponent
+values), and some theory for ML is developed more naturally in terms of
+sums like
+\begin{displaymath}
+\loglike(\theta) = \log[\like(\theta)] = \sum_{i=1}^{n}
+\loglike_{i}(\theta)
+\end{displaymath}
+rather than in terms of the products
+in equation~(\ref{equation:general.parametric.likelihood}). Note that the
+maximum of $\loglike(\theta)$, if one exists, occurs at
+the same value of $\theta$ as the maximum of
+$\like(\theta)$.
+
+
+%----------------------------------------------------------------------
+\begin{example}
+\label{example:alpha.likelihood}
+{\bf Likelihood for the $\alpha$-particle data.}
+In this example, the unknown parameter $\expmean$ is a scalar and this
+makes the analysis particularly simple and provides a useful first
+example to illustrate basic concepts.  Substituting
+equation~(\ref{equation:exponential.cdf}) into
+(\ref{equation:parametric.interval.likelihood}), and
+(\ref{equation:parametric.interval.likelihood}) into
+(\ref{equation:general.parametric.likelihood}) gives the exponential
+distribution likelihood function (joint probability) for interval
+data (e.g., Table~\ref{table:berkson.alpha.particle}) as
+\begin{eqnarray}
+\label{equation:grouped.exponential.likelihood}
+\like(\expmean)&=& \prod_{i=1}^{n} \like_{i}(\expmean)= \prod_{i=1}^{n} 
+\left [ F(\realrv_{i};\expmean)-F(\realrv_{i-1};\expmean)
+ \right ] \\
+             &=& \prod_{j=1}^{8} 
+\left [ F(\realrv_{j};\expmean)-F(\realrv_{j-1};\expmean)
+ \right ]^{d_{j}} = \prod_{j=1}^{8} \left[
+\exp \left(- \,\frac{\realrv_{j-1}}{ \expmean} \right)-
+\exp \left( -\,\frac{\realrv_{j}}{ \expmean} \right)
+\right]^{d_{j}} 
+\nonumber
+\end{eqnarray}
+where $d_{j}$ is the number of interarrival times in
+interval $j$. Notice that in the first line of
+(\ref{equation:grouped.exponential.likelihood}), the product is over
+the $n$ observed times and in the second line, it is over the 8 bins into
+which the data have been grouped.
+\end{example}
+
+The ML estimate of $\theta$ is found by
+maximizing $\like(\theta)$.  When there is a unique global maximum,
+$\thetahat$ denotes the value of $\theta$ that maximizes
+$\like(\theta)$.  In general, however, the maximum may not be
+unique. The function $\like(\theta)$ may have multiple local maxima or can
+have flat spots along which $\like(\theta)$ changes slowly, if at all.
+Such flat spots may or may not be at the maximum value of
+$\like(\theta)$. The shape and magnitude of $\like(\theta)$ relative
+to $\like(\thetahat)$ over all possible values of $\theta$ describe
+the information on $\theta$ that is contained in $\data_{i}, i=1,
+\ldots , n$.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{example}
+{\bf Relative likelihood for the $\alpha$-particle data.}
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfiguresize{\figurehome/alpha.exp.thetapro.ps}{5in}
+\caption{Relative likelihood functions
+$R(\expmean)=\like(\expmean)/\like(\expmeanhat)$ for the $n= 20$, 200, 
+and 2,000 samples and ML estimate for the $n=$10,220 sample of the
+$\alpha$-particle data. Vertical lines give corresponding
+approximate $95\%$ likelihood confidence intervals.}
+\label{figure:alpha.exp.thetapro.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Figure~\ref{figure:alpha.exp.thetapro.ps} shows the {\em relative
+likelihood functions}
+\begin{displaymath}
+R(\expmean)=\frac{\like(\expmean)}{\like(\expmeanhat)}
+\end{displaymath}
+for the samples of size $n=$ 2,000, 200 and 20 and a vertical line at
+the mean of all $n=$10,220 times.  These functions allow one to judge the
+probability of the data for values of $\expmean$, {\em relative} to
+the probability at the ML estimate.  For example, 
+$R(\expmean_{0})=.1$
+implies that the probability 
+of the data is 10 times larger at $\expmeanhat$ than
+at $\expmean_{0}$. The next section explains 
+how to use $R(\expmean)$
+to compute confidence intervals for $\expmean$.
+
+
+
+Figure~\ref{figure:alpha.exp.thetapro.ps} indicates that the spread of
+the likelihood function tends to decrease as the sample size increases.
+The relative
+likelihood functions for the larger samples are much tighter
+than those for the smaller samples, indicating that the larger samples
+contain more information about $\expmean$.  The $\expmean$ value at
+which the different likelihood functions are maximized is random and
+depends, in this comparison, on the results of the sampling described
+in Example~\ref{example:alpha.particle.data}. The four $\expmeanhat$'s
+differ, but they are consistent with the variability that one would expect
+from random sampling using the corresponding sample sizes.  
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Comparison of 
+$\alpha$-particle data analyses}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfiguresize{\figurehome/alpha.mlep.exp.ps}{4in}
+\caption{Exponential probability plot of
+the $n = $ 200 sample of $\alpha$-particle interarrival time data. The
+plot also shows the parametric exponential ML estimate and approximate
+95\% confidence intervals for $F(\realrv;\theta)$.}
+\label{figure:alpha.mlep.exp.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Figure~\ref{figure:alpha.mlep.exp.ps} shows another exponential
+probability plot of the $n=200$ sample.  The solid line on this graph
+is the ML estimate of the exponential cdf $F(\realrv;\theta)$.  The dotted
+lines are drawn through a set of pointwise parametric
+normal-approximation 95\% confidence 
+intervals for $F(\realrv;\theta)$; these parametric intervals will be
+explained in Section~\ref{section:one.par.ci.expmean}.
+Table~\ref{table:berkson.results} summarizes the results of fitting
+exponential distributions to the four different samples in
+Table~\ref{table:berkson.alpha.particle}; it includes ML estimates,
+standard errors, and confidence intervals.
+Section~\ref{section:one.par.ci.expmean} provides results specifically
+for $\expmean$, the mean (which is also the .632 quantile, $t_{.632}$) of the
+exponential distribution.
+Section~\ref{section:ci.on.lambda} shows how to obtain
+similar results for $\lambda=1 / \expmean$, the arrival intensity rate
+(per unit of time).
+%-------------------------------------------------------------------
+\begin{table}
+\caption{Comparison of $\alpha$-particle ML results}
+\centering\small
+\begin{tabular}{*{6}{r}}
+\\[-.5ex]
+\hline
+\multicolumn{2} {c} {}&
+\multicolumn{1} {c} {All Times}&
+\multicolumn{3} {c} {Sample of Times} \\
+\cline{4-6}
+\multicolumn{1} {c} {}&
+\multicolumn{1} {c} {}&
+\multicolumn{1} {c} {$n=10$,220}&
+\multicolumn{1} {c} {$n=2$,000}&
+\multicolumn{1} {c} {$n=200$}&
+\multicolumn{1} {c} {$n=20$}\\
+\cline{1-2} \cline{3-6} \\ [-1.5ex]
+\multicolumn{1} {l} {ML Estimate $\expmeanhat$}
+&&  596.3 &  612.8 & 572.3  & 440.2  \\[1ex]
+\multicolumn{1} {l} {Standard Error $ \sehat_{\expmeanhat}$}
+&&  6.084 & 14.13 & 41.72 & 101.0  \\[1ex]
+\multicolumn{1} {l} {Approximate 95\%}\\
+\multicolumn{1} {l} {Confidence Intervals}
+&&&&& \\
+\multicolumn{1} {l} {for $\expmean$ Based on}
+&&&&& \\
+\multicolumn{1} {l} {\hspace{1em}  Likelihood}
+&& [584, 608] & [586, 641] & [498, 662] & [289, 713]  \\[.51ex]
+\multicolumn{1} {l} {\hspace{1em}
+        $Z_{\log(\expmeanhat)} \approxdist \NOR(0,1)$ }
+&& [584, 608] & [586, 641] & [496, 660] & [281, 690]  \\[.51ex]
+\multicolumn{1} {l} {\hspace{1em}
+        $Z_{\expmeanhat} \approxdist \NOR(0,1)$ }
+&& [584, 608] & [585, 640] & [490, 653] & [242, 638]  \\[3.1ex]
+\hline
+\multicolumn{1} {l} {ML Estimate $\lambdahat \times 10^{5}$}
+&& 168 & 163& 175 & 227  \\[1ex]
+\multicolumn{1} {l} {Standard Error $ \sehat_{\lambdahat \times 10^{5} }$}
+&& 1.7 & 3.8& 13 & 52  \\[1ex]
+\multicolumn{1} {l} {Approximate 95\%}\\
+\multicolumn{1} {l} {Confidence Intervals}
+&&&&& \\
+\multicolumn{1} {l} {for $\lambda\times 10^{5}$ Based on}
+&&&&& \\
+\multicolumn{1} {l} {\hspace{1em} Likelihood}
+&& [164, 171] & [156, 171] & [151, 201]& [140, 346] \\[.51ex]
+\multicolumn{1} {l} {\hspace{1em}
+        $Z_{\log(\lambdahat)} \approxdist \NOR(0,1)$ }
+&& [164, 171] & [156, 171] & [152, 202]& [145, 356] \\[.51ex]
+\multicolumn{1} {l} {\hspace{1em}
+        $Z_{\lambdahat} \approxdist \NOR(0,1)$ }
+&& [164, 171] & [156, 171] & [149, 200]& [125, 329] \\[.51ex]
+\hline
+\end{tabular}
+\label{table:berkson.results}
+\end{table}
+%-------------------------------------------------------------------
+
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Confidence Intervals for $\expmean$}
+\label{section:one.par.ci.expmean}
+%----------------------------------------------------------------------
+\subsection{Likelihood confidence intervals for $\theta$}
+\label{section:lr.ci.expmean}
+The likelihood function provides a versatile method for assessing the
+information that the data contains on parameters, or functions of
+parameters.  Specifically, the likelihood function provides a
+generally useful method for finding approximate confidence 
+intervals for parameters and functions of parameters.
+
+An approximate $100(1-\alpha)\%$ 
+likelihood-based confidence interval for $\expmean$
+is the set of all values of $\expmean$ such that
+\begin{displaymath}
+-2 \log[R(\expmean)] \leq \chisquare_{(1-\alpha;1)}
+\end{displaymath}
+or, equivalently, the set defined by
+\begin{displaymath}
+R(\expmean) \geq \exp \left [-\chisquare_{(1-\alpha;1)}/2 \right ].
+\end{displaymath}
+The theoretical justification for this interval is given in
+Appendix Section~\ref{section:profile.on.theta}.
+\begin{example}
+{\bf Likelihood confidence intervals for the mean time between
+arrivals of $\alpha$ particles.}
+Figure~\ref{figure:alpha.exp.thetapro.ps} illustrates likelihood
+confidence intervals.  The horizontal line at
+$\exp[-\chisquare_{(.95;1)}/2] = .147$, corresponds to approximate
+95\% confidence intervals. The vertical lines dropping from the
+respective curves give the endpoints of the confidence intervals for
+the different samples.  Table~\ref{table:berkson.results} gives
+numerical values of likelihood-based approximate 95\%
+confidence intervals (as well as intervals based on other methods to
+be explained subsequently).
+Figure~\ref{equation:general.parametric.likelihood} shows that
+increasing sample size tends to reduce confidence interval
+length. Approximate (large-sample) theory shows that confidence
+interval length under standard regularity conditions is
+approximately proportional to $1/\sqrt{n}$ (see
+Appendix Section~\ref{asection:asymptotic.theory.mle} for an outline of this
+theory and Chapter~\ref{chapter:test-planning} for methods of
+choosing the sample size to control the width of a confidence
+interval).
+\end{example}
+
+A one-sided approximate $100(1-\alpha)\%$ confidence bound can be
+obtained by drawing the horizontal line at
+$\exp[-\chisquare_{(1-2\alpha;1)}/2]$ and using the appropriate end
+point of the resulting two-sided confidence interval.
+
+\begin{example}
+{\bf One-sided likelihood-based confidence bounds for the mean time
+between arrivals of $\alpha$ particles.} 
+\label{example:one.sided.lr.exponential}
+Referring to Figure~\ref{figure:alpha.exp.thetapro.ps}, the horizontal
+line at $\exp[-\chisquare_{(.95;1)}/2] = .147$ would provide one-sided
+approximate 97.5\% confidence bounds for $\theta$. For
+one-sided approximate 95\% confidence bounds the line would be drawn
+at $\exp[-\chisquare_{(.90;1)}/2]$ = .259 (corresponding to .90 on the
+right-hand scale on Figure~\ref{figure:alpha.exp.thetapro.ps}).
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Relationship between confidence 
+intervals and significance tests}
+\label{section:one.par.ci.hyp.relat}
+
+Significance testing (sometimes called hypothesis testing) is a
+statistical technique widely used in many areas of science. The basic
+idea is to assess the reasonableness of a claim or hypothesis
+about a model or parameter value,
+relative to observed data. One can test a hypothesis by first constructing a
+$100(1-\alpha\%)$ confidence interval for the quantity of interest and
+then checking to see if the interval encloses the hypothesized value 
+or not. If not, then the hypothesis is rejected ``at the
+$\alpha$ level of significance.'' If the interval encloses the 
+hypothesized value, then the appropriate conclusion is that the data are
+consistent with the hypothesis (it is important, however, to
+note that failing to reject a hypothesis is not the same as saying
+that the hypothesis is true---see the following examples).  Most
+practitioners find confidence intervals much more informative than the
+yes-no result of an significance test. See pages 39-40 of Hahn and
+Meeker~(1991) and other references given there for further discussion
+of this subject.
+
+To be more formal, a likelihood ratio test for a single-parameter
+model can be done by comparing the maximum of the likelihood under the
+``null hypothesis'' to the maximum of the likelihood over all possible
+values for the parameter.  A likelihood much smaller under the null
+hypothesis provides evidence to refute the hypothesis. Specifically,
+for the exponential distribution, the single-point null hypothesis
+$\theta=\theta_{0}$ should be rejected if
+\begin{equation}
+\label{equation:lr.test.exp}
+-2\log \left [ { \like(\theta_{0})}/{ \like(\thetahat) } \right ] 
+> \chisquare_{(1-\alpha;1)}
+\end{equation}
+where $\thetahat$ is the ML estimate of $\theta$.  Rejection implies
+that the data are not consistent with the null hypothesis.  Using the
+definition given in Section~\ref{section:lr.ci.expmean}, it is easy to
+see that a likelihood-based confidence interval is the set of
+all values of $\theta$ that would not be rejected under the likelihood
+ratio test defined in (\ref{equation:lr.test.exp}).
+
+
+\begin{example}
+{\bf Likelihood-ratio test for the mean time between arrivals of
+$\alpha$ particles.} Suppose that investigators conducted the
+$\alpha$-particle experiment to test the hypothesis that the mean time
+between arrivals of $\alpha$ particles is $\theta=650$. Based on the
+confidence intervals for $n=$2000 in Table~\ref{table:berkson.results}, we
+would have to conclude that there is not enough evidence to reject
+this hypothesis. Correspondingly,
+\begin{displaymath}
+-2\log \left [{\like(650)}/{\like(572.3)}\right] 
+= 2.94  < \chisquare_{(.95;1)} = 3.84
+\end{displaymath} 
+again showing that there is not sufficient evidence in the $n=200$
+sample to reject the hypothesis.  Using the $n=$2000 sample, however, does
+provide sufficient evidence to reject the hypothesis that
+$\theta=650$ at the 5\%
+level of significance, as 650 is not in the 95\% confidence
+interval.
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Normal-approximation confidence intervals 
+for $\theta$}
+\label{section:normal.theory.exponential}
+A $100(1-\alpha)\%$ normal-approximation confidence
+interval for $\expmean$ is
+\begin{equation}
+\label{equation:exponential.interval.nolog}
+ [ \undertilde{\expmean}, \quad \tilde{\expmean}] =
+\expmeanhat \pm \norquan_{(1-\alpha/2)} \sehat_{\expmeanhat}.
+\end{equation}
+A one-sided approximate $100(1-\alpha)\%$
+confidence bound can be obtained by replacing
+$\norquan_{(1-\alpha/2)}$ with $\norquan_{(1-\alpha)}$ 
+in (\ref{equation:exponential.interval.nolog}) and using the
+appropriate endpoint of the resulting two-sided confidence interval.
+
+An estimate of the standard error of 
+$\expmeanhat$ is typically computed from the
+``observed information'' as
+\begin{equation}
+\label{equation:scalar.hessian}
+ \sehat_{\expmeanhat} = 
+\sqrt{ \left[-\frac{d^{2} \loglike(\expmean)}
+{d \expmean^{2}} \right]^{-1}}
+\end{equation}
+where the second derivative is evaluated at $\expmeanhat$.  This
+computation is a special case of (\ref{equation:gcovariance.est}) in
+Appendix Section~\ref{asection:observed.information}.  The second derivative
+measures curvature of $\loglike(\expmean)$ at $\expmeanhat$. If
+$\loglike(\expmean)$ is approximately quadratic, large curvature
+implies a narrow likelihood and thus a small estimate of the standard
+error of $\expmeanhat$.
+
+The approximate confidence interval in
+(\ref{equation:exponential.interval.nolog}) is based on the 
+assumption that the distribution of
+\begin{equation}
+\label{equation:z.theta.exp}
+Z_{\thetahat} = \frac{\expmeanhat-\expmean}{\sehat_{\expmeanhat}}
+\end{equation}
+can be approximated by a $\NOR(0,1)$ distribution.
+Then 
+\begin{equation}
+\label{equation:zthetahat.normal}
+\Pr \left[ \norquan_{(\alpha/2)} < Z_{\thetahat}  \leq
+	\norquan_{(1-\alpha/2)} \right]	\approx 1-\alpha
+\end{equation}
+which implies
+\begin{equation}
+\label{equation:theta.ci.normal}
+\Pr \left[  \expmeanhat - \norquan_{(1-\alpha/2)} \sehat_{\expmeanhat}
+	 <
+	\expmean \leq
+	 \expmeanhat + \norquan_{(1-\alpha/2)} \sehat_{\expmeanhat}\right]
+	\approx 1-\alpha
+\end{equation}
+because $z_{(1-\alpha/2)}=-z_{(\alpha/2)}$.
+The approximation is usually better for large samples, but may be poor
+for small samples.  See Appendix
+Section~\ref{asection:convergence.in.distribution} for more
+information on such large-sample approximations.
+
+\begin{example}
+{\bf Normal-approximation confidence intervals for the
+mean time between arrivals of $\alpha$ particles.}
+For the $n=200$ $\alpha$-particle data 
+$\sehat_{\expmeanhat} = 41.72$ and an approximate 95\% confidence 
+interval for $\expmean$ based on the assumption that  
+$Z_{\expmeanhat} \approxdist \NOR(0,1)$ is
+\begin{displaymath}
+ [ \undertilde{\expmean}, \quad \tilde{\expmean}] =
+572.3 \pm 1.960 (41.72) = [490, \quad 653].
+\end{displaymath}
+Thus we are 95\% confident that $\theta$ is in this interval.
+\end{example}
+
+An alternative approximate confidence interval for positive quantities
+like $\theta$ is
+\begin{equation}
+\label{equation:exponential.interval.log}
+[ \undertilde{\expmean}, \quad \tilde{\expmean}]=
+	[\expmeanhat/w, \quad \expmeanhat \times w]
+\end{equation}
+where $w=\exp(\norquan_{(1-\alpha/2)}\sehat_{\expmeanhat}/\expmeanhat)$.
+This interval is based on the assumption that the distribution of
+\begin{equation}
+\label{equation:expmean.pivotal.like}
+Z_{\log(\expmeanhat)} = \frac{\log(\expmeanhat)-
+	\log(\expmean)}{\sehat_{\log(\expmeanhat)}}
+\end{equation}
+can be approximated by a $\NOR(0,1)$ distribution
+where $\sehat_{\log(\expmeanhat)}=\sehat_{\expmeanhat}/\expmeanhat$
+is obtained by using the delta method in
+Appendix Section~\ref{asection:delta.method}. The confidence interval in 
+(\ref{equation:exponential.interval.log})
+follows because an approximate $100(1-\alpha)$\% confidence
+interval for $\log(\expmean)$ is
+\begin{displaymath}
+[\undertilde{\log(\expmean)}, \quad  \tilde{\log(\expmean)}] =
+\log(\expmeanhat) \pm \norquan_{(1-\alpha/2)}
+\sehat_{\log(\expmeanhat)} .
+\end{displaymath}
+
+
+For a parameter,
+like $\expmean$, that must be positive,
+(\ref{equation:exponential.interval.log}) is often suggested as
+providing positive interval endpoints and probably
+a more accurate approximate interval than
+(\ref{equation:exponential.interval.nolog}).  Although there is no
+guarantee that (\ref{equation:exponential.interval.log}) will be more
+accurate than (\ref{equation:exponential.interval.nolog}) in a
+particular setting, the sampling distribution of
+$Z_{\log(\expmeanhat)}$ is usually more symmetric than that of
+$Z_{\expmeanhat}$ and the log transformation ensures that the
+lower endpoint of the confidence interval will be positive [which is
+not always so for confidence intervals based on
+(\ref{equation:exponential.interval.nolog})].
+
+\begin{example}
+{\bf Normal-approximation confidence intervals for the mean time
+between arrivals of $\alpha$ particles.} For the $\alpha$-particle
+data, an approximate 95\% confidence interval for $\expmean$ 
+based on the assumption that $Z_{\log(\expmeanhat)}\approxdist \NOR(0,1)$
+is
+\begin{displaymath}
+ [ \undertilde{\expmean},\quad  \tilde{\expmean}] =
+[572.3/1.1536, \quad
+	 572.3 \times 1.1536] = [496, \quad 660]
+\end{displaymath}
+where $w=\exp\{1.960 \times 41.72/572.3\}=1.1536$.
+\end{example}
+
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Confidence Intervals for Functions of $\expmean$}
+\label{section:one.par.ci.functions}
+
+For one-parameter distributions like the exponential, confidence
+intervals for $\expmean$ can be translated directly into confidence
+intervals for monotone functions of $\expmean$.
+
+%-------------------
+\subsection{Confidence intervals for the arrival rate}
+\label{section:ci.on.lambda}
+The arrival rate $\lambda=1/\expmean$ is a {\em decreasing} function
+of $\expmean$. Thus the upper limit $\tilde{\expmean}$ is
+substituted for $\expmean$ to get a lower limit for $\lambda$ and
+vice versa.  The confidence interval for $\lambda$ obtained in this
+manner will contain $\lambda$ if and only if the corresponding
+interval for $\expmean$ contains $\expmean$. Thus the confidence
+interval for $\lambda$ has the same confidence level as the interval
+for $\expmean$.
+\begin{example} 
+{\bf Likelihood-based confidence intervals for the arrival rate
+of $\alpha$ particles.} Using the 
+likelihood-based confidence interval for the $n=200$ sample in
+Table~\ref{table:berkson.results},
+\begin{displaymath}
+ [ \undertilde{\lambda}, \quad  \tilde{\lambda} ] = 
+ [1/ \tilde{\expmean}, \quad  1/ \undertilde{\expmean} ] =  [.00151,
+\quad  .00201].
+\end{displaymath}
+Also, the ML estimate of $\lambda$ is obtained as
+$\lambdahat  =  1/\expmeanhat = .00175 $.
+\end{example}
+
+%------------------------
+\subsection{Confidence intervals for $F(\realrv;\theta)$}
+\label{section:exp.ci.f}
+Because $F(\realrv;\expmean)$ is a decreasing
+function of $\expmean$, confidence intervals for the exponential
+distribution $F(\estimtime;\expmean)$ for a particular
+$\estimtime$ is
+\begin{displaymath}
+[\Flower(\estimtime), \quad \Fupper(\estimtime)] = 
+[ F(\estimtime;\tilde{\expmean}), \quad 
+F(\estimtime;\undertilde{\expmean})].
+\end{displaymath}
+One can compute a set of pointwise confidence intervals
+for a range of values of $\realrv$. The set can, in this case
+(unlike in Section~\ref{section:np.simultaneous.cb}), also be
+interpreted as simultaneous confidence bands for the entire
+exponential cdf $F(\realrv;\expmean)$.  This is because $\expmean$
+is the only unknown parameter for this model and the bands will contain
+the unknown exponential cdf $F(\realrv;\expmean)$ if and only if the
+corresponding confidence interval for $\expmean$ contains the unknown
+true $\expmean$.
+
+
+\begin{example}
+{\bf Confidence intervals for the $\alpha$-particle time between
+arrivals cdf.}
+The dotted lines in Figure~\ref{figure:alpha.mlep.exp.ps} are drawn
+through a set of pointwise normal-approximation  95\%
+confidence intervals for the exponential $F(\realrv;\expmean)$.
+\end{example}
+
+In subsequent chapters  where
+models have more than one parameter (as with the nonparametric simultaneous
+confidence bands in Section~\ref{section:np.simultaneous.cb}),
+a collection of intervals must be
+handled differently because the confidence level applies only to the
+process of constructing an interval for a single point in time
+$\estimtime$.  Generally, making a simultaneous statement would
+require either a wider set of bands or a lower level of confidence.
+%(see Section~\ref{section:locscale.simultaneous} for further
+%discussion of parametric simultaneous confidence bands).
+
+
+%----------------------------------------------------------------------
+\section{Comparison of Confidence Interval Procedures}
+\label{section:exponential.ci.comparison}
+For the particle arrival data, Table \ref{table:berkson.results}
+compares approximate 95\% confidence intervals for $\expmean$
+based on the likelihood, the normal approximation
+$Z_{\log(\expmeanhat)} \approxdist
+\NOR(0,1)$, and the normal approximation
+$Z_{\expmeanhat} \approxdist \NOR(0,1)$.  Statistical theory suggests
+that, in large samples, the log likelihood will be approximately
+quadratic with the approximation improving as the sample size
+increases and that all of the different procedures for computing
+confidence intervals will give similar answers.  This is consistent
+with the results in Table~\ref{table:berkson.results}.  For the sample
+with $n=20$, however, there are some rather large differences among
+the procedures.
+
+Simulation studies have shown that the computationally demanding
+likelihood procedure can be expected to provide better intervals (i.e.,
+an actual coverage probability closer to the nominal confidence
+level).  Also, between the other two simple-to-compute procedures, the
+normal-approximation procedure based on $\log(\expmeanhat)$ provides a
+better approximation. 
+
+It is possible to improve slightly the normal-approximation
+procedure in (\ref{equation:z.theta.exp}) by using the $p$ quantile
+of the Student's $t$ distribution, $\Tquant_{(p;\nu)}$, in place of
+the standard normal quantile, $z_{(p)}$ in
+(\ref{equation:exponential.interval.nolog}) or
+(\ref{equation:exponential.interval.log}). For complete data, $n-1$
+is an obvious choice for the degrees of freedom $\nu$. This is also
+a reasonable choice for censored data (a correction for censoring
+might be contemplated, but no generally useful rule is known). The
+improvement afforded by using $\Tquant_{(p;\nu)}$ instead of
+$z_{(p)}$ is negligible in samples larger than 30 or so because
+$\Tquant_{(p;\nu)}$ approaches $z_{(p)}$ for large $\nu$. In samples
+with fewer than 30 or even 50 observations, any normal-approximation
+procedure can be rather crude (especially for the single-sided
+coverage probabilities, which are important in the common situation
+where the cost of being outside the interval differs from one
+side to the other).  Usually, however, the normal-approximation
+procedures are quick, useful, and adequate for exploratory
+work. When more accurate confidence interval approximations are
+required (e.g., for reporting final results), one should use
+likelihood procedures or other procedures based on simulation (to be
+described in Chapter~\ref{chapter:bootstrap}).
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Likelihood for Exact Failure Times}
+\label{section:exact.fail.like}
+%----------------------------------------------------------------------
+\subsection{Correct likelihood for observations 
+reported as exact failures}
+
+Consider the diesel generator fan data in Appendix
+Table~\ref{atable:fan.data}.  Although time is a continuous variable
+and the failure times were
+initially reported as exact times, these data (as with most data)
+are actually discrete.  In this case, the reported
+failure times were rounded to the nearest 10 hours.  Thus the
+``correct likelihood'' is one for interval-censored data
+(\ref{equation:parametric.interval.likelihood}).  For example, with
+the exponential distribution, the likelihood contribution
+(probability) of the failure recorded at 450 hours is
+\begin{displaymath}
+\like_{1}(\theta)=F(455;\expmean)-F(445;\expmean).
+\end{displaymath}
+
+\subsection{Using the density approximation for 
+observations reported as exact values}
+
+The traditional and commonly used form of the likelihood for an
+observation, say the $i$th,
+reported as an ``exact'' failure
+at time $\realrv_{i}$, is
+\begin{equation}
+\label{equation:density.approximation}
+\like_{i}(\theta)=f(\realrv_{i};\theta)
+\end{equation}
+where $f(\realrv_{i};\theta)= dF(\realrv_{i};\theta)/d\realrv$ is the
+assumed pdf for the random variable
+$\rv$.  The density approximation in
+(\ref{equation:density.approximation}) is convenient, easy-to-use,
+and, in some simple special cases, yields closed
+form equations for ML estimates.
+
+The use of the density approximation
+(\ref{equation:density.approximation})
+instead of the correct discrete likelihood can be
+justified as follows. For most statistical models, the contribution to
+the likelihood (i.e., probability of the data) of observations
+reported as exact values can, for small $\Delta_{i}>0$, be
+approximated by
+\begin{equation}
+\label{equation:why.density.approximation}
+        [F(\realrv_{i};\theta)-
+        F(\realrv_{i}-\Delta_{i};\theta)]
+        \approx f(\realrv_{i};\theta)\Delta_{i}
+\end{equation}
+where $\Delta_{i}$ does not depend on $\theta$.  Because the
+right-hand sides of (\ref{equation:why.density.approximation}) and
+(\ref{equation:density.approximation}) differ by a factor of
+$\Delta_{i}$, when the density approximation is used, the
+approximate likelihood in (\ref{equation:density.approximation})
+differs from the probability in
+(\ref{equation:why.density.approximation}) by a constant scale
+factor.  As long as the approximation in
+(\ref{equation:why.density.approximation}) is adequate and because
+$\Delta_{i}$ does not depend on $\theta$, however, the general
+character (i.e., the shape and the location of the maximum) of the
+likelihood is not affected.
+
+%----------------------------------------------------------------------
+\subsection{ML estimates for the exponential $\theta$
+based on the density approximation} 
+\label{section:exponential.density.approx.mle}
+The density approximation to the likelihood generally provides an
+adequate approximation for the exponential distribution.  For a
+sample consisting of only right censored observations and
+observations reported as exact failure times (and no left-censored
+or interval-censored observations), it is easy to show that the ML
+estimate of $\expmean$ is computed as
+\begin{equation}
+\label{equation:exp.exact.ml}
+\expmeanhat=\frac{\ttt}{r}
+\end{equation}
+where $\ttt=\sum_{i=1}^{n}\realrv_{i}$ is known as the ``total time on test''
+and where $\realrv_{i}$, $i=1,n$ are the reported failure times for units 
+that failed and
+the running (or censoring) time for the right-censored observations.
+Note that the sum runs over {\em all} of the failures {\em and}
+each of the censoring times. In this case, an estimate of standard error 
+of $\expmeanhat$ is a special case of (\ref{equation:scalar.hessian}),
+and is computed as
+\begin{equation}
+\label{equation:sehat.exp.mean}
+ \sehat_{\expmeanhat} = 
+\sqrt{ \left[-\frac{d^{2} \loglike(\expmean)}
+{d \expmean^{2}} \right]^{-1}} = \sqrt{\frac{\expmeanhat^{2}}{r}}
+= \frac{\thetahat}{\sqrt{r}} 
+\end{equation}
+where $r$ is the number of failures.
+
+%----------------------------------------------------------------------
+\begin{example}
+{\bf Comparison of ML estimates for the fan data
+based on the correct likelihood and
+the density approximation.} Fitting the exponential distribution to
+the diesel generator fan data in Appendix Table~\ref{atable:fan.data}
+using the ``correct'' likelihood contribution in
+(\ref{equation:parametric.interval.likelihood}) and the density
+approximation in (\ref{equation:density.approximation}) give, to 7
+decimal places, the same answers [$\log(\expmeanhat)=10.26476$ and
+$\sehat_{\log(\expmeanhat)}=.2886757$]. Although the agreement is
+nearly exact in this case, with other distributions, the degree of
+agreement will not be so good unless the $\Delta_{i}$ are small.
+\end{example}
+
+
+%----------------------------------------------------------------------
+\subsection{Confidence intervals for the exponential
+with complete data or failure censoring} Suppose that a life test
+starts at time 0 and that all failures are reported as exact
+failures. If the test continues until all units have failed or if the
+test is terminated after a prespecified number $r$ failures
+(Type~II censoring), then the ML estimate of $\expmean$ is
+$\expmeanhat=\ttt/r$ and an exact $100(1-\alpha)\%$ confidence
+interval for $\expmean$ can be computed from
+\begin{displaymath}
+ [ \undertilde{\expmean}, \quad \tilde{\expmean}] =
+\left[ \frac{2(\ttt)}{\chisquare_{(1-\alpha/2;2r)}}, \quad
+\frac{2(\ttt)}
+{\chisquare_{(\alpha/2;2r)}} \right].
+\end{displaymath}
+This interval is based on the fact that $2(\ttt/ \expmean) \sim
+\chisquare_{(2r)}$. This confidence interval
+procedure has exactly the specified confidence level
+$100(1-\alpha)\%$.  Lawless~(1982, page 127) and Bain and
+Engelhardt~(1991, page 122) provide technical details and
+justification for this method. With time (Type~I) censoring, the
+procedure still provides a useful approximation.
+%----------------------------------------------------------------------
+\begin{example}
+\label{example:insul.type2}
+{\bf Confidence interval for the mean life of a new insulating
+material.} A life test for a new insulating material used 25
+specimens.  The specimens were tested simultaneously at 30 kV
+(considerably higher than the rated voltage of 20 kV). The test was
+run until 15 of the specimens failed (failure or Type~II censoring).
+The failure times were recorded as 1.08, 12.20, 17.80, 19.10, 26.00,
+27.90, 28.20, 32.20, 35.90, 43.50, 44.00, 45.20, 45.70, 46.30, and
+47.80 hours.  The total time on test for these data is $1.08 + 12.20 +
+\cdots + 47.80 + 10\times 47.80 = 950.88$ hours and thus the ML
+estimate of $\expmean$ is 950.88/15=63.392 hours. A 95\%
+confidence interval for $\expmean$ is
+\begin{displaymath}
+ [ \undertilde{\expmean}, \quad \tilde{\expmean}] =
+\left [ \frac{2(950.88)}{\chisquare_{(.975;30)}}, \quad
+\frac{2(950.88)}{\chisquare_{(.025;30)}} \right ] =
+\left [ \frac{1901.76}{46.98}, \quad
+\frac{ 1901.76 }{ 16.79 } \right ] = [ 40.48, \quad 113.26 ].
+\end{displaymath}
+An estimate of the standard error of $\expmeanhat$ 
+using (\ref{equation:sehat.exp.mean}) is $\sehat_{\thetahat}=
+\sqrt{(63.392)^{2}/15}=16.37$.
+%splus  signif(sort(-74*log(1-runif(25))),digits=3)
+%splus
+%splus (sum(c(1.08, 12.20, 17.80, 19.10, 26.00, 27.90,28.20, 32.20, 35.90, 43.50, 44.00, 45.20, 45.70, 46.30, 47.80))+10* 47.80)
+%splus    [1] 950.88
+%splus
+%splus   (2*950.88)/qchisq(.975,30)
+%splus    [1] 40.48086
+%splus
+%splus  (2*950.88)/qchisq(.025,30)
+%splus   [1] 113.2622
+%splus
+%splus    950.88/15
+%splus   [1] 63.392
+%splus   sqrt(63.392^2/15)
+%splus  [1] 16.36774
+%splus
+\end{example}
+
+
+%----------------------------------------------------------------------
+\section{Data Analysis with No Failures}
+\label{section:expon.zero.fail}
+For data on high reliability components, it is possible that
+there will be no failures. The ML estimate of the exponential
+distribution mean is then $\thetahat=\infty$ (and
+sometimes it is said that the ML estimate ``does not exist'').  This
+is not a useful answer because, generally, it is known that there would
+have been failures if the period of testing had been extended. With
+zero failures and an assumed exponential distribution it is, however,
+possible to obtain a {\em lower} confidence bound for $\expmean$.  In
+particular, if there are no failures in a life test with 
+total time on test $\ttt$ (defined in
+Section~\ref{section:exponential.density.approx.mle}) a conservative
+$100(1-\alpha)$\% lower confidence bound on $\expmean$ is
+\begin{equation}
+\label{equation:zero.failures.exp.ci}
+\undertilde{\expmean} = \frac{2 (\ttt)}{ \chisquare_{(1-\alpha;2)}}
+	 = \frac{\ttt}{ -\log(\alpha) }
+\end{equation}
+because $ \chisquare_{(1-\alpha;2)} = - 2 \log(\alpha) $.
+This bound is based on the fact that under the exponential
+failure-time distribution, with immediate replacement of failed
+units, the number of failures observed in a life test with a fixed
+total time on test has a Poisson distribution.
+
+As in Section~\ref{section:one.par.ci.functions}, this confidence
+bound can be translated into an lower confidence bound for functions
+of $\expmean$ like $\rvquan_{p}$ for specified $p$ or a upper
+confidence bound for $F(\estimtime)$ for a specified $\estimtime$.
+Unless $\ttt$ is large, however, the resulting bound may not be very
+informative.  See Nelson~(1985) for justification and further
+discussion of this method.
+
+\begin{example}
+{\bf Analysis of the diesel generator fan data assuming removal after
+200 hours of service.} For this example, suppose that each of the
+diesel generator fans described in Example~\ref{example:fan.data} had
+been removed unfailed after 200 hours of service. There was a total of
+70 fans in the study. None failed before 200 hours of service.  Thus
+$\ttt$=14,000 hours. A conservative 95\% lower confidence bound on
+$\expmean$ is
+\begin{displaymath}
+%splus 28000/5.991 = 4673.677
+\undertilde{\expmean} = 
+\frac{2 (\ttt)}{ \chisquare_{(.95;2)}} =
+\frac{28000}{ 5.991} =  4674.
+\end{displaymath}
+Using the entire data set, the point estimate of $\expmean$ was 28,701
+with a likelihood-based approximate 95\% lower confidence bound of
+$\undertilde{\expmean}=$ 18,485 hours.  This shows how little
+information comes from a short test with zero or few failures.  
+
+A conservative $95\%$ upper confidence bound on $F(10000;\theta)$,
+the probability of failing before 10,000 hours, is
+$\Fupper(10000)=F(10000;
+\undertilde{\theta})=1-\exp(-10000/4674) = .882$. Again, due to the
+%splus  1-exp(-10000/4674)
+limited amount of information from the short test, this upper bound is
+not very useful for making a statement on the fan's 10,000-hour
+reliability (of course, the only lower bound that can be computed for
+$F(10000;\theta)$ is $0$ which also is not very useful).
+\end{example}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Bibliographic Notes}
+
+The ML method dates back to early work by Fisher~(1925) and has been
+used as a method for constructing estimators ever since.
+Statistical theory for ML is briefly covered in most textbooks on
+mathematical statistics. Some particularly useful references for the
+approach used here are Kulldorff~(1961), Kempthorne and
+Folks~(1971), Rao~(1973), and Cox and Hinkley~(1974),
+Lehmann~(1983), Nelson~(1982), Lawless~(1982), Casella and
+Berger~(1990), and Lindsey~(1996).  Epstein and Sobel~(1953)
+described the fundamental ideas of using the exponential
+distribution as a model for life data.
+
+Anscombe~(1964) and Sprott~(1973) suggest using the transformed
+parameter $\nu=\expmean^{-1/3}$ for the exponential parameter
+because it will make the third derivative of exponential log
+likelihood function nearly 0. The important implication is that this
+transformation makes the exponential log likelihood function nearly
+symmetric and approximately quadratic in $\nu$. In this scale, the
+normal-approximation inferences provide an excellent approximation to
+the likelihood-based inferences.  Meeker and Escobar~(1995) show that
+the normal-approximation intervals can be viewed as approximations to
+likelihood intervals obtained by using a quadratic approximation to
+the log likelihood function.
+
+Meeker~(1986) uses asymptotic variances to show that binning data will
+not seriously affect the precision of ML estimates as long as there
+are a reasonable number of bins (say more than 5 or 6) and that the
+bins are chosen so that the number of observations in the different
+bins is not too uneven.
+
+For examples of failures of the ``density approximation'' to the
+likelihood, see Le Cam~(1990), Friedman and Gertsbakh~(1980) and
+Meeker and Escobar~(1994). Each of these references describes a
+model or models for which the ``density approximation'' likelihood
+has a path or paths in the parameter space along which
+$\like(\theta)$ approaches $\infty$. In these cases, using the
+``correct'' likelihood based on discrete data eliminates the
+singularity in $\like(\theta)$.
+
+\section*{Exercises}
+
+\begin{exercise}
+\label{exercise:exponential.ml.complete}
+Consider the case of $n$ observations reported as ``exact''
+failure times from an $\EXP(\expmean)$ distribution.  	 
+\begin{enumerate}
+\item 
+Show that the ML estimate, $\expmeanhat$, of $\expmean$ is
+the sample mean, say $\bar{\realrv}=\sum_{i=1}^{n}t_{i}/n$.  	 
+\item 
+\label{exercise.part:complete.data.exponential.profile}
+Show that the relative likelihood has the simple expression
+\begin{displaymath}
+R(\expmean)=\exp(n) \left (\frac{\bar{\realrv}}{\expmean}\, \right )^{n}
+\exp \left ( - \frac{n\bar{\realrv}}{\expmean} \,\right ).
+\end{displaymath} 
+\item
+\label{exercise.part:chisquare.exponential.lr.interval}
+Explain how to use $R(\expmean)$ to obtain an approximate confidence
+interval
+for $\expmean$ based on inverting a likelihood ratio test
+[i.e., assume that when evaluated at the
+true value of $\expmean$, $R(\expmean) \approxdist \chisquare_{1}$].
+\item 
+\label{exercise.part:chisquare.exponential.lr.interval.ex}
+Suppose that $n=4$ and $\bar{\realrv}=0.87$. Obtain 
+the ML estimate and an
+approximate $90\%$ confidence interval for $\expmean$ using the
+method in part~\ref{exercise.part:chisquare.exponential.lr.interval}.
+Plot $R(\expmean)$ to facilitate your work.
+\end{enumerate}
+\end{exercise}
+
+
+
+
+
+\begin{exercise}
+\label{exercise:exponential.ml.type1.censored}
+Let $\realrv_{1}, \ldots, \realrv_{r}$ be the failure times in a
+singly time-censored sample of size $n$ from an $\EXP(\expmean)$
+distribution. Suppose
+that the prespecified censoring time is $\censortime$.
+The total time on test is $\ttt=\sum_{i=1}^{r}\realrv_{i}+(n-r)\censortime$.
+\begin{enumerate}
+\item 
+\label{exercise.part:exponential.ml.density}
+Write an expression for the log likelihood using the density
+approximation for the observations
+reported as exact failures.
+\item 
+Show that the ML estimate is $\expmeanhat=\ttt/r$.  		
+\item 
+\label{exercise.part:exponential.ml.exist.limit.allc}
+Use the result of part~\ref{exercise.part:exponential.ml.density} to show
+that the ML estimate of $\expmean$ is equal to $\infty$ (or ``does not
+exist'') when all the observations are censored.
+\item 
+Derive an expression for the relative likelihood similar to the one
+given in part~\ref{exercise.part:complete.data.exponential.profile} of
+Problem~\ref{exercise:exponential.ml.complete} (note that in this case
+$\ttt/r$ plays the role of $\bar{\realrv}$ and $r$ the role of $n$).
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+Refer to Exercise~\ref{exercise:exponential.ml.type1.censored}. Show that 
+if there are no failures by time
+$t_{c}$, then $L(\theta)$ always increases as a function of 
+$\theta$ and thus $L(\theta)$ does not have a maximum.
+\end{exercise}
+
+\begin{exercise}
+\label{exercise:elec.sys}
+A large electronic system contains thousands of copies of a particular
+component, which we will refer to as Component-A (each system is
+custom-made to order and the actual number of components varies with
+the size of the particular system). The failure rate for Component-A
+is small, but because there are so many of the components in
+operation, failures are reported from time to time. A field tracking
+study was conducted to estimate the failure rate of a new design for
+Component-A (which was intended to provide better reliability at lower
+cost), to see if there was any real improvement. A number of systems
+were put into service simultaneously and monitored for 1000 hours. The
+total number of copies of Component-A in all of the systems was 9432.
+Failures of Component-A were observed at 345, 556, 712, and 976 hours.
+Failure mode analysis suggested that the failures were due to random
+shocks rather than any kind of quality defects or wearout. This,
+along with past experience with simpler components, suggested that
+an exponential distribution might be an appropriate
+model for the lifetime of Component-A.
+\begin{enumerate}
+\item
+Compute the ML estimate for the exponential mean $\theta$
+for Component-A.
+\item
+\label{ex.pt:ci.theta}
+Compute an approximate 95\% confidence interval for $\theta$.
+\item
+Explain the interpretation of the confidence interval
+obtained in part~\ref{ex.pt:ci.theta}.
+\item
+Explain the interpretation of the hazard function 
+$\lambda=1/\theta$. In what way can this quantity be used to compute
+failure rates for Component-A or for the overall system?
+\item
+Use the results of part~\ref{ex.pt:ci.theta} to obtain an approximate
+95\% confidence interval for $\lambda$. Express this in units of FITs
+(failures per $10^{9}$ hours of operation).
+\item
+The hazard for the old part was $\lambda_{\mbox{old}}=8.5 \times
+10^{-7}$
+(or 850 FITs). How strong is the evidence that reliability has improved
+with the new design? Describe how you would phrase a statement about
+the relative improvement.
+\item
+Compute and plot the exponential $\Fhat(t)$ from 0 to 10,000
+hours on Weibull paper. Comment on the usefulness of this plot.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+The manufacturer of computer hard disks reports in its promotional
+literature
+an ``MTBF'' figure. This figure is obtained by taking a sample of units
+from each day's production, putting the units on test for a period
+$\censortime$ (perhaps one week), pooling the available data over
+several months, and computing
+\begin{displaymath}
+\mtbfhat = \frac{\ttt}{r}
+\end{displaymath}
+where $\ttt$ is the total time on test of all units that were tested
+and $r$ is the observed number of failures (typically a very small
+number of drives).  Reported figures are typically numbers like MTBF=30
+years.  Comment on the usefulness and validity of the use of this
+figure for characterizing the reliability of disk drives.
+\end{exercise}
+
+
+\begin{exercise}
+Nelson~(1982, page 105) provides data on minutes to breakdown for an
+insulating fluid. There were 11 tests at 30 kV.  After 100
+minutes, there were $7$ breakdowns (failures) at the following times
+(in minutes): 7.74, 17.05, 20.46, 21.02, 22.66, 43.40, 47.30. The
+other $4$ units had not failed.
+\begin{enumerate}
+\item
+Make a Weibull probability plot and an exponential probability plot for these data.
+\item 
+What do you think about the suggestion of using 
+an exponential distribution, $\EXP(\theta)$, to model
+the data? 
+\item
+Assuming an exponential distribution, obtain the ML estimate of 
+$\theta$ and give an estimate of $\se_{\thetahat}$.
+\item
+Compute an approximate $95\%$ confidence interval for $\theta$.
+\item
+Compute the ML estimate of $\rvquan_{.1}$, the $.1$ quantile of the
+time
+to breakdown distribution.
+\item
+Compute an approximate $95\%$ confidence interval for $\rvquan_{.1}$.
+\end{enumerate}
+\end{exercise}
+
+
+\begin{exercise}
+\label{exercise:insul.material.40kv}
+ A life test for a new insulating material used 50 specimens.  The
+specimens were tested simultaneously at 40 kV (considerably higher
+than the rated voltage of 20 kV). The test was run until 10 of the
+specimens failed (this is known as ``failure'' 
+or Type~II censoring). The failure
+times were recorded as 8, 11, 12, 13, 19, 21, 28,
+34, 36, and 44 hours. The engineers responsible for the reliability
+believe, based on previous experience with similar materials, tested
+under similar conditions, that the failure-time distribution at 40
+kV can be described by an $\EXP(\expmean)$ distribution.
+\begin{enumerate}
+\item	
+Construct an exponential probability plot of the data.
+Does the plot provide any evidence that the exponential distribution
+is inadequate?
+\item	
+Compute $\ttt$, the total time on test, 
+and $\expmeanhat$, the ML estimate for $\expmean$.
+\item	
+Compute an estimate of the standard error of $\expmeanhat$.
+\item	
+Compute 95\% confidence intervals for $\expmean$ based on,
+$Z_{\expmeanhat} \approxdist \NOR(0,1)$,
+$Z_{\log(\expmeanhat)} \approxdist \NOR(0,1)$, and
+the exact distribution of $2(\ttt/\expmean)$.
+Which of these intervals would you feel comfortable using? Why?
+\item	
+For this problem, is there any extrapolation involved in 
+estimating $\expmean$? Explain.
+\item	
+Compute 95\% confidence intervals for $\rvquan_{.1}$,
+$h(50;\expmean)$, and $F(50;\expmean)$
+based on the exact distribution of $2(\ttt/\expmean)$. Is there any 
+extrapolation involved in these intervals? Explain.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+Use the results from Exercise~\ref{exercise:insul.material.40kv} to
+compute and plot (use an exponential plot) the ML estimate of
+$F(\realrv;\expmean)$ and 95\% simultaneous parametric
+confidence bands for $F(\realrv;\expmean)$, based on the exact
+distribution of $2(\ttt/\expmean)$.
+\end{exercise}
+
+\begin{exercise}
+A life test was conducted for the same insulating material described
+in Exercise~\ref{exercise:insul.material.40kv}.  Again, 50 specimens
+were tested, but at 25 kV. The test ran for 20 hours without any
+failures. The test had to be terminated at this time so that the
+test equipment could be used for other experiments.
+\begin{enumerate}
+\item	
+Compute the $\ttt$ and show why the ML estimate for $\expmean$
+is equal to $\infty$.
+\item
+\label{exercise.part:insulation.ci.for.expmean}
+Compute a conservative 95\% lower confidence bound for $\expmean$.
+\item	
+For this problem, is there any extrapolation involved in 
+computing the lower confidence bound for $\expmean$? Explain.
+\item	
+Use the result in part~\ref{exercise.part:insulation.ci.for.expmean}
+to compute a conservative 95\% lower confidence bound for
+$\rvquan_{.1}$, and conservative 95\% upper confidence bounds
+for $h(50;\expmean)$ and $F(50;\expmean)$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise1}
+Refer to Exercise~\ref{exercise:exponential.ml.complete} to show that
+in this case $2 n \expmeanhat /\expmean$ has a $\chisquare$
+distribution with $2n$ degrees of freedom and use this to obtain an
+expression for a $100(1-\alpha)\%$ confidence interval for $\expmean$.
+\end{exercise1}
+
+\begin{exercise1}
+Refer to Exercise~\ref{exercise:exponential.ml.type1.censored}.
+Derive an expression for the bias of $\expmeanhat$ [i.e.,
+$\E(\expmeanhat) -\expmean$], conditional on the existence of the
+estimator (i.e., conditional on $r>0$) and show that the bias is
+negligible when $\censortime$ is large.
+\end{exercise1}
+
+\begin{exercise1}
+Refer to Exercise~\ref{exercise:exponential.ml.type1.censored}.
+Derive (\ref{equation:sehat.exp.mean}).
+\end{exercise1}
+
+\begin{exercise1}
+\label{exercise:exponential.ml.exist}
+Consider $n$ observations with inspection data from an
+$\EXP(\expmean)$ distribution with $0<\expmean<\infty$.  Show that
+\begin{enumerate}
+\item	
+\label{exercise.part:exponential.ml.exist.allf}
+The ML estimate of $\expmean$ does not 	exist (i.e., there is not a
+unique maximum of the likelihood function) when
+$\deadin_{1}=n$ or $\deadin_{m+1}=n$.
+\item 
+\label{exercise.part:exponential.ml.exist.allc}
+When $\deadin_{i}=n$ ($i \ne 1, m+1$), the ML estimator is
+\begin{displaymath} 
+\expmeanhat=\frac{\realrv_{i}-\realrv_{i-1}}
+{\log(\realrv_{i})-\log(\realrv_{i-1})}.
+\end{displaymath} 	
+\end{enumerate}
+\end{exercise1}
+
+

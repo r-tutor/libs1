@@ -1,0 +1,202 @@
+---
+output: html_document
+---
+
+```{r echo=FALSE}
+ex <- 0
+```
+
+
+# From the Text Exercise 3.`r ex = ex+1; ex`
+
+ \label{exercise:bb.ci75} Use the ball bearing life test data in Table~\ref{table:lz.bbearing.data} to do the following: 
+ 
+
+a. Compute a nonparametric estimate of the population fraction failing by 75 million cycles. 
+
+a. \label{exercise.part:bb.ci75p1} Use the conservative interval in (\ref{equation:binomial.confidence.interval}) to compute an approximate 90\% confidence interval for the population fraction failing by 75 million cycles. 
+
+a. \label{exercise.part:bb.ci75p2} Use the normal-approximation method in (\ref{equation:nor.approc.binom.ci}) to compute an approximate 90\% confidence interval for the population fraction failing by 75 million cycles. 
+
+a. Comparing the intervals from parts~\ref{exercise.part:bb.ci75p1} and \ref{exercise.part:bb.ci75p2}, what do you conclude about the adequacy of the normal-approximation method for these data?  
+
+
+# From the Text Exercise 3.`r ex = ex+1; ex`
+
+ Repeat Exercise~\ref{exercise:bb.ci75}, using the population fraction failing by 25 million cycles.  Why does the normal-approximation method not work so well in this case? 
+
+
+# From the Text Exercise 3.`r ex = ex+1; ex`
+
+ Show how (\ref{equation:np.normal.theory.ci}) follows from (\ref{equation:fhat.ci.normal}) and how (\ref{equation:fhat.ci.normal}) follows from (\ref{equation:def.zfhat.normal}). 
+
+
+# From the Text Exercise 3.`r ex = ex+1; ex`
+
+ \label{exercise:parida.1991} Parida~(1991) gives data from a load-controlled high-cycle fatigue test conducted on 130 chain links. The 130 links were randomly selected from a population of different heats used to manufacture the links. Each link was tested until failure or until it had run for 80 thousand cycles, whichever came first. There were 10 failures---one each reported at 33, 46, 50, 59, 62, 71, 74, and 75 thousand cycles and 2 reported at 78 thousand cycles. The other 120 links had not failed by 80 thousand cycles. 
+ 
+
+a. Use (\ref{equation:binomial.ecdf}) to compute the nonparametric estimate of $F(t)$ and corresponding standard errors.  
+
+a. Compute a set of pointwise approximate 90\% confidence intervals for $F(t)$.  Explain the proper interpretation of these intervals. 
+
+a. For the first 3 failures, compare the numerical estimates from (\ref{equation:nonparametric.estimator.for.F}) with the numerical estimates from (\ref{equation:binomial.ecdf}). 
+
+a. The original paper reported the number of cycles to failure, as given above. Suggest reasons why the numbers of cycles to failures were not given with more precision and the effect that this has on the results of the analysis. 
+
+a. The original paper reported that the tested units had been selected from a random sample of heats. What might have happened in the experiment if all of the sample links had been selected from just one or two heats? 
+
+a. The original paper did not report the order in which the tests were run. Typically fatigue tests require the use of  one or a few expensive test stands and tests are done in sequence. The order in which the failures occurred was not described in the original paper. Is it possible that there was some useful information in knowing the order in which the 130 units had been tested? Discuss.  
+
+
+# From the Text Exercise 3.`r ex = ex+1; ex`
+
+ The supplier of an electromechanical control for a household appliance ran an accelerated life test on sample controls. In the test, 25 controls were put on test and run until failure or until 30 thousand cycles had been been accumulated. Failures occurred at 5, 21, and 28 thousand cycles. The other 22 controls did not fail by the end of the test. 
+ 
+
+a. Compute and plot a nonparametric estimate for $F(t)$. 
+
+a. \label{exer.part:elmech.ci.binom} Compute an approximate 95\% confidence interval for the probability that an electromechanical device from the same production process, tested in the same way, would fail before 30 thousand cycles. Use the conservative binomial distribution approach. 
+
+a. \label{exer.part:elmech.ci.norm} Compute an approximate 95\% confidence interval for the probability that an electromechanical device from the same production process, tested in the same way, would fail before 30 thousand cycles. Use the normal-approximation method based on $Z_{\hat{F}(30)} \overset{\cdot}{\sim} NOR(0,1)$. 
+
+a. Explain why, in this situation, the approach in part~\ref{exer.part:elmech.ci.binom} would be preferred to the approach in part~\ref{exer.part:elmech.ci.norm}. 
+
+a. \label{exerpart:prod.mix} The appliance manufacturer is really interested in the probability of the number of days to failure for its product. Use rate differs from household to household, but the average rate is 2.3 cycles per day. What can the manufacturer say about the proportion of devices that would fail in 10 years of operation (the expected technological life of the product)?  
+
+a. Refer to part~\ref{exerpart:prod.mix}. Describe an appropriate model to use when use rate varies in the  population of units. To simplify, start by assuming that there are only two different use-rates. Discuss, using appropriate expressions.  
+
+
+# From the Text Exercise 3.`r ex = ex+1; ex`
+
+ \label{exercise:earth.orbit.cdf} Over the past 18 months, ten separate copies of an electronic system have been deployed in earth-orbit where repair is impossible. Continuous remote monitoring, however, provides information on the state of the system and each of its main subsystems.  Each system contains 3 nominally identical devices and it was learned, after deployment, that these devices are, in the system's environment, failing unexpectedly. The failures cause degradation to the overall system operation. For future systems that are to be deployed, the problem will be fixed, but owners of the systems have asked for information on the amount of degradation that can be expected in future years of operation among these currently deployed. To date, 5 of the 30 devices have failed. Due to the staggered entry of the systems into service, the available data are multiply censored. The following table summarizes the available information with times given in hours.  Times of unfailed units are marked with a "$+$."\\[5ex] 
+ {\centering\small 
+$$
+\begin{array}{rrrr} \\[-.5ex] System & Device 1 & Device 2 & Device 3\\ 
+\hline
+ 1  &   564+    &   564+        &  564+  \\ 2  &   1321+   &   1104\hspace{8pt}     &  1321+ \\ 3  &   1933+   &   1933+       &  1933+ \\ 5  &   1965+   &   1965+       &  1965+ \\ 4  &   2578+   &   2345\hspace{8pt}     &  2578+ \\ 6  &   3122+   &   3122+       &  3122+ \\ 7  &   5918+   &   5918+       &  4467\hspace{8pt}   \\ 8  &   7912+   &   7912+       &  6623\hspace{8pt}   \\ 9  &   8156+   &   8156+       &  8156+ \\ 10 &   7885\hspace{8pt} &   12229+      &  12229+\\ 
+\hline
+ 
+\end{array}
+$$
+ } 
+ 
+ 
+
+a. Compute a nonparametric estimate of  $F(t)$, the life distribution of the devices, assuming that the devices are operating and failing independently. 
+
+a. Plot the nonparametric estimate of $F(t)$. 
+
+a. Compute pointwise approximate $95\%$ confidence intervals for $F(t)$ and add these to your plot. 
+
+a. Explain why it might be that the 30 devices are not operating and failing independently and how this would affect conclusions drawn from the data. 
+
+a. Describe possible reasons why this failure-causing problem was not discovered earlier and what might be done to minimize the chance of such problems occurring in the future. What questions would you ask of a client who wants you to help interpret the information in the failure data?  
+
+
+# From the Text Exercise 3.`r ex = ex+1; ex`
+
+ Consider the Plant 1 heat exchanger data in Figure~\ref{figure:heatex.plcomp1fig.ps}. 
+ 
+
+a. Write the likelihood for these data in terms of $\pi_{1}, \pi_{2}, \pi_{3},$ and $\pi_{4}.$ 
+
+a. Write the likelihood for these data in terms of $p_{1}, p_{2}, p_{3},$ and $p_{4}.$  
+
+
+# From the Text Exercise 3.`r ex = ex+1; ex`
+
+ \label{exercise:fhat.sim} Some computer programs (e.g., statistical packages and spreadsheets) can be used to generate pseudorandom samples from a uniform distribution.  Let $U_{1},\ldots,U_{n}$ denote such a sample. Then $T_{1}=-\log(1-U_{1}),\ldots,T_{n}=-\log(1-U_{n})$ is a pseudorandom sample from an exponential distribution (to be described in more detail in Chapter~\ref{chapter:ls.parametric.models}).  Simulate a sequence of $50$ such samples each of size $n=200.$ For each sample: 
+ 
+
+a. Compute and plot $\hat{F}.$ 
+
+a. Make a histogram of the $50$ values of $\hat{F}(1).$ 
+
+a. \label{exer.pt:fhat.sim1} Make a histogram of the $50$ values of $Z_{\hat{F}(1)}.$ 
+
+a. \label{exer.pt:fhat.sim2} Make a histogram of the $50$ values of $Z_{logit(\hat{F})}.$ 
+
+a. Compare the histograms in parts~\ref{exer.pt:fhat.sim1} and \ref{exer.pt:fhat.sim2}. Which statistic seems to be better approximated by a $NOR(0,1)$ distribution?  
+
+
+# From the Text Exercise 3.`r ex = ex+1; ex`
+
+ Repeat Exercise~\ref{exercise:fhat.sim} using samples of size $n=20$ (and, perhaps other values of $n$).  Compare the plots with those from Exercise~\ref{exercise:fhat.sim} and describe how sample size affects the distribution of statistics like $\hat{F},$ $Z_{\hat{F}},$ and $Z_{logit(\hat{F})}$. 
+
+
+# From the Text Exercise 3.`r ex = ex+1; ex`
+
+ \label{exercise:weis.et.al.1986} Weis, Caldararu, Snyder, and Croitoru~(1986) report on the results of a life test on silicon photodiode detectors in which 28 detectors were tested at $85^\circ$C and 40 volts reverse bias. These conditions, which were more stressful than normal use conditions,  were used in order to get failures quickly. Specified electrical tests were made at 0, 10, 25, 75, 100, 500, 750, 1000, 1500, 2000, 2500, 3000, 3600, 3700, and 3800 hours to determine if the detectors were still performing properly. Failures were found after the inspections at 2500 (1~failure), 3000 (1~failure), 3500 (2~failures), 3600  (1~failure), 3700 (1~failure), and 3800 (1~failure). The other 21 detectors had not failed after 3800 hours of operation. Use these data to estimate the life distribution of  such photodiode detectors running at the test conditions. 
+ 
+
+a. From the description given above, the data would be useful for making inferences about what particular populations or process? Explain your reasoning. 
+
+a. \label{exercise.part:photo.diode.npest} Compute and plot a nonparametric estimate of the cdf for time to failure at the test conditions. 
+
+a. Compute standard errors for the nonparametric estimate in part \ref{exercise.part:photo.diode.npest}. 
+
+a. Compute a set of pointwise approximate 95\% confidence intervals for $F(t)$ and add these to your plot. 
+
+a. Compute simultaneous approximate 95\% confidence bands for $F(t)$ over the complete range of observation. 
+
+a. Provide a careful explanation of the differences in interpretation and application of the pointwise confidence intervals and the simultaneous confidence bands.  
+
+
+# From the Text Exercise 3.`r ex = ex+1; ex`
+
+ Example~\ref{example:shock.absorber.cdfest} illustrates the computations for the nonparametric estimation of the cdf for the shock absorber data up to 12,220~km. Complete the computations for the rest of the data (i.e., out to 28,100~km). Use $S(12200)=.9086984$ to continue the cumulative product in (\ref{equation:nonparametric.estimator}). 
+ 
+
+a. \label{exercise.part:npshock.plotcdf} Plot the nonparametric estimate out to 28,100 km. 
+
+a. Compute $\widehat{se}_{\hat{F}}$ out to 28,100 km. 
+
+a. Compute a set of pointwise approximate 90\% confidence intervals for $F(t)$ out to 28,100~km and add these to the plot in part \ref{exercise.part:npshock.plotcdf}. 
+
+a. Explain why, with right-censored data, for the nonparametric estimation method, there is only a limited range of time over which we can estimate $F(t)$.  
+
+
+# From the Text Exercise 3.`r ex = ex+1; ex`
+
+ Example~\ref{example:npe.heat.exchanger} illustrated the computations for the nonparametric and approximate confidence intervals for $F(1)$  and $F(2)$ for the pooled heat exchanger tube data. Complete similar computations for $F(3)$. 
+
+
+# From the Text Exercise 3.`r ex = ex+1; ex`
+
+ Explain why the nonparametric estimate of $F(t)$ is a set of points for the heat exchanger data in Example~\ref{example:npe.heat.exchanger} but a step function for the shock absorber data in Example~\ref{example:shock.absorber.cdfest}. 
+
+
+# From the Text Exercise 3.`r ex = ex+1; ex`
+
+ Use the data in Table~\ref{table:v7.transmitter.tube} to do the following for the V7 Transmitter tube: 
+ 
+
+a. Compute an estimate of the conditional probability of failing for each cell. 
+
+a. Compute a nonparametric estimate for $F(t)$ for each cell.  
+
+a. Plot the estimate of $F(t)$  along with a set of pointwise approximate 95\% confidence intervals. 
+
+a. For each interval, compute and plot an estimate of the probability of failing in that interval given a unit enters the interval. 
+
+a. Explain how these estimates could be used to plan for preventive maintenance for a group of radio transmitters, each with one such tube.  
+
+
+# From the Text Exercise 3.`r ex = ex+1; ex`
+
+ \label{exercise:fan.km} Use the diesel engine fan data in Appendix Table~\ref{atable:fan.data} to compute the product-limit nonparametric estimate of $F(t)$ using (\ref{equation:nonparametric.estimator}). 
+
+
+# From the Text Exercise 3.`r ex = ex+1; ex`
+
+ Example~\ref{example:proto.battery.npmle} illustrated the computations for the nonparametric estimate of the  cdf for prototype batteries with both failure times and censored observations within the given intervals. Complete the computations for the rest of the data in Appendix Table~\ref{atable:morgan.battery.data} (i.e., out to 1700 hours). Use $\hat{S}(600)=.51608$ to continue the cumulative product  in (\ref{equation:nonparametric.estimator}). 
+ 
+
+a. \label{exercise.part:proto.batt.plotcdf} Plot the nonparametric estimate out to 1700 hours. 
+
+a. Compute $\widehat{se}_{\hat{F}}$ out to 1700 hours. 
+
+a. Compute a set of approximate pointwise 90\% confidence intervals for $F(t)$ out to 1700 hours and add these to the plot in part \ref{exercise.part:proto.batt.plotcdf}.  
+
+

@@ -1,0 +1,86 @@
+---
+title: "`r SMRD:::info('book')`"
+subtitle: "`r SMRD:::info('chapter14')`"
+author: "`r SMRD:::info('authors')`"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+output:
+  slidy_presentation:
+    smart: false
+    fig_caption: yes
+footer: "`r paste('SMRD: ', SMRD:::info('chapter14'))`"
+runtime: shiny
+graphics: yes
+---
+
+```{r intro, echo=FALSE,message=FALSE, warning=FALSE}
+assign('dynamic', TRUE, envir = sys.frame(),immediate = TRUE)
+source('scripts/R/setup.R')
+```
+
+# CHAPTER OVERVIEW
+
+```{r}
+shiny::includeCSS('scripts/css/flat-slidy.css')
+shiny::includeScript(path = "scripts/js/audiojs/audiojs/audio.min.js",
+                     "audiojs.events.ready(function() {audiojs.createAll();});")
+shiny::includeScript("scripts/js/jkf-scroll.js")
+```
+
+## This chapter explains
+
+- The use of Bayesian statistical methods to combine "prior" information with data to make inferences
+- The relationship between Bayesian methods and the likelihood methds used in earlier chapters
+- Sources of prior information
+- Useful statistical and numerical methods for Bayesian analysis
+- Bayesian methods for estimating reliability
+- Bayesian methods for prediction
+- The dangers of using "wishful thinking" or expectations as prior information
+
+# 14.1 - INTRODUCTION
+
+# 14.2 - USING BAYES'S RULE TO UPDATE PRIOR INFORMATION
+
+#  14.2.1 Notation
+
+#  14.2.2 Bayes's rule
+
+# 14.3 - PRIOR INFORMATION AND DISTRIBUTIONS
+
+#  14.3.1 Noninformative (diffuse) prior distributions
+
+#  14.3.2 Using past data to specify a prior distribution
+
+#  14.3.3 Expert opinion and eliciting prior information
+
+# 14.4 - NUNERICAL METHODS FOR COMBINING PRIOR INFORMATION WITH A LIKELOHOOD
+
+#  14.4.1 Numerical integration methods for computing the posterior distribution of $\theta$
+
+#  14.4.2 Simulation-based methods for computing the posterior distribution of $\theta$
+
+# 14.5 - USING THE POSTERIOR DISTRIBUTION FOR ESTIMATION
+
+#  14.5.1 - Bayesian point estimation
+
+#  14.5.2 - Bayesian interval estimation
+
+# 14.6 - BAYESIAN PREDICTION
+
+#  14.6.1 - Bayesian posterior predictive distribution
+
+#  14.6.2 - Approximating posterior predictive distributions
+
+#  14.6.3 - Prediction of an observation from a log-location-scale distribution
+
+#  14.6.4 - Posterior predictive distribution for the $k$th failure from a future sample of size $m$
+
+# 14.7 - PRACTICAL ISSUES IN THE APPLICATION OF BAYESIAN METHODS
+
+#  14.7.1 - Comparison between Bayesian and likelihood/frequentist statistical methods
+
+#  14.7.2 - Cautions on the use of prior information
+
+
+```{r}
+
+```

@@ -1,0 +1,48 @@
+---
+output: html_document
+---
+
+```{r echo=FALSE}
+ex <- 0
+```
+
+
+# From the Text Exercise 15.`r ex = ex+1; ex`
+
+ \label{exercise:sp.bridge.comp} Consider the bridge system structure in Figure~\ref{figure:system.bridgefig.ps}. Assume that components 1, 2, 4, and 5 all have the same cdf $F(t)$. Plot $F_{T}(t)$ versus $0 < F(t) < 1 $ with a separate line for each value of $\Pr( A_{3})= 0, .25, .5, .75$, and 1. Comment on the results relative to the reliability of the two different series-parallel structures in Section~\ref{section:series.parallel}. 
+
+
+# From the Text Exercise 15.`r ex = ex+1; ex`
+
+ Revisit the shock absorber data introduced in Example~\ref{example:shock.absorber.data} and given in Appendix Table~\ref{atable:shockabs.data}.  There were actually two different causes of failure for this product. The analyses in Chapters~\ref{chapter:nonparametric.estimation} and \ref{chapter:parametric.ml.ls} ignored the different "failure modes" in the analysis. An alternative analysis (important for some purposes) would take into consideration the different failure modes. Such an analysis is straightforward when the failure times to the two different failure modes are statistically independent.      
+ 
+
+a. \label{part:shock.separate.modes} Assuming that the failure modes are independent, fit Weibull distributions separately to estimate the time to failure for each failure mode.  Also fit other parametric distributions to the individual failure modes to see if there are other distributions that fit better than the Weibull. 
+
+a. \label{exer.part:shockabs.crisk} Suppose that the shock absorber is a series system that fails as soon as there is a failure due to one mode of the other.  Combine the results from part~\ref{part:shock.separate.modes} to obtain an estimate of the cdf for the shock absorbers with both modes acting together.  Plot these on Weibull probability paper and compare the results with the analysis that ignores the differences between the two different failure modes. 
+
+a. Provide an intuitive explanation for the result from part~\ref{exer.part:shockabs.crisk}. 
+
+a. Explain why the agreement between the two methods of analysis is so good in this case (as compared with Example~\ref{example:deviceg}). In general, when would you expect to see more important differences between the analysis that accounts for the different failure modes and the analysis that does not account for the different failure modes?  
+
+
+# From the Text Exercise 15.`r ex = ex+1; ex`
+
+ Consider the following system diagram. Derive an expression for the cdf of the system as a function of $F_{1}$, $F_{2}$, and $F_{3}$.\\ \xfigbookfiguresize{\figurehome/system.threefig.ps}{1.5in} 
+
+
+# From the Text Exercise 15.`r ex = ex+1; ex`
+
+ Consider the following system diagram. Derive an expression for the cdf of the system as a function of $F_{1}, \dots, F_{6}$.\\ \xfigbookfiguresize{\figurehome/system.sixafig.ps}{2.2in} 
+
+
+# From the Text Exercise 15.`r ex = ex+1; ex`
+
+ Consider the following system diagram. Derive an expression for the cdf of the system as a function of $F_{1}, \dots, F_{6}$.\\ \xfigbookfiguresize{\figurehome/system.sixbfig.ps}{2.2in} 
+
+
+# From the Text Exercise 15.`r ex = ex+1; ex`
+
+ \label{exercise:ram.option} A new computer-based home entertainment system will require 16 megabytes of RAM to run the operating system, store needed information for quick access, and other tasks.  The product designers can use a single 16 megabyte chip or four 4 megabyte chips, the latter option being 30\% less expensive. The manufacturers of the memory claim that the average fit rate for 2 years at normal operating conditions is 10 fits/per chip for all of their memory chips. Compare the reliability of the memory system for the two different design options. 
+
+

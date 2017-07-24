@@ -1,0 +1,66 @@
+---
+title: 'SENG 585 - Homework # 2'
+author: "Due 4 November 2016"
+output: 
+  pdf_document:
+    fig_height: 4
+    fig_width:  5
+---
+
+```{r,echo=FALSE,message=FALSE}
+library(SMRD)
+library(survival)
+library(actuar)
+library(evd)
+```
+
+# From the text problem # 3.5
+
+_The supplier of an electromechanical control for a household appliance ran an accelerated life test on sample controls.  In the test, 25 controls were put on test and run until 30 thousand cycles had been accumulated.  Failures occurred at 5, 21,and 28 thousand cycles.  The other 22 controls did not fail by the end of the test._
+  
+(a) _Compute and plot a nonparametric estimate for_ $F(t)$.
+
+(b) _Compute an approximate 95% confidence interval for the probability that an electromechanical device from the same production process, tested in the same way, would fail before 30 thousand cycles.  Use the conservative binomial approach._
+
+(c) _Compute an approximate 95% confidence interval for the probability that an electromechanical device from the same production process, tested in the same way, would fail before 30 thousand cycles.  Use the normal-approximation method based on_ $Z_{\hat{F}(30)}\sim NOR(0,1)$ 
+
+(d) _Explain why, in this situation, the approach in part (b) would be preferred to the approach in part (c)_
+
+(e) _The appliance manufacturer is really interested in the probability of the number of days to failure for its product.  Use-rate differs from household to household, but the average rate is 2.3 cycles per day.  What can the manufacturer say about the proportion of devices that would fail in 10 years of operation (the expected technological life of the product)?_ 
+
+# From the text problem # 3.7
+
+_Consider the Plant 1 heat exchanger data in Figure 3.1_
+
+(a) _Write the likelihood for these data in terms of_ $\pi_{1},\pi_{2},\pi_{3},$ _and_ $\pi_{4}$
+
+(b) _Write the likelihood for these data in terms of_ $p_{1},p_{2},p_{3},$ _and_ $p_{4}$
+
+# From the text problem # 3.18
+
+_Explain why the nonparametric estimate of_ $F(t)$ _is a set of points for the heat exchanger data in Example 3.6 but a step-function for the shock absorber data in Example 3.9_
+
+
+# From the text problem # 4.7
+
+_Consider the Weibull_ $h(t).$ _Note that when_ $\beta=1, h(t)$ _is constant and that when_ $\beta=2, h(t)$ _increases linearly.  Show that:_
+
+(a) _If_ $0<\beta<1,$ _then_ $h(t)$ _is decreasing in_ $t.$
+
+(b) _If_ $1<\beta<2,$ _then_ $h(t)$ _is concave increasing._
+
+(c) _If_ $\beta>2,$ _then_ $h(t)$ _is convex increasing._
+
+# From the text problem # 4.15
+
+_The coefficient of variation,_ $\gamma_{2},$ _is a useful scale-free measure of relative variability for a random variable._
+
+(a) _Derive an expression for the coefficient of variation for the Weibull distribution_
+
+(b) _Compute,_ $\gamma_{2}$ _for all combinations of_ $\beta=.5,1,3,5$ _and_ $\eta=50,100.$  _Also, plot the Weibull pdfs for the same combinations of parameters._
+
+(c) _Explain the effect that changes in_ $\eta$ _and_ $\beta$ _have on the shape of the Weibull density and the effect that they have on_ $\gamma_{2}.$
+
+# From the text problem # 5.12
+
+_Let_ $T_{(1)}$ _denote the minimum of_ $m$ _independent Weibull random variables with parameters_ $\mu_{i}, i=1,...,m,$ _and constant_ $\sigma.$  _Show that_ $T_{(1)}$ _has a Weibull distribution._

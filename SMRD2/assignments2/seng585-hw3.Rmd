@@ -1,0 +1,63 @@
+---
+title: 'SENG 585 Homework #3'
+author: ""
+date: 'Due 23 November 2016'
+output:
+  pdf_document:
+    fig_height: 4
+    fig_width: 5
+---
+
+```{r,echo=FALSE,message=FALSE}
+library(SMRD)
+library(survival)
+library(actuar)
+library(evd)
+```
+
+# From the text problem # 6.5
+
+_Consider the ball bearing fatigue data given in Example 1.1 and Table 1.1_
+
+(a) _Compute a nonparametric estimate of $F(t)$, the proportion of units failing as a function of time.  Plot your estimate on paper with linear scales_
+
+(b) _Make a lognormal probability plot of the data.  This is accomplished by ordering the failure times in increasing order,_ $T_{(1)}\le...\le T_{(23)}.$  _Then plot_ $t_{(i)}$ _versus $(i-.5)/n$ on lognormal probability paper._
+
+(c) _Do the same as in part (b) but on Weibull probability paper._
+
+(d) _Comment on the adequacy of the lognormal and Weibull models to describe these data._
+
+# From the text problem # 6.7
+
+_A sample of $100$ specimens of a titanium alloy were subjected to a fatigue test to determine the time to crack initiation.  The test was run up to a limit of $100,000$ cycles.  The observed time of crack initiation (in units of $1,000's$ of cycles) were: $18,32,39,53,59,68,77,78,93.$ No crack had initiated in any of the other $91$ specimens._
+
+(a) _Compute a nonparametric estimate, $\hat{F}(t)$ of the cdf $F(t)$ using both the simple binomial method and the Kaplan-Meier method (in this case the two methods provide the same answer)_
+
+(b) _Plot $\hat{F}(t)$ on linear axes._
+
+(c) _Use $\hat{F}(t)$ to compute plotting positions and plot the data on Weibull paper.  Use the plot to obtain an estimate of the Weibull shape parameter $\beta$_
+
+(d) _Comment on the adequacy of the Weibull distribution_
+
+(e) _Comment on the adequacy of the available data if the purpose of the experiment was to estimate_ $t_{.1}.$
+
+# From the text problem # 6.9
+
+_Using the life test data on silicon photodiode detectors from Exercise 3.12, construct probability plots for the exponential, Weibull, and lognormal distributions.  Which distributions look like they might provide an adequate model for photodiode detector life?_
+
+# From the text problem # 8.5
+
+_Return to the fatigue crack-initiation test in Exercise 6.7.  Fit a Weibull distribution with a given shape parameter_ $\beta=2.$
+
+(a) _Compute the ML estimate of_ $\eta.$  _What is the practical interpretation of this estimate?_
+
+(b) _Obtain the estimate_ $\hat{se}_{\hat{\eta}}.$
+
+(c) _Compute a conservative 95% confidence interval for_ $\eta.$
+
+(d) _Plot the Weibull estimate of_ $F(t)$ _along with the nonparametric estimate.  Comment on the adequacy of the Weibull distribution to describe the data._
+
+(e) _What is an estimate of the .1 quantile of the time-to-initiation distribution?_
+
+(f) _Compute a conservative 95% confidence interval for the .1 quantile of the time-to-initiation distribution._
+

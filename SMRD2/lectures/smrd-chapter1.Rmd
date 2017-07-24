@@ -1,0 +1,541 @@
+---
+title: '`r SMRD:::info("book")`'
+subtitle: '`r SMRD:::info("chapter1")`'
+author: '`r SMRD:::info("authors")`'
+date: '`r format(Sys.Date(), "%d %B %Y")`'
+footer: '`r paste("SMRD: ", SMRD:::info("chapter1"))`'
+output:
+  slidy_presentation:
+    fig_caption: yes
+    smart: no
+graphics: yes
+---
+
+# CHAPTER OVERVIEW
+
+```{r intro, echo=FALSE,message=FALSE, warning=FALSE, jkf_par=TRUE}
+source('scripts/R/setup.R')
+library(shape)
+
+shiny::includeCSS('scripts/css/flat-slidy.css')
+shiny::includeScript(path = "scripts/js/audiojs/audiojs/audio.min.js",
+                     "audiojs.events.ready(function() {audiojs.createAll();});")
+shiny::includeScript("scripts/js/jquery.min.js")
+shiny::includeScript("scripts/js/jkf-scroll.js")
+```
+
+## This chapter explains...
+
+- The background of the <a href="#(3)">SMRD</a> package we'll use throughout this course 
+
+- Basic ideas behind product reliability
+
+- Reasons for collecting reliability data
+
+- Distinguishing features of reliability data
+
+- General models for reliability data
+
+- Examples of reliability data and motivations for collecting the data
+
+- A general strategy used for data analysis, modeling, and inference from reliability data
+
+# THE SMRD PACKAGE<a name="smrd"></a>
+
+```{r, out.width='100%'}
+teachingApps::includeApp('smrd_package', height = '800px')
+```
+
+# 1.1.1 - Quality And Reliability
+
+## What is reliability? 
+
+- A <red>stochastic</red> measure of the likelihood that a component or system will perform its <blue>required function(s)</blue> for a specified <green>period of operation</green> under stated <purple>operating conditions</purple>
+
+    + <red>Stochastic</red> - The true measure of the likelihood is random/uncertain due to complex factors affecting how long a given system will survive
+
+    + <blue>Required function(s)</blue> - Systems perform many functions - the function of interest must be specifically defined
+
+    + <green>Period of operation</green> - Operating life may be accumulated on a continuous scale (time, distance) or a discrete scale (shots, launches, take-off/landing cycles)
+    
+    + <purple>Operating conditions</purple> - Harsh environments may consume operating life more quickly than benign environments - therefore a system's operating environment must be defined  
+
+## What is quality?
+
+- How well a population of manufactured products conform to the initial design requirements and specifications
+
+    + A product can have BOTH high quality AND low reliability
+    
+    + This highlights the importance of developing good reliability requirements early on in a program
+
+## What is maintainability?
+
+- The probability that an unavailable or degraded function can be restored to a specified condition within a period of time when maintenance is performed in accordance with prescribed procedures
+
+## What is availability?
+
+- The probability that a component or system can perform a required function at a given point in time when used under stated operating conditions
+
+## What is reliability engineering?
+
+- Academic discipline focused on the analysis, characterization, and measurement of system failures to increase system design life and improve system availability by:
+
+    - Eliminating and/or reducing the likelihood of failures and safety risks
+
+    - Reducing downtime due to maintenance
+    
+    - Merging many statistical and engineering disciplines together
+
+<center><img src="media/images/what-is-reliability-engineering.png" width="40%"></center>
+
+> ...is engineering in its most practical form...
+> <qref>James R. Schlesinger U.S. Secretary of Defense (1973-1975)</qref>
+
+## Why study reliability?
+
+- Ever-increasing system complexity and sophistication
+
+- Public awareness and insistence on product reliability
+
+- Profit considerations resulting from the high cost of failures, repairs, and warranty programs
+
+- Contractual requirements to meet reliability and maintainability performance specifications
+
+- Laws and regulations concerning product liability and safety
+
+    + Food and Drug Act
+
+    + Flammable Fabrics Act
+
+    + Federal Hazardous Substance Act
+
+    + National Traffic and Motor Vehicle Safety Act
+
+    + Fire Research and Safety Act
+
+    + Child Protection and Toy Safety Act
+
+    + Poison Prevention Packaging Act
+
+    + Occupational Safety and Health Act
+
+    + Federal Boat Safety Act
+
+    + Consumer Product Safety Act
+
+## Approaches to meeting reliability requirements
+
+- Engineering (deterministic) approach 
+
+    + Prevent failures by designing in a safety factor of 4 to 10 times the expected average stress
+
+    + Can result in overdesigned products leading to dramatically increased costs
+
+    + Can also result in under-designed products if an unanticipated load or a material weakness results in a failure
+
+- Probabilistic approach
+
+    + Treats failures as random events
+
+    + In theory, if we understood the exact physics and chemistry of a failure process, many failures of a component could be predicted with certainty
+
+    + With limited data on the state of a component, and incomplete knowledge of the processes that cause failures, failures will appear to occur at random over time
+
+    + This random process may exhibit a pattern which can be modeled by some probability distribution
+
+## The product reliability environment 
+
+- Consumers & producers often have different priorities when it comes to product reliability
+
+- <focus>However, both usually work hard to save money</focus>
+
+```{r, out.width='100%'}
+teachingApps::includeApp('reliability_environment', height = '600px')
+```
+
+## The EXTENDED product reliability environment
+
+- <red>Scientists</red> 
+
+    + Develop improved materials that can enable new capabilities
+    
+    + Find more efficient system architectures 
+
+- <blue>Governments</blue> 
+
+    + Issue new safety requirements (for products and employees) 
+    
+    + Create new environmental regulations
+
+- <green>Competitors</green> 
+
+    + Develop newer/better/cheaper products that can impact your profit margins 
+    
+    + Competition to get your product to market first
+
+- <purple>Test experts</purple> 
+
+    + Develop new test capabilities to find and remove failures
+    
+    + Derive new analysis techniques to reduce test time or number of samples
+
+# 1.1.2 - Reasons For Collecting Reliability Data
+
+## Why should reliability data be collected? 
+
+- Assess performance characteristics of materials over design life
+
+- Predict product reliability
+
+- Assess the effect of a proposed design change
+
+- Compare components from different manufacturers
+
+- Assess product reliability in field
+
+- Checking the veracity of an advertising claim
+
+- Track new failure modes
+
+- Predict product warranty costs
+
+- Ensure safety requirements are met
+
+# 1.1.3 - Distinguishing Features of Reliability Data
+
+- Reliability <focus>data structures</focus> can be very complex (closed form solutions rarely exist)
+
+- Software required to solve all but the most basic problems (this class will use R)
+
+- Data are typically <focus>censored</focus>
+
+- Observations (e.g., time or cycles to failure) are strictly positive
+    
+- Estimating model parameters is usually <u>__not__</u> the primary interest
+
+- <focus>Extrapolation</focus> is often required when applying accelerated stresses
+
+# EXAMPLES OF RELIABILITY DATA
+
+- This section lists several real-world examples of reliability data sets 
+
+- Demonstrates the wide range of reliability data structures
+
+    + Right, left, and interval censoring
+    
+    + Multiple failure modes
+    
+    + Different usage measures (time, flight hours, miles driven, rounds fired)
+    
+    + Explanatory variables (accelerated stresses, differing usage environments)
+
+# 1.2.1 - Failure Data (No Explanatory Variables)
+
+## Explanatory variables
+
+- Explanatory variables are commonly used in regression modeling or design of experiments
+
+    + May be called regressors or experimental factors in certain contexts
+
+    + Used to reduce uncertainty in responses by incorporating differences in how units were tested
+
+- In the context of reliability, explanatory variables can be used to define the severity of an environment to which a system was exposed
+
+    + The severity of the environment relates how quickly a product's "life" is consumed
+
+    + If it can be reasonably assumed that each unit was exposed to an equivalent environment, explanatory variables may be ignored and the failure observations $t_i, i=1,2,...$ are assumed to be $iid$ 
+
+    + Assuming $t_{i} \sim iid, \forall i$ implies that any differences in the sample population or test process are captured by $Var[X]$
+
+```{r, out.width='100%'}
+teachingApps::includeApp('example1_1', height = '800px')
+```
+
+## Modeling time-to-event data can produce poor results if
+
+- The time-scale used to measure operating life differs between test units
+
+    + Company A specifies the lifetime of landing gear components in flight hours
+    
+    + Company B specifies the lifetime of landing gear components in take-off/landing cycles
+
+- The severity of the test environment is not considered
+
+```{r, out.width='100%'}
+teachingApps::includeApp('example1_2', height = '800px')
+```
+
+```{r, out.width='100%'}
+teachingApps::includeApp('example1_5', height = '800px')
+```
+
+# 1.2.2 - Failure Data (w/ Explanatory Variables)
+
+## Analyzing data with explanatory variables 
+
+- Often, units are tested at multiple environments with differing levels of severity
+
+    + To drive failures more quickly
+
+    + To reduce the overall test time
+
+- Recall, explanatory variables can be used to relate how quickly "life" is consumed in each environment
+
+- Changing the value of an explanatory variable changes the value of one or more parameter in the underlying failure distribution (think regression)
+
+- Complex models are often required to compare life consumption rates between severity levels
+    
+- Examples
+
+    + Cracks grow faster when a higher level of stress is applied
+    
+    + Tire treads wear faster when driven on gravel roads
+    
+    + Metal corrodes faster when it is exposed to humid environments
+
+- It is critical that the results obseved at higher stress environments represent the behavior observed at the use-level stress
+
+    + We could subject a test unit to a temperature that would cause some component to melt, but that would not give any useful information about the time to failure out in the field
+
+    + We can generate failures very quickly instantly in some cases
+    
+    + But, the desire to reduce the total test time should not cause failures that would never be observed in the operating environment 
+
+```{r, out.width='100%'}
+teachingApps::includeApp('example1_8', height = '800px')
+```
+
+# 1.2.3 - Degradation Data (No Explanatory Variables)
+
+## Degradation failures
+
+- Occur when the value of a system performance measure crosses above or below a critical value
+
+- <green>Soft degradation failures:</green> - Occurs when a <green>performance</green> measure crosses an acceptable level
+
+    + Power window motor raises/lowers windows too slowly
+    
+    + Tire tread depth falls below a safe level
+
+- <red>Hard degradation failure:</red> - Occurs when a <red>physical</red> measure crosses a failure level
+
+    + Power window motor gear teeth thickness wears down to where it fails
+    
+    + Tire wear becomes so extreme that the tire fails below
+
+<!--So why doesn't [__this__](http://www.centennialbulb.org) degrade?-->
+
+# 1.3.1 - Define The Target Population Or Process
+
+## Enumerative studies
+
+- Used to <u>ASSESS</u> the performance of <u>MATURE</u> products
+
+- Most statistics courses discuss enumerative studies
+
+- Test a random sample from a population of units
+
+- Observe test results, analyze data, and make conclusions
+
+- BUT, what if your conclusion is these parts suck and don't meet the reliability requirement?
+
+## Analytic Studies
+
+- Used to <u>IMPROVE</u> the performance of <u>IMMATURE</u> products
+
+- Most reliability tests are Analytic Studies
+
+- You improve the design, and now...
+
+- Your test data is based on a prior design that doesn't exist anymore
+
+# 1.3.2 - Causes of Failure and Degradation Leading To Failure
+
+## Most failures result from physical degradation
+
+- Failure results when a flaw is exposed to a severe environment for a sufficient period of time.
+
+    + Flaws result from poor designs 
+
+    + Flaws can result from manufacturing
+
+    + Flaws can result if the usage environment is not well understood
+
+- The environment in which the system operates imparts stresses on the system which over time can
+
+    - Extend microcracks
+    
+    - Loosen joints
+    
+    - Weaken electical connections
+    
+    - Magnify vibrations
+    
+    - Elevate internal temperatures
+
+- These enlarged flaws weaken the system until the environmental stresses exceed the flaw's residual strength
+
+```{r, out.width='100%'}
+teachingApps::includeApp('stress_strength', height = '300px')
+```
+
+# 1.3.3 - Environmental Effects Of Reliability
+
+- It's well understood that a system's performance is affected by its operating environment
+
+- It's less understood how many different environments a system is actually exposed to
+
+<center><video src="media/videos/fedex.mp4" controls></video></center>
+
+# 1.3.4 - Definition Of Time-Scale
+
+## Most systems lifetimes can be quantified with more than one "time-scale"
+
+- Example: A car
+
+    - Timescale 1: Years of ownership
+    
+    - Timescale 2: Miles driven
+    
+    - Timescale 3: Number of times started
+
+- Each customer may have their own time-scale of interest
+
+- Each system component has a time-scale that is most appropriate
+
+# 1.3.5 - Defining Time Origin And Failure Time
+
+## When does a product's life begin? (This can be tricky)
+
+- When it leaves the assembly line?
+
+- When it ships from factory to a retailer?
+
+- When it is purchased by a customer?
+
+- When it is installed/unboxed?
+
+- When it is first used?
+
+- <focus>Is it possible to know when these events occur?</focus>
+
+## Likewise, defining when a product's life ends can be difficult
+
+- When the customer realizes it has stopped functioning?
+
+- When a warranty claim is made?
+
+- When it is received by the manufacturer?
+
+## How we'll define time origin and failure time in this course?
+
+- In this course defining the time origin and/or the failure time will not a be a concern
+
+- However, you should recognize that these values must be defined prior to collecting time-to-event data for a fielded system
+
+# 1.4 - Repairable Systems and Non-Repairable Units
+
+```{r, out.width='100%'}
+teachingApps::includeApp('repairable_nonrepairable', height = '800px')
+```
+
+# 1.5.1 - Planning A Reliability Study
+
+## Clearly define the purpose of the current test
+
+- Reliability tests are often campaigns composed of many disparate tests
+
+- Each test will have its own goals
+
+- The type(s) of test used depend on where the system is in its development
+
+- The goal of a particular test may not sync with the overall goal of the test campaign
+
+## Types of reliability tests
+
+- <blue>Developmental Tests</blue> - <u>Improve</u> the performance of <u>immature</u> systems by finding & removing flaws
+
+- <red>Operational Tests</red> - <u>Assess</u> the performance of <u>mature</u> systems in the operational environment
+
+## Define the test resources available (test equip, ranges, personnel, time)
+
+- <blue>Developmental test resources</blue> 
+
+    - Environmental test chambers
+    
+    - Performance diagnostic equipment
+    
+    - Data acquisition systems
+    
+    - Personnel - technical SME's for root cause analyses
+
+- <red>Operational test resources</red>
+
+    - Test ranges
+    
+    - Maintenance equipment
+    
+    - Personnel - operational SME's for realistic performance exercises 
+
+## Understand the environment(s) in which the fielded system will operate
+
+- Test environments should be similar to the fielded environment
+
+    + Ensure test results are representative of fielded operations
+    
+    + Consumers want the test environment to be <red>more</red> severe to ensure more failure modes are found and removed 
+    
+    + Producers want the test environment to be <blue>less</blue> severe to ensure that their  product successfully passes the test   
+
+- Fielded systems will be exposed to multiple-stresses, simultaneously
+
+    + Every failure mode will respond to each stress differently
+
+    + If a failure mode is sensitive to thermal loads, a vibration test may not produce meaningful results
+
+## What metric(s) will be used to validate performance?
+
+- <red>MTBF</red> Mean time between failures
+
+- <blue>MTBM</blue> - Mean time between maintenance (any maintenance?)
+
+- <green>MTBCF</green> - Mean time between critical failure (what is a critical failure?)
+
+- <purple>MMH/OH</purple> - Maintenance-man hours per operational hour
+
+- Do the data being gathered in the test support this?
+
+## Define how precise the results should be (sample size)
+
+- Often, data from <blue>DT</blue> cannot be used to improve the estimates in <red>OT</red>
+
+- This is a very active research area
+
+# 1.5.2 - Study For Data Analysis And Modeling
+
+## This process will be used throughout the course to assess reliability data
+
+1) Assess the data nonparametrically - using simple graphical methods
+
+2) Fit one or more simple parametric models to the data
+
+3) Check for violations of model assumptions
+
+4) Compute model parameter estimates and confidence intervals
+
+5) Use numeric and graphical methods to check fit to data
+
+6) Perform sensitivity analyses on parameter values and model assumptions
+
+# CHAPTER 1 SUMMARY
+
+## This chapter presented:
+
+- Examples of time-to-failure data for different types of systems
+
+- A strategy for estimating system performance metrics from the data
+
+- The most common reliability metric is the failure-time distribution
+
+- Many failure time processes are modeled using a continuous scale (i.e. Time)
+
