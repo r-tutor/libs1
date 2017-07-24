@@ -1,0 +1,684 @@
+############################################################
+# Import functions
+############################################################
+importFrom("stats", "dbinom", "dgeom", "dpois", "integrate",
+  "pbinom", "pgeom", "ppois", "dgamma", "pgamma")
+
+
+############################################################
+# Export functions
+############################################################
+
+export(
+C_erlang,
+B_erlang,
+Engset,
+CompareQueueingModels2,
+CompareQueueingModels,
+NewInput.MM1,
+CheckInput.i_MM1,
+QueueingModel.i_MM1,
+summary.o_MM1,
+print.summary.o_MM1,
+Report.o_MM1,
+RO.o_MM1,
+Pn.o_MM1,
+Qn.o_MM1,
+Lq.o_MM1,
+VNq.o_MM1,
+Wq.o_MM1,
+VTq.o_MM1,
+L.o_MM1,
+VN.o_MM1,
+W.o_MM1,
+VT.o_MM1,
+Wqq.o_MM1,
+Lqq.o_MM1,
+Inputs.o_MM1,
+NewInput.MMC,
+CheckInput.i_MMC,
+QueueingModel.i_MMC,
+summary.o_MMC,
+print.summary.o_MMC,
+Report.o_MMC,
+Inputs.o_MMC,
+RO.o_MMC,
+Lq.o_MMC,
+VNq.o_MMC,
+Wq.o_MMC,
+VTq.o_MMC,
+L.o_MMC,
+VN.o_MMC,
+W.o_MMC,
+VT.o_MMC,
+Wqq.o_MMC,
+Lqq.o_MMC,
+Pn.o_MMC,
+Qn.o_MMC,
+NewInput.MM1KK,
+CheckInput.i_MM1KK,
+QueueingModel.i_MM1KK,
+summary.o_MM1KK,
+print.summary.o_MM1KK,
+Report.o_MM1KK,
+Inputs.o_MM1KK,
+RO.o_MM1KK,
+Lq.o_MM1KK,
+VNq.o_MM1KK,
+Lqq.o_MM1KK,
+Throughput.o_MM1KK,
+L.o_MM1KK,
+VN.o_MM1KK,
+W.o_MM1KK,
+VT.o_MM1KK,
+Wq.o_MM1KK,
+VTq.o_MM1KK,
+Wqq.o_MM1KK,
+WWs.o_MM1KK,
+SP.o_MM1KK,
+Pn.o_MM1KK,
+Qn.o_MM1KK,
+NewInput.MMCKK,
+CheckInput.i_MMCKK,
+QueueingModel.i_MMCKK,
+summary.o_MMCKK,
+print.summary.o_MMCKK,
+Report.o_MMCKK,
+Inputs.o_MMCKK,
+L.o_MMCKK,
+VN.o_MMCKK,
+Lq.o_MMCKK,
+VNq.o_MMCKK,
+Lqq.o_MMCKK,
+Throughput.o_MMCKK,
+W.o_MMCKK,
+RO.o_MMCKK,
+Wq.o_MMCKK,
+VTq.o_MMCKK,
+Wqq.o_MMCKK,
+Pn.o_MMCKK,
+Qn.o_MMCKK,
+NewInput.MMCKM,
+CheckInput.i_MMCKM,
+QueueingModel.i_MMCKM,
+summary.o_MMCKM,
+print.summary.o_MMCKM,
+Report.o_MMCKM,
+Inputs.o_MMCKM,
+L.o_MMCKM,
+VN.o_MMCKM,
+Lq.o_MMCKM,
+VNq.o_MMCKM,
+Lqq.o_MMCKM,
+Throughput.o_MMCKM,
+W.o_MMCKM,
+RO.o_MMCKM,
+Wq.o_MMCKM,
+Wqq.o_MMCKM,
+Pn.o_MMCKM,
+Qn.o_MMCKM,
+NewInput.MMInfKK,
+CheckInput.i_MMInfKK,
+QueueingModel.i_MMInfKK,
+summary.o_MMInfKK,
+print.summary.o_MMInfKK,
+Report.o_MMInfKK,
+Inputs.o_MMInfKK,
+L.o_MMInfKK,
+VN.o_MMInfKK,
+Lq.o_MMInfKK,
+VNq.o_MMInfKK,
+Lqq.o_MMInfKK,
+Throughput.o_MMInfKK,
+W.o_MMInfKK,
+VT.o_MMInfKK,
+RO.o_MMInfKK,
+Wq.o_MMInfKK,
+VTq.o_MMInfKK,
+Wqq.o_MMInfKK,
+Pn.o_MMInfKK,
+Qn.o_MMInfKK,
+NewInput.MMInf,
+CheckInput.i_MMInf,
+QueueingModel.i_MMInf,
+summary.o_MMInf,
+print.summary.o_MMInf,
+Report.o_MMInf,
+Inputs.o_MMInf,
+L.o_MMInf,
+VN.o_MMInf,
+Lq.o_MMInf,
+VNq.o_MMInf,
+Lqq.o_MMInf,
+W.o_MMInf,
+VT.o_MMInf,
+Wq.o_MMInf,
+VTq.o_MMInf,
+Wqq.o_MMInf,
+RO.o_MMInf,
+Pn.o_MMInf,
+Qn.o_MMInf,
+NewInput.MM1K,
+CheckInput.i_MM1K,
+QueueingModel.i_MM1K,
+summary.o_MM1K,
+print.summary.o_MM1K,
+Report.o_MM1K,
+Inputs.o_MM1K,
+L.o_MM1K,
+VN.o_MM1K,
+W.o_MM1K,
+VT.o_MM1K,
+RO.o_MM1K,
+Lq.o_MM1K,
+VNq.o_MM1K,
+Lqq.o_MM1K,
+Wq.o_MM1K,
+VTq.o_MM1K,
+Wqq.o_MM1K,
+W.o_MM1K,
+Pn.o_MM1K,
+Qn.o_MM1K,
+Throughput.o_MM1K,
+NewInput.MMCK,
+CheckInput.i_MMCK,
+QueueingModel.i_MMCK,
+summary.o_MMCK,
+print.summary.o_MMCK,
+Report.o_MMCK,
+Inputs.o_MMCK,
+RO.o_MMCK,
+L.o_MMCK,
+VN.o_MMCK,
+Lq.o_MMCK,
+VNq.o_MMCK,
+Lqq.o_MMCK,
+W.o_MMCK,
+Wq.o_MMCK,
+VTq.o_MMCK,
+Wqq.o_MMCK,
+Pn.o_MMCK,
+Qn.o_MMCK,
+Throughput.o_MMCK,
+NewInput.MMCC,
+CheckInput.i_MMCC,
+QueueingModel.i_MMCC,
+summary.o_MMCC,
+print.summary.o_MMCC,
+Report.o_MMCC,
+Inputs.o_MMCC,
+L.o_MMCC,
+VN.o_MMCC,
+Lq.o_MMCC,
+VNq.o_MMCC,
+Lqq.o_MMCC,
+W.o_MMCC,
+VT.o_MMCC,
+Wq.o_MMCC,
+VTq.o_MMCC,
+Wqq.o_MMCC,
+RO.o_MMCC,
+Pn.o_MMCC,
+Qn.o_MMCC,
+Throughput.o_MMCC,
+NewInput.OJN,
+NewInput2.OJN,
+NewInput3.OJN,
+CheckInput.i_OJN,
+QueueingModel.i_OJN,
+summary.o_OJN,
+print.summary.o_OJN,
+Report.o_OJN,
+Inputs.o_OJN,
+Throughput.o_OJN,
+L.o_OJN,
+W.o_OJN,
+ROk.o_OJN,
+Throughputk.o_OJN,
+Lk.o_OJN,
+Wk.o_OJN,
+Pn.o_OJN,
+NewInput.CJN,
+NewInput2.CJN,
+NewInput3.CJN,
+CheckInput.i_CJN,
+QueueingModel.i_CJN,
+summary.o_CJN,
+print.summary.o_CJN,
+Report.o_CJN,
+Inputs.o_CJN,
+Throughput.o_CJN,
+L.o_CJN,
+W.o_CJN,
+ROk.o_CJN,
+Throughputk.o_CJN,
+Lk.o_CJN,
+Wk.o_CJN,
+Throughputn.o_CJN,
+NewInput.MCON,
+CheckInput.i_MCON,
+QueueingModel.i_MCON,
+summary.o_MCON,
+print.summary.o_MCON,
+Report.o_MCON,
+Inputs.o_MCON,
+W.o_MCON,
+L.o_MCON,
+Throughput.o_MCON,
+Wc.o_MCON,
+Lc.o_MCON,
+Throughputc.o_MCON,
+ROk.o_MCON,
+Wk.o_MCON,
+Lk.o_MCON,
+Throughputk.o_MCON,
+ROck.o_MCON,
+Wck.o_MCON,
+Lck.o_MCON,
+Throughputck.o_MCON,
+NewInput.MCCN,
+CheckInput.i_MCCN,
+QueueingModel.i_MCCN,
+summary.o_MCCN,
+print.summary.o_MCCN,
+Report.o_MCCN,
+Inputs.o_MCCN,
+W.o_MCCN,
+L.o_MCCN,
+Throughput.o_MCCN,
+Wc.o_MCCN,
+Lc.o_MCCN,
+Throughputc.o_MCCN,
+ROk.o_MCCN,
+Wk.o_MCCN,
+Lk.o_MCCN,
+Throughputk.o_MCCN,
+ROck.o_MCCN,
+Wck.o_MCCN,
+Lck.o_MCCN,
+Throughputck.o_MCCN,
+Throughputcn.o_MCCN,
+NewInput.MCMN,
+CheckInput.i_MCMN,
+QueueingModel.i_MCMN,
+summary.o_MCMN,
+print.summary.o_MCMN,
+Report.o_MCMN,
+Inputs.o_MCMN,
+L.o_MCMN,
+W.o_MCMN,
+Throughput.o_MCMN,
+Lc.o_MCMN,
+Wc.o_MCMN,
+Throughputc.o_MCMN,
+ROk.o_MCMN,
+Lk.o_MCMN,
+Wk.o_MCMN,
+Throughputk.o_MCMN,
+ROck.o_MCMN,
+Lck.o_MCMN,
+Wck.o_MCMN,
+Throughputck.o_MCMN,
+CheckInput,
+QueueingModel,
+Inputs,
+RO,
+Lq,
+VNq,
+Wq,
+VTq,
+L,
+VN,
+W,
+VT,
+Wqq,
+Pn,
+Qn,
+Lqq,
+Throughput,
+WWs,
+SP,
+Lc,
+Wc,
+Throughputc,
+ROk,
+Lk,
+Wk,
+Throughputk,
+ROck,
+Lck,
+Wck,
+Throughputck,
+Throughputn,
+Throughputcn,
+Report
+)
+
+############################################################
+## register S3 methods
+############################################################
+S3method(CheckInput, i_MM1)
+S3method(CheckInput, i_MM1K)
+S3method(CheckInput, i_MMC)
+S3method(CheckInput, i_MMInf)
+S3method(CheckInput, i_MMCK)
+S3method(CheckInput, i_MMCC)
+S3method(CheckInput, i_MM1KK)
+S3method(CheckInput, i_MMCKK)
+S3method(CheckInput, i_MMCKM)
+S3method(CheckInput, i_MMInfKK)
+S3method(CheckInput, i_OJN)
+S3method(CheckInput, i_CJN)
+S3method(CheckInput, i_MCON)
+S3method(CheckInput, i_MCCN)
+S3method(CheckInput, i_MCMN)
+
+S3method(QueueingModel, i_MM1)
+S3method(QueueingModel, i_MM1K)
+S3method(QueueingModel, i_MMC)
+S3method(QueueingModel, i_MMInf)
+S3method(QueueingModel, i_MMCK)
+S3method(QueueingModel, i_MMCC)
+S3method(QueueingModel, i_MM1KK)
+S3method(QueueingModel, i_MMCKK)
+S3method(QueueingModel, i_MMCKM)
+S3method(QueueingModel, i_MMInfKK)
+S3method(QueueingModel, i_OJN)
+S3method(QueueingModel, i_CJN)
+S3method(QueueingModel, i_MCON)
+S3method(QueueingModel, i_MCCN)
+S3method(QueueingModel, i_MCMN)
+
+S3method(Inputs, o_MM1)
+S3method(Inputs, o_MM1K)
+S3method(Inputs, o_MMC)
+S3method(Inputs, o_MMInf)
+S3method(Inputs, o_MMCK)
+S3method(Inputs, o_MMCC)
+S3method(Inputs, o_MM1KK)
+S3method(Inputs, o_MMCKK)
+S3method(Inputs, o_MMCKM)
+S3method(Inputs, o_MMInfKK)
+S3method(Inputs, o_OJN)
+S3method(Inputs, o_CJN)
+S3method(Inputs, o_MCON)
+S3method(Inputs, o_MCCN)
+S3method(Inputs, o_MCMN)
+
+S3method(RO, o_MM1)
+S3method(RO, o_MM1K)
+S3method(RO, o_MMC)
+S3method(RO, o_MMInf)
+S3method(RO, o_MMCK)
+S3method(RO, o_MMCC)
+S3method(RO, o_MM1KK)
+S3method(RO, o_MMCKK)
+S3method(RO, o_MMCKM)
+S3method(RO, o_MMInfKK)
+
+S3method(Lq, o_MM1)
+S3method(Lq, o_MM1K)
+S3method(Lq, o_MMC)
+S3method(Lq, o_MMInf)
+S3method(Lq, o_MMCK)
+S3method(Lq, o_MMCC)
+S3method(Lq, o_MM1KK)
+S3method(Lq, o_MMCKK)
+S3method(Lq, o_MMCKM)
+S3method(Lq, o_MMInfKK)
+
+S3method(VNq, o_MM1)
+S3method(VNq, o_MMC)
+S3method(VNq, o_MMCC)
+S3method(VNq, o_MMInf)
+S3method(VNq, o_MMInfKK)
+S3method(VNq, o_MM1K)
+S3method(VNq, o_MMCK)
+S3method(VNq, o_MM1KK)
+S3method(VNq, o_MMCKK)
+S3method(VNq, o_MMCKM)
+
+S3method(Wq, o_MM1)
+S3method(Wq, o_MM1K)
+S3method(Wq, o_MMC)
+S3method(Wq, o_MMInf)
+S3method(Wq, o_MMCK)
+S3method(Wq, o_MMCC)
+S3method(Wq, o_MM1KK)
+S3method(Wq, o_MMCKK)
+S3method(Wq, o_MMCKM)
+S3method(Wq, o_MMInfKK)
+
+S3method(VTq, o_MM1)
+S3method(VTq, o_MMC)
+S3method(VTq, o_MMCC)
+S3method(VTq, o_MMInf)
+S3method(VTq, o_MMInfKK)
+S3method(VTq, o_MM1K)
+S3method(VTq, o_MMCK)
+S3method(VTq, o_MM1KK)
+S3method(VTq, o_MMCKK)
+
+S3method(L, o_MM1)
+S3method(L, o_MM1K)
+S3method(L, o_MMC)
+S3method(L, o_MMInf)
+S3method(L, o_MMCK)
+S3method(L, o_MMCC)
+S3method(L, o_MM1KK)
+S3method(L, o_MMCKK)
+S3method(L, o_MMCKM)
+S3method(L, o_MMInfKK)
+S3method(L, o_OJN)
+S3method(L, o_CJN)
+S3method(L, o_MCON)
+S3method(L, o_MCCN)
+S3method(L, o_MCMN)
+
+S3method(VN, o_MM1)
+S3method(VN, o_MMC)
+S3method(VN, o_MMCC)
+S3method(VN, o_MMInf)
+S3method(VN, o_MMInfKK)
+S3method(VN, o_MM1K)
+S3method(VN, o_MMCK)
+S3method(VN, o_MM1KK)
+S3method(VN, o_MMCKK)
+S3method(VN, o_MMCKM)
+
+S3method(W, o_MM1)
+S3method(W, o_MM1K)
+S3method(W, o_MMC)
+S3method(W, o_MMInf)
+S3method(W, o_MMCK)
+S3method(W, o_MMCC)
+S3method(W, o_MM1KK)
+S3method(W, o_MMCKK)
+S3method(W, o_MMCKM)
+S3method(W, o_MMInfKK)
+S3method(W, o_OJN)
+S3method(W, o_CJN)
+S3method(W, o_MCON)
+S3method(W, o_MCCN)
+S3method(W, o_MCMN)
+
+S3method(VT, o_MM1)
+S3method(VT, o_MMC)
+S3method(VT, o_MMCC)
+S3method(VT, o_MMInf)
+S3method(VT, o_MMInfKK)
+S3method(VT, o_MM1K)
+S3method(VT, o_MM1KK)
+
+S3method(Wqq, o_MM1)
+S3method(Wqq, o_MM1K)
+S3method(Wqq, o_MMC)
+S3method(Wqq, o_MMInf)
+S3method(Wqq, o_MMCK)
+S3method(Wqq, o_MMCC)
+S3method(Wqq, o_MM1KK)
+S3method(Wqq, o_MMCKK)
+S3method(Wqq, o_MMCKM)
+S3method(Wqq, o_MMInfKK)
+
+S3method(Pn, o_MM1)
+S3method(Pn, o_MM1K)
+S3method(Pn, o_MMC)
+S3method(Pn, o_MMInf)
+S3method(Pn, o_MMCK)
+S3method(Pn, o_MMCC)
+S3method(Pn, o_MM1KK)
+S3method(Pn, o_MMCKK)
+S3method(Pn, o_MMCKM)
+S3method(Pn, o_MMInfKK)
+S3method(Pn, o_OJN)
+
+S3method(Qn, o_MM1)
+S3method(Qn, o_MM1K)
+S3method(Qn, o_MMC)
+S3method(Qn, o_MMInf)
+S3method(Qn, o_MMCK)
+S3method(Qn, o_MMCC)
+S3method(Qn, o_MM1KK)
+S3method(Qn, o_MMCKK)
+S3method(Qn, o_MMCKM)
+S3method(Qn, o_MMInfKK)
+
+
+S3method(Lqq, o_MM1)
+S3method(Lqq, o_MM1K)
+S3method(Lqq, o_MMC)
+S3method(Lqq, o_MMInf)
+S3method(Lqq, o_MMCK)
+S3method(Lqq, o_MMCC)
+S3method(Lqq, o_MM1KK)
+S3method(Lqq, o_MMCKK)
+S3method(Lqq, o_MMCKM)
+S3method(Lqq, o_MMInfKK)
+
+S3method(Throughput, o_MM1)
+S3method(Throughput, o_MM1K)
+S3method(Throughput, o_MMC)
+S3method(Throughput, o_MMInf)
+S3method(Throughput, o_MMCK)
+S3method(Throughput, o_MMCC)
+S3method(Throughput, o_MM1KK)
+S3method(Throughput, o_MMCKK)
+S3method(Throughput, o_MMCKM)
+S3method(Throughput, o_MMInfKK)
+S3method(Throughput, o_OJN)
+S3method(Throughput, o_CJN)
+S3method(Throughput, o_MCON)
+S3method(Throughput, o_MCCN)
+S3method(Throughput, o_MCMN)
+
+S3method(WWs, o_MM1KK)
+S3method(SP, o_MM1KK)
+
+S3method(Throughputc, o_MCON)
+S3method(Throughputc, o_MCCN)
+S3method(Throughputc, o_MCMN)
+
+S3method(Wc, o_MCON)
+S3method(Wc, o_MCCN)
+S3method(Wc, o_MCMN)
+
+S3method(Lc, o_MCON)
+S3method(Lc, o_MCCN)
+S3method(Lc, o_MCMN)
+
+S3method(Throughputk, o_OJN)
+S3method(Throughputk, o_CJN)
+S3method(Throughputk, o_MCON)
+S3method(Throughputk, o_MCCN)
+S3method(Throughputk, o_MCMN)
+
+S3method(Wk, o_OJN)
+S3method(Wk, o_CJN)
+S3method(Wk, o_MCON)
+S3method(Wk, o_MCCN)
+S3method(Wk, o_MCMN)
+
+S3method(Lk, o_OJN)
+S3method(Lk, o_CJN)
+S3method(Lk, o_MCON)
+S3method(Lk, o_MCCN)
+S3method(Lk, o_MCMN)
+
+S3method(ROk, o_OJN)
+S3method(ROk, o_CJN)
+S3method(ROk, o_MCON)
+S3method(ROk, o_MCCN)
+S3method(ROk, o_MCMN)
+
+S3method(Throughputck, o_MCON)
+S3method(Throughputck, o_MCCN)
+S3method(Throughputck, o_MCMN)
+
+S3method(Throughputn, o_CJN)
+
+S3method(Throughputcn, o_MCCN)
+
+S3method(Wck, o_MCON)
+S3method(Wck, o_MCCN)
+S3method(Wck, o_MCMN)
+
+S3method(Lck, o_MCON)
+S3method(Lck, o_MCCN)
+S3method(Lck, o_MCMN)
+
+S3method(ROck, o_MCON)
+S3method(ROck, o_MCCN)
+S3method(ROck, o_MCMN)
+
+
+S3method(Report, o_MM1)
+S3method(Report, o_MM1K)
+S3method(Report, o_MMC)
+S3method(Report, o_MMInf)
+S3method(Report, o_MMCK)
+S3method(Report, o_MMCC)
+S3method(Report, o_MM1KK)
+S3method(Report, o_MMCKK)
+S3method(Report, o_MMCKM)
+S3method(Report, o_MMInfKK)
+S3method(Report, o_OJN)
+S3method(Report, o_CJN)
+S3method(Report, o_MCON)
+S3method(Report, o_MCCN)
+S3method(Report, o_MCMN)
+
+
+S3method(summary, o_MM1)
+S3method(summary, o_MM1K)
+S3method(summary, o_MMC)
+S3method(summary, o_MMInf)
+S3method(summary, o_MMCK)
+S3method(summary, o_MMCC)
+S3method(summary, o_MM1KK)
+S3method(summary, o_MMCKK)
+S3method(summary, o_MMCKM)
+S3method(summary, o_MMInfKK)
+S3method(summary, o_OJN)
+S3method(summary, o_CJN)
+S3method(summary, o_MCON)
+S3method(summary, o_MCCN)
+S3method(summary, o_MCMN)
+
+
+S3method(print, summary.o_MM1)
+S3method(print, summary.o_MM1K)
+S3method(print, summary.o_MMC)
+S3method(print, summary.o_MMInf)
+S3method(print, summary.o_MMCK)
+S3method(print, summary.o_MMCC)
+S3method(print, summary.o_MM1KK)
+S3method(print, summary.o_MMCKK)
+S3method(print, summary.o_MMCKM)
+S3method(print, summary.o_MMInfKK)
+S3method(print, summary.o_OJN)
+S3method(print, summary.o_CJN)
+S3method(print, summary.o_MCON)
+S3method(print, summary.o_MCCN)
+S3method(print, summary.o_MCMN)
+

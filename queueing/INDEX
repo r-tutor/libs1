@@ -1,0 +1,657 @@
+B_erlang                Returns the probability that all servers are
+                        busy
+C_erlang                Returns the probability to wait in queue
+                        because all servers are busy
+CheckInput              Generic S3 method to check the params of a
+                        queueing model (or network)
+CheckInput.i_CJN        Check the input params of a Closed Jackson
+                        Network
+CheckInput.i_MCCN       Check the input params of a MultiClass Closed
+                        Network
+CheckInput.i_MCMN       Check the input params of a MultiClass Mixed
+                        Network
+CheckInput.i_MCON       Check the input params of a MultiClass Open
+                        Network
+CheckInput.i_MM1        Checks the input params of a M/M/1 queueing
+                        model
+CheckInput.i_MM1K       Checks the input params of a M/M/1/K queueing
+                        model
+CheckInput.i_MM1KK      Checks the input params of a M/M/1/K/K queueing
+                        model
+CheckInput.i_MMC        Checks the input params of a M/M/c queueing
+                        model
+CheckInput.i_MMCC       Checks the input params of a M/M/c/c queueing
+                        model
+CheckInput.i_MMCK       Checks the input params of a M/M/c/K queueing
+                        model
+CheckInput.i_MMCKK      Checks the input params of a M/M/c/K/K queueing
+                        model
+CheckInput.i_MMCKM      Checks the input params of a M/M/c/K/m queueing
+                        model
+CheckInput.i_MMInf      Checks the input params of a M/M/Infinite
+                        queueing model
+CheckInput.i_MMInfKK    Checks the input params of a M/M/Infinite/K/K
+                        queueing model
+CheckInput.i_OJN        Check the input params of an Open Jackson
+                        Network
+CompareQueueingModels   Compare several queueing models in a tabulated
+                        format
+Engset                  Returns the probability that all servers are
+                        busy
+Inputs                  Returns the input parameters of a queueing
+                        model (or network)
+Inputs.o_CJN            Returns the input params of a Closed Jackson
+                        Network
+Inputs.o_MCCN           Returns the input params of a MultiClass Closed
+                        Network
+Inputs.o_MCMN           Returns the input params of a MultiClass Mixed
+                        Network
+Inputs.o_MCON           Returns the input params of a MultiClass Open
+                        Network
+Inputs.o_MM1            Returns the input parameters of a M/M/1
+                        queueing model
+Inputs.o_MM1K           Returns the input parameters of a M/M/1/K
+                        queueing model
+Inputs.o_MM1KK          Returns the input parameters of a M/M/1/K/K
+                        queueing model
+Inputs.o_MMC            Returns the input parameters of a M/M/c
+                        queueing model
+Inputs.o_MMCC           Returns the input parameters of a M/M/c/c
+                        queueing model
+Inputs.o_MMCK           Returns the input parameters of a M/M/c/K
+                        queueing model
+Inputs.o_MMCKK          Returns the input parameters of a M/M/c/K/K
+                        queueing model
+Inputs.o_MMCKM          Returns the input parameters of a M/M/c/K/m
+                        queueing model
+Inputs.o_MMInf          Returns the input parameters of a M/M/Infinite
+                        queueing model
+Inputs.o_MMInfKK        Returns the input parameters of a
+                        M/M/Infinite/K/K queueing model
+Inputs.o_OJN            Returns the input params of an Open Jackson
+                        Network
+L                       Returns the mean number of customers in a
+                        queueing model (or network)
+L.o_CJN                 Returns the mean number of customers of a
+                        Closed Jackson Network
+L.o_MCCN                Returns the mean number of customers of a
+                        MultiClass Closed Network
+L.o_MCMN                Returns the mean number of customers of a
+                        MultiClass Mixed Network
+L.o_MCON                Returns the mean number of customers of a
+                        MultiClass Open Network
+L.o_MM1                 Returns the mean number of customers in the
+                        M/M/1 queueing model
+L.o_MM1K                Returns the mean number of customers in the
+                        M/M/1/K queueing model
+L.o_MM1KK               Returns the mean number of customers in the
+                        M/M/1/K/K queueing model
+L.o_MMC                 Returns the mean number of customers in the
+                        M/M/c queueing model
+L.o_MMCC                Returns the mean number of customers in the
+                        M/M/c/c queueing model
+L.o_MMCK                Returns the mean number of customers in the
+                        M/M/c/K queueing model
+L.o_MMCKK               Returns the mean number of customers in the
+                        M/M/c/K/K queueing model
+L.o_MMCKM               Returns the mean number of customers in the
+                        M/M/c/K/m queueing model
+L.o_MMInf               Returns the mean number of customers in the
+                        M/M/Infinite queueing model
+L.o_MMInfKK             Returns the mean number of customers in the
+                        M/M/Infinite/K/K queueing model
+L.o_OJN                 Returns the mean number of customers of an Open
+                        Jackson Network
+Lc                      Returns the vector with the mean number of
+                        customers of each class in a multiclass
+                        queueing network
+Lc.o_MCCN               Returns the vector with the mean number of
+                        customers of each class in a MultiClass Closed
+                        Network
+Lc.o_MCMN               Returns the vector with the mean number of
+                        customers of each class in a MultiClass Mixed
+                        Network
+Lc.o_MCON               Returns the vector with the mean number of
+                        customers of each class in a MultiClass Open
+                        Network
+Lck                     Reports a matrix with the mean number of
+                        customers of class i in each node (server) j in
+                        a MultiClass Network
+Lck.o_MCCN              Reports a matrix with the mean number of
+                        customers of class i in each node (server) j in
+                        a MultiClass Closed Network
+Lck.o_MCMN              Reports a matrix with the mean number of
+                        customers of class i in each node (server) j in
+                        a MultiClass Mixed Network
+Lck.o_MCON              Reports a matrix with the mean number of
+                        customers of class i in each node (server) j in
+                        a MultiClass Open Network
+Lk                      Returns the vector with the mean number of
+                        customers in each node (server) of a queueing
+                        network
+Lk.o_CJN                Returns the vector with the mean number of
+                        customers in each node (server) of a Closed
+                        Jackson Network
+Lk.o_MCCN               Returns a vector with the mean number of
+                        customers in each node (server) of a MultiClass
+                        Closed Network
+Lk.o_MCMN               Returns a vector with the mean number of
+                        customers in each node (server) of a MultiClass
+                        Mixed Network
+Lk.o_MCON               Returns a vector with the mean number of
+                        customers in each node (server) of a MultiClass
+                        Open Network
+Lk.o_OJN                Returns the vector with the mean number of
+                        customers in each node (server) of an Open
+                        Jackson Network
+Lq                      Returns the mean number of customers in the
+                        queue in a queueing model
+Lq.o_MM1                Returns the mean number of customers in the
+                        queue in the M/M/1 queueing model
+Lq.o_MM1K               Returns the mean number of customers in the
+                        queue in the M/M/1/K queueing model
+Lq.o_MM1KK              Returns the mean number of customers in the
+                        queue in the M/M/1/K/K queueing model
+Lq.o_MMC                Returns the mean number of customers in the
+                        queue in the M/M/c queueing model
+Lq.o_MMCC               Returns the mean number of customers in the
+                        queue in the M/M/c/c queueing model
+Lq.o_MMCK               Returns the mean number of customers in the
+                        queue in the M/M/c/K queueing model
+Lq.o_MMCKK              Returns the mean number of customers in the
+                        queue in the M/M/c/K/K queueing model
+Lq.o_MMCKM              Returns the mean number of customers in the
+                        queue in the M/M/c/K/m queueing model
+Lq.o_MMInf              Returns the mean number of customers in the
+                        queue in the M/M/Infinite queueing model
+Lq.o_MMInfKK            Returns the mean number of customers in the
+                        queue in the M/M/Infinite/K/K queueing model
+Lqq                     Returns the mean number of customers in queue
+                        when there is queue in a queueing model
+Lqq.o_MM1               Returns the mean number of customers in queue
+                        when there is queue in the M/M/1 queueing model
+Lqq.o_MM1K              Returns the mean number of customers in queue
+                        when there is queue in the M/M/1/K queueing
+                        model
+Lqq.o_MM1KK             Returns the mean number of customers in queue
+                        when there is queue in the M/M/1/K/K queueing
+                        model
+Lqq.o_MMC               Returns the mean number of customers in queue
+                        when there is queue in the M/M/c queueing model
+Lqq.o_MMCC              Returns the mean number of customers in queue
+                        when there is queue in the M/M/c/c queueing
+                        model
+Lqq.o_MMCK              Returns the mean number of customers in queue
+                        when there is queue in the M/M/c/K queueing
+                        model
+Lqq.o_MMCKK             Returns the mean number of customers in queue
+                        when there is queue in the M/M/c/K/K queueing
+                        model
+Lqq.o_MMCKM             Returns the mean number of customers in queue
+                        when there is queue in the M/M/c/K/m queueing
+                        model
+Lqq.o_MMInf             Returns the mean number of customers in queue
+                        when there is queue in the M/M/Infinite
+                        queueing model
+Lqq.o_MMInfKK           Returns the mean number of customers in queue
+                        when there is queue in the M/M/Infinite/K/K
+                        queueing model
+NewInput.CJN            Define the inputs of a Closed Jackson Network
+NewInput.MCCN           Define the inputs of a MultiClass Closed
+                        Network
+NewInput.MCMN           Define the inputs of a MultiClass Mixed Network
+NewInput.MCON           Define the inputs of a MultiClass Open Network
+NewInput.MM1            Define the inputs of a new M/M/1 queueing model
+NewInput.MM1K           Define the inputs of a new M/M/1/K queueing
+                        model
+NewInput.MM1KK          Define the inputs of a new M/M/1/K/K queueing
+                        model
+NewInput.MMC            Define the inputs of a new M/M/c queueing model
+NewInput.MMCC           Define the inputs of a new M/M/c/c queueing
+                        model
+NewInput.MMCK           Define the inputs of a new M/M/c/K queueing
+                        model
+NewInput.MMCKK          Define the inputs of a new M/M/c/K/K queueing
+                        model
+NewInput.MMCKM          Define the inputs of a new M/M/c/K/m queueing
+                        model
+NewInput.MMInf          Define the inputs of a new M/M/Infinite
+                        queueing model
+NewInput.MMInfKK        Define the inputs of a new M/M/Infinite/K/K
+                        queueing model
+NewInput.OJN            Define the inputs of an Open Jackson Network
+Pn                      Returns the probabilities of a queueing model
+                        (or network)
+Pn.o_MM1                Returns the probabilities of a M/M/1 queueing
+                        model
+Pn.o_MM1K               Returns the probabilities of a M/M/1/K queueing
+                        model
+Pn.o_MM1KK              Returns the probabilities of a M/M/1/K/K
+                        queueing model
+Pn.o_MMC                Returns the probabilities of a M/M/c queueing
+                        model
+Pn.o_MMCC               Returns the probabilities of a M/M/c/c queueing
+                        model
+Pn.o_MMCK               Returns the probabilities of a M/M/c/K queueing
+                        model
+Pn.o_MMCKK              Returns the probabilities of a M/M/c/K/K
+                        queueing model
+Pn.o_MMCKM              Returns the probabilities of a M/M/c/K/m
+                        queueing model
+Pn.o_MMInf              Returns the probabilities of a M/M/Infinite
+                        queueing model
+Pn.o_MMInfKK            Returns the probabilities of a M/M/Infinite/K/K
+                        queueing model
+Pn.o_OJN                Returns vector of the probabilities of each
+                        node (server) of an Open Jackson Network
+QueueingModel           Generic S3 method to build a queueing model (or
+                        network)
+QueueingModel.i_CJN     Builds one Closed Jackson Network
+QueueingModel.i_MCCN    Builds one MultiClass Closed Network
+QueueingModel.i_MCMN    Builds one MultiClass Mixed Network
+QueueingModel.i_MCON    Builds one MultiClass Open Network
+QueueingModel.i_MM1     Builds a M/M/1 queueing model
+QueueingModel.i_MM1K    Builds a M/M/1/K queueing model
+QueueingModel.i_MM1KK   Builds a M/M/1/K/K queueing model
+QueueingModel.i_MMC     Builds a M/M/c queueing model
+QueueingModel.i_MMCC    Builds a M/M/c/c queueing model
+QueueingModel.i_MMCK    Builds a M/M/c/K queueing model
+QueueingModel.i_MMCKK   Builds a M/M/c/K/K queueing model
+QueueingModel.i_MMCKM   Builds a M/M/c/K/m queueing model
+QueueingModel.i_MMInf   Builds a M/M/Infinite queue model
+QueueingModel.i_MMInfKK
+                        Builds a M/M/Infinite/K/K queueing model
+QueueingModel.i_OJN     Builds one Open Jackson Network
+RO                      Reports the server use of a queueing model
+RO.o_MM1                Reports the server use of a M/M/1 queueing
+                        model
+RO.o_MM1K               Reports the server use of a M/M/1/K queueing
+                        model
+RO.o_MM1KK              Reports the server use of a M/M/1/K/K queueing
+                        model
+RO.o_MMC                Reports the server use of a M/M/c queueing
+                        model
+RO.o_MMCC               Reports the server use of a M/M/c/c queueing
+                        model
+RO.o_MMCK               Reports the server use of a M/M/c/K queueing
+                        model
+RO.o_MMCKK              Reports the server use of a M/M/c/K/K queueing
+                        model
+RO.o_MMCKM              Reports the server use of a M/M/c/K/m queueing
+                        model
+RO.o_MMInf              Reports the server use of a M/M/Infinite
+                        queueing model
+RO.o_MMInfKK            Reports the server use of a M/M/Infinite/K/K
+                        queueing model
+ROck                    Reports a matrix with the use of class i in
+                        each node (server) j in a MultiClass Queueing
+                        Network
+ROck.o_MCCN             Reports a matrix with the use of class i in
+                        each node (server) j in a MultiClass Closed
+                        Network
+ROck.o_MCMN             Reports a matrix with the use of class i in
+                        each node (server) j in a MultiClass Mixed
+                        Network
+ROck.o_MCON             Reports a matrix with the use of class i in
+                        each node (server) j in a MultiClass Open
+                        Network
+ROk                     Reports a vector with each node (server) use of
+                        a queueing network
+ROk.o_CJN               Reports a vector with each node (server) use of
+                        a Closed Jackson Network
+ROk.o_MCCN              Reports a vector with each node (server) use of
+                        a MultiClass Closed Network
+ROk.o_MCMN              Reports a vector with each node (server) use of
+                        a MultiClass Mixed Network
+ROk.o_MCON              Reports a vector with each node (server) use of
+                        a MultiClass Open Network
+ROk.o_OJN               Reports a vector with each node (server) use of
+                        an Open Jackson Network
+Report                  Reports the results of a queueing model
+Report.o_CJN            Reports the results of a Closed Jackson Network
+Report.o_MCCN           Reports the results of a MultiClass Closed
+                        Network
+Report.o_MCMN           Reports the results of a MultiClass Mixed
+                        Network
+Report.o_MCON           Reports the results of a MultiClass Open
+                        Network
+Report.o_MM1            Reports the results of a M/M/1 queueing model
+Report.o_MM1K           Reports the results of a M/M/1/K queueing model
+Report.o_MM1KK          Reports the results of a M/M/1/K/K queueing
+                        model
+Report.o_MMC            Reports the results of a M/M/c queueing model
+Report.o_MMCC           Reports the results of a M/M/c/c queueing model
+Report.o_MMCK           Reports the results of a M/M/c/K queueing model
+Report.o_MMCKK          Reports the results of a M/M/c/K/K queueing
+                        model
+Report.o_MMCKM          Reports the results of a M/M/c/K/m queueing
+                        model
+Report.o_MMInf          Reports the results of a M/M/Infinite queueing
+                        model
+Report.o_MMInfKK        Reports the results of a M/M/Infinite/K/K
+                        queueing model
+Report.o_OJN            Reports the results of an Open Jackson Network
+SP                      Returns the saturation point of a queueing
+                        model
+SP.o_MM1KK              Returns the saturation point of a M/M/1/K/K
+                        queueing model
+Throughput              Throughput of a queueing model (or network)
+Throughput.o_CJN        Reports the network throughput of a Closed
+                        Jackson Network
+Throughput.o_MCCN       Reports the throughput of a MultiClass Closed
+                        Network
+Throughput.o_MCMN       Reports the throughput of a MultiClass Mixed
+                        Network
+Throughput.o_MCON       Reports the throughput of a MultiClass Open
+                        Network
+Throughput.o_MM1        Throughput of a M/M/1 queueing model
+Throughput.o_MM1K       Throughput of a M/M/1/K queueing model
+Throughput.o_MM1KK      Throughput of a M/M/1/K/K queueing model
+Throughput.o_MMC        Throughput of a M/M/c queueing model
+Throughput.o_MMCC       Throughput of a M/M/c/c queueing model
+Throughput.o_MMCK       Throughput of a M/M/c/K queueing model
+Throughput.o_MMCKK      Throughput of a M/M/c/K/K queueing model
+Throughput.o_MMCKM      Throughput of a M/M/c/K/m queueing model
+Throughput.o_MMInf      Throughput of a M/M/Infinite queueing model
+Throughput.o_MMInfKK    Throughput of a M/M/Infinite/K/K queueing model
+Throughput.o_OJN        Reports the throughput of an Open Jackson
+                        Network
+Throughputc             Reports a vector with each class throughput in
+                        a multiclass queueing network
+Throughputc.o_MCCN      Reports a vector with each class throughput in
+                        a MultiClass Closed Network
+Throughputc.o_MCMN      Reports a vector with each class throughput in
+                        a MultiClass Mixed Network
+Throughputc.o_MCON      Reports a vector with each class throughput in
+                        a MultiClass Open Network
+Throughputck            Reports a matrix with the throughput of class i
+                        in each node (server) j in a MultiClass Network
+Throughputck.o_MCCN     Reports a matrix with the throughput of class i
+                        in each node (server) j in a MultiClass Closed
+                        Network
+Throughputck.o_MCMN     Reports a matrix with the throughput of class i
+                        in each node (server) j in a MultiClass Mixed
+                        Network
+Throughputck.o_MCON     Reports a matrix with the throughput of class i
+                        in each node (server) j in a MultiClass Open
+                        Network
+Throughputcn            Returns a matrix with the Throughput from each
+                        class and every population of a Multi Class
+                        Closed Network
+Throughputcn.o_MCCN     Returns a matrix with the Throughput from each
+                        class and every population of a Multi Class
+                        Closed Network
+Throughputk             Reports a vector with each node (server)
+                        throughput of a queueing network
+Throughputk.o_CJN       Reports a vector with each node (server)
+                        throughput of a Closed Jackson Network
+Throughputk.o_MCCN      Reports a vector with each node (server)
+                        throughput of a MultiClass Closed Network
+Throughputk.o_MCMN      Reports a vector with each node (server)
+                        throughput of a MultiClass Mixed Network
+Throughputk.o_MCON      Reports a vector with each node (server)
+                        throughput of a MultiClass Open Network
+Throughputk.o_OJN       Reports a vector with each node (server)
+                        throughput of an Open Jackson Network
+Throughputn             Returns a vector with the each Throughput from
+                        1 to the parameter n (population passed as
+                        input) of a Closed Network
+Throughputn.o_CJN       Returns a vector with the each Throughput from
+                        1 to the parameter n (population passed as
+                        input) of a Closed Jackson Network
+VN                      Returns the variance of the number of customers
+                        in a queueing model (or network)
+VN.o_MM1                Returns the variance of the number of customers
+                        in the M/M/1 queueing model
+VN.o_MM1K               Returns the variance of the number of customers
+                        in the M/M/1/K queueing model
+VN.o_MM1KK              Returns the variance of the number of customers
+                        in the M/M/1/K/K queueing model
+VN.o_MMC                Returns the variance of the number of customers
+                        in the M/M/c queueing model
+VN.o_MMCC               Returns the variance of the number of customers
+                        in the M/M/c/c queueing model
+VN.o_MMCK               Returns the variance of the number of customers
+                        in the M/M/c/K queueing model
+VN.o_MMCKK              Returns the variance of the number of customers
+                        in the M/M/c/K/K queueing model
+VN.o_MMCKM              Returns the variance of the number of customers
+                        in the M/M/c/K/m queueing model
+VN.o_MMInf              Returns the variance of the number of customers
+                        in the M/M/Infinite queueing model
+VN.o_MMInfKK            Returns the variance of the number of customers
+                        in the M/M/Infinite/K/K queueing model
+VNq                     Returns the variance of the number of customers
+                        in the queue in a queueing model
+VNq.o_MM1               Returns the variance of the number of customers
+                        in the queue in the M/M/1 queueing model
+VNq.o_MM1K              Returns the variance of the number of customers
+                        in the queue in the M/M/1/K queueing model
+VNq.o_MM1KK             Returns the variance of the number of customers
+                        in the queue in the M/M/1/K/K queueing model
+VNq.o_MMC               Returns the variance of the number of customers
+                        in the queue in the M/M/c queueing model
+VNq.o_MMCC              Returns the variance of the number of customers
+                        in the queue in the M/M/c/c queueing model
+VNq.o_MMCK              Returns the variance of the number of customers
+                        in the queue in the M/M/c/K queueing model
+VNq.o_MMCKK             Returns the variance of the number of customers
+                        in the queue in the M/M/c/K/K queueing model
+VNq.o_MMCKM             Returns the variance of the number of customers
+                        in the queue in the M/M/c/K/m queueing model
+VNq.o_MMInf             Returns the variance of the number of customers
+                        in the queue in the M/M/Infinite queueing model
+VNq.o_MMInfKK           Returns the variance of the number of customers
+                        in the queue in the M/M/Infinite/K/K queueing
+                        model
+VT                      Returns the variance of the time spend in a
+                        queueing model (or network)
+VT.o_MM1                Returns the variance of the time spend in the
+                        M/M/1 queueing model
+VT.o_MM1K               Returns the variance of the time spend in the
+                        M/M/1/K queueing model
+VT.o_MM1KK              Returns the variance of the time spend in the
+                        M/M/1/K/K queueing model
+VT.o_MMC                Returns the variance of the time spend in the
+                        M/M/c queueing model
+VT.o_MMCC               Returns the variance of the time spend in the
+                        M/M/c/c queueing model
+VT.o_MMInf              Returns the variance of the time spend in the
+                        M/M/Infinite queueing model
+VT.o_MMInfKK            Returns the variance of the time spend in the
+                        M/M/Infinite/K/K queueing model
+VTq                     Returns the variance of the time spend in queue
+                        in a queueing model
+VTq.o_MM1               Returns the variance of the time spend in queue
+                        in the M/M/1 queueing model
+VTq.o_MM1K              Returns the variance of the time spend in queue
+                        in the M/M/1/K queueing model
+VTq.o_MM1KK             Returns the variance of the time spend in queue
+                        in the M/M/1/K/K queueing model
+VTq.o_MMC               Returns the variance of the time spend in queue
+                        in the M/M/c queueing model
+VTq.o_MMCC              Returns the variance of the time spend in queue
+                        in the M/M/c/c queueing model
+VTq.o_MMCK              Returns the variance of the time spend in queue
+                        in the M/M/c/K queueing model
+VTq.o_MMCKK             Returns the variance of the time spend in queue
+                        in the M/M/c/K/K queueing model
+VTq.o_MMInf             Returns the variance of the time spend in queue
+                        in the M/M/Infinite queueing model
+VTq.o_MMInfKK           Returns the variance of the time spend in queue
+                        in the M/M/Infinite/K/K queueing model
+W                       Returns the mean time spend in a queueing model
+                        (or network)
+W.o_CJN                 Returns the mean time spend in a Closed Jackson
+                        Network
+W.o_MCCN                Returns the mean time spend in a MultiClass
+                        Closed Network
+W.o_MCMN                Returns the mean time spend in a MultiClass
+                        Mixed Network
+W.o_MCON                Returns the mean time spend in a MultiClass
+                        Open Network
+W.o_MM1                 Returns the mean time spend in the M/M/1
+                        queueing model
+W.o_MM1K                Returns the mean time spend in the M/M/1/K
+                        queueing model
+W.o_MM1KK               Returns the mean time spend in the M/M/1/K/K
+                        queueing model
+W.o_MMC                 Returns the mean time spend in the M/M/c
+                        queueing model
+W.o_MMCC                Returns the mean time spend in the M/M/c/c
+                        queueing model
+W.o_MMCK                Returns the mean time spend in the M/M/c/K
+                        queueing model
+W.o_MMCKK               Returns the mean time spend in the M/M/c/K/K
+                        queueing model
+W.o_MMCKM               Returns the mean time spend in the M/M/c/K/m
+                        queueing model
+W.o_MMInf               Returns the time spend in the M/M/Infinite
+                        queueing model
+W.o_MMInfKK             Returns the mean time spend in the
+                        M/M/Infinite/K/K queueing model
+W.o_OJN                 Returns the mean time spend in an Open Jackson
+                        Network
+WWs                     Returns the normalized mean response time in a
+                        queueing model
+WWs.o_MM1KK             Returns the normalized mean response time in
+                        the M/M/1/K/K queueing model
+Wc                      Returns the vector with each class mean time
+                        spend on a multiclass queueing network
+Wc.o_MCCN               Returns the vector with each class mean time
+                        spend on a MultiClass Closed Network
+Wc.o_MCMN               Returns the vector with each class mean time
+                        spend on a MultiClass Mixed Network
+Wc.o_MCON               Returns the vector with each class mean time
+                        spend on a MultiClass Open Network
+Wck                     Reports a matrix with the mean time of class i
+                        in each node (server) j in a MultiClass
+                        Queueing Network
+Wck.o_MCCN              Reports a matrix with the mean time of class i
+                        in each node (server) j in a MultiClass Closed
+                        Network
+Wck.o_MCMN              Reports a matrix with the mean time of class i
+                        in each node (server) j in a MultiClass Mixed
+                        Network
+Wck.o_MCON              Reports a matrix with the mean time of class i
+                        in each node (server) j in a MultiClass Open
+                        Network
+Wk                      Generic S3 method to return the mean time spend
+                        in each node (or server) of a network
+Wk.o_CJN                Returns the vector with the mean time spend in
+                        each node (server) of a Closed Jackson Network
+Wk.o_MCCN               Returns a vector with the mean time spend in
+                        each node (server) of a MultiClass Closed
+                        Network
+Wk.o_MCMN               Returns a matrix with the mean time spend in
+                        each node (server) of a MultiClass Mixed
+                        Network
+Wk.o_MCON               Returns a matrix with the mean time spend in
+                        each node (server) of a MultiClass Open Network
+Wk.o_OJN                Returns the vector with the mean time spend in
+                        each node (server) of an Open Jackson Network
+Wq                      Returns the mean time spend in queue in a
+                        queueing model
+Wq.o_MM1                Returns the mean time spend in queue in the
+                        M/M/1 queueing model
+Wq.o_MM1K               Returns the mean time spend in queue in the
+                        M/M/1/K queueing model
+Wq.o_MM1KK              Returns the mean time spend in queue in the
+                        M/M/1/K/K queueing model
+Wq.o_MMC                Returns the mean time spend in queue in the
+                        M/M/c queueing model
+Wq.o_MMCC               Returns the mean time spend in queue in the
+                        M/M/c/c queueing model
+Wq.o_MMCK               Returns the mean time spend in queue in the
+                        M/M/c/K queueing model
+Wq.o_MMCKK              Returns the mean time spend in queue in the
+                        M/M/c/K/K queueing model
+Wq.o_MMCKM              Returns the mean time spend in queue in the
+                        M/M/c/K/m queueing model
+Wq.o_MMInf              Returns the mean time spend in queue in the
+                        M/M/Infinite queueing model
+Wq.o_MMInfKK            Returns the mean time spend in queue in the
+                        M/M/Infinite/K/K queueing model
+Wqq                     Returns the mean time spend in queue when there
+                        is queue in a queueing model
+Wqq.o_MM1               Returns the mean time spend in queue when there
+                        is queue in the M/M/1 queueing model
+Wqq.o_MM1K              Returns the mean time spend in queue when there
+                        is queue in the M/M/1/K queueing model
+Wqq.o_MM1KK             Returns the mean time spend in queue when there
+                        is queue in the M/M/1/K/K queueing model
+Wqq.o_MMC               Returns the mean time spend in queue when there
+                        is queue in the M/M/c queueing model
+Wqq.o_MMCC              Returns the mean time spend in queue when there
+                        is queue in the M/M/c/c queueing model
+Wqq.o_MMCK              Returns the mean time spend in queue when there
+                        is queue in the M/M/c/K queueing model
+Wqq.o_MMCKK             Returns the mean time spend in queue when there
+                        is queue in the M/M/c/K/K queueing model
+Wqq.o_MMCKM             Returns the mean time spend in queue when there
+                        is queue in the M/M/c/K/m queueing model
+Wqq.o_MMInf             Returns the mean time spend in queue when there
+                        is queue in the M/M/Infinite queueing model
+Wqq.o_MMInfKK           Returns the mean time spend in queue when there
+                        is queue in the M/M/Infinite/K/K queueing model
+print.summary.o_CJN     Summary of the results of a Closed Jackson
+                        Network
+print.summary.o_MCCN    Summary of the results of a MultiClass Closed
+                        Network
+print.summary.o_MCMN    Summary of the results of a MultiClass Mixed
+                        Network
+print.summary.o_MCON    Summary of the results of a MultiClass Open
+                        Network
+print.summary.o_MM1     Summary of the results of a M/M/1 queueing
+                        model
+print.summary.o_MM1K    Summary of the results of a M/M/1/K queueing
+                        model
+print.summary.o_MM1KK   Summary of the results of a M/M/1/K/K queueing
+                        model
+print.summary.o_MMC     Summary of the results of a M/M/c queueing
+                        model
+print.summary.o_MMCC    Summary of the results of a M/M/c/c queueing
+                        model
+print.summary.o_MMCK    Summary of the results of a M/M/c/K queueing
+                        model
+print.summary.o_MMCKK   Summary of the results of a M/M/c/K/K queueing
+                        model
+print.summary.o_MMCKM   Summary of the results of a M/M/c/K/m queueing
+                        model
+print.summary.o_MMInf   Summary of the results of a M/M/Infinite
+                        queueing model
+print.summary.o_MMInfKK
+                        Reports the results of a M/M/Infinite/K/K
+                        queueing model
+print.summary.o_OJN     Reports the results of an Open Jackson Network
+queueing-package        Analysis of Queueing Networks and Models.
+summary.o_CJN           Summary of the results of a Closed Jackson
+                        Network
+summary.o_MCCN          Summary of the results of a MultiClass Closed
+                        Network
+summary.o_MCMN          Summary of the results of a MultiClass Mixed
+                        Network
+summary.o_MCON          Summary of the results of a MultiClass Open
+                        Network
+summary.o_MM1           Summary of the results of a M/M/1 queueing
+                        model
+summary.o_MM1K          Summary of the results of a M/M/1/K queueing
+                        model
+summary.o_MM1KK         Summary of the results of a M/M/1/K/K queueing
+                        model
+summary.o_MMC           Summary of the results of a M/M/c queueing
+                        model
+summary.o_MMCC          Summary of the results of a M/M/c/c queueing
+                        model
+summary.o_MMCK          Summary of the results of a M/M/c/K queueing
+                        model
+summary.o_MMCKK         Summary of the results of a M/M/c/K/K queueing
+                        model
+summary.o_MMCKM         Summary of the results of a M/M/c/K/m queueing
+                        model
+summary.o_MMInf         Summary of the results of a M/M/Infinite
+                        queueing model
+summary.o_MMInfKK       Summary of the results of a M/M/Infinite/K/K
+                        queueing model
+summary.o_OJN           Summary of the results of an Open Jackson
+                        Network
