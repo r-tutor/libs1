@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Lincoln Mullen" />
+
+<meta name="date" content="2016-08-29" />
+
+<title>Introduction to the tokenizers Package</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to the tokenizers Package</h1>
+<h4 class="author"><em>Lincoln Mullen</em></h4>
+<h4 class="date"><em>2016-08-29</em></h4>
+
+
+
+<div id="package-overview" class="section level2">
+<h2>Package overview</h2>
+<p>In natural language processing, tokenization is the process of breaking human-readable text into machine readable components. The most obvious way to tokenize a text is to split the text into words. But there are many other ways to tokenize a text, the most useful of which are provided by this package.</p>
+<p>The tokenizers in this package have a consistent interface. They all take either a character vector of any length, or a list where each element is a character vector of length one. The idea is that each element comprises a text. Then each function returns a list with the same length as the input vector, where each element in the list contains the tokens generated by the function. If the input character vector or list is named, then the names are preserved, so that the names can serve as identifiers.</p>
+</div>
+<div id="examples-of-tokenizers" class="section level2">
+<h2>Examples of tokenizers</h2>
+<p>Using the following sample text, the rest of this vignette demonstrates the different kinds of tokenizers in this package.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tokenizers)
+<span class="kw">options</span>(<span class="dt">max.print =</span> <span class="dv">25</span>)
+
+james &lt;-<span class="st"> </span><span class="kw">paste0</span>(
+  <span class="st">&quot;The question thus becomes a verbal one</span><span class="ch">\n</span><span class="st">&quot;</span>,
+  <span class="st">&quot;again; and our knowledge of all these early stages of thought and feeling</span><span class="ch">\n</span><span class="st">&quot;</span>,
+  <span class="st">&quot;is in any case so conjectural and imperfect that farther discussion would</span><span class="ch">\n</span><span class="st">&quot;</span>,
+  <span class="st">&quot;not be worth while.</span><span class="ch">\n</span><span class="st">&quot;</span>,
+  <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>,
+  <span class="st">&quot;Religion, therefore, as I now ask you arbitrarily to take it, shall mean</span><span class="ch">\n</span><span class="st">&quot;</span>,
+  <span class="st">&quot;for us _the feelings, acts, and experiences of individual men in their</span><span class="ch">\n</span><span class="st">&quot;</span>,
+  <span class="st">&quot;solitude, so far as they apprehend themselves to stand in relation to</span><span class="ch">\n</span><span class="st">&quot;</span>,
+  <span class="st">&quot;whatever they may consider the divine_. Since the relation may be either</span><span class="ch">\n</span><span class="st">&quot;</span>,
+  <span class="st">&quot;moral, physical, or ritual, it is evident that out of religion in the</span><span class="ch">\n</span><span class="st">&quot;</span>,
+  <span class="st">&quot;sense in which we take it, theologies, philosophies, and ecclesiastical</span><span class="ch">\n</span><span class="st">&quot;</span>,
+  <span class="st">&quot;organizations may secondarily grow.</span><span class="ch">\n</span><span class="st">&quot;</span>
+)</code></pre></div>
+<div id="characters" class="section level3">
+<h3>Characters</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tokenize_characters</span>(james)[[<span class="dv">1</span>]] </code></pre></div>
+<pre><code>##  [1] &quot;t&quot; &quot;h&quot; &quot;e&quot; &quot;q&quot; &quot;u&quot; &quot;e&quot; &quot;s&quot; &quot;t&quot; &quot;i&quot; &quot;o&quot; &quot;n&quot; &quot;t&quot; &quot;h&quot; &quot;u&quot; &quot;s&quot; &quot;b&quot; &quot;e&quot;
+## [18] &quot;c&quot; &quot;o&quot; &quot;m&quot; &quot;e&quot; &quot;s&quot; &quot;a&quot; &quot;v&quot; &quot;e&quot;
+##  [ reached getOption(&quot;max.print&quot;) -- omitted 517 entries ]</code></pre>
+<p>You can also tokenize character-based shingles.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tokenize_character_shingles</span>(james, <span class="dt">strip_non_alphanum =</span> <span class="ot">FALSE</span>)[[<span class="dv">1</span>]][<span class="dv">1</span>:<span class="dv">20</span>]</code></pre></div>
+<pre><code>##  [1] &quot;the&quot; &quot;he &quot; &quot;e q&quot; &quot; qu&quot; &quot;que&quot; &quot;ues&quot; &quot;est&quot; &quot;sti&quot; &quot;tio&quot; &quot;ion&quot; &quot;on &quot;
+## [12] &quot;n t&quot; &quot; th&quot; &quot;thu&quot; &quot;hus&quot; &quot;us &quot; &quot;s b&quot; &quot; be&quot; &quot;bec&quot; &quot;eco&quot;</code></pre>
+</div>
+<div id="words-and-word-stems" class="section level3">
+<h3>Words and word stems</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tokenize_words</span>(james)</code></pre></div>
+<pre><code>## [[1]]
+##  [1] &quot;the&quot;       &quot;question&quot;  &quot;thus&quot;      &quot;becomes&quot;   &quot;a&quot;        
+##  [6] &quot;verbal&quot;    &quot;one&quot;       &quot;again&quot;     &quot;and&quot;       &quot;our&quot;      
+## [11] &quot;knowledge&quot; &quot;of&quot;        &quot;all&quot;       &quot;these&quot;     &quot;early&quot;    
+## [16] &quot;stages&quot;    &quot;of&quot;        &quot;thought&quot;   &quot;and&quot;       &quot;feeling&quot;  
+## [21] &quot;is&quot;        &quot;in&quot;        &quot;any&quot;       &quot;case&quot;      &quot;so&quot;       
+##  [ reached getOption(&quot;max.print&quot;) -- omitted 87 entries ]</code></pre>
+<p>Word stemming is provided by the <a href="https://cran.r-project.org/package=SnowballC">SnowballC</a> package.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tokenize_word_stems</span>(james)</code></pre></div>
+<pre><code>## [[1]]
+##  [1] &quot;the&quot;      &quot;question&quot; &quot;thus&quot;     &quot;becom&quot;    &quot;a&quot;        &quot;verbal&quot;  
+##  [7] &quot;one&quot;      &quot;again&quot;    &quot;and&quot;      &quot;our&quot;      &quot;knowledg&quot; &quot;of&quot;      
+## [13] &quot;all&quot;      &quot;these&quot;    &quot;earli&quot;    &quot;stage&quot;    &quot;of&quot;       &quot;thought&quot; 
+## [19] &quot;and&quot;      &quot;feel&quot;     &quot;is&quot;       &quot;in&quot;       &quot;ani&quot;      &quot;case&quot;    
+## [25] &quot;so&quot;      
+##  [ reached getOption(&quot;max.print&quot;) -- omitted 87 entries ]</code></pre>
+<p>You can also provide a vector of stop words. A default is provided for several languages by the <code>stopwords()</code> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tokenize_words</span>(james, <span class="dt">stopwords =</span> <span class="kw">stopwords</span>())</code></pre></div>
+<pre><code>## [[1]]
+##  [1] &quot;question&quot;    &quot;thus&quot;        &quot;becomes&quot;     &quot;verbal&quot;      &quot;one&quot;        
+##  [6] &quot;again&quot;       &quot;our&quot;         &quot;knowledge&quot;   &quot;all&quot;         &quot;early&quot;      
+## [11] &quot;stages&quot;      &quot;thought&quot;     &quot;feeling&quot;     &quot;any&quot;         &quot;case&quot;       
+## [16] &quot;so&quot;          &quot;conjectural&quot; &quot;imperfect&quot;   &quot;farther&quot;     &quot;discussion&quot; 
+## [21] &quot;would&quot;       &quot;worth&quot;       &quot;while&quot;       &quot;religion&quot;    &quot;therefore&quot;  
+##  [ reached getOption(&quot;max.print&quot;) -- omitted 47 entries ]</code></pre>
+</div>
+<div id="sentences-and-paragraphs" class="section level3">
+<h3>Sentences and paragraphs</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tokenize_sentences</span>(james) </code></pre></div>
+<pre><code>## [[1]]
+## [1] &quot;The question thus becomes a verbal one again; and our knowledge of all these early stages of thought and feeling is in any case so conjectural and imperfect that farther discussion would not be worth while.&quot;                                               
+## [2] &quot;Religion, therefore, as I now ask you arbitrarily to take it, shall mean for us _the feelings, acts, and experiences of individual men in their solitude, so far as they apprehend themselves to stand in relation to whatever they may consider the divine_.&quot;
+## [3] &quot;Since the relation may be either moral, physical, or ritual, it is evident that out of religion in the sense in which we take it, theologies, philosophies, and ecclesiastical organizations may secondarily grow.&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tokenize_paragraphs</span>(james)</code></pre></div>
+<pre><code>## [[1]]
+## [1] &quot;The question thus becomes a verbal one again; and our knowledge of all these early stages of thought and feeling is in any case so conjectural and imperfect that farther discussion would not be worth while.&quot;                                                                                                                                                                                                                                                                   
+## [2] &quot;Religion, therefore, as I now ask you arbitrarily to take it, shall mean for us _the feelings, acts, and experiences of individual men in their solitude, so far as they apprehend themselves to stand in relation to whatever they may consider the divine_. Since the relation may be either moral, physical, or ritual, it is evident that out of religion in the sense in which we take it, theologies, philosophies, and ecclesiastical organizations may secondarily grow. &quot;</code></pre>
+</div>
+<div id="n-grams-and-skip-n-grams" class="section level3">
+<h3>N-grams and skip n-grams</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tokenize_ngrams</span>(james, <span class="dt">n =</span> <span class="dv">5</span>, <span class="dt">n_min =</span> <span class="dv">2</span>)</code></pre></div>
+<pre><code>## [[1]]
+##  [1] &quot;the question&quot;                   &quot;the question thus&quot;             
+##  [3] &quot;the question thus becomes&quot;      &quot;the question thus becomes a&quot;   
+##  [5] &quot;question thus&quot;                  &quot;question thus becomes&quot;         
+##  [7] &quot;question thus becomes a&quot;        &quot;question thus becomes a verbal&quot;
+##  [9] &quot;thus becomes&quot;                   &quot;thus becomes a&quot;                
+## [11] &quot;thus becomes a verbal&quot;          &quot;thus becomes a verbal one&quot;     
+## [13] &quot;becomes a&quot;                      &quot;becomes a verbal&quot;              
+## [15] &quot;becomes a verbal one&quot;           &quot;becomes a verbal one again&quot;    
+## [17] &quot;a verbal&quot;                       &quot;a verbal one&quot;                  
+## [19] &quot;a verbal one again&quot;             &quot;a verbal one again and&quot;        
+## [21] &quot;verbal one&quot;                     &quot;verbal one again&quot;              
+## [23] &quot;verbal one again and&quot;           &quot;verbal one again and our&quot;      
+## [25] &quot;one again&quot;                     
+##  [ reached getOption(&quot;max.print&quot;) -- omitted 413 entries ]</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tokenize_skip_ngrams</span>(james, <span class="dt">n =</span> <span class="dv">5</span>, <span class="dt">k =</span> <span class="dv">2</span>)</code></pre></div>
+<pre><code>## [[1]]
+##  [1] &quot;the becomes one our all&quot;            
+##  [2] &quot;question a again knowledge these&quot;   
+##  [3] &quot;thus verbal and of early&quot;           
+##  [4] &quot;becomes one our all stages&quot;         
+##  [5] &quot;a again knowledge these of&quot;         
+##  [6] &quot;verbal and of early thought&quot;        
+##  [7] &quot;one our all stages and&quot;             
+##  [8] &quot;again knowledge these of feeling&quot;   
+##  [9] &quot;and of early thought is&quot;            
+## [10] &quot;our all stages and in&quot;              
+## [11] &quot;knowledge these of feeling any&quot;     
+## [12] &quot;of early thought is case&quot;           
+## [13] &quot;all stages and in so&quot;               
+## [14] &quot;these of feeling any conjectural&quot;   
+## [15] &quot;early thought is case and&quot;          
+## [16] &quot;stages and in so imperfect&quot;         
+## [17] &quot;of feeling any conjectural that&quot;    
+## [18] &quot;thought is case and farther&quot;        
+## [19] &quot;and in so imperfect discussion&quot;     
+## [20] &quot;feeling any conjectural that would&quot; 
+## [21] &quot;is case and farther not&quot;            
+## [22] &quot;in so imperfect discussion be&quot;      
+## [23] &quot;any conjectural that would worth&quot;   
+## [24] &quot;case and farther not while&quot;         
+## [25] &quot;so imperfect discussion be religion&quot;
+##  [ reached getOption(&quot;max.print&quot;) -- omitted 287 entries ]</code></pre>
+</div>
+<div id="miscellaneous" class="section level3">
+<h3>Miscellaneous</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tokenize_lines</span>(james)</code></pre></div>
+<pre><code>## [[1]]
+##  [1] &quot;The question thus becomes a verbal one&quot;                                   
+##  [2] &quot;again; and our knowledge of all these early stages of thought and feeling&quot;
+##  [3] &quot;is in any case so conjectural and imperfect that farther discussion would&quot;
+##  [4] &quot;not be worth while.&quot;                                                      
+##  [5] &quot;Religion, therefore, as I now ask you arbitrarily to take it, shall mean&quot; 
+##  [6] &quot;for us _the feelings, acts, and experiences of individual men in their&quot;   
+##  [7] &quot;solitude, so far as they apprehend themselves to stand in relation to&quot;    
+##  [8] &quot;whatever they may consider the divine_. Since the relation may be either&quot; 
+##  [9] &quot;moral, physical, or ritual, it is evident that out of religion in the&quot;    
+## [10] &quot;sense in which we take it, theologies, philosophies, and ecclesiastical&quot;  
+## [11] &quot;organizations may secondarily grow.&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tokenize_regex</span>(james, <span class="dt">pattern =</span> <span class="st">&quot;[,.;]&quot;</span>)</code></pre></div>
+<pre><code>## [[1]]
+##  [1] &quot;The question thus becomes a verbal one\nagain&quot;                                                                                                                     
+##  [2] &quot; and our knowledge of all these early stages of thought and feeling\nis in any case so conjectural and imperfect that farther discussion would\nnot be worth while&quot;
+##  [3] &quot;\n\nReligion&quot;                                                                                                                                                      
+##  [4] &quot; therefore&quot;                                                                                                                                                        
+##  [5] &quot; as I now ask you arbitrarily to take it&quot;                                                                                                                          
+##  [6] &quot; shall mean\nfor us _the feelings&quot;                                                                                                                                 
+##  [7] &quot; acts&quot;                                                                                                                                                             
+##  [8] &quot; and experiences of individual men in their\nsolitude&quot;                                                                                                             
+##  [9] &quot; so far as they apprehend themselves to stand in relation to\nwhatever they may consider the divine_&quot;                                                              
+## [10] &quot; Since the relation may be either\nmoral&quot;                                                                                                                          
+## [11] &quot; physical&quot;                                                                                                                                                         
+## [12] &quot; or ritual&quot;                                                                                                                                                        
+## [13] &quot; it is evident that out of religion in the\nsense in which we take it&quot;                                                                                             
+## [14] &quot; theologies&quot;                                                                                                                                                       
+## [15] &quot; philosophies&quot;                                                                                                                                                     
+## [16] &quot; and ecclesiastical\norganizations may secondarily grow&quot;                                                                                                           
+## [17] &quot;\n&quot;</code></pre>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
