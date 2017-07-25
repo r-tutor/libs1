@@ -1,0 +1,88 @@
+---
+output: html_document
+---
+
+__A sample of $100$ specimens of a titanium alloy were subjected to a fatigue test to determine the time to crack initiation.  The test was run up to a limit of $100,000$ cycles.  The observed time of crack initiation (in units of $1,000's$ of cycles) were: $18,32,39,53,59,68,77,78,93.$ No crack had initiated in any of the other $91$ specimens.__
+
+a. __Compute a nonparametric estimate, $\widehat{F}(t)$ of the cdf $F(t)$ using both the simple binomial method and the Kaplan-Meier method (in this case the two methods provide the same answer)__
+
+`r teachingSMRD:::solution()$begin`
+The Kaplan-Meier estimator for the survivor function can be expressed as
+
+$$
+\widehat{S}(t_{i})=\prod_{j=1}^{i}\left[1-\frac{d_{j}}{n_{j}}\right]
+$$
+
+where both $d_{j}$ and $n_{j}$ change by a value of one after each failure because the failure times are exact and because this data set is singly right censored at 100 kilocycles. The nonparametric estimate of the cdf at 100 kilocycles, for example, is then
+
+$$
+\widehat{F}(100)=1-\widehat{S}(100)=1-\frac{99}{100}\times\frac{98}{99}\times\frac{97}{98}\times\frac{96}{97}\times\frac{95}{96}\times\frac{94}{95}\times\frac{93}{94}\times\frac{92}{93}\times\frac{91}{92}=1-\frac{91}{100}=\frac{9}{100}
+$$
+
+The simple binomial method produces an estimate for the cdf as
+
+$$
+\widehat{F}(t_{j})=\frac{\sum_{j=1}^{i}d_{j}}{n}
+$$
+
+where only the numerator changes by one after each failure.  The estimate of the cdf at 100 kilocycles using the binomial method is
+
+$$
+\widehat{F}(100)=\frac{9}{100}.
+$$
+
+For each failure time, the value of $\widehat{F}(t_{j}), j=1,2,...,i$ computed using both approaches will be equivalent.  These values are: $(.01, .02, .03, .04, .05, .06, .07, .08, .09).$ For the censored observations we are unable to accurately estimate the value of the cdf, thus for these 91 non-failures we assign a value of $.09.$
+`r teachingSMRD:::solution()$end`
+
+b. __Plot $\widehat{F}(t)$ on linear axes.__
+
+`r teachingSMRD:::solution()$begin`
+The SMRD package can be used produce the requested plot of $\widehat{F}(t)$ with following code.  Although the data set for this problem is loaded in the SMRD package as `titanium01`, we'll produce the plot by creating the data frame from scratch.
+
+```{r, fig.cap="Weibull probability plot of the LZ Bearing data set"}
+observ<-c(18,32,39,53,59,68,77,78,93,rep(100,91))
+censor<-c(rep("failed",9), rep("right",91))
+df<-data.frame(observ,censor)
+titanium.ld<-frame.to.ld(df,
+                         response.column = 1,
+                         censor.column = 2,
+                         time.units = "Kilocycles")
+plot(titanium.ld)
+```
+`r teachingSMRD:::solution()$end`
+
+c. __Use $\widehat{F}(t)$ to compute plotting positions and plot the data on Weibull paper.  Use the plot to obtain an estimate of the Weibull shape parameter $\beta$__
+
+`r teachingSMRD:::solution()$begin`
+The SMRD package can compute the plotting positions for this singly right-censored data set and plot these points on Weibull paper using the following R code
+
+```{r,  fig.cap="Nonparametric CDF plot for the titanium fatigue crack initiation data on Weibull paper"}
+plot(titanium.ld, distribution = "weibull")
+```
+
+Estimating $\beta = \sigma^{-1}$ from the plot requires that the plotting position values are known.  The SMRD package does not provide these values, but we can calculate them ouselves.  In $\S$ 6.4.2 we see that for singly right-censored data Meeker recommends using Hazen plotting positions.  These values can be created with the following code
+
+```{r}
+times<-Response(titanium.ld)
+hazen2<-(rank(times)-0.5)/length(times)
+pp<-SMRD:::qsev(hazen2)
+```
+
+A graphical estimate for the Weibull shape parameter $\beta$ may be found from the slope of the best fit line through the data.  From Figure 5, an estimate of the slope is
+
+$$
+\frac{\text{log}\left[-\text{log}[1-.09]\right]-\text{log}\left[-\text{log}[1-.01]\right]}{\text{log}[93]-\text{log}[18]}=\frac{\text{log}\left[\frac{\text{log}[.91]}{\text{log}[.99]}\right]}{\text{log}\left[\frac{93}{18}\right]}=1.36
+$$
+`r teachingSMRD:::solution()$end`
+
+d. __Comment on the adequacy of the Weibull distribution__
+
+`r teachingSMRD:::solution()$begin`
+The transformed data appears to fall close to a straight line. Thus, the assumption that the data were generated from a Weibull process seems reasonable.
+`r teachingSMRD:::solution()$end`
+
+e. __Comment on the adequacy of the available data if the purpose of the experiment was to estimate $t_{.1}.$__
+
+`r teachingSMRD:::solution()$begin`
+Since only $9\%$ of the systems under test failed, estimating $t_{.1}$ will require extrapolating outside of the data. However, since none of the data fall far from the best fit line there may be little risk in this short of an extrapolation.
+`r teachingSMRD:::solution()$end`

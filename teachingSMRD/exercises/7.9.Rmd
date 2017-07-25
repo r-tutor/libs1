@@ -1,0 +1,53 @@
+---
+output: html_document
+---
+
+__A life test was conducted for the same insulating material described in Exercise 7.7. Again, 50 specimens were tested, but at 25 kV. The test ran for 20 hours without any failures.  The test had to be terminated at this time so that the test equipment could be used for other experiments.__
+
+a. __Compute the $TTT$ and show why the ML estimate for $\theta$ is equal to $\infty.$__
+
+`r teachingSMRD:::solution()$begin`
+For this test the $TTT$ is $50\times 20=1000 \text{ hours}.$  Because no failures were observed the maximum likelihood estimate is undefined as
+
+$$
+\lim_{r\rightarrow\infty}\widehat{\theta}_{_{MLE}}=\frac{1000}{0}\rightarrow\infty
+$$
+`r teachingSMRD:::solution()$end`
+
+b. __Compute a conservative 95% lower confidence bound for $\theta.$__
+
+`r teachingSMRD:::solution()$begin`
+As shown in equation (7.17), a conservative $100(1-\alpha)\%$ lower confidence bound for $\theta$
+
+$$
+\underline{\theta}=\frac{TTT}{-\text{log}(\alpha)}=\frac{1000}{-\text{log}(0.05)}=333.81 \text{ hours}.
+$$
+`r teachingSMRD:::solution()$end`
+
+c. __For this problem, is there any extrapolation involved in computing the lower confidence bound for $\theta$? Explain.__
+
+`r teachingSMRD:::solution()$begin`
+There is extrapolation in this problem since we are attempting to estimate $\theta$ (the time at which $63.2\%$ of a population has failed) from a test that includes no failures. 
+`r teachingSMRD:::solution()$end`
+
+d. __Use the result in part (b) to compute a conservative 95% lower confidence bound for $t_{.1},$ and conservative 95% upper confidence bounds for $h(50;\theta)$ and $F(50;\theta).$__
+
+`r teachingSMRD:::solution()$begin`
+A conservative $95\%$ lower confidence bound on $t_{0.1}$ can be found from inverting the exponential cdf where 
+
+$$
+t_{0.1}=-\theta\times \text{log}(1-0.1)=-333.8\times \text{log}(1-0.1)=35.17.
+$$
+
+A conservative $95\%$ upper confidence bound on $F(50;\theta)$, the probability of failing before $50$ hours, can be expressed as
+
+$$
+F(50;\theta) = 1-\text{exp}\left(\frac{-50}{333.8}\right)=.139.
+$$
+
+A conservative $95\%$ upper confidence bound on $h(50;\theta)$, the conditional probability of failure after $50$ hours, given that failure has not occurred at $50$ hours, is expressed as
+
+$$
+h(50;\theta)=\frac{1}{\theta}=\frac{1}{333.8}=0.0029.
+$$
+`r teachingSMRD:::solution()$end`

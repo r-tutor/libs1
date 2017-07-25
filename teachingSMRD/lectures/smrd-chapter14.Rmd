@@ -1,0 +1,143 @@
+---
+title: "`r SMRD:::info('book')`"
+subtitle: "`r SMRD:::info('chapter14')`"
+author: "`r SMRD:::info('authors')`"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+output:
+  slidy_presentation:
+    smart: false
+    fig_caption: yes
+footer: "`r paste('SMRD: ', SMRD:::info('chapter14'))`"
+runtime: shiny
+graphics: yes
+---
+
+```{r intro, echo=FALSE,message=FALSE, warning=FALSE}
+source(jkf::SCRIPT('setup.R'))
+```
+
+# CHAPTER OVERVIEW
+
+```{r}
+shiny::includeCSS(jkf::SCRIPT('flat-slidy.css'))
+shiny::includeScript(jkf::SCRIPT("jquery.min.js"))
+shiny::includeScript(jkf::SCRIPT("jkf-scroll.js"))
+```
+
+## This chapter explains
+
+- The use of Bayesian statistical methods to combine "prior" information with data to make inferences
+
+- The relationship between Bayesian methods and the likelihood methds used in earlier chapters
+
+- Sources of prior information
+
+- Useful statistical and numerical methods for Bayesian analysis
+- Bayesian methods for estimating reliability
+
+- Bayesian methods for prediction
+
+- The dangers of using "wishful thinking" or expectations as prior information
+
+# 14.1 - INTRODUCTION
+
+## Example experiments
+
+- Experiment 1: flipping a 'fair' coin
+
+    + What's the probability of getting a 'Heads'?
+    + Can we assign a valid probability to this result?
+
+- Experiment 2: Predicting Presidential election results
+
+    + What's the probability that a Democrat wins?
+    + Can we assign a valid probability to this result?
+
+- Experiment 3: Predicting the Kentucky Derby winner
+
+    + What's the probability that the favored horse wins?
+    + Can we assign a valid probability to this result?
+
+## Definitions of probability
+
+- Frequentists define probability in the context of experiments that have results that are random and well-defined
+
+    + The probability of a random event denotes the relative frequency of occurrence of an experiment's outcome, when repeating the experiment. 
+    + The relative frequency "in the long run" of outcomes.
+    + Based on the Law of Large Numbers
+
+- Bayesians define probability in accordance with the Subjectivist’s view - with some modifications
+
+    + Subjectivist's assign probabilities using subjective measures (i.e., a degree of belief)
+    + Bayesians have no problems handling the coin flipping problem or questions that do not have a long-run frequency interpretation
+    + For many experiments the probability of a result cannot be computed using the frequentist definition
+
+- Premises of Bayesian Analysis
+
+    + All uncertainty should be modeled using probabilities
+    + Statistical inferences should be logical conclusions based on the laws of probabilities
+    + Analysis should include “expert” opinion
+    + Prediction is often more important that inference
+
+## Differing views on model parameters
+
+- Frequentists view model parameter values as unknown and __fixed__
+
+    + Ex: A process produces widgets of length $X \sim NOR(\mu, \sigma)$
+    + As frequentists we believe that $\mu$ and $\sigma$ are properties of the process - in its current configuration
+    + If some event altered the process, the values of $\mu$ and $\sigma$ would change - but would still be unknown
+    + We inspect the length of $N$ widgets and estimate the value of $\mu$ and $\sigma$
+
+- Bayesians view model parameter values as unknown and __random__
+
+    + Ex: A process produces widgets of length $X \sim NOR(\mu, \sigma)$
+    + As Bayesians, we believe that the values of $\mu$ and $\sigma$ are uncertain 
+    + We can express this uncertainty using 'prior' distributions
+    + These distributions can be based on expert opinion or data from similar processes 
+    + If some event altered the process, the distributions of $\mu$ and $\sigma$ would change
+    + We inspect the length of $N$ widgets and combine this information with our prior information to reduce our uncertainty about the value of $\mu$ and $\sigma$
+
+
+
+# 14.2 - USING BAYES'S RULE TO UPDATE PRIOR INFORMATION
+
+#  14.2.1 Notation
+
+#  14.2.2 Bayes's rule
+
+# 14.3 - PRIOR INFORMATION AND DISTRIBUTIONS
+
+#  14.3.1 Noninformative (diffuse) prior distributions
+
+#  14.3.2 Using past data to specify a prior distribution
+
+#  14.3.3 Expert opinion and eliciting prior information
+
+# 14.4 - NUNERICAL METHODS FOR COMBINING PRIOR INFORMATION WITH A LIKELOHOOD
+
+#  14.4.1 Numerical integration methods for computing the posterior distribution of $\theta$
+
+#  14.4.2 Simulation-based methods for computing the posterior distribution of $\theta$
+
+# 14.5 - USING THE POSTERIOR DISTRIBUTION FOR ESTIMATION
+
+#  14.5.1 - Bayesian point estimation
+
+#  14.5.2 - Bayesian interval estimation
+
+# 14.6 - BAYESIAN PREDICTION
+
+#  14.6.1 - Bayesian posterior predictive distribution
+
+#  14.6.2 - Approximating posterior predictive distributions
+
+#  14.6.3 - Prediction of an observation from a log-location-scale distribution
+
+#  14.6.4 - Posterior predictive distribution for the $k$th failure from a future sample of size $m$
+
+# 14.7 - PRACTICAL ISSUES IN THE APPLICATION OF BAYESIAN METHODS
+
+#  14.7.1 - Comparison between Bayesian and likelihood/frequentist statistical methods
+
+#  14.7.2 - Cautions on the use of prior information
+

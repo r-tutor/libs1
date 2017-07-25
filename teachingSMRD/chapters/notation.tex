@@ -1,0 +1,1080 @@
+%notation
+%\batchmode
+%original by wqmeeker  27 Jan 94
+%edited by wqmeeker     7 Feb 94
+%edited by driker       18 Mar 94
+%edited by lae          18 Mar 94 (bring in the notation in)
+%edited by wqmeeker     26 mar 94 changed notation
+%edited by wqmeeker     27 mar 94 brought in lae reg cond
+%edited by lae          30 mar 94 update notation list
+%edited by wqm          19 nov 94 reordering
+%edited by driker       22 nov 94
+%edited by wqmeeker	22/25 nov 94
+%edited by lae     	26 nov 94 update BISA, GOMA, etc.
+%edited by lae          27/30 nov 94 luis new notation and more editing
+%edited by lae          22 dec 94 add notation and modify delta method
+%edited by wqmeeker     31 dec 94 broke into notation, atables, appendices
+%edited by lae          04 jan 94 add suggestion from Bill
+%edited by lae          29 jun 95 make corrections and changes
+%edited by lae          30 jun 96 update list notation for chapters16-18
+%edited by lae          30 sep 96 update list notation for latest chapters
+%edited by lae          01 dec 96 add acronyms and new notation
+%edited by lae          06 dec 96 index order
+%edited by lae          22 dec 96 add GELS t-quantile
+%edited by lae          27 mar 97 react to comments from Bill
+%edited by lae          07 apr 97 update 
+%edited by lae          27 jul 97 insert \cup and \cap symbols
+%\setcounter{page}{m}
+
+%\begin{appendix}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\chapter{Notation and Acronyms}
+In this book random variables are denoted by capital letters $\rv$,
+$\grv$, etc. A positive random variable is usually denoted by $\rv$
+and an unrestricted random variable is usually denoted by
+$\grv$. Observed or realized values and dummy variables are denoted
+by lower case letters $\realrv$, $\grealrv$, etc. Parameters are
+denoted by Greek letters such as $\beta$, $\theta$, $\gamma$,
+etc. Estimates of these parameters are indicated by a hat as in
+$\betahat$, $\thetahat$, $\gammahat$, etc.  We do not use different
+notation to distinguish between estimators, which are random
+variables, and estimates which are the observed values of the
+estimators.  Bootstrap-related quantities are denoted with a
+$\mbox{}^{*}$; for example, $\thetahat^{*}$ is an estimate of
+$\theta$ obtained from a bootstrap sample.  Posterior related
+quantities are denoted with a $\mbox{}^{\star}$; for example,
+$\thetahat^{\star}$ is an observation from the posterior density
+$f(\theta|\DATA)$.  In an effort to use same notation that is widely
+used and accepted in the statistical literature, there are a few
+symbols for which the use of a subscript or not indicates a
+difference in the meaning of the symbol (e.g. $r$ versus $r_{i}$ and
+$\beta$ versus $\beta_{i}$). Also, notation defined and used
+locally, just in one section of the book, is not included in this
+appendix.
+
+Some common symbols and their definitions follow:
+
+\begin{supertabular}{p{0.9in}lp{4.0in}}
+$\cap$ &
+%notdef  $\backslash{cap}$ 
+& intersection of two sets [e.g., $A \cap B$ consists of
+elements that are in both $A$ and $B$]
+  \\
+$\cup$ &
+%notdef  $\backslash{cup}$ 
+& union of two sets [e.g., $A \cup B$ consists of
+the elements that are in $A$ or in $B$ or both]
+  \\$\transpose$ &
+%notdef  $\backslash{transpose}$ 
+& matrix transpose operator 
+  \\
+$\Box$ &
+%notdef  $\backslash{\planvalue}$
+&indicates a planning value used in choosing 
+a  test plan.
+ [e.g., $\theta^{\planvalue}$ is a planning value for $\theta$]
+   \\
+$\widehat{\mbox{ }}$ &
+%notdef  $\backslash{\hat}$         
+&indicates an estimator
+[e.g., $\thetahat$ is an estimator of $\theta$]
+   \\
+$\mbox{ }^{*}$ &
+%notdef  $^{*}$         
+&indicates a bootstrap characteristic
+[e.g., $\thetavechat^{*}_{j}$ is ML estimate
+of $\thetavec$  computed from bootstrap sample $j$,
+$\DATA^{*}_{j}$]
+   \\
+$\mbox{ }^{\star}$ &
+%notdef  $^{\star}$         
+&indicates a posterior characteristic
+[e.g., $\thetavec^{\star}$ is an observation
+from the posterior $f(\thetavec | \DATA)$]
+    \\
+$\mbox{ }_{(j)}$ &
+&indicates the $j$th order statistic [e.g., $\realrv_{(1)}, \dots,
+\realrv_{(r)}$ are the first $r$ failures times from a sample of $n$
+units.]
+\\
+$\mbox{ }_{[j]}$ &
+&indicates a vector with the single element $j$
+deleted
+[e.g., $\thetavec_{[1]}$ is the vector $\thetavec$ with the 
+first element deleted]
+       \\
+$\sim$ &
+%notdef   $\backslash{sim}$ 
+&indicates distributed
+as [e.g., $Z \sim \NOR(0,1)$]. But 
+$[\undertilde{\mu}, \,\, \tilde{\mu}]$ is confidence
+interval for $\mu$ and 
+$[\Tlower, \,\, \Tupper]$ is prediction
+interval for $\rv$
+       \\
+$\dot{\sim}$ &
+%notdef   $\backslash{approxdist}$ 
+&indicates {\em approximately} distributed
+[e.g., $Z_{\thetahat} \approxdist \NOR(0,1)$]
+   \\
+$\approx$ &
+%notdef   $\backslash{approx}$ 
+&indicates {\em approximately} equal to
+\newline
+[e.g., $\Pr(Z_{n} \le \norquan_{(1-\alpha)}) \approx 
+\Phi_{\nor}(\norquan_{(1-\alpha)})$]
+   \\
+$\alpha$     &  
+%notdef   $\backslash{alpha}$ 
+& significance level for a significance or hypothesis test.
+Also  $1-\alpha$ is a   confidence level for a statistical
+interval (e.g., a confidence interval)
+   \\
+$\beta $     & 
+%notdef  $\backslash{beta}$ 
+&Weibull distribution shape parameter (used on 
+a limited basis) 
+   \\
+$\beta_{0},\beta_{1}, \ldots$ & 
+%notdef  $\backslash{beta}\_\{0\}$, etc. 
+&parameters in a linear or nonlinear regression model
+relating another parameter or response to explanatory variables
+   \\
+$\betavec $     & 
+%notdef  $\backslash{betavec}$ 
+&vector of parameters; $\betavec=(\beta_{1},\dots,\beta_{k})$
+\\
+$\Gamma(\gammashape)$ &
+%notdef  $\backslash{Gamma}$ 
+& gamma function; 
+$\Gamma(\gammashape)=\int_{0}^{\infty} x^{\gammashape-1}e^{-x}dx$
+    \\
+$\incgamma(z;\gammashape)$ &
+%notdef  $\backslash{incgamma}$ 
+&incomplete gamma probability function;\\ 
+&&$\incgamma(z;\gammashape)=\int_{0}^{z} x^{\gammashape-1}e^{-x}dx/\Gamma(\gammashape)$
+  \\
+$\incgamma^{-1}(p;\gammashape)$ &
+%notdef  $\backslash{incgamma}\, \hat{ }\, \{-1\}$ 
+&inverse incomplete gamma probability function; \\
+&&$\incgamma
+\left [\incgamma^{-1}(p;\gammashape);\gammashape \right ]=
+p$
+  \\
+$\threshold$   & 
+%notdef  $\backslash{threshold}$ 
+&threshold parameter of the distribution of 
+$\rv$ [i.e.,  $\threshold$ is the largest value such 
+ that $\Pr(T \leq \gamma)=0$]
+  \\
+$\gamma_{2}$   & 
+%notdef  $\backslash{gamma_\{2\}}$ 
+& coefficient of variation of a random variable;
+$\gamma_{2}=\var(\rv)/\E(\rv)$
+   \\
+$\gamma_{3}$   & 
+%notdef  $\backslash{gamma_\{3\}}$ 
+& coefficient of skewness of a random variable;\\
+&&
+$\gamma_{3}=\E[(\rv-\E(\rv))^{2}]/[\var(\rv)]^{3/2}$
+   \\
+$\gamma_{0}, \gamma_{1}, \ldots $   & 
+%notdef  $\backslash{threshold}$ 
+& regression parameters in certain physical models
+\\
+$\Delta$ & 
+%notdef  $\backslash{Delta}
+& small positive quantity [e.g., $\pm \Delta_{i}$ represents roundoff error
+for observation $i$]
+    \\
+$\mcfdiff(\realrv)$       & 
+&
+difference of mean cumulative
+functions at $\realrv$; 
+$
+\mcfdiff(\realrv)=\mcf_{1}(\realrv)-\mcf_{2}(\realrv)
+$
+   \\
+$\delta_{\cdot}(\realrv_{k})$ & 
+     &
+size of the risk set at time $\realrv_{k}$
+in a sample of systems having recurrent events (such as repairs)
+   \\
+$\epsilon_{ij}$ &
+%notdef  $\backslash{epsilon\_\{ij\}}$ 
+&residual of  observation $j$ on unit $i$
+   \\
+$\zeta$ & 
+%notdef  $\backslash{zeta}
+& standardized log time; $\zeta=[\log(\realrv)-\mu]/\sigma$ 
+\\
+$\zeta_{c}$   & 
+%notdef  $\backslash{\zeta\_\{e\}}$ 
+&standardized log censoring time;
+$\zeta_{c}=[\log(\realrv_{c})-\mu]/\sigma$
+\\
+$\zeta_{e}$   & 
+%notdef  $\backslash{\zeta\_\{e\}}$ 
+&standardized log estimation time;
+$\zeta_{e}=[\log(\realrv_{e})-\mu]/\sigma$
+   \\
+$\weibscale$ &
+%notdef  $\backslash{weibscale}
+& Weibull scale parameter or characteristic life
+\\
+$\Thetavec$ &
+%notdef  $\backslash{Thetavec}$ 
+& parameter space 
+[i.e., the set of all possible values of $\thetavec$]
+   \\
+%$\thetahat$ &
+%%notdef  $\backslash{thetahat}$ 
+%&estimate of $\theta$
+%  \\
+$\thetavec$ & 
+%notdef  $\backslash{thetavec}$ 
+&vector  parameter; $\thetavec=(\theta_{1},\dots,\theta_{r})$
+   \\
+$\thetavec_{1}$ & 
+%notdef  $\backslash{thetavec}\_\{1\}$ 
+&parameter vector subset [e.g., $\thetavec_{1}$
+is a subset of the elements of  $\thetavec=(\thetavec_{1},\thetavec_{2})$]
+   \\
+$\thetavec_{i}$ & 
+%notdef  $\backslash{thetavec}\_\{i\}$ 
+&parameters for the cdf of component $i$
+in a system
+    \\
+$\thetavec_{i}^{\star}$ & 
+%notdef  $\backslash{thetavec}\_\{i\}\^\{\star\}$ 
+&
+sample element $i$ from  the posterior,
+$f(\thetavec | \DATA)$, for $\thetavec$
+   \\
+%$\thetavechat$ &
+%%notdef  $\backslash{thetavechat}$ 
+%&estimate of $\thetavec$
+%  \\
+$\expmean$ & 
+%notdef  $\backslash{expmean}$ 
+&mean of the exponential distribution or a scale parameter for some
+other distributions
+     \\
+$\gammashape$ & 
+%notdef  $\backslash{gamashape}$ 
+&gamma distribution shape parameter 
+    \\
+$\mu$       & 
+%notdef  $\backslash{mu}$ 
+&location parameter of a location-scale distribution 
+[e.g., mean of a normal distribution]
+    \\
+$\mcf(\realrv)$       & 
+&
+mean cumulative function at time 
+$\realrv$; $\mcf(\realrv)=\E[N(\realrv)]$
+   \\
+$\rocof(\realrv)$       & 
+%notdef  $\backslash{rocof}(\backslash{realrv})$ 
+&
+system recurrence rate;
+$\rocof(\realrv)=d \mcf(\realrv)/d \realrv$
+   \\
+$\pivec$ &
+%notdef  $\backslash{pivec}$ 
+&vector of unconditional failure probabilities;
+$\pivec=(\pi_{1}, \ldots, \pi_{m+1})$ 
+   \\
+$\pi_{i}$ &
+%notdef  $\backslash{pi\_\{i\}}$ 
+&multinomial probability 
+(Chapters~\ref{chapter:np.models.censoring.likelihood},
+\ref{chapter:nonparametric.estimation}).
+Proportion allocated to experimental variable 
+level or combination $i$ (Chapter~\ref{chapter:alt.test.planning})
+    \\
+$\rho$ &
+%notdef  $\backslash{rho}$ 
+&correlation between two random variables\\
+&&$ \left [\mbox{e.g.,} \,\,\rho_{\thetahat_{1},\thetahat_{2}}=
+\cov(\thetahat_{1},\thetahat_{2})/
+\sqrt{\var(\thetahat_{1}) \var(\thetahat_{2})} \,
+  \right ]$
+   \\
+$\rho_{k}$ &
+&serial correlation (or autocorrelation) coefficient
+of lag-$k$
+     \\
+$\vcvmat$ & 
+%notdef  $\backslash{Sigma}$        
+&asymptotic covariance matrix [e.g.,
+$\vcvmat_{\thetavechat}$ is the asymptotic
+covariance matrix for $\thetavechat$]
+   \\
+$\sigma $   & 
+%notdef  $\backslash{sigma}$ 
+&scale parameter for a location-scale distribution
+[e.g., standard deviation of a normal distribution]
+\\
+$\tau_{j}$ &
+%notdef  $\backslash{tau}\_\{j\}$ 
+&time elapsed between  the $(j-1)$ and $j$th
+recurrence;
+$\tau_{j}=\rv_{j}-\rv_{j-1}$
+   \\
+$\Phi$      & 
+%notdef  $\backslash{Phi}$ 
+&cdf for a standardized location-scale distribution \\
+            &
+&[i.e., $\Pr(Z \le z)=\Phi(z)$, where $Z=(\grv-\mu)/\sigma$]
+   \\
+$\Phi^{-1}(p)$      & 
+%notdef  $\backslash{Phi} \,\hat{ }\,\{-1\}(p)$ 
+& $p$ quantile  of random variable with
+cdf $\Phi$
+  \\
+$\phi$      & 
+%notdef  $\backslash{phi}$ 
+&pdf for a standardized location-scale distribution 
+   \\ 
+$\chi^{2}_{(p;\nu)}$      & 
+%notdef  $\backslash{chi}\^\{2\}\_\{(p;\backslash{nu})\}$ 
+&$p$ quantile for a chi-square random variable with
+$\nu$ degrees of freedom
+  \\
+%$\sigmahat$ &
+%%notdef  $\backslash{sigmahat}$ 
+%&estimate of $\sigma$ 
+%  \\
+$\AF$  &
+%notdef  $\backslash{AF}$ 
+&acceleration factor [e.g., $\AF(\Temp,\Temp_{U},\Ea)$ is 
+the Arrhenius temperature acceleration factor and 
+$\AF_{\rm Ey}(\Temp,\Temp_{U},\Ea)$ is
+the Eyring temperature acceleration factor]
+   \\
+$\acov$  &
+%notdef  $\backslash{acov}$ 
+&asymptotic covariance [e.g., $\acov(\thetahat_{1},
+\thetahat_{2})$] 
+ \\
+ADT  &
+%notdef  ADT
+& accelerated degradation test
+ \\
+ALT  &
+%notdef  ALT
+& accelerated life test
+  \\
+%${\alphahat}$ &
+%%notdef   $\backslash{alphahat}$ 
+%&estimate of $\alpha$
+%  \\
+$\ase$  &
+%notdef   $\backslash{ase} $ 
+&asymptotic standard error
+$ \left [ \mbox{e.g.,} \,\, \ase(\thetahat)=\sqrt{\avar(\thetahat)} \, \right ] $
+  \\
+AT  &
+%notdef  AT
+& accelerated test
+  \\
+$\avar$  &
+%notdef   $\backslash{avar} $ 
+&asymptotic variance [e.g., $\avar(\thetahat)$] 
+    \\
+$B$ &
+%notdef  $B$ 
+&number of bootstrap samples
+   \\
+$\BISA$     & 
+%notdef  $\backslash{BISA}$ 
+&Birnbaum-Saunders distribution
+  \\
+${\likeconstant}$ &
+%notdef  $\backslash{likeconstant}$
+&parameter-free likelihood constant of proportionality
+  \\
+$C$     & 
+%notdef  $C$ 
+&random censoring time
+   \\
+cdf & 
+%notdef  cdf
+& cumulative distribution function
+   \\
+${\cov}$ &
+%notdef  $\backslash{cov}$ 
+&covariance [e.g., $\cov(\thetahat_{1},\thetahat_{2})$ is
+the covariance between $\thetahat_{1}$ and  $\thetahat_{2}$]
+   \\
+$\mbox{CR}_{\rm B}$ &
+&
+Bayes confidence region
+  \\
+%$\covhat$ &
+%%notdef  $\backslash{covhat}$ 
+%&estimate of $\cov$
+%  \\
+$\degpath(\realrv)$ &
+%notdef  $\backslash{degpath}$ 
+&level of degradation at time $\realrv$
+   \\
+$\critdeg$ &
+%notdef  $\backslash{critdeg}$ 
+&level of degradation defining failure [i.e., 
+when $\critdeg>0$, failure is 
+defined to be the first time such that $\degpath(\realrv)>\critdeg$;
+when $\critdeg<0$, failure is the
+first time for which
+$\degpath(\realrv)<\critdeg$]. $\critdeg$ could be either fixed or 
+random
+   \\
+$\degpath_{\infty}$ &
+%notdef  $\backslash{degpath}\_\{\infty\}$ 
+&asymptotic degradation level; $\degpath_{\infty}=
+\lim_{\realrv \to\infty} \degpath(\realrv)$
+  \\
+$D$ & 
+%notdef  $D$
+& confidence interval half-width;
+$D=(\tilde{g}-\undertilde{g})/2$
+  \\[-2ex]
+$D_{T}$ & 
+%notdef  $D\_\{T\}$
+&   specified target value for the 
+    confidence interval half-width 
+   \\
+$\deadin_{i}$ & 
+%notdef  $\backslash{deadin}\_\{i\}$ 
+& number of failures or deaths in observation interval $i$
+   \\
+$\deadin_{i}(\realrv_{k})$ 
+     &
+     & 
+total number
+of recurrences for system $i$ at time $\realrv_{k}$
+    \\
+$\deadin_{\cdot}(\realrv_{k})$ 
+     &
+     & 
+total number of recurrences for all systems at time $\realrv_{k}$
+     \\
+$\bar{\deadin}(\realrv_{k})$ 
+     &
+     & 
+average number of recurrences (across a population of systems)
+at time $\realrv_{k}$
+   \\
+$\DATA$   &
+%notdef  $\backslash{DATA}$   
+& data for a complete sample of observational units 
+  \\
+$\DATA^{*}_{j}$   &
+%notdef  $\backslash{DATA}\_\{j\}$   
+& bootstrap sample $j$
+  \\
+$\data_{i}$   &
+%notdef  $\backslash{data}\_\{i\}$   
+&  data for the  observational unit $i$
+in sample $\DATA$
+\\
+$\E$       & 
+%notdef  $\backslash{E} $ 
+& expected value or mean [e.g., $\E(\rv)$ is the expected value of $\rv$]
+\\
+$\Ea$       & 
+%notdef  $\backslash{E} $ 
+& activation energy in units of electron-volts
+   \\
+$\EGENG$ & 
+%notdef  $\backslash{EGENG}$
+& extended generalized gamma distribution
+  \\
+$\Fquant_{(p;\kappa, \nu)} $  &  
+    &
+$p$ quantile  of an F distribution with 
+$(\kappa, \nu)$ degrees of freedom
+   \\
+$F(\realrv)$  &  
+    &                            
+  cdf of random variable [e.g., for $\rv$,
+  $F(\realrv)=  \Pr(\rv \le \realrv)$].
+  When necessary, to distinguish among cdfs for 
+  different random variables 
+  we write, for example, $F_{T}(\realrv)=\Pr(\rv \le \realrv)$
+   \\
+$F_{i}$  &  
+    &                            
+  cdf of unit  $i$   in a system
+   \\
+$F_{\rv}$  &  
+    &                            
+  cdf for a  system 
+   \\
+$f(\realrv)$  &  
+    &
+pdf of random variable [e.g., for $\rv$,
+$f(\realrv)=d F(\realrv)/dt$]
+   \\
+$f(\thetavec | \DATA)$  &  
+    &
+posterior
+pdf of $\thetavec$ given the available
+data
+   \\
+$f(\realrv | \DATA)$  &  
+    &
+posterior predictive pdf for $\rv$
+    \\
+%${\Fhat}$     &
+%%notdef  $\backslash{Fhat}$ 
+%&estimate of $F$
+%  \\
+$g$ &
+    &
+real-valued function of $\thetavec$ [e.g.,
+$g(\thetavec)$]
+   \\
+$\gvec$       &
+%notdef  $\backslash{gvec}$ 
+&vector-valued function of $\thetavec$ 
+[e.g., $\gvec(\thetavec)=[g_{1}(\thetavec), g_{2}(\thetavec)]$]
+   \\
+$\GAM$ & 
+%notdef  $\backslash{GAM}$
+& gamma distribution
+   \\
+$\GENG$ & 
+%notdef  $\backslash{GENG}$
+& generalized gamma distribution
+  \\
+$\GENF$       &
+%notdef  $\backslash{GENF}$ 
+&generalized F distribution
+    \\
+$\GETS$ & 
+%notdef  $\backslash{GETS}$
+& generalized threshold-scale distribution
+%$\ghat$       &
+%%notdef  $\backslash{ghat}$ 
+%&estimate of $g$
+%  \\
+  \\
+$\GOMA$       &
+%notdef  $\backslash{GOMA}$ 
+&Gompertz-Makeham distribution
+  \\
+HPD        &
+%notdef  
+&highest posterior density
+  \\
+HPP        &
+%notdef  $\backslash{HPP}$ 
+&homogeneous Poisson process
+   \\
+%$\gvechat$       &
+%%notdef  $\backslash{gvechat}$ 
+%&estimate of $\gvec$
+%   \\
+$h(\realrv)$     & 
+              &
+hazard function of a random variable;
+$h(\realrv)=f(\realrv)/[1-F(\realrv)]$
+   \\
+$H(\realrv)$     & 
+              &
+cumulative hazard function; $H(\realrv) = \int^{\realrv}_{0} h(x)\,dx$
+   \\
+hf     & 
+              &
+hazard function
+   \\
+$I$ & 
+%notdef  $I$ 
+& Fisher information matrix [e.g.,  $I_{\thetavec}$ 
+is the Fisher information matrix for $\thetavec$]
+\\
+IC &
+%notdef  $\backslash{IGAU}$ 
+&integrated circuit
+ \\
+$\IGAU$ &
+%notdef  $\backslash{IGAU}$ 
+&inverse Gaussian distribution
+ \\
+${\rm iid}$ &
+&independent and identically distributed
+   \\
+$\Boltzmann$ & 
+%notdef  $\backslash{Boltzmann}$ 
+&Boltzmann constant in units of electron volts
+per $\degreesc$;
+$\Boltzmann=8.6171\times 10^{-5} \approx 1/11605$
+    \\
+$k$           & 
+              &
+number of explanatory variables [e.g., $k$ is length of
+$\betavec$]
+    \\
+%${\lambdahat}$ &
+%%notdef  $\backslash{lambdahat}$ 
+%&estimate of $\lambda$ 
+%  \\
+$\loglike$  & 
+%notdef  $\backslash{loglike}$ 
+&log likelihood; $\loglike=
+\loglike(\pvec)=\loglike(\pvec;\DATA)=\log[\like(\pvec)]$,
+or \newline
+$\loglike(\thetavec)=\loglike(\thetavec;\DATA)=\log[\like(\thetavec)]$
+   \\
+$\loglikei$ &
+%notdef  $\backslash{loglikei}$ 
+&contribution of observation $i$ to the log likelihood 
+   \\
+$\like$     & 
+%notdef  $\backslash{like}$ 
+&likelihood; [i.e., $\like(\pvec)=\like(\pvec;\DATA)$]
+   \\
+$\scl_{i}$ &
+%notdef  $\backslash{scl}$ 
+& number of observations left censored at the 
+upper endpoint of observation interval $i$
+  \\
+$\LEV$ &
+%notdef  $\backslash{LEV}$ 
+&largest extreme value distribution
+  \\
+$\lev$ &
+%notdef  $\backslash{lev}$ 
+&indicates a standardized largest extreme 
+value distribution 
+[e.g.,  $\Phi_{\lev}$ is the standardized largest
+extreme value  cdf]
+  \\
+LFP &
+&Limited Failure Population
+   \\
+$\LOGIS$    & 
+%notdef  $\backslash{LOGIS}$          
+&logistic distribution
+   \\
+$\logis$    & 
+%notdef  $\backslash{logis}$          
+&indicates a standardized logistic distribution 
+[e.g.,  $\Phi_{\logis}$ is the standardized logistic cdf]
+   \\
+$\logit$    & 
+%notdef  $\backslash{logit}$          
+&logistic transformation; $\logit(p)=\log[p/(1-p)]$
+\\
+$\LOGLOGIS$ &
+%notdef  $\backslash{LOGLOGIS}$ 
+&loglogistic distribution
+   \\
+$\LOGNOR$ &
+%notdef  $\backslash{LOGNOR}$ 
+&lognormal distribution
+   \\
+$M$ & 
+%notdef  $M$ 
+&number of observations from prior $f(\thetavec)$
+   \\
+$M^{\star}$ & 
+%notdef  $M$ 
+            &
+number of observation from the posterior 
+$f(\thetavec | \DATA)$
+   \\
+MCF & 
+%notdef  MCF
+      &
+mean cumulative function
+  \\
+ML & 
+%notdef  ML
+      &
+maximum likelihood
+    \\
+MTBF & 
+%notdef  MTBF
+      &
+mean time between failures in a repairable system
+   \\
+MTTF & 
+%notdef  MTTF
+      &
+mean time to failure for a replaceable unit
+    \\
+$m$ & 
+%notdef  $m$ 
+&number of observation intervals. 
+Also in Chapters~\ref{chapter:prediction}
+and
+\ref{chapter:singledist.bayes} indicates
+the number of ${\rm iid}$ observations in a future sample
+%$\mod$ & 
+%notdef  $\backslash{mod}$ 
+%&modulus operation
+\\
+$N$ & 
+%notdef  $N$ 
+&simulation size when using Monte Carlo to evaluate a complicated cdf
+   \\
+$N(s, \realrv)$ &
+%notdef  $N(s, \realrv)$ 
+&cumulative number of 
+recurrences in the interval $(s, \realrv]$
+\\
+$N(\realrv)$ &
+%notdef  $N(\realrv)$ 
+&cumulative number of 
+recurrences in the interval $(0, \realrv]$
+[i.e., $N(\realrv)=N(0,\realrv)$]
+ \\
+NHPP        &
+%notdef  $\backslash{HPP}$ 
+&nonhomogeneous Poisson process
+\\
+$\NOR$ &
+%notdef  $\backslash{NOR}$ 
+&normal distribution
+[e.g., $\NOR(\mu,\sigma)$ indicates a normal
+distribution with mean $\mu$ and standard deviation
+$\sigma$]
+   \\
+$\nor$      & 
+%notdef  $\backslash{nor}$ 
+&indicates a normal distribution 
+[e.g., $\Phi_{\nor}$ is the standardized normal cdf]
+  \\
+$n    $     & 
+            &
+sample size
+\\
+$n_{i}$     & 
+            &
+size of the risk set at the
+beginning of interval $i$
+    \\
+%${\Phat}$  &
+%%notdef  $\backslash{Phat}$ 
+%&estimate of $P$
+%\\
+${\rm PH}$     &
+          &
+proportional hazards 
+\\
+$\Pr$     &
+          &
+probability
+   \\ 
+${p}$     &
+          &
+conditional probability of failure in an interval
+(Chapters~\ref{chapter:np.models.censoring.likelihood},
+\ref{chapter:nonparametric.estimation});
+\newline
+$\left [\mbox{e.g.,}\,\, p_{i}=\Pr(\realrv_{i-1} < \rv \leq \realrv_{i} |
+       \rv > \realrv_{i-1})\right ]$.
+More generally a probability or a proportion
+  \\
+%${\phat}$     &
+%%notdef  $\backslash{phat}$ 
+%&estimate of $p$ 
+%  \\
+%$\pivechat$ &
+%%notdef  $\backslash{pivechat}$ 
+%&estimate of $\pivec$
+%  \\
+${\pvec}$ &
+%notdef  $\backslash{pvec}$ 
+&vector of conditional failure probabilities;
+$\pvec=(p_{1}, \ldots, p_{m})$
+  \\
+%${\pvechat}$ &
+%%notdef  $\backslash{pvechat}$ 
+%&estimate of $\pvec$
+%  \\ 
+pdf &
+%notdef  pdf
+&
+probability density function [i.e., the derivative
+of the cdf]
+\\
+$Q$  & & log-likelihood-ratio statistic;
+$Q=-2(\loglike_{\rm const}-\loglike_{\rm unconst})$
+  \\
+%$Q$  &
+%%notdef  $Q$ 
+%&log-likelihood ratio statistic
+%  \\
+$q$  & & ${q=1-p}$ is conditional probability of
+survival in an interval
+  \\
+%$\qhat$  &
+%%notdef  $\backslash{qhat}$ 
+%&estimate of $q$
+%  \\
+$\Rate_{i}$ & 
+%notdef  $\backslash{Rate}$ 
+& rate of chemical reaction $i$
+    \\
+$R$ &
+    &
+measure of precision for a confidence interval 
+of a positive parameter;
+$R=\tilde{g}/\ghat=
+\ghat/\undertilde{g}$ 
+   \\
+$R_{T}$ &
+    &
+target value for $R$
+   \\
+$R(\thetavec_{1})$ &
+                   &
+profile likelihood  for parameter vector subset $\thetavec_{1}$ 
+   \\
+$r$ &
+%notdef  $      $ 
+&number of failures out of $n$ observations.
+Also number of parameters [e.g., $r$ is the 
+length of $\thetavec$]
+   \\
+$r_{1}$ &
+%notdef  $      $ 
+&
+length of parameter vector subset $\thetavec_{1}$
+   \\
+$\rcensorat_{i}$ &
+%notdef  $\backslash{rcensorat}\_\{i\}$ 
+&number of observations right 
+censored at the upper endpoint of the
+observation interval $i$
+   \\
+$\ncomponents$      & 
+%notdef  $\backslash{ncomponents}$ 
+& number of components in a multiple-component system
+    \\
+$\saft$      & 
+%notdef  $\backslash{saft}$ 
+& Scale Accelerated Failure Time
+   \\
+$\sd$      & 
+%notdef  $\backslash{sd}$ 
+&standard deviation; $ \left [\mbox{e.g.,}\,\, \sd(\rv)=\sqrt{\var(\rv)}\, \right ]$
+   \\
+$\se$       & 
+%notdef  $\backslash{se}$             
+&standard error of an estimator [e.g.,\,  $\se_{\thetahat}$ is the standard error
+of $\thetahat$]
+   \\
+$\sehat$    & 
+%notdef  $\backslash{sehat}$          
+&estimated standard error
+   \\
+$\SEV$      & 
+%notdef  $\backslash{SEV}$ 
+&smallest extreme value distribution
+   \\
+$\sev$      & 
+%notdef  $\backslash{sev}$ 
+&indicates a standardized smallest extreme value distribution 
+[e.g.,  $\Phi_{\sev}$ is the standardized smallest extreme 
+value cdf]
+   \\
+$S(\realrv)$ &
+       &
+survival function;
+$S(\realrv)=1-F(\realrv)$
+   \\
+$S_{i}(\realrv)$ &
+       &
+survival function for component  $i$
+  in a system;
+$S_{i}(\realrv)=1-F_{i}(\realrv)$
+  \\
+%${\Shat}$ &
+%%notdef  $\backslash{Shat}$ 
+%&estimate of $S$
+%  \\
+%$\Tquant_{(p;r)} $  &  
+%    &
+%$p$ quantile  of a {\rm Student's t} cdf with 
+%$r$ degrees of freedom
+% \\
+ $\rv$       & 
+%notdef  $\backslash{rv}$ 
+&positive random variable (usually time)
+   \\
+$\ttt$       & 
+%notdef  $\backslash{ttt}$ 
+&total time on test
+ \\
+$\realrv$   & 
+%notdef  $\backslash{realrv}$ 
+&a reported time (e.g., realization of $\rv$); also a dummy variable
+ \\
+$\realrv_{c}$   & 
+%notdef  $\backslash{realrv}\_\{c\}$ 
+&specified censoring time 
+  \\
+$\realrv_{e}$   & 
+%notdef  $\backslash{realrv}\_\{e\}$ 
+&specified estimation time [e.g., time at which $F(\realrv)$ or
+  $h(\realrv)$ is to be estimated] 
+\\$\realrv_{i}$ &
+%notdef  $\backslash{realrv}\_\{i\}$ 
+&upper endpoint of observation interval $i$ 
+or an exact observation
+\\
+$\realrv_{i-1}$   & 
+%notdef  $\backslash{realrv}\_\{i-1\}\$ 
+&lower endpoint of observation interval $i$
+ \\[.3ex]
+$\realrv_{(i)}$   & 
+%notdef  $\backslash{realrv}\_\{(i)\}$ 
+&$i$th order statistics [i.e., $i$th largest failure time in a sample]
+  \\[.6ex]
+$\realrv_{ij}$   & 
+%notdef  $\backslash{realrv}\_\{ij\}$ 
+&
+recurrence (e.g., failure, repair, or other event) time $j$  for system
+$i$
+  \\
+%$\rvhat$       & 
+%%notdef  $\backslash{rvhat}$ 
+%&for using in expressions like $\rvhat_{P}$
+%   \\
+$\rvquan_{p}$   & 
+%notdef  $\backslash{rv}\_\{p\}$ 
+& $p$ quantile of the random variable  $\rv$;
+$F(\rvquan_{p})=p$
+   \\
+$\median$ &
+%notdef  $\backslash{median}$ 
+&median of the random variable $\rv$;
+$F(\median)=.5$
+%  \\
+%$\medianhat$ & 
+%%notdef  $\backslash{medianhat}$ 
+%&estimate of $\median$ 
+   \\ 
+$\Tquant_{(p;\nu)}$      & 
+%notdef  $t\_\{(p;\nu)\}$ 
+&$p$ quantile for a random variable with
+Student's $t$ cdf and $\nu$ degrees of freedom
+   \\
+$\Tempc{}$   & 
+%notdef  $\backslash{Tempc}$
+&temperature in degrees Celsius
+    \\ 
+$\Tempk{}$   & 
+%notdef  $\backslash{Tempk}$
+&absolute temperature, Kelvin scale;
+$\Tempk{}=\Tempc{}+273.15$
+     \\ 
+$\Tempc{U}$   & 
+&temperature at use conditions in degrees Celsius
+  \\ 
+$\UNIF$  &
+&uniform distribution [e.g.,
+$Y \sim \UNIF(a, b)$]
+  \\
+$\acovf$  &
+%notdef  $\backslash{acovf}$ 
+&asymptotic variance or covariance factor 
+[e.g., $\acovf_{\thetahat_{1},\thetahat_{2}}=
+         n\acov(\thetahat_{1},\thetahat_{2})$ and
+$\avarf_{\thetahat}=n\avar(\thetahat)$]
+  \\
+$\var$     & 
+%notdef  $\backslash{var}$ 
+&variance [e.g.,  $\var(\rv)$ is the variance
+of $\rv$]
+   \\
+%$\varhat$     &
+%%notdef  $\backslash{varhat}$ 
+%&estimate of $\var$ [e.g.,
+%$\varhat(\ghat)$ is estimate of
+%$\var(\ghat)$]
+%  \\
+${\WEIB}$ &
+%notdef  $\backslash{WEIB}$ 
+&Weibull distribution
+  \\
+$X^{2}_{\rm MHB}$    & 
+& Military Handbook
+test statistic for trend in times between failures in a
+repairable system
+  \\
+$\xvec$    & 
+%notdef  $\backslash{xvec}$ 
+& vector of explanatory variables;
+ $\xvec=(x_{1}, \ldots, x_{k})$
+   \\
+$\grv$       & 
+%notdef  $\backslash{grv}$ 
+&unrestricted random variable, $-\infty<\grv<\infty$
+[e.g., $\grv=\log(\rv)$]
+    \\
+$\grealrv$   & 
+%notdef  $\backslash{grealrv}$ 
+&a realization of $\grv$; also a dummy variable
+   \\
+$\grealrv_{ij}$   & 
+%notdef  $\backslash{grealrv\_\{ij\}}$ 
+&observation $j$ on unit $i$
+    \\
+%notdef  $\grvhat$       & 
+%notdef  $\backslash{grvhat}$ 
+%notedef &for using in expressions like $\grvhat_{P}$
+%notedef   \\
+$\grvquan_{p}$   & 
+%notdef  $\backslash{grvquan}\_\{p\}$ 
+&  $p$ quantile of $\grv$
+    \\
+$Z$ &
+%notdef  $Z$
+& standard random variable [e.g., $Z=(\grv-\mu)/\sigma$]
+     \\
+$Z_{\ghat}$ &
+%notdef  $Z\_\{\backslash{hat}(g)\}$
+& ``studentized'' random variable for some 
+parameter of function $g$ of the parameters;
+[e.g., $Z_{\ghat}=(\ghat-g)/\sehat_{\ghat}$]. Used 
+to derive approximate confidence intervals for $g=g(\thetavec)$
+     \\
+$Z_{\ghat^{*}}$ &
+%notdef  
+& ``studentized'' bootstrap statistic;
+$Z_{\ghat^{*}}=(\ghat^{*}-\ghat)/\sehat_{\ghat^{*}}$,
+where $\ghat^{*}=g(\thetavechat^{*})$.
+Used to approximate the distribution of $Z_{\ghat}$
+    \\
+$Z_{\rm LP}$ &
+& 
+Laplace test statistic for trend in times between failures in a
+repairable system
+    \\
+$Z_{\rm LR}$ &
+& 
+Lewis-Robinson test for trend in times between failures in a
+repairable system
+    \\
+$\norquan_{(p)}$    & 
+%notdef  $\backslash{norquan}\_\{p\}$ 
+&$p$ quantile  of a standard normal;
+$\Phi_{\nor}(\norquan_{(p)})=p$
+   \\
+$\norquan_{\ghat^{*}_{(p)}}$    & 
+%notdef  
+& $p$ quantile  of the bootstrap distribution of $Z_{\ghat^{*}}$
+\\
+\end{supertabular}
+%\end{appendix}
+%----------------------------------------------------------------------
+
+

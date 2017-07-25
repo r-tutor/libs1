@@ -1,0 +1,30 @@
+---
+output: html_document
+---
+
+__Using the life test data on silicon photodiode detectors from Exercise 3.12, construct probability plots for the exponential, Weibull, and lognormal distributions.  Which distributions look like they might provide an adequate model for photodiode detector life?__
+
+`r teachingSMRD:::solution()$begin`
+This problem does not indicate that we must use the Hazen plotting position.  Therefore, using the SMRD package, the requested plots can be produced with the following code:
+
+```{r,echo=c(1:6,8:10),  fig.cap="Probability plots of the silicon photodiode detector failure data using the exponential (top), Weibull (middle), and lognormal (bottom) distributions", fig.height=8}
+times6.9_lower<-c(2000,2500,3000,3500,3600,3700,3800)
+times6.9_upper<-c(2500,3000,3500,3600,3700,3800,3800)
+event6.9      <-c("interval","interval","interval","i","i","i","right")
+weights6.9    <-c(1,1,2,1,1,1,21)
+df6.9<-data.frame(times6.9_lower,times6.9_upper,event6.9,weights6.9)
+spd.ld<-frame.to.ld(df6.9, 
+                    response.column = c(1,2), 
+                    censor.column = 3, 
+                    case.weight.column = 4, 
+                    data.title = "Silicon photodiode detector failure data",
+                    time.units = "Hours")
+par(family = "serif", mfrow = c(3,1))
+plot(spd.ld, distribution = "exponential")
+plot(spd.ld, distribution = "weibull")
+plot(spd.ld, distribution = "lognormal")
+par(mfrow = c(1,1))
+```
+
+Looking at these plots is appears that both the lognormal and Weibull distributions adequately fit the photodiode detector life data, while the exponential distribution does not.
+`r teachingSMRD:::solution()$end`

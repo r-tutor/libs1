@@ -1,0 +1,1512 @@
+%chapter 13
+%original by wqmeeker  3 aug 1994
+%edited by wqmeeker  26 may 1995 bringing in meeker/hamada and lu/meeker 
+%edited by wqmeeker  27/30 may 1995 smoothing
+%edited by wqmeeker  3 june 1995 smoothing luis' comments
+%edited by wqmeeker  5 june 1995 minor changes
+%edited by driker 22 june 1995
+%edited by driker 3 august 1995
+%edited by wqmeeker  6 august 1995
+%edited by wqmeeker  21 dec 1995 changing to sqrt(pi) model
+%edited by wqmeeker  25 may 1996 additional figures from lu&meeker
+%edited by driker 22 october 1996
+%edited by driker 4 april 1997
+%edited by driker 22 july 1997
+
+\setcounter{chapter}{12}
+
+%\setcounter{page}{m}
+
+\chapter{Degradation Data, Models, and Data Analysis}
+\label{chapter:degradation.data}
+
+\input{\chapterhome/common_heading.tex}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Objectives}
+This chapter explains
+\begin{itemize} 
+\item 
+Some useful degradation models.
+\item
+The connection
+between degradation models and failure-time models.
+\item
+How degradation measures, when available, can be used to advantage
+in estimating reliability.
+\item 
+Methods for data analysis and reliability inference with
+degradation data.
+\item 
+The differences between degradation data analysis and traditional
+failure time data analysis.
+\item
+A simple method for degradation analysis that can be useful in
+certain situations.
+\end{itemize}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Overview}
+This chapter introduces the concepts of degradation analysis as they relate
+to product reliability. Many failure mechanisms can be traced to an 
+underlying degradation process. Degradation eventually leads to a weakness
+that can cause failure. When it is possible to measure degradation,
+such measures often provide more information than failure-time data for
+purposes of assessing and improving product reliability. For some 
+products direct observation of degradation level is impossible, but it
+may be that product performance data will be a useful substitute. 
+This chapter, Chapter~\ref{chapter:accelerated.test.models}, and 
+Chapter~\ref{chapter:accelerated.degradation} provide a brief introduction
+to this important subject (a complete treatment would
+require a separate book).  This chapter should be read before
+Chapter~\ref{chapter:accelerated.degradation}.  Readers may skip this
+chapter if their primary interest is in failure-time data, although
+Section~\ref{section:degrad.models} does
+give an introduction to some physics-of-failure concepts that provide
+useful motivation for failure-time models.
+Section~\ref{section:est.degrad.param} extends ML methods from earlier
+chapters to deal with the more complicated degradation models.
+Sections~\ref{section:degrad.and.failure},
+\ref{section:eval.of.ft}, \ref{section:est.ft}, and \ref{section:degrad.ci} 
+relate degradation and failure time and show how to estimate $F(t)$
+from degradation data.  Section~\ref{section:compare.ft.da} uses an
+example to compare degradation analysis with traditional
+failure-time analysis.  Section~\ref{section:app.deg.anal} presents
+a simple approximate method for degradation analysis that might be
+appropriate in some applications.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Introduction}
+Design of high-reliability systems generally requires that the
+individual system components have extremely high reliability, even
+after long periods of time.  With short product development times,
+reliability tests must be conducted with severe time constraints.
+Frequently no failures occur during such tests.  Thus, it is difficult
+to assess reliability with traditional life tests that record only
+failure time.  For some components degradation measures can be
+taken over time.  A relationship between component failure and amount
+of degradation makes it possible to use degradation models and data to
+make inferences and predictions about failure time.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Models for Degradation Data}
+\label{section:degrad.models}
+%-------------------------------------------------------------------
+\subsection{Degradation data}
+In some reliability studies, it is possible to measure the physical
+degradation as a function of time (e.g., tire wear).  In other
+applications actual physical degradation cannot be observed
+directly, but measures of product performance degradation (e.g.,
+power output) may be available. Both kinds of data are generically
+referred to as ``degradation data'' and we will follow this
+convention.  Modeling performance degradation may be useful, but
+could be complicated because performance may be affected by more
+than one underlying degradation process.  Depending on the
+application, degradation data may be available continuously or at
+specific points in time where measurements are taken.
+
+
+In most reliability testing applications, degradation data, if
+available, will have important practical advantages. In particular,
+\begin{itemize}
+\item
+Degradation data can, especially in
+applications with few or no failures, provide
+considerably more reliability information
+than traditional censored failure-time data.
+\item
+Accelerated tests are commonly used to obtain reliability test
+information more quickly.  Direct observation of physical
+degradation process (e.g., tire wear) or some closely related
+surrogate may allow direct modeling of the failure-causing
+mechanism, providing more credible and precise reliability estimates
+and a firmer basis for often-needed extrapolation.
+\end{itemize}
+
+\begin{example}
+\label{example:bk.fatigue.data.points}
+{\bfseries Fatigue crack-size data.} Recall the Alloy-A fatigue
+crack-size data in Example~\ref{example:bk.fatigue.data}.
+Figure~\ref{figure:bk.fatigue.data.points.ps} is similar to
+Figure~\ref{figure:bk.fatigue.data.ps}, but includes the actual data
+points on crack size given in
+Appendix Table~\ref{atable:bk.fatigue.data}. The initial crack size (i.e., at
+time 0) for each path was .9 inch, the size of the notch cut into
+each specimen.  Suppose that investigators wanted to estimate the
+material's crack growth parameters and the time (measured in number
+of cycles) at which 50\% of the cracks would reach 1.6 inches (a
+size considered to be dangerous).
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/bk.fatigue.data.points.ps}
+\caption{Alloy-A fatigue crack data.}
+\label{figure:bk.fatigue.data.points.ps}
+\end{figure}
+%-------------------------------------------------------------------
+For purposes of our degradation analysis the fatigue experiment for
+each specimen was terminated at the first inspection after a unit's
+cracks reached 1.6 inch or censored after .12 million cycles,
+whichever came first.
+\end{example}
+
+%-------------------------------------------------------------------
+\subsection{Degradation leading to failure}
+\label{section:deg.to.fail}
+Most failures can be traced to an underlying degradation process.
+Figure~\ref{figure:degradation.comparison.ps} shows examples of three
+general shapes for degradation curves in arbitrary units
+of degradation and time: linear, convex, and concave.  The horizontal
+line at degradation level .6 represents the level or approximate
+level at which failure would occur.  In some applications there may be
+more than one degradation variable or more than one underlying
+degradation process. The following examples, however, use only a
+single degradation variable.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/degradation.comparison.ps}
+\caption{Possible shapes for univariate degradation curves.}
+\label{figure:degradation.comparison.ps}
+\end{figure}
+%-------------------------------------------------------------------
+
+The following examples describe some specific models for degradation curves.
+Engineers and physical scientists must find such models in their literature
+or develop them from basic principles relating to the underlying degradation
+process. Usually such models start with a deterministic description of the
+degradation process --- often in the form of a differential equation or
+system of differential equations. Then randomness can be introduced, as
+appropriate, using probability distributions to describe variability in
+initial conditions and model parameters like rate constants or materials
+properties.
+
+\begin{example}{\bfseries Linear degradation.}
+Linear degradation arises in some simple wear processes
+(e.g., automobile tire wear). For example if $\degpath(t)$ 
+is the amount of automobile tire tread wear
+at time $t$ and
+wear rate is $d\, \degpath(t)/d\, t = C$
+then $\degpath(t)=\degpath(0)+C \times t$.
+\end{example}
+The parameters $\degpath(0)$ and $C$ could be taken as constant for
+individual units, but random from unit to unit.
+
+\begin{example}{\bfseries Convex degradation.}
+Models for which the degradation rate increases with the level of
+degradation are, for example, used in modeling the growth of fatigue
+cracks. Let $a(t)$ denote the size of a crack at time $t$.  A simple
+version of the deterministic Paris-rule model (e.g., Dowling~1993)
+\begin{equation}
+\label{equation:paris.diffyq}
+\frac{d\,a(t)}{d\,t} = C  \times \left[ \Delta K(a) \right ]^{m}
+\end{equation}
+provides a useful model for cracks within a certain size range.  Here
+$C$ and $m$ are materials properties and $\Delta K(a)$ (known as the
+``stress intensity range function'') is a function of crack size $a$,
+the range of applied stress, part dimensions, and geometry. For
+example, to model a two-dimensional edge-crack in a plate with a crack
+that is small relative to the width of the plate (say less than 3\%),
+$\Delta K(a)=\text{Stress} \sqrt{\pi a}$. The deterministic solution to the
+resulting differential equation is
+\begin{equation}
+\label{equation:paris.diffyq.solution}
+a(t) = \left\{ \begin{array}{lll}
+\left[\{a(0)\}^{1-m/2} + 
+(1-m/2)  \times C  \times (\text{Stress}\sqrt{\pi})^{m}  \times 
+t\right]^{\displaystyle 2/(2-m)}, & m \ne 2\\[3ex]
+a(0)  \times  \exp \left [ C  \times (\text{Stress}\sqrt{\pi})^{2} \times
+ t \right ], & m = 2 .
+\end{array} \right.
+\end{equation}
+This solution is illustrated for $m=2.05$ with the convex curve in
+Figure~\ref{figure:degradation.comparison.ps}.
+\end{example}
+
+\begin{example}{\bfseries Concave degradation.}
+\label{example:concave.deg}
+Meeker and LuValle~(1995) describe models for growth of
+failure-causing conducting filaments of chlorine-copper compounds in
+printed-circuit boards. These filaments cause failure when they reach
+from one copper-plated through-hole to another.
+In their model, $A_{1}(t)$ is the amount of
+chlorine available for reaction and $A_{2}(t)$ is proportional to the
+amount of failure-causing chlorine-copper compounds at time $t$. Under
+appropriate conditions of temperature, humidity, and electrical
+charge, copper combines with chlorine $A_{1}$ to produce 
+the chlorine-copper compound $A_{2}$
+with rate constant $k_{1}$. Diagrammatically,\\
+\begin{center}
+\setlength{\unitlength}{.1mm}
+\begin{picture}(360,120)
+\thicklines
+\put(5,60){\makebox(0,0){$\A_{1}$}}
+\put(30,60){\vector(1,0){210}}
+\put(135,85){\makebox(0,0){$k_{1}$}}
+\put(270,60){\makebox(0,0){$\A_{2}$.}}
+\end{picture}\\
+\end{center}
+The rate equations for this process are
+\begin{equation}
+\label{equation:luvalle.meeker.diffyq}
+\frac{d \A_{1}}{dt} =  -k_1 \A_{1} \quad \text{and} \quad
+\frac{d \A_{2}}{dt} =  k_1  \A_{1}. 
+\end{equation}
+The solution of this system of differential equations
+gives
+\begin{eqnarray}
+\label{equation:luvalle.meeker.diffyq.sol}
+\A_{1}(t)&=&\A_{1}(0) \times \exp(-k_{1}t) \\
+\A_{2}(t)&=&\A_{2}(0)+\A_{1}(0)\times[1-\exp(-k_{1}t)]
+\end{eqnarray}
+where $\A_{1}(0)$ and $\A_{2}(0)$ are initial amounts. To simplify notation,
+let $A_{2}(\infty)=\A_{1}(0)+\A_{2}(0)$. Then if $A_{2}(0)=0$,
+the solution for $\A_{2}(t)$
+(the quantity of primary interest) can be expressed as
+\begin{equation}
+\label{equation:luvalle.meeker.diffyq.sol2}
+A_{2}(t) = A_{2}(\infty)\times [1 -  \exp(-k_{1}t)].
+\end{equation}
+This function is illustrated by the concave curve in
+Figure~\ref{figure:degradation.comparison.ps}.  The asymptote at
+$A_{2}(\infty)$ reflects the finite amount of chlorine available for the
+reaction producing the harmful compounds.
+\end{example}
+Meeker and LuValle~(1995) also suggest other more elaborate models
+for this failure process.  Carey and Koenig~(1991) use similar models
+to describe degradation of electronic components.
+Chapter~\ref{chapter:accelerated.test.models} describes the ideas behind
+acceleration of failure-causing processes like these.
+
+%-------------------------------------------------------------------
+\subsection{Models for variation in degradation and failure times}
+\label{section:models.for.variation}
+If all manufactured units were identical, operated 
+under exactly the same conditions, and in exactly the same
+environment, and if every unit failed as it reached a particular
+``critical'' level of degradation, then, according to the simple deterministic
+models above, all units would fail at
+exactly the same time.  Of course, there is some degree of variability
+in all of these model factors as well as in factors that are not in the
+model. These factors combine to cause variability in the degradation 
+curves and in the failure times.
+
+%-------------------------------
+\mbox{  }\\
+\noindent
+{\bf Unit-to-unit variability.}
+The following are examples of sources of unit-to-unit variability:
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/paris.degradation.fixedm.ps}
+\caption{Plot of Paris model for growth of fatigue cracks
+with unit-to-unit variability in the initial crack size $a_{0}$ but
+with constant materials parameters ($C$ and $m$) and constant stress.}
+\label{figure:paris.degradation.fixedm.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/paris.degradation.stochm.ps}
+\caption{Plot of Paris model for growth of fatigue cracks
+with unit-to-unit variability in the initial crack size and in
+materials parameters $C$ and $m$, but with constant stress.}
+\label{figure:paris.degradation.stochm.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{itemize}
+\item
+{\bfseries Initial conditions.} Individual units will vary with
+respect to the amount of material available to wear, initial level of
+degradation, amount of harmful degradation-causing material, and so
+on.  Figure~\ref{figure:paris.degradation.fixedm.ps} shows the Paris
+model for growth of fatigue cracks, with simulated variability in the
+size of the initial crack, but with all other of the unit's Paris model
+characteristics and other factors held
+constant.
+\item
+{\bf Material properties}.
+Figure~\ref{figure:paris.degradation.stochm.ps} shows the Paris model
+for growth of fatigue cracks, allowing for unit-to-unit variability in
+the material properties parameters $C$ and $m$ and the size of the
+initial crack. In this case, as shown in the Paris model in
+(\ref{equation:paris.diffyq}), the rate of growth depends on $C$ and
+$m$ which differ from unit to unit. This yields crossing of the
+crack-growth curves (typical of what is observed in actual fatigue
+testing).
+\item
+{\bf Component geometry or dimensions.} Unit-to-unit variability in
+component geometry or dimensions can, for example, cause additional
+unit-to-unit variability in degradation rates [e.g., through the
+$\Delta K(a)$ function in (\ref{equation:paris.diffyq})].
+\item
+{\bf Within-unit variability.} Often there will be spatial
+variability in materials properties within a unit (e.g., defects).
+\end{itemize}
+
+%-------------------------------
+\mbox{  }\\
+\noindent
+{\bf Variability due to operating and environmental conditions.}
+Besides the materials properties described above, the rate of degradation
+will depend on operating and environmental conditions.  For example,
+$K(a)$ in the Paris model (\ref{equation:paris.diffyq}) depends on
+the amount of applied stress and the Paris parameters can depend on 
+temperature. In laboratory fatigue tests, the stress
+is either fixed or changing in a systematic manner (e.g., to keep
+$K(a)$ nearly constant as $a$ increases). In actual operation
+of most components, stress would generally be a complicated function over 
+time. Such variations possibly described by a stochastic process model. 
+Figure~\ref{figure:paris.degradation.stochm.stosig.ps}
+shows the Paris model with degradation rate varying due to variations
+in stress that might have been caused, for example, by variation in
+driving conditions encountered, over time, by an automobile. In some
+applications, shocks that occur randomly in time can dominate other sources
+of variability in a failure-causing process.
+
+The models described here are simple relative to more exact theory of
+failure-causing processes that, almost certainly exist (but may not be
+known or understood). For some purposes, however, such simple first-order
+descriptions are useful.
+
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/paris.degradation.stochm.stosig.ps}
+\caption{Plot of Paris model for growth of fatigue cracks
+with unit-to-unit variability in the initial crack size and
+materials parameters $C$ and $m$, and with a stochastic process
+model for the changes in stress over the life of the unit.}
+\label{figure:paris.degradation.stochm.stosig.ps}
+\end{figure}
+%-------------------------------------------------------------------
+
+\subsection{Limitations of degradation data}
+Physical degradation or performance degradation are natural property
+to measure for many testing processes (e.g., monitoring crack size
+of a specimen subjected to stress cycling or power output of an
+electronic device). Often, however, degradation measurement of a
+unit requires destructive inspection (e.g., destructive strength
+tests) or disruptive measurement (e.g., disassembly and reassembly
+of a motor) that has the potential to change the degradation process. In
+such situations one can obtain only a single measurement on each
+unit tested. It is possible to extract useful information from such
+data if a large number of units can be tested (for an example, see
+Nelson~1990a, Chapter 11).
+
+The advantages of degradation data can also be compromised when the
+degradation measurements are contaminated with large amounts of
+measurement error or when the degradation measure is not closely
+related to failure. For example, when the degradation measurement is
+on performance degradation, rather than physical degradation,
+failures may occur for physical reasons that are not or cannot be
+observed directly.
+
+\begin{example}{\bfseries Laser degradation and defective lasers.}
+\label{example:laser.defect.deg}
+Over the life of some laser devices, degradation causes a decrease
+in light output. Some lasers, however, contain a feedback mechanism
+that will maintain nearly constant light output by increasing operating
+current as the laser degrades. When operating current gets too high,
+the device is considered to have failed.
+Figure~\ref{figure:laser.degradation.strate.defect.ps} shows the
+increase in operating current over time for a sample of GaAs lasers
+tested at $80\degreesc$ (this temperature, much higher than the use
+temperature, was used to accelerate the failure mechanism so that
+degradation information would be obtained more rapidly---see
+Chapter~\ref{chapter:accelerated.degradation}).  Some of the units
+degrade gracefully; others fail suddenly.  Sudden failures, like
+those in Figure~\ref{figure:laser.degradation.strate.defect.ps}
+usually indicate manufacturing or other quality problems in an
+immature product. Such behavior is common, especially in outputs of
+electronic devices.  Possible reasons for sudden failures include
+\begin{itemize}
+\item
+An {\em unobserved} sudden change in the physical state of the unit
+that would lead to a subsequent increase in the degradation rate
+(e.g., growth of a conducting path that suddenly causes a short circuit).
+\item
+Manufacturing defects (often observed in early development of a new
+product). 
+\item
+A different failure mode actuated only at high temperatures.
+\item
+Inadvertent shocks to units.
+\end{itemize}
+As a product's design, manufacturing, and testing processes mature, such
+problems are usually eliminated.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/laser.degradation.strate.defect.ps}
+\caption{Plot of percent increase in operating current for GaAs
+lasers tested at $80\degreesc$.}
+\label{figure:laser.degradation.strate.defect.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+When there is not a strong correlation between failure times and
+degradation, there may be little to be gained by
+using degradation data instead of traditional censored failure time
+data. The limited amount of information in such degradation
+measurements can be the result of monitoring a {\em
+performance} variable (e.g., output voltage) rather than the actual
+physical degradation (e.g., amount of material displaced by
+electromigration).  An important but difficult engineering challenge of
+degradation analysis is to find variables that are closely related to 
+failure time and develop methods for accurately measuring these variables.
+
+%----------------------------------------------------------------------
+\subsection{General degradation path model}
+\label{section:general.degradation.model}
+
+The actual degradation path of a particular unit over time is
+denoted by $\degpath(t), t > 0$. In applications, values of
+$\degpath(t)$
+are sampled at discrete points in time $t_{1}, t_{2}, \dots $.
+The observed sample degradation $y_{ij}$ of unit $i$ at time $t_j$ is
+\begin{equation}
+\label{equation:general.deg.path.model}
+y_{ij} = \degpath_{ij} + \epsilon_{ij},\quad i
+= 1, \dots, n, \quad j = 1, \dots, m_{i}
+\end{equation}
+where $\degpath_{ij}=\degpath(t_{ij},\beta_{1i},\dots,\beta_{ki})$ 
+is the actual
+path of the unit $i$ at time $t_{ij}$ (the times need not be the
+same for all units) and $\epsilon_{ij}\sim \NOR
+\left(0,\sigma_{\epsilon}\right)$ is a residual deviation
+for unit $i$ at time $t_j$. The
+total number of inspections on unit $i$ is denoted by $m_{i}$.
+Time $t$ could be real-time, operating time, or some other appropriate
+measure of use like
+miles for automobile tires or cycles in fatigue tests.  For the $i$th
+unit, $\beta_{1i}, \dots , \beta_{ki}$ is a vector of $k$ unknown
+parameters.  Typically sample paths have $k=1$, 2, 3 or 4 parameters.
+As described in Section~\ref{section:models.for.variation}, some of
+the $\beta_{1},
+\dots,\beta_{k}$ parameters will be random from unit-to-unit.  One or
+more of the $\beta_{1},
+\dots,\beta_{k}$ parameters could, however, be modeled as
+common across all units.
+
+The scales of $y$ and $t$ can be chosen, as suggested by physical
+theory and the data, to simplify the form of
+$\degpath(t,\beta_{1},\dots,\beta_{k})$.  For example, the
+relationship between the logarithm of degradation and the logarithm of
+time might be modeled by the additive relationship in
+(\ref{equation:general.deg.path.model}).  Degradation model choice
+requires not only specification of the form of the
+$\degpath(t,\beta_{1},\dots,\beta_{k})$ function, but also
+specification of which of the $\beta_{1}, \dots, \beta_{k}$ are random
+(differing from unit to unit) and which are fixed (common to all units). 
+Because of the flexibility in specifying
+the form of $\degpath(t,\beta_{1},\dots,\beta_{k})$, and of the way in
+which the $\beta_{1}, \dots, \beta_{k}$ come into this form, we can,
+for simplicity, model the unit-to-unit variability in
+$\beta_{1},\dots,\beta_{k}$ with a multivariate
+normal distribution with mean vector $\muvec_{\betavec}$ and covariance
+matrix $\vcvmat_{\betavec}$.
+
+It is generally assumed that the random $\beta_{1}, \dots, \beta_{k}$ 
+are independent of the $\epsilon_{ij}$ deviations. Another common 
+assumption is that $\sigma_{\epsilon}$ is constant. The adequacy of this
+assumption can be affected by transforming $\degpath(t)$. Because
+the $y_{ij}$ are taken serially on a unit, however, there is potential for
+autocorrelation among the $\epsilon_{ij}, j=1, \dots, m_{i}$
+values, especially if there are many closely-spaced readings.
+In many practical applications involving inference on the degradation
+of units from a population or process, however, the correlation is
+weak and, moreover, dominated by the unit-to-unit variability in the
+$\beta_{1}, \dots, \beta_{k}$ values and thus can be ignored. In situations
+where autocorrelation cannot be ignored, one can use a time series model
+for the residual term along with appropriate estimation methods.
+
+%----------------------------------------------------------------------
+\subsection{Degradation model parameters}
+Although the values of $\beta_{1},\dots,\beta_{k}$ for the
+individual units may be of interest in some applications (e.g., to
+predict the future degradation of a particular unit, based on a few
+early readings), subsequent development in this chapter will
+concentrate on the use of degradation data to make inferences about
+the population or process or predictions about future units.
+In this case, the underlying
+model parameters are $\muvec_{\betavec}$ and $\vcvmat_{\betavec}$, as well
+as the residual standard deviation $\sigma_{\epsilon}$. For
+shorthand, we will use
+$\thetavec_{\betavec}=(\muvec_{\betavec},\vcvmat_{\betavec})$ to denote the
+overall population/process parameters.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Estimation of Degradation Model Parameters}
+\label{section:est.degrad.param}
+
+The likelihood for the random-parameter degradation model in
+Section~\ref{section:general.degradation.model} can be expressed as
+\begin{equation}
+\label{equation:degradation.likelihood}
+L(\thetavec_{\betavec},\sigma_{\epsilon} | \DATA)=
+\prod_{i=1}^{n} \int_{ - \infty}^{\infty} \dots \int_{ -
+\infty}^{\infty}
+\left[ \prod_{j=1}^{m_{i}} \frac{1}{\sigma_{\epsilon}}
+\phi_{\nor}(\stdnor_{ij}) \right] f_{\betavec}(\beta_{1i}, \dots ,
+\beta_{ki};\thetavec_{\betavec}) 
+	d\beta_{1i}, \dots , d\beta_{ki}
+\end{equation}
+where $\stdnor_{ij}=[y_{ij}
+-\degpath(t_{ij},\beta_{1i},\dots,\beta_{ki})]/\sigma_{\epsilon}$ and
+$f_{\betavec}(\beta_{1i}, \dots ,
+\beta_{ki};\thetavec_{\betavec}) $ is the
+multivariate normal distribution density function.  Each evaluation of
+(\ref{equation:degradation.likelihood}) will, in general, require
+numerical approximation of $n$ integrals of dimension $k$ (where $n$ is
+the number of sample paths and $k$ is the number of 
+random parameters in each
+path).  Maximizing (\ref{equation:degradation.likelihood}) with
+respect to $(\muvec_{\betavec},\vcvmat_{\betavec},\sigma_{\epsilon})$
+directly, even with today's computational capabilities, is extremely
+difficult unless $\degpath(t)$ is a linear function.  Pinheiro and Bates
+(1995a) describe and compare estimation schemes that provide
+approximate ML estimates of
+$\thetavec_{\betavec}=(\muvec_{\betavec},\vcvmat_{\betavec})$ and
+$\sigma_{\epsilon}$, as well as the unit-specific components in
+$\beta_{1i},\dots,\beta_{ki}, i=1, \dots, n$.  Pinheiro and Bates~(1995b)
+implement a modification of the method of Lindstrom and Bates~(1990).
+The examples in this chapter were computed with the Pinheiro and Bates
+(1995b) program implemented in \splus as function {\tt nlme}. 
+
+\begin{example}{\bfseries Estimates of fatigue data model parameters 
+for Alloy-A.}
+\label{example:bk.fatigue.data.basic.estimate}
+Continuing with Example~\ref{example:bk.fatigue.data.points}, we fit
+the model in (\ref{equation:general.deg.path.model}) with
+$\degpath_{ij}=a(t)$ in
+(\ref{equation:paris.diffyq.solution}), $a(0)=.9$,
+Stress=1, $\beta_{1}=m$ and $\beta_{2}=C$, modeling
+$(\beta_{1},\beta_{2})$ with a bivariate normal distribution.  The
+program of Pinheiro and Bates~(1995b) gives the following
+approximate ML estimates.
+\begin{displaymath}  
+\muvechat_{\betavec} =
+\left( \begin{array}{c}  5.17 \\3.73 
+       \end{array}
+\right), \qquad
+\vcvmathat_{\betavec} =
+\left( \begin{array}{rr}
+       .251  & -.194 \\
+      -.194 &   .519
+      \end{array}
+\right).
+\end{displaymath}
+and $\sigmahat_{\epsilon}=.0034.$
+Figure~\ref{figure:bk.fatigue.data.fit.ps} shows the fitted Paris relationship
+for each of the sample paths (indicated by the points on the plot) 
+for the Alloy-A fatigue-crack data.
+Figure~\ref{figure:bk.fatigue.data.bvn.ps} is a scatter plot of the
+estimates of the Paris relationship parameters for each of the 21 sample
+paths,
+indicating the reasonableness of the bivariate normal distribution
+model for this random-coefficients model.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/bk.fatigue.data.fit.ps}
+\caption{Alloy-A fatigue crack size observations and fitted Paris-rule model.}
+\label{figure:bk.fatigue.data.fit.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/bk.fatigue.data.bvn.ps}
+\caption{Plot of $\betahat_{1i}$ 
+versus $\betahat_{2i}$ for the $i=1,\dots, 21$ sample paths from the
+Alloy-A fatigue crack size data. The contour lines represent the
+fitted bivariate normal distribution for $\beta_{1}$ and $\beta_{2}$.}
+\label{figure:bk.fatigue.data.bvn.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+%----------------------------------------------------------------------
+\section{Models Relating Degradation and Failure}
+\label{section:degrad.and.failure}
+
+%----------------------------------------------------------------------
+\subsection{Soft failures: specified degradation level}
+For some products there is a gradual loss of performance (e.g.,
+decreasing light output from a fluorescent light bulb). Then failure would
+be defined (in a somewhat arbitrary, but purposeful, manner)
+at a specified level of degradation (e.g., 60\% of initial
+output).  We call this a ``soft failure'' definition.
+
+A fixed value of $\critdeg$ will be used to denote the critical
+level for the degradation path above (or below) which failure is
+assumed to have occurred.  The failure time $T$ is defined as the
+time when the actual path $\degpath(t)$ crosses the critical
+degradation level $\critdeg$.  We use $\censortime$ to denote the
+planned stopping time in the experiment (as illustrated in
+Figure~\ref{figure:bk.fatigue.data.points.ps}).  Inferences are
+desired on the failure-time distribution of a particular product or
+material. For soft failures it may be possible to continue observation
+beyond $\critdeg$.
+
+%--------------------------------------------------------------------------
+\subsection{Hard failures: joint distribution of 
+degradation and failure level.} For some products, the definition of the
+failure event is clear---the product stops working (e.g., when the
+resistance of a resistor deviates too much from its nominal value,
+causing the oscillator in an electronic circuit to stop oscillating or
+when an incandescent light bulb burns out).  These are called ``hard
+failures.''
+With hard failures, failure times will not, in general, correspond
+exactly with a particular level of degradation (like the horizontal
+line shown in Figures~\ref{figure:degradation.comparison.ps} through
+\ref{figure:laser.degradation.strate.defect.ps}). Instead, the
+level of degradation at which failure (i.e., loss of functionality)
+occurs will be random from unit to unit and even over time.  This
+could be modeled by using a distribution to describe unit-to-unit
+variability in $\critdeg$ or, more generally, the joint distribution of
+$\vecofbetas$ and the stochastic behavior in $\critdeg$.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Evaluation of $\boldsymbol{F(t)}$}
+\label{section:eval.of.ft}
+%----------------------------------------------------------------------
+
+A specified model for $\degpath(t)$ and $\critdeg$
+defines a failure-time distribution. In
+general, this distribution can be written as a function of the
+degradation model parameters.  Suppose that a unit fails at time $t$
+if degradation level first reaches $\critdeg$ at time $t$. Then
+\begin{equation}
+\label{equation:mixed.effect.to.ttf}
+\Pr(T \leq t) = F(t) =
+	F(t; \thetavec_{\betavec})= 
+	\Pr[\degpath(t,\beta_{1},\dots,\beta_{k}) \geq  \critdeg ].  
+\end{equation}
+For a fixed $\critdeg$, the distribution of $T$ depends on the
+distribution of the $\beta_{1},\dots,\beta_{k}$ which, in turn,
+depends on the basic path parameters in $\thetavec_{\betavec}$. In
+some simple cases it is possible to write down a closed form
+expression for $F(t)$.  In general, however, such a closed form
+expression will not exist.  For most practical path models,
+especially when $\degpath(t)$ is nonlinear and more than one of the
+$\beta_{1},\dots,\beta_{k}$ is random, it is necessary to evaluate
+$F(t)$ with numerical methods.
+
+%----------------------------------------------------------------------
+\subsection{Analytical solution for $\boldsymbol{F(t)}$}
+\label{section:evaluation.of.f.of.t}
+
+For some particularly simple path
+models, $F(t)$ can be expressed as a function of the basic
+path parameters in a closed form.
+Consider the following example.
+
+\begin{example}{\bfseries Linear degradation with lognormal rate.}
+\label{example:closed_form_lognormal}
+Suppose the actual degradation path of a particular unit is given by
+\begin{displaymath} 
+\degpath(t) = \beta_{1} + \beta_{2} t
+\end{displaymath} 
+where
+$\beta_{1}$ is fixed and $\beta_{2}$ varies from unit to unit according to a
+$\LOGNOR(\mu, \sigma)$ distribution; that is,
+\begin{displaymath} 
+\Pr(\beta_{2} \leq b)  = 
+\Phi_{\nor} \left[ \frac{\log(b)-\mu}{\sigma}\right].
+\end{displaymath} 
+The parameter $\beta_{1}$ represents
+the common initial amount of degradation of all the test units at
+time 0 and $\beta_{2}$ represents
+the degradation rate, random from unit-to-unit.
+Then
+\begin{eqnarray*}
+F(t;\beta_{1}, \mu, \sigma) &=& \Pr\left[\degpath(t) > \critdeg \right] = 
+	\Pr(\beta_{1} + \beta_{2} t> \critdeg) = \Pr \left (\beta_{2} >
+\frac{\critdeg - \beta_{1}}{t} \right ) \\[1ex]
+	 &=& 1-  
+\Phi_{\nor}\left(\frac{\log(\critdeg - \beta_{1}) - \log(t) - \mu}{\sigma}\right)  = 
+\Phi_{\nor}\left(\frac{\log(t) - \left[ \log(\critdeg - \beta_{1} ) - \mu \right]}
+{\sigma}\right), \quad t>0. 
+\end{eqnarray*}
+This shows that $T$ has a lognormal distribution with parameters
+that depend on the basic path parameters
+$\thetavec_{\betavec}=(\beta_{1}, \mu, \sigma)$, and $\critdeg$. That
+is, $\exp[ \log(\critdeg - \beta_{1} ) - \mu ]$ is the
+lognormal median and $\sigma$ is the lognormal shape parameter.
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Numerical evaluation of $\boldsymbol{F(t)}$}
+
+\begin{algorithm}{\bfseries Evaluation
+of $\boldsymbol{F(t)}$ by direct integration.}
+\label{algorithm:evaluation.of.f.of.t.by.int} 
+If $(\beta_{1}, \beta_{2})$ have a bivariate normal distribution
+with parameters $\mu_{\beta_{1}},\mu_{\beta_{2}},
+\sigma_{\beta_{1}}^{2}, \sigma_{\beta_{2}}^{2},
+\rho_{\beta_{1},\beta_{2}}$,
+then
+\begin{eqnarray*}
+F(t) = P(\rv \le \realrv) &=&
+\int_{-\infty}^{\infty}
+\Phi_{\nor}
+\left [
+-\, 
+\frac{g(\critdeg, \realrv, \beta_{1})-\mu_{\beta_{2} | 
+\beta_{1}}}
+     {\sigma_{\beta_{2} | \beta_{1}}}
+\right ]
+\frac{1}{\sigma_{\beta_{1}}}
+\phi_{\nor}  
+\left (
+\frac{\beta_{1} -\mu_{\beta_{1}}}
+     {\sigma_{\beta_{1}}}
+\right ) d\beta_{1}
+\end{eqnarray*}
+where $g(\critdeg, \realrv, \beta_{1})$ 
+is the value of $\beta_{2}$ that gives $\degpath(\realrv)=\critdeg$
+for specified $\beta_{1}$ and where
+\begin{eqnarray*}
+\mu_{\beta_{2} | \beta_{1}}&=&\mu_{\beta_{2}}+
+\rho \sigma_{\beta_{2}}
+\left (\frac{\beta_{1}-\mu_{\beta_{1}}}{\sigma_{\beta_{1}}}
+\right)
+\\
+\sigma^{2}_{\beta_{2} | \beta_{1}}&=&\sigma_{\beta_{2}}^{2} (1-\rho^{2}).
+\end{eqnarray*}
+In principle, this approach can be extended in a straightforward
+manner when there are more than 2 continuous random variables. The
+amount of computational time needed to evaluate the multidimensional
+integral will, however, increase exponentially with the dimension of
+the integral.
+\end{algorithm}
+
+%----------------------------------------------------------------------
+\subsection{Monte Carlo evaluation of $\boldsymbol{F(t)}$}
+Monte Carlo simulation, as illustrated in
+Figures~\ref{figure:paris.degradation.fixedm.ps},
+\ref{figure:paris.degradation.stochm.ps}, 
+and \ref{figure:paris.degradation.stochm.stosig.ps} is a particularly
+versatile method for evaluating $F(t)$. Evaluation is done in the
+following algorithm by generating a large number of random sample
+paths from the assumed path model, using the proportion 
+of path crossing
+$\critdeg$ by time $t$ as an evaluation of $F(t)$.
+
+\begin{algorithm}{\bfseries Monte Carlo evaluation
+of $\boldsymbol{F(t)}$ from degradation model parameters.}
+\label{algorithm:mc.evaluation.of.f.of.t}
+\begin{enumerate}
+\item
+Generate $N$ simulated realizations
+$\betahook_{1},\dots,\betahook_{k} $ of $\beta_{1},\dots,\beta_{k}$
+from a multivariate normal distribution with mean
+$\thetavechat_{\betavec}$
+and variance-covariance matrix $\vcvmathat_{\betavec}$,
+where $N$ is a large number (e.g., $N$=100,000).
+\item
+Compute the $N$ simulated failure times corresponding to the $N$
+realizations of $\betahook_{1},\dots,\betahook_{k}$. Conceptually this
+can be done by substituting the realizations of
+$\betahook_{1},\dots,\betahook_{k}$ into
+$\degpath(t,\beta_{1},\dots,\beta_{k})$, finding the crossing time for
+each (often the crossing time can be expressed conveniently as a
+function of the $\beta_{1},\dots,\beta_{k}$; otherwise the crossing
+time can be found by using a numerical root-finding algorithm).
+\item
+For any desired values of $t$, use
+\begin{displaymath} 
+F(t) \approx \frac{\text{Number of Simulated First Crossing Times }  
+\leq t}{N} 
+\end{displaymath}
+as an evaluation of $F(t)$.
+\end{enumerate}
+\end{algorithm}
+The potential error in this Monte Carlo approximation is easy to
+evaluate by using the binomial distribution. The error can be made
+arbitrarily small by choosing $N$ large enough. In particular,
+the standard deviation of the Monte Carlo error in $F(t)$ at a given
+point
+is $\sqrt{F(t)(1-F(t))/N}$. For example, if $F(t)=.01$ 
+and $N$=100,000, the standard deviation of the Monte Carlo error is .0003.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Estimation of $\boldsymbol{F(t)}$} 
+\label{section:est.ft}
+
+One can estimate the
+failure-time distribution $F(t)$ by substituting the estimates
+$\thetavechat_{\betavec}$ into (\ref{equation:mixed.effect.to.ttf}) giving
+$\Fhat(t) =
+F(t; \thetavechat_{\betavec})$.
+This is straightforward for the case when $F(t)$ can be expressed in a
+closed form.  When there is no closed-form expression for $F(t)$, and
+when numerical transformation methods are too complicated, one can  
+use Algorithm~\ref{algorithm:evaluation.of.f.of.t.by.int} 
+or \ref{algorithm:mc.evaluation.of.f.of.t} to evaluate 
+(\ref{equation:mixed.effect.to.ttf}) at $\thetavechat_{\betavec}$.
+
+\begin{example}{\bfseries Degradation data estimate of $\boldsymbol{F(t)}$.}
+\label{example:bk.degradation.fhat}
+Figure~\ref{figure:bk.fatigue.fhat.and.ci.ps} shows $\Fhat(t)$ for
+the Alloy-A data, estimated with
+Algorithm~\ref{algorithm:evaluation.of.f.of.t.by.int}, using the
+estimates
+$\thetavechat_{\betavec}=(\muvechat_{\betavec},\vcvmathat_{\betavec})$
+obtained in Example~\ref{example:bk.fatigue.data.basic.estimate}.
+\begin{table}
+\caption{Crossing times and plotting positions for the Alloy-A data.}
+\centering\small 
+\begin{tabular}{rrrrlc}
+\multicolumn{1}{c}{} & \multicolumn{4}{c}{Crossing
+ Time} & \multicolumn{1}{c}{Plotting Positions} \\
+\multicolumn{1}{c}{Path} & \multicolumn{4}{c}{(Million
+Cycles)} & \multicolumn{1}{c}{$(i-.5)/21$} \\
+\hline
+ 1 &&&& $.088$ & .024 \\
+ 2 &&&& $.100$ & .071 \\
+ 3 &&&& $.101$ & .119 \\
+ 4 &&&& $.103$ & .167 \\
+ 5 &&&& $.103$ & .214 \\
+ 6 &&&& $.106$ & .262 \\
+ 7 &&&& $.106$ & .310 \\
+ 8 &&&& $.109$ & .357 \\
+ 9 &&&& $.113$ & .405 \\
+10 &&&& $.115$ & .452 \\
+11 &&&& $.118$ & .500 \\
+12 &&&& $.118$ & .548 \\
+13 &&&& $.129^{*}$  &       .595 \\
+14 &&&& $.133^{*}$  &       .643 \\
+15 &&&& $.138^{*}$ &        .690    \\
+16 &&&& $.144^{*}$  &       .738    \\
+17 &&&& $.146^{*}$  &       .786    \\
+18 &&&& $.151^{*}$  &       .833    \\
+19 &&&& $.160^{*}$  &       .881    \\
+20 &&&& $.167^{*}$ &        .929    \\
+21 &&&& $.170^{*}$  &       .976    \\
+\hline
+\end{tabular}\\
+\begin{minipage}[t]{4in}
+Observations marked with a ``*'' would have been censored
+for a test that ended at .12 million cycles.
+\end{minipage}
+\label{table:alloya.cross.times}
+\end{table}
+The plotted points from Table~\ref{table:alloya.cross.times} (computed
+as described in Chapter~\ref{chapter:probability.plotting}) provide a
+nonparametric estimate based on the complete crossing time data (i.e.,
+including the eventual crossing times beyond .12 million cycles, where
+we assume that the test has ended).  This nonparametric estimate
+provides a useful comparison with the parametric degradation and
+failure time models based on the data available up to
+$\censortime=.12$.  The confidence intervals in this figure will be
+explained in the next section.
+\end{example}
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/bk.fatigue.fhat.and.ci.ps}
+\caption{Degradation model estimate of $F(t)$ with pointwise
+two-sided approximate 90\% and 80\% bootstrap bias-corrected
+percentile confidence intervals, based on the Alloy-A crack-size data
+censored at $\censortime=.12$.  The dots track the nonparametric
+estimate of $F(t)$.}
+\label{figure:bk.fatigue.fhat.and.ci.ps}
+\end{figure}
+%-------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Bootstrap Confidence Intervals }
+\label{section:degrad.ci}
+Because there is no simple method of computing standard errors for
+$\Fhat(t)$, we use the bias-corrected percentile bootstrap method in
+this chapter.  This method is described briefly in
+Section~\ref{section:percentile.bootstrap} and more fully in
+Efron~(1985) and Efron and Tibshirani~(1993). The method is
+implemented with the following algorithm.
+
+\begin{algorithm}{\bfseries Bootstrap confidence intervals from
+degradation data.}\\
+\label{algorithm:degradation.bootstrap}
+\begin{enumerate}
+\item
+Use the observed data from the $n$ sample paths to compute 
+the estimates $\thetavechat_{\betavec}$ and $\sigmahat^{2}_{\epsilon}$.
+\item
+Use Algorithm~\ref{algorithm:evaluation.of.f.of.t.by.int} 
+or \ref{algorithm:mc.evaluation.of.f.of.t} with
+$\thetavechat_{\betavec}$ as input to compute 
+the estimate $\Fhat(t)$
+at desired values of $t$.
+\item
+Generate a large number $B$ (e.g., $B=4$000) of bootstrap samples
+that mimic the original sample and compute the corresponding
+bootstrap estimates $\Fhatboot(t)$ according to the following steps.
+\begin{enumerate}
+\item
+Generate, from  $\thetavechat_{\betavec}$,
+$n$ simulated realizations of the random path parameters 
+$\beta_{1i}^{*},\dots,\beta_{ki}^{*}, i=1,\ldots,n$.
+\item
+Using the same sampling scheme as in the original experiment,
+compute $n$ simulated observed paths from
+\begin{displaymath}
+y_{ij}^{*}=\degpath(t_{ij};\beta_{1i}^{*},\dots,\beta_{ki}^{*} ) +
+\epsilon_{ij}^{*}
+\end{displaymath}
+up to the planned stopping time $\censortime$, where the
+$\epsilon^{*}_{ij}$ values are independent simulated residual values
+generated from $\NOR(0,\sigmahat_{\epsilon})$.
+\item
+Use the $n$ simulated paths to estimate parameters of the path
+model, giving the bootstrap estimates $\thetavechat^{*}_{\betavec}$.
+\item
+Use Algorithm~\ref{algorithm:evaluation.of.f.of.t.by.int} 
+or \ref{algorithm:mc.evaluation.of.f.of.t} with
+$\thetavechat^{*}_{\betavec}$ as input to compute 
+the bootstrap estimates $\Fhat^{*}(t)$
+at desired values of $t$.
+\end{enumerate}
+\item
+For each desired value of $t$, the bootstrap confidence interval
+for $F(t)$ is computed using the following steps
+\begin{enumerate}
+\item
+Sort the $B$ bootstrap estimates
+$\Fhat^{*}(t)_{1}, \dots, \Fhat^{*}(t)_{B}$
+in increasing order giving $\Fhat^{*}(t)_{(b)},b=1, \dots, B$.
+\item
+Following Efron and Tibshirani~(1993), 
+the lower and upper bounds of pointwise
+approximate $100(1-\alpha)\%$ confidence intervals for the distribution
+function $F(t)$ are
+\begin{displaymath}
+\left[ \wideundertildex{F(t)}, \quad
+\wideovertildex{F(t)} \right] = 
+%\tilde{F(t)} \right] = 
+\left[\Fhatboot(t)_{(l)},  \quad
+\Fhatboot(t)_{(u)} \right]
+\end{displaymath}
+where
+\begin{displaymath}
+l=B \times \Phi_{\nor}\left[2\Phi_{\nor}^{-1}(q)
++\Phi_{\nor}^{-1}(\alpha/2)\right], \;\; u=B \times
+\Phi_{\nor}\left[2\Phi_{\nor}^{-1}(q)+\Phi_{\nor}^{-1}(1-\alpha/2)\right]
+\end{displaymath}
+and $q$ is the proportion of the $B$ values of  $\Fhat^{*}(t)$
+that are less than $\Fhat(t)$ (using $q=.5$ is equivalent to the
+percentile bootstrap method).
+\end{enumerate}
+\end{enumerate}
+\end{algorithm}
+
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/bk.bootsamples.ps}
+\caption{Bootstrap estimates of $F(t)$ for Alloy-A.}
+\label{figure:bk.bootsamples.ps}
+\end{figure}
+%-------------------------------------------------------------------
+
+\begin{example}{\bf Degradation data 
+bootstrap confidence intervals for the Alloy-A $\boldsymbol{F(t)}$.}
+\label{example:bk.degradation.ci}
+Continuing with Example~\ref{example:bk.degradation.fhat},
+Figure~\ref{figure:bk.fatigue.fhat.and.ci.ps} shows pointwise
+two-sided approximate 90\% and 80\% bootstrap bias-corrected
+percentile confidence intervals for $F(t)$, based on the crack-size
+data censored at $\censortime=.12$.
+Figure~\ref{figure:bk.bootsamples.ps} shows a subset of the bootstrap
+estimates that were used to compute the bias-corrected percentile
+confidence intervals for $F(t)$.
+\end{example}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Comparison with Traditional Failure Time Analyses}
+\label{section:compare.ft.da}
+This section compares the degradation and failure-time data analyses
+for the Alloy-A data. Based on the degradation data and the
+failure-time data censored at $\censortime=.12$,
+Figure~\ref{figure:bk.fatigue.lognor.cen.ps} shows a lognormal
+probability plot of the nonparametric estimate of $F(t)$ (the dots)
+and the lognormal distribution ML estimate of $F(t)$ based on the
+failure-time data available at time $\censortime=.12$ million cycles
+(the line).
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/bk.fatigue.lognor.cen.ps}
+\caption{Lognormal probability plot of the nonparametric estimate
+(dots) and the lognormal distribution ML fit (line) based on the
+failure-time Alloy-A data censored at $\censortime=.12$.}
+\label{figure:bk.fatigue.lognor.cen.ps}
+\end{figure}  
+%-------------------------------------------------------------------
+Figure~\ref{figure:bk.fatigue.lognor.all.ps} shows the nonparametric
+estimate of $F(t)$, the lognormal distribution ML
+estimate of $F(t)$, and the corresponding approximate 90\% pointwise
+confidence intervals.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/bk.fatigue.lognor.all.ps}
+\caption{Lognormal
+distribution ML estimate and pointwise approximate 90\% confidence
+intervals.  The dots indicate the nonparametric estimate based on the
+Alloy-A {\em uncensored} failure-time data (i.e., based on failure
+times beyond the artificial censoring time used in the parametric
+degradation and failure-time analyses).}
+\label{figure:bk.fatigue.lognor.all.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Figure~\ref{figure:bk.fatigue.dist.comp.ps} compares the degradation
+data/model estimates with the ML estimates of the lognormal, normal,
+and Weibull failure-time distributions, based on the censored
+failure-time data.  Figures~\ref{figure:bk.fatigue.lognor.all.ps}
+and \ref{figure:bk.fatigue.dist.comp.ps} also show the nonparametric
+estimate of the failure-time distribution using the actual crossing
+times that occurred after $\censortime=.12$.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/bk.fatigue.dist.comp.ps}
+\caption{Comparison of degradation and failure-time
+data analyses based on the Alloy-A data censored at $\censortime$.
+The dots indicate the nonparametric estimate based on the Alloy-A
+{\em uncensored} failure-time data (i.e., based on failure times
+beyond the artificial censoring time used in the parametric
+degradation and failure-time analyses).}
+\label{figure:bk.fatigue.dist.comp.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Some observations from these figures are:
+\begin{enumerate}
+\item
+Figures~\ref{figure:bk.fatigue.lognor.cen.ps} and
+\ref{figure:bk.fatigue.lognor.all.ps} show that the lognormal
+distribution provides a good fit to the failure-time data up to
+$\censortime=.12$, but not beyond.
+\item
+Figure~\ref{figure:bk.fatigue.dist.comp.ps} shows that the other
+commonly used parametric models, which fit almost as well before
+$\censortime=.12$, do not do any better beyond $\censortime=.12$.
+The degradation analysis, however, does provide a reasonable
+extrapolation beyond $\censortime=.12$.  This is because the
+degradation analysis method directly models the relationship between
+degradation and time and takes account of the amount of degradation
+in the censored observations when estimating $F(t)$.  See the
+distribution of crack lengths for the Alloy-A units that had not
+failed before $\censortime=.12$, shown in
+Figure~\ref{figure:bk.fatigue.data.points.ps}.  The traditional
+failure-time data analysis ignores this important information.
+
+\item
+Comparing Figures~\ref{figure:bk.fatigue.fhat.and.ci.ps} and
+\ref{figure:bk.fatigue.lognor.all.ps} shows that the confidence
+intervals based on the degradation and failure-time data have
+similar widths from $.10 < t < .12$.  Outside of this range, however,
+the confidence intervals are narrower for the degradation method.
+\end{enumerate}
+
+%----------------------------------------------------------------------
+\section{Approximate Degradation Analysis}
+\label{section:app.deg.anal}
+This section describes an alternative (but only approximately
+correct) method of analyzing degradation data.  Consider the general
+degradation model given in
+Section~\ref{section:general.degradation.model}.  There are two steps in
+the approximate method.  The first step consists of separate
+analysis for each unit to predict the time at which the unit will
+reach the critical degradation level corresponding to failure. These
+times are called ``pseudo failure times''. In the second step, the
+$n$ pseudo failure times are analyzed as a complete sample of
+failure times to estimate $F(t)$.  Formally, the method is as
+follows.
+\begin{itemize}
+\item
+For the unit $i$, use the path model $y_{ij} = \degpath_{ij} +
+\epsilon_{ij}$ and the sample path data $(\realrv_{i1}, y_{i1})$,
+\dots, $(\realrv_{im_{i}}, y_{im_{i}})$ to find the (conditional) ML
+estimate of $\betavec_{i}=(\beta_{1i}, \dots , \beta_{ki})$, say
+$\betavechat_{i}$. This can be done using nonlinear least squares.
+\item
+Solve the equation
+$
+\degpath(\realrv,\betavechat_{i})=\critdeg
+$
+for $\realrv$ and call the solution $\that_{i}$.
+\item
+Repeat the procedure for each sample path to obtain 
+the pseudo failure times $\that_{1}, \dots, \that_{n}$.
+\item
+Do a single distribution analysis of the 
+data $\that_{1}, \dots, \that_{n}$ to estimate $F(\realrv)$.
+\end{itemize} 
+
+%----------------------------------------------------------------------
+\subsection{Simple linear path}
+For simple linear degradation processes the degradation path for a unit can
+be written as $\degpath(t) = \beta_{1} + \beta_{2} t$.
+In some cases log
+transformations on the sample degradation values or on the time scale or
+both will result in a simple linear-path model. In this case the pseudo failure times are obtained from
+\begin{displaymath}
+\that_{i}=\frac{
+\critdeg-\betahat_{1i}
+	       }
+ 	       {
+\betahat_{2i}
+		}
+\end{displaymath}
+where 
+\begin{displaymath}
+\betahat_{1i}=\ybar_{i}-\betahat_{2i}\times \tbar_{i},
+\quad \quad
+\betahat_{2i}=
+\frac{
+\sum_{j=1}^{m_{i}} (t_{ij}-\tbar_{i}) \times y_{ij}
+     }
+     {
+\sum_{j=1}^{m_{i}} (t_{ij}-\tbar_{i})^{2}
+     }
+\end{displaymath}
+and $\tbar_{i}$ and $\ybar_{i}$ are the means of
+$t_{i1}, \dots, t_{im_{i}}$ and 
+$y_{i1}, \dots, y_{im_{i}}$, respectively.
+%---------------------------------------------------------------------
+
+\subsection{Simple linear path through the origin}
+For some degradation, all paths start at the origin ($t_{i1}=0,
+y_{i1}=0$). If, in addition, the degradation rate is constant, then
+the degradation path has the form $\degpath(t) = \beta_{2}
+t$. Then the pseudo failure times are
+obtained from
+\begin{displaymath}
+\that_{i}=\frac{
+\critdeg
+	       }
+ 	       {
+\betahat_{2i}
+		}
+\end{displaymath}
+where 
+\begin{displaymath}
+\betahat_{2i}=
+\frac{
+\sum_{j=1}^{m_{i}} t_{ij} \times y_{ij}
+     }
+     {
+\sum_{j=1}^{m_{i}} t_{ij}^{2}
+     }.
+\end{displaymath}
+%----------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------
+\subsection{Comments on the approximate degradation analysis}
+For simple problems the approximate degradation analysis is
+attractive because the computations are relatively simple.  The
+approximate method is less appealing when the degradation paths are
+nonlinear.
+
+The approximate method  may give  adequate analysis if
+\begin{itemize}
+\item
+The degradation paths are relatively simple.
+\item
+The fitted path model is approximately correct.
+\item
+There are enough  data for precise estimation
+of the $\betavec_{i}$'s.
+\item
+The amount of measurement error is small.
+\item
+There is not too much extrapolation in predicting
+the $\that_{i}$ ``failure times.''
+\end{itemize} 
+There are, however, 
+potential problems with the  approximate degradation analysis
+because
+\begin{itemize}
+\item
+The method ignores the prediction error in $\that$ and does not
+account for measurement error in the observed sample paths.
+\item
+The distributions fitted to the pseudo failure times will not, in general,
+correspond to the distribution induced by the degradation model.
+\item
+For some applications, there may be sample paths that do not contain
+enough information to estimate all of the path parameters (e.g.,
+when the path model has an asymptote but the sample path has not
+begun to level off). This might necessitate fitting different models
+for different sample paths in order to predict the crossing time.
+\end{itemize}
+Overall, extrapolation into the tails of
+the failure-time distribution may be more valid
+with the actual crossing distribution implied by the degradation
+model (as used in
+Sections~\ref{section:degrad.and.failure} through
+\ref{section:est.ft}) than with the empirically 
+predicted failure times.
+
+\begin{example}
+{\bf Laser life analysis.}
+\label{example:simple.deg.laser}
+The data in
+Figure~\ref{figure:GaAs.laser.ps} and Appendix
+Table~\ref{atable:GaAs.laser.degradation.data} are from a laser life
+test similar to the one described in
+Example~\ref{example:laser.defect.deg}, except that there were no
+early failures.  For this device and the corresponding application,
+a $\critdeg=10\%$ increase in current was the specified failure
+level.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/GaAs.laser.ps}
+\caption{Plot of laser operating current as a function of time.}
+\label{figure:GaAs.laser.ps}
+\end{figure}
+The failure times (for paths exceeding $\critdeg=10\%$ increase in
+current before 4000 hours) and the pseudo failure times were
+obtained by fitting straight lines through the data for each
+path. These pseudo failure times are 3702, 4194, 5847, 6172, 5301,
+3592, 6051, 6538, 5110, 3306, 5326, 4995, 4721, 5689, and 6102
+hours.  Using methods from Chapter~\ref{chapter:parametric.ml.ls},
+Figure~\ref{figure:GaAs.laser.lognor.mleprobplot.ps} is a Weibull
+probability plot of the laser
+pseudo failure times showing the ML estimate for $F(t)$ and
+approximate 95\% pointwise confidence intervals.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/GaAs.laser.lognor.mleprobplot.ps}
+\caption{Weibull probability plot of the laser pseudo 
+failure times showing the ML estimate of $F(t)$
+and approximate 95\% pointwise confidence intervals.}
+\label{figure:GaAs.laser.lognor.mleprobplot.ps}
+\end{figure}
+\end{example}
+
+
+%----------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Bibliographic Notes}
+Gertsbakh and Kordonsky~(1969) discuss the degradation approach from
+an engineering point of view.  They point out the value of analyzing
+degradation measures in terms of sample paths to assess product
+reliability.  They present the Bernstein distribution which
+describes the failure-time distribution for a simple linear model
+with random intercept and random slope.  Knezevic~(1993) presents
+similar probability models based on what he calls a ``condition
+parameter.''  Nelson~(1990a, Chapter 11) discusses a special
+situation in which the degradation measurement is destructive (only
+one measurement could be made on each item). Tomsky~(1982) uses a
+multivariate normal regression model to evaluate component
+degradation.  Linear degradation models were used in Suzuki, Maki,
+and Yokogawa~(1993) to model the increase in a resistance
+measurement over time and in Tseng, Hamada, and Chiao~(1995) to
+model lumens output from fluorescent light bulbs over time.
+Yanagisawa (1997) fits models to degradation data for silicon solar
+cells where the accelerating factors were light intensity and
+temperature.
+
+Murray~(1993, 1994) and Murray and Maekawa~(1996) describe
+degradation data for disk storage media (e.g. compact disc) error
+rates in accelerated testing. These papers, Tseng et al.~(1995) and
+Tobias and Trindade~(1995) use the approximate analysis method
+described in Section~\ref{section:app.deg.anal} to analyze their
+degradation data. Tseng and Yu~(1997) and Yu and Tseng~(1998)
+propose methods for choosing the time to terminate a degradation
+test.
+
+Much of the material in this chapter is based on methods presented
+in Lu and Meeker~(1993), Lu, Meeker and Escobar~(1996), and ideas in
+Meeker and Hamada~(1995).  Nelson~(1995b) describes models and
+analysis methods for problems with random nonzero degradation
+initiation times.  His methods assume destructive inspection so that
+each sample unit will provide a single (possibly censored)
+degradation response. It would be useful to extend this work to
+allow for multiple readings on individual test units.
+Crowder~(1997) describes methods for developing component-based
+preventive maintenance plans.  One of these methods used
+degradation-type data. Davidian and Giltinan~(1995) provide an
+excellent description and development of methods for fitting
+statistical models to nonlinear degradation-type models (also known
+as ``growth curves'') and estimating random parameters.
+
+%----------------------------------------------------------------------
+\section*{Exercises}
+
+%---------------------------------------
+\begin{exercise}
+Show that (\ref{equation:paris.diffyq.solution}) 
+is the solution to (\ref{equation:paris.diffyq}).
+\end{exercise}
+
+%---------------------------------------
+\begin{exercise}
+Use the degradation equation (\ref{equation:paris.diffyq.solution}) 
+to obtain an expression for the time that $\degpath(t)$
+crosses a specified $\critdeg$.
+\end{exercise}
+
+%---------------------------------------
+\begin{exercise}
+Show that (\ref{equation:luvalle.meeker.diffyq.sol}) 
+is the solution to (\ref{equation:luvalle.meeker.diffyq}).
+\end{exercise}
+
+%---------------------------------------
+\begin{exercise}
+Use  the degradation equation (\ref{equation:luvalle.meeker.diffyq.sol2}) 
+to obtain an expression for the time that $\A_{2}(t)$
+crosses a specified $\A_{2f}$.
+\end{exercise}
+
+%---------------------------------------
+\begin{exercise}
+Determine the value of $N$ needed in
+Algorithm~\ref{algorithm:mc.evaluation.of.f.of.t} to evaluate $F(t)$ at
+the point where $F(t)=.01$ so that the probability that Monte Carlo
+error in evaluation is less than .0001, with probability approximately
+.95.  Use the normal distribution approximation to the binomial
+probability.
+\end{exercise}
+
+%---------------------------------------
+\begin{exercise}
+Discuss the advantages and disadvantages of
+using Algorithm~\ref{algorithm:evaluation.of.f.of.t.by.int} 
+versus \ref{algorithm:mc.evaluation.of.f.of.t} when estimating $F(t)$
+from degradation data.
+\end{exercise}
+%---------------------------------------
+
+%---------------------------------------
+\begin{exercise}
+Consider the analysis of the laser degradation data
+in Example~\ref{example:simple.deg.laser}.
+\begin{enumerate}
+\item
+\label{exerpart:5per}
+Repeat the analysis using the time at
+which current has increased by 5\% to define failure.
+\item
+\label{exerpart:15per}
+Repeat the analysis using the time at
+which current has increased by 15\% to define failure.
+\item
+Compare the results in parts 
+\ref{exerpart:5per} and \ref{exerpart:15per}. Comment on the
+differences in assumptions needed to estimate these two different
+distributions.
+\end{enumerate}
+\end{exercise}
+%---------------------------------------
+
+%---------------------------------------
+\begin{exercise1}
+Example~\ref{example:simple.deg.laser} illustrates the simple
+analysis of the data in Appendix
+Table~\ref{atable:GaAs.laser.degradation.data}. Do the analysis of
+these data using the random-coefficient degradation model.
+\begin{enumerate}
+\item
+Identify and estimate a parametric distribution for the slopes.
+\item
+Derive an expression for the failure-time distribution based on the
+degradation model, where failure is defined as the time at
+which current has increased by 10\%.
+\item
+Plot the estimate of the failure time distribution. Compare it with
+the simple estimate obtained in
+Example~\ref{example:simple.deg.laser}.
+\end{enumerate}
+\end{exercise1}
+%---------------------------------------
+
+%---------------------------------------
+\begin{exercise}
+\label{exercise:block.error.rate.degradation.data}
+Appendix Table~\ref{atable:block.error.rate.degradation.data} gives
+degradation data on block error rates (the ratio of number of bytes
+with errors to the total number of bytes tested) of magneto-optic data
+storage disks tested for 2000 hours at 80$\degreesc$ and 85\%
+relative humidity. Use the simple analysis method described in
+Section~\ref{section:app.deg.anal} to estimate the failure-time
+distribution of these disks at 80$\degreesc$ and 85\% relative
+humidity where failure is defined as the time that it takes to reach
+an error rate of $50 \times 10^{-5}$ (a safe level at which error
+correcting codes can be expected to correct errors).
+\end{exercise}
+%---------------------------------------
+
+\begin{exercise}
+\label{exercise:asym.deg}
+As an electronic device ages, its power output decreases.  Because the
+degradation results from a simple one-step chemical reaction with a
+limited amount of harmful material available for reaction, the
+decrease in power can be described by the degradation model
+$\degpath(t) = \beta_{2}[1 -  \exp(-\beta_{1} t )]$
+where $\degpath(t)$ is the power output at time $t$, $\beta_{2} < 0
+$ is nearly the same for all units, and $\beta_{1}$, comes from a
+lognormal distribution.  System performance degrades noticeably when
+$\degpath(t)$ falls below $\critdeg$. Thus we define a failure as
+the point in time when $\degpath(t) < \critdeg$.
+\begin{enumerate}
+\item
+Describe some possible physical reasons for the asymptotic behavior of
+$\degpath(t)$.
+\item
+What happens, in the long run, if $\beta_{2} > \critdeg $?
+\item
+Assuming that $\critdeg$ is a fixed constant and that
+$\beta_{2} < \critdeg $, derive an
+expression for $F(t)$, the failure time cdf.
+\end{enumerate}
+\end{exercise}
+
+%---------------------------------------
+\begin{exercise}
+Suppose the actual degradation path of a particular unit is given by
+$\degpath(t) = \beta_{1} t$ where $-\log(\beta_{1})$ varies from
+unit to unit according to a $\SEV(\mu, \sigma)$ distribution. If
+failure occurs when $\degpath(t) > \critdeg$, where $\critdeg$ is a
+fixed constant, show that the failure time distribution is Weibull.
+\end{exercise}
+
+%---------------------------------------
+\begin{exercise1}
+Suppose the actual degradation path of a particular unit is given by
+$\degpath(t) = \beta_{1} t$ 
+where $\beta_{1}$ varies from unit to unit according to a
+$\LOGNOR(\mu_{1}, \sigma_{1})$ distribution. Also suppose that failure
+occurs when $\degpath(t) > \critdeg$, and $\critdeg$ has a
+$\LOGNOR(\mu_{2},
+\sigma_{2})$ distribution. Derive an
+expression for $F(t)$, the failure time cdf.
+\end{exercise1}
+
+%---------------------------------------
+\begin{exercise1}
+Suppose the actual degradation path of a particular unit is given by
+$\degpath(t) = \beta_{1} + \beta_{2} t$ where $(\beta_{1},
+\beta_{2})$ vary from unit to unit according to a bivariate normal
+distribution with parameters $\mu_{\beta_{1}}$, $\mu_{\beta_{2}}$,
+$\sigma_{\beta_{1}}$, $\sigma_{\beta_{2}}$, and
+$\rho_{\beta_{1}\beta_{2}}$.
+\begin{enumerate} 
+\item
+Assuming that failure occurs when
+$\degpath(t) > \critdeg$, derive an expression for the failure time
+distribution $F(t)=\Pr(T  \leq t) = \Pr[\degpath(t) > \critdeg]$.
+\item
+Explain why $\lim_{t \rightarrow \infty} F(t) < 1$.
+\end{enumerate}
+\end{exercise1}
+

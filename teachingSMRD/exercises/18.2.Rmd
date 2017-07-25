@@ -1,0 +1,91 @@
+---
+output: html_document
+---
+
+__Based on previous experience with similar products, the failure time of a particular field effect transistor on a monolithic microwave GaAs integrated circuit, operating at $100^{o}C$ (channel temperature), is expected to have a lognormal distribution with a median time to failure of $30$ years.  The  primary failure mode is caused by a chemical reaction that has an activation energy of $E_{a}=.6 eV.$ The value of the lognormal scale parameter for this failure mode is expected to be $\sigma=.7$.__
+
+a. __What are the lognormal parameters $\mu$ and $\sigma$ if time is recorded in hours?__
+
+`r teachingSMRD:::solution()$begin`
+For the lognormal distribution $t_{.5}=\text{exp}(\mu)$, thus
+
+$$
+\mu=\text{log}(t_{.5})=\text{log}\left(30\text{ years}\times 365\frac{\text{days}}{\text{year}}\times 24\frac{\text{hours}}{\text{day}}\right)=12.479 \text{ hours}
+$$
+
+The problem statement gives no indication that the variance for this data set is dependent on the level of stress, therefore changing the measure of usage will not affect $\sigma$.
+`r teachingSMRD:::solution()$end`
+
+b. __For operation at $100^{o}C$ channel temperature, what is the time at which $5\%$ of the units would fail? $10\%?, 90\%$?__
+
+`r teachingSMRD:::solution()$begin`
+Since $100^{o}C$ is the nominal (use) temperature, the requested quantile values may be computed from the $LOGNOR(12.479,.7)$ distribution as
+
+$$
+\begin{aligned}
+t_{.05}&=\text{exp}\left(12.479+\Phi^{-1}_{nor}(.05)\times.7\right)=\hspace{5pt}83,083.6\text{ hours}\\
+t_{.10}&=\text{exp}\left(12.479+\Phi^{-1}_{nor}(.10)\times.7\right)=107,142.4\text{ hours}\\
+t_{.90}&=\text{exp}\left(12.479+\Phi^{-1}_{nor}(.90)\times.7\right)=644,407.2\text{ hours}
+\end{aligned}
+$$
+`r teachingSMRD:::solution()$end`
+
+c. __Calculate the time-acceleration factor for testing at_ $250^{o}C$, $200^{o}C,$ and $150^{o}C$ channel temperature.  Use Table 18.2 and Figure 18.3 and check with equation (18.2).__
+
+`r teachingSMRD:::solution()$begin`
+The acceleration factor values obtained using both Table 18.2 and Figure 18.3 result from reading off the temperature differential factor value and then using the equation
+
+$$
+\mathcal{AF}(T_{low},T_{high},E_{a})=\text{exp}\left[E_{a}\times TDF(T_{low},T_{high})\right]
+$$
+
+Using Equation 18.2 (Arrhenius Relationship) the acceleration factor values are computed from
+>
+$$
+\mathcal{AF}(T_{low},T_{high},E_{a})=\text{exp}\left[E_{a}\left(\frac{11605}{T_{low}K}-\frac{11605}{T_{high}K}\right)\right]
+$$
+
+```{r echo=TRUE,eval=FALSE}
+eq18.2<-round(exp(.6*11605*((1/373.15)-(1/(273.15+c(150,200,250))))),3)
+tab18.2<-round(exp(.6*c(3.67,6.57,8.92)),3)
+temp<-c(150,200,250)+273.15
+fig18.3<-exp(.6*c(3.67,6.57,8.92))
+df<-data.frame(temp,tab18.2,fig18.3,eq18.2)
+colnames(df)<-c("Temp (K)","Table 18.2", "Figure 18.3", "Equation 18.2")
+knitr::kable(df,
+             caption = "Acceleration factor values for Exercise 18.2".
+             format = 'pandoc')
+```
+`r teachingSMRD:::solution()$end`
+
+d. __Obtain an expression for the temperature at which $100p\%$ of tested units would be expected to fail in a $6000$ hour test.  Use this expression to compute the temperatures at which $90\%$ and $10\%$ _would be expected to fail.__
+
+`r teachingSMRD:::solution()$begin`
+The requested function is the cdf of the lognormal distribution wherein $\mu$ is replaced by the Arrhenius relationship to reflect the effect that changing the applied temperature above or below the use temperature has on the mean of the distribution. The Arrhenius-lognormal cdf is expressed as
+
+$$
+\begin{aligned}
+F(t|T)&=\Phi_{nor}\left(\frac{\text{log}(t)-\mu(T)}{\sigma}\right)\\
+&=\Phi_{nor}\left(\frac{\text{log}(t)-\beta_{0}+\beta_{1}\left[\frac{11605}{273.15+T_{U}}-\frac{11605}{273.15+T}\right]}{\sigma}\right)
+\end{aligned}
+$$
+
+where $\beta_{0}=\mu(T_{use})$ and $\beta_{1}=E_{a}$.  Substituting these values and $t=6000$ results in
+
+$$
+\begin{aligned}
+F(t=6000|T=\text{Temp})&=\Phi_{nor}\left(\frac{8.7-12.479+.6\left[\frac{11605}{373.15}-\frac{11605}{273.15+T}\right]}{.7}\right)\\
+F(t=6000|T=\text{Temp})&=\Phi_{nor}\left(21.26-\frac{9947.143}{273.15+T}\right)
+\end{aligned}
+$$
+
+Rearranging this equation results in the requested function
+
+$$
+Temp+273.15=-\frac{9947.143}{\Phi^{-1}_{nor}(p)-21.26}
+$$
+
+For $p=10\%$, $\text{Temp}=441.28\text{ Kelvin } (168.13^{o}C)$.
+
+For $p=90\%$, $\text{Temp}=497.89\text{ Kelvin } (224.74^{o}C)$
+`r teachingSMRD:::solution()$end`

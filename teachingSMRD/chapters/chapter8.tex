@@ -1,0 +1,2063 @@
+%chapter 8
+%original by wqmeeker  12 Jan 94
+%edited by wqmeeker  28/31 Jan 94
+%edited by wqmeeker  7 Feb 94
+%edited by wqmeeker  10/13 Feb 94
+%edited by driker 2/17/94
+%edited by wqmeeker  17/18 Feb 94 trivial changes
+%edited by driker 3/10/94
+%edited by wqmeeker 10 mar 1994
+%edited by driker 18 mar 94
+%edited by wqmeeker 26 mar 94
+%edited by wqmeeker 16 apr 94 to add previously missing figures
+%edited by wqmeeker  1 june 94
+%edited by wqmeeker  9 aug 94
+%edited by wqmeeker 12 aug 94 Europe changes
+%edited by wqmeeker  4 aug 94
+%edited by wqmeeker  22 oct 94  smoothing
+%edited by wqmeeker  12 nov 94  breaking double figures
+%edited by wqmeeker  29/30 nov 94  smoothing
+%edited by wqmeeker  17/27 dec 94  bootstrap
+%edited by wqmeeker  1 jan 95  fixed sigma example
+%edited by wqmeeker  17 june 95 moving bootstrap
+%edited by driker 20 june 95
+%edited by driker 27 june 95
+%edited by driker 29 august 95
+%edited by driker 7 nov 95
+%edited by wqmeeker  30 dec 95 zero failures
+%edited by wqmeeker   4 jan 96 likelihood ratio
+%edited by driker 5 jan 96
+%edited by driker 12 jan 96
+%edited by driker 1 july 96
+%edited by driker 1 aug 96  wayne's comments
+%edited by driker 3 oct 96 luis' comments
+%edited by driker 4 oct 96
+
+\setcounter{chapter}{7}
+
+
+\chapter{Maximum Likelihood for Log-Location-Scale Distributions}
+\label{chapter:parametric.ml.ls}
+
+\input{\chapterhome/common_heading.tex}
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Objectives}
+This chapter explains
+\begin{itemize} 
+\item 
+Likelihood methods for fitting log-location-scale distributions
+(especially the Weibull and lognormal distributions).
+\item 
+Likelihood confidence intervals/regions
+for model parameters and for {\em functions} of model parameters.
+\item 
+Normal-approximation confidence intervals/regions.
+\item
+Estimation and confidence intervals for log-location-scale
+distributions
+with a given shape parameter.
+\end{itemize}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Overview}
+This chapter extends the methods in
+Chapter~\ref{chapter:parametric.ml.one.par} to two-parameter
+distributions that are based on location-scale distributions. These
+distributions, including the popular lognormal and Weibull
+distributions, are the workhorses of parametric reliability modeling.
+Section~\ref{section:likelihood.for.lc.base} shows how to compute the
+likelihood for these distributions and censored data.  The
+distributions and estimation methods used in this chapter are also
+used in the regression and accelerated testing chapters
+(Chapters~\ref{chapter:regression.analysis} and
+\ref{chapter:analyzing.alt.data}).
+Sections~\ref{section:likelihood.based.ci.for.location.scale} and
+\ref{section:location.scale.normal.theory.ci} show how to compute
+confidence regions and intervals for parameters and functions of the
+parameters. Section~\ref{section:sigma.known} shows the effect of
+using a given value of the scale parameter $\sigma$ instead of
+estimating it as if it were unknown.
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Introduction}
+This chapter describes fitting of and making inferences from the
+two-parameter Weibull and lognormal life distributions
+(Section~\ref{section:threshold.dist.ml} discusses estimation of
+the parameters of the three-parameter versions of these
+distributions).  The methods also apply to other location-scale distributions 
+or distributions that can be transformed into a location-scale form
+including the normal, smallest extreme value, largest extreme value,
+logistic, and loglogistic distributions.
+
+For these distributions and exact failure times (i.e., when the amount
+of roundoff is small relative to the variability in the data), the
+density approximation in (\ref{equation:density.approximation})
+adequately approximates the correct discrete likelihood on the
+left-hand side of (\ref{equation:why.density.approximation}). Thus we
+will use (\ref{equation:density.approximation}) to represent the
+likelihood for exact observations in this chapter.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Likelihood}
+\label{section:likelihood.for.lc.base}
+%----------------------------------------------------------------------
+\subsection{Likelihood for location-scale distributions}
+\label{section:likelihood.for.locscale}
+
+The likelihood for a sample $\grealrv_{1},\ldots , \grealrv_{n}$ from
+a location-scale distribution for a random variable $-\infty < \grv <
+\infty$, consisting of exact (i.e., not censored) and
+right-censored observations can be written as
+\begin{eqnarray*}
+\like(\mu,\sigma) &=& \prod_{i=1}^{n} \like_{i}(\mu, \sigma;\data_{i})
+=   \prod_{i=1}^{n}    
+ \left [ 
+ f(\grealrv_{i};\mu,\sigma)
+\right ]^{\delta_{i}} 
+\left [1- F(\grealrv_{i};\mu,\sigma) \right]^{1-\delta_{i}}
+\\
+&=&  \prod_{i=1}^{n}
+\left[ \frac{1}{\sigma} \phi
+\left(\frac{\grealrv_{i} -\mu}{\sigma}
+\right)
+\right]^{\delta_{i}}
+ \times 
+\left[1- \Phi \left(\frac{ \grealrv_{i} -\mu}{\sigma}
+\right) \right]^{1-\delta_{i}}
+\end{eqnarray*}
+where
+\begin{eqnarray*}
+\delta_{i}= \left \{
+     \begin{array}{lll}
+	1 & \quad \mbox{if $y_{i}$ is an exact observation} \\
+        0 & \quad \mbox{if $y_{i}$ is a right censored  observation.} \\
+     \end{array}
+            \right .
+\end{eqnarray*}
+As defined in Section~\ref{section:location.scale},
+for a particular location-scale distribution, substitute the
+appropriate $\Phi$ and $\phi$.  For the smallest extreme value
+distribution substitute $\Phi_{\sev}$ and $\phi_{\sev}$. Similarly,
+for the normal distribution, substitute $\Phi_{\nor}$ and $\phi_{\nor}$,
+and for the logistic distribution substitute $\Phi_{\logis}$ and $
+\phi_{\logis}$.
+Left censored and interval censored observations could be factored in,
+using these same functions, as described in
+Section~\ref{section:likelihood.contributions}.
+
+When there is no censoring, the normal distribution likelihood
+simplifies and it is possible to solve explicitly to obtain the values
+of $\mu$ and $\sigma$ that maximize this likelihood. This is a
+standard exercise in most textbooks on mathematical statistics.
+%----------------------------------------------------------------------
+\subsection{Likelihood for the lognormal, Weibull, and other
+log-location-scale distributions}
+\label{section:exp.loc.scale.like}
+
+Because the logarithm of lognormal, Weibull, and loglogistic random
+variables follow corresponding location-scale distributions, the
+likelihoods for these distributions can also be written in terms of
+the standardized location-scale distributions. In particular, for a
+sample consisting of exact failure times and right-censored observations,
+the likelihood can be expressed as
+\begin{equation}
+\label{equation:log.location.scale.likelihood}
+\like(\mu,\sigma) = \prod_{i=1}^{n}
+\left\{ \frac{1}{\sigma \realrv_{i}} \, \phi
+\left[\frac{ \log(\realrv_{i}) -\mu}{\sigma}
+\right]
+\right\}^{\delta_{i}}
+\times
+ \left\{1-\Phi \left[\frac{ \log(\realrv_{i}) -\mu}{\sigma}
+\right] \right\}^{1-\delta_{i}} 
+\end{equation}
+where $\delta_{i}$ again indicates whether observation $i$ is a failure or
+a right censored observation.  Left censored and interval
+censored observations could be factored in as described in
+Section~\ref{section:likelihood.contributions}.  It is important to
+note that some computer programs omit the $1/\realrv_{i}$ term in the
+density part of the likelihood. Because this term does not depend on
+the unknown parameters, this has no effect on the location of the ML
+estimates. It does, however, affect the reported value of the
+likelihood (or more commonly the log likelihood) at the maximum, and
+therefore caution should be used when comparing values of
+log likelihoods computed with different software.
+
+Again, the particular $\Phi$ and $\phi$ functions determine the
+distribution to be used. For the Weibull distribution,
+use $\Phi_{\sev}$ and $\phi_{\sev}$; for the lognormal, use
+$\Phi_{\nor}$ and $\phi_{\nor}$; and for the loglogistic, use
+$\Phi_{\logis}$ and $\phi_{\logis}$.
+
+
+\begin{example}
+\label{example:shockabs.likelihood}
+{\bf Shock absorber data likelihood and ML estimates.} This example
+returns to the shock absorber data in
+Examples~\ref{example:shock.absorber.data}
+and \ref{example:shock.absorber.cdfest}.  The Weibull and
+lognormal probability plots with nonparametric simultaneous confidence
+bands in Figures~\ref{figure:shockabsB.npp.weib.ps} and
+\ref{figure:shockabsB.npp.lnor.ps} indicated no strong preference for
+either distribution.
+Figure~\ref{figure:shockabsB.profcont.weib.ps}
+is a contour plot of the
+relative likelihood function
+$R(\mu,\sigma)=\like(\mu,\sigma)/\like(\muhat,\sigmahat)$
+for the Weibull distribution 
+model. The surface is well behaved with a unique maximum
+(i.e., $ \muhat = 10.23$ and $\sigmahat = .3164$)
+defining the ML estimates.
+The orientation of the contours indicates some
+positive correlation between $\muhat$ and $\sigmahat$.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.profcont.weib.ps}
+\caption{Weibull relative likelihood for the shock absorber data.}
+\label{figure:shockabsB.profcont.weib.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+Fitting a Weibull (lognormal) distribution is equivalent to fitting a
+straight line through the data on a Weibull (lognormal) probability
+plot, using the ML criterion to choose the line. Generally when
+fitting a distribution with ML, it is useful to use a probability plot
+that also shows the fitted distribution.
+
+\begin{example}
+{\bf A comparison of Weibull and lognormal 
+distribution fits to the shock absorber data.}
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.mlep.weib.ps}
+\caption{Weibull probability plot
+of shock absorber failure times (both failure modes) with maximum
+likelihood estimates and pointwise approximate 95\% confidence
+intervals for $F(\realrv)$.}
+\label{figure:shockabsB.mlep.weib.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.mlep.lnor.ps}
+\caption{Lognormal probability plot
+of shock absorber failure times (both failure modes) with maximum
+likelihood estimate and pointwise approximate 95\% confidence
+intervals for $F(\realrv)$. The curved line going through the points
+is the Weibull maximum likelihood estimate.}
+\label{figure:shockabsB.mlep.lnor.ps}
+\end{figure}
+Figures~\ref{figure:shockabsB.mlep.weib.ps} and
+\ref{figure:shockabsB.mlep.lnor.ps} give Weibull and lognormal
+probability plots, respectively, with the corresponding ML estimates
+of $F(\realrv)$ represented by the straight lines in the plots.  The
+dotted lines are drawn through a set of 95\% pointwise normal-approximation
+confidence intervals for $F(\realrv)$ (computed as described in
+Section~\ref{section:norm.conf.int.for.ls.fun}). The
+curved line going through the points on the lognormal probability plot
+is the corresponding ML estimate of the Weibull $F(\realrv)$. 
+
+Table~\ref{table:shockabsB.results} gives ML estimates, standard
+errors, and confidence intervals for both the Weibull and lognormal
+distributions.  The following sections describe methods for computing
+these standard errors and confidence intervals.  The parameters $\mu$
+and $\sigma$ are not directly comparable because these parameters have
+different interpretations in the Weibull and lognormal distributions.
+%-------------------------------------------------------------------
+\begin{table}
+\caption{Comparison of shock absorber estimates and
+confidence intervals.}
+\centering\small
+\begin{tabular}{*{4}{r}}
+\\[-.5ex]
+\hline
+\\[-.8ex]
+\multicolumn{2} {c} {}&
+\multicolumn{2} {c} {Distribution} \\
+\multicolumn{2} {c} {}&
+\multicolumn{1} {c} {Weibull}&
+\multicolumn{1} {c} {Lognormal} \\
+\cline{3-4}\\
+\multicolumn{1} {c} {ML Estimate $\muhat$}
+&&  10.23 &  10.14   \\[1ex]
+\multicolumn{1} {c} {Standard Error $ \sehat_{\muhat}$}
+&& .1099 & .1442   \\[1ex]
+\multicolumn{1} {l} {Approximate 95\%}\\
+\multicolumn{1} {l} {Confidence Intervals for $\mu$}
+&&& \\
+\multicolumn{1} {l} {\hspace{1em} Based on the Likelihood}
+&& [10.06, 10.54] & [9.91, 10.53]  \\[.5ex]
+\multicolumn{1} {l} {\hspace{1em} Based on \quad
+        $Z_{\muhat} \approxdist \NOR(0,1)$ }
+&& [10.01, 10.45] & [9.86, 10.43] \\[2ex]
+\multicolumn{1} {c} {ML Estimate $\sigmahat$}
+&& .3164 & .5301 \\[1ex]
+\multicolumn{1} {c} {Standard Error $ \sehat_{\sigmahat}$}
+&& .07317 & .1127 \\[1ex]
+\multicolumn{1} {l} {Approximate 95\%}\\
+\multicolumn{1} {l} {Confidence Intervals for $\sigma$}
+&&& \\
+\multicolumn{1} {l} {\hspace{1em} Based on the Likelihood}
+&& [.210, .527] & [.367, .858]  \\[.5ex]
+\multicolumn{1} {l} {\hspace{1em} Based on \quad
+        $Z_{\log(\sigmahat)} \approxdist \NOR(0,1)$ }
+&& [.201, .498] & [.349, .804]  \\[.5ex]
+\multicolumn{1} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\sigmahat} \approxdist \NOR(0,1)$ }
+&& [.173, .460] & [.309, .751]  \\[2ex]
+%-------------------------
+%-------------------------
+%-------------------------
+\multicolumn{1} {c} {ML Estimate $\rvquanhat_{.1}$}
+&& 13602   & 12910 \\[1ex]
+\multicolumn{1} {c} {Standard Error $ \sehat_{\rvquanhat_{.1}}$}
+&& 1982 & 1667 \\[1ex]
+\multicolumn{1} {l} {Approximate 95\%}\\
+\multicolumn{1} {l} {Confidence Intervals for $\rvquan_{.1}$}
+&&& \\
+\multicolumn{1} {l} {\hspace{1em} Based on the Likelihood}
+&& [9400,     17300] & [9400, 16300]  \\[.5ex]
+\multicolumn{1} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\log(\rvquanhat_{.1})} \approxdist \NOR(0,1)$ }
+&& [10200, 18100] & [10000, 16600]  \\[.5ex]
+%splus lognormal 12910 *exp(1.96*(1667)/12910)=16628
+%splus lognormal 12910 /exp(1.96*(1667)/12910)=10023
+%splus weibull 13602 *exp(1.96*(1982)/13602)=10223
+%splus weibull 13602 /exp(1.96*(1982)/13602)=18098
+\multicolumn{1} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\rvquanhat_{.1}} \approxdist \NOR(0,1)$ }
+&& [9700, 17500] & [9600, 16200]  \\[2ex]
+%-------------------------
+%-------------------------
+%-------------------------
+\multicolumn{1} {c} {ML Estimate $\Fhat(10000)$}
+&& .03908  & .03896 \\[1ex]
+\multicolumn{1} {c} {Standard Error $ \sehat_{\Fhat(10000)}$}
+&& .02480 & .02561 \\[1ex]
+\multicolumn{1} {l} {Approximate 95\%}\\
+\multicolumn{1} {l} {Confidence Intervals for $F(10000)$}
+&&& \\
+\multicolumn{1} {l} {\hspace{1em} Based on the Likelihood}
+&& [.0092, .1136] & [.0085, .1159]  \\[.5ex]
+\multicolumn{1} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\logit(\Fhat)} \approxdist \NOR(0,1)$ }
+&& [.0110, .1292] & [.0105, .1342]  \\[.5ex]
+%splus lognormal .03896-1.96*.02561  = -0.0112356
+%splus lognormal .03896+1.96*.02561  = 0.0891556
+%splus weibull .03908-1.96*.02480  =  -0.009528
+%splus weibull .03908+1.96*.02480  = 0.087688
+\multicolumn{1} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\Fhat} \approxdist \NOR(0,1)$ }
+&& [$-.0095$, .0877] & [$-.0112$, .0892]  \\
+\hline
+\end{tabular}
+\label{table:shockabsB.results}
+\end{table}
+%-------------------------------------------------------------------
+Comparing Figures~\ref{figure:shockabsB.mlep.weib.ps} and
+\ref{figure:shockabsB.mlep.lnor.ps} and
+the estimates of $\rvquan_{.1}$ and $F(10000)$, indicate good
+agreement for inferences from these two distributions {\em within the range
+of the data}. Although Figures~\ref{figure:shockabsB.mlep.weib.ps} and
+\ref{figure:shockabsB.mlep.lnor.ps} suggest a slightly better fit for
+the Weibull distribution, as methods described in
+Section~\ref{section:ml.gen.gamma} show, however, these data
+could reasonably have arisen from either of these two distributions.
+
+In situations like this, one should be cautious about
+making inferences in the tails of the distributions and
+outside the range of the data.
+The estimates there can be importantly
+different {\em and} the
+data do not strongly suggest one model over the other.
+In general, it is useful and important to fit different
+distributions to compare results on questions of interest. 
+\end{example}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Likelihood Confidence Regions and Intervals}
+\label{section:likelihood.based.ci.for.location.scale}
+
+%----------------------------------------------------------------------
+\subsection{Joint confidence regions for $\mu$ and $\sigma$}
+\label{section:joint.ci}
+
+As described in Appendix Section~\ref{section:like.con.regions}, any of the
+constant-likelihood contour lines on
+Figure~\ref{figure:shockabsB.profcont.weib.ps} define an approximate
+joint confidence region for $\mu$ and $\sigma$ that can be accurately
+calibrated, even in moderately small samples (e.g., 15 to 20 failures),
+by using the large-sample $\chi^2$ approximation for the distribution
+of the likelihood-ratio statistic.  For a two-dimensional
+relative likelihood (or two-dimensional profile likelihood), the
+region $R(\theta_{i},\theta_{j}) > \exp[-\chi^{2}_{(1-\alpha;2)}/2]=
+\alpha$ provides an approximate
+$100(1-\alpha)\%$ joint confidence region for $\theta_{i}$ and
+$\theta_{j}$.
+
+\begin{example}
+{\bf Joint confidence region for shock absorber $(\mu,\sigma)$.}
+\label{example:joint.conf.reg.sa}
+In Figure~\ref{figure:shockabsB.profcont.weib.ps}, 
+the region $R(\mu,\sigma) >
+\exp(-\chi^{2}_{(.90;2)}/2)=.1$
+provides an approximate
+90\% joint likelihood-based confidence region for $\mu$ and $\sigma$.
+Figure~\ref{figure:shockabsB.conlevcont.weib.ps}, 
+similar to Figure~\ref{figure:shockabsB.profcont.weib.ps}, 
+plots contours of constant
+values of $100\Pr \{ \chi^{2}_{2} 
+\leq -2 \log[ R (\mu, \sigma)] \}$ giving approximate confidence
+levels corresponding to joint likelihood-based confidence regions for $\mu$
+and $\sigma$.
+\end{example}
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.conlevcont.weib.ps}
+\caption{Weibull likelihood joint confidence
+regions for $\mu$ and $\sigma$ for the shock absorber data.}
+\label{figure:shockabsB.conlevcont.weib.ps}
+\end{figure}
+%-------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------
+\subsection{Individual confidence intervals for $\mu$ and $\sigma$}
+\label{section:lr.ci.ls.par}
+The profile likelihood for a single parameter summarizes the sample
+information for that parameter and provides 
+likelihood confidence intervals.
+
+\subsubsection{Confidence interval for $\mu$}
+
+The profile likelihood for $\mu$ is
+\begin{equation}
+\label{equation:profile.on.mu}
+R(\mu) = \vstack{\max}{\sigma}
+\left[\frac{\like(\mu,\sigma)}
+{\like(\muhat, \sigmahat)}\right].
+\end{equation}
+The interval over which $R(\mu) >
+\exp[-\chi^{2}_{(1-\alpha;1)}/2]$ is an approximate
+$100(1-\alpha) \%$ confidence interval for $\mu$.  The general
+theory for likelihood confidence intervals is given in
+Appendix Section~\ref{section:like.con.regions}.  Intuitively, we want to
+include all values of $\mu$ that have high likelihood. Using
+(\ref{equation:profile.on.mu}), for every
+fixed value of $\mu$, find the point of {\em highest} relative likelihood by
+maximizing the relative
+likelihood with respect to $\sigma$.
+This gives the profile likelihood level for that
+value of $\mu$. Values of $\mu$ with high profile
+likelihood are more plausible than those with lower values of profile
+likelihood.
+\begin{example}
+{\bf Profile likelihood $R(\mu)$ for the shock absorber data.}
+Figure~\ref{figure:shockabsB.weib.muprofile.ps} shows $R(\mu)$ 
+and indicates how to obtain the likelihood-based approximate 95\% 
+confidence interval; the right-hand scale indicates the appropriate
+position for drawing the horizontal line to obtain intervals with
+other levels of confidence. Numerical values of the confidence
+interval endpoints are given in Table~\ref{table:shockabsB.results}, for
+comparison with other intervals that are described later in this chapter.
+\end{example}
+Example~\ref{example:one.sided.lr.exponential}
+shows how to use the profile likelihood to
+obtain one-sided confidence bounds.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.weib.muprofile.ps}
+\caption{Weibull profile likelihood $R(\mu)$ 
+for the shock absorber data.}
+\label{figure:shockabsB.weib.muprofile.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\subsubsection{Confidence interval for $\sigma$}
+The profile likelihood for $\sigma$ is
+\begin{displaymath}
+R(\sigma) = \vstack{\max}{\mu}
+\left[\frac{\like(\mu,\sigma)}
+{\like(\muhat, \sigmahat)}\right].
+\end{displaymath}
+The interval over which $R(\sigma) >
+\exp[-\chi^{2}_{(1-\alpha;1)}/2]$ is an approximate
+$100(1-\alpha) \%$ confidence interval for $\sigma$.
+\begin{example}
+{\bf Profile likelihood $R(\sigma)$ for the shock absorber data.}
+Figure~\ref{figure:shockabsB.weib.sigmaprofile.ps} shows $R(\sigma)$
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.weib.sigmaprofile.ps}
+\caption{Weibull profile likelihood $R(\sigma)$
+for the shock absorber data.}
+\label{figure:shockabsB.weib.sigmaprofile.ps}
+\end{figure}
+%-------------------------------------------------------------------
+and indicates how to obtain the likelihood-based approximate 95\%
+confidence interval.  Table~\ref{table:shockabsB.results} gives
+numerical values.  A corresponding interval for $\beta=1/\sigma$ can
+be obtained by taking the reciprocal of the endpoints of the interval
+for $\sigma$. This interval provides strong evidence that $\sigma < 1$
+(or $\beta > 1$) indicating that the shock absorber population has a
+hazard function that increases with age. This is consistent with the
+suggestion that shock absorbers tend to wear out.
+\end{example}
+
+\subsection{Likelihood confidence intervals for 
+functions of $\mu$ and $\sigma$}
+%----------------------------------------------------------------------
+\label{section:profile.on.functions}
+The parameters for a statistical model are often chosen for
+convenience, by tradition, so that the parameters have scientific
+meaning, or for numerical reasons.  This chapter, for convenience
+and consistency, uses the location and scale parameters $\mu$ and
+$\sigma$ as the basic distribution parameters as these are most 
+commonly used to
+describe location-scale distributions.  
+Interest, however, often centers on
+functions of these parameters like probabilities $p=F(\realrv)=
+\Phi[(\log(t)-\mu)/\sigma]$
+or distribution quantiles like $\rvquan_{p}=F^{-1}(p)=
+\exp \left [\mu+\Phi^{-1}(p)\sigma \right ]$.
+In general, the ML estimator of a function $\gvec(\mu,\sigma)$
+is $\gvechat=\gvec(\muhat,\sigmahat)$. Due to this {\em invariance}
+property of ML estimators, likelihood-based methods can, in
+principle, be applied, as described above, to make inferences about
+such functions.  For any function of interest, this can be done
+by defining a one-to-one transformation (or reparameterization),
+$\gvec(\mu,\sigma)=[g_{1}(\mu,\sigma),g_{2}(\mu,\sigma)]$, that
+contains the function of interest among its elements.  Either of the new
+parameters may be identical to the old ones.  Using this method to
+compute confidence intervals for the elements of $\gvec(\mu,\sigma)$
+requires that the first partial derivatives of $\gvec(\mu,\sigma)$ be
+continuous.  Then ML fitting can be carried out 
+and profile plots can be made for this new
+parameterization in a manner that is the same as that described above
+for $(\mu,\sigma)$. This provides a procedure for obtaining
+ML estimates and likelihood confidence intervals for
+any scalar or vector function of $(\mu,\sigma)$.  If one can readily
+compute $\gvec(\mu,\sigma)$ and its inverse, this method is simple to
+implement.  Otherwise, iterative numerical methods for obtaining the
+inverse are needed, requiring more computing time.
+
+\subsubsection{Confidence interval for $\rvquan_{p}$}
+The profile likelihood for the $p$ quantile $\rvquan_{p}=\exp \left
+[\mu+\Phi^{-1}(p)\sigma \right ]$ is
+\begin{displaymath}
+R(\rvquan_{p}) = \vstack{\max}{\sigma}
+\left[\frac{\like(\rvquan_{p},\sigma)}
+{\like(\muhat, \sigmahat)}\right]
+\end{displaymath}
+where the likelihood under the reparameterized model,
+$\like(\rvquan_{p},\sigma)$, is obtained by substituting
+$\log(\rvquan_{p})-\Phi^{-1}(p)\sigma$ for $\mu$ in the expression
+(\ref{equation:log.location.scale.likelihood}) for $\like(\mu, \sigma)$. 
+
+\begin{example}
+{\bf Profile likelihood for Weibull quantiles from the shock absorber data.}
+Figure~\ref{figure:shockabsB.weib.sc.T.1.conf.profile.ps} shows a
+contour plot for the relative likelihood $R(\rvquan_{.1},\sigma)$.
+The plot gives us an immediate sense of the plausible ranges
+of values for these two quantities.
+In contrast to Figure~\ref{figure:shockabsB.profcont.weib.ps}, the
+orientation of the contours indicates a negative correlation between
+$\rvquanhat_{.1}$ and $\sigmahat$.
+Figure~\ref{figure:shockabsweib.T.1.profile.ps} shows the profile
+likelihood for $\rvquan_{.1}$ with an approximate 95\%
+likelihood-based confidence interval indicated.
+Table~\ref{table:shockabsB.results} gives numerical values.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.weib.sc.T.1.conf.profile.ps}
+\caption{Contour plot of Weibull relative likelihood $R(\rvquan_{.1},\sigma)$ 
+for the shock absorber data (parameterized with $\rvquan_{.1}$ and
+$\sigma$).}
+\label{figure:shockabsB.weib.sc.T.1.conf.profile.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsweib.T.1.profile.ps}
+\caption{Weibull profile likelihood $R(\rvquan_{.1})$ 
+for the shock absorber data.}
+\label{figure:shockabsweib.T.1.profile.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+\subsubsection{Confidence intervals for $F(\estimtime)$}
+
+Likelihood-based confidence intervals for
+$F(\estimtime)$, the population failure probability at
+a specified time
+$\estimtime$, can be found in a similar manner.  In particular, the
+profile likelihood for $F(\estimtime)$ is
+\begin{displaymath}
+R[F(\estimtime)] = \vstack{\max}{\sigma}
+\left\{\frac{\like[F(\estimtime),\sigma]}
+{\like(\muhat, \sigmahat)}\right\}
+\end{displaymath}
+where $\like[F(\estimtime),\sigma]$ for the reparameterized
+model is obtained by substituting
+$\log(\estimtime)-\Phi^{-1}[F(\estimtime)]\sigma$ for $\mu$ in
+the expression (\ref{equation:log.location.scale.likelihood}) for
+$\like(\mu, \sigma)$.
+
+\begin{example}
+{\bf Profile likelihood $R[F(\estimtime)]$ for the shock absorber data.} 
+Figures~\ref{figure:shockabsB.weib.F10k.profile.ps} and
+\ref{figure:shockabsB.weib.F20k.profile.ps} give profile likelihoods
+for $F(10000)$ and $F(20000)$, the probabilities that a shock absorber
+will fail by $\estimtime$=10,000 and $\estimtime=$20,000 kilometers,
+respectively. Note that the profile likelihood for $F(20000)$ is more
+symmetric than the profile likelihood for $F(10000)$. One explanation
+for this is that large-sample approximations (which leads to, among
+other things, approximate symmetry of the likelihood) tend to be worse
+in the tails of the distribution.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.weib.F10k.profile.ps}
+\caption{Weibull profile likelihood
+$R[F(10000)]$ for the shock absorber data.}
+\label{figure:shockabsB.weib.F10k.profile.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.weib.F20k.profile.ps}
+\caption{Weibull profile likelihood
+$R[F(20000)]$ for the shock absorber data.}
+\label{figure:shockabsB.weib.F20k.profile.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Relationship between confidence intervals and significance
+tests} 
+\label{section:two.par.ci.hyp.relat}
+
+As described in Section~\ref{section:one.par.ci.hyp.relat}, there is
+a close relationship between a confidence interval and a hypothesis
+test for a single parameter or other quantity of interest. With two
+or more parameters or other quantities of interest, there is a
+similar close relationship between a confidence region and a joint
+hypothesis test.  This section describes the link between confidence
+intervals, confidence regions, and hypothesis tests for simple
+location-scale distributions.  Corresponding general theory is
+outlined in Appendix Sections~\ref{section:profile.on.theta} and
+\ref{section:like.con.regions}. Application of these methods to
+other models is usually straightforward and various applications are
+described in subsequent chapters.  Although it can still be argued
+that confidence regions are more informative than the yes-no result
+of a hypothesis test, a joint confidence region for more than two
+quantities of interest can be difficult to display and interpret.
+
+Formally, a likelihood ratio test of a hypothesis, for a
+two-parameter model, can be done by comparing the likelihood under
+the null hypothesis with the
+maximum of the likelihood. The point
+null hypothesis $(\mu_{0}, \sigma_{0})$ should be rejected
+if
+\begin{equation}
+\label{equation:lr.test.ls}
+-2\log \left[\frac{\like(\mu_{0},\sigma_{0})}{\like(\muhat,\sigmahat) }\right ] > 
+	\chisquare_{(1-\alpha;2)}
+\end{equation}
+where $(\muhat,\sigmahat)$ is the ML estimate of $(\mu,\sigma)$.
+There are two degrees of freedom for this statistic because there are
+two free parameters in the full model but zero free parameters with
+$\mu_{0}$ and $\sigma_{0}$ fixed; the difference is two.  Then,
+according to the definition given in (\ref{equation:lr.test.ls}), a
+likelihood-ratio-based confidence region is the set of all values of
+$(\mu_{0},\sigma_{0})$ that would not be rejected under the likelihood
+ratio test defined in (\ref{equation:lr.test.ls}).
+
+\begin{example}
+{\bf Likelihood-ratio test for the shock absorber Weibull parameters.}
+Suppose that investigators conducted the shock absorber study to test
+the hypothesis that the data from a new design are consistent with a
+historical Weibull distribution $(\mu_{0}=10.1,\sigma_{0}=.35)$,
+corresponding to extensive past experience with the old design.
+Substituting into (\ref{equation:lr.test.ls}) gives
+\begin{displaymath}
+-2\log \left [\frac{\like(10.1,.35)}{\like(10.23,.3164)} \right] = 2.73
+	< \chisquare_{(.95;2)} = 5.99
+\end{displaymath} 
+%splus  2*(mlest(shockabsB.d,dist="Weibull")$log.likelihood 
+%splus	-mlest(shockabsB.d,dist="Weibull",
+%splus	parameter.fixed =c(T,T),theta.start=c(10.1,.35))$log.likelihood)
+%splus[1] 2.733734
+showing that the data are consistent with the hypothesized values
+at the 5\% level of significance. Note also that
+$(\mu_{0}=10.1,\sigma_{0}=.35)$ lies {\em inside} the 95\% confidence
+region shown in Figure~\ref{figure:shockabsB.conlevcont.weib.ps}. If,
+however, the hypothesized value had been
+$(\mu_{0}=10.0,\sigma_{0}=.5)$, the appropriate conclusion would have been
+that the data do provide sufficient evidence to reject the hypothesis
+at the 1\% (or smaller) level of significance, because
+$(\mu_{0}=10.0,\sigma_{0}=.5)$ does not lie in the 99\% confidence
+region in Figure~\ref{figure:shockabsB.conlevcont.weib.ps}.
+\end{example}
+
+For testing just one parameter (or a single function of
+the two parameters), there is also a correspondence between a subset
+likelihood ratio test and the profile likelihood functions used in
+Sections~\ref{section:lr.ci.ls.par} and
+\ref{section:profile.on.functions}.
+For example we would reject, at the 100$\alpha$\% level of significance,
+the hypothesis that $\sigma=\sigma_{0}$ if
+\begin{equation}
+\label{equation:subset.lr.test.ls}
+-2\log
+\left \{ \vstack{\max}{\mu}
+\left[\frac{\like(\mu,\sigma_{0})}{\like(\muhat,\sigmahat)}\right ]\right \} > 
+	\chisquare_{(1-\alpha;1)}.
+\end{equation}
+In this case there is one degree of freedom because there are
+two free parameters in the full model minus the one free parameter $\mu$
+with $\sigma=\sigma_{0}$ constrained,
+leaving one degree of freedom in the optimization.
+
+
+\begin{example}
+{\bf Likelihood-ratio test for $\sigma$.} Suppose that someone has
+asked whether the shock absorber data are consistent with the
+hypothesis of an exponential distribution (i.e., $\sigma=1$).  This
+hypothesis should be rejected at the 1\% level of significance,
+because, (\ref{equation:subset.lr.test.ls}) yields
+\begin{displaymath}
+-2\log
+\left \{ \vstack{\max}{\mu}  \left [\frac{ \like(\mu,1)}
+{\like(10.23,.3164)} \right ]\right \} = 14.86 > \chisquare_{(.99;1)} = 9.21.
+\end{displaymath} 
+Also note that $\sigma_{0}=1$ is outside the profile likelihood
+region in Figure~\ref{figure:shockabsB.weib.sigmaprofile.ps}.  Thus the
+shock absorber data are not consistent with the exponential
+distribution.
+\end{example}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Normal-Approximation Confidence Intervals}
+\label{section:location.scale.normal.theory.ci}
+Normal-approximation confidence intervals are easy to compute and, at
+present, are used in most commercial statistical packages. Using ML
+estimates of the model parameters and of the variance-covariance
+matrix of the ML estimates, it is possible to compute confidence intervals 
+for parameters
+and functions of parameters with a hand-calculator. The main
+shortcomings of normal-approximation confidence intervals are: (a) they
+have actual coverage probabilities that can be importantly different
+from the nominal specification, unless the number of failures is large and (b)
+unlike the likelihood-based intervals, they depend on the
+transformation used for the parameter, as illustrated in the following
+examples. With moderate-to-large samples they are useful for preliminary 
+confidence intervals, where rapid interactive analysis is important.
+
+Normal-approximation confidence regions are based on a {\em
+quadratic approximation} to the log likelihood and are adequate when
+the log likelihood is approximately quadratic over the confidence
+region. With large samples, under the usual regularity conditions
+(Appendix Section ~\ref{asection:regularity.conditions}) the log likelihood
+is approximately quadratic, and thus the normal-approximation and
+the likelihood-based intervals will be in close agreement. The
+sample size required to have an adequate approximation is not easy
+to characterize because it depends on the model, on the amount of
+censoring and truncation (Section~\ref{section:truncated.data}) and
+on the particular quantity of interest. In some extreme examples,
+with heavy censoring, a sample size $n$ on the order of thousands is
+not sufficient for a good approximation. With censoring, it is
+usually better to describe the adequacy of large-sample
+approximations in terms of the number of failures instead of the
+sample size.  When the quadratic approximation to the log likelihood
+is poor, likelihood-based intervals
+(Section~\ref{section:likelihood.based.ci.for.location.scale}) or
+bootstrap-based intervals (Chapter~\ref{chapter:bootstrap}) should
+be used instead, especially when reporting final results.
+
+\subsection{Parameter variance-covariance matrix}
+\label{section:param.vcv.mat}
+Appendix Section~\ref{asection:ci.wald} describes the general theory for
+computing confidence intervals based on the large-sample approximate
+normal distribution of the ML estimators. These intervals require
+an estimate of the variance-covariance matrix for the ML
+estimates of the model parameters. For the location-scale
+distribution, one computes the {\em local} estimate
+$\vcvmathat_{\thetavechat}$ of $\vcvmat_{\thetavechat}$ as the
+inverse of the {\em observed} information matrix
+\begin{equation}
+\label{equation:ls.local.est.vcv}
+\vcvmathat_{\muhat,\sigmahat}=
+\left[ 
+\begin{array}{ll}
+\varhat(\muhat)& \covhat(\muhat,\sigmahat)\\
+\covhat(\muhat,\sigmahat)& \varhat(\sigmahat)
+\end{array}
+\right]
+=
+\left[ 
+\begin{array}{ll}
+-\frac{\partial ^{2} \loglike(\mu,\sigma)}{\partial \mu^{2} }&
+-\frac{\partial ^{2} \loglike(\mu,\sigma)}{\partial \mu \partial \sigma }\\
+-\frac{\partial ^{2} \loglike(\mu,\sigma)}{\partial \sigma \partial \mu }&
+-\frac{\partial ^{2} \loglike(\mu,\sigma)}{\partial \sigma^{2} }
+\end{array}
+\right]^{-1}
+\end{equation}
+where the partial derivatives are evaluated at $\mu=\muhat$
+and $\sigma=\sigmahat$.
+
+The intuitive motivation for this estimator is a generalization of the 
+likelihood curvature ideas described in
+Section~\ref{section:normal.theory.exponential}. 
+The partial second derivatives describe the curvature 
+of the log likelihood at the ML estimate.
+More curvature in the log likelihood surface implies a more concentrated
+likelihood near
+$\muhat,\sigmahat$, and this implies more precision.
+
+\begin{example}
+\label{example:shockabs.vcv.estimate}
+{\bf Estimate of variance-covariance matrix for the shock absorber
+data Weibull ML estimates.}
+For the shock absorber data and the Weibull distribution model,
+\begin{equation}
+\label{shock.absorber.weibull.vcv}
+\vcvmathat_{\muhat,\sigmahat}=
+\left[ 
+\begin{array}{rr}
+.01208 &.00399\\
+.00399 & .00535
+\end{array}
+\right].
+\end{equation}
+An estimate of the correlation between $\muhat$ and $\sigmahat$
+%splus .00399/sqrt(.01208*.00535) = 0.4963209
+is $\rhohat_{\muhat,\sigmahat}=
+\covhat(\muhat,\sigmahat)/\sqrt{\varhat(\muhat)\varhat(\sigmahat)}=.4963$.
+This positive correlation is reflected in the orientation
+of the likelihood contours in 
+ Figure~\ref{figure:shockabsB.profcont.weib.ps}.
+\end{example}
+
+%-------------------------------------------------------------------
+\subsection{Confidence intervals for model parameters}
+\label{section:ci.ls.param}
+Approximating the distribution of
+$Z_{\muhat}=(\muhat-\mu)/\sehat_{\muhat}$ by a $\NOR(0,1)$ distribution
+yields an approximate $100(1-\alpha)\%$ confidence interval for $\mu$ as
+\begin{equation}
+\label{equation:normal.theory.ci.for.mu}
+ [\undertilde{\mu}, \quad \tilde{\mu}] = 
+\muhat \pm  \norquan_{(1-\alpha/2)}\sehat_{\muhat}.
+\end{equation}
+A one-sided approximate $100(1-\alpha)\%$
+confidence bound can be obtained by replacing
+$\norquan_{(1-\alpha/2)}$ with $\norquan_{(1-\alpha)}$ and using the
+appropriate endpoint of the two-sided confidence interval.
+
+After constructing a confidence interval for a particular parameter
+(or other quantity), it is simple to transform the endpoints of the
+interval to get a confidence interval for the desired monotone
+function of that parameter.  For example, an approximate
+$100(1-\alpha)\%$ confidence interval for $\weibscale=\exp(\mu)$
+(still based on the $Z_{\muhat} \approxdist
+\NOR(0,1)$
+approximation) is
+$ [\undertilde{\weibscale},\quad \tilde{\weibscale}] = 
+	[\exp(\undertilde{\mu}),\quad \exp(\tilde{\mu})]$.
+
+\begin{example}
+\label{example:normal.theory.ci.for.shock.mu}
+{\bf Normal-approximation confidence interval for the shock absorber
+Weibull scale parameter.} For the shock absorber data,
+$\sehat_{\muhat}=\sqrt{.01208}=.1099$ and
+\begin{displaymath}
+ [\undertilde{\mu},\quad \tilde{\mu}] =
+10.23 \pm  1.960 (.1099) = [10.01, \quad 10.45]
+%splus   10.23 - 1.96*.1099
+%splus   10.23 + 1.96*.1099
+\end{displaymath}
+is an approximate 95\% confidence interval for $\mu$.
+From this, the corresponding confidence interval for
+the Weibull scale parameter $\weibscale=\exp(\mu)$ is
+\begin{displaymath}
+ [\undertilde{\weibscale},\quad \tilde{\weibscale}] = 
+	[\exp(\undertilde{\mu}),\quad \exp(\tilde{\mu})]
+% = [\exp(10.01), \quad \exp(10.45)]  %taken out because of roundoff
+=[\text{22,350}, \quad \text{34,386}].
+%splus   exp(10.01) =22247.84  exp(10.23 - 1.96*.1099)=22350.32
+%splus    exp(10.45)=34544.37  exp(10.23 + 1.96*.1099)= 34385.97
+\end{displaymath}
+Note that, due to round off, exponentiating the rounded answers
+10.01 and 10.45 would give somewhat different answers.  Because the
+Weibull scale parameter $\eta$ is approximately the .63 quantile of
+the distribution, this interval tells us that we are (approximately)
+95\% confident that the interval from 22,350 to 34,386 km encloses
+the point in time where 63\% of the population will fail.
+\end{example}
+
+Because $\sigma$ is a positive parameter, it is common practice to
+use the log transformation to obtain a confidence interval.
+Approximating the sampling distribution of
+$Z_{\log(\sigmahat)}=[\log(\sigmahat)-\log(\sigma)]/\sehat_{\log(\sigmahat)}$
+by a $\NOR(0,1)$ distribution, an approximate $100(1-\alpha)$\%
+confidence interval for $\sigma$ is
+\begin{equation}
+\label{equation:normal.theory.ci.for.sigma}
+[ \undertilde{\sigma}, \quad \tilde{\sigma}]=
+[\sigmahat/w, 
+\quad
+\sigmahat \times w]
+\end{equation}
+where $w=\exp[\norquan_{(1-\alpha/2)} \sehat_{\sigmahat}/\sigmahat]$ and 
+$\sehat_{\sigmahat}=\sqrt{\varhat(\sigmahat)}$.
+
+
+\begin{example}
+{\bf Normal-approximation confidence intervals
+for the shock absorber Weibull shape parameter.}
+\label{example:normal.theory.ci.for.shock.sigma}
+For the shock absorber example, 
+$\sehat_{\sigmahat}=\sqrt{.005353}=.07316$
+and an approximate  95\% confidence
+interval for $\sigma$ is
+\begin{displaymath}
+[ \undertilde{\sigma}, \quad \tilde{\sigma}] =
+[.3164/1.5733, \quad
+.3164 \times 1.5733]  = [ .201    , \quad  .498  ]
+% splus  .3164/exp(1.96*(.07316)/.3164)  =  0.2011003
+% splus  .3164*exp(1.96*(.07316)/.3164)  =  0.4978062
+\end{displaymath}
+where $w=\exp[1.960(.07316)/.3164]=1.5733$.
+The corresponding approximate  95\% confidence
+interval for the Weibull shape parameter $\beta=1/\sigma$ is 
+\begin{displaymath}
+[ \undertilde{\beta}, \quad \tilde{\beta}]=
+[ 1/\tilde{\sigma}, \quad 1/\undertilde{\sigma}]
+ = [ 1/.498   , \quad   1/.201   ]
+ = [  2.01   , \quad  4.97   ].
+% splus  1/0.201 =  4.975124 but 1/(.3164/exp(1.96*(.07316)/.3164))=4.972643
+% splus  1/0.498 = 2.009  but  1/(.3164*exp(1.96*(.07316)/.3164))= 2.008814
+\end{displaymath}
+Note that because the reciprocal transformation is {\em decreasing}
+the upper endpoint for $\sigma$ translates into the lower endpoint for
+$\beta$ and vice versa. Both sets of intervals use the approximation
+$Z_{\log(\sigmahat)} \approxdist \NOR(0,1)$.  Note that the interval
+for $\beta$ provides strong evidence that $\beta > 1$, implying an
+increasing hazard function and suggesting wearout behavior for the
+shock absorbers.
+
+
+Comparison in Table~\ref{table:shockabsB.results} shows that the
+confidence interval for $\sigma$ based on the approximation
+$Z_{\log(\sigmahat)} \approxdist \NOR(0,1)$ agrees well with the
+likelihood-based interval, but differs considerably from the
+untransformed normal-approximation interval based on the approximation of
+$Z_{\sigmahat} \approxdist \NOR(0,1)$. This suggests that
+using the log transformation for computing confidence intervals
+for positive parameters like $\sigma$ provides a better procedure.
+\end{example}
+%-------------------------------------------------------------------
+\subsection{Normal-approximation
+confidence intervals for functions of $\mu$ and $\sigma$}
+\label{section:norm.conf.int.for.ls.fun}
+Following the general theory in Appendix
+Section~\ref{asection:ci.wald}, a normal-approximation confidence
+interval for a function of $\mu$ and $\sigma$, say $g_{1}=g_{1}(\mu,
+\sigma)$ can be based on the 
+large sample approximate $\NOR(0,1)$ distribution of
+$Z_{\ghat_{1}}=(\ghat_{1}-g_{1})/\sehat_{\ghat_{1}}$.
+Then an approximate $100(1-\alpha)$\% confidence
+interval for $g_{1}$ is
+\begin{equation} 
+\label{equation:ci.for.function}
+[\undertilde{g_{1}}, \quad \tilde{g}_{1}] =
+\ghat_{1} \pm 	 \norquan_{(1-\alpha/2)} \sehat_{\ghat_{1}}
+\end{equation}
+where, using a special case of (\ref{equation:gcovariance.est}),
+\begin{equation}
+\label{equation:se.for.function}
+\sehat_{\ghat_{1}}=\sqrt{\varhat(\ghat_{1})} =
+\left  [
+\left(\frac{\partial g_{1}}{\partial \mu}\right)^{2}\varhat(\muhat)+
+2\left(\frac{\partial g_{1}}{\partial \mu}\right)
+\left(\frac{\partial g_{1}}{\partial
+\sigma}\right)\covhat(\muhat,\sigmahat)
++\left(\frac{\partial g_{1}}{\partial \sigma}\right)^{2}\varhat(\sigmahat)
+\right ]^{\frac{1}{2}}. 
+\end{equation}
+The partial derivatives in (\ref{equation:se.for.function}) should be
+evaluated at $\mu=\muhat$ and $\sigma=\sigmahat$.  
+
+\subsubsection{Confidence interval for a 
+distribution  quantile $\rvquan_{p}$}
+
+An approximate $100(1-\alpha)\%$ confidence interval for
+$\realrv_{p}=\exp[\mu + \Phi^{-1}(p)\sigma]$ based on the large-sample
+approximate $\NOR(0,1)$ distribution of $Z_{\log(\rvquanhat_{p})}=
+[\log(\rvquanhat_{p})-\log(\rvquan_{p})]/\sehat_{\log(\rvquanhat_{p})}$
+is
+\begin{equation}
+\label{equation:norm.approx.for.quant}
+[ \undertilde{\realrv_{p}},\quad \tilde{\realrv}_{p} ]=
+[\rvquanhat_{p}/w,
+\quad \rvquanhat_{p} \times w]
+\end{equation}
+where $w=\exp[\norquan_{(1-\alpha/2)}\sehat_{\rvquanhat_{p}}/\rvquanhat_{p}]$. 
+Applying (\ref{equation:se.for.function}) gives
+\begin{eqnarray}
+	\sehat_{\rvquanhat_{p}}& =& \sqrt{\varhat(\rvquanhat_{p})} 
+  	=\sqrt{\rvquanhat_{p}^2 \varhat[\log(\rvquanhat_{p})]} \nonumber\\
+	&=& \rvquanhat_{p} \left \{ \varhat(\muhat) + 
+	 2 \Phi^{-1}(p) \covhat(\muhat,\sigmahat) +
+	[\Phi^{-1}(p)]^2 \varhat(\sigmahat) \right\}^{\frac{1}{2}} .
+\label{equation:ls.quant.sehat}
+\end{eqnarray}
+
+\begin{example}
+{\bf Normal-approximation confidence intervals
+for the shock absorber Weibull .1 quantile.}
+The ML estimate for the Weibull distribution .1 quantile is
+\begin{displaymath}
+\rvquanhat_{.1}=
+\exp \left [\muhat+\Phi_{\sev}^{-1}(.1)\sigmahat \right ] =
+\exp[10.23+(-2.2504).3164]=13602
+\end{displaymath} 
+%
+% Splus command for arithmetic T.01:
+% exp(10.23+(-4.600149)*.3164)=6467
+%
+% Splus command for arithmetic T.1:
+% exp(10.23+(log(-log(1-.1)))*.3164)=13602
+%
+and substituting into (\ref{equation:ls.quant.sehat}) gives
+\begin{displaymath}
+\sehat_{\rvquanhat_{.1}}=13602 \left [ .01208+
+2 (-2.2504) (.00399) +(-2.2504)^2 (.005353) \right ] ^ {\frac{1}{2}} = 1982.
+\end{displaymath}
+%
+% Splus command for arithmetic T.01:
+% 6467*(.01208+2 *(-4.600)* (.00399) +(-4.600)^2 * (.005353))^(.5)=1925
+%
+%
+% Splus command for arithmetic T.1:
+% 13602*(.01208+2 *(-2.2504)* (.00399) +(-2.2504)^2 * (.005353))^(.5)=1981.952
+%
+An approximate  95\% confidence
+interval for $\rvquan_{.1}$ based on $Z_{\log(\rvquanhat_{.1})}
+\approxdist \NOR(0,1)$ is
+\begin{displaymath}
+[ \undertilde{\rvquan_{.1}}, \quad \tilde{\rvquan}_{.1} ]=
+[13602/1.3306, \quad
+13602 \times 1.3306 = [\text{10,223}, \quad  \text{18,098}]
+\end{displaymath}
+% Splus command for arithmetic T.1:
+% 13602/exp(1.96*(1982)/13602)=10223
+%
+% Splus command for arithmetic T.1:
+% 13602 *exp(1.96*(1982)/13602)=18098
+%
+where $w=\exp[1.960(1982)/13602]=1.3306$.
+
+Comparison in Table~\ref{table:shockabsB.results}
+suggests that both of the normal-approximation intervals deviate
+in the same direction from the likelihood-based interval.
+This is related to the left-skewed shape of
+$R(\rvquan_{.1})$, as seen in 
+Figure~\ref{figure:shockabsweib.T.1.profile.ps}.
+The log transformation on $\rvquan_{.1}$ 
+does not improve the symmetry of the profile likelihood
+for this example.
+\end{example}
+
+%---------------------
+\subsubsection{Confidence interval for $F(t)$}
+\label{section:ci.for.loc.scale.cdf}
+Let $\estimtime$ be a specified time at which an estimate of
+$F(t)$ is desired.  The ML estimate for $F(\estimtime)$ is
+$\Fhat(\estimtime)=
+	F(\estimtime; \muhat, \sigmahat) =\Phi(\estimtimestdhat)$
+where $\estimtimestdhat=[\log(\estimtime)-\muhat]/\sigmahat$.
+An approximate confidence interval can be obtained from
+\begin{equation}
+\label{equation:ci.for.loc.scale.cdf}
+[\Flower(\estimtime), \quad \Fupper(\estimtime) ] = 
+\Fhat(\estimtime) \pm \norquan_{(1-\alpha/2)} \sehat_{\Fhat} 	 
+\end{equation}
+where  applying (\ref{equation:se.for.function}) gives
+\begin{equation}
+\label{equation:ls.se.fhat}
+	\sehat_{\Fhat}
+	= \frac{  \phi(\estimtimestdhat )  }{\sigmahat} \left[ \varhat(\muhat) + 
+	 2 \estimtimestdhat \covhat(\muhat,\sigmahat) +
+	\estimtimestdhat^2 \varhat(\sigmahat) \right]  ^{\frac{1}{2}} .
+\end{equation}
+The interval in (\ref{equation:ci.for.loc.scale.cdf}) is based on the
+$\NOR(0,1)$ approximation for 
+$Z_{\Fhat} = [ \Fhat(\estimtime)  -F(\estimtime) ] /
+\sehat_{\Fhat}$. With a small to moderate number of failures, however, the
+approximation could be poor; endpoints of the interval might even fall
+outside the range $0 \leq F(\estimtime) \leq 1$.  A confidence interval
+procedure based on a transformation $g_{1}=g_{1}(F)$ would have
+a confidence level closer to the nominal $100(1-\alpha)\%$ if
+$Z_{\ghat_{1}} = ({g_{1}-\ghat_{1}})/\sehat_{\ghat_{1}}$ 
+has a distribution that is closer than $Z_{\Fhat}$ to 
+$\NOR(0,1)$.  Usually $g_{1}$ is a function of
+$F$ chosen such that $g_{1}$ ranges from $(-\infty, \infty)$,
+the same range as the normal distribution.  For estimating
+probabilities, for example, the logit transformation
+\begin{displaymath} 	
+\ghat_{1}= \logit 	 \left [ F(\estimtime;
+\muhat, \sigmahat) \right ] 		= 	\log \left \{
+\frac{F(\estimtime;\muhat, \sigmahat)} 	 {1-F(\estimtime; \muhat,
+\sigmahat)} \right \}  	 
+\end{displaymath} 
+does this.  Then we find a 
+confidence interval for $\logit(F)$ and transform the
+endpoints of this interval to obtain a confidence
+interval based on the approximate normal distribution of
+$Z_{\logit(\Fhat)}$.  Using the
+inverse logit transformation gives the $100(1-\alpha)\%$ confidence
+interval for $F(\estimtime)$ as
+\begin{equation}
+\label{equation:normal.theory.ci.on.cdf}
+	  [ \Flower(\estimtime), \quad	\Fupper(\estimtime) ] = 
+	\left[\frac{\Fhat}{\Fhat
+	+(1-\Fhat) \times w}, \quad \frac{\Fhat}{\Fhat+
+	(1-\Fhat)/w}\right]
+\end{equation}
+where
+$w=\exp\{(\norquan_{(1-\alpha/2)}
+	\sehat_{\Fhat})/[\Fhat(1-\Fhat)]\}$.
+The endpoints of this interval will always be between $0$ and $1$.
+\begin{example}
+{\bf Normal-approximation confidence interval for $F(t)$ for the Weibull
+ distribution fit to shock absorber data.} 
+Table~\ref{table:shockabsB.results} gives
+normal-approximation confidence intervals for $F(\estimtime)$ for
+$\estimtime=$10,000 km based on $Z_{\logit(\Fhat)}$ and
+$Z_{\Fhat}$ following, approximately, $\NOR(0,1)$
+distributions.  Comparison shows that the interval
+from (\ref{equation:normal.theory.ci.on.cdf}) agrees well
+with the likelihood-based interval, but the
+interval from (\ref{equation:ci.for.loc.scale.cdf})
+has a negative lower endpoint, a clear indication
+of an inadequate approximation.
+\end{example}
+%---------------------
+\subsubsection{Confidence interval 
+for the hazard function $h(\realrv)$}
+\label{section:locscale.hazard.normal}
+
+Let $\estimtime$ be a specified point in time at which an estimate of
+the hazard function $h$ is desired.  The ML estimate for
+$h(\estimtime)$ is 
+\begin{displaymath}
+\hhat(\estimtime)=h(\estimtime; \muhat, \sigmahat) =
+	\frac{\phi(\estimtimestdhat)}{\estimtime 
+	\sigmahat [1-\Phi(\estimtimestdhat)]}
+\end{displaymath}
+where $\estimtimestdhat=[\log(\estimtime)-\muhat]/\sigmahat$.
+Following Section~\ref{section:norm.conf.int.for.ls.fun}, an
+approximate 100$(1-\alpha)\%$  confidence interval based on the
+$\NOR(0,1)$ large-sample approximation to the distribution of
+$Z_{\log(\hhat)}=\{\log[\hhat(\estimtime)]-\log[h(\estimtime)]\}/\sehat_{\log(\hhat)}$
+is
+\begin{equation}
+\label{equation:locscale.hazard.normal}
+[ \undertilde{h}(\estimtime),\quad \tilde{h}(\estimtime) ]=
+[\hhat(\estimtime)/w, \quad \hhat(\estimtime) \times w]
+\end{equation}
+where $w=\exp[\norquan_{(1-\alpha/2)}
+\sehat_{\hhat}/\hhat(\estimtime)]$
+and $\sehat_{\hhat}$ can be obtained by using
+(\ref{equation:se.for.function}).
+\begin{example}
+{\bf Weibull hazard function estimate for the shock absorber data.}
+Figure~\ref{figure:shockabsB.weib.haz.ps} shows the ML estimate and a
+set of pointwise approximate 95\% confidence intervals for the Weibull
+hazard function, computed from the shock absorber data.  In this
+example, $\betahat>1$ ($\sigmahat<1$) so $h(t)$ is increasing.  Note that
+the Weibull $h(t)$ is always linear on log-log axes.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.weib.haz.ps}
+\caption{ML estimate and pointwise normal-approximation 95\% confidence
+intervals for the Weibull hazard function for the shock absorber data.}
+\label{figure:shockabsB.weib.haz.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+
+%----------------------------------------------------------------------
+\subsection{Improved normal-approximation confidence intervals}
+\label{section:improved.norm.ls}
+As mentioned in Section~\ref{section:exponential.ci.comparison}, the
+normal-approximation intervals like those in
+(\ref{equation:normal.theory.ci.for.mu}) can be improved slightly by
+using $\Tquant_{(p;\nu)}$ instead of $z_{(p)}$.  Corresponding to
+the well-know procedure of constructing a confidence interval for
+the mean of a normal distribution, with complete data (no
+censoring), confidence intervals with exact coverage probabilities
+are available for the mean (median) of a normal (lognormal)
+distribution.  Such intervals are obtained by using
+$\Tquant_{(p;\nu)}$ instead of $z_{(p)}$ and substituting
+$[n/(n-1)]^{1/2}\se_{\muhat}$ for $\se_{\muhat}$ in
+(\ref{equation:normal.theory.ci.for.mu}).  When there is no
+censoring, exact intervals are also available for normal/lognormal
+distribution quantiles, using the noncentral-$t$ distribution (see,
+for example, Chapter 4 of Hahn and Meeker~(1991) or Table 3 in Odeh
+and Owen 1980).  It is, in fact, possible to obtain exact confidence
+intervals for any location-scale or log-location-scale distribution
+parameters or quantiles with complete data or Type~II censoring.
+General tables for the factors to replace the normal-approximation
+$z_{(p)}$ are not generally available (see Robinson~1983 for
+references to limited tables that are available).  Procedures
+described in Chapter~\ref{chapter:bootstrap} can, however, be used
+to compute such factors with simulation.
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Estimation with $\sigma$ Given}
+\label{section:sigma.known}
+When such information is available, one may use a given value for $\sigma$
+(or $\beta=1/\sigma$ for the Weibull distribution) instead of
+estimating $\sigma$. The
+effect is to provide considerably more precision from limited
+data. The danger is the given value of $\sigma$ may be seriously 
+incorrect, resulting in misleading conclusions.
+
+%----------------------------------------------------------------------
+\subsection{Lognormal/normal distribution with $\sigma$ given}
+\label{section:known.sigma.inference}
+For the normal/lognormal distribution with given $\sigma$ and when
+there is no censoring $\loglike(\mu)$ will be quadratic in $\mu$
+(which implies that $\like(\mu)$ will have the shape of a normal 
+density).  This may be approximately so for other distributions
+under certain regularity conditions (see
+Appendix Section~\ref{asection:regularity.conditions}) and large samples.
+When there is censoring, the $L(\mu)$ is no longer exactly 
+quadratic. Also, there is no closed-form solution to find the ML
+estimates for $\mu$ and iterative methods are
+required to compute the ML estimate $\muhat$.
+
+%---------------------------------------------------------------------
+\subsection{Weibull/smallest extreme value distribution with given $\sigma$}
+With a given value of $\sigma=1/\beta$ it is possible to transform
+Weibull random variables to exponential random variables and to use
+the simpler methods for this distribution. If $\rv_{1},\ldots,
+\rv_{n}$ have a Weibull distribution with shape parameter
+$\beta=1/\sigma$ and scale parameter $\weibscale=\exp(\mu)$, then
+$\rv_{1}^{\beta},\ldots, \rv_{n}^{\beta}$ have an exponential
+distribution with mean $\expmean=\weibscale^{\beta}$.
+
+In simple situations, the available data consist of a sample of $n$
+observations $\realrv_{1},\ldots,\realrv_{n}$ of which $r$ are exact
+failure times and $n-r$ are the running times of unfailed
+units. From this is follows, as an extension of
+(\ref{equation:exp.exact.ml}) in
+Section~\ref{section:exponential.density.approx.mle}, that the
+maximum likelihood estimate of the Weibull scale parameter, for
+fixed $\sigma=1/\beta$, is
+\begin{equation}
+\label{equation:weibull.known.shape.exact.ml}
+\weibscalehat=\left(\frac{\sum_{i=1}^{n}\realrv_{i}^{\beta}}{r} 
+	\right )^{\frac{1}{\beta}}.
+\end{equation}
+An estimate of the standard error of $\weibscalehat$ is
+\begin{equation}
+\label{equation:weibull.known.shape.exact.ml.se}
+\sehat_{\weibscalehat} = \frac{\weibscalehat}{\beta}\sqrt{\frac{1}{r}}.
+\end{equation}
+
+It is interesting to note here that the ML estimate and its standard
+error can be computed without knowing which of the $\realrv_{i}$
+correspond to failure times and which correspond to running times.
+Data of this kind arise commonly, for example, when the service times
+of individual units that fail are not known, but when there is knowledge, 
+generally, of the total service time
+of all of the units in the field. Without a given value for $\beta$,
+such data are of limited value for estimating
+the failure-time distribution.
+
+The simple formulas in (\ref{equation:weibull.known.shape.exact.ml})
+and (\ref{equation:weibull.known.shape.exact.ml.se}) hold only for
+combinations of
+right censoring and observations reported as exact failures.  For
+other kinds of data, there are still useful gains in precision
+from using a given value of $\beta$, but
+iterative methods are, in general, needed to compute the ML estimates
+and standard errors. See Nelson~(1985) for justification of these
+methods and another example.
+
+
+\begin{example}
+\label{example:bearing.cage}
+{\bf Bearing-cage field data.} Appendix
+Table~\ref{atable:bcage.data} gives bearing-cage fracture times for
+6 failed units as well as running times for 1697 units that had
+accumulated various amounts of service time without failing.  The
+data and an analysis appear in Abernethy, Breneman, Medlin, and
+Reinman~(1983).
+%-------------------------------------------------------------------
+\begin{sidewaysfigure}
+\splusbookfiguresize{\figurehome/bcage.fix.beta.ps}{7.5in}
+\caption{Weibull probability plots of the bearing-cage fracture data
+with Weibull ML estimates and sets of 95\% pointwise confidence
+intervals for $F(\estimtime)$ with estimated
+$\sigmahat=1/\betahat=.491$, and given values $\beta$= 1.5,
+2, and 3.}
+\label{figure:bcage.fix.beta.ps}
+\end{sidewaysfigure}
+These data represent a population of units that had been introduced
+into service over time. There were concerns about the adequacy of the
+bearing-cage design.  Analysts wanted to use these initial data to
+decide if a redesign would be needed to meet the design-life
+specification.  This requirement was that $\rvquan_{.1}$ (referred to
+as B10 in some references) be at least 8000 hours.  Management also
+wanted to know how many additional failures could be expected in the
+next year from the population of units currently in service. This
+second issue will be explored in Chapter~\ref{chapter:prediction}.
+
+Figure~\ref{figure:bcage.fix.beta.ps} shows four Weibull probability
+plots with different superimposed fitted Weibull distributions (solid
+lines) and approximate 95\% normal-approximation pointwise confidence
+intervals (dotted lines).  In the NW corner is a fitted Weibull
+distribution in which the shape parameter $\beta$ was estimated. In
+the other three plots, the Weibull shape parameter was fixed at a
+specified value ($\beta=$1.5, 2, and 3). The ML estimate of $\beta$ is
+2.035 while the ML estimate of $\rvquan_{.1}$ is 3903 hours
+(considerably below the design life of 8000 hours). A 95\% likelihood
+confidence interval for $\rvquan_{.1}$ is [2,093,\quad 22,144] hours,
+indicating that the design life {\em might} be much more than 8000
+hours.  The poor precision (wide interval) is due to the small number
+of failures.
+
+Using a given value of $\beta$ provides much more precision. There is,
+however, some risk
+that the given $\beta$ is seriously incorrect, which could lead to  
+seriously incorrect conclusions.
+For example, using $\beta=1.5$ results in a
+much more optimistic estimate of bearing cage reliability. Using
+$\beta$=2 or 3, however, gives a strong indication that the design
+life requirement had not been met.
+\end{example}
+
+The most striking conclusion from the previous example, and true in
+general, is the higher degree of precision obtained by using a given
+Weibull shape parameter $\beta$, especially outside the range of the
+data. Estimation of $\rvquan_{.1}$ required extrapolating from the
+proportion .055 (the maximum value of the nonparametric estimate)
+out to .1 (not an unreasonable amount of extrapolation for this kind
+of application).  When there has been much accumulated experience
+with a product and its particular failure mode (or modes), it may be
+possible to safely use a particular given value for the Weibull
+shape parameter for analysis and decision making.  Generally it is a
+good idea to use a plausible range of values, as shown in
+Figure~\ref{figure:bcage.fix.beta.ps}.  If the range of plausible
+$\beta$ values is close to that suggested by the data themselves,
+(as in the example) then the combined uncertainties will be
+approximately the same as reflected in the confidence intervals of
+the $\beta$-estimated model. If the given value of $\beta$ is closer
+to the true $\beta$ than is $\betahat$, then it is possible to
+achieve important increases in precision using the given value of
+$\beta$.
+
+Chapter~\ref{chapter:singledist.bayes} describes Bayesian methods of
+data analysis that will allow a more formal method of incorporating
+prior uncertain knowledge about parameters, such as $\beta$, into an analysis.
+
+%----------------------------------------------------------------------
+\subsection{Weibull/smallest extreme value distribution with 
+given $\beta=1/\sigma$ and zero failures} 
+\label{section:weib.zero.fail}
+ML estimates for the Weibull distribution cannot be computed unless
+the available data contain
+one or more failures. Section~\ref{section:expon.zero.fail}, however,
+showed how to compute a {\em lower} confidence bound on the
+exponential distribution mean when there are no
+failures. The resulting precision
+may be poor, but still useful for some practical
+purposes. With a given  Weibull shape parameter, the
+same ideas can be used to obtain a lower confidence bound on the
+Weibull scale parameter $\weibscale$ [or correspondingly, the $\SEV$
+location parameter $\mu=\log(\weibscale)]$.  
+
+For a sample of $n$ units on test with running times
+$\realrv_{1},\dots,\realrv_{n}$ and no failures, a conservative
+$100(1-\alpha)$\% lower confidence bound for $\weibscale$ is
+\begin{equation}
+\label{equation:zero.failures.weib.ci}
+\undertilde{\weibscale} = \left( \frac{2 \sum_{i=1}^{n} \realrv_{i}^{\beta}}{
+\chisquare_{(1-\alpha;2)}} \right)^{\frac{1}{\beta}}
+= \left( \frac{ \sum_{i=1}^{n} \realrv_{i}^{\beta}} { -\log(\alpha)} \right)^{\frac{1}{\beta}}
+\end{equation}
+because $ \chisquare_{(1-\alpha;2)} = - 2 \log(\alpha) $.
+As in Section~\ref{section:expon.zero.fail}, this bound is based on
+the fact that, under the exponential distribution,
+with immediate replacement of failed units, the number of
+failures observed in a life test with a fixed total time on test
+has a Poisson distribution.
+
+As described in Sections~\ref{section:one.par.ci.functions} and
+\ref{section:expon.zero.fail}, 
+$\undertilde{\weibscale}$ can be translated into a
+lower confidence bound for increasing functions of $\weibscale$ like
+$\rvquan_{p}$ for specified $p$.  Similarly, $\undertilde{\weibscale}$
+can be translated into an {\em upper} confidence bound for decreasing
+functions of $\weibscale$ like $F(\estimtime)$ for a specified
+$\estimtime$. Precision is a function of $\sum_{i=1}^{n}
+\realrv_{i}^{\beta}$.  Unless there are many large $\realrv_{i}$ values,
+the resulting confidence bound may be largely uninformative.  See
+Nelson~(1985) for justification and further discussion of this method.
+%-------------------------------------------------------------------
+\begin{table}
+\caption{Early production failure-free running times for Component-B.}
+\centering\small
+\begin{tabular}{lrrrrrrrr}
+\\[-.5ex]
+\hline
+Hours: & 500&1000&1500&2000&2500&3000&3500&4000\\
+\hline
+Number of Units: &  10 & 12 &  8&  9 &  7 &  9 &  6 &  3 \\
+\hline
+\end{tabular}\\
+\begin{minipage}[t]{4in}
+Staggered entry data, with no reported failures.
+\end{minipage}
+\label{table:component.a.results}
+\end{table}
+\begin{example}
+{\bf Determination of component safe-life.} 
+A metal component in a ship's propulsion system (which we will refer
+to as Component-B) is known to fail from fatigue-caused fracture after
+some period of time in service. To minimize the probability of
+unscheduled downtime, the component is usually replaced
+during certain scheduled (for other purposes) preventive
+maintenance.  Because of persistent reliability
+problems, the component was redesigned to have a longer service
+life.  Previous experience with this and other components using the
+same alloy and similar designs suggests that the Weibull shape parameter
+is near $\beta=2$, and almost certainly between 1.5 and 2.5.  A
+number of the newly designed components were put into service
+during the past year. No failures have been reported with the new
+design. The service engineers asked that the data be
+used to assess whether the replacement age might be increased
+from 2000 hours to 4000 hours.  The running times of the in-service
+components are given in Table~\ref{table:component.a.results}.
+Using a fixed value $\beta=2$, 
+an approximate 95\% lower confidence bound on $\weibscale$ is
+\begin{displaymath}
+\undertilde{\weibscale} = \left( \frac{2 \sum_{i=1}^{n} t_{i}^{2}}{
+		\chisquare_{(.95;2)}}\right) ^{\frac{1}{2}}=
+	\left( \frac{2 \times (10\times 500^{2}+\dots+3 \times 4000^{2})}{5.99}\right)^{\frac{1}{2}} =
+	\left( \frac{2 \times 314750000}{5.99}\right) ^{\frac{1}{2}} = 10250.
+\end{displaymath}
+%splus sqrt(2 * 314750000/5.99)= 10251.43
+As described in Section~\ref{section:exp.ci.f}, because there is only
+one unknown parameter in this problem, $\undertilde{\weibscale}$ and
+the given $\beta$ can be substituted into the Weibull cdf to provide
+simultaneous upper confidence bounds on the entire cdf (or quantile
+function).  This is illustrated in
+Figure~\ref{figure:comp.a.zero.fail.ps}. In particular, for $\beta=2$,
+an upper confidence bound on the probability of failure before $4000$
+hours is obtained by substituting $\undertilde{\weibscale}$ into
+(\ref{equation:weibull.cdf}) giving $\Fupper(4000) =
+1-\exp[-(4000/10250)^{2}]=.141$.  Also shown in this figure are
+similar lines drawn for the upper bounds corresponding to given values
+of $\beta=$1.5 and 2.5. This provides sensitivity analysis with
+respect to the uncertainty in $\beta$.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/comp.a.zero.fail.ps}
+\caption{Weibull distribution 95\% upper confidence bounds on $F(t)$
+for Component-B with different fixed values for the Weibull shape parameter.}
+\label{figure:comp.a.zero.fail.ps}
+\end{figure}
+
+The conclusion from the confidence bounds is that the redesigned
+component may well have improved the life distribution enough to
+extend the replacement interval to 4000 hours.  There is not, however,
+sufficient evidence to demonstrate this level of improvement.  The
+probability of failure could be as small as $0$ or (using the
+pessimistic $\beta=2.5$) as large as $\Fupper(4000) =
+1-\exp[-(4000/7925)^{2.5}]=.166$ because
+$\undertilde{\weibscale}=7925$ for $\beta=2.5$.
+% splus> 1-exp(-(4000/7925)^(2.5)) = 0.1655553
+\end{example}
+
+
+\section*{Bibliographic Notes}
+
+Escobar and Meeker~(1992) give the partial derivatives of the log
+likelihood needed in (\ref{equation:ls.local.est.vcv}) for location
+scale distributions for observations reported as exact failure as well
+as right-, left-, and interval-censored observations. These expressions
+are useful for computing estimates of variance-covariance matrices
+like that shown in (\ref{equation:ls.local.est.vcv}).
+
+Ostrouchov and Meeker~(1988) compare normal-approximation and
+likelihood confidence intervals for Weibull distribution parameters
+and percentiles. They show that likelihood intervals provide actual
+coverage probabilities that are closer to nominal confidence levels
+when there is a small to moderate number of failures in the sample.
+Doganaksoy~(1995) and Doganaksoy and Schmee~(1993) describe the
+advantages of likelihood confidence intervals and show that certain
+corrected likelihood intervals can provide important improvements in
+confidence level accuracy when the number of failures is small (say
+less than 10).  Meeker and Escobar~(1995) compare likelihood and
+normal-approximation confidence intervals (also see
+Exercise~\ref{exercise:from.me95}).
+
+Cheng and Iles~(1983, 1988) provide simultaneous confidence bands
+for $F(t)$ for complete data from a Weibull or lognormal distribution.
+Escobar and Meeker~(1998b) provide extensions and related technical results.
+\section*{Exercises}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+Use the ball bearing data from
+Exercise~\ref{exercise:bbear.nonpar.probplot} to do the following.
+\begin{enumerate}
+\item
+\label{exer.part:parametric.lognormal}
+Fit a lognormal distribution to the data. To facilitate the
+computations, use the following  summary of the 
+data,
+\begin{displaymath}
+\sum_{i=1}^{23} y_{i}=95.46,
+\quad
+\sum_{i=1}^{23} \left (y_{i} -\bar{y}
+	        \right )^{2}=6.26
+\end{displaymath}
+where $y_{i}=\log(\realrv_{i})$ and $\bar{y}=\sum_{i=1}^{23} y_{i}/23$.
+Plot the fitted lognormal distribution along with the nonparametric estimate
+on lognormal probability plot paper like that used in
+Exercise~\ref{exercise:bbear.nonpar.probplot}\ref{exer.part:lnormal.prob.plot}.
+\item
+A computer program gives the following ML estimates for 
+a Weibull distribution, $\muhat=4.41$, $\sigmahat=0.476$. 
+Do the same as in 
+\ref{exer.part:parametric.lognormal} but for the Weibull distribution.
+\item
+Comment on the adequacy of the lognormal and Weibull distributions
+to fit these data. 
+\end{enumerate}
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:heatex.comp}
+Use the heat exchanger tube crack data in
+Figure~\ref{figure:heatex.stime.datafig.ps} to do the following:
+     \begin{enumerate}
+\item
+Fit an exponential distribution to the data.
+(Note that this could be done 
+by fitting a Weibull distribution with
+$\beta$
+constrained to be 1.)
+\item
+Fit a Weibull distribution to the  data.
+\item
+Compare the values of the log likelihood from the two different
+distributions. How do they compare and what does this suggest?
+\end{enumerate}
+\end{exercise}
+%------------------------------------------------------------------------
+%------------------------------------------------------------------------
+\begin{exercise}
+Refer to Exercise~\ref{exercise:heatex.comp} and use the fitted
+Weibull and exponential distributions to do a likelihood ratio test to
+see if the data are consistent with a Weibull shape parameter
+$\beta=1$.  What is the implication of this hypothesis and what is
+your conclusion?
+\end{exercise}
+
+%------------------------------------------------------------------------
+%------------------------------------------------------------------------
+\begin{exercise}
+Refer to Exercise~\ref{exercise:heatex.comp} and use the Weibull distribution to:
+     \begin{enumerate}
+\item
+Compute an approximate 95\% confidence interval 
+for $F(2)$, the proportion of cracked tubes
+after
+2 years of service, based on
+$Z_{\Fhat(2)} \approxdist \NOR(0,1)$.
+\item
+Compute an approximate 95\% confidence interval 
+for $F(2)$, 
+based on $Z_{\logit[\Fhat(2)]}
+\approxdist \NOR(0,1)$.
+\item
+Explain why you might prefer to report one of these intervals over the other.
+\end{enumerate}
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+Return to the fatigue crack-initiation test in
+Exercise~\ref{exercise:fatigue.experiment}.
+Fit a Weibull distribution
+with a given shape parameter $\beta=2$. 
+\begin{enumerate}
+\item 
+Compute the ML estimate of $\eta$. What is the {\em practical}
+interpretation of
+this estimate?
+\item
+Obtain the estimate $\sehat_{\etahat}$.
+\item
+Compute a conservative 95\% confidence interval for $\eta$.
+\item
+Plot the Weibull estimate of $F(\realrv)$ along with the
+nonparametric estimate. Comment on the adequacy of the Weibull distribution to 
+describe the data.
+\item
+What is an estimate of the $.1$ quantile of the time-to-initiation
+distribution?
+\item
+Compute a conservative 95\% confidence interval for the $.1$ quantile of the time-to-initiation
+distribution.
+\end{enumerate}
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+Suppose that $\ghat$ is the ML estimate of a quantity $g$, and that 
+$\sehat_{\ghat}$ is an estimated
+standard error. Show that a confidence interval for
+$g$, based on 
+$Z_{\log(\ghat)}=[\log(\ghat) - \log(g)]/\sehat_{\log(\ghat)} \approxdist
+\NOR(0,1)$ has the form
+$
+[ \undertilde{g}, \quad \tilde{g}]=
+[\ghat/w, \quad 
+\ghat \times w]
+$
+where $w=\exp[\norquan_{(1-\alpha/2)} \sehat_{\ghat}  /\ghat]$.
+\end{exercise}
+
+
+%------------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:ic.sing.alt}
+A particular type of integrated circuit (IC) is known to have an
+electromigration-related failure mode. A life test was conducted at
+a temperature of $120\degreesc$ in order to learn more about the life
+distribution and when failures might be expected to occur. A total
+of 20 ICs were tested and 5 failed before 500 hours, when the test
+was stopped. Failure times were at 252, 315, 369, 403, and 474
+hours. ML estimates of the lognormal parameters are $\muhat=6.56$
+and $\sigmahat=.534$. The variance-covariance matrix estimate for
+$\muhat$ and $\sigmahat$ is
+\begin{displaymath}
+\vcvmathat_{\muhat,\sigmahat}=
+\left[ 
+\begin{array}{rr}
+.0581 &.0374\\
+.0374 & .0405
+\end{array}
+\right].
+\end{displaymath}
+Recall that $\exp(\muhat)=\exp(6.56)=706$ hours  is the ML estimate of
+the lognormal median.
+\begin{enumerate}
+\item
+\label{exer.part:ic.sing.lnpp}
+Make a lognormal probability plot of the failure data.
+\item
+Compute ML estimates of the lognormal $F(200)$ and $F(1000)$ and use
+these to draw a line representing the lognormal estimate of
+$F(t)$.
+\item
+Use $\muhat$ and $\sigmahat$ to compute an estimate of the mean of
+the lognormal distribution (equation given in
+Section~\ref{section:lognormal.distribution.def}).  Compare this
+with the estimate of the lognormal median. Comment on the
+difference.
+\item
+Compute $\rvquanhat_{.1}$, the ML estimate of 
+the .1 quantile of the life distribution.
+\item
+Compute the standard error for $\rvquanhat_{.1}$. Explain the
+interpretation
+of this quantity.
+\item
+Compute an approximate 95\% confidence interval for $t_{.1}$.  
+Include this interval in the plot in
+part~\ref{exer.part:ic.sing.lnpp}.
+Explain
+the interpretation of this interval and the justification for the
+approximate method that you use.
+\end{enumerate}
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:weib.bulb}
+A life test was run on 20 prototype high-power RF transmitting tubes.
+In order to obtain tube life information more quickly, the tubes were
+tested at higher than usual levels of voltage.  The tubes were tested
+simultaneously until failure or until 1.50 thousand hours. Failures
+were observed at .82, .99, 1.06, 1.08, 1.24, 1.39, 1.40 thousand
+hours.  The other 13 tubes ran until 1.5 thousand hours without
+failure.  Based on experience with life tests on similar products, the
+engineers believe that the Weibull shape parameter is $\beta=3$. Do
+the following with $\beta$ fixed at at this value.
+\begin{enumerate}
+\item
+\label{exer.part:hprf.probplot}
+Make a Weibull probability plot of these data. Determine if the
+data are consistent with the specified value of $\beta$.
+\item
+Compute the ML estimate of the Weibull scale parameter $\eta$.
+Compute and graph the ML estimate of $F(t)$ on the probability plot
+constructed in part~\ref{exer.part:hprf.probplot}.
+\item
+Compute a 95\% confidence interval for $\eta$.
+What is the practical interpretation of this interval?
+\item
+\label{exer.pt:weib.bulb}
+Compute the ML estimate and a 95\% confidence interval for
+$F(\realrv)$ at $1000$ hours.
+\item
+Explain the interpretation of the confidence interval from
+part~\ref{exer.pt:weib.bulb}.
+\end{enumerate}
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+Redo Exercise~\ref{exercise:weib.bulb}, but use 
+$\beta=2$. Comment on the differences in the results and the potential
+effect of using an incorrect value of $\beta=3$,
+if the actual Weibull shape parameter is $\beta=2$.
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+Refer to Exercise~\ref{exercise:elec.sys}. Suppose
+now that failure analysis and previous experience suggests that
+Component-A life
+can be modeled adequately with a Weibull failure-time distribution.
+\begin{enumerate}
+\item
+Compute and plot the ML estimate of $F(t)$ with a Weibull 
+distribution using given $\beta=3$.
+\item
+Compute and plot the ML estimate of $F(t)$ with a Weibull
+distribution using given $\beta=.33$.
+\item
+Compute and plot the Weibull $\Fhat(t)$ and pointwise $95\%$
+confidence intervals, estimating $\beta$ from the data.
+\item
+Compare the plots constructed above. Use these plots and
+describe the consequences of using a seriously incorrect value of
+$\beta$.
+\end{enumerate}
+\end{exercise}
+
+%------------------------------------------------------------------------
+%------------------------------------------------------------------------
+\begin{exercise}
+Use the diesel locomotive fan failure data in
+Appendix Table~\ref{atable:fan.data} to do the following:
+\begin{enumerate}
+\item 
+Fit an exponential distribution to the fan data.  
+\item
+Fit a Weibull distribution to the fan data.  
+\item 
+Do a
+likelihood ratio test that the Weibull
+shape parameter is equal to 1. How would the conclusion affect
+fan replacement policy?  
+\item 
+Compute an approximate 95\% confidence interval for $\rvquan_{.1}$,
+the time at which 10\% of the fan population will fail, based
+on $Z_{\rvquanhat_{.1}}
+\approxdist \NOR(0,1)$.  
+\item 
+Compute an approximate 95\% confidence interval for $\rvquan_{.1}$,
+based on $Z_{\log(\rvquanhat_{.1})}
+\approxdist \NOR(0,1)$.
+\end{enumerate}
+\end{exercise}
+
+
+%------------------------------------------------------------------------
+\begin{exercise}
+Nelson~(1982, page 529) analyzes failure data to compare two
+different snubber designs (a snubber is a component in a toaster).  The data
+are in Appendix Table~\ref{atable:snubber.data}.
+\begin{enumerate}
+\item  
+Use
+probability plots and maximum likelihood fits  to assess the
+adequacy of different parametric distributions for the data from the
+old design.
+\item  
+Analyze the new-design data in the same way to assess
+if there is evidence that the distributions differ.
+Section~\ref{section:product.comparison} describes analytical
+methods for such comparisons.
+\end{enumerate}
+\end{exercise}
+
+
+%------------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:weibull.likelihood}
+Consider a sample of $n$ observations with 
+$t_{1}$, \ldots, $t_{r}$ reported as exact failure times (suppose that
+$2 \leq r \leq n$) and $n-r$ observations censored at a common time 
+$\censortime$. Provide a simple expression for the Weibull log likelihood 
+in the $\weibscale=\exp(\mu)$ and $\beta=1/\sigma$ parameterization.
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise1}
+Refer to Exercise~\ref{exercise:weibull.likelihood}. 
+\begin{enumerate}
+\item
+Derive an expression for the ML estimate of the Weibull distribution
+parameter $\weibscale$ with right censoring at time $\censortime$,
+for a given value of $\weibscale$.
+\item
+Explain how Weibull ML methods, when the shape parameter is given,
+are related to inference for the exponential distribution.
+\end{enumerate}
+\end{exercise1}
+
+%------------------------------------------------------------------------
+\begin{exercise1}
+Refer to Exercise~\ref{exercise:weibull.likelihood}. 
+\begin{enumerate}
+\item
+Take partial derivatives of the likelihood with respect to 
+$\beta$ and $\eta$.
+\item
+Show that the Weibull ML estimates can be obtained by solving the
+following two equations:
+\begin{displaymath}
+\label{exercise:part.wieq}
+\left[ \frac{
+\sum_{i=1}^{r} \realrv_{i}^{\beta} \log(\realrv_{i}) +
+(n-r)\censortime^{\beta}\log(\censortime)} {\sum_{i=1}^{r}
+\realrv_{i}^{\beta} + (n-r) \censortime^{\beta} } - \frac{1}{\beta}
+\right] - \frac{1}{r} \sum_{i=1}^{r} \log(\realrv_{i}) =0
+\end{displaymath}
+\begin{displaymath}
+\weibscale^\beta = \frac{1}{r} \left[ \sum_{i=1}^{r} \realrv_{i}^{\beta} +
+(n-r) \censortime^{\beta}
+\right] .
+\end{displaymath}
+Note that the first equation does not contain $\eta$ and is thus easy to
+solve numerically for $\beta$.
+\item
+Use the equations in part~\ref{exercise:part.wieq} to determine the
+smallest sample size ($n$) and the smallest number of failures ($r$)
+that are needed for the ML estimates of $\weibscale$ and $\beta$ to be
+unique.  Hint: Use of numerical and graphical methods can provide
+insight and suggest an
+appropriate analytical solution to this problem.
+\end{enumerate}
+\end{exercise1}
+
+
+%------------------------------------------------------------------------
+\begin{exercise}
+Write the Weibull likelihood for a sample 
+containing both exact failure times and right censored values, using
+$\sigma$ and $t_{p}$ as the distribution parameters (for some
+specified fixed $0<p<1$). Explain how to use this likelihood to
+compute a profile likelihood for $t_{p}$.
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise1}
+\label{exercise:from.me95}
+Consider a sample of $n$ failure times:
+$t_{1}$, \ldots, $t_{n}$, that can be fit to a lognormal distribution.
+\begin{enumerate}
+\item
+Write an expression for the likelihood and show that it is a function
+only of $\sum_{i=1}^{n}\log(t_{i})$, $\sum_{i=1}^{n}\log(t_{i})^2$, 
+$n$, $\mu$, and $\sigma$.
+\item
+Derive simple expressions for ML estimates of the lognormal
+parameters.
+\item
+Derive an expression for the relative likelihood $R(\mu,\sigma)$.
+\item
+Derive a simple expression for the profile likelihood $R(\mu)$.
+\item
+Derive a simple expression for the profile likelihood $R(\sigma)$.
+\item
+Challenge: Derive the profile likelihood
+$R(\rvquan_{p})$, where $\rvquan_{p}$ is the lognormal $p$ quantile.
+\end{enumerate}
+\end{exercise1}
+%------------------------------------------------------------------------
+
+
+%------------------------------------------------------------------------
+\begin{exercise1}
+Use (\ref{equation:se.for.function}) to derive an expression for
+the standard error estimate $\sehat_{\hhat(\estimtime)}$
+needed in (\ref{equation:locscale.hazard.normal}). Show how this
+expression simplifies for the Weibull distribution.
+\end{exercise1}
+
+%------------------------------------------------------------------------
+\begin{exercise1}
+For a location-scale distribution, under certain regularity
+conditions, in large samples, $-2$ times the logarithm of the relative
+likelihood function,
+$R(\mu,\sigma)=\like(\mu,\sigma)/\like(\muhat,\sigmahat)$, when
+evaluated at the true $\mu$ and $\sigma$, has approximately a
+$\chi^{2}_{2}$ distribution.
+\begin{enumerate}
+\item
+Show how to use this property to test if a specified pair of parameter
+values, say $\mu_{0}$ and $\sigma_{0}$ are consistent with the data.
+\item
+Explain how to use the function $R(\mu,\sigma)$ to obtain an
+approximate joint confidence region for $\mu,\sigma$.
+\item
+Show why, for a particular $\alpha$, the $R(\mu,\sigma)= \alpha$
+contour of the two-dimensional relative likelihood function (or a two
+dimensional profile likelihood function) provides an approximate
+$100(1-\alpha)\%$ joint confidence region for $\mu,\sigma$.
+\end{enumerate}
+\end{exercise1}
+
+
+%------------------------------------------------------------------------
+\begin{exercise1}
+\label{exercise:mu.sig.corr}
+For the shock absorber data, the
+orientation of the contours in
+Figure~\ref{figure:shockabsB.profcont.weib.ps} indicates some positive
+correlation between $\muhat$ and $\sigmahat$.  The orientation of the
+contours in Figure~\ref{figure:shockabsB.weib.sc.T.1.conf.profile.ps}
+indicates a negative correlation between $\rvquanhat_{.1}$ and
+$\sigmahat$.
+\begin{enumerate}
+\item
+Use the numerical results in (\ref{shock.absorber.weibull.vcv}) to
+compute an estimate of the correlation between $\rvquanhat_{.1}$ and
+$\sigmahat$.
+\item 
+For
+which value of $p$ will $\rvquanhat_{p}$ and $\sigmahat$ be
+approximately uncorrelated? 
+\end{enumerate}
+\end{exercise1}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+As explained in Section~\ref{section:known.sigma.inference}, data
+analysis with the Weibull distribution is simpler and estimates are
+more precise if the Weibull shape
+parameter is given.
+\begin{enumerate}
+\item
+Explain the dangers of using a specified Weibull shape parameter
+value when analyzing life data.
+\item
+A reliability engineer for a project claims that the
+Weibull shape parameter is known for a population of components.
+How would you, as an analyst,
+approach the problem of working with the engineer
+to make a reliability prediction based on a limited censored sample?
+\end{enumerate}
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+A random sample of five new automobile horns was taken from early
+production.  The horns were tested simultaneously in a simulated use
+environment (with heat, humidity, salt air, and vibration) until each
+horn had reached a total of six hundred thousand cycles. There were no
+failures in the test.  The reliability specification for the horns
+says that $t_{.01}$ for the horn's life distribution should be at
+least two hundred thousand cycles.  The dominant failure mode for
+similar horns, manufactured in the past, was stress-corrosion induced
+fatigue cracking and this failure mode had a Weibull shape parameter
+of $\beta=1/\sigma=2.3$.
+\begin{enumerate}
+\item
+Using the given value of $\beta$, compute a lower 95\% confidence
+bound for $t_{.01}$ of the horn's life distribution.
+\item
+Do the results contradict reliability specification?  Do the results
+demonstrate the reliability specification? What is the difference?
+\item
+Suggest, based on physical considerations, arguments to convince
+someone that it is possible that the test might lack validity for
+testing the reliability specification.
+\end{enumerate}
+\end{exercise}
+
+
+%------------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:zero.failures.weibull}
+Analysis of field data has suggested that a particular engine bearing
+is an important life limiting component.  The responsible engineers
+believe
+that
+improving the bearing's reliability would have an important effect on
+overall engine reliability.  A redesigned bearing was tested
+extensively in a bench life test with simulated loads. Ten bearings
+were tested, each for 500 hours, with no reported
+failures. On the basis of previous field failure data
+for this class of bearing, a Weibull
+distribution with a shape parameter of $\beta=2.3$ had
+provided an adequate 
+description for the life of this bearing. Find a 95\% lower confidence
+bound for the .01 quantile of the bearing life distribution.
+\end{exercise}
+
+
+%------------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:zero.failures.lognormal}
+Consider the problem described in
+Exercise~\ref{exercise:zero.failures.weibull} but suppose that the
+presumed distribution was lognormal with $\sigma=.55$.
+\begin{enumerate}
+\item
+\label{exer.part:zero.failures.lognormal1}
+Use the nonparametric method in Chapter 3 to obtain an approximate
+95\% upper confidence
+bound for $F(500)$.
+\item 
+\label{exer.part:zero.failures.lognormal2}
+Use the nonparametric upper confidence bound from
+part~\ref{exer.part:zero.failures.lognormal1} 
+and the lognormal distribution assumption to obtain a 95\% lower
+confidence bound for the .01 quantile of the bearing life
+distribution.
+\item
+Explain the relationship between the interval given in
+part~\ref{exer.part:zero.failures.lognormal2} and the corresponding
+method for the Weibull distribution explained in
+Section~\ref{section:weib.zero.fail}.
+\end{enumerate}
+\end{exercise}

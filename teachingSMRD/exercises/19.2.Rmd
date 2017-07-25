@@ -1,0 +1,42 @@
+---
+output: html_document
+---
+
+__The following table contains data from an accelerated life test on Device-C, an integrated circuit.  Failures were caused by a chemical reaction inside the circuit package.  Reliability engineers tested 10 circuits at each temperature over a period of $3000$ hours.  The purpose of the experiment was to estimate the activation energy of the failure causing reaction and to obtain an estimate of the integrated circuit life distribution at $80^{o}C$ junction temperature.__
+
+```{r echo=FALSE}
+Jtemp <- c("$80^{o}C$","$125^{o}C$","$150^{o}C$","$175^{o}C$","$200^{o}C$")
+ntest <- c(rep(10, 5))
+Fail  <- c("None by 3000 hours",
+           "None by 3000 hours",
+           "2.35, 2.56, 2.98",
+           "0.80, 1.13, 1.21, 1.31, 1.35, 1.37, 1.42, 1.77, 1.96",
+           "0.22, 0.25, 0.28, 0.33, 0.38, 0.46, 0.46, 0.51, 0.61")
+dat.f <- data.frame(Jtemp,ntest,Fail)
+names(dat.f)<-c("Junction Temperature", 
+                "# of Units Tested",
+                "Recorded Failure Times in Thousands of Hours")
+
+knitr::kable(dat.f, format = 'pandoc', escape = T)
+```
+
+a. __For each temperature with failures, plot the ordered failure times $t_{(i)}$ versus $(i-.5)/10$ on lognormal probability paper__
+
+b. __Repeat part (a) but use Weibull probability paper__
+
+c. __Make a judgement as to whether the lognormal or the Weibull distribution is a more adequate distribution for these data__
+
+d. __Using the lognormal probabilty plot, draw a set of parallel straight lines through the plotted points, one line for each temperature having failures__
+
+e. __Use each line on the probability plot to obtain graphical estimates of the $.5$ quantiles at the corresponding temperatures.__
+
+f. __Use each line on the probability plot to obtain graphical estimates of the $.01$ quantiles at the corresponding temperatures.  Describe the nature of the extrapolation in these estimates__
+
+g. __Plot the estimates of the $.5$ quantile versus temperature on Arrhenius paper.  Draw a straight line to estimate the relationship between life and temperature.  Do the same with the graphical estimates of the_ $.01$ quantile.__
+
+h. __Graphically estimate the slope of the lines drawn in part (g), and use these to obtain a graphical estimate of the failure mode's activation energy.__
+
+i. __Use the lines drawn in part (g) to obtain estimates of the $.01$ and the $.5$ quantiles of the life distribution of Device-C at $80^{o}C$.  Describe the nature of the extrapolation in these estimates.__
+
+j. __Predict the effect on the estimates of the Arrhenius relationship in the data at $80^{o}C$ and $125^{o}C$ were omitted from the analysis.  Explain.__
+

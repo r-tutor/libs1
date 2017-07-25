@@ -1,0 +1,27 @@
+---
+output: html_document
+---
+
+__Let $T_{(1)}$ denote the minimum of $m$ independent Weibull random variables with parameters $\mu_{i}, i=1,\ldots m$, and constant $\sigma.$ Show that $T_{(1)}$ has a Weibull distribution.__
+
+`r teachingSMRD:::solution()$begin`
+Let $T_{(1)}=\min(T_{1},...,T_{m})$ denote the minimum failure time observed from $m$ independent Weibull random variables having distinct scale parameters $\mu_{i}, i=1,...,m$ and an equilvalent shape parameter $\sigma$. Then
+
+$$
+\begin{aligned}
+F_{T_{(1)}}(t)&=Pr(T_{(1)}<t)\\
+&=1-Pr(T_{(1)}>t)\\
+&=1-\prod_{j=1}^m Pr(T_{j}>t)\\
+&=1-\prod_{j=1}^m \text{exp}\left[-\left(\frac{t}{\text{exp}(\mu_{j})}\right)^\frac{1}{\sigma}\right]\\
+&=1-\text{exp}\left[-\sum_{j=1}^m\left(\frac{t}{\text{exp}(\mu_{j})}\right)^\frac{1}{\sigma}\right]\\
+&=1-\text{exp}\left[-t^\frac{1}{\sigma} \times \sum_{j=1}^m\left(\frac{1}{\text{exp}(\mu_{j})}\right)^\frac{1}{\sigma}\right]\\
+&=1-\text{exp}\left[-\left(\frac{t}{\text{exp}[\mu_{(1)}]}\right)^\frac{1}{\sigma}\right]
+\end{aligned}
+$$
+
+which is in the form of a Weibull cdf for which the scale parameter is
+
+$$
+\text{exp}[\mu_{(1)}]=\left[\sum_{j=1}^m\left(\frac{1}{\text{exp}(\mu_{j})}\right)^\frac{1}{\sigma}\right]^{-\sigma}
+$$
+`r teachingSMRD:::solution()$end`

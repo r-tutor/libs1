@@ -1,0 +1,144 @@
+---
+output: html_document
+---
+
+__In some appliations a sample of failure times comes from a mixture of subpopulations.__
+
+a. __Write down the expression for the cdf $F(t)$ for a mixture of two exponential distributions with means $\theta_{1}=1$ and $\theta_{2}=10$ (subpopulations 1 and 2, respectively) with $\zeta$ being the proportion from subpopulation 1.__
+
+`r teachingSMRD:::solution()$begin`
+In reliability, mixture distributions can arise when multiple failure mechanisms generate failures for which the respective distributions are sufficiently distinct.
+
+For the mixture model discussed in this exercise, the pdf is expressed as
+
+$$
+f_{_X}(x)=\eta \frac{1}{\theta_{1}}e^{-(\frac{x}{\theta_{1}})}+(1-\eta) \frac{1}{\theta_{2}}e^{-(\frac{x}{\theta_{2}})}
+$$
+
+Integrating wrt $x$ gives
+
+$$
+F_{_X}(x)=\int_0^x \!f_{_X}(t)dt=\eta (1-e^{-(\frac{x}{\theta_{1}})})+(1-\eta)(1-e^{-(\frac{x}{\theta_{2}})})
+$$
+
+and finally,
+
+$$
+F_{_X}(x)=1-\eta e^{-x}-(1-\eta) e^{-(\frac{x}{10})}.
+$$
+`r teachingSMRD:::solution()$end`
+
+b. __For $\zeta=0,0.1,0.5,0.9,\text{and} 1$, compute the mixture $F(t)$ for a number of values of $t$ ranging between 0 and 30.  Plot these distributions on one graph.__
+
+`r teachingSMRD:::solution()$begin`
+Figure H2.5 shows the CDF plots for the requested mixture distributions.  This plot may be generated with the following R code. 
+```{r,echo=TRUE,fig.align='center', fig.cap="Cdf plots for the mixture distributions"}
+par(family = 'serif', lwd = 2, las = 1)
+
+MIX <- function(t,eta) 1-eta*exp(-1*t)-(1-eta)*exp(-1*(t/10))
+eta = c(0,0.1,0.5,0.9,1)
+
+for(i in 1:length(eta)) {
+  curve(MIX(x, eta = eta[i]),
+        add = ifelse(i==1,F,T),
+        xlab = 't',
+        ylab = 'F(t)',
+        col = i,
+        lty = i,
+        xlim = c(0,30),
+        ylim = c(0,1))
+}
+legend("bottomright", 
+       c(expression(zeta==0.0),
+         expression(zeta==0.1),
+         expression(zeta==0.5), 
+         expression(zeta==0.9),
+         expression(zeta==1.0)),
+       lty = 1:5,
+       col = 1:5,
+       bty ="n",
+       xjust = 0.5)
+```
+`r teachingSMRD:::solution()$end`
+
+c. __Plot $\log(t)$ versus $\log[-\log[1-F(t)]]$ for each $F(t)$ computed in part (b).  Comment on the shapes of the mixtures of exponential distributions, relative to a pure exponential distribution or a Weibull distribution.__
+
+`r teachingSMRD:::solution()$begin`
+The same code shown for (b) can be used for (c) applying the tranformations. 
+
+```{r,echo=FALSE,fig.align='center',fig.cap="Weibull transformed quantile plots for the mixture distributions"}
+par(family="serif", lwd = 2, las = 1)
+
+for(i in 1:length(eta)) {
+  curve(log(-log(1-MIX(x, eta = eta[i]))),
+        add = ifelse(i==1,F,T),
+        xlab = 'log(t)',
+        ylab = "log(-log(1-F(t)))",
+        col = i,
+        lty = i,
+        xlim = c(1,32),
+        ylim = c(-3,3),
+        log = 'x')
+}
+legend("bottomright", 
+       c(expression(zeta==0.0),
+         expression(zeta==0.1),
+         expression(zeta==0.5), 
+         expression(zeta==0.9),
+         expression(zeta==1.0)),
+       lty = 1:5,
+       col = 1:5,
+       bty = "n",
+       xjust = 0.5)
+```
+`r teachingSMRD:::solution()$end`
+
+d. __Plot the hazard function $h(t)$ on the mixture distributions in part (b).__
+
+`r teachingSMRD:::solution()$begin`
+As discussed, the hazard function can be expressed as $h(t)=\frac{f_{_X}(x)}{1-F_{_X}(x)}$ Though this exercise began with the pdf for the mixture model, the following code can be used to find $f_{_X}(x)$ symbolically when only the cdf is known.
+
+```{r,echo=TRUE,eval=TRUE}
+DMIX<-function(t,eta)  {
+ d.1<-body(MIX)                   #Extract body of function MIX
+ d.2<-as.expression(d.1)          #Convert body to an expression
+ d.3<-D(d.2,"t")                  #Take derivative of expression
+ d.4<-function(t,eta) eval(d.3)   #Convert derivative expression to function
+ return(d.4(t,eta))               #Return value of derivative
+}
+```
+
+Adjusting the plotting code used in parts (b) and (c) results in the following plot of $h(t)$.
+
+```{r,echo=FALSE,fig.show='asis',fig.cap="Hazard plots for the mixture distributions"}
+par(family="serif", lwd = 2, las = 1)
+
+for(i in 1:length(eta)) {
+  curve(DMIX(x, eta[i])/(1-MIX(x,eta[i])),
+        add = ifelse(i==1,F,T),
+        xlab = 't',
+        ylab = "h(t)",
+        col = i,
+        lty = i,
+        xlim = c(0,10),
+        ylim = c(0,1))
+}
+legend("right", 
+       c(expression(zeta==0.0),
+         expression(zeta==0.1),
+         expression(zeta==0.5), 
+         expression(zeta==0.9),
+         expression(zeta==1.0)),
+       lty = 1:5,
+       col = 1:5,
+       cex = 0.75,
+       bty = "n",
+       xjust = 0.5)
+```
+`r teachingSMRD:::solution()$end`
+
+e. __Qualitatively, what do the Weibull plots in part (c) suggest about the hazard fucntion of a mixture of two exponential distributions?__
+
+`r teachingSMRD:::solution()$begin`
+The plots shown in (b), (c) and (d) suggest that the mixture of two exponential distributions with $\eta \in (0,1)$ is not in the exponential family.
+`r teachingSMRD:::solution()$end`

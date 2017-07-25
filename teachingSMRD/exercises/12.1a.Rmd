@@ -1,0 +1,110 @@
+---
+output: html_document
+---
+
+__Exercise 12.1, asked you to compute a $95\%$ bootstrap-based prediction interval for the number of cycles to failure for a future specimen, assuming all 20 specimens were tested to failure.  Re-accomplish Problem 12.1 assuming that testing stopped after $5$, $10$, and $15$ failures, respectively.  Compare the width of these intervals using $B = 10,000$ bootstrap samples. Use the same parameter values provided in Exercise 12.1 $\mu 5.13$, $\sigma = 0.161$__
+ 
+`r teachingSMRD:::solution()$begin`
+```{r, echo=FALSE, warning=FALSE}
+mu = 5.13 ; sigma = 0.161 
+library(SMRD)
+bootPI20  <- c(118.1, 240.0)
+bootPI100 <- c(121.6, 233.7)
+```
+
+The function defined in the code chunk below can be used to perform the bootstrap procedure and return the upper and lower limits of the prediction interval.  To use this function, copy the code in the chunk and paste it into the R console. 
+
+```{r echo=TRUE}
+set.seed(1)
+
+boot.pivot <- 
+  function(B = 100, N = 20, 
+           mu = 5.13, sigma = 0.161, 
+           t_c = NULL, fails = NULL, alpha = 0.05) 
+{
+
+if(!is.null(t_c) && !is.null(fails)) { 
+  
+  stop('For censored tests, specify either the\n
+       time "t_c" or the number of failures "fails"\n
+       when testing ends -- not both')
+  
+}
+    
+samp <- replicate(B, rlnorm(N, mu, sigma))
+
+samp <- apply(samp, MARGIN = 2, sort)
+
+if(!is.null(t_c))   samp[which(samp > t_c)] <- t_c
+if(!is.null(fails)) { 
+
+samp[fails:N,] <- matrix(rep(samp[fails,],each = N-fails+1), 
+                         ncol = B, 
+                         byrow = F) 
+}
+
+params <- 
+  sapply(X = 1:B, 
+         FUN = function(x) {
+           
+      right <- N - fails
+      samp.df <- 
+        data.frame(samp[,x],
+                   rep(c('f','r'),c(fails,right)))
+      samp.ld <- 
+        frame.to.ld(samp.df,
+                    response.column = 1,
+                    censor.column = 2)
+      
+      print(mlest(samp.ld, distribution = 'lognormal'))$mle[,1]
+})
+
+zlog_t <- 
+  sapply(X = 1:B,
+        FUN = function(x) { 
+                        
+    numer <- log(rlnorm(1, mu, sigma)) - params[[1,x]]
+    denom <- params[[2,x]]
+    numer / denom
+})
+
+zlog_t <- sort(zlog_t)
+
+limits <- zlog_t[c(B * alpha / 2, B * (1 - alpha / 2))]
+
+zout         <- list()
+zout$zlog_t  <- zlog_t
+zout$limits  <- limits 
+zout$predict <- exp(mu + limits * sigma) 
+
+return(zout)
+}
+```
+
+Pasting the above code into R makes the function `boot.pivot` available to use.  To evaluate the function we must call it and provide values for the following formal arguments:
+
+- The number of bootstrap samples `B = 10,000`
+- The number of observations in each sample `N = 20` 
+- The desired significance level `alpha = 0.05` 
+- The ML parameters of the original data set `mu = 5.13`, `sigma = 0.161`
+- The number of failures for a Type-2 test `fails = c(5, 10, 15)` 
+The code chunk below evaluates the `boot.pivot` function for `fails = 5` and saves the upper and lower limits of the prediction interval as an object called `bootPI20_5`.  The table below shows the lower and upper limits of the prediction intervals for $5$, $10$, $15$, and $20$ failures.
+
+```{r, eval=FALSE, echo=TRUE}
+bootPI20_5 <- boot.pivot(B = 10000,
+                         N = 20,
+                         alpha = 0.05,
+                         mu = 5.13,
+                         sigma = 0.161,
+                         fails = 5)$predict
+```
+
+```{r, echo=FALSE}
+`Failures` <- c(5, 10, 15, 20)
+`Lower PI` <- c(113.0035, 115.1097, 117.1904, 118.2482)
+`Upper PI` <- c(395.4598, 268.1998, 247.4052, 240.7687)
+dats <- data.frame(`Failures`, `Lower PI`, `Upper PI`)
+knitr::kable(dats, caption = 'caption', format = 'pandoc')
+```
+`r teachingSMRD:::solution()$end`
+

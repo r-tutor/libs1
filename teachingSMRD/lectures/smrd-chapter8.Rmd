@@ -1,0 +1,463 @@
+---
+title: "`r SMRD:::info('book')`"
+subtitle: "`r SMRD:::info('chapter8')`"
+author: "`r SMRD:::info('authors')`"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+footer: "`r paste('SMRD: ', SMRD:::info('chapter8'))`"
+output:
+  slidy_presentation:
+    smart: false
+    fig_caption: yes
+runtime: shiny
+graphics: yes
+---
+
+```{r echo=F, message=F, warning=F}
+assign('dynamic', TRUE, envir = sys.frame(),immediate = TRUE)
+source('scripts/R/setup.R')
+```
+
+# CHAPTER OVERIEW
+
+## This Chapter Explains...
+
+```{r test, verbatim=TRUE, eval=F, echo=1, comment=NA}
+head(mtcars)
+```
+
+<div id="play"><audio src="media/audio/test-slide.m4a"/></div>
+
+- Likelihood methods for fitting log-location-scale distributions (especially the Weibull and lognormal distributions)
+
+- Likelihood confidence intervals/regions for model parameters and for functions of model parameters
+
+- Normal-approximation confidence intervals/regions
+
+- Estimation and confidence intervals for log-location-scale distributions with a given shape parameter
+
+# 8.1 - INTRODUCTION
+
+## This chapter extends the methods presented in Chapter 7 
+
+- Distributions with two parameters
+
+- Based on location-scale distributions
+
+- These methods can be applied to any distribution in the location-scale family 
+
+- Particular attention is paid to the Weibull and lognormal distributions
+
+- For exact failure times the density approximation to the likelihood (Eq 7.13) is adequate
+
+# 8.2 - LIKELIHOOD $\mathcal{L}(\underline{\theta})$
+
+# 8.2.1 - $\mathcal{L}$ for Location-Scale Distributions
+
+- For data with exact failures and right censored observations
+
+ $$
+\begin{aligned}
+\mathcal{L}(\mu,\sigma|\underline{t})&=\prod_{i=1}^n\left[f(t_i|\mu,\sigma)\right]^{\delta_{i}}\left[1-F(t_i|\mu,\sigma)\right]^{1-\delta_i}\\
+&=\prod_{i=1}^n\left[\frac{1}{\sigma}\phi\left(\frac{t_i-\mu}{\sigma}\right)\right]^{\delta_i}\times\left[1-\Phi\left(\frac{t_i-\mu}{\sigma}\right)\right]^{1-\delta_i}
+\end{aligned}
+$$
+
+- Where
+
+$$\delta_i=\begin{cases}1 &\mbox{for exact observations}\\ 0 &\mbox{for right-censored observations}\end{cases}$$
+
+# 8.2.2 - $\mathcal{L}$ for Log-Location-Scale Distributions
+
+- For data with exact failures and right censored observations
+
+$$
+\begin{aligned}
+\mathcal{L}(\mu,\sigma|\underline{t})&=\prod_{i=1}^n\left[f(\log(t_i)|\mu,\sigma)\right]^{\delta_{i}}\left[1-F(\log(t_i)|\mu,\sigma)\right]^{1-\delta_i}\\
+&=\prod_{i=1}^n\left[\frac{1}{t_i\sigma}\phi\left(\frac{\log(t_i)-\mu}{\sigma}\right)\right]^{\delta_i}\times\left[1-\Phi\left(\frac{\log(t_i)-\mu}{\sigma}\right)\right]^{1-\delta_i}
+\end{aligned}
+$$
+
+- Where
+
+$$\delta_i=\begin{cases}1 &\mbox{for exact observations}\\ 0 &\mbox{for right-censored observations}\end{cases}$$
+
+<div class='example'>
+### Example 8.1 Shock Absorber 
+
+```{r}
+if(dynamic) teachingApps:::shock_absorber8()
+if(dynamic) teachingApp('shock_absorber8')
+```
+</div>
+
+# 8.3 - Likelihood Confidence Regions and Intervals
+
+# 8.3.1 - Joint Confidence Regions for $\mu$ and $\sigma$
+
+## Confidence Intervals & Confidence Regions
+
+- For one unknown parameter (i.e. $\overline{\theta}=\theta$) an approximate $100(1-\alpha)\%$ <focus>confidence interval</focus> is all values of $\theta$ such that 
+
+$$R(\theta) \ge \exp\left[-\chi^2_{(1-\alpha;1)}/2\right]$$
+
+- A plot of a likelihood-based confidence interval for a single parameter depicts $R(\theta)$ for a range of $\theta$ values
+
+- The shiny app below shows a likelihood-based confidence interval plot for the exponential parameter $\theta$ using the `berkson200` data set
+
+## Likelihood-Based Confidence Interval for $\theta$ 
+
+```{r}
+if(dynamic) teachingApps:::berkson_interval()
+if(dynamic) teachingApp('berkson_interval')
+```
+
+- For two unknown parameters (i.e. $\overline{\theta}=\theta_1,\theta_2$) an approximate $100(1-\alpha)\%$ <focus>confidence region</focus> is all values of $\theta_1$ and $\theta_2$ such that
+
+$$R(\theta_1, \theta_2)>\exp\left[-\chi^2_{(1-\alpha;2)}/2\right]$$
+
+## Figures 8.3 & 8.4 - Joint Confidence & Relative Likelihood Regions
+
+```{r}
+if(dynamic) teachingApps:::shockabsorber_surfaces()
+if(dynamic) teachingApp('shockabsorber_surfaces')
+```
+
+# 8.3.2 - Individual CI for $\mu$ and $\sigma$
+
+## Procedure for computing likelihood-based CI's for $\mu$ 
+
+1) Estimate $\hat{\mu}_{_{MLE}}\;\text{and}\;\hat{\sigma}_{_{MLE}}$ 
+
+2) Select a value $\mu_0$
+
+3) For each value of $\mu_0$ numerically find the value of $\sigma$ that maximizes the relative likelihood, i.e.
+
+$$R(\mu_0)=\max_{\sigma}\left[\frac{\mathcal{L}(\mu_0,\sigma)}{\mathcal{L}(\hat{\mu}_{_{MLE}},\hat{\sigma}_{_{MLE}})}\right]$$
+
+4) Record and plot $\left(\mu_0, R(\mu_0)\right)$ - these values form what is known as the <red>profile likelihood</red> for $\mu$
+
+## Procedure for computing likelihood-based CI's for $\sigma$ 
+
+1) Estimate $\hat{\mu}_{_{MLE}}\;\text{and}\;\hat{\sigma}_{_{MLE}}$ 
+
+2) Select a value $\sigma_0$
+
+3) For each value of $\sigma_0$ numerically find the value of $\mu$ that maximizes the relative likelihood, i.e.
+
+$$R(\sigma_0)=\max_{\mu}\left[\frac{\mathcal{L}(\mu,\sigma_0)}{\mathcal{L}(\hat{\mu}_{_{MLE}},\hat{\sigma}_{_{MLE}})}\right]$$
+
+4) Record and plot $(\sigma_0, R(\sigma_0))$ - these values form what is known as the <blue>profile likelihood</blue> for $\sigma$
+
+## Figures 8.5 & 8.6 - Profile Likelihoods $R(\mu)$ & $R(\sigma)$
+
+```{r}
+if(dynamic) teachingApps:::shockabsorber_profiles()
+if(dynamic) teachingApp('shockabsorber_profiles')
+```
+
+# 8.3.3 - Likelihood CI for Functions of $\mu,\sigma$
+
+## Once $\hat{\mu}_{_{MLE}}\;\text{and}\;\hat{\sigma}_{_{MLE}}$ have been estimated
+
+- Confidence intervals may be computed for functions of $\mu$ and/or $\sigma$
+
+    + Define a $1-1$ transformation $\mathbf{g[\mu,\sigma]}=[g_1(\mu,\sigma),g_2(\mu,\sigma)],$ where $g_1\;\text{or}\;g_2$ is the function of interest
+
+    + Due to the invariance properties of MLE's, likelihood-based CI methods can be applied as was described for the parameters
+
+## Likelihood Confidence Interval for $t_p$
+
+- For the quantile function $t_p$
+
+$$R(t_p)=\max_{\sigma}\left[\frac{\mathcal{L}(f(\mu),\sigma)}{\mathcal{L}(\hat{\mu}_{_{MLE}},\hat{\sigma}_{_{MLE}})}\right]$$
+
+- Recall, $t_p=\exp\left[\mu+\Phi^{-1}(p)\sigma\right]$, rearranging gives
+
+$$\mu = \log(t_p)-\Phi^{-1}(p)\sigma$$
+
+- Substituting the right-side of the above expression for $\mu$ into the relative likelihood gives
+
+$$R(t_p)=\max_{\sigma}\left[\frac{\mathcal{L}\left[\log(t_p)-\Phi^{-1}(p)\sigma,\sigma\right]}{\mathcal{L}(\hat{\mu}_{_{MLE}},\hat{\sigma}_{_{MLE}})}\right]$$
+
+- Therefore, to find the likelihood-based confidence interval for $t_p$
+
+    1) Choose a value for $\mu_0$ and find $R(\mu_0)$ for each value of $\sigma$ 
+
+    2) Choose a quantile value $p$, we know that $R(\mu_0) = R(t_{p_{0}})$ 
+
+    3) Record and plot $(t_{p_{0}},R(t_{p_{0}}))$ to get the likelihood profile for $t_p$
+
+## Figure 8.7 & 8.8 - Likelihood Contour & Profile for $t_{0.1}$
+
+```{r, echo=FALSE, fig.align='center', fig.height=5.25, message=FALSE}
+if(dynamic) teachingApps:::shockabsorber_quantiles()
+if(dynamic) teachingApp('shockabsorber_quantiles')
+```
+
+## Likelihood Confidence Interval For $F(t_e)$
+
+Similarly, $F(t_e)=\Phi[\left(\log(t_e)-\mu\right)/\sigma]$, rearranging gives
+
+$$\mu = \log(t_e)-\Phi^{-1}\left(F(t_e)\right)\sigma$$
+
+substituting the right-side of this expression for $\mu$ into the relative likelihood 
+
+$$R\left(F(t_e)\right)=\max_{\sigma}\left[\frac{\mathcal{L}\left[\log(t_e)-\Phi^{-1}\left(F(t_e)\right)\sigma,\sigma\right]}{\mathcal{L}(\hat{\mu}_{_{MLE}},\hat{\sigma}_{_{MLE}})}\right]$$
+
+To find the likelihood-based CI for $F(t_e)$
+
+- Choose a value for $\mu_0$ and find $R(\mu_0)$ for each value of $\sigma$ 
+
+- For the time of interest $t_e$, we know that $R(\mu_0) = R\left(F(t_{e_{0}})\right)$ 
+
+- Record and plot $\left(F(t_{e_{0}}),R\left(F(t_{e_{0}})\right)\right)$ to get the likelihood profile for $F(t_e)$
+
+```{r, echo=FALSE, fig.align='center', fig.height=5.25, message=FALSE}
+
+if(dynamic) teachingApps:::shockabsorber_probabilities()
+if(dynamic) teachingApp('shockabsorber_probabilities')
+```
+
+# 8.3.4 - Confidence Interval/Significance Test Relationship
+
+
+# 8.4 NORMAL-APPROXIMATION CONFIDENCE INTERVALS
+
+# 8.4.1 - Parameter Variance-Covariance Matrix
+
+- For location-scale distributions, a <focus>local</focus> estimate of $\Sigma_{\hat{\theta}}$ may be computed by inverting the observed information matrix
+
+$$
+\mathbf{\widehat{\Sigma}_{\hat{\mu},\hat{\sigma}}} = 
+\left[ \begin{array}{cc} 
+\widehat{Var}(\hat{\mu}) & \widehat{Cov}(\hat{\mu},\hat{\sigma}) \\
+\widehat{Cov}(\hat{\mu},\hat{\sigma}) & \widehat{Var}(\hat{\sigma}) \\
+\end{array} \right]=\left[ \begin{array}{cc} 
+-\frac{\partial^2\mathcal{L}}{\partial\mu^2} & -\frac{\partial^2\mathcal{L}}{\partial\mu\partial\sigma} \\
+-\frac{\partial^2\mathcal{L}}{\partial\sigma\partial\mu} & -\frac{\partial^2\mathcal{L}}{\partial\sigma^2} \\
+\end{array} \right]^{-1}
+$$
+
+- As was discussed in Chapter 7, $\mathbf{\widehat{\Sigma}_{\hat{\mu},\hat{\sigma}}}$ describes the curvature of $\mathcal{L}$ at $\hat{\mu},\hat{\sigma}$
+
+- A higher degree of curvature implies a more concentrated likelihood near $\hat{\mu},\hat{\sigma}$ and thereby greater precision.
+
+## Once Again, The SMRD Package Makes This Easy
+
+- We can create a list of several important maximum likelihood estimate properties using the `mlest` function 
+
+- The `mlest` function requires that we provide 
+
+    + A life data object
+
+    + A distribution for which we want the ML properties
+
+```{r, echo=TRUE}
+shock.mlest <- mlest(ShockAbsorber.ld, distribution = "weibull")
+```
+
+- We can then return $\widehat{\Sigma}_{\hat{\mu},\hat{\sigma}}$ for the shockabsorber data set (assuming a Weibull distribution) with the following code 
+
+```{r, echo=TRUE, results='markup'}
+shock.vcv <- print(shock.mlest)$vcv.matrix ; shock.vcv
+```
+
+- Finally, we can convert this object a $\LaTeX$ table using
+
+```{r, echo=TRUE, results='hide'}
+xarray(shock.vcv, digits = c(1,6,6))
+```
+
+$$
+`r xarray(print(mlest(ShockAbsorber.ld, distribution = "weibull"))$vcv.matrix, digits = c(1,6,6))`
+$$
+
+- Similarly, we can return the parameter correlation
+$\widehat{\rho}_{\hat{\mu},\hat{\sigma}}=\widehat{Cov}(\hat{\mu},\hat{\sigma})/\sqrt{\widehat{Var}(\hat{\mu})\widehat{Var}(\hat{\sigma})}$ 
+
+```{r, echo=TRUE, eval=FALSE}
+shock.pcm <- print(shock.mlest)$param.corr.matrix
+xarray(shock.pcm, digits = c(1,6,6))
+```
+
+$$
+`r xarray(print(mlest(ShockAbsorber.ld, distribution = "weibull"))$param, digits = c(1,6,6))`
+$$
+
+# 8.4.2 - Confidence Intervals for Model Parameters
+
+## For location-scale and log-location-scale distributions
+
+- Confidence intervals based on the normal approximation assume that
+
+$$Z_{\hat{\mu}}=\frac{\hat{\mu}-\mu}{\widehat{se}_{\hat{\mu}}}\sim NOR(0,1)$$ 
+
+- and
+
+$$Z_{\log(\hat{\sigma})}=\frac{\log(\hat{\sigma})-\log(\sigma)}{\widehat{se}_{\log(\hat{\sigma})}}\sim NOR(0,1)$$
+
+- Where the $\log(\hat{\sigma})$ transformation is made to improve the coverage probability of the CI since $\sigma$ is a <focus>strictly positive quantity</focus>
+
+- Therefore a $100(1-\alpha)\%$ 2-sided CI for $\mu$ is expressed as
+
+$$\left[\underline{\mu},\overline{\mu}\right]=\hat{\mu}\pm z_{(1-\alpha/2)}\widehat{se}_{\hat{\mu}}$$
+
+- A two-sided $100(1-\alpha)\%$ CI for $\sigma$ is expressed as
+
+$$\left[\underline{\sigma},\overline{\sigma}\right]=[\hat{\sigma}/w, \hat{\sigma}\times w]$$
+
+- where
+
+$$w = \exp[z_{(1-\alpha/2)}\widehat{se}_{\hat{\sigma}}/\hat{\sigma}]$$
+
+# 8.4.3 - Normal-Approximation CI for Functions of $\mu,\sigma$
+
+## For location-scale and log-location-scale distributions
+
+- Computing confidence intervals for $g_1=f(\mu,\sigma)$ based on the normal approximation assumes that 
+
+$$Z_{\hat{g}_1}=\frac{\hat{g}_1-g_1}{\widehat{se}_{\hat{g}_1}}\sim NOR(0,1)$$
+
+- Where approximate $100(1-\alpha)\%$ confidence interval for $g_1$ is then expressed as 
+
+$$\left[\underline{g_1}, \overline{g_1}\right]=\hat{g_1}\pm z_{(1-\alpha/2)}\widehat{se}_{\hat{g_1}}$$
+
+- And
+
+<small>
+$$
+\begin{aligned}
+\widehat{se}_{\hat{g}_1}&=\sqrt{\widehat{Var}(\hat{g}_1)}\\
+&=\left[\left(\frac{\partial g_1}{\partial\mu}\right)^2\widehat{Var}(\hat{\mu})+2\left(\frac{\partial g_1}{\partial\mu}\right)\left(\frac{\partial g_1}{\partial\sigma}\right)\widehat{Cov}(\hat{\mu},\hat{\sigma})+\left(\frac{\partial g_1}{\partial\sigma}\right)^2\widehat{Var}(\hat{\sigma})\right]^{1/2}
+\end{aligned}
+$$
+</small>
+
+- <focus>Note</focus> any monotone function of $\mu$ transmits directly to $\left[\underline{\mu},\overline{\mu}\right]$ for example  
+
+$$\left[\underline{\eta},\overline{\eta}\right]=\left[\exp(\underline{\mu}),\exp(\overline{\mu})\right]$$
+
+## Normal-Approximation CI for Quantile $t_p$
+
+- An approximate $100(1-\alpha)\%$ CI for $t_p=\exp[\mu+\Phi^{-1}(p)\sigma]$ based on the normal approximation is
+
+$$\left[\underline{t}_p,\overline{t}_p\right]=\left[\hat{t}_p/w,\hat{t}_p\times w\right]$$
+
+where $w=\exp[z_{(1-\alpha/2)}\widehat{se}_{\hat{t}_p}]$ 
+
+and
+
+<small>
+$$
+\begin{aligned}
+\widehat{se}_{\hat{t}_p}&=\sqrt{\widehat{Var}(\hat{t}_p)}=\sqrt{\hat{t}_p^2\widehat{Var}[\log(\hat{t}_p)]}\\
+&=\hat{t}_p\left[\widehat{Var}(\hat{\mu})+2\Phi^{-1}(p)\widehat{Cov}(\hat{\mu},\hat{\sigma})+[\Phi^{-1}(p)]^2\widehat{Var}(\hat{\sigma})\right]^{1/2}
+\end{aligned}
+$$
+</small>
+
+```{r, eval=FALSE}
+shock.quantile <- print(shock.mlest)$quantiles
+xarray(shock.quantiles, include.rownames = FALSE, digits = c(0,3,0,0,0,0))
+```
+
+<smaller>
+$$
+`r xarray(print(shock.mlest)$quantiles, include.rownames=FALSE,digits=c(0,3,0,0,0,0))`
+$$
+</smaller>
+
+## Normal-Approximate CI for the CDF $F(t_e)$
+
+Define $t_e$ as a time at which an estimate of the failure probability $F(t)$ is desired  
+
+An approximate $100(1-\alpha)\%$ CI for $\hat{F}(t_e)$ based on $Z_{\hat{F}}=\frac{\hat{F}(t_e)-F(t_e)}{\widehat{se}_{\hat{F}}}\sim NOR(0,1)$
+
+$$\left[\underline{F}(t_e),\overline{F}(t_e)\right]=\hat{F}(t_e)\pm z_{(1-\alpha/2)}\widehat{se}_{\hat{F}}$$
+
+where 
+
+<font size="5">
+$$\widehat{se}_{\hat{F}}=\frac{\phi(\hat{\zeta}_e)}{\hat{\sigma}}\left[\widehat{Var}(\hat{\mu})+2\hat{\zeta}_e\widehat{Cov}(\hat{\mu},\hat{\sigma})+\hat{\zeta}_e^2\widehat{Var}(\hat{\sigma})\right]^{1/2}$$
+</font>
+
+and
+
+$$\hat{\zeta}_{e}=[\log(t_e)-\hat{\mu}_{_{MLE}}]/\hat{\sigma}_{_{MLE}}$$
+
+As discussed in Chapter 3, assuming $Z_{\hat{F}}=\frac{\hat{F}(t_e)-F(t_e)}{\widehat{se}_{\hat{F}}}\sim NOR(0,1)$ can result in a CI $\notin (0,1)$ for small sample sizes
+
+To improve the coverage probability the following transformation was made
+
+$$\text{logit}[F(t_e|\hat{\mu},\hat{\sigma})]=\log\left[\frac{F(t_e|\hat{\mu},\hat{\sigma})}{1-F(t_e|\hat{\mu},\hat{\sigma})}\right]$$ 
+
+where
+
+$$Z_{\text{logit}[\hat{F}]}=\frac{\text{logit}[\hat{F}(t_e)]-\text{logit}[F(t_e)]}{\widehat{se}_{\text{logit}[\hat{F}]}}\sim NOR(0,1)$$
+
+An inverse logit transformation is then used to give an approximate $100(1-\alpha)\%$ CI for $F(t_e)$ as
+
+$$\left[\underline{F}(t_e),\overline{F}(t_e)\right]=\left[\frac{\hat{F}}{\hat{F}+(1-\hat{F})\times w}, \frac{\hat{F}}{\hat{F}+(1-\hat{F})/w}\right]$$
+
+where
+
+$$w=\exp\left[\frac{z_{(1-\alpha/2)}\widehat{se}_{\hat{F}}}{\hat{F}(1-\hat{F})}\right]$$
+
+The endpoints of this interval will always be $\in (0,1)$
+
+
+```{r, eval=FALSE}
+shock.failure <- print(shock.mlest)$failure.probabilities
+xarray(shock.failure, include.rownames = FALSE, digits = c(0,0,4,4,4,4) )
+```
+
+<font size="4.75">
+$$
+`r xarray(print(shock.mlest)$failure.probabilities,include.rownames = FALSE, digits = c(0,0,4,4,4,4))`
+$$
+</font>
+
+## Normal-Approximation CI for the Hazard Function $h(t_e)$
+
+```{r, eval=FALSE}
+shock.hazard <- print(shock.mlest)$hazard
+xarray(shock.hazard, include.rownames = FALSE, digits = c(0,0,7,7,7,7) )
+```
+
+<font size="4.75">
+$$
+`r xarray(print(shock.mlest)$hazard,include.rownames = FALSE, digits = c(0,0,7,7,7,7))`
+$$
+</font>
+
+```{r, echo=FALSE, fig.align='center', fig.height=5.25}
+par(bg = NA, family = "serif")
+mlehazplot(ShockAbsorber.ld, distribution="Weibull",x.axis = "log", y.axis = "log", x.range = c(500,50000))
+```
+
+
+```{r, eval=FALSE}
+mlehazplot(ShockAbsorber.ld, 
+           distribution="Weibull",
+           x.axis = "log", 
+           y.axis = "log", 
+           x.range = c(500,50000))
+```
+
+# 8.4.4 - Improved Normal-Approximation Confidence Intervals
+
+# 8.5 - ESTIMATION WITH GIVEN $\sigma$
+
+# 8.5.1 - Lognormal/Normal With Given $\sigma$
+
+
+
+
+# 8.5.2 - Weibull/SEV with given $\sigma$
+
+
+# 8.5.3 - Weibull/SEV With Given $\sigma$ and No Failures
+
+```{r}
+
+```

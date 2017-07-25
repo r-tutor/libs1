@@ -1,0 +1,68 @@
+---
+output: html_document
+---
+
+__Show that with single censoring (i.e., all failures precede the first censoring time) that (3.7) simplifies to (3.1) and that (3.9) simplifies to (3.4).__
+
+`r teachingSMRD:::solution()$begin`
+>In this question we are asked to assumme that our data are singly censored -- composed of only exact failure times and right censored observations at time $t_c$.  Under this assumption, the following two intervals exist
+>
+$$
+\begin{aligned}
+\mbox{Interval 1}& \equiv [0, t_c]\\\\
+\mbox{Interval 2}& \equiv [t_c, \infty).
+\end{aligned}
+$$
+>
+Equation 3.7 relates the estimated failure probability, after the $i^{th}$ interval as
+>
+$$
+\begin{aligned}
+\widehat{F}(t_{i})&=1-\widehat{S}(t_{i}), & i=1,\cdots,m\\\\
+&=1-\prod_{j=1}^{i}\left(1-\widehat{p}_{j}\right), & i=1,\cdots,m\\\\
+&=1-\prod_{j=1}^{i}\left(1-\frac{d_j}{n_j}\right), &i=1,\cdots,m.
+\end{aligned}
+$$
+>
+Expanding the product in this expression for intervals 1 and 2 results in
+>
+$$
+\begin{aligned}
+\widehat{F}(t_{i})&=1-\left(1-\frac{d_1}{n_1}\right)\left(1-\frac{d_2}{n_2}\right).
+\end{aligned}
+$$
+>
+Every unit is assumed to be operating at the beginning of the test, thus $n_1 = n$.  The number of failures, occurring in Interval 1 are $d_1 = \sum_{j=1}^1$, and because Interval 2 begins at time $t_c$, $d_2 = 0$. Making these substitutions in the above expression gives 
+>
+$$
+\begin{aligned}
+\widehat{F}(t_{1})&=1-\left(1-\frac{\sum_{j=1}^1d_j}{n}\right)\left(1-\frac{0}{n-\sum_{j=1}^1d_j}\right)\\\\
+&=\frac{\sum_{j=1}^1 d_j}{n}
+\end{aligned}
+$$
+>
+Which shows that Equation 3.7 does reduces to Equation 3.1 for singly censored data.
+>
+For the second part of this question we're asked to show that 
+>
+$$
+\left[\widehat{S}(t_i)\right]^2\sum_{j=1}^i\frac{\widehat{p}_j}{n_j(1-\widehat{p}_j)} = \frac{1-\widehat{F}(t_i)\widehat{F}(t_i)}{n}
+$$
+>
+when the data are singly censored.  Recall, no failures occur in Interval 2, by definition, thus $\widehat{p}_2=0/n_2=0$ and the summation in the above expression will therefore reduce to just a single term as shown below.
+>
+$$
+\left[\widehat{S}(t_1)\right]^2\frac{\widehat{p}_1}{n_1(1-\widehat{p}_1)} = \frac{1-\widehat{F}(t_1)\widehat{F}(t_1)}{n}
+$$
+>
+Next, we note that $n_1 = n$ and that the remaining terms on the left-hand side of the equationcan be re-defined wrt $\widehat{F}(t_1)$ since $\widehat{S}(t_1)=1-\widehat{F}(t_1)$ and $\widehat{p}_1=\widehat{F}(t_1)$. Making these substitutions and simplifying the resulting expression gives
+>
+$$
+\begin{aligned}
+\left[1-\widehat{F}(t_1)\right]^2\frac{\widehat{F}(t_1)}{n\left[1-\widehat{F}(t_1)\right]} &= \frac{1-\widehat{F}(t_1)\widehat{F}(t_1)}{n}\\\\
+\frac{1-\widehat{F}(t_1)\widehat{F}(t_1)}{n} &= \frac{1-\widehat{F}(t_1)\widehat{F}(t_1)}{n}
+\end{aligned}
+$$
+>
+Thus, showing that Equation 3.9 does simplify to Equation 3.4 for singly censored data.  
+`r teachingSMRD:::solution()$end`

@@ -1,0 +1,33 @@
+---
+output: html_document
+---
+
+__Consider the Weibull $h(t)$. Note that when $\beta=1, h(t)$ is constant and that when $\beta=2, h(t)$ increases linearly.  Show that:__
+
+a. __If $0<\beta<1$, then $h(t)$ is decreasing in $t$__
+
+`r teachingSMRD:::solution()$begin`
+First, note that for the Weibull distribution
+
+$$
+\begin{aligned}
+h(t)&=\frac{\beta}{\eta^{\beta}}t^{\beta-1}, \hspace{67pt} t>0, \beta>0, \eta>0\\
+h'(t)&=\frac{\beta(\beta-1)}{\eta^{\beta}}t^{\beta-2}, \hspace{40pt} t>0, \beta>0, \eta>0\\
+h''(t)&=\frac{\beta(\beta-1)(\beta-2)}{\eta^{\beta}}t^{\beta-3}, \hspace{9pt} t>0, \beta>0, \eta>0
+\end{aligned}
+$$
+
+Thus, for $0<\beta<1, h'(t)<0$, and $h(t)$ is decreasing for $\beta \in (0,1)$
+`r teachingSMRD:::solution()$end`
+
+b. __If $1<\beta<2,$ then $h(t)$ is concave increasing.__
+
+`r teachingSMRD:::solution()$begin`
+For $\beta \in (1,2), h'(t)>0$ and $h''(t)<0,$ thus $h(t)$ is concave increasing.
+`r teachingSMRD:::solution()$end`
+
+c. __If $\beta>2,$ then $h(t)$ is convex increasing__
+
+`r teachingSMRD:::solution()$begin`
+For $\beta \in (2,\infty), h'(t)>0$ and $h''(t)>0,$ thus $h(t)$ is convex increasing
+`r teachingSMRD:::solution()$end`

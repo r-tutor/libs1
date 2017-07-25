@@ -1,0 +1,47 @@
+---
+output: html_document
+---
+
+__Let $T \sim WEIB(\mu, \sigma), \eta=\exp(\mu),$ and $\beta=1/\sigma.$__
+
+__a. For $m>0,$ show that $E(T^{m})=\eta^{m}\Gamma(1+m/\beta),$ where $\Gamma(x)$ is the gamma function.__
+
+`r teachingSMRD:::solution()$begin`
+Need to show that after implementing the parameter substitutions suggested in the text, the $m^{th}$ moment for the random variable $T \sim Weibull(\eta, \beta)$
+
+$$
+E[T^m]=\int_0^\infty T^{m}\frac{\beta}{\eta}\left(\frac{t}{\eta}\right)^{\beta-1}e^{-\left(\frac{t}{\eta}\right)^{\beta}}dt=\eta^m \int_0^\infty x^{\frac{m}{\beta}}e^{-x}dx
+$$
+
+First, define $a=\left(\frac{1}{\eta}\right)^{\beta}$ and distribute $T^m$ giving
+
+$$
+E[T^m]=\int_0^\infty a\beta\left(t\right)^{m+\beta-1}e^{-at^{\beta}}dt
+$$
+
+Next, introduce the substitution $x=at^{\beta} \rightarrow t=\left(\frac{x}{a}\right)^{\frac{1}{\beta}} \rightarrow dt=\frac{1}{a\beta}\left(\frac{x}{a}\right)^{-1+\frac{1}{\beta}}dx$ such that
+
+$$
+\begin{aligned}
+E[T^m]&=\int_0^\infty a\beta\left(\frac{x}{a}\right)^{\frac{m+\beta-1}{\beta}}\text{exp}(-x)\frac{1}{a\beta}\left(\frac{x}{a}\right)^{-1+\frac{1}{\beta}}dx\\
+&=\int_0^\infty \left(\frac{x}{a}\right)^{\frac{m}{\beta}+1-\frac{1}{\beta}-1+\frac{1}{\beta}}\text{exp}(-x)dx\\
+&={a}^{-\frac{m}{\beta}}\int_0^\infty x^{\frac{m}{\beta}}\text{exp}(-x)dx\\
+&={a}^{-\frac{m}{\beta}}\Gamma\left(\frac{m}{\beta}+1\right)\\
+E[T^m]&=\eta^m\Gamma\left(\frac{m}{\beta}+1\right).
+\end{aligned}
+$$
+`r teachingSMRD:::solution()$end`
+
+__b. Use the result in (a) to show that $E(T)=\eta\Gamma(1+1/\beta)$ and $Var(T)=\eta^{2}[\Gamma(1+2/\beta)-\Gamma^{2}(1+1/\beta)].$__
+
+`r teachingSMRD:::solution()$begin`
+Using the result from (a) for $m=1, E[T]=\eta\Gamma\left(\frac{1}{\beta}+1\right)$. Further, it can be shown that
+
+$$
+\begin{aligned}
+Var[T]&=E[T^2]-(E[T])^2\\
+&=\eta^2\Gamma\left(\frac{2}{\beta}+1\right)-\left(\eta\Gamma\left(\frac{1}{\beta}+1\right)\right)^2\\
+&=\eta^2\left[\Gamma\left(\frac{2}{\beta}+1\right)-\Gamma^2\left(\frac{1}{\beta}+1\right)\right]
+\end{aligned}
+$$
+`r teachingSMRD:::solution()$end`

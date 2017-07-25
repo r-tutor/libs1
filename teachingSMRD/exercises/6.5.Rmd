@@ -1,0 +1,63 @@
+---
+output: html_document
+---
+
+__Consider the ball bearing fatigue data given in Example 1.1 and Table 1.1__
+
+a. __Compute a nonparametric estimate of $F(t)$, the proportion of units failing as a function of time.  Plot your estimate on paper with linear scales__
+
+`r teachingSMRD:::solution()$begin`
+Since the data are uncensored, $\widehat{F(t)}$ can be found using the binomial approach (Eq. 3.1) where
+
+$$
+\widehat{F}(t_{i})=\frac{\sum_{j=1}^{i}d_{i}}{n}.
+$$
+
+For this data set, $\sum_{j=1}^{i}d_{i}$ is updated after each failure.  Since the failure times are exact, $\widehat{F}(t_{i})$ is a constant for $[t_{i-1}-t_{i}), i=1,...,23$.  Thus, the plot will appear as a step function.  Using RSplida, we can find the values of $\widehat{F}(t_{i})$ and plot them on linear scales using the following code.
+
+```{r,echo=c(1,3),  fig.cap="Nonparametric probability plot of the LZ Bearing data set"}
+lzbearing.ld<-frame.to.ld(lzbearing,
+                          response.column = 1,
+                          time.units = "Megacycles")
+par(family="serif")
+plot(lzbearing.ld, band.type = "none")
+```
+`r teachingSMRD:::solution()$end`
+
+b. __Make a lognormal probability plot of the data.  This is accomplished by ordering the failure times in increasing order, $T_{(1)}\le...\le_{(23)}.$  Then plot $t_{(i)}$ versus $(i-.5)/n$ on lognormal probability paper.__
+
+`r teachingSMRD:::solution()$begin`
+The requested plot is obtained by plotting the ordered failure times against $\Phi^{-1}_{_{NOR}}\left(\widehat{p}\right)$ where $\widehat{p}$ is computed using the Hazen plotting position formula $\frac{i-0.5}{n}$:
+
+These values are then plotted on semi-log paper as shown in the R code below
+
+```{r, echo=TRUE,  fig.cap="Lognormal probability plot of the LZ Bearing data set"}
+x<-Response(lzbearing.ld)
+hazen<-(rank(x)-0.5)/length(x)
+y<-qnorm(hazen)
+par(family = "serif")
+plot(x, y, pch = 16, col = "darkblue", xlab = expression(t[p]), ylab = "", log = "x")
+mtext(side = 2, expression(Phi[NOR]**-1~(over(i-0.5,n))), line = 2)
+```
+`r teachingSMRD:::solution()$end`
+
+c. __Do the same as in part (b) but on Weibull probability paper.__
+
+`r teachingSMRD:::solution()$begin`
+The Weibull probability plot is obtained by plotting time against $\Phi^{-1}_{_{SEV}}\left(\widehat{p}\right)$ where $\widehat{p}$ is again computed using the Hazen plotting position formula 
+
+These values are then plotted on semi-log paper as shown in the R code below
+
+```{r,  fig.cap="Weibull probability plot of the LZ Bearing data set"}
+y<-SMRD:::qsev(hazen)
+par(family = "serif")
+plot(x, y, pch = 16, col = "red", xlab = expression(t[p]), ylab = "", log = "x")
+mtext(side = 2, expression(Phi[SEV]**-1~(over(i-0.5,n))), line = 2)
+```
+`r teachingSMRD:::solution()$end`
+
+d. __Comment on the adequacy of the lognormal and Weibull models to describe these data.__
+
+`r teachingSMRD:::solution()$begin`
+Upon observing the plots in parts (b) and (c) above, both the Weibull and lognormal distributions appear to fit these data equally well. 
+`r teachingSMRD:::solution()$end`

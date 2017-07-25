@@ -1,0 +1,13 @@
+---
+output: html_document
+---
+
+__Show that if $Y$ has a SEV$(\mu, \sigma)$ distribution then $-Y$ has a LEV$(-\mu, \sigma)$ distribution.__
+
+`r teachingSMRD:::solution()$begin`
+We are given that $Y\sim SEV(\mu,\sigma)$.  Thus, $F_{_Y}(y)=P(Y\le y)=1 -\text{exp}{[-\text{exp}{\frac{(y-\mu)}{\sigma}}]}$
+
+$$
+f(x) = \frac{1}{\beta}e^{\frac{x-\mu}{\beta}}e^{-e^{\frac{x-\mu}{\beta}}}
+$$
+`r teachingSMRD:::solution()$end`

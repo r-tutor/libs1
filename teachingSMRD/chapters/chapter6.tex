@@ -1,0 +1,1540 @@
+%chapter 6
+%original by wqmeeker  12 Jan 94
+%edited by wqmeeker 19 mar 1994
+%edited by wqmeeker 28 mar 1994
+%edited by driker 29 mar 1994
+%edited by wqmeeker 29/31 mar 1994
+%edited by wqmeeker  1 june 94
+%edited by driker 13 july 94
+%edited by wqmeeker  2 aug 94
+%edited by wqmeeker  7 aug 94
+%edited by wqmeeker  21 sept 94
+%edited by wqmeeker  2/4 oct 94 major changes switched justification
+%                    of linearization and reorganized
+%                    added alloy t7987 and turbine wheel examples
+%edited by riker  21 oct 94 luis' comments
+%edited by wqmeeker  22 oct 94 further stuff
+%edited by wqmeeker  26/27/29 nov 94 
+%edited by driker    14 dec 94
+%edited by wqmeeker    14 dec 94
+%edited by driker 20 dec 94
+%edited by driker 2 feb 95
+%edited by wqm    19 feb 95 luis' comments
+%edited by driker 21 june 95
+%edited by driker 27 june 95
+%edited by driker 30 august 95
+%edited by wqm    30 sept 95 gng probplot and minor stuff
+%edited by driker 5 oct 95
+%edited by driker 1 july 96
+%edited by wqmeeker    9 mar 97
+\setcounter{chapter}{5}
+
+\chapter{Probability Plotting}
+\label{chapter:probability.plotting}
+
+\input{\chapterhome/common_heading.tex}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Objectives}
+This chapter explains
+\begin{itemize}
+\item
+Applications of probability plots.
+\item
+Basic  probability plotting concepts
+for both complete and censored data. 
+\item 
+How to analytically linearize a cdf on special plotting scales.
+\item 
+How to plot a modified nonparametric estimate of $F(t)$
+on probability paper and
+how to use such plot to judge the adequacy of a particular
+parametric distribution.
+\item 
+Analytical and simulation methods of separating useful
+information from ``noise'' when using a probability plot to assess
+the reasonableness of a particular distributional model.
+\item 
+Graphical
+estimates of important reliability characteristics like failure
+probabilities and distribution quantiles.
+
+\end{itemize}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Overview}
+This chapter presents the important
+topic of probability plotting. Probability plots are used throughout
+this book to present data, guide modeling, and present the results of
+analyses.  Sections~\ref{section:probplot.intro} through
+\ref{section:plotting.pos} 
+explain the basic concepts of probability plotting.
+Section~\ref{section:probplot.extensions} describes some useful
+extensions to the standard probability plots while
+Section~\ref{section.probplot.notes} explains additional aspects of the
+practical application of probability plots, including the use of
+simulation to help interpret such plots.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Introduction}
+\label{section:probplot.intro}
+Probability plots are an important tool for analyzing data and have
+been particularly popular in the analysis of life data.
+
+%-------------------------------------------------------------------
+\subsection{Purposes of probability plots}
+\label{section:prob.plot.purposes}
+In practical applications, probability plots are used to
+\begin{itemize}
+\item
+Assess the adequacy of a particular distributional model.
+\item
+Provide {\em nonparametric} graphical estimates of probabilities and
+distribution quantiles. 
+\item
+Obtain graphical estimates of {\em parametric} model parameters (e.g., by 
+fitting a straight line through the points on a probability plot).
+\item
+Displaying the {\em results} of a parametric
+maximum likelihood fit along with the data.
+
+\end{itemize}
+In addition, probability plots often reveal information about a population,
+process, or data, that might otherwise escape detection.
+%-------------------------------------------------------------------
+\subsection{Probability plotting scales: linearizing a cdf}
+
+The figures in
+Chapter~\ref{chapter:ls.parametric.models} 
+show that cdfs from different
+distributions have similar shapes.  Thus, distinguishing, by eye,
+among cdfs from different distributions is not easy. Probability
+plots use special scales on which a cdf of a particular
+distribution plots as a straight line.
+
+The plot of \{$\realrv$ versus $F(\realrv)$\} can be linearized
+by finding transformations of $F(\realrv)$ and  $\realrv$
+such that the relationship between the transformed variables is
+linear.  Then the transformed axes can be relabeled in terms of the
+original probability and time
+variables. The resulting probability scale
+is generally nonlinear and is called the ``probability scale.'' The
+data scale is usually a log scale or a linear scale, depending on the
+particular distribution and type of probability plot.
+
+Probability paper was developed initially to allow data analysts
+to plot data, obtain estimates,
+and assess fit of a particular model by
+comparing with a straight line.  Normal and Weibull probability papers
+have been widely used in practice.
+However, because there are many different
+combinations of possible probability and data axes that might be
+needed, it is useful to have a computer implementation of probability
+plotting methods like those described in this chapter.
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\section{Linearizing Location-Scale-Based Distributions}
+\label{section:linearize.loc.scale}
+
+The quantile function for $F(\realrv)$ provides a convenient
+starting point for finding the transformation needed for linearizing a
+cdf.  We illustrate the ideas in this section with a subset of the
+location-scale-based distributions from
+Chapter~\ref{chapter:ls.parametric.models}.  The approach, however, is
+similar for other location-scale-based distributions. 
+In Section~\ref{section:probplot.extensions}, we extend the method to
+non-location-scale distributions.
+%-------------------------------------------------------------------
+\subsection{Linearizing the exponential cdf}
+\label{section:linearizing.exponential.probplot}
+The quantile function for the  two-parameter
+exponential distribution 
+(see Section~\ref{section:exponential.distribution}) is
+\begin{displaymath}
+\rvquan_{p}= \gamma - \log(1-p) \expmean. 
+\end{displaymath}
+This
+implies that \{$\rvquan_{p}$ versus $-\log(1-p)$\} plots as a
+straight line, as illustrated in Figure~\ref{figure:linear.exponential.ps}.
+Because we plot time on the horizontal
+axis and $p$ on the
+vertical axis (corresponding to the traditional cdf plots used in
+Chapters~\ref{chapter:reliability.data} through
+\ref{chapter:other.parametric.models}) $\gamma$ is the intercept on
+the time scale (because $-\log(1-p)=0$ when $p=0$) and the slope 
+on the time versus quantile scales is
+equal to $1/\expmean.$ In this case, $\expmean$ determines the
+slope of the line and $\gamma$ determines the horizontal position of the
+line. 
+
+The linear scale on the right-hand side of the plot,
+corresponding to $-\log(1-p)$, is useful for graphically estimating
+the slope. Because this scale is unnecessary for the other 
+applications listed in Section~\ref{section:prob.plot.purposes}
+and because it is bad style
+to encumber graphs with unnecessary scales, such scales will be
+displayed only in selected examples in this book.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/linear.exponential.ps}
+\caption{Exponential probability plot (exponential distribution probability 
+scale) showing exponential cdfs as straight lines for
+$\expmean=50$, 200 and $\gamma=0$, 200.}
+\label{figure:linear.exponential.ps}
+\end{figure}
+%-------------------------------------------------------------------
+
+
+
+%----------------------------------------------------------------------
+\subsection{Linearizing the normal cdf}
+As shown in Section~\ref{section:normal.distribution.definition}, the
+quantile function for the normal distribution is
+\begin{displaymath}
+\grvquan_{p}= \mu  + \Phi_{{\rm nor}}^{-1}(p) \sigma
+\end{displaymath}
+where
+$\Phi^{-1}_{{\rm nor}}(p)$ is the $p$ quantile of the standard normal
+distribution.
+As illustrated in Figure~\ref{figure:linear.normal.ps}, this implies
+that \{$\grvquan_{p}$ 
+versus $\Phi_{{\rm nor}}^{-1}(p)$\} plots as a straight
+line. 
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/linear.normal.ps}
+\caption{Normal probability plot (normal distribution probability scale)
+showing normal cdfs as straight lines for $\mu=40$, 80 and
+$\sigma=10$, 20.}
+\label{figure:linear.normal.ps}
+\end{figure}
+%-------------------------------------------------------------------
+The normal mean $\mu$ (location parameter)
+can be read from the time scale at the point where the cdf
+intersects the $\Phi^{-1}_{{\rm nor}}(p)=0$ line
+(the right-hand scale is $\Phi^{-1}_{\nor}(p)$ and
+the horizontal dashed line
+shows that $\Phi^{-1}_{{\rm nor}}(p)=0$ at $p =.5$).
+The slope of the line on the time versus quantile scales is $1/\sigma$.
+Any normal cdf plots as a straight line with
+positive slope.  Correspondingly, any straight line with positive
+slope corresponds to a normal distribution.
+Note the symmetry of the probability 
+scale above and below .5,  following from 
+the symmetry of the normal distribution pdf (shown in
+Figure~\ref{figure:distplot.nor.ps}).
+
+%----------------------------------------------------------------------
+\subsection{Linearizing the lognormal cdf}
+Lognormal probability plots are closely related to
+normal probability plots.
+As shown in Section~\ref{section:lognormal.distribution.def}, the
+quantile function for the lognormal distribution is
+$\rvquan_{p}=\exp[\mu + \Phi_{{\rm nor}}^{-1}(p) \sigma ]$ where
+$\Phi^{-1}_{{\rm nor}}(p)$ is the $p$ quantile of the standard normal
+distribution.  This leads to
+\begin{displaymath}
+\log(\rvquan_{p})= \mu  + \Phi_{{\rm nor}}^{-1}(p) \sigma.
+\end{displaymath}
+As illustrated in Figure~\ref{figure:loglinear.lognormal.ps}, this implies
+that \{$\log(\rvquan_{p})$ 
+versus $\Phi_{{\rm nor}}^{-1}(p)$\} plots as a straight
+line. 
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/loglinear.lognormal.ps}
+\caption{Lognormal probability plot (normal distribution probability 
+scales) showing lognormal cdfs as straight lines for $\exp(\mu)=50$, 500 and
+$\sigma=1$, 2.}
+\label{figure:loglinear.lognormal.ps}
+\end{figure}
+%-------------------------------------------------------------------
+The lognormal scale parameter (median) $\rvquan_{.5}=\exp(\mu)$ can be
+read from the time at the point 
+where the cdf intersects the $\Phi^{-1}_{{\rm nor}}(p)=0$
+line (the
+horizontal dashed line shows that $\Phi^{-1}_{{\rm nor}}(p)=0$ at
+$p =.5$).  The slope of the line on the time versus
+quantile scales is $1/\sigma$.  Any
+lognormal cdf plots as a straight line with positive slope.
+Correspondingly, any straight line with positive slope corresponds to
+a lognormal distribution.
+
+The lognormal data scale is a logarithmic scale.  The lognormal
+probability scale is the same as that on normal probability plots
+(Figure~\ref{figure:linear.normal.ps}). The base-10 log-time scale
+on the top of the graph is preferred by some engineers.  This scale,
+along with the linear $\Phi_{\nor}^{-1}(p)$ scale on the right-hand
+side of the plot facilitate the computation of $\sigma$ for the
+base-10 lognormal distribution (see
+Section~\ref{section:lognormal.distribution.def}).
+
+\begin{example}
+{\bf Reading parameter values from a probability plot.}  To
+illustrate the process of reading parameter values from a
+probability plot, refer to
+the $\exp(\mu), \sigma= 50, 2$ line
+on Figure~\ref{figure:loglinear.lognormal.ps}. The value of the
+median $\exp(\mu)$ of the lognormal distribution corresponding to this line
+can be read from the Time axis where the line crosses the dotted
+line. Then $\exp(\mu)=50$, which corresponds to
+$\mu=\log_{10}(50)=1.69897$ for the base-10 lognormal
+distribution
+and $\mu=\log(50)=3.912023$ for the base-$e$ lognormal distribution.
+To find sigma, one needs to find the reciprocal of the slope 
+of the line. Start with the base-10
+log-time
+scale and for best resolution, use the extreme endpoints (in this
+case $\log_{10} = 0$ and  $\log_{10} = 3$). The corresponding
+standardized quantile values can be read 
+from the right-hand axis as approximatley  -1.97 and 1.5.
+% splus> log(10)*(3-0)/(1.5-(-1.97))
+% splus> [1] 1.990708
+% splus> > log(50)  [1] 3.912023
+% splus> > log10(50)  [1] 1.69897
+Then for the base-10 lognormal distribution
+\begin{displaymath}
+ \sigma \approx \left( \frac{3-0}{1.5-(-1.97)}
+\right) = .865 
+\end{displaymath}
+and for the base-$e$ lognormal distribution
+$\sigma \approx \log(10) \times .865=1.99$
+where the factor $\log(10)=2.302585$ converts logarithms from 
+base-10 to logarithms in base-$e$.
+
+\end{example}
+
+%-------------------------------------------------------------------
+\subsection{Linearizing the Weibull cdf}
+\label{section:probplot.weibull}
+As shown in Section~\ref{section:weibull.distribution},
+the quantile function for the Weibull distribution 
+can be expressed (showing both the location-scale and the 
+common parameterization) as
+$\rvquan_{p}=\exp[\mu  + \Phi_{{\rm sev}}^{-1}(p) \sigma ]=
+	\weibscale[-\log(1-p)]^{1/\beta}$
+where $\Phi^{-1}_{{\rm sev}}(p)=\log[-\log(1-p)]$.
+This leads to
+\begin{displaymath}
+\log(\rvquan_{p})= \mu  + \log[-\log(1-p)] \sigma=
+	\log(\weibscale) + \log[-\log(1-p)]\frac{1}{\beta}.
+\end{displaymath}
+As illustrated in Figure~\ref{figure:loglinear.weibull.ps}, this implies
+that \{$\log(\rvquan_{p})$ 
+versus $ \log[-\log(1-p)]$\} plots as a straight line. 
+% [log(t_{p_{1}})-log(t_{p_{2}})]/[\Phi_{-1}(p_{1})-\Phi_{-1}(p_{2})].
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/loglinear.weibull.ps}
+\caption{Weibull probability plot (smallest extreme value distribution 
+probability scale) showing Weibull cdfs as straight lines for
+$\weibscale=50$, 500 and $\beta=.5$, 1.}
+\label{figure:loglinear.weibull.ps}
+\end{figure}
+%------------------------------------------------------------------- 
+The Weibull scale parameter $\weibscale=\exp(\mu)$ can be read from
+the time scale at the point where the cdf intersects the
+$\log[-\log(1-p)]=0$ line (indicated by the horizontal dashed line at
+$p \approx 0.632$).  The slope of the line on the log time versus
+quantile scales is $\beta=1/\sigma$.  Any Weibull cdf plots as a
+straight line with positive slope.  Correspondingly, any straight line
+with positive slope corresponds to a Weibull distribution. Exponential
+cdfs plot as straight lines with slopes equal to 1. Note the log scale
+for time (with a linear time scale, this would be a smallest extreme
+value distribution probability plot).
+%
+%
+\section{Graphical Goodness of Fit}
+\label{section:graphical.gof}
+Assessment of distributional adequacy is an important application of
+probability plots. As shown in Section~\ref{section:plotting.pos},
+this is done by plotting the nonparametric estimate $\Fhat(t)$ on the
+linearizing probability scales and assessing departures from a
+straight line.  Such probability plots can be made even more useful by
+plotting, in addition, simultaneous confidence bands like those
+presented in Section~\ref{section:np.simultaneous.cb}. Based on the
+available data, any possible $F(t)$ within these bands is,
+statistically, consistent with the data. On probability paper for a
+particular distribution, if it is possible to draw a straight line all
+the way between the bands, then the distribution is consistent with
+the data. We will use simultaneous confidence bands on all probability
+plots in this chapter.
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Probability Plotting Positions}
+\label{section:plotting.pos}
+To construct a probability plot, one must decide how to plot the
+nonparametric estimate of $F(t)$ on the probability scales described
+in Section~\ref{section:linearize.loc.scale}.  With exact times, it
+has been traditional to plot each failure time against an estimate of
+the probability of failing at that time.  To follow this tradition, we
+plot an estimate of $F(t)$ at some specified points in
+time---typically the failure times when they are reported and the
+upper endpoints of inspection intervals for inspection data.  Then we
+need to define ``plotting positions,'' consisting of a corresponding
+estimate of $F(t)$, at these points in time.
+
+%----------------------------------------------------------------------
+\subsection{Criteria for choosing plotting positions}
+\label{section:plotpos.criteria}
+Criteria for choosing plotting positions should depend on the
+application or purpose for constructing the probability plot. The
+following are some possible applications that will suggest criteria.
+
+\mbox{ }\\
+\noindent
+%-------------------------------
+{\bf Checking distributional assumptions.}
+Probability plotting is used to
+check if the observed data are well approximated
+by the postulated parametric distribution $F(\realrv; \thetavec)$.
+For this purpose, some bias in the slope
+and location of the fitted line is not a serious problem.
+For this reason, it is generally suggested that, for assessing
+distributional assumptions, the choice of plotting positions,
+in moderate-to-large samples, is not so
+important. 
+
+\mbox{ }\\
+\noindent
+%-------------------------------
+{\bf Estimation of parameters.}
+If the purpose of the probability plot is to use a fitted line to
+estimate parameters of a particular distribution
+(by using the slope and intercept of a line drawn through
+the data points), the ``best'' plotting positions will depend
+on the assumed underlying model and the
+functions to be estimated (e.g., which quantile or moment is of interest). 
+For complete data, letting $i$ index the ordered observations, there is some
+general agreement that the plotting positions
+\begin{displaymath}
+p_{i}=\frac{i-.5}{n}
+\end{displaymath}
+provide a good choice for general-purpose use in probability plotting.
+
+\mbox{ }\\
+\noindent
+%-------------------------------
+{\bf Display of maximum likelihood fits with data.}
+As shown in 
+Chapter~\ref{chapter:parametric.ml.one.par},
+maximum likelihood (ML) fitting of parametric models
+is a convenient and general method for obtaining
+estimates and predictions from censored data.  One important
+application of a probability plot is to display the ML
+fit graphically and to compare with the corresponding nonparametric
+estimate.  In this case an important criterion is that the line
+``fit'' the points well when the assumed model being fit
+with ML agrees with the data. 
+With a poor choice of plotting positions, the ML line may not 
+fit the plotted points. Then the probability plot can give
+the false impression that the parametric model and the data disagree,
+even though any difference
+between the points and the line will generally be small relative to
+sampling error 
+variability that would be observed by repeating the sampling process.
+Plotting simultaneous confidence bands on the
+probability plot will indicate the amount of sampling variability
+one might expect to see.
+
+%----------------------------------------------------------------------
+\subsection{Choice of plotting positions}
+There are three cases to consider: 1) continuous inspection 
+(or small inspection intervals resulting in exact failures), 
+2) interval-censored data
+with relatively large intervals, and 3) arbitrarily censored data which
+could include combinations of left censoring, right censoring,
+and overlapping failure intervals.
+
+
+\mbox{ }\\
+\noindent
+%-------------------------------
+{\bf Continuous inspection data and single censoring.}  With
+continuous inspection and single right censoring (or complete data),
+the nonparametric estimate $\Fhat(t_{(i)})=i/n$ is a step function
+increasing by an amount $1/n$ at each reported failure time.  Let
+$\realrv_{(1)},
+\realrv_{(2)}, \ldots $ be the ordered failure times.  From a plot of
+the step function (e.g.,  Figure~\ref{figure:alloy.t7987.cdf.sim.ps}),
+we see that $\Fhat(t)$ steps up at each reported failure time.
+Plotting at the bottom (top) of the step would lead to bias in the
+plotted points and the ML line would tend to be above (below) the
+plotted points.  Also, in situations where the last reported time is a
+failure, it is not possible to plot a point at $\Fhat(t)=1$ (the
+value of the nonparametric estimate at the last failure).  A
+reasonable compromise plotting position is the midpoint of the jump
+\begin{equation}
+\label{equation:i.minus.p5}
+\frac{i-.5}{n} = \frac{1}{2} [\Fhat (\realrv_{(i)})
+ 		+ \Fhat (\realrv_{(i-1)})].
+\end{equation}
+Another justification for this definition of plotting positions
+[estimator of $F(t)$ at $t$] is that the median of the $i$th order
+statistic (i.e., the $i$th largest observation) in a sample of size
+$n$ is approximately $ F^{-1} [(i-.5)/n]$.  For complete or
+singly-censored data, this plotting position has been useful for a
+variety of different distributions and purposes [see, for example,
+pages 293-294 of Hahn and Shapiro (1967) for discussion of
+alternative plotting positions].
+ 
+%-------------------------------------------------------------------
+\begin{example}
+\label{example:alloy.t7987.data}
+{\bf Probability plots of fatigue life data for Alloy T7987.} 
+Table~\ref{table:alloy.t7987} gives the fatigue life (rounded to
+the nearest thousand cycles) for 67 specimens
+of Alloy T7987 that failed before having accumulated 300 thousand cycles of
+testing. There were, in addition, 5 ``runout'' specimens that survived
+until 300 thousand cycles without failure.
+%-------------------------------------------------------------------
+\begin{table}
+\caption{Number of cycles (in thousands) of fatigue life for 67 of 72
+Alloy T7987 specimens that failed before 300 thousand cycles.}
+\centering\small
+\begin{tabular}{*{10}{r}}
+\\[-.5ex]
+\hline
+% alloy  T7987 fatigue data
+% thousands of cycles
+ 94 &  96  &  99 &   99 &  104  &  108  & 112  & 114  & 117  & 117      \\
+118  & 121  & 121  & 123  & 129   &  131  & 133  & 135  & 136  & 139     \\
+139  & 140  & 141  &141  & 143  & 144 &  149 &  149  & 152  & 153     \\ 
+159  & 159  & 159  & 159 & 162  & 168 &  168 &  169 &  170  & 170     \\ 
+171  & 172  & 173  & 176  & 177  & 180  & 180 &  184 & 	187 &  188      \\
+189  & 190 &  196 &  197  & 203  &  205 &  211  & 213  & 224  & 226      \\
+227  & 256  & 257  & 269  & 271  & 274    & 291    \\
+\hline      
+\end{tabular}
+\label{table:alloy.t7987}
+\end{table}
+%-------------------------------------------------------------------
+Figure~\ref{figure:alloy.t7987.cdf.sim.ps}
+shows a plot of $\Fhat(t)$, the nonparametric estimate of
+the fatigue life cdf.
+Some of the step increases are integer multiples of $1/n$ because of the
+ties resulting from rounding.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/alloy.t7987.cdf.sim.ps}
+\caption{Linear-scales plot of nonparametric estimate 
+of $F(t)$ for the Alloy T7987
+fatigue life and
+simultaneous approximate 95\% confidence bands for $F(t)$.}
+\label{figure:alloy.t7987.cdf.sim.ps}
+\end{figure}
+%-------------------------------------------------------------------
+The points in the Weibull probability plot in
+Figure~\ref{figure:alloy.t7987.npp.weib.ps} are, for each reported
+failure point, plotted at a probability corresponding to half the
+jump-height of each step in
+Figure~\ref{figure:alloy.t7987.cdf.sim.ps}. 
+Figure~\ref{figure:alloy.t7987.npp.weib.ps} indicates
+that the Weibull distribution does not provide a good fit to the
+data.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/alloy.t7987.npp.weib.ps}
+\caption{Weibull probability plot
+of the Alloy T7987 fatigue life data and
+simultaneous approximate 95\% confidence bands for $F(t)$.}
+\label{figure:alloy.t7987.npp.weib.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Figure~\ref{figure:alloy.t7987.npp.lnor.ps}
+indicates that the lognormal distribution provides a much better fit
+than the Weibull distribution. Both distributions, however, show
+concave behavior in the lower tail, an indication that a threshold parameter
+for either the Weibull or lognormal distribution
+would improve the fit to the data. This is investigated further
+in Section \ref{section:probplot.extensions}.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/alloy.t7987.npp.lnor.ps}
+\caption{Lognormal probability plot
+for the Alloy T7987
+fatigue life and
+simultaneous approximate 95\% confidence bands for $F(t)$.}
+\label{figure:alloy.t7987.npp.lnor.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+
+\mbox{ }\\
+\noindent
+%-------------------------------
+{\bf Continuous inspection data and multiple censoring.}
+With continuous inspection and multiple right censoring 
+the usual nonparametric estimate $\Fhat(t)$
+is again a step function with steps at each reported failure time 
+(but, due to censoring
+between failures, the step increases may be different from $1/n$).
+Corresponding to the definition for
+single censoring in (\ref{equation:i.minus.p5}), we modify $\Fhat(t_{(i)})$
+to get plotting positions for multiple censoring as \{$\realrv_{(i)}$ versus
+$p_{i}$\} with
+\begin{equation}
+\label{equation:averagekm}
+ p_{i}=\frac{1}{2} [\Fhat (\realrv_{(i)})\, 
++ \,\Fhat (\realrv_{(i-1)})].
+\end{equation}
+
+
+\begin{example}
+{\bf Comparison of Weibull and lognormal probability plots for the
+shock absorber data.} For the shock absorber data
+in Example~\ref{example:shock.absorber.data} and Appendix
+Table~\ref{atable:shockabs.data},
+the nonparametric estimate of $F(t)$ is given in
+Figure~\ref{figure:shockabsB.cdf.pw.ps}.
+Figures~\ref{figure:shockabsB.npp.weib.ps} and
+\ref{figure:shockabsB.npp.lnor.ps} show, respectively, Weibull and
+lognormal probability plots of these data, along with approximate 95\%
+nonparametric simultaneous confidence bands.
+The Weibull distribution appears to provide a better
+description of these data.
+With the large amount of uncertainty
+expressed by the simultaneous confidence bands, however, we certainly
+could not rule out the lognormal distribution as an adequate
+distribution.
+\end{example}
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.npp.weib.ps}
+\caption{Weibull probability plot of the shock absorber data with
+simultaneous approximate 95\% confidence bands for $F(t)$.}
+\label{figure:shockabsB.npp.weib.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.npp.lnor.ps}
+\caption{Lognormal probability plot of the shock absorber data with
+simultaneous approximate 95\% confidence bands for
+$F(t)$.}
+\label{figure:shockabsB.npp.lnor.ps}
+\end{figure}
+%------------------------------------------------------------------- 
+
+\mbox{ }\\
+\noindent
+%-------------------------------
+{\bf Interval-censored inspection data.}
+With interval-censored data, if there are failures in each interval,
+$\Fhat(t)$ is defined at the upper endpoint
+of each interval (see
+Section~\ref{section:def.of.nonparametric.estimate}).  Let
+$(\realrv_{0}, \realrv_{1}], \ldots, (\realrv_{m-1}, \realrv_{m}]$ be the
+intervals preceding the $m$ inspection times.  The upper endpoints of
+the inspection intervals $\realrv_{i}, i=1,2,\ldots$, 
+are convenient plotting times.  For corresponding
+plotting positions here use $p_{i}=\Fhat(\realrv_{i})$.  
+The justification for this choice is that, with no censoring, 
+from standard binomial theory,
+\begin{equation}
+\label{equation:interval.points.justification}
+\E [\Fhat(\realrv_{i})]=F(\realrv_{i}).
+\end{equation}
+With losses (multiple censoring), 
+(\ref{equation:interval.points.justification}) will be
+approximately true. When there are no
+censored observations beyond $\realrv_{m}$,
+$F(\realrv_{m})=1$ and this point cannot be plotted on
+probability paper. 
+
+\begin{example}
+{\bf Exponential probability plot for the heat exchanger tube data.}
+Figure~\ref{figure:heatexch.npp.exp.ps} is an exponential
+probability plot of the heat exchanger data showing the
+nonparametric estimate of $F(t)$ computed in
+Example~\ref{example:npe.heat.exchanger}.  Also shown are 95\%
+nonparametric simultaneous confidence bands for $F(\realrv)$. These
+bands are very wide due to the small number of observed cracks in
+the combined heat exchanger data.  The bands are not symmetric
+because we used the logit transformation (described in
+Section~\ref{section:np.pointwise.ci}) to improve the large-sample
+approximation.  The points on this plot fall roughly along a
+straight line, indicating that there is no evidence here to
+contradict an exponential distribution assumption. Of course, the
+width of the simultaneous confidence bands for $F(\realrv)$ also
+indicates that it is certainly possible that the heat exchanger tube
+life has a distribution far from the exponential distribution.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/heatexch.npp.exp.ps}
+\caption{Exponential probability plot of the heat-exchanger
+tube cracking data with 
+simultaneous approximate 95\% confidence bands for $F(t)$.}
+\label{figure:heatexch.npp.exp.ps}
+\end{figure}
+\end{example}
+
+\mbox{ }\\
+\noindent
+%------------------------
+{\bf Arbitrarily censored data.}  With mixtures of left censoring,
+right censoring, and observations reported as exact failures,
+$\Fhat(t)$ can consist of a mixture of sets of points and horizontal
+lines of increasing height.  Such estimates require a compromise
+between the other two cases.
+
+\begin{example}
+%-------------------------------------------------------------------
+{\bf Turbine wheel data.} The turbine wheel data from
+Example~\ref{example:turbine.wheel.data} and given in
+Table~\ref{table:turbine.data} consist of a set of overlapping left-
+and right-censored observations.
+Figure~\ref{figure:turbine.npp.exp.ps} is an exponential probability
+plot of the turbine wheel data.
+Figure~\ref{figure:turbine.npp.lnor.ps} is a lognormal probability
+plot of the same data. Both plots contain 95\% simultaneous
+nonparametric confidence bands.
+
+It is clear that the lognormal distribution fits these data better
+than the exponential distribution.  For these data, the Weibull
+probability plot (not shown here) was very similar to the lognormal
+probability plot.  The great width of the 95\% simultaneous
+confidence bands indicates, however, that none of these distributions
+could be ruled out. As a practical matter, however, it is generally
+more conservative to use the more general Weibull or lognormal
+distributions. Unless the assumption could be based on physical
+experience with related data or other information apart from the
+data, use of the exponential distribution with such sparse data
+would generally give an unrealistically small indication of
+sampling uncertainty.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/turbine.npp.exp.ps}
+\caption{Exponential probability plot of the turbine wheel
+inspection data with 
+simultaneous approximate 95\% confidence bands for $F(\realrv)$.}
+\label{figure:turbine.npp.exp.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/turbine.npp.lnor.ps}
+\caption{Lognormal probability plot of the turbine wheel
+inspection data with 
+simultaneous approximate 95\% confidence bands for $F(t)$.}
+\label{figure:turbine.npp.lnor.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Probability Plots with Specified Shape Parameters}
+\label{section:probplot.extensions} 
+The methods in Section~\ref{section:linearize.loc.scale} can
+extend to constructing probability plots for distributions that are not
+members of the log-location-scale family. In addition to the other
+applications described in Section~\ref{section:plotpos.criteria}, such
+plots help graphically identify the possibility of improving fit by
+using a nonzero threshold
+parameter (Sections~\ref{section:intro.to.threshold.distributions} and
+\ref{section:threshold.dist.ml}).
+
+Some distributions are not in the location-scale or
+log-location-scale families and cannot be transformed into such a
+distribution (e.g, the gamma and generalized gamma distributions and
+other distributions covered in
+Chapter~\ref{chapter:other.parametric.models}).  Such distributions
+have one or more unknown shape parameters (if a distribution has a
+single shape parameter whose value is assumed known, the
+distribution can be considered to be a location-scale
+distribution). It is still possible to construct a probability plot
+for distributions with an unknown shape parameter, but the plotting
+scales depend on the given value or estimate for the shape
+parameter.  There are two approaches to specifying an unknown shape
+parameter for a probability plot:
+\begin{itemize}
+\item
+Plot the data with different given values of the shape parameter in an
+attempt to find a value that will give a probability plot that is
+nearly linear.
+\item
+Use parametric maximum likelihood methods 
+to estimate the shape parameter and use the estimated value to
+construct probability plotting scales. This is discussed, starting in
+Chapter~\ref{chapter:parametric.ml.one.par}, and continuing in
+Chapters~\ref{chapter:parametric.ml.ls}, and \ref{chapter:ml.other.parametric}
+\end{itemize}
+These two approaches generally lead to approximately the same plot,
+and with modern computing software, either is reasonably easy to
+implement as shown below.
+
+%-------------------------------------------------------------------
+\subsection{Linearizing the gamma cdf}
+\label{section:probplot.gamma}
+As shown in Section~\ref{section:gamma.moment.quant},
+the quantile function for the gamma distribution is
+$\rvquan_{p}=\incgamma^{-1}(p;\kappa) \theta$.
+The quantile function for the three-parameter
+gamma distribution, allowing the distribution to start at $\gamma$
+instead of 0
+(Section~\ref{section:intro.to.threshold.distributions}), is
+\begin{displaymath}
+\rvquan_{p}= \gamma + \incgamma^{-1}(p;\kappa) \theta.
+\end{displaymath}
+This implies that \{$\rvquan_{p}$ versus $\incgamma^{-1}(p;\kappa)$\}
+plots as a straight line.  In contrast to the exponential
+probability plot, the probability scale for the gamma probability plot
+depends on specification of the shape parameter $\kappa$.  As with the
+exponential probability plots (described in
+Section~\ref{section:linearizing.exponential.probplot}), $\gamma$ is
+the intercept on the time scale [because $\incgamma^{-1}(p;\kappa)=0$
+when $p=0$].  When plotting time is on the horizontal axis, the slope of
+the cdf line equals $1/\expmean.$ Thus, changing $\expmean$
+changes the slope of the line, and changing $\gamma$ changes the
+horizontal position of the line.
+ 
+%-------------------------------------------------------------------
+\begin{example}
+\label{example:gamma.probplot.alloy.t7987}
+{\bf Gamma probability plots for fatigue data for alloy T7987.}
+Here we return to the Alloy T7987 fatigue life data introduced in
+Example~\ref{example:alloy.t7987.data}.
+Figure~\ref{figure:alloy.t7987.npp.gamma.all.ps}
+shows gamma probability plots with shape parameter
+$\kappa=.8$, 1.2, 2, and 5. These plots show the effect
+that choosing different gamma shape parameters will have on the
+curvature in the probability plot. Among these shape parameters,
+$\kappa=2$ seems to give the best fit to the data.  Each of these
+plots also indicates the need for a threshold parameter $\gamma$ that is
+approximately 90 (Table \ref{table:alloy.t7987} shows that the
+smallest observation in the data set was 94). There is, for these
+data, some physical justification for a threshold parameter. For some
+alloys, the amount of time that it takes for a fatigue crack to
+initiate and grow to failure may be on the order of hundreds of
+thousands of cycles, particularly if deformation caused by loading is
+primarily elastic.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/alloy.t7987.npp.gamma.all.ps}
+\caption{Gamma probability plots with $\kappa=.8$, 1.2, 2, and 5
+for the Alloy T7987 fatigue life data with
+simultaneous approximate 95\% confidence bands for $F(t)$.}
+\label{figure:alloy.t7987.npp.gamma.all.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+
+%-------------------------------------------------------------------
+\subsection{Linearizing the Weibull cdf using a linear time scale and
+specified shape parameter}
+\label{section:probplot.linear.weibull}
+The quantile
+function for the three-parameter Weibull distribution
+\begin{displaymath}
+\rvquan_{p}=	 \gamma + \weibscale[-\log(1-p)]^{1/\beta}.
+\end{displaymath} 
+can be obtained by inverting the cdf given in
+Section~\ref{section:threshold.cdf}.  This expression shows that
+\{$\rvquan_{p}$ versus $[-\log(1-p)]^{1/\beta}$\} plots as a
+straight line.  Unlike the standard log-time-scale Weibull
+probability plot described in
+Section~\ref{section:probplot.weibull}, the probability scale for
+the linear-time-scale Weibull probability plot requires a given
+value of the shape parameter $\beta$. However, the plots provide
+instead, a graphical estimate of the threshold parameter $\gamma$
+(which was previously constrained to be 0). As with the gamma and
+exponential probability plots, $\gamma$ is the intercept on the time
+scale (because $[-\log(1-p)]^{1/\beta}=0$ when $p=0$).  When time is
+on the horizontal axis, the slope of the cdf line is equal to
+$1/\weibscale.$ As with the gamma and exponential probability plots,
+changing $\weibscale$ changes the slope of the line, and changing
+$\gamma$ changes the horizontal position of the line.
+
+\begin{example} 
+\label{example:alloy.t7987.weibull.plot.compare}
+{\bf Comparison of log and linear time-scale Weibull
+probability plots for fatigue life data for alloy T7987.} 
+Although the standard log-data-scale Weibull probability plot in
+Figure~\ref{figure:alloy.t7987.npp.weib.ps} (with threshold parameter
+$\gamma=0$, implicitly) indicated a poor fit, the linear-data-scale
+Weibull probability plot with specified $\beta=1.4$ (this value was
+determined by trial to provide the best fit, visually) in
+Figure~\ref{figure:alloy.t7987.npp.weib.1p4.ps} indicates that a
+Weibull distribution with a shape parameter $\beta=1.4$ and threshold
+parameter of approximately $\gamma=90$ will provide a good fit to the
+data.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/alloy.t7987.npp.weib.1p4.ps}
+\caption{Linear-scale Weibull plot with $\beta=1.4$
+for the Alloy T7987 fatigue life with
+simultaneous approximate 95\% confidence bands for $F(t)$.}
+\label{figure:alloy.t7987.npp.weib.1p4.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+
+%-------------------------------------------------------------------
+\subsection{Linearizing the generalized gamma cdf}
+\label{section:probplot.gng}
+As shown in Section~\ref{section:gng.moment.quant}, the quantile
+function for the generalized gamma distribution (GENG) is
+$\rvquan_{p}=\theta \left[
+\incgamma^{-1}(p;\kappa)\right]^{\frac{1}{\beta}}$.  This leads to
+\begin{displaymath}
+\log(\rvquan_{p})= \log(\theta)  + \log[\incgamma^{-1}(p;\kappa)]\frac{1}{\beta},
+\end{displaymath}
+implying that \{$\log(\rvquan_{p})$ versus
+$\log[\incgamma^{-1}(p;\kappa)]$\} plots as a straight line.
+Unlike the standard Weibull probability plot in
+Section~\ref{section:probplot.weibull}, the probability scale for the
+GENG probability plot requires a given value of the shape
+parameter $\kappa$.  The scale parameter $\theta$ is the intercept on the
+time scale, corresponding to the time where the cdf crosses the
+horizontal line at $\log[\incgamma^{-1}(p;\kappa)]=0$. 
+The slope of the line on the
+graph with time on the horizontal axis is $\beta$. 
+
+
+
+\begin{example} 
+\label{example:bearing.gng.plot.compare}
+{\bf GENG
+probability plots for ball bearing fatigue data.} 
+Example~\ref{example:ball.bearing.data} introduced data on the number of
+revolutions to failure for 23 ball bearings.
+%-------------------------------------------------------------------
+\begin{sidewaysfigure}
+\splusfigurelandscapesize{\figurehome/bearing.mul.gng.ps}{8in}
+\caption{GENG probability plots of the ball bearing
+fatigue data with specified $\kappa$=
+.1, 1, 4, and 20.}
+\label{figure:bearing.mul.gng.ps}
+\end{sidewaysfigure}
+%-------------------------------------------------------------------
+Figure~\ref{figure:bearing.mul.gng.ps} shows GENG
+probability plots with specified values of $\kappa$= .1, 1, 4, and 20.
+The linear right-hand axis shows the gamma standard quantiles corresponding
+to $\log[\incgamma^{-1}(p;\kappa)]$.
+As explained in Section~\ref{section:gng.special.cases}, the value of
+$\kappa$=1 corresponds to a Weibull distribution and $\kappa \rightarrow
+\infty$ corresponds to the lognormal distribution. 
+The value $\kappa$=20 was chosen to
+correspond, roughly, to the lognormal distribution.
+None of the values of $\kappa$ could be ruled out, but values greater
+than 1 seem to fit better.   The value of
+$\kappa$=4 was chosen by trial and error as a compromise
+between the Weibull and lognormal distributions.  These examples show
+that the ranges of the standard quantile scales depend strongly on the
+specified value of $\kappa$. Relatedly, the value of $p$ corresponding
+to $\log[\incgamma^{-1}(p;\kappa)]=0$ depends strongly on $\kappa$
+(and for $\kappa=20$ it is off of the scale). This is an indication of
+the potential problems, alluded to in 
+Section~\ref{section:gng.reparameterization},
+associated with statistically estimating the 
+three traditional GENG parameters.
+\end{example}
+
+
+\subsection{Summary of probability plotting methods}
+Table~\ref{table:linearization.of.cdfs}
+summarizes the linearizing transformations
+given in Sections~\ref{section:linearize.loc.scale}
+and \ref{section:probplot.extensions}.
+This table also indicates which parameters need to be specified
+and which can be estimated from the
+slope and time-scale intercept of a fitted line.
+\begin{sidewaystable}
+\caption{Summary of Probability Plot Scales to
+Linearize cdfs}
+\centering\small
+%\begin{tabular}{lllllll}
+\begin{tabular}{lrcrccc}
+\\[-.5ex]
+\hline
+& & 
+\multicolumn{2}{c}{Linearizing}&& \multicolumn{2}{c}{Identified}
+\\
+& & 
+\multicolumn{2}{c}{Transformation}& & \multicolumn{2}{c}{Parameters}
+\\
+\cline{3-4}  \cline{6-7}
+       &                               & \multicolumn{1}{c}{Time (Data)}          &
+\multicolumn{1}{c}{Probability}&Specified&\multicolumn{1}{c}{Time-Scale}
+\\
+Family &\multicolumn{1}{c}{cdf}  &  \multicolumn{1}{c}{Scale}
+& \multicolumn{1}{c}{Scale}&Parameter& Intercept&Slope \\
+\hline
+\\
+Exponential & $1-\exp \left (-\,  \frac{t-\threshold}{\expmean}\right )$ & $\rvquan_{p}$
+& $-\log(1-p)$ &   & $\gamma$  & $\frac{1}{\theta} 
+\approx \frac{1}{\rvquan_{.63}}$  \\ \\
+%
+
+Smallest Extreme Value & $\Phi_{{\rm sev}} \left ( \frac{\grealrv-\mu}{\sigma} \right )$ & $\grvquan_{p}$
+& $\Phi^{-1}_{{\rm sev}}(p)$  &    & $\mu \approx y_{.63}$   &  $\frac{1}{\sigma}$   \\ \\
+%
+Weibull (two-parameter) & $\Phi_{{\rm sev}} \left [ \frac{\log(\realrv)-\mu}{\sigma} \right ]$ & $\log(\rvquan_{p})$
+& $\Phi^{-1}_{{\rm sev}}(p)$ &    & $\weibscale=e^{\mu}\approx t_{.63}$  &  $\beta=\frac{1}{\sigma}$    \\ \\
+%
+Weibull (three-parameter) & $\Phi_{{\rm sev}} \left [ \frac{\log(\realrv-\gamma)-\mu}{\sigma} \right ]$ & $\rvquan_{p}$
+& $\exp[\Phi^{-1}_{{\rm sev}}(p)\sigma]$ &  $\beta=\frac{1}{\sigma}$  &  $\gamma$  &  $\frac{1}{\weibscale}\approx \frac{1}{\rvquan_{.63}}$    \\ \\
+%
+Normal & $\Phi_{{\rm nor}} \left ( \frac{\grealrv-\mu}{\sigma} \right
+)$ 
+& $\grvquan_{p}$
+& $\Phi^{-1}_{{\rm nor}}(p)$    & & $\mu=y_{.5}$  & $\frac{1}{\sigma}$   \\ \\
+%
+Lognormal (two-parameter) & $\Phi_{{\rm nor}} \left [ \frac{\log(\realrv)-\mu}{\sigma} \right ]$ & $\log(\rvquan_{p})$
+& $\Phi^{-1}_{{\rm nor}}(p)$  &   &  $e^{\mu}=\rvquan_{.5}$  & $\frac{1}{\sigma}$   \\ \\
+%
+Lognormal (three-parameter) & $\Phi_{{\rm nor}} \left [ \frac{\log(\realrv-\gamma)-\mu}{\sigma} \right ]$ & $\rvquan_{p}$
+& $\exp[\Phi^{-1}_{{\rm nor}}(p)\sigma]$  & $\sigma$    &  $\gamma$  & 
+	$e^{-\mu}=\frac{1}{\rvquan_{.5}}$   \\ \\
+Gamma (3-parameter) & $\incgamma\left(\frac{\realrv-\gamma}{\expmean};\gammashape\right)$ & $\rvquan_{p}$
+& $\incgamma^{-1}(p;\gammashape)$    & $\gammashape$ &  $\gamma$   &  $\frac{1}{\theta}$    \\ \\
+%
+Generalized Gamma
+& $\incgamma\left[\left(\frac{\realrv}{\expmean}\right)^{\beta};\gammashape \right]$ & $\log(\rvquan_{p})$
+& $\log[\incgamma^{-1}(p;\gammashape)]$  &  $\gammashape$   &  $\theta$  &
+$\beta$   \\ [.5ex]
+\hline
+\end{tabular}\\
+\begin{minipage}[t]{5.5in}
+The functions defined under ``cdf'' and ``Probability Scale'' are
+defined in Chapters~\ref{chapter:ls.parametric.models} and
+\ref{chapter:other.parametric.models}.
+\end{minipage}
+\label{table:linearization.of.cdfs}
+\end{sidewaystable}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Notes on the Application of Probability Plotting}
+\label{section.probplot.notes}
+\subsection{Using simulation to help interpret probability plots}
+\begin{itemize}
+\item 
+When the points on the probability plot follow a curved pattern (as in
+Figure~\ref{figure:alloy.t7987.npp.weib.ps}), a smooth curve drawn
+through the points will still provide a useful graphical nonparametric
+estimate of the cdf. The curve provides quantile or failure
+probability estimates. This kind of plot is, for some, easier to
+interpret than the cdf plot with linear probability axes (compare
+Figure~\ref{figure:alloy.t7987.cdf.sim.ps} with
+Figure~\ref{figure:alloy.t7987.npp.weib.ps}).
+\item 
+As we have illustrated in our examples, analysts should try
+probability plotting with different assumed distributions and compare
+the results.  Of course, finding a probability plot that indicates a
+good fit to the data does not guarantee that the model will be
+adequate for the desired purpose. This is a judgment that must be
+made in the context of the particular application.
+\item 
+When assessing linearity, one must generally allow for the fact
+that, for most distributions, there will be more variability in the
+extreme observations.  Judgment about the departure from
+linearity to expect comes with experience.  Even experienced data
+analysts find, however, that it helpful to either
+\begin{itemize}
+\item 
+Plot simultaneous nonparametric confidence bands (e.g., the methods
+described in Section~\ref{section:np.simultaneous.cb}
+and Section~\ref{section:graphical.gof}) to help assess the
+sampling uncertainty in the nonparametric estimate of $F(t)$ or
+\item 
+Use simulation methods to assess sampling variability directly. For
+example, one could generate simulated censored data from a particular
+distribution and plot the nonparametric estimates from a series of such
+data sets to get a sense of the deviations from linearity that one
+would expect under specific assumed distributions.
+\end{itemize}
+\end{itemize}
+
+%-------------------------------------------------------------------
+\begin{sidewaysfigure}
+\splusfigurelandscapesize{\figurehome/multiple.probplot.nor.sim.ps}{8in}
+\caption{Simulated normal data on normal probability plots.
+Five replications for each sample size.}
+\label{figure:multiple.probplot.nor.sim.ps}
+\end{sidewaysfigure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{sidewaysfigure}
+\splusfigurelandscapesize{\figurehome/multiple.probplot.exp.sim.ps}{8in}
+\caption{Simulated exponential data plotted on normal probability plots.
+Five replications for each sample size.}
+\label{figure:multiple.probplot.exp.sim.ps}
+\end{sidewaysfigure}
+%-------------------------------------------------------------------
+To illustrate the use of simulation,
+Figure~\ref{figure:multiple.probplot.nor.sim.ps} shows 
+probability plots of simulated normal distribution samples 
+of size $n$=10, 20, and 40.
+There are five probability plots
+from each sample size to allow an assessment of the repeatability or
+consistency of such plots. What we see is that
+there is very little consistency in the $n=10$ plots. Even though the
+data were normally distributed, the pattern in the plots can deviate
+importantly from a straight line. With the larger sample sizes,
+however, there is more consistency across the repeated plots, except for
+the variability in the tails of the distribution. 
+Figure~\ref{figure:multiple.probplot.exp.sim.ps} has similar
+normal probability plots, but in that case the
+simulated data were from an exponential distribution.
+In this case we see that some of the plots with $n=10$ do not
+deviate too much from a straight line and, to some extent,
+are similar to the probability plots of the normal data in
+Figure~\ref{figure:multiple.probplot.nor.sim.ps}. For the larger sample
+sizes, however, there is enough consistency to indicate that samples
+of size 20 to 40 are sufficiently large to distinguish between
+data  from exponential and normal distributions.
+
+Inexperienced analysts tend to expect plots to be straighter than
+they are.  Simulations of this kind can and should be used to help
+analysts ``calibrate'' their interpretation of probability plots,
+particularly in unfamiliar situations.
+
+%-------------------------------------------------------------------
+\subsection{Possible reason for a bend in a probability plot}
+Probability plots with a sharp bend or change in slope generally
+indicate an abrupt change in a failure process.  Causes for such
+behavior could include two or more failure modes or a mixture of
+different subpopulations. Such causes should be investigated and
+will often suggest how to improve product reliability.
+\begin{example}
+%-------------------------------------------------------------------
+{\bf Bleed system failure.}
+%-------------------------------------------------------------------
+\begin{sidewaysfigure}
+\splusfigurelandscapesize{\figurehome/bleed.mixture.ps}{8in}
+\caption{Bleed system data: (NW) Linear plot of the cdf, (NE) Weibull probability plot 
+for all bases, (SW) Weibull probability plots for Base D alone,
+(SE) Weibull plot for all bases except Base D.}
+\label{figure:bleed.mixture.ps}
+\end{sidewaysfigure}
+%-------------------------------------------------------------------
+Appendix Table~\ref{atable:bleed.data} gives failure and running time for 2256
+bleed systems. The data were abstracted from Abernethy, Breneman,
+Medlin, and Reinman~(1983) who present an analysis similar to
+the one done here.
+
+The top row of Figure~\ref{figure:bleed.mixture.ps} shows a plot of
+the nonparametric estimate and a corresponding Weibull probability
+plot of the data. The
+different slopes on this probability plot before and after 600 hours suggests some kind of
+change. Closer examination of the data showed that 9 of the 19
+failures had occurred at Base D. In the bottom row of 
+Figure~\ref{figure:bleed.mixture.ps}, separate analyses of the Base D data
+and the data from the other bases indicated different life
+distributions. The large slope ($\beta \approx 5$) for Base D indicated
+strong wearout behavior.  
+The relatively small slope for the other bases ($\beta
+\approx .85$) suggested infant mortality or accidental failures. After
+investigation it was determined that the early-failure
+problem at base D was caused
+by salt air (Base D was near the ocean). A change in maintenance
+procedures there solved the dominant bleed system reliability problem.
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\end{example}
+
+%-------------------------------------------------------------------
+\subsection{Use of grid lines and special scales on probability plots}
+\label{section:grid.lines}
+In the past, most data were plotted by hand on pre-prepared
+probability paper that contained grid lines. The grid lines make it
+easier to plot points by hand and allowed one to more precisely read
+numbers from the plot. While grid lines are useful, some analysts feel
+that grid lines can get in the way of interpreting a plot. Computer
+programs should provide an option to include grid lines or not.
+Because our interest is primarily in graphical perception of the
+information on a plot, we will generally not use grid lines on our
+computer-generated data analysis plots.  If we are interested in
+particular numbers that would be read from the graph, the numbers are
+available from tabular computer output. For purposes of illustration,
+however, the following example uses probability plots with grid lines.
+It is also possible to put special scales on probability paper to
+facilitate graphical estimation of the parameter related to the slope
+of a line on the plot. Such scales are on some commercial probability
+papers but can also be put on computer-generated plots.
+
+\begin{example}
+%-------------------------------------------------------------------
+{\bf V7 transmitter tube failure data.}
+%-------------------------------------------------------------------
+Figure~\ref{figure:v7tube.npp.exp.ps} is an exponential probability plot
+of the V7 transmitter tube data from
+Example~\ref{example:heat.transmitter.tube.data}. We see some departure from
+a straight line in the plot, but the width of the
+confidence bands makes it clear that this could be the result of
+random variability.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/v7tube.npp.exp.ps}
+\caption{Exponential probability plot of the V7 transmitter
+tube failure data with 
+simultaneous approximate 95\% confidence bands for $F(\realrv)$.}
+\label{figure:v7tube.npp.exp.ps}
+\end{figure}
+%-------------------------------------------------------------------
+
+Figures~\ref{figure:v7tube.npp.weib.ps} and
+\ref{figure:v7tube.npp.lnor.ps} are, respectively, Weibull 
+and lognormal probability plots
+of the V7 transmitter tube failure data. Comparing 
+Figures~\ref{figure:v7tube.npp.exp.ps},
+\ref{figure:v7tube.npp.weib.ps},
+and \ref{figure:v7tube.npp.lnor.ps} suggests that none of these
+distributions can be ruled out but that the lognormal
+distribution provides the best fit among these distributions.  Vacuum
+tubes have parts (filaments and cathode coatings) that will
+deteriorate with use, suggesting that the exponential distribution
+would not be an appropriate model.
+
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/v7tube.npp.weib.ps}
+\caption{Weibull probability plot of the V7 transmitter
+tube failure data with
+simultaneous approximate 95\% confidence bands for $F(\realrv)$.}
+\label{figure:v7tube.npp.weib.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/v7tube.npp.lnor.ps}
+\caption{Lognormal probability plot of the V7 transmitter
+tube failure data with
+simultaneous approximate 95\% confidence bands for $F(\realrv)$.}
+\label{figure:v7tube.npp.lnor.ps}
+\end{figure}
+Figures~\ref{figure:v7tube.npp.exp.ps}, \ref{figure:v7tube.npp.weib.ps} and
+\ref{figure:v7tube.npp.lnor.ps} also contain special scales
+that allow one to graphically estimate $\theta$, $\beta$ and $\sigma$,
+respectively, without doing any computations. To do this,
+draw a line, as shown, parallel to a line through
+the data points, going through the
+mark ``$\oplus$'' and read, respectively,
+the estimates $\theta=32$, $\beta=.75$ and $\sigma=1.06$ scales
+on the left-hand side of the graphs.
+%-------------------------------------------------------------------
+\end{example}
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Bibliographic Notes}
+Most of the literature on methods for probability plotting
+is concerned with complete (uncensored) data. Chapter 8 of Hahn 
+and Shapiro~(1967) provides
+a nice summary of basic theory and methods and illustrates, with
+simulated data, the variability
+that one expects to see in the points on a probability
+plot.  Harter~(1984) reviews some history concerning the choice of
+plotting positions. Chernoff and Lieberman~(1954), Blom~(1958), and
+Barnett~(1976) used good estimation of model parameters as a criterion
+for choosing plotting positions. David~(1981, page 208) gives 
+an excellent review of the results on these last three
+papers. For multiply censored data Lawless
+(1982, page 88) suggests the use of the half-step correction to the
+nonparametric estimate of $F(t)$ defined in
+(\ref{equation:averagekm}).
+Nelson and Thompson~(1971) provide Weibull probability papers
+that can be copied and used for making
+probability plots ``by hand.'' Such papers are also available
+commercially.
+
+
+For multiply censored data Nelson~(1972, 1982, Chapter~4), proposed
+the use of a hazard plot. A hazard plot can be viewed as a type of
+probability plot with special plotting positions corresponding to
+the Nelson-Aalen nonparametric estimate of the cdf (See
+Exercise~\ref{exercise:nelson.aalen.estimator}).  Nelson~(1982, page
+135) suggests modified hazard plotting positions obtained by averaging
+the hazard step function at the jumps.  These are similar to the
+modified plotting positions in (\ref{equation:averagekm}).  Nelson
+comments ``The modified positions agree better with a distribution
+fitted by maximum likelihood.'' An alternative that would serve the
+same purpose would average the estimates in the probability scale
+instead, similar to (\ref{equation:averagekm}).  Wilk, Gnanadesikan,
+and Huyett~(1962a) show how to construct probability plots for the
+gamma distribution.  Nair~(1981) describes, in more detail, the theory
+and applications of simultaneous confidence bands as a tool for
+assessing distributional goodness of fit.
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Exercises}
+
+\begin{exercise}
+For the $\LOGLOGIS(\mu, \sigma)$ distribution
+with cdf 	 
+\begin{displaymath}
+F(\realrv)=\Phi_{\logis} \left [
+\frac{\log(\realrv)-\mu}{\sigma}
+\right ], \quad \realrv > 0; \quad -\infty< \mu <\infty, \sigma
+> 0,  	 
+\end{displaymath} 	 
+\begin{enumerate} 	 
+\item 	 
+Find the probability scales that will linearize all of the cdfs
+in the logistic family.
+\item
+Use the scales to generate a proper labeled graph, and display the
+$\LOGLOGIS(1, 1)$ and the $\LOGLOGIS(1, 2)$ cdfs.
+\item 
+What quantile of this distribution corresponds to the scale
+parameter $\exp(\mu)$?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+Starting with an ordinary piece of graph paper with linear divisions,
+perform the following steps to create Weibull probability paper with
+time ranging between $10$ and $1000$ and probability ranging between
+$.001$ and $.999.$ Refer to Figure~\ref{figure:loglinear.weibull.ps} 
+for an example. Alternatively, program a spread-sheet or statistical 
+package to do the same thing with computer graphics.
+\begin{enumerate}
+\item
+Find values of $\log[-\log(1-p)]$ for $p=.001$ and $p=.999.$ Use these
+to develop a linear axis on the right-hand side of the graph.
+\item
+For selected values of $p$ between .001 and .999 (e.g., .001,
+.01, .1, .3, .5, .7, .9, .99, .999) compute $\log[-\log(1-p)].$ Find
+this value on the right-hand side axis to determine the location of
+the $p$ label on the left-hand side axis.
+\item
+Find values of $\log(t)$ for $t=10$ and $t=1000.$ Use these to develop
+a linear axis for $\log(t)$ on the top of the page.
+\item
+For selected values of $t$ between 10 and 1000 (e.g., 10, 20, 50,
+100, 200, 500, 1000), compute $\log(t)$ and use the location on the
+top axis to determine the corresponding locations for the time labels
+on the bottom axis.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+Consider the scale  parameter $\eta$ for the Weibull distribution.
+\begin{enumerate}
+\item
+Show that $\eta=\exp(\mu)$ for the Weibull distribution is
+approximately equal to the $.63$ quantile.
+\item
+Discuss the practical importance of estimating $\eta$ for a
+population of integrated circuits to be installed in new personal
+computers.
+\item
+Is it possible to get a good graphical estimate of $\eta$ from a
+probability plot based on a life test for which only 3.5\% of the
+integrated circuits failed by the end of the test?
+\item
+For what Weibull ``parameters'' (i.e., functions of $\eta$ and $\beta$)
+can one get a good graphical estimates
+from such data?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+Use the following 10 simulated observations from a Weibull
+distribution with $\weibscale=1$ and $\beta=2$ (so that $\mu=0$ and
+$\sigma=.5$) to make a Weibull probability plot and use it to
+obtain graphical estimates of the parameters
+$\eta$ and $\beta$. 
+$\realrv_{i}=$.74, 1.21, .22, .37, 1.28,
+.73, .99, .67, .71, .33.
+How do the estimates compare with the ``true parameter values''?
+\end{exercise}
+
+
+\begin{exercise} 
+\label{exercise:bbear.nonpar.probplot}
+Consider the ball bearing fatigue data
+given in Example~\ref{example:ball.bearing.data}
+and Table~\ref{table:lz.bbearing.data}.
+
+%-------------------------------------------------------------------
+\begin{enumerate}
+\item
+Compute a nonparametric estimate of $F(\realrv)$, the proportion of
+units failing as function of time. Plot your estimate on paper with
+linear scales.
+\item
+\label{exer.part:lnormal.prob.plot}
+Make a lognormal probability plot of the data. This is accomplished
+by ordering the failure times
+ in increasing order, $\realrv_{(1)} \le \ldots \le \realrv_{(23)}$. 
+Then plot
+$\realrv_{(i)}$ versus $(i-.5)/n$ on lognormal 
+probability paper.
+\item
+\label{exer.part:weibull.prob.plot}
+Do the same as in part~\ref{exer.part:lnormal.prob.plot} but on
+Weibull probability paper. 
+\item
+Comment on the adequacy
+of the lognormal and Weibull models to describe these data.
+\end{enumerate}
+\end{exercise}
+
+
+\begin{exercise}
+Use the answers to Exercise~\ref{exercise:earth.orbit.cdf}
+to do the following:
+\begin{enumerate}
+\item
+Make a Weibull probability plot displaying the
+device failure data.
+\item
+Use the plotted points to estimate the proportion of devices that
+will fail before 10,000 hours of operation.
+\item
+Comment on whether the Weibull distribution fits the data well.
+\item
+Use the slope and location of this line to estimate the Weibull
+distribution parameters.
+\item
+Use the plotted points to estimate the proportion of devices that
+will fail before 100,000 hours. Comment on the usefulness of this
+estimate.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise} 
+\label{exercise:fatigue.experiment}
+A sample of 100 specimens of a titanium alloy were subjected to a
+fatigue test to determine time to crack initiation. The test was run
+up to a limit of 100,000 cycles.  The observed times of crack
+initiation (in units of 1,000 of cycles) were: $18, 32, 39, 53, 59,
+68, 77, 78, 93$. No crack had initiated in any of the other 91
+specimens.
+\begin{enumerate}
+\item
+Compute a nonparametric estimate, $\Fhat(\realrv)$, of the cdf
+$F(\realrv)$ using both the simple binomial method and the Kaplan
+Meier method (in this case these two methods provide the same
+answer).
+\item
+Plot $\Fhat(t)$ on linear axes.
+\item
+Use $\Fhat(t)$ to compute plotting positions and plot the data
+on Weibull paper. Use the plot to obtain an
+estimate of the Weibull shape parameter~$\beta$.
+\item
+Comment on the adequacy of the Weibull distribution.
+\item
+Comment on the adequacy of the available data if the purpose of the 
+experiment was to estimate $t_{.1}$.
+\end{enumerate}
+\end{exercise}
+
+
+\begin{exercise}
+For the high-cycle fatigue life data in Exercise~\ref{exercise:parida.1991},
+construct probability plots for the exponential, lognormal, Weibull,
+and gamma distributions (trying several values of $\gammashape$
+for the gamma distribution). Which distributions appear suitable for
+describing the shape of the distribution in the lower tail?
+\end{exercise}
+
+
+
+\begin{exercise}
+Using the life test data on silicon photodiode detectors 
+from Exercise~\ref{exercise:weis.et.al.1986},
+construct probability plots for the
+exponential, Weibull, and lognormal distributions.
+Which distributions look like they might provide
+an adequate model for photodiode detector life?
+\end{exercise}
+
+
+\begin{exercise}
+Figures~\ref{figure:loglinear.lognormal.ps} and 
+\ref{figure:loglinear.weibull.ps} have horizontal lines at the 
+standardized quantile value of 0.
+\begin{enumerate}
+\item
+For Figure~\ref{figure:loglinear.lognormal.ps}, 
+explain why the dotted line crosses the $F(t)$
+scale at $F(t)=.5$.
+\item
+For Figure~\ref{figure:loglinear.weibull.ps}, compute the value of $F(t)$ 
+where the dotted line crossed the 0 on the standardized quantile scale.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+\label{example:graphical.T7987}
+Using the linear scales on the top and right of 
+Figure~\ref{figure:alloy.t7987.npp.lnor.ps},
+we can use a straight line drawn through the data points to
+obtain graphical estimates of the lognormal distribution fit to
+the Alloy T7987 data. Use these estimates to compute a parametric estimate
+of F(200) by substituting them into (\ref{equation:lognormal.cdf}).
+\end{exercise}
+
+\begin{exercise}
+\label{example:graphical.T7987.a}
+Use Figures~\ref{figure:alloy.t7987.cdf.sim.ps}, 
+\ref{figure:alloy.t7987.npp.weib.ps}, and 
+\ref{figure:alloy.t7987.npp.lnor.ps} to obtain nonparametric graphical
+estimates of $F(200)$ for the Alloy T7987 data. Are the answers
+similar? Explain why or why not. Compare your answers with those
+obtained in Exercise~\ref{example:graphical.T7987}. Explain the reason
+for observed differences.
+\end{exercise}
+
+\begin{exercise}
+Use the linear scales on the top and right of 
+Figure~\ref{figure:shockabsB.npp.weib.ps}
+to compute graphical estimates of the Weibull distribution parameters
+for the shock absorber data.
+\end{exercise}
+
+
+\begin{exercise1}
+Consider the family of gamma distributions with scale parameter
+$\expmean$ and shape parameter $\gammashape$, as in
+equation~(\ref{equation:gamma.cdf}). Show that for a fixed value
+of $\gammashape$, the probability plotting scales $\{\rvquan_{p},
+\incgamma^{-1}(p;\gammashape)\}$ provide linearizing scales of
+the distribution for all values of the parameter $\expmean$.
+\end{exercise1}
+
+
+\begin{exercise1}
+Consider an uncensored sample (i.e., all observations reported as
+exact failures) $\realrv_{(1)} \le \cdots \le \realrv_{(n)}$ of
+failure times used to make a Weibull probability plot. Let
+$(\realrv_{(i)}, p_{i}), i=1, \ldots, n$ be the points on the
+probability plot, where $p_{i}$ is defined in
+(\ref{equation:averagekm}). A simple method for estimating the
+Weibull~$(\eta, \beta)$ parameters is the following: Use least
+squares to fit a straight line through the points using $\log
+(t_{(i)})$ as the response $(y)$ and $\Phi^{-1}_{\sev}(p_i)$ as the explanatory variable
+$(x)$.  Then use the intercept and the slope of the line,
+respectively, to estimate the parameters $\mu$ and $\sigma$.  Denote
+these estimates by $\sigmahat_{{\rm ols}}$ and $\muhat_{{\rm ols}}$.
+Then estimates for $(\eta, \beta)$ are $(\exp(\muhat_{{\rm
+ols}}),1/\sigmahat_{{\rm ols}})$.
+
+\begin{enumerate} 	 
+\item 
+Derive the equations for the estimates $\sigmahat_{{\rm ols}}$, and
+$\muhat_{{\rm ols}}$.
+\item 
+Do the assumptions that assure optimality of the ordinary least
+squares estimators hold in this case?  Give details for your answer.
+\item 
+Is the standard R-squared statistic used in regression a useful measure
+of goodness of fit for this problem? Why or why not?
+\end{enumerate}
+\end{exercise1}

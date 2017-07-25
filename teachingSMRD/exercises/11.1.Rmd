@@ -1,0 +1,54 @@
+---
+output: html_document
+---
+
+__Wilk, Gnanadesikan and Hyuett (1962b) give the number of weeks until failure for a sample of 34 transistors subjected to accelerated conditions.  The reported failure times, with the number of ties shown in parentheses, were 3, 4, 5, 6(2), 7, 8(2), 9(3), 10(2), 11(3), 13(5), 17(2), 19(2), 25, 29, 33, 42(2), 52.  The other 3 transistors had not failed at the end of 52 weeks.__
+
+a. __Use ML to estimate the parameters of the BISA, IGAU, gamma and lognormal distributions to these data using discrete data likelihood.  Plot all of these estimates on lognormal probability paper and compare the different estimates.  Describe any important differences you see in the estimates.__
+
+`r teachingSMRD:::solution()$begin`
+The problem does not state how frequently the tranistors were inspected.  My solution (and therefore your solution) assumes that the transistors were inspected every week, thus each observed failure occurs during a one week interval.  In the SMRD package, once the "life.data" object has been created, the maximum likelihood parameter estimates for each of the requested distributions can be found with the following code.
+
+```{r echo=TRUE, results='hide'}
+start   <- c(2,3,4,5,6,7,8, 9,10,12,16,18,24,28,32,41,51,52)
+end     <- c(3,4,5,6,7,8,9,10,11,13,17,19,25,29,33,42,52,52)
+weight  <- c(1,1,1,2,1,2,3,2,3,5,2,2,1,1,1,2,1,3)
+censor  <- c(rep('i',17), rep('r',1))
+trans   <- data.frame(start, end, weight, censor)
+colnames(trans) <- c('WeeksL', 'WeeksU', 'Weight', 'Censor')
+data.ld <- frame.to.ld(trans, 
+                       response.column = c(1,2), 
+                       censor.column = 4, 
+                       case.weight.column = 3)
+
+BISA <- bisa.mle(data.ld)$origparam
+IGAU <- igau.mle(data.ld)$origparam
+GAMM <- Gamma.mle(data.ld)$origparam
+LOGN <- ls2.mle(data.ld,"lognormal")$origparam
+```
+
+For the above distributions the code returns the following parameter values.
+
+$$
+\begin{aligned}
+\text{Birnbaum-Sanders: }(\theta,\beta)&=(`r BISA`)\\
+\text{Inverse-Gaussian: }(\theta,\beta)&=(`r IGAU`)\\
+\text{           Gamma: }(\theta,\kappa)&=(`r GAMM`)\\
+\text{       Lognormal: }(\mu,\sigma)&=(`r LOGN`)\\
+\end{aligned}
+$$
+
+The plot comparing these distributions on lognormal probability paper is shown below
+
+```{r}
+compare.mleprobplot(data.ld, 
+                    compare.distribution = c('gamma','lognormal','bisa','igau'), 
+                    main.distribution = 'lognormal')
+```
+`r teachingSMRD:::solution()$end`
+
+b. __Redo the gamma distribution analyses assuming that the failures occurred at exactly the reported time.  Are there differences of practical importance in this example?__
+
+`r teachingSMRD:::solution()$begin`
+Considering the failures times as exact results in the following plot comparing the same distributions as were compared in the plot from part (a) of this problem.
+`r teachingSMRD:::solution()$end`

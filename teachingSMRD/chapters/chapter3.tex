@@ -1,0 +1,2048 @@
+%chapter 3
+%original by wqmeeker  12 Jan 94
+%edited by wqmeeker  19 Feb 94
+%edited by wqmeeker  28 Feb 94
+%edited by wqmeeker   4 Mar 94
+%edited by wqmeeker   20 Mar 94
+%edited by driker     25 mar 94
+%edited by wqmeeker   26 Mar 94
+%edited by driker     30 Mar 94
+%edited by wqmeeker   31 Mar 94
+%edited by driker 13 july 94
+%edited by wqmeeker 16 july 94 moved shock absorber data
+%edited by wqmeeker  2 aug 94
+%edited by wqmeeker  7 aug 94
+%edited by wqmeeker  9 aug 94
+%edited by wqmeeker 20 sept 94 shock absorber km example
+%edited by wqmeeker 21 sept 94 added data analysis data sets exercises
+%edited by wqmeeker 22 sept 94 cleaning up/removed hazard est
+%edited by wqmeeker 03 oct 94 cleaning ci just and begin bootstrap
+%edited by driker 21 oct 94
+%edited by wqmeeker  21/22 oct 94
+%edited by wqmeeker  29 oct 94 data versus DATA
+%edited by wqmeeker  20 nov 94 
+%edited by wqmeeker  25 nov 94  
+%edited by wqmeeker  09 dec 94 first round of boot figures 
+%edited by wqmeeker  17/18 dec 94 editing and remaining boot stuff
+%edited by driker 22 dec 94
+%edited by wqmeeker  23/29 dec 94  bootstrap
+%edited by wqmeeker  30 dec 94 various improvements
+%edited by driker 4 jan 95
+%edited by driker 5 jan 95
+%edited by driker 2 feb 95
+%edited by wqmeeker  18 feb 95 stronger warnings on bootstrap
+%edited by wqmeeker 17 june 95 moving the bootstrap
+%edited by wqmeeker 18 june 95 smoothing and reacting to reviewers comments
+%edited by driker 26 june 95
+%edited by wqmeeker 13 oct 95 smoothing and censoring in interval
+%edited by wqmeeker 4 nov 95 luis comments
+%edited by driker 6 nov 95
+%edited by driker 1 july 96
+%edited by driker 20 nov 96
+%edited by wqmeeker 8 mar 97 india changes
+\setcounter{chapter}{2}
+
+\chapter{Nonparametric Estimation}
+\label{chapter:nonparametric.estimation}
+
+\input{\chapterhome/common_heading.tex}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Objectives}
+This chapter explains:
+\begin{itemize} 
+\item 
+Simple statistical methods, based on the binomial distribution, to
+estimate a cdf $F(\realrv)$ from interval and singly right censored data,
+without having to assume an underlying parametric distribution. This
+is called ``nonparametric'' estimation.
+\item 
+Standard errors of the nonparametric estimator and approximate
+confidence intervals for $F(\realrv)$.
+\item 
+Life table methods to extend nonparametric estimation to allow for
+combinations of interval-censored and multiply right-censored data.
+\item
+The Kaplan-Meier nonparametric estimator for data with observations
+reported as exact failure times.
+\item 
+A generalized nonparametric estimator of $F(\realrv)$ for arbitrary
+censoring (including combinations and mixtures of exact failure times
+with left, right, and interval censoring).
+\end{itemize}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Overview}
+The nonparametric (model-free) estimates described in this chapter are
+used throughout this book as a tool for reliability data analysis.
+Section~\ref{section:binomial.np} starts with a simple method that
+applies to problems with complete data or single censoring.
+Section~\ref{section:basic.iease.of.infer} explains the basic ideas
+of statistical inference and introduces the ideas behind the use of
+confidence intervals, another statistical tool used throughout this
+book.  Confidence intervals for complete data or single censoring
+are described in Section~\ref{section:ci.simple.cen}. The
+methods are generalized to the commonly encountered multiple censoring
+in Sections~\ref{section:def.model.free.est},
+\ref{section:np.stderror.and.ci}, and
+\ref{section:def.of.nonparametric.estimate}. Simultaneous
+confidence bands (used for helping to choose a model in
+Chapter~\ref{chapter:probability.plotting}) are presented in
+Section~\ref{section:np.simultaneous.cb}.
+Sections~\ref{section:life.table} and
+\ref{section:arbitrary.censoring}
+provide other general methods for handling more complicated kinds of censoring.
+
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Introduction}
+As explained in Section~\ref{section:strategy.for.data.analysis}, data
+analysis should begin with analytical and graphical tools that do not
+require strong model assumptions.  Such methods allow the data to
+be interpreted without distortion that might be caused by using inadequate
+model assumptions.  This chapter describes methods for computing
+nonparametric estimates and confidence intervals for $F(\realrv)$.  In
+some cases, such estimates are all that will be needed for an
+analysis.  In other situations a nonparametric analysis provides an
+intermediate step toward a more highly structured model allowing more
+precise or more extensive inferences, provided that the additional
+assumptions of such a model are valid.
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Estimation From Singly-Censored Interval Data}
+\label{section:binomial.np}
+This section shows how to compute a nonparametric estimate of a cdf
+from interval-censored data when either all units fail or
+all of the right censoring is at one point at the end of
+the study (known as single right censoring).
+%-------------------------------------------------------------------
+\begin{example}
+\label{example:heat.exchanger.p1}
+{\bf Plant 1 heat exchanger data.}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\xfigbookfigure{\figurehome/heatex.plant1fig.ps}
+\caption{Plant~1 heat exchanger data.}
+\label{figure:heatex.plant1fig.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Figure~\ref{figure:heatex.plant1fig.ps} shows the Plant~1 data from
+Example~\ref{example:heat.exchanger.data}. As a first step in our
+analysis of the heat exchanger data we want to estimate
+$F(\realrv)$ for just Plant~1.
+\end{example}
+
+Most studies involving inspection start at time zero with an initial sample of
+units. Information is available on the status of the units
+at the end of each time interval.  Let $n$ be the initial 
+number of units (sample size) and let
+$\deadin_{i}$ denote the number of units that {\em died} or failed 
+in the $i$th interval $(\realrv_{i-1}, \realrv_{i}]$.
+The nonparametric
+estimator $\Fhat(\realrv_{i})$, based on the simple binomial distribution, is 
+\begin{equation}
+\label{equation:binomial.ecdf}
+\Fhat(\realrv_{i})=\frac{
+\# \,\, \mbox{of failures up to time } \,\, \realrv_{i}
+                           }
+			   {n}
+=\frac{
+       \sum_{j=1}^{i} \deadin_{j}
+      } {n}.
+\end{equation}
+
+\begin{example}
+\label{example:npe.heat.exchanger.p1}
+{\bf Nonparametric estimator of $F(\realrv)$.}
+The data from Plant~1 ($n=100, \deadin_{1}=1,
+ \deadin_{2}=2,  \deadin_{3}=2 $) give:
+\begin{displaymath}
+\Fhat(1)=1/100, \quad \Fhat(2)=3/100, \quad \Fhat(3)=5/100.
+\end{displaymath}
+This estimate is shown graphically with the $\bullet$ symbols in
+Figure~\ref{figure:heatexchplant1.cdf.pw.ps}.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/heatexchplant1.cdf.pw.ps}
+\caption{Plot of the nonparametric estimate 
+for the Plant~1 heat exchanger data 
+with  pointwise approximate $95\%$ confidence
+intervals based on binomial theory.}
+\label{figure:heatexchplant1.cdf.pw.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+
+In general, this nonparametric estimator $\Fhat(\realrv_{i})$ is
+defined at all values of $\realrv_{i}$ (upper endpoints of all
+intervals).  Additionally, if interval $i$ is known to have no
+failures, then $\Fhat(\realrv)=\Fhat(\realrv_{i-1})$ for
+$\realrv_{i-1} \leq \realrv \leq
+\realrv_{i}$. If interval $i$ is known to contain one or more
+failures, $\Fhat(t)$ increases from $\Fhat(\realrv_{i-1})$ to
+$\Fhat(\realrv_{i})$ in the interval $(\realrv_{i-1},\realrv_{i}]$.
+In this case $\Fhat(\realrv)$ is undefined for $\realrv_{i-1} <
+\realrv < \realrv_{i}$.  Intuitively, this is because we do not know
+the exact location of the failure(s) within the interval
+$(\realrv_{i-1},\realrv_{i}]$ and thus we have no information on how
+$\Fhat(\realrv)$ is increasing in the interval.  By using the binomial
+distribution, it is easy to show that $\Fhat(\realrv_{i})$ is the
+maximum likelihood estimator of $F(t)$.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+ \section{Basic Ideas of Statistical Inference}
+\label{section:basic.iease.of.infer}
+ \subsection{The Sampling Distribution of $\Fhat(\realrv_{i})$}
+\label{section:sampling.dist.of.fhat}
+Estimates like $\Fhat(\realrv_{i}), i=1, \ldots , m$, computed from
+a set of sample data can be interpreted in at least
+two different ways.
+\begin{itemize}
+\item
+Estimates can be viewed as
+descriptive of the {\em particular data set} used to compute the estimate.
+This is known as ``descriptive statistics.''
+\item
+More commonly, there is interest {\em beyond} the particular
+sample units and estimates are used to make inferences about the process or
+larger existing population of units from which the sample units were
+chosen at random. This is an example of ``inferential statistics.''
+\end{itemize}
+In inferential applications, an estimate [say $\Fhat(t_{i})$ at a
+particular time $\realrv_{i}$] will deviate from $F(\realrv_{i})$, the
+actual population or process cdf at $\realrv_{i}$.  The standard
+(non-Bayesian\footnote{Bayesian methods of statistical inference,
+described in Chapter~\ref{chapter:singledist.bayes}, are based on the
+specification of a prior distribution to describe prior knowledge or
+opinion about the model parameters. As explained in
+Chapter~\ref{chapter:singledist.bayes}, this alternative approach to
+inference leads to inference statements with a somewhat different
+interpretation.}) approach to quantifying the possible size of the
+difference between $\Fhat(\realrv_{i})$ and $F(\realrv_{i})$ is to
+consider what would happen if the inferential {\em procedure}
+(sampling and estimation) were repeated a large number of times, each
+time getting different data and thus a different $\Fhat(\realrv_{i})$.
+The distribution of $\Fhat(\realrv_{i})$ values is called a sampling
+distribution, and this distribution provides insight into the probable
+deviation between $\Fhat(\realrv_{i})$ and $F(\realrv_{i})$.
+
+%-------------------------------------------------------------------
+\subsection{Confidence intervals} 
+\label{section:confidence.intervals}
+A point estimate, by itself, can be misleading, as it may or may not be
+close to the quantity being estimated.
+Confidence intervals are one of the most useful
+ways of quantifying uncertainty due to ``sampling error'' arising from
+limited sample sizes. Confidence intervals, however, generally do not quantify
+possible errors and biases arising from an inadequate model or other invalid
+model assumptions.
+
+Confidence intervals have a specified ``level of
+confidence,'' typically 90\% or 95\%, expressing one's confidence ({\em
+not probability}) that a specific interval
+contains the quantity of interest. A specific interval either contains
+the quantity of interest or not; the truth is unknown.  It
+is important to recognize that the confidence level pertains to a 
+probability statement
+about the performance of the confidence interval {\em procedure} rather
+than a statement about any particular interval.  See Chapter 2 of Hahn
+and Meeker~(1991) for further discussion of the interpretation of 
+statistical intervals.
+
+``Coverage probability'' is the probability that a confidence interval
+{\em procedure} will result in an interval containing the quantity of
+interest. When the specified level of confidence [generically
+$100(1-\alpha)\%$] is not equal to the coverage probability, the procedure
+and resulting intervals are said to be {\em approximate}.  In some
+simple problems coverage probability for a given procedure can be
+computed analytically and, correspondingly, {\em exact} confidence
+interval methods can be developed. ``Conservative'' procedures have a
+coverage probability
+that is {\em at least} as large as the specified confidence level.
+In most practical problems
+involving censored data, there are no ``exact'' confidence interval
+procedures. There are, however, a number of useful, and often simple,
+approximate methods.  Better approximations generally require more
+computations. The adequacy of the approximations can be checked with
+repeated simulation. In turn, often simulation can be used to obtain
+better approximations, as described in Chapter~\ref{chapter:bootstrap}.
+Section~\ref{section:np.stderror.and.ci} describes simple methods
+for computing approximate confidence intervals.  
+Chapter~\ref{chapter:bootstrap}
+presents a more accurate simulation-based approach.
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\section{Confidence Intervals from Complete or Singly-Censored Data}
+\label{section:ci.simple.cen}
+%-------------------------------------------------------------------
+\subsection{Pointwise 
+binomial-based confidence interval for $F(\realrv_{i})$}
+\label{section:binomial.confidence.intervals}
+
+A conservative $100(1-\alpha)\%$ confidence interval $\left [
+\undertilde{F}(\realrv_{i}), \quad
+\tilde{F}(\realrv_{i})
+\right ]$ for $F(\realrv_{i})$
+based on binomial sampling is
+\begin{eqnarray}
+\label{equation:binomial.confidence.interval}
+\undertilde{F}(\realrv_{i}) &=&
+\left \{
+1+
+\frac{(n-n\Fhat+1) \Fquant_{(1-\alpha/2; 2n-2n\Fhat+2,
+2 n \Fhat)}
+     }
+     {
+n \Fhat
+     }
+\right \}^{-1}
+\\ \nonumber
+\tilde{F}(\realrv_{i})&=&
+\left \{
+1+
+\frac
+{
+n-n\Fhat
+}
+{
+(n\Fhat+1) \Fquant_{(1-\alpha/2; 2n\Fhat+2,
+         2n-2n\Fhat)}
+}
+\right \}^{-1}
+\end{eqnarray}
+where $\Fhat=\Fhat(\realrv_{i})$ and $\Fquant_{(p; \nu_{1},
+\nu_{2})}$ is the $p$ quantile of the F distribution
+with $(\nu_{1}, \nu_{2})$ degrees of freedom.
+Elementary statistics textbooks provide
+Tables of F distribution quantiles. The confidence
+interval in (\ref{equation:binomial.confidence.interval}) is
+conservative in the sense that the coverage probability is greater
+than or equal to $1-\alpha$.  Theory for this confidence interval is
+given, for example, in Brownlee~(1960, pages 119-120).  
+
+A one-sided approximate $100(1-\alpha)\%$ confidence bound for $F(t)$
+can be obtained by replacing $\Fquant_{(1-\alpha/2)}$ with
+$\Fquant_{(1-\alpha)}$ in
+(\ref{equation:binomial.confidence.interval}) and using the
+appropriate endpoint of the two-sided confidence interval.  For
+example a conservative 90\% confidence interval from
+(\ref{equation:binomial.confidence.interval}) can also be viewed as
+two conservative 95\% one-sided confidence bounds.
+
+\begin{example}
+{\bf Binomial confidence interval for $F(\realrv)$.}
+To illustrate the computation of the binomial confidence intervals
+from (\ref{equation:binomial.confidence.interval}), we
+compute a 95\% confidence interval for F(2) at which point 3 of the
+100 tubes had failed. Then with $n=100$ and $n\Fhat(2)=3$, 
+$\Fquant_{(.975; 196, 6)}=4.8831$, and 
+$\Fquant_{(.975; 8, 194)}=2.2578$, substituting into
+%splus qf(.975, 8, 194) =2.257833
+%splus qf(.975,196,6) =4.8831
+(\ref{equation:binomial.confidence.interval}) gives
+%splus (1+((100-3+1)*qf(.975,200-6+2,6)/(3)))^(-1)=0.006229972
+%splus (1+(100-3)/((3+1)*qf(.975,6+2,200-6)))^(-1)=0.08517605
+\begin{eqnarray*}
+\undertilde{F}(2) &=&
+\left \{
+1+
+\frac{(100-3+1) \Fquant_{(.975; 200-6+2,
+6)}}{3}\right \}^{-1} = .0062
+\\
+\tilde{F}(2)&=&
+\left \{1+\frac{100-3}{(3+1) \Fquant_{(.975; 6+2,200-6)}
+}
+\right \}^{-1}= .0852.
+\end{eqnarray*}
+Thus we are (at least) 95\% confident that the probability of failing
+before the end of 2 years is between .0062 and .0852.
+\end{example}
+
+%-------------------------------------------------------------------
+\subsection{Pointwise 
+normal-approximation confidence interval~for~$F(\realrv_{i})$}
+\label{section:nor.bino.confidence.intervals}
+
+For a specified value
+of $\realrv_{i}$, a simpler approximate $100 (1-\alpha)\%$ 
+confidence interval
+for $F(\realrv_{i}) $ is
+\begin{equation}
+\label{equation:nor.approc.binom.ci}
+[\undertilde{F}(\realrv_{i}), \quad \tilde{F}(\realrv_{i})] =
+\Fhat(\realrv_{i}) \pm \norquan_{(1-\alpha/2)} 
+\sehat_{\Fhat}
+\end{equation}
+where $z_{(p)}$ is the $p$ quantile of the
+standard normal distribution and
+
+\begin{equation}
+\label{equation:binomial.var.ecdf}
+\sehat_{\Fhat}=\sqrt{ \Fhat(\realrv_{i}) \left [1- \Fhat(\realrv_{i}) \right ]/ n }
+\end{equation}
+is an estimate of the
+standard error~of~$\Fhat(\realrv_{i})$.
+This confidence interval is
+based on the assumption that
+\begin{displaymath}
+Z_{\Fhat}  = 
+\frac{
+     \Fhat(\realrv_{i})-F(\realrv_{i})
+     }
+     {
+   \sehat_{\Fhat}
+     }
+\end{displaymath}
+can be adequately approximated by a $\NOR(0,1)$ (standard normal)
+distribution.  For this approximation to be adequate,
+$n\Fhat(\realrv_{i})$ should be at least 5 to 10 and no more than
+$n-5$ or $n-10$.  Otherwise the approximation will be crude, and it is
+even possible to get confidence limits that are outside
+the interval 0 to 1.  The computations for
+(\ref{equation:nor.approc.binom.ci}) are, however, simple and can be
+done easily by hand.
+\begin{example}
+{\bf Normal-approximation confidence interval for the Plant~1 $F(\realrv)$.} To
+illustrate these intervals we compute an approximate 95\% confidence
+interval for $F(3)$ for the Plant~1 heat exchanger tubes. At $t=3$, 5
+of the 100 tubes had failed. Then with $n=100$, $\Fhat(3)=.05$, and
+$z_{.975}=1.960$, substituting into
+(\ref{equation:nor.approc.binom.ci}) gives
+\begin{displaymath}
+[\undertilde{F}(3), \quad \tilde{F}(3)] =
+.05  \pm 1.960 \times .02179 = [.0073, \quad .0927]
+\end{displaymath}
+where 
+$
+\sehat_{\Fhat}=\sqrt{ .05 \left (1- .05\right )/ 100 } = .02179
+$
+is an estimate of the
+standard error of $\Fhat(\realrv_{3})$.
+
+Table~\ref{table:plant1.heat.exch} also shows confidence intervals for 
+$F(1)$ and $F(2)$ (both the conservative and the
+normal-approximation).
+Note that the normal-approximation intervals for $F(1)$ and $F(2)$
+have nonsensical negative lower endpoints.
+Section~\ref{section:np.stderror.and.ci} provides a method of
+improving the normal-approximation interval for situations in which
+the conservative binomial interval does not apply. 
+\end{example}
+%-------------------------------------------------------------------
+\begin{table}
+\caption{Nonparametric estimates and 
+approximate confidence intervals for the heat exchanger tube $F(\realrv)$.}
+\centering\small
+\begin{tabular}{*{5}{r}c}
+\\[-.5ex]
+\hline
+\\[-.8ex]
+ & & & & & \multicolumn{1}{c}{Pointwise Approximate}
+\\[-.1ex]
+ & & & & & \multicolumn{1}{c}{Confidence Intervals} 
+\\[-.1ex]
+Year & $t_{i}$  &  $d_{i}$ & $\Fhat(\realrv_{i})$ &
+$\sehat_{\Fhat}$ & $\undertilde{F}(\realrv_{i}) \quad \quad 
+\tilde{F}(\realrv_{i})$
+\\
+\cline{1-6}
+\\
+$ (0-1]$ & 1 & 1 & .01& .00995 \\[1ex]
+\multicolumn{5} {l} { 95\% Confidence Intervals for $F(1)$} \\
+\multicolumn{5} {l} {\hspace{1em} Based on \,\,\,
+        Binomial Theory}
+& [ .0003, .0545 ] \\
+\multicolumn{5} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\Fhat} \approxdist \NOR(0,1)$ }
+& [$-.0095$, .0295 ] \\[3ex]
+$ (1-2]$ & 2 & 2 & .03& .01706 \\[1ex]
+\multicolumn{5} {l} { 95\% Confidence Intervals for $F(2)$} \\
+\multicolumn{5} {l} {\hspace{1em} Based on \,\,\,
+        Binomial Theory}
+& [ .0062,  .0852 ] \\
+\multicolumn{5} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\Fhat} \approxdist \NOR(0,1)$ }
+& [$-.0034$, .0634 ] \\[3ex]
+$ (2-3]$ & 3 & 2 & .05& .02179
+\\[1ex]
+\multicolumn{5} {l} { 95\% Confidence Intervals for $F(3)$} \\
+\multicolumn{5} {l} {\hspace{1em} Based on \,\,\,
+        Binomial Theory}
+& [ .0164, .1128 ] \\
+\multicolumn{5} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\Fhat} \approxdist \NOR(0,1)$ }
+& [ .0073, .0927 ] 
+\\[1ex] \hline
+\end{tabular}
+\label{table:plant1.heat.exch}
+\end{table}
+
+\begin{example}
+{\bf Nonparametric confidence intervals for integrated circuit
+failure data.} The integrated circuit failure data in
+Table~\ref{table:lfp.data} are singly censored at 1370 hours. Ties
+in the data suggest that failures were found at points in times
+where there was an inspection. For this example, however, as is
+commonly done in practice when the intervals are small relative to
+the spread in the data, this discreteness in the data will be
+ignored.  Thus the simple binomial methods can be used to estimate
+$F(t)$ at any specified value of $t$.
+Figure~\ref{figure:lfp.cdf.pw.ps} shows the nonparametric estimate
+along with normal-approximation 95\% confidence intervals for each
+estimated point.  The normal-approximation intervals are
+nonsymmetric because they are based on an approximation-improving
+transformation explained in
+Section~\ref{section:np.stderror.and.ci}.
+\end{example}
+
+
+
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/lfp.cdf.pw.ps}
+\caption{Plot of the nonparametric estimate 
+of the cdf of the integrated circuit failure times . Also shown are
+a set of normal-approximation 95\% confidence intervals.}
+\label{figure:lfp.cdf.pw.ps}
+\end{figure}
+%------
+
+%----------------------------------------------------------------------
+\section{Estimation From Multiply Censored Data}
+\label{section:def.model.free.est}
+
+This section shows how to compute a nonparametric estimate of a cdf
+from data with multiple right censoring (failures occur after some
+units have been censored).  Suppose that an initial sample of $n$ units
+start operating at time zero. If a unit does not fail in interval $i$,
+it is either censored at the end of interval $i$ or it continues into
+interval $i+1$.  Information is available on the status of the units
+at the end of each interval. The intervals may be large or small and
+need not be of equal length, as long 
+as the intervals for different units do not overlap
+(Section~\ref{section:arbitrary.censoring}
+extends the method to data with different, overlapping intervals,
+which arise, for example, when units are not subject to the same inspection
+schedule). Let $\deadin_{i}$ denote the number of units that {\em
+died} or failed in the $i$th interval $(\realrv_{i-1}, \realrv_{i}]$.
+Also, let $\rcensorat_{i}$ denote the number of units that survive
+interval $i$ and are {\em right} censored at
+$\realrv_{i}$.  The units that are alive at the beginning of interval
+$i$ are called the ``risk set'' for interval $i$ (i.e., those at risk
+to failure) and the size of this risk set at the beginning of interval
+$i$ is
+\begin{equation}
+\label{equation:psubihat}
+n_{i}= n-\sum_{j=0}^{i-1} \deadin_{j}-
+\sum_{j=0}^{i-1} \rcensorat_{j},\,\,\,\,\
+i=1,\ldots,m
+\end{equation}
+where $m$ is the number of intervals and
+it is understood that $\deadin_{0}=0$ and $\rcensorat_{0}=0$.
+An estimator of the conditional probability of failing in 
+interval $i$, given that a unit enters this interval, is the sample
+proportion failing
+\begin{displaymath}
+\phat_{i}=\frac{\deadin_{i}}{n_{i}},\,\,\,\,\
+i=1,\ldots,m.
+\end{displaymath}
+Substituting these into (\ref{equation:discrete.survival.function})
+provides an estimator of the survival function:
+\begin{equation}
+\label{equation:nonparametric.estimator}
+\Shat(\realrv_{i})=\prod_{j=1}^{i}\left [ 1 - 
+\phat_{j} \right ] ,\,\,\,\,\
+i=1,\ldots,m.
+\end{equation}
+Then the corresponding nonparametric estimator of $F(\realrv_{i})$
+is
+\begin{equation}
+\label{equation:nonparametric.estimator.for.F}
+\Fhat(\realrv_{i})=1-\Shat(\realrv_{i}),\,\,\,\,\
+i=1,\ldots,m.
+\end{equation}
+Here $\phat_{i}$ is the maximum likelihood (ML) estimator of the
+conditional probability $p_{i}$ from (\ref{equation:pvec.def}).  This
+implies that $\Fhat(\realrv_{i})$ is the ML estimator of
+$F(\realrv_{i})$ (see Exercise~\ref{exercise:km.ml}).  The
+nonparametric estimator $\Fhat(\realrv_{i})$ is defined at all
+$\realrv_{i}$ values (upper endpoint of all intervals).  Additionally,
+if interval $i$ is known to have zero failures, then
+$\Fhat(\realrv_{i})=\Fhat(\realrv_{i-1})$ for $\realrv_{i-1}\leq
+\realrv \leq
+\realrv_{i}$. If interval $i$ is known to contain one or more
+failures, $\Fhat(t)$ increases from $\Fhat(\realrv_{i-1})$ to
+$\Fhat(\realrv_{i})$ in the interval $(\realrv_{i-1},\realrv_{i}]$ but
+as before, $\Fhat(\realrv)$ is not defined over the interval.
+Note that when there are no censored observations before
+the last failure, (\ref{equation:nonparametric.estimator.for.F}) is
+numerically equivalent to (\ref{equation:binomial.ecdf}).
+
+%-------------------------------------------------------------------
+\begin{example}
+\label{example:npe.heat.exchanger}
+{\bf Nonparametric estimate of $F(\realrv)$ for the pooled heat 
+exchanger tube data.}
+%-------------------------------------------------------------------
+\begin{figure}
+\xfigbookfigure{\figurehome/heatex.plcomp1fig.ps}
+\caption{Pooling of the heat exchanger data in preparation for 
+computing the nonparametric estimate of $F(\realrv)$. The number of
+units at risk in each cell is shown in the small rectangles.}
+\label{figure:heatex.plcomp1fig.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Returning to the heat exchanger data from Example
+\ref{example:heat.exchanger.data},
+Figure~\ref{figure:heatex.plcomp1fig.ps} displays the pooled
+data from
+Figure~\ref{figure:heatex.stime.datafig.ps} across the three different
+plants. For each year of operation, the bottom of Figure
+\ref{figure:heatex.plcomp1fig.ps} shows the number in the risk set (in
+the upper left-hand corner), the number that cracked in each interval,
+and the number censored at the end of each interval.
+Table~\ref{table:pl.heat.exch} illustrates numerical computations.
+Figures~\ref{figure:heatexch.cdf.pw.ps} and
+\ref{figure:heatexch.cdf.sim.ps} show the estimate with different sets
+of approximate confidence intervals and bands that are explained in
+Sections~\ref{section:np.pointwise.ci} and
+\ref{section:np.simultaneous.cb},
+respectively.
+%-------------------------------------------------------------------
+\begin{table}
+\caption{Calculations for the nonparametric estimate of $F(\realrv_{i})$
+for the pooled heat exchanger tube data.}
+\centering\small
+\begin{tabular}{*{9}{r}}
+\\[-.5ex]
+\hline
+&& \multicolumn{1} {c} {Failed} & 
+	\multicolumn{1} {c} {Censored} & \multicolumn{1} {c} {Entered}&\\
+\cline{3-5}
+Year & $t_{i}$ & $d_{i}$ & $r_{i}$ & $n_{i}$ & $\phat_{i}$ & $1-\phat_{i}$
+& $\Shat(\realrv_{i})$ & $\Fhat(\realrv_{i})$ \\[.8ex]
+\hline
+$ (0-1]$ & 1   & 4 & 99 &  300 &  4/300 & 296/300 & .9867 & .0133 \\ 
+$ (1-2]$ & 2   & 5 & 95 &  197  & 5/197 & 192/197 & .9616 & .0384\\ 
+$ (2-3]$ & 3   & 2 & 95 &  97  &  2/97 & 95/97 & .9418 & .0582
+\\[1ex] \hline
+\end{tabular}
+\label{table:pl.heat.exch}
+\end{table}
+\end{example}
+%-------------------------------------------------------------------
+
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+ \section{Pointwise Confidence Intervals from Multiply Censored Data}
+\label{section:np.stderror.and.ci}
+%-------------------------------------------------------------------
+ \subsection{Approximate variance of $\Fhat(\realrv_{i})$}
+\label{section:avar.nonpar.fhat}
+Because $\Fhat(\realrv_{i})=1-\Shat(\realrv_{i})$,
+$\var
+\left [\Fhat(\realrv_{i}) \right ]=
+\var \left [\Shat(\realrv_{i}) \right ].$
+Using the delta method approach in Appendix
+Section~\ref{asection:delta.method}, a first-order Taylor series
+approximation for $\Shat(\realrv_{i})$ is
+\begin{displaymath}
+\Shat(\realrv_{i}) \approx
+ S(\realrv_{i})+\sum_{j=1}^{i} 
+ \left. \frac{\partial S}{\partial q_{j}} \right |_{q_{j}}
+\left(\qhat_{j} - q_{j} \right )
+\end{displaymath}
+where $q_{j}=1-p_{j}$. 
+Because the $\qhat_{j}$ values are approximately
+uncorrelated binomial proportions (the $\qhat_{j}$ 
+values are asymptotically, 
+as $n \rightarrow \infty$, uncorrelated), it follows that
+\begin{equation}
+\label{equation:pl.asym.var}
+ \var \left [\Fhat(\realrv_{i}) \right ]=\var \left [\Shat(\realrv_{i}) \right ] 
+\approx [S(\realrv_{i})]^{2}
+\sum_{j=1}^{i} \frac{p_{j}}{n_{j} (1-p_{j})}.
+\end{equation}
+The right-hand side of (\ref{equation:pl.asym.var}) is also an
+asymptotic (large-sample approximate) variance denoted by
+$\avar
+\left [\Fhat(\realrv_{i}) \right ]$.  This can be shown by
+using the large-sample approximation in
+Appendix Sections~\ref{asection:asymptotic.theory.mle}
+and~\ref{asection:asymptotic.theory.fmle}.
+
+%-------------------------------------------------------------------
+\subsection{Greenwood's formula}
+Substituting $\phat_{j}$ for $p_{j}$ and $\Shat(\realrv_{i})$ for
+$S(\realrv_{i})$
+in (\ref{equation:pl.asym.var})
+gives the following variance estimator:
+\begin{equation}
+\label{equation:greenwood}
+ \varhat \left [\Fhat(\realrv_{i}) 
+\right ]=\varhat \left [\Shat(\realrv_{i}) \right ] =
+ [\Shat(\realrv_{i})]^{2}
+\sum_{j=1}^{i} \frac{\phat_{j}}{n_{j}(1-\phat_{j})}.
+\end{equation}
+This is known as ``Greenwood's formula.''
+An estimator of the standard error of
+$\Fhat(\realrv_{i})$
+is
+\begin{equation}
+\label{equation:sd.greenwood}
+\sehat_{\Fhat} =
+\sqrt{\varhat \left [\Fhat(\realrv_{i}) \right ]}.
+\end{equation} 
+Note that when there are no censored observations before
+the last failure, (\ref{equation:sd.greenwood}) is
+numerically equivalent to (\ref{equation:binomial.var.ecdf}).
+
+%----------------------------------------------------------------------
+\subsection{Pointwise normal-approximation
+confidence interval for $F(\realrv_{i}) $}
+\label{section:np.pointwise.ci}
+Because $\Fhat(\realrv)$ is defined only at the upper endpoint of
+intervals that contain failures, $\Fhat(\realrv)$ is generally
+estimated only at such points (if there are no failures in an
+interval, $\Fhat(\realrv)$ remains constant over that interval).  For
+a specified upper endpoint $\realrv_{i}$ at which an estimate of
+$F(\realrv)$ is desired, a normal-approximation $100 (1-\alpha)\%$
+confidence interval for $F(\realrv_{i})$ is
+\begin{equation}
+\label{equation:np.normal.theory.ci}
+[\Flower(\realrv_{i}), \quad \Fupper(\realrv_{i})] =
+\Fhat(\realrv_{i}) \pm \norquan_{(1-\alpha/2)} 
+\sehat_{\Fhat}
+\end{equation}
+where $z_{(p)}$ is the $p$ quantile of the 
+standard normal distribution.
+In general, a one-sided approximate $100(1-\alpha)\%$
+confidence bound can be obtained by replacing
+$\norquan_{(1-\alpha/2)}$ with $\norquan_{(1-\alpha)}$ and using the
+appropriate endpoint of the two-sided confidence interval.
+
+The approximate confidence intervals 
+from (\ref{equation:nor.approc.binom.ci}) or
+(\ref{equation:np.normal.theory.ci}) are based on the assumption that
+the distribution of
+\begin{equation}
+\label{equation:def.zfhat.normal}
+Z_{\Fhat}  = 
+\frac{\Fhat(\realrv_{i})-F(\realrv_{i})}
+{\sehat_{\Fhat}}
+\end{equation}
+can be approximated adequately by a $\NOR(0,1)$ distribution.
+Then 
+\begin{equation}
+\label{equation:prob.zfhat.normal}
+\Pr \left[ \norquan_{(\alpha/2)} < Z_{\Fhat} \leq
+	\norquan_{(1-\alpha/2)} \right]	\approx 1-\alpha
+\end{equation}
+implies that
+\begin{equation}
+\label{equation:fhat.ci.normal}
+\Pr \left[  \Fhat(\realrv_{i}) - \norquan_{(1-\alpha/2)} 
+	\sehat_{\Fhat}  <
+	F(\realrv_{i})   \leq
+	\Fhat(\realrv_{i}) - \norquan_{(\alpha/2)} 
+	\sehat_{\Fhat} \right]
+	\approx 1-\alpha.
+\end{equation}
+This gives the approximate coverage probability for intervals computed
+with the procedure in (\ref{equation:np.normal.theory.ci}). Note that
+in (\ref{equation:fhat.ci.normal}), $F(\realrv_{i})$ is fixed while
+$\Fhat(\realrv_{i})$ and $\sehat_{\Fhat}$ are
+random.  The approximation in (\ref{equation:fhat.ci.normal}) is a
+large-sample approximation and improves with increasing sample
+size. Appendix Section~\ref{asection:convergence.in.distribution} 
+provides more information on such large-sample approximations.
+
+When the sample size is not large, however, the distribution of
+$Z_{\Fhat}$ may be badly skewed and the normal distribution may not
+provide an adequate approximation, particularly in
+the tails of the distribution [where $\Fhat(\realrv)$ is close to 0
+or 1].  For example, it is possible that 
+(\ref{equation:np.normal.theory.ci}) gives 
+$\undertilde{F}(\realrv) < 0$ or $\tilde{F}(\realrv) > 1$, a
+result that is outside the possible range for $F(t)$. Generally
+a better approximation might be obtained by using the logit
+transformation ($\logit(p)=\log[p/(1-p)]$) and basing the confidence
+intervals on the distribution of
+\begin{equation}
+\label{equation:fhat.logit.stand.z}
+Z_{\logit(\Fhat)} = \frac{\logit[\Fhat(\realrv_{i})]-\logit
+[F(\realrv_{i})]}
+{\sehat_{\logit(\Fhat)}}.
+\end{equation}
+Because $\logit[\Fhat(\realrv_{i})]$, like a standard normal
+random variable, is unrestricted (i.e.,  ranges between $-\infty$ and
+$\infty$) (\ref{equation:fhat.logit.stand.z}) can be expected to be 
+closer to $\NOR(0,1)$ than (\ref{equation:def.zfhat.normal}).  This leads
+(the needed steps are left as an exercise)
+to the two-sided approximate $100(1-\alpha)\%$ confidence interval
+\begin{equation}
+\label{equation:fhat.logit.ci}
+[\undertilde{F}(\realrv_{i}), \quad \tilde{F}(\realrv_{i})] = 
+\left[\frac{\Fhat}{\Fhat
++(1-\Fhat) \times w},  \quad \frac{\Fhat}{\Fhat+
+(1-\Fhat)/w}
+\right]
+\end{equation}
+where
+$w=\exp\{\norquan_{(1-\alpha/2)}\sehat_{\Fhat}/
+[\Fhat(1-\Fhat)]\}$. The endpoints of this interval
+will always lie between 0 and 1.
+A one-sided approximate $100(1-\alpha)\%$
+confidence bound can be obtained by replacing
+$\norquan_{(1-\alpha/2)}$ with $\norquan_{(1-\alpha)}$ and using the
+appropriate endpoint of the two-sided confidence interval.
+
+%-------------------------------------------------------------------
+\begin{example}
+\label{example:heat.ex.nonpar.nor}
+{\bf Normal-approximation confidence intervals for the heat exchanger data.}
+This example illustrates the computation of 
+standard errors and nonparametric approximate confidence
+intervals for the heat exchanger data, 
+using both large-sample approximations in this section.
+For the failure probability at $\realrv_{i}=\realrv_{1}=1$, we have
+$\Fhat(1)=.0133$ and
+\begin{displaymath}
+\varhat \left [\Fhat(1) \right ]
+=(.9867)^{2}
+\left[ \frac{.0133}{300(.9867)} \right]=.0000438.
+\end{displaymath}
+Then
+$\sehat_{\Fhat} =\sqrt{.0000438}=.00662$
+and the approximate
+95\% confidence interval for $F(1)$ from
+(\ref{equation:np.normal.theory.ci})
+is
+\begin{displaymath}
+[\undertilde{F}(1), \quad \tilde{F}(1)] = 
+ .0133 \pm 1.960(.00662)=[.0003, \quad .0263].
+\end{displaymath}
+%splus:  .0133-(1.96)*(.00662)          = 0.0003248
+%splus:  .0133+(1.96)*(.00662)          = 0.0262752
+The corresponding interval from (\ref{equation:fhat.logit.ci}),
+based on the logit transformation, is
+\begin{displaymath}
+[\undertilde{F}(1), \quad \tilde{F}(1)] = 
+\left[\frac{.0133}{.0133
++(1-.0133) \times w}, \quad \frac{.0133}{.0133+
+(1-.0133)/w}\right] = \left[.0050, \quad .0350\right]
+\end{displaymath}
+%splus:  (.0133)/(.0133+(1-.0133)*2.687816)       = 0.00498993
+%splus:   (.0133)/(.0133+(1-.0133)/2.687816)      = 0.0349631
+where $w=\exp\{1.960(.00662)/[.0133(1-.0133)]\}=2.687816$.
+%splus:  exp(1.960*(.00662)/(.0133*(1-.0133)))    =2.687816
+Differences between the two methods are large enough
+to be of practical importance. The intervals based on the logit
+transformation are expected to provide a better approximation
+to the nominal $95\%$ confidence level.
+
+For the failure probability at $\realrv_{i}=\realrv_{2}=2$, we have
+\begin{displaymath}
+\varhat \left [\Fhat(2) \right ]
+=(.9616)^{2} \left[ \frac{.0133}{300(.9867)}+
+\frac{.0254}{197(.9746)} \right] = .0001639
+\end{displaymath}
+so that $\sehat_{\Fhat} = \sqrt{.0001639}=.0128$.
+The approximate 95\% confidence intervals for $F(2)$ are
+\begin{displaymath}
+[\undertilde{F}(2), \quad \tilde{F}(2)] 
+= .0384 \pm 1.960(.0128)=[.0133, \quad .0635]
+\end{displaymath}
+%splus:  .0384-(1.96)*(.0128)          =  0.013312
+%splus:  .0384+(1.96)*(.0128)          = 0.063488
+and
+\begin{displaymath}
+[\undertilde{F}(2), \quad \tilde{F}(2)] = 
+\left[\frac{.0384}{.0384
++(1-.0384) \times w}, \quad \frac{.0384}{.0384+
+(1-.0384)/w}\right] = \left[.0198, \quad .0730\right]
+\end{displaymath}
+%splus:  (.0384)/(.0384+(1-.0384)*1.972739)       = 0.01984101
+%splus:   (.0384)/(.0384+(1-.0384)/1.972739)      = 0.07302545
+where $w=\exp\{1.960(.0128)/[.0384(1-.0384)]\}=1.972739$.
+%splus:  exp((1.960)*(.0128)/(.0384*(1-.0384)))    =1.972739.
+
+Figure~\ref{figure:heatexch.cdf.pw.ps} shows the nonparametric
+estimates for $F(\realrv_{i})$ and pointwise approximate 95\%
+confidence intervals.  The intervals are not symmetric around the
+estimates because of the logit transformation. The intervals are wide
+because of the heavy censoring and the small number of failures.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/heatexch.cdf.pw.ps}
+\caption{Plot of the nonparametric estimate
+for the heat exchanger data along with a set of pointwise
+logistic-transform normal-approximation 95\% confidence intervals for
+$F(t)$.}
+\label{figure:heatexch.cdf.pw.ps}
+\end{figure}
+\end{example}
+%-------------------------------------------------------------------
+
+
+%-------------------------------------------------------------------
+\begin{table}
+\caption{Summary of calculations for nonparametric confidence intervals
+for $F(\realrv)$
+for the pooled heat exchanger tube data.}
+\centering\small
+\begin{tabular}{rrrrc}
+\\[-.5ex]
+\hline
+\\[-1.5ex]
+Year & $\realrv_{i}$ &  $\Fhat(\realrv_{i})$
+&$\sehat_{\Fhat}$&
+	\multicolumn{1}{c}{Pointwise Confidence Intervals }
+\\[.5ex]
+\hline
+\\[-.5ex]
+$ (0-1]$ & 1 & .0133 & .00662 \\[1ex]
+\multicolumn{4} {l} { 95\% Confidence Intervals for $F(1)$} \\
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\logit(\Fhat)} \approxdist \NOR(0,1)$ }
+& [.0050, .0350] \\[.1ex]
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\Fhat} \approxdist \NOR(0,1)$ }
+& [.0004, .0133] \\[3ex]
+
+$ (1-2]$&2&.0384&.0128\\[1ex]
+\multicolumn{4} {l} { 95\% Confidence Intervals for $F(2)$} \\
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\logit(\Fhat)} \approxdist \NOR(0,1)$ }
+& [.0198, .0730] \\[.1ex]
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\Fhat} \approxdist \NOR(0,1)$ }
+& [.0133, .0635] \\[3ex]
+
+$ (2-3]$&3&.0582&.0187\\[1ex]
+\multicolumn{4} {l} { 95\% Confidence Intervals for $F(3)$} \\
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\logit(\Fhat)} \approxdist \NOR(0,1)$ }
+& [.0307, .1076] \\
+\multicolumn{4} {l} {\hspace{1em} Based on \,\,\,
+        $Z_{\Fhat} \approxdist \NOR(0,1)$ }
+& [.0216, .0949] \\[.1ex]
+\\[.5ex] \hline
+\end{tabular}
+\label{table:conf.interval.heat.exch}
+\end{table}
+
+%-------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Estimation from Multiply Censored Data with Exact Failures}
+\label{section:def.of.nonparametric.estimate}
+Failures are often reported at exact times.  In such cases, the
+reported times are denoted by $t_{i}$.  This section shows how to
+apply the methods of Sections~\ref{section:def.model.free.est} and
+\ref{section:np.stderror.and.ci}
+to estimate $F(t)$ for such exact failures.
+
+
+%-------------------------------------------------------------------
+\begin{example}
+\label{example:shock.absorber.data}
+{\bf Shock absorber failure data.} Appendix
+Table~\ref{atable:shockabs.data} gives the failure times (in number of
+kilometers of use) of vehicle shock absorbers, first reported in
+O'Connor~(1985). The table shows two different failure modes, denoted
+by M1 and M2. Engineers responsible for shock absorber manufacturing
+and reliability would be interested in the distribution of time to
+failure for the individual failure modes. Engineers responsible for
+higher-level automobile system reliability and choosing among
+alternative vendors would be more interested in the overall
+failure-time distribution for the part.
+\end{example}
+
+Exact failure times arise from a continuous
+inspection process (or, perhaps, from having used a very large number
+of closely-spaced inspections).  In the limit, as the number of
+inspections increases and the width of the inspection intervals
+approaches zero, failures are concentrated in a relatively small
+number of intervals. Most intervals will not contain any failures.
+$\Fhat(t)$ is {\em constant} over all intervals that have no
+failures. Thus with small intervals, $\Fhat$ will become a step
+function with gaps over the intervals where there were failures and
+with jumps at the upper endpoint of these intervals. In the limit, as
+the width of the intervals approaches $0$, the size of the gaps
+approaches 0 and the step function increases at the reported failure
+times. This limiting case of the interval-based nonparametric
+estimator is generally known as the product-limit or Kaplan-Meier
+estimator.
+
+%-------------------------------------------------------------------
+\begin{example}
+\label{example:shock.absorber.cdfest}
+{\bf Nonparametric estimator and normal-approximation confidence
+intervals for the shock absorber data.} 
+%-------------------------------------------------------------------
+\begin{table}[htb]
+\caption{Nonparametric estimates 
+for the shock absorber data up to 12,200 km.}
+\centering\small
+\begin{tabular}{*{8}{r}}
+\\[-1.0ex]
+\hline
+& \multicolumn{1}{c}{Failed} & \multicolumn{1}{c}{Censored} & \multicolumn{1}{c}{Entered}&\\
+\cline{2-4}
+ $\realrv_{i} \quad \mbox{(km)}$ & $d_{j}$ & $r_{j}$ & $n_{j}$ & $\phat_{j}$ & $1-\phat_{j}$
+& $\Shat(\realrv_{i})$ & $\Fhat(\realrv_{i})$ \\[.8ex]
+\hline
+ 6,700   & 1 & 0  & 38 & 1/38  & 37/38  & .9737 & .0263 \\ 
+ 6,950   & 0 & 1  & 37 &       &       &       &  \\ 
+ 7,820   & 0 & 1  & 36 &       &       &       &  \\ 
+ 8,790   & 0 & 1  & 35 &       &       &       &  \\ 
+ 9,120   & 1 & 0  & 34 & 1/34  & 33/34 & .9451  & .0549 \\ 
+ 9,660   & 0 & 1  & 33 &       &       &       &  \\ 
+ 9,820   & 0 & 1  & 32 &       &       &       &  \\ 
+11,310   & 0 & 1  & 31 &       &       &       &  \\ 
+11,690   & 0 & 1  & 30 &       &       &       &  \\ 
+11,850   & 0 & 1  & 29 &       &       &       &  \\ 
+11,880   & 0 & 1  & 28 &       &       &       &  \\ 
+12,140   & 0 & 1  & 27 &       &       &       &  \\ 
+12,200   & 1 & 0  & 26 & 1/26  &  25/26& .9087  & .0913 \\ 
+\hline
+\end{tabular}
+\label{table:pl.shockabs}
+\end{table}
+%-------------------------------------------------------------------
+For the data from
+Example~\ref{example:shock.absorber.data} and Appendix
+Table~\ref{atable:shockabs.data} we do not
+differentiate between the two different failure modes. Instead, we
+estimate the time to failure when both mode M1 and M2 are acting.
+Table~\ref{table:pl.shockabs} illustrates the computations for the
+product-limit estimator up to 12,200 km.
+Figure~\ref{figure:shockabsB.cdf.pw.ps} shows the nonparametric
+estimator and a set of pointwise approximate 95\% confidence
+intervals for $F(\realrv)$. Estimated standard errors were computed using
+(\ref{equation:sd.greenwood}) and the confidence intervals were
+computed using the logistic transformation method in
+Section~\ref{section:np.pointwise.ci}. The wide confidence
+intervals indicate a high degree of uncertainty.
+\end{example}
+
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.cdf.pw.ps}
+\caption{Plot of the nonparametric estimate
+for the shock absorber data along with a set of pointwise
+logistic-transform normal-approximation 95\% confidence intervals for
+$F(t)$.}
+\label{figure:shockabsB.cdf.pw.ps}
+\end{figure}
+%-------------------------------------------------------------------
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\section{Simultaneous Confidence Bands}
+\label{section:np.simultaneous.cb}
+
+%-------------------------------------------------------------------
+\subsection{Motivation}
+The {\em pointwise} confidence intervals defined in
+Section~\ref{section:np.pointwise.ci} are useful for making a
+statement about $F(\realrv_{i})$ at {\em one} particular specified
+value of $\realrv_{i}$ (even though it is common practice to plot a
+set of such intervals). In many applications, however, it is
+necessary to quantify the sampling uncertainty, simultaneously, over
+a range of values of $t$ (even though it is common practice to plot
+a set of such intervals).  To do this, we can use simultaneous
+confidence bands for $F(t)$. As explained in
+Chapter~\ref{chapter:probability.plotting}, simultaneous confidence
+bands are particularly useful for judging the magnitude of observed
+departures from fitted parametric models.
+
+The overall coverage probability
+for the collection of pointwise intervals 
+(e.g., Figure~\ref{figure:shockabsB.cdf.pw.ps}) is generally less than 
+that for any individual interval.
+Plotting an estimate of $F(\realrv)$ showing
+simultaneous confidence bands more accurately reflects
+the uncertainty over the range of times displayed on the plot.
+
+%-------------------------------------------------------------------
+\subsection{Large-sample simultaneous confidence 
+bands for $F(\realrv)$}
+Approximate $100 (1-\alpha)\%$ simultaneous confidence bands
+for $F(\realrv)$ can be obtained from 
+\begin{equation}
+\label{equation:ep.bands.def}
+ \left[\simFlower(\realrv), \quad \simFupper(\realrv) \right] = 
+	\Fhat(\realrv) \pm e_{(a, b, 1-\alpha/2)} 
+\sehat_{\Fhat}(\realrv) \,\,\,\,\mbox{for all}\,\,\, t \in[t_{L}(a),t_{U}(b)]
+\end{equation}
+where the range $[t_{L}(a),t_{U}(b)]$ is a complicated function of the
+censoring pattern in the data, as described in
+Section~\ref{section:simultaneous.a.b}.  With no
+censoring the
+range of $t$ is given by the values of $t$ for which $a
+\leq \Fhat(\realrv) \leq b$.  The approximate factors $e_{(a, b,
+1-\alpha/2)}$ given in Table~\ref{table:vijay.evalues} were computed
+from a large-sample approximation given in Nair~(1984). Because the
+factor $e_{(a, b, 1-\alpha/2)}$ is the same for all values of $t$,
+this family of bands is known as the ``equal precision'' or ``EP''
+simultaneous confidence bands. The factors $e_{(a, b, 1-\alpha/2)}$
+are larger than the corresponding pointwise normal-approximation
+$\norquan_{(1-\alpha/2)}$ values. Thus the width of the simultaneous
+bands, at any given point $t$, is wider than the corresponding
+pointwise confidence interval at that point. This is as expected (and
+necessary) to account for the simultaneous nature of the bands
+afforded by (\ref{equation:ep.bands.def}).
+
+Simultaneous approximate confidence bands like those defined in
+(\ref{equation:ep.bands.def}) are based on the approximate
+distribution of 
+\begin{equation}
+\label{equation:nair}
+Z_{\mbox{max} \Fhat} = 
+\vstack{\max}{\realrv \in [t_{L}(a),t_{U}(b)]}
+\left [
+ \frac{\Fhat(t)-F(t)}
+{ \sehat_{\Fhat(\realrv)}}
+\right ] .
+\end{equation}
+As explained in Section~\ref{section:np.pointwise.ci}
+for the pointwise confidence intervals, it is generally better to
+compute the simultaneous confidence bands based on the logit
+transformation of $\Fhat$. These can be computed from 
+\begin{equation}
+\label{equation:simul.logit.bands}
+[\simFlower(\realrv), \quad \simFupper(\realrv)] = 
+\left[\frac{\Fhat(t)}{\Fhat(t)
++[1-\Fhat(t)] \times w},  \quad \frac{\Fhat(t)}{\Fhat(t)+
+[1-\Fhat(t)]/w}
+\right]
+\end{equation}
+where
+$w=\exp\{e_{(a, b, 1-\alpha/2)}\sehat_{\Fhat}/
+[\Fhat(1-\Fhat)]\}$. The endpoints of these bands
+will always lie between 0 and 1.
+The bands computed from (\ref{equation:simul.logit.bands})
+are based on the  approximate
+distribution of the random function
+\begin{equation}
+\label{equation:fhat.sim.logit.stand.z}
+Z_{\mbox{max}\, \logit(\Fhat)}= 
+\vstack{\max}{\realrv \in [t_{L}(a),t_{U}(b)]}
+	\left [
+     \frac{\logit[\Fhat(\realrv)]-\logit
+[F(\realrv)]}
+{ \sehat_{\logit[\Fhat(\realrv)]}}
+       \right ].
+\end{equation}
+The bands that we have computed for our examples use this approximation.
+
+%-------------------------------------------------------------------
+\begin{table}
+\caption{Factors $e_{(a,b,1-\alpha/2)}$
+for the EP simultaneous approximate confidence bands.}
+\centering\small
+\begin{tabular}{llrrrr}
+\\[-.5ex]
+\hline
+\multicolumn{2}{c}{Limits} & \multicolumn{4}{c}{Confidence Level}\\
+\hline
+\multicolumn{1}{c}{$a$}&\multicolumn{1}{c}{$b$}
+&\multicolumn{1}{c}{.80}
+&\multicolumn{1}{c}{.90}
+&\multicolumn{1}{c}{.95}
+&\multicolumn{1}{c}{.99}\\
+\hline
+.005&.995&2.86&3.12&3.36&3.85\\
+.01&.995&2.84&3.10&3.34&3.83\\
+.05&.995&2.76&3.03&3.28&3.77\\
+.1&.995&2.72&3.00&3.25&3.75\\
+.005&.99&2.84&3.10&3.34&3.83\\
+.01&.99&2.81&3.07&3.31&3.81\\
+.05&.99&2.73&3.00&3.25&3.75\\
+.1&.99&2.68&2.96&3.21&3.72\\
+.005&.95&2.76&3.03&3.28&3.77\\
+.01&.95&2.73&3.00&3.25&3.75\\
+.05&.95&2.62&2.91&3.16&3.68\\
+.1&.95&2.56&2.85&3.11&3.64\\
+.005&.9&2.72&3.00&3.25&3.75\\
+.01&.9&2.68&2.96&3.21&3.72\\
+.05&.9&2.56&2.85&3.11&3.64\\
+.1&.9&2.48&2.79&3.06&3.59\\
+\hline
+\end{tabular}
+\label{table:vijay.evalues}
+\end{table}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\subsection{Determining the time-range for simultaneous confidence 
+bands for $F(\realrv)$} 
+\label{section:simultaneous.a.b}
+Specifying the quantities $a$ and $b$
+determines the range $[t_{L}(a),t_{U}(b)]$ over which simultaneous
+confidence bands for $F(\realrv)$ are defined. Let
+\begin{displaymath}
+\sigmahat(t) = n \sum_{j: t_{j} \leq t} \frac{d_{j}}{n_{j}(n_{j}-d_{j})},\quad
+\mbox{and} \quad \Khat(t)=\frac{\sigmahat(t)}{1+\sigmahat(t)}.
+\end{displaymath}
+where the summation is over $j$ such that $t_{j}\leq t$.
+Then the simultaneous confidence bands have a range covering all values
+of $t$ such that $a \leq \Khat(t) \leq b$. The function $\Khat(t)$
+behaves like a nonparametric estimate $\Fhat(t)$: it is nondecreasing,
+$0 \leq \Khat(t) \leq 1$, and $\Khat(t)=\Fhat(t)$ when there is no
+censoring.
+
+%-------------------------------------------------------------------
+\begin{example}
+{\bf Simultaneous confidence bands for the shock absorber life cdf.}
+Figure~\ref{figure:shockabsB.cdf.sim.ps} is similar to
+Figure~\ref{figure:shockabsB.cdf.pw.ps}, but it displays approximate
+95\% simultaneous confidence bands for $F(t)$ instead of a set of
+pointwise confidence intervals.  Note that the upper limit of the
+simultaneous confidence bands is constant from 6,700 km to 12,200 km,
+even though there is a failure and a corresponding jump in $\Fhat(t)$
+at 9,120 km.  This is due to an adjustment made to
+(\ref{equation:simul.logit.bands}) so that the simultaneous confidence
+bands for $F(t)$ do not decrease, thus agreeing with the
+nondecreasing characteristic of cdfs. If the upper band is
+decreasing on the left, it is made flat from $t_{L}(a)$ to the point
+of the minimum. If the lower band is decreasing on the right, it made
+flat from the point of maximum to $t_{U}(b)$.  These adjustments, if
+needed, give tighter, more sensible bands and have no effect on the
+actual coverage probability of the simultaneous bands.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/shockabsB.cdf.sim.ps}
+\caption{Plot of the nonparametric estimate
+for the shock absorber data along with simultaneous logistic-transform
+normal-approximation 95\% confidence bands for $F(t)$ computed from
+(\ref{equation:simul.logit.bands}).}
+\label{figure:shockabsB.cdf.sim.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+
+
+\begin{example}
+{\bf Simultaneous confidence bands for the pooled heat exchanger tube data.}
+Figure~\ref{figure:heatexch.cdf.sim.ps} for the
+heat exchanger data, shows simultaneous confidence
+bands. As expected, the simultaneous bands are much wider than the
+set of pointwise confidence intervals in 
+Figure~\ref{figure:heatexch.cdf.pw.ps}.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/heatexch.cdf.sim.ps}
+\caption{Plot of the nonparametric estimate
+for the heat exchanger data along with simultaneous logistic-transform
+normal-approximation 95\% confidence intervals for $F(t)$ computed from
+(\ref{equation:simul.logit.bands}).}
+\label{figure:heatexch.cdf.sim.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Uncertain Censoring Times}
+\label{section:life.table}
+The methods in earlier
+sections of this chapter assume that all left- and right-censored
+observations occur at upper endpoints of the
+intervals. If all of the censoring times are {\em known}, this is not a
+serious restriction because the data intervals can be defined to
+accommodate all of the data.  If, however, censoring times are known
+only to be {\em within} specified intervals, the risk set is
+decreasing over the intervals in a manner that cannot be specified
+precisely. If the censoring times are random and the
+form of the distribution is known, a likelihood estimation
+method could be based on the likelihood in
+(\ref{equation:like.censoring.in.interval}). Without such knowledge,
+another approach is needed.
+
+Two extreme methods of handling the censored observations in the
+intervals are
+\begin{itemize}
+\item
+Assume that all censored observations are removed at $\realrv_{i}$,
+the upper endpoint of the interval. This gives
+$\phat_{i}=\deadin_{i}/n_{i}$ as used in
+Section~\ref{section:def.model.free.est}.  This estimate of
+$p_{i}$ is biased upward.
+\item
+Assume that all censored observations are removed at $\realrv_{i-1}$,
+the lower endpoint of the interval. This gives
+$\phat_{i}=\deadin_{i}/(n_{i}-\rcensorat_{i})$.
+This estimate of $p_{i}$ is biased downward.
+\end{itemize}
+A commonly used compromise is
+$\phat_{i}=\deadin_{i}/(n_{i}-\rcensorat_{i}/2)$, the harmonic mean of
+the two more extreme estimates.  These compromise estimates
+$\phat_{i}$ can be substituted into
+(\ref{equation:nonparametric.estimator}) and
+(\ref{equation:greenwood}) leading through
+(\ref{equation:nonparametric.estimator.for.F}) and
+(\ref{equation:sd.greenwood}) to the ``actuarial'' or
+``life table'' nonparametric
+estimate $\Fhat(t)$ and the corresponding standard error
+$\sehat_{\Fhat}$.
+
+\begin{example}
+{\bf Nonparametric estimate for the prototype battery data with
+uncertain censoring times}
+\label{example:proto.battery.npmle}
+%-------------------------------------------------------------------
+\begin{table}
+\caption{Calculations for the nonparametric life table estimate of $F(\realrv_{i})$
+for the prototype battery data.}
+\centering\small
+\begin{tabular}{rrcccrrrrr}
+\\[-.5ex]
+\hline
+\\[-1.5ex]
+Interval&  & Failed in& Censored in&Entered& Adjusted& \\
+in Hours &  &$(t_{i-1},t_{i}]$ &$(t_{i-1},t_{i}]$&$(t_{i-1},t_{i}]$ &
+at Risk& \\
+\cline{1-1}\cline{3-6}
+$(t_{i-1},t_{i}]$ &  & $d_{i}$ & $r_{i}$ & $n_{i}$ & $n_{i}-\frac{r_{i}}{2}$ & $\phat_{i}$ & $1-\phat_{i}$
+& $\Shat(\realrv_{i})$ & $\Fhat(\realrv_{i})$ \\[.8ex]
+\hline
+  $(0-50]$     & & 1 & 5 & 68 & 65.5 & 1/65.5 & 64.5/65.5 & .985 & .015 \\
+  $(50-100]$   & & 0 & 6 & 62 & 59 & 0/59 & 59/59 & .985 & .015 \\ 
+  $(100- 150]$ & & 1 & 1 & 56 & 55.5 & 1/55.5 & 54.5/55.5 & .967 & .033 \\ 
+  $(150- 200]$ & & 4 & 6 & 54 & 51 & 4/51 & 47/51 & .891 & .109 \\
+  $(200- 250]$ & & 1 & 2 & 44 & 43 & 1/43 & 42/43 & .870 & .130 \\
+  $(250- 300]$ & & 1 & 1 & 41 & 40.5 & 1/40.5 & 39.5/40.5 & .849 & .151 \\
+  $(300- 350]$ & & 1 & 2 & 39 & 38 & 1/38 & 37/38 & .827 & .173 \\
+  $(350- 400]$ & & 4 & 2 & 36 & 35 & 4/35 & 31/35 & .732 & .268 \\ 
+   $(450- 500]$& & 4 & 3 & 30 & 28.5 & 4/28.5 & 24.5/28.5 & .629 & .371 \\
+  $(500- 550]$ & & 2 & 1 & 23 & 22.5 & 2/22.5 & 20.5/22.5 & .573 & .427 \\
+ $ (550- 600]$ & & 2 & 0 & 20 & 20 & 2/20 & 18/20 & .516 & .484\\
+\vdots &\vdots &\vdots &\vdots &\vdots &\vdots 
+&\vdots &\vdots &\vdots &\vdots \\[1ex] \hline 
+\end{tabular}
+\label{table:battery.pl}
+\end{table}
+The prototype battery failure data in
+Example~\ref{example:morgan.battery.data} and Appendix
+Table~\ref{atable:morgan.battery.data} has both failure times and
+censored observations within the given intervals.
+Here we consider the life distribution
+of the batteries, without distinguishing among the
+different failure modes.
+Table~\ref{table:battery.pl} illustrates the computations for the
+nonparametric life table estimate of $F(t)$ up to 600 hours.
+\end{example}
+%-------------------------------------------------------------------
+
+%\section{Other Nonparametric Estimators of $F(\realrv)$}
+%\subsection{The hazard estimator of $F(\realrv)$}
+%\label{section:hazard.estimator}
+%\subsection{The reduced sample estimator of $F(\realrv)$}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+%-------------------------------------------------------------------
+\section{Arbitrary Censoring}
+\label{section:arbitrary.censoring}
+The nonparametric estimate in
+(\ref{equation:nonparametric.estimator}) works only for some kinds of
+censoring patterns (e.g., multiple right censoring and interval
+censoring with intervals that do not overlap).  When censoring is
+more complicated, an alternative is needed. 
+This need arises because, with complicated censoring, we do not know
+the $n_{i}$ values in (\ref{equation:psubihat}).
+
+The Peto-Turnbull estimator provides the needed generalization of
+the nonparametric ML estimator that can be used for: \begin{itemize}
+\item
+Arbitrary censoring (e.g., combinations of left and right censoring
+and interval censoring with overlapping intervals).
+\item
+Truncated data (as described in Section~\ref{section:truncated.data}).
+\end{itemize} The basic idea is to write the likelihood as in
+(\ref{equation:probability.of.data}) and to maximize this likelihood
+to estimate the vector $\pvec$ or $\pivec$ from which one can compute
+an estimate of $F(\realrv)$.  We illustrate the basic idea in the
+following example. With the simple right-censoring patterns used
+previously, the Peto-Turnbull estimator is equivalent to the 
+nonparametric estimator defined in 
+Sections~\ref{section:def.model.free.est}
+and \ref{section:def.of.nonparametric.estimate}.
+
+%-------------------------------------------------------------------
+\begin{example}
+\label{example:turbine.cdfest}
+{\bf Nonparametric estimate of the turbine wheel distribution of
+time to crack initiation based on inspection data.} As explained in
+Example~\ref{example:turbine.wheel.data}, the turbine wheel inspection
+data on time-to-crack-initiation can be viewed as a collection of
+overlapping right- and left-censored observations.
+Figure~\ref{figure:turbine.rawcdf.ps} plots the raw observed
+proportion failing as a function of hours of exposure.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/turbine.rawcdf.ps}
+\caption{Plot of proportions failing 
+versus hours of exposure for the turbine wheel inspection data.}
+\label{figure:turbine.rawcdf.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Due to random variability, this crude estimate of $F(\realrv)$ is, in
+several places, decreasing. The true cdf is, of course, a
+nondecreasing function of time.  Although it is {\em not} possible to use
+the product limit estimator to compute the nonparametric maximum
+likelihood estimate of $F(\realrv)$, the general maximum likelihood
+approach introduced in Section~\ref{section:general.likelihood} still
+works.  Figure~\ref{figure:turbine.npmldatafig.ps} illustrates the
+basic parameters $\pi_{i}$ used in computing the nonparametric estimate of
+$F(\realrv_{i})$ for this example.
+%-------------------------------------------------------------------
+\begin{figure}
+\xfigbookfigure{\figurehome/turbine.npmldatafig.ps}
+\caption{Basic parameters used in computing the nonparametric ML
+estimate of $F(\realrv_{i})$ for the turbine wheel inspection data.}
+\label{figure:turbine.npmldatafig.ps}
+\end{figure}
+%-------------------------------------------------------------------
+Using terms like those in (\ref{equation:left.censored.likelihood})
+and (\ref{equation:right.censored}) and the data summarized in
+Table~\ref{table:turbine.data} leads to
+\begin{eqnarray*}
+\like(\pivec)=
+\like(\pivec;\DATA)&=& \likeconstant \times  
+	[ \pi_{1}]^{0} \times  
+	[ \pi_{2} + \cdots +\pi_{12}]^{39} \times  \\
+&&	[ \pi_{1}+\pi_{2}]^{4} \times  
+	[ \pi_{3} + \cdots +\pi_{12}]^{49} \times  \\
+&&	[ \pi_{1}+ \pi_{2} +\pi_{3}]^{2} \times  
+	[ \pi_{4} + \cdots +\pi_{12}]^{31} \times  \\
+&& \vdots\\
+&&	[ \pi_{1}+\cdots +\pi_{11}]^{21} \times  
+	[\pi_{12}]^{15}
+\end{eqnarray*}
+where $\pi_{12}=1-\sum_{i=1}^{11}\pi_{i}$.  The elements of $\pivec = (\pi_{1},
+\ldots ,\pi_{11})$ that maximize $\like(\pivec)$ gives $\pivechat$, the
+ML estimator of $\pivec$.  Substituting the elements of $\pivechat$
+into (\ref{equation:f.is.sum.of.pi}) provides the nonparametric
+estimator of $F(\realrv)$.  The estimate, which is nondecreasing, is
+plotted in Figure~\ref{figure:turbine.cdf.pw.ps}. The pointwise
+confidence intervals in Figure~\ref{figure:turbine.cdf.pw.ps} were
+computed using (\ref{equation:simul.logit.bands}). The needed
+$\sehat_{\Fhat}$ values were computed based on general methods given
+in Appendix Section~\ref{asection:observed.information}.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/turbine.cdf.pw.ps}
+\caption{Plot of the nonparametric ML estimate
+for the turbine wheel inspection data along with a set of pointwise
+logistic-transform normal-approximation 95\% confidence intervals for
+$F(t)$.}
+\label{figure:turbine.cdf.pw.ps}.
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+
+%----------------------------------------------------------------------
+
+\section*{Bibliographic Notes}
+
+For the estimator given in (\ref{equation:nonparametric.estimator}),
+Kaplan and Meier~(1958) allowed the width of the intervals in
+(\ref{equation:small.intervals}) to approach zero and the number of
+intervals to approach $\infty$.  This is the origin of the alternative
+name ``product-limit estimator.''  This estimator is also widely known
+as the ``Kaplan-Meier estimator.''  Kaplan and Meier~(1958),
+Elandt-Johnson and Johnson~(1980, page~172), and Lawless~(1982,
+page~74) provide more detailed justification for
+(\ref{equation:nonparametric.estimator}) as an ML estimator.
+
+Nelson~(1969, 1972, 1982) defined and illustrated the use of a
+nonparametric estimator for the cumulative hazard function.
+Corresponding asymptotic theory is given by Aalen~(1976).  This
+provides an alternative estimator for $F(\realrv)$, sometimes referred
+to as the ``Nelson-Aalen estimator.'' The Nelson-Aalen nonparametric
+estimator is asymptotically, as the sample size increases, equivalent
+to the product-limit nonparametric estimator.  Some properties of this
+estimator are explored in Exercise~\ref{exercise:nelson.aalen.estimator}.
+
+Fleming and Harrington~(1992), and Anderson, Borgan, Gill, and
+Keiding~(1993) give detailed treatment of the general theory for both
+the product-limit estimator and the Nelson-Aalen estimator and outline
+the related literature with biomedical applications.
+
+Nair~(1981) gives asymptotic theory for the simultaneous confidence
+bands described in Section~\ref{section:np.simultaneous.cb}. Nair
+(1984) used simulation to compare these bands with alternatives
+bands suggested in the literature.  Weston and Meeker~(1990)
+suggest and use simulation to evaluate the modification to Nair's
+bands, based on the logit transformation.  Their results showed that
+the logit transformation provides a better approximation to the
+nominal coverage probability.
+
+Peto~(1973) defined the nonparametric maximum likelihood estimator for
+arbitrary censoring, including complicated overlapping
+interval-censored data.  Turnbull~(1976) further generalized the
+estimator to cover ``truncated data'' (to be discussed in
+Section~\ref{section:truncated.data}) and suggested an EM
+(expectation-maximization) algorithm to compute the estimate.
+Gentleman and Geyer~(1994) describe asymptotic theory and
+computational issues for this estimator.
+
+Thomas and Grunkemeier~(1975) compare several different
+nonparametric confidence intervals for $F(\realrv)$. They
+conclude that confidence intervals based on inverting a likelihood
+ratio test for $F(\realrv)$ are more accurate than intervals based on
+the normal approximation. Owen~(1990) describes ``empirical
+likelihood,'' providing a theoretical basis for nonparametric
+likelihood ratio confidence regions.  Li~(1995a), using the Thomas and
+Grunkemeier~(1975) problem as a starting point, provides theory and an
+algorithm for computing nonparametric confidence intervals based on
+inverting a likelihood ratio test for $F(\realrv)$. The work is
+extended to truncated data in Li~(1995b).
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Exercises}
+
+
+%------------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:bb.ci75}
+Use the ball bearing life test data in
+Table~\ref{table:lz.bbearing.data} to do the following:
+\begin{enumerate}
+\item
+Compute a nonparametric estimate of the population fraction failing by
+75 million cycles.
+\item
+\label{exercise.part:bb.ci75p1}
+Use the conservative interval in
+(\ref{equation:binomial.confidence.interval}) to compute an
+approximate 90\% confidence interval for the population
+fraction failing by 75 million cycles.
+\item
+\label{exercise.part:bb.ci75p2}
+Use the normal-approximation method in
+(\ref{equation:nor.approc.binom.ci}) to compute an approximate 90\%
+confidence interval for the population
+fraction failing by 75 million cycles.
+\item
+Comparing the intervals from parts~\ref{exercise.part:bb.ci75p1} and
+\ref{exercise.part:bb.ci75p2}, what do you conclude about the adequacy of
+the normal-approximation method for these data?
+\end{enumerate}
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+Repeat Exercise~\ref{exercise:bb.ci75}, using the population
+fraction failing by 25 million cycles. 
+Why does the normal-approximation method not work so
+well in this case?
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+Show how (\ref{equation:np.normal.theory.ci}) follows from
+(\ref{equation:fhat.ci.normal}) and how (\ref{equation:fhat.ci.normal})
+follows from (\ref{equation:def.zfhat.normal}).
+\end{exercise}
+
+
+%------------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:parida.1991}
+Parida~(1991) gives data from a load-controlled high-cycle
+fatigue test conducted on 130 chain links. The 130 links were randomly
+selected from a population of different heats used to manufacture the
+links. Each link was tested until failure or until it had run for 80
+thousand cycles, whichever came first. There were 10 failures---one
+each reported at 33, 46, 50, 59, 62, 71, 74, and 75 thousand cycles
+and 2 reported at 78 thousand cycles. The other 120 links had not
+failed by 80 thousand cycles.
+\begin{enumerate}
+\item
+Use (\ref{equation:binomial.ecdf}) to compute the nonparametric estimate of
+$F(\realrv)$ and corresponding standard errors. 
+\item
+Compute a set of pointwise approximate 90\% confidence intervals for
+$F(\realrv)$.  Explain the proper interpretation of these intervals.
+\item
+For the first 3 failures, compare the numerical estimates
+from (\ref{equation:nonparametric.estimator.for.F}) with the numerical
+estimates from (\ref{equation:binomial.ecdf}).
+\item
+The original paper reported the number of cycles to failure, as given above.
+Suggest reasons why the numbers of cycles to failures were not given with more
+precision and the effect that this has on the results of the analysis.
+\item
+The original paper reported that the tested units had been selected
+from a random sample of heats. What might have happened in the
+experiment if all of the sample links had been selected from just one
+or two heats?
+\item
+The original paper did not report the order in which the tests were
+run. Typically fatigue tests require the use of 
+one or a few expensive test
+stands and tests are done in sequence. The order in which the
+failures occurred was not described in the original paper. Is it
+possible that there was some useful information in knowing the order
+in which the 130 units had been tested? Discuss.
+\end{enumerate}
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+The supplier of an electromechanical control for a
+household appliance ran an accelerated life
+test on sample controls. In the test, 25 controls were put on test and run
+until failure or until 30 thousand cycles had been been accumulated.
+Failures occurred at 5, 21, and 28 thousand cycles. The other 22
+controls did not fail by the end of the test.
+\begin{enumerate}
+\item
+Compute and plot a nonparametric estimate for $F(t)$.
+\item
+\label{exer.part:elmech.ci.binom}
+Compute an approximate 95\% confidence interval for the probability
+that an electromechanical device from the same production process,
+tested in the same way, would fail before 30 thousand cycles. Use the
+conservative binomial distribution approach.
+\item
+\label{exer.part:elmech.ci.norm}
+Compute an approximate 95\% confidence interval for the probability
+that an electromechanical device from the same production process,
+tested in the same way, would fail before 30 thousand cycles. Use the
+normal-approximation method based on $Z_{\Fhat(30)} \approxdist
+\NOR(0,1)$.
+\item
+Explain why, in this situation, the approach in
+part~\ref{exer.part:elmech.ci.binom} would be preferred to the
+approach in part~\ref{exer.part:elmech.ci.norm}.
+\item
+\label{exerpart:prod.mix}
+The appliance manufacturer is really interested in the
+probability of the number of days to failure for its product.
+Use rate differs from household to household, but the average rate is
+2.3 cycles per day. What can the manufacturer say about the proportion
+of devices that would fail in 10 years of operation (the expected
+technological life of the product)? 
+\item
+Refer to part~\ref{exerpart:prod.mix}.
+Describe an appropriate model to use when use rate varies in the 
+population of units. To simplify, start by assuming that there are
+only two different use-rates. Discuss, using appropriate expressions.
+\end{enumerate}
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:earth.orbit.cdf}
+Over the past 18 months, ten separate
+copies of an electronic system have been
+deployed in earth-orbit where repair is impossible. Continuous remote
+monitoring, however, provides information on the state of the system
+and each of its main subsystems.  Each system contains 3 nominally
+identical devices and it was learned, after deployment, that these
+devices are, in the system's environment, failing unexpectedly. The
+failures cause degradation to the overall system operation. For future
+systems that are to be deployed, the problem will be fixed, but owners
+of the systems have asked for information on the amount of degradation
+that can be expected in future years of operation among these
+currently deployed. To date, 5 of the 30 devices have failed. Due to
+the staggered entry of the systems into service, the available data
+are multiply censored. The following table summarizes the available
+information with times given in hours.  Times of unfailed units are
+marked with a ``$+$.''\\[5ex]
+\begin{center}
+{\centering\small
+\begin{tabular}{rrrr}
+\\[-.5ex]
+System & Device 1 & Device 2 & Device 3\\
+\hline
+1  &   564\censormark    &   564\censormark        &  564\censormark  \\
+2  &   1321\censormark   &   1104\nocensormark     &  1321\censormark \\
+3  &   1933\censormark   &   1933\censormark       &  1933\censormark \\
+5  &   1965\censormark   &   1965\censormark       &  1965\censormark \\
+4  &   2578\censormark   &   2345\nocensormark     &  2578\censormark \\
+6  &   3122\censormark   &   3122\censormark       &  3122\censormark \\
+7  &   5918\censormark   &   5918\censormark       &  4467\nocensormark   \\
+8  &   7912\censormark   &   7912\censormark       &  6623\nocensormark   \\
+9  &   8156\censormark   &   8156\censormark       &  8156\censormark \\
+10 &   7885\nocensormark &   12229\censormark      &  12229\censormark\\
+\hline
+\end{tabular}
+}
+\end{center}
+\begin{enumerate}
+\item
+Compute a nonparametric estimate of  $F(t)$, the life
+distribution of the devices, assuming that the devices are operating
+and failing independently.
+\item
+Plot the nonparametric estimate of $F(t)$.
+\item
+Compute pointwise approximate $95\%$ confidence intervals for $F(t)$
+and add these to your plot.
+\item
+Explain why it might be that the 30 devices are not operating and failing
+independently and how this would affect conclusions drawn from the data.
+\item
+Describe possible reasons why this failure-causing problem was not
+discovered earlier and what might be done to minimize the chance of
+such problems occurring in the future. What questions would you ask of
+a client who wants you to help interpret the information in the
+failure data?
+\end{enumerate}
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+Consider the Plant 1 heat exchanger data in
+Figure~\ref{figure:heatex.plcomp1fig.ps}.
+\begin{enumerate}
+\item
+Write the likelihood for these data in terms of $\pi_{1}, \pi_{2},
+\pi_{3},$ and $\pi_{4}.$
+\item
+Write the likelihood for these data in terms of $p_{1}, p_{2}, p_{3},$
+and $p_{4}.$
+\end{enumerate}
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise1}
+For a given $t_{i}$, $i=1,n$, show that the expression in
+(\ref{equation:binomial.ecdf}) is the maximum likelihood estimator for
+$\Fhat(t_{i}).$
+\end{exercise1}
+
+%------------------------------------------------------------------------
+\begin{exercise1}
+The expression in (\ref{equation:binomial.var.ecdf}) was obtained by
+evaluating the square root of $\var[\Fhat (t_{i})]$ at
+$\Fhat(t_{i}).$ Show this by deriving the expression for
+$\var[\Fhat(t_{i})].$
+\end{exercise1}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:fhat.sim}
+Some computer programs (e.g., statistical packages and spreadsheets)
+can be used to generate pseudorandom samples from a uniform
+distribution.  Let $U_{1},\ldots,U_{n}$ denote such a sample. Then
+$T_{1}=-\log(1-U_{1}),\ldots,T_{n}=-\log(1-U_{n})$ is a pseudorandom
+sample from an exponential distribution (to be described in more
+detail in Chapter~\ref{chapter:ls.parametric.models}).  Simulate a
+sequence of $50$ such samples each of size $n=200.$ For each sample:
+\begin{enumerate}
+\item
+Compute and plot $\Fhat.$
+\item
+Make a histogram of the $50$ values of $\Fhat(1).$
+\item
+\label{exer.pt:fhat.sim1}
+Make a histogram of the $50$ values of $Z_{\Fhat(1)}.$
+\item
+\label{exer.pt:fhat.sim2}
+Make a histogram of the $50$ values of $Z_{\logit(\Fhat)}.$
+\item
+Compare the histograms in parts~\ref{exer.pt:fhat.sim1} and
+\ref{exer.pt:fhat.sim2}. Which statistic seems to be better
+approximated by a $\NOR(0,1)$ distribution?
+\end{enumerate}
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+Repeat Exercise~\ref{exercise:fhat.sim} using samples of size $n=20$
+(and, perhaps other values of $n$).  Compare the plots
+with those from
+Exercise~\ref{exercise:fhat.sim} and describe how sample
+size affects the distribution of statistics like $\Fhat,$ $Z_{\Fhat},$
+and $Z_{\logit(\Fhat)}$.
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:weis.et.al.1986}
+Weis, Caldararu, Snyder, and Croitoru~(1986) report on the results of
+a life test on silicon photodiode detectors in which 28 detectors were
+tested at
+$85^\circ$C and 40 volts reverse bias. These conditions, which
+were more stressful than normal use conditions, 
+were used in order to get failures
+quickly. Specified electrical tests were made at
+0, 10, 25, 75, 100, 500, 750, 1000, 1500, 2000, 2500, 3000, 3600,
+3700, and 3800 hours to determine if the detectors were still
+performing properly. Failures were found after the inspections at
+2500 (1~failure), 3000 (1~failure), 3500 (2~failures), 3600 
+(1~failure), 3700 (1~failure), and 3800 (1~failure). The other 21
+detectors had not failed after 3800 hours of operation.
+Use these data to estimate the life distribution of 
+such photodiode detectors running at the test conditions.
+\begin{enumerate}
+\item
+From the description given above, the data would be useful
+for making inferences about what particular populations or process?
+Explain your reasoning.
+\item
+\label{exercise.part:photo.diode.npest}
+Compute and plot a nonparametric estimate of the cdf for time
+to failure at the test conditions.
+\item
+Compute standard errors for the nonparametric estimate in part
+\ref{exercise.part:photo.diode.npest}.
+\item
+Compute a set of pointwise approximate 95\% confidence intervals for
+$F(\realrv)$ and add these to your plot.
+\item
+Compute simultaneous approximate 95\% confidence bands for
+$F(\realrv)$ over the complete range of observation.
+\item
+Provide a careful explanation of the differences in interpretation
+and application of the pointwise confidence intervals and the
+simultaneous confidence bands.
+\end{enumerate}
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise1}
+Use the delta method (Appendix Section~\ref{asection:delta.method})
+and the assumptions given in Section~\ref{section:avar.nonpar.fhat}
+to derive (\ref{equation:pl.asym.var}).
+\end{exercise1}
+
+%------------------------------------------------------------------------
+\begin{exercise1}
+Show how (\ref{equation:fhat.logit.ci}) follows from
+(\ref{equation:fhat.logit.stand.z}).  Begin by using the delta method
+(e.g., Appendix Section~\ref{asection:delta.method}) to obtain an expression
+for $\sehat_{\logit(\Fhat)}$ as a function of
+$\sehat_{\Fhat}$.
+\end{exercise1}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+Example~\ref{example:shock.absorber.cdfest} illustrates the
+computations for the nonparametric estimation of the cdf for the shock
+absorber data up to 12,220~km. Complete the computations for the rest
+of the data (i.e., out to 28,100~km). Use $S(12200)=.9086984$ to continue
+the cumulative product in (\ref{equation:nonparametric.estimator}).
+\begin{enumerate}
+\item
+\label{exercise.part:npshock.plotcdf}
+Plot the nonparametric estimate out to
+28,100 km.
+\item
+Compute $\sehat_{\Fhat}$ out to
+28,100 km.
+\item
+Compute a set of pointwise approximate 90\% confidence intervals for
+$F(\realrv)$ out to 28,100~km and add these to the plot in part
+\ref{exercise.part:npshock.plotcdf}.
+\item
+Explain why, with right-censored data, for the nonparametric
+estimation method, there is only a limited range of time over which we
+can estimate $F(\realrv)$.
+\end{enumerate}
+\end{exercise}
+
+
+%------------------------------------------------------------------------
+\begin{exercise1}
+Show that with single censoring (i.e., all failures precede the first
+censoring time) that
+(\ref{equation:nonparametric.estimator.for.F}) simplifies to
+(\ref{equation:binomial.ecdf}) and that (\ref{equation:greenwood})
+simplifies to (\ref{equation:binomial.var.ecdf}).
+\end{exercise1}
+
+
+%------------------------------------------------------------------------
+\begin{exercise}
+Example~\ref{example:npe.heat.exchanger} illustrated the computations
+for the nonparametric and approximate confidence intervals for $F(1)$ 
+and $F(2)$ for the pooled
+heat exchanger tube data. Complete similar computations for $F(3)$.
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+Explain why the nonparametric estimate of $F(t)$ is a set of points
+for the heat exchanger data in
+Example~\ref{example:npe.heat.exchanger} but a step function for the
+shock absorber data in Example~\ref{example:shock.absorber.cdfest}.
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+Use the data in Table~\ref{table:v7.transmitter.tube} to do the
+following for the V7 Transmitter tube:
+\begin{enumerate}
+\item
+Compute an estimate of the conditional probability of failing
+for each cell.
+\item
+Compute a
+nonparametric estimate for $F(\realrv)$ for each cell. 
+\item
+Plot the estimate of $F(\realrv)$ 
+along with a set of pointwise approximate 95\% confidence
+intervals.
+\item
+For each interval,
+compute and plot an estimate of the probability of failing in that
+interval given a unit enters the interval.
+\item
+Explain how these estimates could be used to plan for preventive
+maintenance
+for a group of radio transmitters, each with one such tube.
+\end{enumerate}
+\end{exercise}
+
+%------------------------------------------------------------------------
+\begin{exercise}
+\label{exercise:fan.km}
+Use the diesel engine fan data in Appendix
+Table~\ref{atable:fan.data} to compute the product-limit nonparametric
+estimate of $F(\realrv)$ using (\ref{equation:nonparametric.estimator}).
+\end{exercise}
+
+
+%------------------------------------------------------------------------
+\begin{exercise}
+Example~\ref{example:proto.battery.npmle} illustrated the
+computations for the nonparametric estimate of the 
+cdf for prototype batteries with both failure times and
+censored observations within the given intervals.
+Complete the computations for the rest
+of the data in Appendix Table~\ref{atable:morgan.battery.data} (i.e., out to
+1700 hours).
+Use $\Shat(600)=.51608$ to continue the cumulative product 
+in (\ref{equation:nonparametric.estimator}).
+\begin{enumerate}
+\item
+\label{exercise.part:proto.batt.plotcdf}
+Plot the nonparametric estimate out to 1700 hours.
+\item
+Compute $\sehat_{\Fhat}$ out to 1700 hours.
+\item
+Compute a set of approximate pointwise 90\% confidence intervals for
+$F(\realrv)$ out to 1700 hours and add these to the plot in part
+\ref{exercise.part:proto.batt.plotcdf}.
+\end{enumerate}
+\end{exercise}
+
+
+%------------------------------------------------------------------------
+\begin{exercise1}
+\label{exercise:km.ml}
+Consider the model in Section~\ref{section:multinomial.failure.model}
+and the data collection method described in
+Section~\ref{section:def.model.free.est}.  
+\begin{enumerate}
+\item Show that the likelihood of the data, as a function of the
+parameters, is
+\begin{eqnarray*}
+\like(\underline{\pi})
+&=& \pi_{1}^{\deadin_{1}} \times \pi_{2}^{\deadin_{2}} \times
+\cdots  \times
+\pi_{m}^{\deadin_{m}} \times  \\
+& & 
+\left [S(\realrv_{1}) \right ]^{r_{1}} \times
+\left [S(\realrv_{2}) \right ]^{r_{2}} \times
+\cdots
+\times
+\left [S(\realrv_{m}) \right ]^{r_{m}}.
+\end{eqnarray*}
+\item 
+Show that in
+terms of the parameters $\pvec=(p_{1}, \ldots, p_{m})$,
+\begin{eqnarray*}
+\like(\pvec)
+&=&\prod_{j=1}^{m} p_{j}^{\deadin_{j}} (1-p_{j})^{n_{j}-\deadin_{j}}
+\end{eqnarray*}
+where $n_{j}=n-\sum_{i=0}^{j-1} \deadin_{i} - \sum_{i=0}^{j-1} r_{i}$,
+with the understanding that $d_{0}=0$ and $r_{0}=0$.
+\item 
+Show that the maximum likelihood estimators of the
+parameters are
+\begin{displaymath}
+ \phat_{j}=\frac{d_{j}}{n_{j}}, \,\,\, j=1, \ldots, m.
+\end{displaymath}
+\item 
+Show that the observed information matrix for the parameters $\pvec$
+is diagonal and that the $i$th diagonal
+element of the matrix is equal to 	
+\begin{displaymath}  
+- \, \frac{\partial^{2} \log  [ \like(\pvec) ]}
+{\partial p_{i}^{2}} = \frac{n_{i}}{p_{i} (1-p_{i})}
+\end{displaymath} 
+evaluated at $\pvechat$.  This shows that, asymptotically (in large
+samples), the components of $\pvechat$ are uncorrelated and
+$\var(\phat_{i})=p_{i}(1-p_{i})/n_{i}$. Use these results and the
+delta method to derive Greenwood's formula as given in
+(\ref{equation:greenwood}).
+\end{enumerate}
+\end{exercise1}
+
+
+%------------------------------------------------------------------------
+\begin{exercise1}
+\label{exercise:nelson.aalen.estimator}
+Consider the relationship 
+$S(\realrv_{i})=\exp[-H(\realrv_{i})]$, 
+where $H(\realrv)$ is the cumulative hazard function. Note
+that a nonparametric
+ML estimator (based on the product-limit  estimator)
+of $H(\realrv)$ without assuming a distributional form is 
+\begin{displaymath}
+    \Hhat(\realrv_{i}) = -\sum_{j=1}^{i}\log(1-\phat_{j}) 
+	                          \approx \sum_{j=1}^{i}\phat_{j}
+                                  =\sum_{j=1}^{i}\frac{d_{j}}{n_{j}}
+=\Hhathat(\realrv_{i}).
+\end{displaymath}
+$\Hhathat(\realrv_{i})$ is known as the Nelson-Aalen
+estimator of $H(t_{i})$. Thus $\Fhathat(\realrv_{i})=
+1-\exp[-\Hhathat(\realrv_{i})]$ is another nonparametric
+estimator for $F(t)$.
+\begin{enumerate}
+\item 
+Give conditions to assure a good agreement between
+$\Hhat(\realrv_{i})$ and $\Hhathat(\realrv_{i})$ and thus
+between $\Fhat(\realrv)$ and $\Fhathat(\realrv)$.
+\item 
+Use the delta method to compute approximate expressions for  
+$\var \left [\Hhat(\realrv_{i})\right ]$
+and  $\var \left [\Hhathat(\realrv_{i})\right ]$.
+Comment on the expression(s) you get. 	
+\item
+Compute Nelson-Aalen estimate of $F(\realrv)$ and compare with the
+estimate computed in Exercise~\ref{exercise:fan.km}.  Describe
+similarities and differences.  \item Show that
+$\Hhathat(\realrv_{i})<\Hhat(\realrv_{i})$ and that
+$\Fhathat(\realrv_{i}) <
+\Fhat(\realrv_{i})$. 
+\item
+Describe suitable modifications of the estimator that can be used when
+failure and censoring times are grouped into common intervals.
+\end{enumerate} 
+\end{exercise1}
+

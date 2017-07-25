@@ -1,0 +1,2383 @@
+%chapter 17
+%original by wqmeeker  12 Jan 94
+%edited by wqmeeker 9 Apr 94
+%edited by wqmeeker 24 Apr 94
+%edited by wqmeeker 27 Apr 94
+%edited by wqmheeker  1 June 94
+%edited by driker 31 August 95
+%edited by driker 11 nov 95
+%edited by wqmeeker  10 dec 95  restructuring
+%edited by driker 20 dec 95
+%edited by wqmeeker  22-31 dec 95 restructuring and adding new sections
+%edited by wqmeeker  1 jan 96
+%edited by driker 12 jan 96 
+%edited by driker 1 july 96 
+%edited by wqmeeker 28 aug 96 
+%edited by driker 20 nov 96
+%edited by driker 23 july 97
+
+\setcounter{chapter}{16}
+
+\chapter{Failure-Time Regression Analysis}
+
+\label{chapter:regression.analysis}
+
+\input{\chapterhome/common_heading.tex}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Objectives}
+This chapter explains
+\begin{itemize} 
+\item 
+Modeling life as a function of explanatory variables.
+\item 
+Graphical methods for displaying censored
+regression data.
+\item
+Time-scaling transformation functions and other forms
+of relationships between life and explanatory variables.
+\item 
+Simple regression models to relate life to explanatory
+variables.
+\item
+Likelihood methods to draw conclusions from censored
+regression data.
+\item 
+How to detect departures from an assumed regression model.
+\item 
+Extensions to more elaborate nonstandard regression models that can
+be used to relate life to explanatory variables, including quadratic
+regression, models in which $\sigma$ depends on explanatory
+variables, and proportional hazards models.
+\end{itemize}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+%---------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Overview}
+This chapter builds on the material in
+Chapter~\ref{chapter:parametric.ml.ls} and other earlier chapters.
+It shows how to model time as a function of explanatory variables.
+Section~\ref{section:fail.time.regr.models}
+introduces the idea of time acceleration and related failure-time
+regression models and contrasts them with other regression models.
+Section~\ref{section:simple.linear.reg} uses a simple regression
+example to explain and illustrate the most important concepts in 
+this chapter. Section~\ref{section:regr.ci}
+shows how to extend methods from
+Chapter~\ref{chapter:parametric.ml.ls} to compute confidence intervals
+for model
+parameters and functions of parameters (e.g., quantiles and failure
+probabilities).  Sections~\ref{section:quad.regr},
+\ref{section:multiple.reg.models}, and
+\ref{section:product.comparison} describe applications requiring 
+other, more complicated, regression models.
+Section~\ref{section:censored.data.regression.diagnostics} shows how
+to adapt traditional regression diagnostics to nonnormal
+distributions
+and problems involving
+censored data.  Section~\ref{section:prohaz.fail} describes the Cox
+proportional hazard model, which has been used occasionally for
+analyzing field failure data.
+
+%----------------------------------------------------------------------
+\section{Introduction}
+Chapters~\ref{chapter:nonparametric.estimation} through
+\ref{chapter:ml.other.parametric} presented and illustrated the
+use of models to describe a single failure-time distribution. In
+this chapter we present and illustrate methods for including
+explanatory variables in failure-time models.  Some of the material
+in this chapter will be familiar to those who have previously
+studied traditional statistical regression analysis. There the mean
+of a normal distribution is modeled as a linear function of one or
+more (possibly transformed) explanatory variables. The more general
+regression methods presented here were needed to solve practical
+problems in reliability testing and data analysis.
+\begin{example}
+\label{example:comptime.data}
+{\bf Computer program execution time data.} Appendix
+Table~\ref{atable:comptime.data} and
+Figure~\ref{figure:comptime.data.ps} give the amount of time it took
+to execute a particular computer program, on a multi-user computer
+system, as a function of the system load (obtained with the Unix {\tt
+uptime} command) at the point in time when execution was beginning.
+The figure shows that, as one might expect, it takes longer to execute
+a program when the system is more heavily loaded. The figure also
+indicates that there is more variability at higher levels of system
+load.  Execution-time predictions are useful for scheduling subsequent
+steps in a multi-step series-parallel computing problem.
+\end{example}
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/comptime.data.ps}
+\caption{Scatter plot of computer program execution time versus
+system load.}
+\label{figure:comptime.data.ps}
+\end{figure}
+
+\begin{example}
+\label{example:super.alloy.data}
+{\bf Low-cycle fatigue data on a nickel-base superalloy.}  Appendix
+Table~\ref{atable:super.alloy.data} and
+Figure~\ref{figure:super.alloy.data} give low-cycle fatigue life
+data for a strain-controlled test on 26 cylindrical specimens of a
+nickel-base superalloy.  The data were originally described and
+analyzed in Nelson (1984 and 1990a, page 272).  Four of the
+specimens were removed from test before failure.  These censored
+observations are indicated by a $\Delta$ in
+Figure~\ref{figure:super.alloy.data}.  In addition to number of
+cycles, each specimen has a level of pseudostress (Young's modulus
+times strain).  The purpose of Nelson's analysis was to estimate the
+curve giving the number of cycles at which .1\% of the population of
+such specimens would fail, as a function of the pseudostress.
+Figure~\ref{figure:super.alloy.data} shows that (as expected)
+failures occur sooner at high pseudostress.  Also, at lower stress
+there is more spread in the failure times.  The following sections
+will explore several models for the relationship between cycles to
+failure and pseudostress.
+\end{example}
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/super.alloy.data.ps}
+\caption{Scatter plot of low-cycle super 
+alloy fatigue life versus pseudostress for specimens of a
+nickel-base superalloy. Points marked with $\Delta$ are right
+censored observations; others are failures.}
+\label{figure:super.alloy.data}
+\end{figure}
+%----------------------------------------------------------------------
+\section{Failure-time Regression Models}
+\label{section:fail.time.regr.models}
+A model with explanatory variables sometimes explains or predicts
+why some units fail quickly and other units survive a long time. 
+Also, if
+important explanatory variables are ignored in an analysis, it is
+possible that resulting estimates of quantities of interest (e.g.,
+distribution quantiles or failure probabilities) could be seriously
+biased.  In reliability studies possible explanatory variables include
+\begin{itemize} 
+\item 
+Continuous variables like stress, temperature, voltage, and pressure.
+\item
+Discrete variables like number of hardening treatments
+or number of simultaneous users of a system.
+\item 
+Categorical variables like manufacturer, design, and location.
+\end{itemize}
+The general idea of a regression model is to express the failure time
+distribution as a function of $k$ explanatory variables
+denoted by $\xvec=(x_{1},\ldots,x_{k})$. For example
+\begin{displaymath}
+\Pr(T \leq t ;\xvec) = F(\realrv;\xvec) = F(\realrv).
+\end{displaymath}
+In some cases, to simplify notation, we will
+suppress the dependency of $F(\realrv)$ on $\xvec$. Regression 
+models can come from physical/chemical theory, curve fitting to
+empirical observations, or some combination of theory and empiricism.
+In science and engineering, new knowledge and theory are 
+often developed and refined through iterative experimentation.
+
+%----------------------------------------------------------------------
+\subsection{Parameters as functions of explanatory variables}
+An important class of regression models allows one or more of the
+elements of the model parameter vector
+$\thetavec=(\theta_1,\ldots,\theta_{r})$ to be a function of the
+explanatory variables.  Generally one employs a function with a
+specified form with one or more unknown parameters that need to be
+estimated from data.  This is a generalization of statistical
+regression analysis in which the most commonly used models have the
+mean of the normal distribution depending linearly on a vector $\xvec$
+of explanatory variables. For example, if $x_{i}$ is a scalar
+explanatory variable for observation $i$, then the normal distribution
+mean is
+\begin{displaymath}
+\mu_{i} = \beta_{0} + \beta_{1}x_{i}.
+\end{displaymath}
+In this case we think of $x_{i}$ as being a fixed part of
+$\data_{i}$. When the $x_{i}$ values are themselves random, standard
+statistical methods and models provide inferences that are conditional
+on the fixed, observed values of these explanatory variables. Then the
+unknown regression model coefficients ($\beta_{0}$ and $\beta_{1})$
+replace the model parameter $\mu_{i}$ in a new definition of
+$\thetavec$.  In some situations, there may be more than one model
+parameter that will depend on one or more explanatory variables.
+
+%----------------------------------------------------------------------
+\subsection{The scale-accelerated failure time model}
+\label{section:saft.model}
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/sft.transform.ps}
+\caption{SAFT models illustrating acceleration and deceleration.}
+\label{figure:sft.transform.ps}
+\end{figure}
+%-------------------------------------------------------------------
+The Scale-Accelerated Failure-Time (SAFT) model is commonly used
+to describe the effect that
+explanatory variables $\xvec$ have on time. This model
+has a simple time-scaling
+Acceleration Factor that is a function of $\xvec$ and is defined by
+\begin{equation}
+\label{equation:regr.saft}
+\rv(\xvec)=\rv(\xvec_{0})/\AF(\xvec), \quad
+\AF(\xvec) > 0, \quad \AF(\xvec_{0})=1
+\end{equation}
+where $\rv(\xvec)$ is the time at conditions $\xvec$ and
+$\rv(\xvec_{0})$ is the corresponding time at some ``baseline'' conditions
+$\xvec_{0}$.
+Some commonly used forms for the time-scale factor
+$\AF(\xvec)$ include the following loglinear
+relationships (assuring that $\AF(\xvec)>0$):
+\begin{itemize}
+\item 
+For a scalar $x$, $\AF(x)=1/\exp(\beta_{1}x)$ with $x_{0} =  0$.
+\item
+For a vector $\xvec=( x_{1}, \dots, x_{k} )$,
+$\AF(\xvec)=1/\exp(\beta_{1}x_{1}+ \ldots +\beta_{k}x_{k})$ with
+$\xvec_{0}  = \zerovec$. 
+\end{itemize} 
+When $\AF(\xvec) > 1$, the model accelerates time in the sense that
+time moves more quickly at $\xvec$ than at $\xvec_{0}$ so that $\rv(\xvec)
+< \rv(\xvec_{0})$.  When $0< \AF(\xvec) < 1$, $\rv(\xvec) >
+\rv(\xvec_{0})$, and time at $\xvec$ is decelerated relative to time
+at $\xvec_{0}$, but we still refer to the model as SAFT.  
+Figure~\ref{figure:sft.transform.ps} illustrates that scale failure
+time 
+transformation functions
+are straight lines starting at the origin:
+\begin{itemize}
+\item
+Lines {\em below} the diagonal accelerate time relative to
+time at $\xvec_{0}$.
+\item
+Lines {\em above} the diagonal decelerate time relative to
+time at $\xvec_{0}$.
+\end{itemize}
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/lawless.lognor.aft.ps}
+\caption{Weibull probability plot showing that two lognormal 
+cdfs with a scale accelerated failure time (SAFT) regression
+relationship are equidistant along the log-time axis.}
+\label{figure:lawless.lognor.aft.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Figure~\ref{figure:sft.transform.ps} and 
+equation~(\ref{equation:regr.saft})
+describe the effect that $\AF(\xvec)$ has on time. In
+terms of cdfs, with baseline cdf $F(\realrv;\xvec_{0})$, $F(\realrv;
+\xvec)=F \left [
+\AF(\xvec) \times \realrv ; \xvec_{0} \right ].$ This shows that 
+if $\AF(\xvec) \ne 1$, the cdfs $F(\realrv; \xvec)$ and
+$F(\realrv;\xvec_{0})$ do not cross each other. In terms of
+distribution quantiles,
+$\rvquan_{p}(\xvec)=\rvquan_{p}(\xvec_{0})/\AF(\xvec)$.  Then taking
+logs, and isolating the term $\log[\AF(\xvec)],$ gives
+\begin{equation}
+\label{equation:log.saft}
+\log[\rvquan_{p}(\xvec_{0})]
+ - \log[\rvquan_{p}(\xvec)]=\log[\AF(\xvec)].
+\end{equation}
+Thus, as shown in Figure~\ref{figure:lawless.lognor.aft.ps}, in a cdf
+plot or a probability plot with a log data scale, $F(\realrv, \xvec)$
+is a translation of $F(\realrv, \xvec_{0})$ along the $\log(\realrv)$
+axis.
+
+SAFT models are relatively simple to interpret.  Also they are often
+suggested by physical theory of failure some simple mechanisms (as
+shown in Chapter~\ref{chapter:accelerated.test.models}). They do
+{\em not}, however, hold universally (as shown in
+Sections~\ref{section:prohaz.fail}, \ref{section:gen.time.trans},
+and \ref{section:parallel.reaction}).
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Simple Linear Regression Models}
+\label{section:simple.linear.reg}
+This section describes and illustrates the use of simple linear
+regression models (i.e., models with a single explanatory variable)
+based on location-scale distributions, including the normal, logistic,
+and smallest extreme value.  These models are closely related with the
+traditional linear regression model. Maximum likelihood (ML) 
+estimation is used instead of least squares, however, to handle 
+censored data and nonnormal distributions. 
+Because of the relationships described in
+Sections~\ref{section:lognormal.distribution.def},
+\ref{section:weibull.distribution}, and
+\ref{section:loglogistic.distribution.definition}, location-scale models
+can be used also to fit log-location-scale distributions (e.g.,
+Weibull, lognormal, and loglogistic) regression models.  The methods
+developed in this and some of the following sections in this chapter
+can be viewed as a generalization of the material in
+Chapter~\ref{chapter:parametric.ml.ls}, allowing $\mu$ (and later
+$\sigma$) to depend on explanatory variables.  Although it would be
+possible to use notation like $\mu(x)$ to make this dependency
+explicit, we will keep the notation simple, as the dependency will
+be clear from the context of the problem.
+
+We will first illustrate the methods for the lognormal distribution.
+The methods apply, however, directly to other log-location-scale
+distributions or other distributions that can be transformed into
+the location-scale form. Sections~\ref{section:quad.regr} through
+\ref{section:gen.time.trans} illustrate various extensions of
+the simple regression model. These extensions include quadratic
+relationships, models with more than one explanatory variable, a model
+for product comparison, and relationships based on more general
+time-transformation functions.
+
+%----------------------------------------------------------------------
+\subsection{Location-scale regression model and likelihood}
+\label{section:ls.regr.model}
+
+With only one explanatory variable, the location-scale simple regression
+model (including the normal, logistic, and smallest
+extreme value distributions as special cases) is
+\begin{equation}
+\label{equation:ls.regr.cdf.model}
+	\Pr(\grv \leq \grealrv) = F(\grealrv;\mu,\sigma) = F(\grealrv;\beta_{0}, \beta_{1},\sigma) =
+\Phi\left ( \frac{ \grealrv -\mu }{\sigma}\right )
+\end{equation}
+where $\mu=\beta_{0}+\beta_{1} x$ and $\sigma$ does not depend on 
+the explanatory variable $x$.
+The quantile function for this model
+\begin{equation}
+\label{equation:ls.reg.quant}
+	\grvquan_{p}(x) = \mu+ \Phi^{-1}(p)\sigma=
+\beta_{0}+\beta_{1} x + \Phi^{-1}(p)\sigma
+\end{equation}
+is linear in $x$. As with the 
+Chapter~\ref{chapter:parametric.ml.ls} models, choosing
+$\Phi$ determines the shape of the distribution for a particular value
+of $x$. One uses $\Phi_{\nor}$ for normal, $\Phi_{\logis}$ for logistic, and
+$\Phi_{\sev}$ for the smallest extreme value distribution. In this
+model $\beta_{0}$ can be interpreted as the value of $\mu$ when $x=0$
+(when this has meaning) and $\beta_{1}$ is the change in $\mu$ [or
+$\grvquan_{p}(x)$] for a one-unit increase in $x$.
+
+%------------------------------
+The likelihood for a sample of $n$ independent observational units with
+right censored and exact-failure observations has the form
+\begin{eqnarray}
+\label{equation:ls.regr.likelihood}
+	\like(\beta_{0},\beta_{1}, \sigma)&=& 	\prod_{i=1}^{n}
+\like_{i}(\beta_{0},\beta_{1}, \sigma;\data_{i}) \nonumber \\ 	&=&
+\prod_{i=1}^{n} 	\left [ \frac{1}{\sigma} \,
+\phi	\left(\frac{\grealrv_{i} -
+\mu_{i}}{\sigma}\right) 	\right ]^{\delta_{i}} 	\left [1-
+\Phi\left( \frac{ \grealrv_{i} 	-\mu_{i} }
+{\sigma} \right ) \right ]^{1-\delta_{i}}
+\end{eqnarray}
+where $\mu_{i}=\beta_{0}+\beta_{1} x_{i} $, $\delta_{i}=1$ for an
+exact failure time, and $\delta_{i}=0$ for a right censored
+observation. Similar terms could be added for left-censored or
+interval-censored data, as described in
+Section~\ref{section:likelihood.contributions}.  As in
+Chapter~\ref{chapter:parametric.ml.ls}, ML estimates are obtained by
+finding the values of $\beta_{0}$, $\beta_{1}$, and $\sigma$ that
+maximize (\ref{equation:ls.regr.likelihood}) or, equivalently, the
+corresponding log likelihood (preferred for numerical reasons).  With
+an underlying normal distribution and complete data, there are simple
+closed-form equations to compute the ML estimates. Otherwise, it is
+necessary to use numerical optimization methods to maximize the
+log likelihood.
+
+%----------------------------------------------------------------------
+\subsection{Log-location-scale regression model and likelihood}
+\label{section:exp.regr.model}
+
+Following the development in Section~\ref{section:ls.regr.model},
+the log-location-scale distribution
+simple regression model (including the lognormal, Weibull, and
+loglogistic distributions as special cases) is
+\begin{equation}
+\label{equation:regr.cdf.model}
+	\Pr(\rv \leq \realrv) = F(t;\mu,\sigma) = F(t;\beta_{0}, \beta_{1},\sigma) =
+\Phi\left [ \frac{ \log(\realrv) -\mu }{\sigma}\right ]
+\end{equation}
+where $\mu=\beta_{0}+\beta_{1} x$ and $\sigma$ does not depend on $x$.
+The quantile function for this model
+\begin{equation}
+\label{equation:weib.reg.quant}
+	\log[\rvquan_{p}(x)] = \grvquan_{p}(x) = \mu+ \Phi^{-1}(p)\sigma=
+\beta_{0}+\beta_{1} x + \Phi^{-1}(p)\sigma
+\end{equation}
+is linear in $x$. Such a relationship between $\rvquan_{p}(x)$ and
+$x$ is sometimes known as a ``loglinear relationship.''  Choosing
+$\Phi$ determines the shape of the distribution for a particular
+value of $x$. One uses $\Phi_{\nor}$ for lognormal, $\Phi_{\logis}$
+for loglogistic, and $\Phi_{\sev}$ for the Weibull
+distribution. Again, $\beta_{1}$ can be interpreted as the change in
+$\mu$ (or in $\log[\rvquan_{p}(x)]$) for a one-unit increase in
+$x$. Relatedly, because the response is on the log scale,
+$100\beta_{1}$ can be interpreted as the approximate percent
+increase in $\rvquan_{p}(x)$ for a one-unit increase in
+$x$. Re-expressing the quantile function as
+\begin{displaymath}
+	\rvquan_{p}(x)=\exp \left [\grvquan_{p}(x) \right ]= 	\exp
+\left (\beta_{1} x	\right ) \, \rvquan_{p}(0)
+\end{displaymath}
+shows that this regression model is a SAFT model with $\AF(x)=1/\exp
+(\beta_{1}x)$.
+
+%------------------------------
+The likelihood for a combination of $n$ independent exact-failure
+and right-censored observations is
+\begin{eqnarray}
+\label{equation:regr.likelihood}
+	\like(\beta_{0},\beta_{1}, \sigma)&=& 	\prod_{i=1}^{n}
+\like_{i}(\beta_{0},\beta_{1}, \sigma;\data_{i}) \nonumber \\ 	&=&
+\prod_{i=1}^{n} 	\left\{ \frac{1}{\sigma \realrv_{i}} \,
+\phi	\left[\frac{ \log(\realrv_{i}) -
+\mu_{i}}{\sigma}\right] 	\right\}^{\delta_{i}} 	\left\{1-
+\Phi\left[\frac{ \log(\realrv_{i}) 	-\mu_{i} }
+{\sigma}\right] \right\}^{1-\delta_{i}}
+\end{eqnarray}
+where $\mu_{i}=\beta_{0}+\beta_{1} x_{i} $,
+$\delta_{i}=1$ for an exact failure time,
+and $\delta_{i}=0$ for a right censored observation.
+Similar terms could be added
+for left-censored or interval-censored data, as described in
+Section~\ref{section:likelihood.contributions}. 
+As in Chapter~\ref{chapter:parametric.ml.ls}, ML estimates are 
+obtained by finding the values of $\beta_{0}$, $\beta_{1}$, 
+and $\sigma$ that maximize (\ref{equation:regr.likelihood})
+or the corresponding log likelihood. Also, as described in Section~\ref{section:exp.loc.scale.like}, some computer programs omit the $1/t_{i}$ term in the
+density part of the likelihood and
+therefore caution should be used when comparing values of
+log likelihoods computed with different software.
+
+\begin{example}
+{\bf Loglinear lognormal regression model for the computer program
+execution times.}
+\label{example:ct.regr.model}
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/comptime.altplot.lnor.ps}
+\caption{Computer program execution time versus system load
+with fitted lognormal regression model. The lines show ML estimates of
+the .1, .5, and .9 lognormal distribution quantiles as a function of
+system load.}
+\label{figure:comptime.altplot.lnor.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Continuing with Example~\ref{example:comptime.data},
+Figure~\ref{figure:comptime.altplot.lnor.ps} shows the lognormal
+simple regression model fit to the computer program execution time
+data. Table~\ref{table:comptime.mles} summarizes the numerical
+results. Fitting this model is equivalent to fitting a simple linear
+relationship to the logarithms of the times.  The estimated densities
+in Figure~\ref{figure:comptime.altplot.lnor.ps} are normal
+distribution densities because they are plotted on a log-time scale.
+This loglinear model provides a useful description of the data.
+\end{example}
+
+%----------------------------------------------------------------------
+\begin{table}
+\caption{ML estimates for the computer execution time example.}
+\centering\small
+\begin{tabular}{crrrr} \hline
+\\[-.5ex]
+ & & & \multicolumn{2}{c}{Approximate 95\%}\\
+&\multicolumn{1}{c}{ML} &Standard  & \multicolumn{2}{c}{Confidence
+Intervals}\\ \cline{4-5}
+Parameter &  Estimate & \multicolumn{1}{c}{Error} & Lower & Upper \\
+\hline 
+ $\beta_{0} $ &4.49 &.11 &4.28 &4.71 \\[.7ex] 
+$\beta_{1}$ &.290 &.05 &.20 &.38 \\[.7ex] 
+$\sigma$ &.312 &.05 &.22 &.44\\
+\hline
+\\[-1.8ex]
+\end{tabular}
+\begin{minipage}[t]{4in}
+The log likelihood is $\loglike= -89.50$.  The confidence intervals for
+$\beta_0$, $\beta_1$, and $\log(\sigma)$ are based on the normal
+approximation method.
+\end{minipage}
+\label{table:comptime.mles}
+\end{table} 
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Standard Errors and Confidence Intervals for Regression Models}
+\label{section:regr.ci}
+This section shows how to compute estimates of standard errors and
+confidence intervals for parameters and functions of parameters. We
+use the computer execution time data and the simple regression model
+in Section~\ref{section:simple.linear.reg} as an example. The general
+theory is in Appendix Section~\ref{asection:ci.wald}.  Other examples in this
+chapter, in the exercises, and in subsequent chapters illustrate how the
+general ideas apply directly to more complicated models.  We will
+focus primarily on normal-approximation confidence intervals.
+Likelihood and bootstrap confidence intervals described in
+Chapters~\ref{chapter:parametric.ml.ls} and \ref{chapter:bootstrap}
+can also be used for these models.
+
+Standard errors are provided by most computer software packages.
+Normal-approximation confidence intervals may or may not be provided,
+but are easy to compute given the ML estimates and standard errors.
+Although they are superior, likelihood and simulation (bootstrap)
+intervals typically require specialized procedures not commonly
+available in today's commercial software.
+
+%----------------------------------------------------------------------
+\subsection{Standard errors and confidence intervals for parameters}
+\label{section:se.and.ci.for.regr.param}
+Appendix Section~\ref{asection:ci.wald} describes the general theory for
+computing normal-approximation confidence intervals that can be
+applied to regression models. These confidence intervals are based on
+the large-sample approximate normal distribution of the ML estimators.
+These intervals employ an estimate of the variance-covariance matrix
+for the ML estimates of the model parameters
+$\thetavechat=(\betahat_{0},\betahat_{1},\sigmahat)$. Extending the
+ideas presented in Section~\ref{section:param.vcv.mat}, the ``local''
+estimate $\vcvmathat_{\thetavechat}$ of $\vcvmat_{\thetavechat}$ is
+the inverse of the ``observed'' information matrix, namely
+\begin{eqnarray}
+\label{equation:regr.local.est.vcv}
+\vcvmathat_{\thetavechat} &=&
+\left[ 
+\begin{array}{lll}
+\varhat(\betahat_{0})& \covhat(\betahat_{0},\betahat_{1})& 
+	\covhat(\betahat_{0},\sigmahat)\\[.2ex]
+\covhat(\betahat_{1},\betahat_{0}) & \varhat(\betahat_{1})&
+	\covhat(\betahat_{1}, \sigmahat) \\[.2ex]
+\covhat(\sigmahat,\betahat_{0})& 
+	\covhat(\sigmahat,\betahat_{1})& \varhat(\sigmahat)
+\end{array}
+\right]\\[1ex]
+&=&
+\left[ 
+\begin{array}{lll}
+-\frac{\partial ^{2} \loglike(\beta_{0},\beta_{1},\sigma)}
+	{\partial\beta_{0}^{2} }&
+-\frac{\partial ^{2} \loglike(\beta_{0},\beta_{1},\sigma)}
+	{\partial\beta_{0} \partial \beta_{1}}&
+-\frac{\partial ^{2} \loglike(\beta_{0},\beta_{1},\sigma)}
+	{\partial\beta_{0} \partial \sigma }\\[.2ex]
+-\frac{\partial^{2} \loglike(\beta_{0},\beta_{1},\sigma)}
+	{\partial \beta_{1} \partial \beta_{0}  }&
+-\frac{\partial ^{2} \loglike(\beta_{0},\beta_{1},\sigma)}
+	{\partial\beta^{2}_{1}  }&
+-\frac{\partial ^{2} \loglike(\beta_{0},\beta_{1},\sigma)}
+	{\partial\beta_{1} \partial \sigma }\\[.2ex]
+-\frac{\partial ^{2} \loglike(\beta_{0},\beta_{1},\sigma)}
+	{\partial \sigma \partial \beta_{0} }&
+-\frac{\partial ^{2} \loglike(\beta_{0},\beta_{1},\sigma)}
+	{\partial \sigma \partial \beta_{1} }&
+-\frac{\partial ^{2} \loglike(\beta_{0},\beta_{1},\sigma)}
+	{\partial \sigma^{2} }
+\end{array}
+\right]^{-1} \nonumber
+\end{eqnarray}
+where the partial derivatives are evaluated at
+$\betahat_{0},\betahat_{1},\sigmahat$.
+
+\begin{example}
+\label{example:parvarcovarmatest}
+{\bf Parameter variance-covariance matrix estimate for the computer
+execution time example.} For the fitted 
+computer execution time model, the
+estimate of the variance-covariance matrix for the ML estimates
+$\thetavechat=(\betahat_{0},\betahat_{1},\sigmahat)$ is
+\begin{eqnarray}
+\label{equation:ct.local.est.vcv}
+\vcvmathat_{\thetavechat} &=&
+\left[ 
+\begin{array}{rrr}
+.012     &-.0037 &0\\
+-.0037 &.0021    &0\\
+0&0&.0029
+\end{array}
+\right].
+\end{eqnarray}
+These quantities will be used in subsequent numerical examples.
+\end{example}
+
+Normal-approximation confidence intervals for regression model
+parameters can be computed using the methods described in
+Section~\ref{section:ci.ls.param}.
+
+\begin{example}
+\label{example:normal.theory.ci.for.ct.beta1}
+{\bf Normal-approximation confidence interval for the regression
+slope in the computer execution time example.} For the computer time
+data, $\sehat_{\betahat_{1}}=\sqrt{.0021}=.046$ [see
+(\ref{equation:ct.local.est.vcv}) and
+Table~\ref{table:comptime.mles}] and
+\begin{displaymath}
+ [\undertilde{\beta_{1}},\quad \tilde{\beta_{1}}] =
+ .2907 \pm  1.960 \times .0459  = [.20, \quad .38]
+%splus   .2907 + 1.96* (.0459) = .380664
+%splus   .2907 -  1.96* (.0459) = .200736
+\end{displaymath}
+provides an approximate 95\% confidence interval for $\beta_{1}$.
+This interval is based on the approximation
+$Z_{\betahat_{1}}=(\betahat_{1}-\beta_{1})/\sehat_{\betahat_{1}}
+\approxdist
+\NOR(0,1)$.
+This interval implies that we are 95\% confident that a one-unit
+increase in load will increase quantiles of the running time
+distribution by an amount between 20\% and 38\%.
+\end{example}
+
+As described in Section~\ref{section:ci.ls.param}, the log
+transformation generally improves normal-approximation confidence
+intervals for positive parameters like $\sigma$.  In particular,
+using (\ref{equation:normal.theory.ci.for.sigma}) provides an
+approximate $100(1-\alpha)$\% confidence interval for $\sigma$ based
+on the assumption that
+$Z_{\log(\sigmahat)}=[\log(\sigmahat)-\log(\sigma)]/\sehat_{\log(\sigmahat)}$
+can be approximated by a $\NOR(0,1)$ distribution.
+
+\begin{example}
+{\bf Normal-approximation confidence intervals
+for  $\sigma$ in the computer execution time example.}
+\label{example:normal.theory.ci.for.ct.sigma}
+For the computer execution time example 
+$\sehat_{\sigmahat}=\sqrt{.0029}=.054$. An approximate 95\% confidence
+interval for $\sigma$ is
+\begin{displaymath}
+[ \undertilde{\sigma}, \quad \tilde{\sigma}] =
+[.3125/1.400, \quad
+.3125 \times 1.400]  = [ .22    , \quad  .44  ]
+% splus  .3125/exp(1.96*(.05359)/.3125)  =  .2232937
+% splus  .3125*exp(1.96*(.05359)/.3125)  =  .4373444
+\end{displaymath}
+where $w=\exp[1.96(.05359)/.3125]=1.400$.
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Standard errors and confidence intervals for 
+distribution quantities at specific explanatory variable conditions}
+\label{section:se.and.ci.for.regr.funct}
+
+Appendix Section~\ref{asection:ci.wald} describes the general theory for
+computing standard errors and normal-approximation confidence
+intervals for functions of model parameters. This general theory can
+be used to estimate distribution quantities (such as quantiles,
+failure probabilities, or hazard function values) at specified levels
+of the explanatory variables.  This section illustrates an equivalent
+two-stage approach that will simplify the presentation of the method
+(and computations). The presentation and examples are for simple
+regression models with log-location-scale distributions, but the ideas
+apply more generally.
+
+As expressed in (\ref{equation:regr.cdf.model}) and
+(\ref{equation:weib.reg.quant}), there are unknown values of $\mu$ and
+$\sigma$ at each level of $x$ (or combination of levels of $\xvec$ in
+the case of multiple explanatory variables). For specified values of
+the explanatory variables, one can compute the ML estimates $(\muhat,
+\sigmahat)$ of these parameters and an estimate of the corresponding
+variance-covariance matrix. Then the methods given in
+Sections~\ref{section:ci.ls.param} and
+\ref{section:norm.conf.int.for.ls.fun} can
+be applied directly to compute standard errors and
+confidence intervals for quantities of interest at specified values of
+the explanatory variable(s). 
+
+The general formulas needed to compute an estimate of the
+variance-covariance matrix of $(\muhat, \sigmahat)$ are
+(\ref{equation:variance.approximation}) and
+(\ref{equation:covariance.approximation}) in
+Appendix Section~\ref{asection:delta.method}.  For the simple linear
+regression model, at a particular value of $x$, $\muhat =
+\betahat_{0}+
+\betahat_{1}x$, $\sigma$ does not depend on $x$, and using a special
+case of (\ref{equation:gcovariance.est}),
+\begin{equation}
+\label{equation:ls.regr.local.est.vcv}
+\vcvmathat_{\muhat,\sigmahat}=
+\left[ 
+\begin{array}{ll}
+\varhat(\muhat)& \covhat(\muhat,\sigmahat)\\
+\covhat(\muhat,\sigmahat)& \varhat(\sigmahat)
+\end{array}
+\right]
+\end{equation}
+is obtained from $\varhat(\muhat)=\varhat(\betahat_{0})+2x
+\covhat(\betahat_{1},\betahat_{0})+ x^{2} \varhat(\betahat_{1}) $ and
+$\covhat(\muhat,\sigmahat)=
+\covhat(\betahat_{0},\sigmahat) + x \covhat(\betahat_{1}, \sigmahat)$.
+Then standard errors for functions of $(\muhat, \sigmahat)$ can be
+computed by using the delta method, as in
+(\ref{equation:se.for.function}).  The following examples show how the
+the general approach, given in
+Section~\ref{section:norm.conf.int.for.ls.fun}, can be used to find
+confidence intervals for a function of regression model parameters.
+
+\begin{example}
+{\bf Confidence interval for $\rvquan_{p}(x)$ in the computer
+execution time example.}
+\label{example:regr.ci.for.quan}
+Refer to Figure~\ref{figure:comptime.altplot.lnor.ps} and the results
+from Example~\ref{example:ct.regr.model}.  For scheduling purposes, it
+was necessary to estimate and obtain a 95\% confidence interval for
+$\rvquan_{.9}(5)$, the time at which 90\% of jobs running at a system
+load of 5 will have finished. From Table~\ref{table:comptime.mles},
+\begin{eqnarray*}
+\muhat & = & \betahat_{0} + \betahat_{1}x
+	=  4.494 + .2907 \times 5  = 5.947 \\[1ex]
+\rvquanhat_{.9}(5)  &=  & \exp(\muhat + \Phi_{\nor}^{-1}(p) \sigmahat)
+		  = \exp( 5.947 + 1.2816 \times .3125) = 571.2.
+\end{eqnarray*}
+%splus  exp( 5.94732 + 1.2816 * .3124667 ) = 571.2217
+%splus
+From
+(\ref{equation:ct.local.est.vcv}) 
+computing the elements in  (\ref{equation:ls.regr.local.est.vcv}) gives
+\begin{displaymath}
+\vcvmathat_{\muhat,\sigmahat}=
+\left[ 
+\begin{array}{ll}
+\varhat(\muhat)& \covhat(\muhat,\sigmahat)\\
+\covhat(\muhat,\sigmahat)& \varhat(\sigmahat)
+\end{array}
+\right]=
+\left[ 
+\begin{array}{lr}
+ .0277 & 0 \\
+ 0 & .00287
+\end{array}
+\right].
+\end{displaymath}
+Substituting into
+(\ref{equation:ls.quant.sehat}) gives
+\begin{displaymath}
+\sehat_{\rvquanhat_{.9}(5)}=  571.22 [ .0277 +
+	2 \times (1.2816) \times 0 + (1.2816)^{2} \times .00287]^{\frac{1}{2}}=102.9.
+\end{displaymath}
+Then an approximate  95\% confidence
+interval for $\rvquan_{.9}(5)$ based on $Z_{\log[\rvquanhat_{.9}(5)]}
+\approxdist \NOR(0,1)$ is obtained by 
+substituting into (\ref{equation:norm.approx.for.quant}) giving
+%splus
+%splus
+%splus   571.22 * sqrt(.027736 + 2*(1.2816)*0+(1.2816)^2 *.00287)= 102.8989
+%splus
+%splus
+\begin{displaymath}
+[ \undertilde{\rvquan_{.9}}, \quad \tilde{\rvquan}_{.9} ]=
+[571.2/1.423, \quad
+571.2 \times 1.423] = [401, \quad  813]
+\end{displaymath}
+where $w=\exp[1.96 \times 102.9 / 571.2] = 1.423$.
+%splus
+%splus  exp(1.96 *102.9 / 571.2) = 1.423457
+%splus  571.2 * 1.4235
+%splus  571.2 / 1.4235
+%splus
+Thus we are 95\% confident that when the system load is 5,
+$\rvquan_{.9}$ lies between 401 and  813 seconds.
+\end{example}
+Normal-approximation confidence intervals for other quantities (like
+failure probabilities or hazard values) at this or other levels of
+system load can be found similarly using the methods of
+Section~\ref{section:norm.conf.int.for.ls.fun}.
+
+More accurate confidence intervals for regression models can be based
+on the likelihood ratio approach used in
+Chapter~\ref{chapter:parametric.ml.ls} or on the bootstrap methods
+described in Chapter~\ref{chapter:bootstrap}. Implementation here is a
+straightforward extension of the methods presented there and is not 
+described in detail here.
+
+%----------------------------------------------------------------------
+\section{Regression Model with Quadratic-$\mu$ and Nonconstant-$\sigma$}
+\label{section:quad.regr}
+This section describes and illustrates the use of 
+regression models that extend the simple linear model in
+Section~\ref{section:simple.linear.reg}.
+
+%----------------------------------------------------------------------
+\subsection{Quadratic regression relationship
+for $\mu$ and a constant spread parameter}
+
+Consider
+the log-quadratic relationship that uses
+(\ref{equation:regr.cdf.model}) with $\mu=\beta_{0}+\beta_{1}
+x+\beta_{2} x^2$ and $\sigma$ does not depend on $x$. Then
+\begin{displaymath}
+\log[\rvquan_{p}(x)] =\grvquan_{p}(x)=\beta_{0}+\beta_{1} x + \beta_{2} x^2 + \Phi^{-1}(p)\sigma
+\end{displaymath}
+is quadratic in $x$. The quantile function can be written as
+\begin{displaymath}
+\rvquan_{p}(x)=\exp \left [\grvquan_{p}(x) \right ]= \exp(\beta_{1} x+\beta_{2} x^2)
+\, \rvquan_{p}(0).
+\end{displaymath}
+Thus this is a SAFT model with $\AF(x)=1/\exp(\beta_{1}
+x+\beta_{2} x^2)$.  Substituting $\mu_{i} = \beta_{0} + \beta_{1}
+x_{i} + \beta_{2} x_{i}^{2}$ into (\ref{equation:regr.likelihood})
+gives a likelihood having the form $\like(\beta_{0},\beta_{1},
+\beta_{2},\sigma)$.  In the Weibull model $\beta=1/\sigma$ is the
+Weibull shape parameter. On the log-time scale (corresponding to the
+smallest extreme value distribution), $\sigma$ is a scale parameter.
+Generally we will refer to $\sigma$ as a ``spread'' parameter.
+
+%------------------------------
+\begin{example}
+{\bf Model 1: log-quadratic Weibull
+regression model for superalloy fatigue data.} 
+\label{example:super.alloy.nf20}
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/nf.altplot.nf20.weib.ps}
+\caption{Superalloy fatigue data with fitted 
+log-quadratic Weibull regression model 
+with constant $\sigma$, plotted on log-log axes.}
+\label{figure:nf.altplot.nf20.weib.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Continuing from Example~\ref{example:super.alloy.data}, we will fit a
+curvilinear regression model to the superalloy fatigue data.
+Figure~\ref{figure:nf.altplot.nf20.weib.ps} shows the fitted
+log-quadratic Weibull regression model with constant $\sigma$, fit to
+the superalloy fatigue data with $x=\log(\mbox{pseudostress})$. This
+model provides a reasonable fit to the data, but there is, even on the
+log scale, some evidence that the spread in the data is greater at
+lower levels of stress.  The estimated densities in
+Figure~\ref{figure:nf.altplot.nf20.weib.ps} are smallest extreme value
+densities because they are plotted on a log-cycles scale.
+Table~\ref{table:super.alloy.mles} summarizes the numerical results of
+this and another model.  The quadratic model has to be used with
+caution.  As can be visualized in
+Figure~\ref{figure:nf.altplot.nf20.weib.ps}, extrapolation to levels
+of pseudostress beyond 160 ksi would lead to nonsensical estimates of
+longer life.  Section~\ref{section:fatigue.limit.model}
+suggests an alternative model for these data.
+%----------------------------------------------------------------------
+\end{example}
+
+%----------------------------------------------------------------------
+\begin{table}
+\caption{ML estimates for life versus
+stress Weibull regression relationships for nickel-base superalloy
+specimens.}
+\centering\small
+\begin{tabular}{lcrrrr} 
+\\[-.5ex]
+\hline
+ & & & & \multicolumn{2}{c}{Approximate 95\%} \\
+ & &\multicolumn{1}{c}{ML} &Standard  & \multicolumn{2}{c}{Confidence Intervals}\\  \cline{5-6}
+& Parameter & Estimate& \multicolumn{1}{c}{Error} & Lower & Upper \\
+\hline 
+Model 1 &
+ $\beta_{0}$ &217.61 &62.1 &95.9 & 339.3\\[.7ex] 
+ &$\beta_{1}$ &$-85.52$ &26.53 &$-137.5$ &$-33.53$ \\[.7ex] 
+ &$\beta_{2}$ &8.48 &2.83 &2.93 & 14.03\\[.7ex] 
+ &$\sigma$ &.375 &.067 &.26  &.53 \\[1.2ex]
+\hline 
+\\[-1.8ex]
+Model 2 &
+$\beta_{0}^{[\mu]}$ &243.2 &58.12 &129.3 &357.1 \\[.7ex] 
+ &$\beta_{1}^{[\mu]}$ &$ -96.54$ &24.73 &-145.0 &-48.07 \\[.7ex] 
+ &$\beta_{2}^{[\mu]}$ &  9.67 &2.63 &4.52 &14.8 \\[.7ex] 
+ &$\beta_{0}^{[\sigma]}$ &4.47 &4.17 &-3.71 & 12.6 \\[.7ex]
+ &$\beta_{1}^{[\sigma]}$ &$-1.18$ &.89 &$-2.93$ &.58 \\[.7ex]
+\hline
+\\[-1.8ex]
+\end{tabular}
+\begin{minipage}[t]{4in}
+The log likelihoods for Model 1 and Model 2 are, respectively,
+$\loglike_{1}=-93.38$ and $\loglike_{2}=-92.58$.
+\end{minipage}
+\label{table:super.alloy.mles}
+\end{table}
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+\subsection{Quadratic regression model with nonconstant spread
+parameter ($\sigma$)}
+
+This section illustrates the fitting of a regression model in which both
+$\mu$ and $\sigma$ depend on an explanatory variable. The model is given
+by (\ref{equation:regr.cdf.model}) with
+$\mu=\beta_{0}^{[\mu]}+\beta_{1}^{[\mu]} x+\beta_{2}^{[\mu]}
+x^2$ and $\log(\sigma)=\beta_{0}^{[\sigma]}+\beta_{1}^{[\sigma]} x$.
+The log-quantile function for this model is
+\begin{equation}
+\label{equation:quad.mu.lin.sigma.model}
+	\log[\rvquan_{p}(x)] = \grvquan_{p}(x)=\beta_{0}^{[\mu]}+\beta_{1}^{[\mu]} x +
+\beta_{2}^{[\mu]} x^2 +
+\Phi^{-1}(p)\exp \left( \beta_{0}^{[\sigma]}+ \beta_{1}^{[\sigma]} x
+\right )
+\end{equation}
+which is {\em not} quadratic in $x$. Also because
+$\rvquan_{p}(x)/\rvquan_{p}(0)=\exp[\grvquan_{p}(x)-\grvquan_{p}(0)]$
+depends on $p$, this model is {\em not} a SAFT model.
+Substituting $\mu_{i}=\beta_{0}^{[\mu]}+
+\beta_{1}^{[\mu]} x_{i}+\beta_{2}^{[\mu]} x_{i}^{2}$
+and $\sigma_{i}=\exp \left (\beta_{0}^{[\sigma]}+\beta_{1}^{[\sigma]}
+x_{i}
+\right )$ into (\ref{equation:regr.likelihood}) 
+gives a likelihood having the form
+$\like(\beta_{0}^{[\mu]},\beta_{1}^{[\mu]},\beta_{2}^{[\mu]},
+\beta_{0}^{[\sigma]},\beta_{1}^{[\sigma]}).$
+
+%------------------------------
+\begin{example}
+{\bf Model 2: Weibull log-quadratic
+regression model with nonconstant $\sigma$ for the superalloy fatigue data.} 
+\label{example:super.alloy.nf21}
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/nf.altplot.nf21.weib.ps}
+\caption{Superalloy fatigue 
+data with fitted log-quadratic Weibull regression model
+with nonconstant $\sigma$.}
+\label{figure:nf.altplot.nf21.weib.ps}
+\end{figure}
+%----------------------------------------------------------------------
+Continuing from Examples~\ref{example:super.alloy.data} and
+\ref{example:super.alloy.nf20},
+Figure~\ref{figure:nf.altplot.nf21.weib.ps} shows the log-quadratic
+Weibull regression model with nonconstant $\sigma$ fit to the super
+alloy fatigue data.  The numerical results are summarized in
+Table~\ref{table:super.alloy.mles}.  This model seems to provide a
+reasonably good fit to these data. At first sight, the failure at 
+13,949 cycles with
+pseudostress equal to 85.2 ksi appears to be an outlier.  Relative to the
+long lower tail of the smallest extreme distribution, however, the
+observation is not surprisingly extreme (see
+Exercise~\ref{exercise:outlier.test}).
+%splus > 2*(-92.58-(-93.38))
+Comparing Model 1 and Model 2 [e.g.,
+$-2(\loglike_{1}-\loglike_{2})=1.6 < \chisquare_{(.90;1)} = 2.71$]
+indicates that the evidence for nonconstant $\sigma$ in the data is
+not strong. On the other hand, having $\sigma$ decrease with stress
+or strain is typical in fatigue data and this is what we see in data
+points plotted in Figure~\ref{figure:nf.altplot.nf20.weib.ps}.
+Thus, it would be reasonable to use a model with decreasing $\sigma$
+in this case, even
+in the absence of ``statistical significance.''
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Further comments on the use of empirical regression models}
+As described in Example~\ref{example:super.alloy.nf20}, the quadratic
+relationship should not be used for extrapolation.  The 
+fatigue-data models used in
+Examples~\ref{example:super.alloy.nf20} and
+\ref{example:super.alloy.nf21} are purely empirical, without any
+physical basis. In general this is true of other quadratic and higher
+order polynomial relationships. Such relationships 
+can be useful, providing a smooth
+curve to describe a population or a process {\em within the range of
+the data}, but should not be used to extrapolate outside the
+range of one's data.
+
+The nonconstant-$\sigma$ model also has a potential extrapolation
+pitfall (even if the relationship for $\mu$ is linear).  Refer to
+Figure~\ref{figure:nf.altplot.nf21.weib.ps}.  Because of the
+potentially longer lower tail of the distribution at low levels of
+stress, depending on the values of the parameters of the model, it is
+possible to have the lower-tail quantile of the cycles to failure
+distribution decrease as one moves to lower levels of pseudostress,
+predicting shorter life at lower stress, leading physically
+nonsensical extrapolations (see
+Exercise~\ref{exercise:reverse.quant}).
+Section~\ref{section:fatigue.limit.model} suggests an alternative
+model for these data.
+
+%----------------------------------------------------------------------
+\subsection{Comment on numerical methods}
+\label{section:numerical.methods}
+For certain model/data combinations, the shape of the likelihood can
+be such that the commonly used optimization software will find it
+difficult or impossible to find the maximum of the function.  This
+is a problem that is analogous to the numerical problem of finding
+regression coefficients when there is a strong degree of linear
+dependence (multicollinearity) among the explanatory variables.
+High quality software for least squares regression does not use the
+standard textbook formulas based on matrix inversion.  Similarly,
+software developers for ML iterations need to consider carefully the
+numerical analysis aspects of the calculations to be
+programmed. Good software will deal with these numerical issues in a
+manner that is transparent to the user.  That is, when a
+reparameterization or reformulation is used, this need not be
+brought to the user's attention (but such information
+should, perhaps, be available as
+an option).
+
+The superalloy regression models are a case in point. Nelson~(1984)
+centers the $x$ variables, which alleviates the collinearity problem
+in polynomial regression. If, however, the different explanatory
+variables are close to being linearly dependent (multicollinear) or
+if a model without an intercept term is required, then a different
+approach is needed.  Escobar and Meeker~(1998c) describe an
+appropriate reparameterization for multiple linear regression with
+censored data. In general having robust ML iterations (i.e., having
+a high probability of finding the maximum, given that one exists)
+requires
+\begin{itemize}
+\item
+A parameterization that makes the likelihood have a shape that
+is not too different from a quadratic with major axes corresponding to
+the transformed model parameters (resulting in transformed parameter estimates
+that are approximately uncorrelated), and
+\item
+Starting values that are not too far from the maximum.
+\end{itemize}
+For further discussion of numerical methods for ML, see Section~8.6 of
+Nelson~(1982), Ross~(1990), and Escobar and Meeker~(1998c).
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Checking Model Assumptions}
+\label{section:censored.data.regression.diagnostics}
+
+An important part of any statistical analysis is diagnostic checking
+for departures from model assumptions. In conducting a failure time
+regression analysis we recommend the use of graphical methods, using
+generalizations of usual regression diagnostics (including residual
+analysis). These diagnostic
+methods can be used in a manner that is similar to
+their use in ordinary regression analysis, except that interpretation
+is often complicated by the censoring. The analysis can also be
+complicated when fitting underlying nonnormal distributions.
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\subsection{Definition of residuals}
+\label{section:resid.def}
+Consider a set of independent (possibly censored) observations
+$\grealrv_{i}$, $i=1,\dots,n$ from location-scale distributions with
+cdfs $\Phi[(y-\mu_{i})/\sigma_{i}]$, where $\mu_{i}$ and
+$\sigma_{i}$ may be functions of regression parameters and
+explanatory variables $\xvec_{i}$. This would include data from
+normal, logistic, or smallest extreme value regression models. A
+natural and commonly used definition of standardized residuals for
+this model is
+\begin{equation}
+\label{equation:estimated.residual.definition}
+\epsilonhat_{i}=
+\frac{\grealrv_{i} - \muhat_{i}}{\sigmahat_{i}} 
+\end{equation}
+where $\muhat_{i}$ and $\sigmahat_{i}$ are the ML estimates of
+$\mu_{i}$ and $\sigma_{i}$.  Then, under the assumed regression
+model, these residuals should look like a (possibly censored) random
+sample from a standardized (i.e., $\mu=0$ and $\sigma=1$)
+location-scale distribution (e.g., standard normal, smallest extreme
+value, or logistic).  When $y_{i}$ is a censored observation, the
+corresponding residual is also censored. For example, if $y_{i}$ is
+a right-censored observation, the corresponding $\epsilonhat_{i}$ is
+also right censored (we only know that the actual residual would
+have been larger than the censored residual).
+
+For regression data from log-location-scale distributions with cdfs
+$\Phi\{[\log(\realrv)-\mu_{i}]/\sigma_{i}\}$ (e.g., regression with
+the lognormal, loglogistic, or Weibull data) a natural extension of
+the definition of standardized residuals is
+\begin{equation}
+\label{equation:exp.estimated.residual.definition}
+\epsilonhat_{i} = \exp \left [\frac{\log(\realrv_{i}) -
+\muhat_{i}}{\sigmahat_{i}}\right]  = \left[ \frac{\realrv_{i}}
+{\exp(\muhat_{i})}\right]^{1/\sigmahat_{i}}.
+\end{equation}
+Again, when $t_{i}$ is a censored observation, the corresponding
+residual is also censored.  Under the assumed regression model,
+these residuals should look like they came from a standardized
+(i.e., $\mu=0$ and $\sigma=1$) log-location-scale distribution.
+Adequacy of the fitted distribution can be assessed by making a
+probability plot of the (possibly censored) residuals using the
+methods in Chapter~\ref{chapter:probability.plotting}. We will refer
+to (\ref{equation:estimated.residual.definition}) and
+(\ref{equation:exp.estimated.residual.definition}) as ``censored
+Cox-Snell'' residuals because they are special cases of general
+Cox-Snell~(1968) residuals as applied to censored data. Nelson
+(1973) shows how to use such residuals to detect departures from
+distributional assumptions and check for other kinds of model
+inadequacies.  These ideas are illustrated in
+Section~\ref{section:regression.diag}.
+
+Cox-Snell residuals can also be used for checking model assumptions
+for non-location-scale distributions. The general definition of
+Cox-Snell residuals is as follows.  Consider observed failure times
+$\realrv_{i}$ corresponding to random variables $\rv_{i}$
+($i=1,\dots,n$). Suppose that the $T_{i}$ are
+functions of explanatory variables $\xvec_{i}$, model parameters
+$\thetavec$, and a set of iid random deviations $\epsilon_{i}$ ($i=1,\dots, n$)
+having a distribution with no unknown parameters. This function
+defines the assumed model for $T$. Then if there is a function
+$w_{i}(\rv;
+\xvec,\thetavec)$ such that
+\begin{displaymath}
+\epsilon_{i} = w_{i}(\rv_{i}; \xvec_{i},\thetavec)
+\end{displaymath}
+the Cox-Snell residuals are defined as and can be computed from
+\begin{displaymath}
+\epsilonhat_{i}= w(\realrv_{i}; \xvec_{i},\thetavechat).
+\end{displaymath}
+Here $\thetavechat$ is the ML estimate of $\thetavec$
+obtained using the assumed model, 
+the data $(\realrv_{i}, \xvec_{i})$ ($i=1,\dots,n$), 
+and the censoring information.
+For example, for the lognormal loglinear regression
+a choice is 
+$w_{i}(\realrv;\xvec_{i}, \thetavec)=
+\exp \left \{[\log(\realrv)-\mu_{i}]/\sigma_{i}\right \}$,
+which yields the residuals in
+(\ref{equation:exp.estimated.residual.definition}).
+
+For a given model and data set, Cox-Snell residuals are not uniquely
+defined because any parameter-free one-to-one transformations of the
+$w_{i}(\realrv; \xvec_{i}; \thetavechat)$ values would also satisfy
+the Cox-Snell definition [with a corresponding change in the
+definition of the deviations $\epsilon_{i}$ ($i=1,\dots, n$) in the
+assumed model].  For example, for the lognormal regression above,
+one can choose $w_{i}(\realrv;\xvec_{i},
+\thetavec)= [\log(\realrv)-\mu_{i}]/\sigma_{i}$ which provides
+Cox-Snell residuals that are unrestricted in sign in contrast with
+the residuals in (\ref{equation:exp.estimated.residual.definition})
+which are all positive.
+
+In general, when the observations are independent (possibly
+censored) and the $\rv_{i}$ have strictly increasing cdfs
+$F(\realrv; \xvec_{i}, \thetavec)$, a natural choice is
+$w_{i}(\realrv;\xvec_{i},\thetavec)= F(\realrv; \xvec_{i},
+\thetavec)$ which provides Cox-Snell residuals on $(0,1)$ given by
+\begin{equation}
+\label{equation:general.cox.snell}
+\uhat_{i}=F(\realrv_{i};\xvec_{i}, \thetavechat).
+\end{equation}
+Because
+$F(\rv_{i};\xvec_{i}, \thetavec)$ has a $\UNIF(0,1)$ distribution (see
+Exercise~\ref{exercise:F.of.T.dist}), these residuals should look
+like a (possibly censored) random sample from a $\UNIF(0,1)$
+distribution.  For
+example, with the log-location-scale regression model above with 
+$F(\realrv;\xvec_{i},\thetavec)=
+\Phi\{[\log(\realrv)-\mu_{i}]/\sigma_{i}\}$, a set of Cox-Snell residuals
+in $(0,1)$  are 
+\begin{displaymath}
+\uhat_{i}=F(\realrv_{i};\xvec_{i}, \thetavechat)=
+\Phi\left[
+\frac{
+\log(\realrv_{i})-\muhat_{i}
+     }
+     {
+\sigmahat_{i}
+     }
+\right ].
+\end{displaymath}
+These residuals are related to the residuals in
+(\ref{equation:exp.estimated.residual.definition}) through the
+transformation $\epsilonhat_{i}=\exp[\Phi^{-1}(\uhat_{i})]$.  Thus
+the information in the $\uhat_{i}$ residuals is equivalent to that
+in the $\epsilonhat_{i}$ residuals.
+
+To assess the adequacy of the distributional assumption, one can use
+a P-P plot (e.g., page 66 of Crowder et al.~1991) of the residuals
+defined in~(\ref{equation:general.cox.snell}).  To do this, obtain
+the nonparametric estimate of the cdf of the residuals using the
+methods in Chapter~\ref{chapter:nonparametric.estimation}.  Then
+obtain probability plotting positions $p_{\uhat}$ at each point
+$\uhat$ at which the nonparametric estimate jumps (see
+Section~\ref{section:plotting.pos}).  The P-P plot is obtained by
+plotting $\{\uhat \quad \mbox{versus} \quad p_{\uhat} \}$ on linear
+axes.  Strong departures from linearity in this plot indicate a
+departure from the assumed model.  Note that the P-P plot can be
+viewed as a probability plot corresponding to a $\UNIF(0,1)$
+distribution.
+
+Alternatively, one can transform the (possibly censored) $\uhat$
+values to $-\log(1-\uhat)$ which, under the assumed model, should
+look like a (possibly censored) sample from an $\EXP(1)$
+distribution. In this case, the adequacy of the distributional
+assumption can be checked by making an exponential or a Weibull
+probability plot of the $-\log(1-\uhat)$ values, using the methods in
+Chapter~\ref{chapter:probability.plotting}.  The Weibull probability
+plot provides much better resolution in the lower tail of the
+distribution.
+
+Lawless~(1982, pages 280-281) describes the use of probability plots
+for Cox-Snell residual analysis and Collett~(1994, page 158)
+describes closely related Weibull Q-Q plots for Cox-Snell residuals.
+
+ 
+%----------------------------------------------------------------------
+\subsection{Regression diagnostics}
+\label{section:regression.diag}
+Some suggested regression model diagnostics include
+\begin{itemize}
+\item
+{\bf Plot of standardized residuals versus fitted values.} As
+mentioned in Section~\ref{section:resid.def}, fitted values can be
+defined in several different ways.  For any of the suggested
+definitions, plotting the residuals versus fitted values can help
+detect  nonlinearity not modeled in the underlying relationship or
+nonconstant variability in life. Heavy censoring can, however,
+make such plots difficult to interpret.
+\item
+{\bf Probability plot of standardized residuals.} When the data at
+different levels of the explanatory variables are censored at a common
+censoring time, it is possible that the computed residuals will be
+multiply censored. In such cases, one can use the methods
+in Chapters~\ref{chapter:nonparametric.estimation} and
+\ref{chapter:probability.plotting} to produce the probability plot.
+
+\item
+{\bf Other residual plots.} Residuals can be plotted in a variety of
+other ways. For example, one might plot residuals against other
+potential explanatory variables not in the model
+to see if they provide any explanatory
+power. If data were collected sequentially over time, then plotting
+residuals versus observation order can help to detect process trends
+and cycles.
+\item
+{\bf Influence (or sensitivity) analysis.} It is important to
+assess the degree to which estimates depend on model assumptions and
+other uncertain inputs to the data analysis process. In some cases, simple
+reanalysis under alternative model assumptions will suffice.  It is,
+however, possible to systematize the process by, for example, dropping
+out one observation at a time and refitting the model to detect highly
+influential observations.
+\end{itemize}
+Additionally, most analytical tests commonly used to detect departures
+from an assumed model can be suitably generalized, at least
+approximately, for censored data (especially using likelihood ratio
+tests).
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/nf.fitvsres.nf11.weib.ps}
+\caption{Plot of standardized residuals
+versus fitted values for the Weibull regression model with
+log-quadratic $\mu$ and constant $\sigma$,
+fit to the superalloy data on log-log axes.}
+\label{figure:nf.fitvsres.nf11.weib.ps}
+\end{figure}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/nf.residual.nf11.weib.ps}
+\caption{Weibull probability plot of the standardized residuals
+from the Weibull regression model with log-quadratic $\mu$ and
+constant $\sigma$, fit to the superalloy data.}
+\label{figure:nf.residual.nf11.weib.ps}
+\end{figure}
+%----------------------------------------------------------------------
+
+\begin{example}
+{\bf Residual plots for Model 1 and the superalloy fatigue data.}
+Figure~\ref{figure:nf.fitvsres.nf11.weib.ps} shows the standardized
+residuals from (\ref{equation:exp.estimated.residual.definition}) versus
+the fitted values for Model 1. This figure gives a strong indication
+that there is more variability among the observations with larger
+fitted values.  Figure~\ref{figure:nf.residual.nf11.weib.ps} is a
+Weibull probability plot of the standardized residuals, revealing
+the early outlying observation. Similar plots for Model 2 (not shown
+here) are better behaved, but still show the early outlying
+observation.
+\end{example}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Models with Two or More Explanatory Variables}
+\label{section:multiple.reg.models}
+This section illustrates the use of regression models having two
+different explanatory variables. The approach generalizes 
+to problems involving more than two explanatory variables.
+
+%----------------------------------------------------------------------
+\subsection{Model-free graphical analysis of two-variable regression data.}
+
+As in simple regression, it is useful to view two-variable
+regression data graphically before making assumptions about the
+relationship between life and the explanatory variables.
+Probability plots and scatter-plots are useful tools for doing this.
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/zelencap.scatter.ps}
+\caption{Scatter-plot of glass capacitor life test data.}
+\label{figure:zelencap.scatter.ps}
+\end{figure}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/zelencap.groupi.ps}
+\caption{Weibull probability plots of glass capacitor life data
+at each temperature and voltage condition, each with
+its Weibull ML estimate of $F(t)$ plotted as a straight line.}
+\label{figure:zelencap.groupi.ps}
+\end{figure}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{table}
+\caption{Glass capacitor life test failure times
+and Weibull ML estimates for each temperature/voltage combination.}
+\centering\small
+\begin{tabular}{l  l  rrrr  } 
+\\[-.5ex]
+\hline
+&& \multicolumn{4}{c}{Applied Voltage}\\
+\cline{3-6}
+Temperature && 200 & 250 & 300 & 350 \\
+\hline 
+               && 439& 572& 315& 258 \\
+        &\multicolumn{1}{c}{Hours} & 904& 690& 315& 258 \\
+               &\multicolumn{1}{c}{to Failure} &1092& 904& 439& 347 \\
+170$\degreesc$ &&1105&1090& 628& 588 \\
+\cline{2-6}
+\\[-1.8ex]
+      &$\muhat$                   &7.13    &7.10    &6.57    &6.54  \\
+      &$\sehat_{\muhat}$          &.15     &.16     &.21     & .26 \\
+      &$\sigmahat$                &.263    &.279    &.372    & .46 \\
+      &$\sehat_{\sigmahat}$       &.13     &.13     &.17     & .21 \\
+      &$\max\loglike(\mu,\sigma)$ &$-31.8$ &$-31.7$ &$-30.2$ &$-30.3$  \\
+\hline
+\hline
+\\[-1.8ex]
+               && 959& 216& 241& 241 \\
+                &\multicolumn{1}{c}{Hours} & 1065&315 & 315 & 241 \\
+               &\multicolumn{1}{c}{to Failure} & 1065& 455& 332& 435 \\
+180$\degreesc$ && 1087 & 473& 380& 455 \\
+\cline{2-6}
+\\[-1.8ex]
+      &$\muhat$                   &7.01    &6.28     &6.00    &6.24  \\
+      &$\sehat_{\muhat}$          &.21     &.16      &.09     & .17 \\
+      &$\sigmahat$                &.04     &.28      &.17     & .30 \\
+      &$\sehat_{\sigmahat}$       &.02     &.13      &.08     & .14 \\
+      &$\max\loglike(\mu,\sigma)$ &$-24.8$ &$-28.4$  &$-26.0$ &$-28.4$  \\
+\hline
+\hline
+\\[-1.8ex]
+\end{tabular}\\
+\begin{minipage}[t]{4in}
+There were eight capacitors tested at each combination of temperature
+and voltage. Testing at each combination was terminated after the
+fourth failure, yielding failure (Type~II) censored data. The data
+are from Zelen~(1959).
+\end{minipage}
+\label{table:zelen.cap.data}
+\end{table}
+%splus
+%splusParameter Estimation Results 
+%splus             MLE         se    z-ratio  95% lower   95% upper 
+%splus   b0  1.9219862 5.74022806  0.3348275 -9.3288608  13.1728332
+%splus   b1  0.5357155 0.21815297  2.4556872  0.1081356   0.9632953
+%splus   b2 -1.6233388 0.27930177 -5.8121322 -2.1707703  -1.0759073
+%splussigma  0.3553966 0.05416938  6.5608396  0.2492246   0.4615686
+
+\begin{example}
+\label{example:zelen.data}
+{\bf The effect of voltage and temperature on capacitor life.}
+Table~\ref{table:zelen.cap.data} gives data from a factorial
+experiment on the life of glass capacitors as a function of
+voltage and operating temperature.  The data were originally analyzed
+in Zelen~(1959), using a two-parameter exponential distribution.
+Figure~\ref{figure:zelencap.scatter.ps} is a scatter-plot of life in
+hours versus voltage, with different symbols for different
+temperatures. A small amount of ``jitter'' was introduced into the
+voltage variable before plotting so that the graph would separate 
+the tied values.  Figure~\ref{figure:zelencap.groupi.ps}, using 
+methods from Chapters~\ref{chapter:probability.plotting} and
+\ref{chapter:parametric.ml.ls}, contains 
+Weibull probability plots for each of
+the 8 individual test conditions. The straight lines on these plots
+are the ML estimates of Weibull cdfs.
+Table~\ref{table:zelen.cap.data} summarizes numerical results.
+\end{example}
+%----------------------------------------------------------------------
+\subsection{Two-variable regression model without interaction}
+
+The log-location-scale two-variable regression model uses
+(\ref{equation:regr.cdf.model}) with $\mu=\beta_{0}+\beta_{1} x_{1} +
+\beta_{2} x_{2}$. When $\sigma$ does not depend on
+$\xvec=(x_{1},x_{2})$,
+the $p$ quantile of the life distribution at a specified $\xvec$ is 
+\begin{equation}
+\label{equation:two.var.regr.model}
+\log[\rvquan_{p}(\xvec)] =\grvquan_{p}(\xvec)=\beta_{0}+
+	\beta_{1} x_{1} + \beta_{2} x_{2} + \Phi^{-1}(p) \sigma.
+\end{equation}
+Re-expressing the quantile function gives
+$\rvquan_{p}(\xvec)=\exp \left [\grvquan_{p}(\xvec) \right ]=
+\exp(\beta_{1} x_{1} + \beta_{2} x_{2}) \, \rvquan_{p}(\zerovec)$
+showing that this is a SAFT model with $\AF(\xvec)=1/\exp(\beta_{1} x_{1} +
+\beta_{2} x_{2})$.  Substituting $\mu_{i} = \beta_{0} + \beta_{1}
+x_{1i} +
+\beta_{2} x_{2i}$ into (\ref{equation:regr.likelihood}) gives a
+likelihood having the form $\like(\beta_{0},\beta_{1},
+\beta_{2},\sigma)$.  The model
+generalizes easily when there are more than two explanatory variables.
+In the model, $\beta_{0}$ is the value of $\mu$ when $x_{1}=x_{2}=0$
+(if this makes sense physically), $\beta_{1}$ is the change in $\mu$
+for a one-unit change in $x_{1}$ (holding $x_{2}$ constant), 
+and $\beta_{2}$ is the change in $\mu$
+for a one-unit change in $x_{2}$ (holding $x_{1}$ constant).
+In particular, the effect of changing $x_{1}$ does not depend on the
+level of $x_{2}$ and vice versa.
+This model is known as the ``additive''
+or ``no-interaction'' two-variable regression model. 
+
+%----------------------------------------------------------------------
+\subsection{Two-variable regression model with interaction}
+\label{section:two.var.with.int}
+The log-location-scale two-variable regression model {\em
+with} interaction uses (\ref{equation:regr.cdf.model}) with
+$\mu=\beta_{0}+\beta_{1} x_{1} +
+\beta_{2} x_{2}+
+\beta_{3} x_{1}x_{2}$. If $\sigma$ does not
+depend on $\xvec$, the log-quantile function is
+\begin{displaymath}
+\log[\rvquan_{p}(\xvec)] =\grvquan_{p}(\xvec)=\beta_{0}+
+	\beta_{1} x_{1} + \beta_{2} x_{2}+ \beta_{3}x_{1}x_{2} 
++ \Phi^{-1}(p) \sigma.
+\end{displaymath}
+The distribution quantile can be re-expressed as
+$\rvquan_{p}(\xvec)=\exp \left [\grvquan_{p}(\xvec) \right ]= 
+		\exp(\beta_{1} x_{1} + \beta_{2} x_{2}+
+                \beta_{3}x_{1}x_{2}) \, \rvquan_{p}(0)$.
+Thus this is a SAFT model with  $\AF(\xvec)=1/\exp(\beta_{1}
+x+\beta_{2}x_{2}+
+\beta_{3} x_{1}x_{2})$.
+Substituting $\mu_{i}  = \beta_{0} + \beta_{1} x_{1i} +
+\beta_{2} x_{2i}+
+\beta_{3} x_{1i}x_{2i}$ into (\ref{equation:regr.likelihood}) gives a
+likelihood having the form $\like(\beta_{0},\beta_{1},
+\beta_{2},\beta_{3},\sigma)$. 
+In this model $\beta_{1} + \beta_{3}x_{2}$ is the change in $\mu$ for
+a one-unit change in $x_{1}$. Similarly, $\beta_{2} + \beta_{3}x_{1}$
+is the change in $\mu$ for a one-unit change in $x_{2}$.
+
+%----------------------------------------------------------------------
+\begin{table}
+\caption{Glass capacitor life test ML estimates for 
+the Weibull regression model.}
+\centering\small
+\begin{tabular}{lcrrrr} 
+\\[-.5ex]
+\hline
+& & & & \multicolumn{2}{c}{Approximate 95\%}\\
+&&\multicolumn{1}{c}{ML} &Standard & \multicolumn{2}{c}{Confidence
+Interval}\\ \cline{5-6}
+& Parameter & Estimate&
+\multicolumn{1}{c}{Error} & Lower & Upper \\
+\hline 
+Model 1 
+&$\beta_{0}$ &13.41 &2.30 &$8.90$ &17.91 \\[.7ex] 
+&$\beta_{1}$ &$-.02$  &.01  & $-.05$  & $-.004$\\[.7ex] 
+&$\beta_{2}$ &$-.006$  &.001 &$-.008$ &$-.004$ \\[.7ex] 
+&$\sigma$ &0.36 &.055 &.27 & .49 \\[1.2ex]
+\hline 
+\\[-1.8ex]
+Model 2 
+&$\beta_{0}$ &9.41 &10.5 &$-11.2$ &30.1 \\[.7ex] 
+&$\beta_{1}$ & $-.0062$ &.060 &$-.12$ &.11 \\[.7ex] 
+&$\beta_{2}$ &$.0086$ &.037 & $-.065$ &.082 \\[.7ex] 
+&$\beta_{3}$ &$.000082$ &$.00021$ & $-.00050$ &$.00034$ \\[.7ex] 
+&$\sigma$ &.362 &.055 &.27 &.49 \\[1.2ex]
+\hline 
+\\[-1.8ex]
+\end{tabular}
+\begin{minipage}[t]{4in}
+The log likelihoods for Models 1 and 2 are, respectively, $\loglike_{1}=-244.24 $
+and $\loglike_{2}=-244.17 $.
+\end{minipage}
+\label{table:zelen.mles}
+\end{table}
+
+\begin{example}
+\label{example:zelen.data.int.model}
+{\bf Regression models for glass capacitor life.} The top half of
+Table~\ref{table:zelen.mles} provides information on the ML fit of
+Model 1, the two-variable no-interaction regression model with
+$x_{1}=\mbox{temperature in $\degreesc$}$ and $x_{2}=\mbox{Voltage}$.
+The bottom half of Table~\ref{table:zelen.mles} provides information
+on the ML estimates for Model 2.  This model includes the interaction
+term $x_{3}=x_{1} x_{2}$.  Comparing the log-likelihood values for the
+two models indicates that the interaction term has not improved the
+model's ability to explain variability in the failure times. In
+particular, the log-likelihood ratio statistic $-2 \times (\loglike_{1}
+- \loglike_{2}) = .14$ is small relative to $\chisquare_{(.75;1)}=1.32$
+(from standard chi-square quantile tables).
+Figure~\ref{figure:zelencap.groupm.int.ps}, is similar to
+Figure~\ref{figure:zelencap.groupi.ps}, but in this case, the parallel
+lines are the Model 2 ML estimates for each of the 8 test conditions.
+The lines are parallel because $\sigma$ in the model does not depend
+on $\xvec=(x_{1},x_{2})$.  
+
+The plotted points in Figure~\ref{figure:zelencap.cellquan.int.ps}
+are the individual estimates of $\rvquan_{.5}$ for each of the 8
+combinations of the glass capacitor test conditions (computed from
+the ML estimates in Table~\ref{table:zelen.cap.data}). The lines in
+Figure~\ref{figure:zelencap.cellquan.int.ps} give the Model 2 fitted
+relationship between life and voltage for temperatures of
+170$\degreesc$ and 180$\degreesc$. The Model 1 plot (not shown here)
+was similar, but the 170$\degreesc$ and 180$\degreesc$ lines were
+exactly parallel.  Figure~\ref{figure:zelencap.groupm.int.resid.ps}
+is a plot of the Model 2 regression residuals. There does not seem
+to be any serious departure from the fitted model or the Weibull
+distribution assumptions in the model.
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/zelencap.groupm.int.ps}
+\caption{Weibull probability plots of data
+at individual temperature and voltage test conditions, with the
+Weibull regression Model 2 ML estimates of $F(t)$ at each set of
+conditions for the glass capacitor
+data.}
+\label{figure:zelencap.groupm.int.ps}
+\end{figure}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/zelencap.cellquan.int.ps}
+\caption{Individual estimates of Weibull $t_{.5}$ plotted for 
+each glass capacitor test condition. The
+straight lines depict the with-interaction (Model 2) 
+Weibull regression model estimate of $t_{.5}$
+versus voltage for $170\degreesc$ and 
+$180\degreesc$.}
+\label{figure:zelencap.cellquan.int.ps}
+\end{figure}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/zelencap.groupm.int.resid.ps}
+\caption{Weibull probability plots of the
+residuals from Model 2 fit to the glass capacitor
+data.}
+\label{figure:zelencap.groupm.int.resid.ps}
+\end{figure}
+%----------------------------------------------------------------------
+\end{example}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Product Comparison: An Indicator-Variable Regression Model}
+\label{section:product.comparison}
+This section illustrates methods for comparing samples from two
+different populations or processes, which we generically call
+``groups.'' In the first analysis 
+(Examples~\ref{example:snubber.separate} and 
+\ref{example:snubber.comparing.quantiles}) the samples are simply analyzed
+separately to make a comparison.  The second analysis 
+(Example~\ref{example:snubber.common.sigma}) uses an
+indicator-variable regression model to compare the samples under the
+assumption that the spread parameter $\sigma$ is the same for both
+groups.
+
+\subsection{Comparison of groups using separate analyses.}
+The simplest method for comparing two groups is to analyze the
+groups separately.
+
+\begin{example}
+\label{example:snubber.separate}
+{\bf A comparison of snubber designs---separate analyses.} Appendix
+Table~\ref{atable:snubber.data} gives data from Nelson
+(1982, page 529), 
+from a life test to compare two different snubber designs.  A
+snubber is a component in an electric toaster.  Following the analysis
+used by Nelson, Figure~\ref{figure:snubber.indiv.norm.ps} shows the
+results of fitting separate normal distributions to the data from
+each snubber design.  The different slopes reflect the different
+standard deviation estimates. The numerical results are summarized
+in Table~\ref{table:snubber.mles}, under Model 1.
+\end{example}
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/snubber.indiv.norm.ps}
+\caption{Normal probability plot showing separate analyses 
+comparing the old and new snubber designs (old design ``$\circ$'' and
+the new design ``$+$'').  The solid (dotted) line is the ML estimate
+of the normal distribution cdf for the old (new) design.}
+\label{figure:snubber.indiv.norm.ps}
+\end{figure}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+%splus old design: Log Likelihood at maximum: -146.7548
+%splus           MLE       se   z-ratio 95% lower 95% upper 
+%splus   mu 908.1341 76.19281 11.918894  758.7962 1057.4720
+%splussigma 362.4326 63.40395  5.716247  238.1609  486.7044
+%splus
+%splus new design Log Likelihood at maximum: -138.6036
+%splus            MLE        se  z-ratio 95% lower 95% upper 
+%splus   mu 1126.5972 123.20691 9.143945  885.1116 1368.0827
+%splussigma  545.9695  99.50092 5.487080  350.9477  740.9913
+%splus
+%splus pooled sigma Log Likelihood at maximum: -286.6587
+%splus            MLE        se    z-ratio 95% lower 95% upper 
+%splus   b0 974.62787  89.11084 10.9372538  799.9706 1149.2851
+%splus   b1  86.67246 114.20675  0.7589084 -137.1728  310.5177
+%splussigma 458.56430  57.66753  7.9518637  345.5360  571.5926
+%splus 
+%splus
+\begin{table}
+\caption{ML estimates for the snubber life test data.}
+\centering\small
+\begin{tabular}{lcrrrr} 
+\\[-.5ex]
+\hline
+& & & & \multicolumn{2}{c}{Approximate 95\%}\\
+& &\multicolumn{1}{c}{ML} &Standard & 
+\multicolumn{2}{c}{Confidence Interval}\\  \cline{5-6}
+& Parameter & Estimate& \multicolumn{1}{c}{Error} & Lower & Upper \\
+\hline 
+Model 1  &$\mu_{\old} $ & 908 &76.2 &759 & 1057 \\[.7ex] 
+&$\sigma_{\old}$ &362 &63.4 &238 &487\\[1.2ex]
+&$\mu_{\new} $ & 1126 &123 &885 &1368 \\[.7ex] 
+&$\sigma_{\new}$ &546 &100 &351 &741 \\[.7ex] 
+\hline 
+\\[-1.8ex]
+Model 2 
+&$\beta_{0}$ &975  &89.1  &800    & 1149  \\[.7ex]
+&$\beta_{1}$ &86.7 &114   &$-137$ &  311  \\[.7ex] 
+&$\sigma$    & 459 & 57.7 & 346   & 572 \\[1.2ex]
+\hline 
+\\[-1.8ex]
+\end{tabular}
+\begin{minipage}[t]{4in}
+For Model 1, $\loglike_{\old}=-138.6$ for the old design and
+$\loglike_{\new}=-146.8$ for the new design (totaling
+$\loglike_{1}=\loglike_{\old}+\loglike_{\new} =-285.4$). For Model 2,
+$\loglike_{2}=-286.7$.
+\label{table:snubber.mles}
+\end{minipage}
+\end{table}
+
+As illustrated in Figure~\ref{figure:snubber.indiv.norm.ps}, comparing
+distributions may not be straightforward in applications where the
+cdfs from the two groups cross. If we took the lines in
+Figure~\ref{figure:snubber.indiv.norm.ps} to be true cdfs, the
+implication would be that the old design is better up until about 550
+cycles, after which the new design is better. The ambiguity arises
+because the estimate for $\sigma$ from the new design is larger.
+It is, however, possible to compare particular points on the cdfs.
+
+\begin{example}
+\label{example:snubber.comparing.quantiles}
+{\bf A comparison of snubber designs---comparing quantiles.} To make a
+quantitative comparison between the two designs, we will estimate the
+difference between the values of $y_{.5}(\new)$ and
+$y_{.5}(\old)$ (we use $y$ instead of $t$ here because we are
+fitting a normal distribution which has a theoretical range extending
+to negative numbers). For the normal distribution, this is the same as
+comparing the means of the two groups.
+Using the results for Model 1 in Table~\ref{table:snubber.mles},
+\begin{eqnarray*}
+\muhat_{\new} - \muhat_{\old} & = & 1126 - 908 = 218\\[1ex]
+\sehat_{\muhat_{\new} - \muhat_{\old}} &=&
+\sqrt{\sehat^{2}_{\muhat_{\new}} + \sehat^{2}_{\muhat_{\old}}}
+\\
+  & = & \sqrt{(76.2)^{2} +  (123)^{2}   } = 144.7
+\end{eqnarray*}
+%splus> 1126 - 908 = 218
+%splus> sqrt((76.2)^2 +  (123)^2  )= 144.6908
+and an approximate 95\% confidence interval for
+$\delta = \mu_{\new} -
+\mu_{\old}$ is
+\begin{eqnarray*}
+[\undertilde{\delta}, \quad \tilde{\delta}] &=& 
+	\muhat_{\new} - \muhat_{\old} \pm 
+     \norquan_{(1-\alpha/2)} \sehat_{\muhat_{\new} -
+\muhat_{\old}}\\
+	&=& 218 \pm 1.96 \times 144.7 = [-66, \quad 501].
+\end{eqnarray*}
+Because this interval contains 0, we conclude that there is
+not a convincing difference
+between the mean cycles to failure for the two designs.
+%splus> 218 + 1.96 * 144.7 = 501.612
+%splus> 218 - 1.96 * 144.7 = -65.612
+\end{example}
+
+%----------------------------------------------------------------------
+\subsection{Comparison of groups using combined analyses}
+In some situations it might be reasonable to use a model in which 
+$\sigma$ is the same across the groups, with differences only in the
+values of $\mu$. 
+The analysis can be made with a simple regression relationship using
+$\mu=\beta_{0}+\beta_{1} x$ where
+$x=0$ for one group and $x=1$ for the other. Then substituting $x$ into
+the model gives $\mu(0)=\beta_{0}$ and
+$\mu(1)=\beta_{0}+\beta_{1}$.
+Furthermore $\delta = t_{p}(1) -t_{p}(0)=\mu(1) -
+\mu(0) = \beta_{1}$, making comparisons with a common $\sigma$
+less ambiguous because, in this model, $\delta$ does not depend on 
+which quantile is compared.
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/snubber.gmodel.norm.ps}
+\caption{Normal probability plot summarizing 
+the fitted common-$\sigma$ models for 
+the old and new snubber designs. 
+Observations from the old design are indicated by a ``$\circ$'' and
+observations from the new design are indicated by a ``$+$.''
+The solid (dotted) line is the ML estimate of the normal distribution
+cdf for the old (new) design. The dashed lines are
+approximate 95\% pointwise
+confidence intervals for the old design.}
+\label{figure:snubber.gmodel.norm.ps}
+\end{figure}
+%----------------------------------------------------------------------
+
+\begin{example}
+{\bf A comparison of snubber designs---common $\sigma$ analysis.}
+\label{example:snubber.common.sigma}
+%----------------------------------------------------------------------
+Figure~\ref{figure:snubber.gmodel.norm.ps} displays estimates of the
+cdfs for the new and old designs. Because in this model $\sigma$ is
+the same for both designs, the fitted lines are parallel.
+Table~\ref{table:snubber.mles} gives corresponding numerical results.
+The dotted curves on Figure~\ref{figure:snubber.gmodel.norm.ps} are
+pointwise approximate 95\% confidence intervals for $F(t)$ for the old
+design. Although these intervals do not answer precisely the question
+of interest, they do indicate that there is considerable variability
+in the estimates, relative to the difference between the point
+estimates of the distributions for the old and the new designs.  An
+approximate 95\% confidence interval for $\delta = t_{p}(\new)
+-t_{p}(\old)=\mu_{\new} -
+\mu_{\old}=\beta_{1}$ is
+\begin{eqnarray*}
+[\undertilde{\delta}, \quad \tilde{\delta}]= 
+[\undertilde{\beta_{1}}, \quad \tilde{\beta_{1}}] &=& 
+	\betahat_{1} \pm 
+     \norquan_{(1-\alpha/2)} \sehat_{\betahat_{1}}\\
+	&=& 86.7 \pm 1.96 \times 114 = [-137, \quad  311].
+\end{eqnarray*}
+Because this interval contains zero, we conclude, as before,  
+that there is not a convincing difference
+between the new and the old designs.
+\end{example}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{The Proportional Hazards Failure Time Model}
+\label{section:prohaz.fail}
+
+%----------------------------------------------------------------------
+\subsection{Proportional hazards relationships}
+The proportional hazards (PH) model relates the hazard functions at
+conditions $\xvec$ and baseline conditions $\xvec_{0}$ by
+\begin{equation}
+\label{equation:ph.def.h}
+h(\realrv; \xvec)=\Psi(\xvec) h(\realrv; \xvec_{0})
+\end{equation}
+for all $\realrv>0$, where $\Psi(\xvec)$, like $\AF(\xvec)$ in
+Section~\ref{section:saft.model}, is a positive function with
+$\Psi(\xvec_{0})=1$.  The proportional hazards model 
+can also be
+written as
+\begin{equation}
+\label{equation:ph.def.s}
+S(t;\xvec) = [S(t;\xvec_{0})]^{\Psi(\xvec)}
+\end{equation}
+or
+\begin{equation}
+\label{equation:ph.def.f}
+F(t;\xvec) = 1- [1-F(t;\xvec_{0})]^{\Psi(\xvec)}.
+\end{equation}
+Again, if
+$\Psi(\xvec) \ne 1$, then $F(t;\xvec)$ and $F(t;\xvec_{0})$ do not
+cross. When $\Psi(\xvec) >1$, the model accelerates time in the sense
+that $F(t;\xvec) > F(t;\xvec_{0})$ for all $t$.  When $\Psi(\xvec)<1$,
+the model decelerates time in the sense that $F(t;\xvec) <
+F(t;\xvec_{0})$ for all $t$. 
+
+Re-expressing (\ref{equation:ph.def.f}) leads to
+$1-F(t;\xvec)=[1-F(t;\xvec_{0})]^{\Psi(\xvec)}$ and taking logs
+(twice) gives
+\begin{equation}
+\label{equation:log.log.phft}
+\log  \left \{-\log   \left [1- F(t;\xvec)   \right ]\right \}
+- \log \left \{-\log \left [1-F(t;\xvec_{0}) \right ]\right \} = \log
+\left [ \Psi(\xvec) \right ].
+\end{equation}
+Thus when $F(\realrv; \xvec)$ and $F(\realrv; \xvec_{0})$ are related by
+a PH model, they are vertically equidistant at any given $t$ on
+Weibull probability paper, as shown in
+Figure~\ref{figure:lawless.lognor.ph.ps}. This graphical
+relationship is useful for assessing the reasonableness of a PH
+regression model.
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/lawless.lognor.ph.ps}
+\caption{Weibull probability plot showing a
+proportional hazards accelerated failure time regression relationship
+with a lognormal baseline distribution (lower line). The upper line
+corresponds to a cdf from the power-lognormal distribution.}
+\label{figure:lawless.lognor.ph.ps}
+\end{figure}
+%----------------------------------------------------------------------
+
+A proportional hazards model can also be expressed as a failure time
+transformation model. In particular, if $\rv(\xvec_{0}) \sim
+F(\realrv;\xvec_{0})$ and if $\rv(\xvec)$ and $\rv(\xvec_{0})$ are
+related by the time transformation function
+\begin{equation}
+\label{equation:ph.time.trans}
+\rv(\xvec)=F^{-1}\left (
+		1- \left \{ 			1 -F \left
+[\rv(\xvec_{0});
+\xvec_{0}
+			         \right ] 		 \right
+\}^{1/\Psi(\xvec)};
+\xvec_{0}
+			      \right )
+\end{equation}
+then it can be shown that $\rv(\xvec)$ and $\rv(\xvec_{0})$ have the
+PH relationship in (\ref{equation:ph.def.h}).  This time
+transformation function is illustrated in
+Figure~\ref{figure:ph.transform.ps}.  In this example, the amount of
+acceleration (or deceleration), $\rv(\xvec_{0})/\rv(\xvec)$, depends
+on the position in time.
+
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/ph.transform.ps}
+\caption{Proportional hazards model with a lognormal baseline
+hazard function expressed as a time transformation function.}
+\label{figure:ph.transform.ps}
+\end{figure}
+
+%----------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/lawless.weib.ph.ps}
+\caption{Weibull probability plot of
+two Weibull distributions. The parallel straight lines
+here come from a regression relationship that is both
+accelerated failure time and proportional hazards.}
+\label{figure:lawless.weib.ph.ps}
+\end{figure}
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+\subsection{The Weibull proportional hazards model}
+For the Weibull distribution (and only the Weibull distribution), a
+PH regression model is also a SAFT regression model.  This can be
+seen by noting that the Weibull distribution is the only
+distribution in which both (\ref{equation:log.saft}) and
+(\ref{equation:log.log.phft}) hold. Relatedly, Weibull probability
+plots of Weibull cdfs with the same $\sigma$ are translations of each
+other in {\em both} the probability and the $\log(\realrv)$
+scale. Thus the Weibull cdfs at $\xvec$ and $\xvec_{0}$ are parallel
+straight lines on Weibull probability paper, as shown in
+Figure~\ref{figure:lawless.weib.ph.ps}.
+
+%----------------------------------------------------------------------
+\subsection{Other proportional hazards models}
+
+Except in the case of the Weibull distribution, the PH regression
+relationship changes the shape of the underlying distribution as a
+function of the explanatory variables $\xvec$.  That is, in general,
+the PH model does not preserve the form of baseline distribution.
+For example, if $\rv(\xvec_{0})$ has a lognormal distribution then
+$\rv(\xvec)$ has a power lognormal distribution
+(Section~\ref{section:power.dist}).
+
+%----------------------------------------------------------------------
+\subsection{The semiparametric (Cox) proportional hazards model}
+In its semiparametric form, the PH model in
+(\ref{equation:ph.def.h}) is known as the Cox
+proportional hazards model. In this model, the form of the hazard
+function $h(t ; \xvec_{0})$ is unspecified. One can estimate the regression
+coefficients [the parametric part of the model $\Psi(\xvec)$] and obtain
+nonparametric estimates of the hazard (or cdf or survival) functions
+at any specified values of the explanatory variable(s).  The Cox PH
+model is widely used in biomedical applications and especially in
+the analysis of clinical-trial data.
+
+
+%----------------------------------------------------------------------
+\subsection{PH model applications in reliability}
+Because models of failure based on physics and chemistry (see
+Chapter~\ref{chapter:accelerated.test.models}) generally suggests
+a SAFT model or other non-PH models, the main area for potential
+application of PH models would appear to be in the analysis of field
+reliability data for which it is necessary to adjust for covariates
+like operating environment, use rate, and so on.  Bendell~(1985) and
+Dale~(1985) describe applications of semiparametric proportional
+hazards modeling to the analysis of reliability data.
+
+Landers and Kolarik~(1987) describe an application where a
+parametric PH model was used in the analysis of field reliability
+data. They, however, used a Weibull baseline distribution and so
+their model was really the same as the SAFT Weibull regression model
+used in Sections~\ref{section:fail.time.regr.models} through
+\ref{section:quad.regr}.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{General Time Transformation Functions}
+\label{section:gen.time.trans}
+In Sections~\ref{section:fail.time.regr.models} and
+\ref{section:prohaz.fail} we expressed both SAFT and PH models as
+special time transformation functions. Time transformation functions
+provide a general model for relating time at one level of $\xvec$
+with time at another level of $\xvec$. The time transformation model
+maps time at one level of $\xvec_{0}$ to time at another level of
+$\xvec$. This can be expressed as
+\begin{displaymath}
+\rv(\xvec)=\Upsilon \left [\rv(\xvec_{0}),\xvec \right ]
+\end{displaymath}
+where $\xvec_{0}$ are again {\em baseline} conditions. To be a time
+transformation, the function $\Upsilon \left (\realrv,\xvec \right )$
+must have the following properties:
+\begin{itemize}
+\item
+For any $\xvec$, $\Upsilon \left (0,\xvec \right )=0$, as in 
+Figure~\ref{figure:general.transform.ps}.
+\item
+$\Upsilon \left (\realrv,\xvec \right ) $ is nonnegative, i.e.,
+$\Upsilon \left (\realrv,\xvec \right ) \ge 0$ for all $\realrv$ and
+$\xvec$.
+\item
+For fixed $\xvec$, $\Upsilon \left (\realrv,\xvec \right )$ is
+monotone increasing in $\realrv$.
+\item
+When evaluated at $\xvec_{0}$, the transformation is the identity 
+transformation (i.e., $\Upsilon \left (\realrv,\xvec_{0} \right )=\realrv
+\,\, \mbox{for all} \,\, \realrv $). 
+\end{itemize}
+A quantile of the distribution of $\rv(\xvec)$ can be determined as a
+function of the corresponding quantile of the distribution of
+$\rv(\xvec_{0})$ and $\xvec$.  In particular, $\rvquan_{p}(\xvec)=
+\Upsilon \left [\rvquan_{p}(\xvec_{0}),\xvec \right ]
+$ for $0 \le p \le 1.$ As shown in
+Figure~\ref{figure:general.transform.ps}, a plot of
+$\rv(\xvec_{0})$ versus $\rv(\xvec)$ can imply a particular class of
+transformation functions. In particular,
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/general.transform.ps}
+\caption{General failure time transformation  model.}
+\label{figure:general.transform.ps}
+\end{figure}
+\begin{itemize} 
+\item
+$T(\xvec)$ entirely below the diagonal line implies acceleration.
+\item
+$T(\xvec)$ entirely above the diagonal line implies deceleration.
+\item
+$T(\xvec)$ can cross the diagonal, in which case the transformation is
+accelerating over some times and decelerating over other times. In
+this case the cdfs of $\rv(\xvec)$ and $\rv(\xvec_{0})$ cross.
+\end{itemize}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+\section*{Bibliographic Notes}
+Seber~(1977) and Neter, Kutner, Nachtsheim, and Wasserman~(1996) are
+useful references on linear regression analysis for complete
+(uncensored) data. Seber and Wild~(1989) describe methods for
+nonlinear regression.  Lawless~(1982), Cox and Oakes~(1984), and
+Nelson~(1990a) describe applications of failure-time regression
+models and illustrate fitting methods for censored
+data. Nelson~(1990a) describes failure time regression modeling,
+analysis, and test plans with applications to accelerated life
+testing, a topic covered in
+Chapters~\ref{chapter:accelerated.test.models} and
+\ref{chapter:analyzing.alt.data} of this book. The ideas
+behind Figures~\ref{figure:lawless.lognor.aft.ps},
+\ref{figure:lawless.weib.ph.ps}, and 
+\ref{figure:lawless.lognor.ph.ps} came from Lawless~(1986).
+Nelson~(1984) analyzed the superalloy fatigue data used in
+Examples~\ref{example:super.alloy.data},
+\ref{example:super.alloy.nf20},
+and \ref{example:super.alloy.nf21}.  Nelson~(1984) also used a model
+in which both $\mu$ and $\sigma$ (parameters of the lognormal
+distribution) depend on a stress variable and outlined the pitfalls
+of using this model.  Our development has followed this
+work. Escobar and Meeker~(1992) give expressions for computing the
+elements in (\ref{equation:regr.local.est.vcv}) and present methods
+for doing influence analysis with censored data. Meeker and
+LuValle~(1995) describe a regression model in which two different
+chemical reaction rate constants depend on temperature, leading to a
+non-SAFT model.  Martin~(1982) describes the use of general time
+transformation functions used in life testing.  General time
+transformation functions are discussed, in the context of
+accelerated testing, in Chapter 17 of Ushakov~(1994).
+
+Nelson~(1973) describes methods for residual analysis with censored
+data.  Schmee and Hahn~(1979) present an iterative least squares
+method of finding estimates for regression parameters with censored
+data. The method is useful for finding starting values for ML
+estimation. 
+
+Kalbfleisch and Prentice~(1980), Lawless~(1982) and Cox and
+Oakes~(1984) provide a detailed treatment of the important facets of
+the Cox proportional hazards model.  Bagdonavi\v{c}ius and
+Nikulin~(1995, 1997) describe general classes of semiparametric
+failure-time regression methods, methods of estimation, and
+asymptotic theory for the estimators.
+
+\section*{Exercises}
+
+%-------------------------------------------------------
+\begin{exercise}
+The confidence intervals for Example~\ref{example:ct.regr.model} given
+in Table~\ref{table:comptime.mles} were computed by using the normal
+approximation method that is commonly used for censored data problems.
+For this data set, with the lognormal model, it is possible to use
+standard ``exact'' methods to compute confidence intervals for these
+parameters, based on a simple ordinary least squares regression
+relating the logarithms of execution time to system load.  Formulas
+for these exact methods are available in almost any elementary
+statistics text covering regression analysis.  Use a computer program
+to do the necessary least squares computations and compute, by hand,
+the ``exact'' confidence intervals.  Compare the estimates and
+confidence intervals. What is your conclusion?
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise}
+Refer to the loglinear model in (\ref{equation:weib.reg.quant}).
+Show why $100\beta_{1}$ can be interpreted as the approximate percent increase
+in $\rvquan_{p}(x)$ for a one-unit increase in $x$.
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise}
+\label{exercise:rcfatigue.graphical}
+McCool~(1980) gives the results of a life test on rolling contact
+fatigue of ceramic ball bearings. Ten specimens were tested at each
+of 4 levels of stress. The ordered failure times are given in the
+following table.  McCool indicates that it is customary to model such
+data with the two-parameter Weibull distribution with a shape parameter
+that does not depend on stress.\\[3ex]
+\begin{tabular}{ll}
+Stress ($10^{6}$ psi) &  Ordered Life Times ($10^{6}$ revolutions) \\
+\hline
+.87 & 1.67, 2.20, 2.51, 3.00, 3.90, 4.70, 7.53, 14.70, 27.80, 37.40 \\
+.99& .80, 1.00, 1.37, 2.25, 2.95, 3.70, 6.07, 6.65, 7.05, 7.37 \\ 
+1.09& .012, .18, .20, .24, .26, .32, .32, .42, .44, .88 \\ 
+1.18 & .073, .098, .117, .135, .175, .262, .270, .350, .386, .456 \\
+\hline
+\\[2ex]
+\end{tabular}
+\begin{enumerate}
+\item
+\label{exer.part:refatigue.logplot}
+Plot the failure times versus stress on log-log axes (or alternatively,
+take logs and plot on linear axes).
+\item
+It is often suggested that median failure time is proportional to a
+power transformation of stress. That is,  $t_{.5}=
+e^{\beta_{0}} \times {(\Stress)}^{\beta_{1}}$ or $\log(t_{.5})=
+\beta_{0}+ \beta_{1}\log(\Stress)$. Is the suggestion
+reasonable in this case?  Plot the sample medians on the graph in
+part~\ref{exer.part:refatigue.logplot} to help answer this question.
+\item
+\label{exer.part:refatigue.graphical}
+Use a hand-drawn line
+through sample medians versus stress points to obtain a graphical estimate
+of the exponent (or slope) $\beta_{1}$.
+\item
+Make separate Weibull probability plots for the data at each level of
+stress, plotting them all on the same graph. What does this plot
+suggest about the customary assumption that the Weibull shape
+parameter is the same for all levels of stress?  Provide possible
+explanations for the observed differences in the estimates of the
+Weibull shape parameter at each level of stress.
+\end{enumerate}
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise}
+Figure~\ref{figure:super.alloy.data} shows that there is more spread 
+(variability) in the
+observed log failure times at low stress, as compared with high stress.
+Provide a simple, nontechnical, intuitive explanation for this
+common behavior of fatigue data.
+\end{exercise} 
+
+%-------------------------------------------------------
+\begin{exercise1}
+\label{exercise:rcfatigue.ls.ml}
+Refer to Exercise~\ref{exercise:rcfatigue.graphical}.
+Suppose that log life can be adequately described by a normal distribution.
+Consider the regression model $\mu=\beta_{0}+\beta_{1}\log(\Stress)$
+with constant $\sigma$, where $\sigma$ is the standard deviation of
+log life, the same for any fixed levels of stress.
+\begin{enumerate}
+\item
+Use ordinary least squares to fit this model to the rolling contact
+fatigue data. Compare your answer to the graphical estimate from
+part~\ref{exer.part:refatigue.graphical} of
+Exercise~\ref{exercise:rcfatigue.graphical}.
+\item
+Use a computer program that does maximum likelihood estimation and fit
+the lognormal regression model (\ref{equation:weib.reg.quant}) to the
+rolling contact fatigue data.
+\item
+Compute and compare estimates from these two different methods of
+estimation for, the median time to failure at $1.05 \times 10^{6}$
+psi, the .01 quantile at $1.05 \times 10^{6}$ psi, and the .01
+quantile at $.85 \times 10^{6}$ psi.  Comment on the results of this
+comparison.
+\end{enumerate}
+\end{exercise1}
+
+%-------------------------------------------------------
+\begin{exercise}
+Use the results in Table~\ref{table:super.alloy.mles} for
+Example~\ref{example:super.alloy.nf20} to compute an 80\%
+normal-approximation confidence interval for $\sigma$.  Explain the
+interpretation of this interval.
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise}
+Use the results in Table~\ref{table:super.alloy.mles}
+for Example~\ref{example:super.alloy.nf21} to do the following: 
+\begin{enumerate}
+\item
+\label{exer.part:nc.sig.beta.ci}
+Compute an 90\% normal-approximation confidence interval for
+$\beta_{1}^{[\sigma]}$.
+\item
+Explain how this confidence interval can be used to judge whether
+$\sigma$ depends on the level of pseudo stress or not.
+\item
+Do a likelihood ratio test to determine whether or not there exists strong
+evidence that $\sigma$ depends on the level of pseudo stress.
+\item
+Explain the steps you would follow to compute a likelihood-ratio-based
+confidence interval for $\beta_{1}^{[\sigma]}$.
+\end{enumerate}
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise1}
+\label{exercise:outlier.test}
+Refer to Example~\ref{example:super.alloy.nf21} and
+Figure~\ref{figure:nf.altplot.nf21.weib.ps}. 
+It has been suggested that the failure at 13,949 cycles with
+pseudostress equal to 85.2 ksi appears to be an outlier.
+\begin{enumerate}
+\item
+\label{exer.part:prob.ext}
+Use the ML estimates for Model 2 in
+Table~\ref{table:super.alloy.mles} as if they were 
+the actual parameter values and  compute the probability
+that one would have a failure before 13,949 cycles when running at 
+a pseudostress equal to 85.2 ksi.
+\item
+\label{exer.part:nf21.outlier}
+Following the approach in part~\ref{exer.part:prob.ext}, if 26 units
+were to be tested at a pseudostress equal to 85.2 ksi, what is the
+probability that the {\em earliest} failure would occur before 13,949
+cycles?
+\item
+There were 26 observations in the superalloy fatigue example. Explain
+why the probability in part~\ref{exer.part:nf21.outlier} is the
+relevant probability to consider when judging whether the single
+observation in the example departs importantly from the assumed model
+or not.
+\end{enumerate}
+\end{exercise1}
+
+%-------------------------------------------------------
+\begin{exercise}
+\label{exercise:reverse.quant}
+Consider the model used in Example~\ref{example:super.alloy.nf21} and
+the corresponding ML estimates for Model 2 in
+Table~\ref{table:super.alloy.mles}. 
+\begin{enumerate}
+\item
+\label{exer.part:reverse.quant}
+Show that it is possible
+to have $\rvquan_{p}(x_{1}) < \rvquan_{p}(x_{2})$ when $x_{1} <
+x_{2}$.
+\item
+Explain why the relationship in part~\ref{exer.part:reverse.quant}
+is physically unreasonable.
+\end{enumerate}
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise1}
+Follow the general approach outlined in
+Section~\ref{section:se.and.ci.for.regr.funct} and
+Example~\ref{example:regr.ci.for.quan} to do the following for Model 2
+used in Example~\ref{example:super.alloy.nf21}:
+\begin{enumerate}
+\item
+Using the results in Table~\ref{table:super.alloy.mles}, compute
+estimates $(\muhat, \sigmahat)$ for pseudostress 100 ksi.
+\item
+Derive the expressions needed to compute
+$\vcvmathat_{\muhat,\sigmahat}$ as a function of the elements of the
+variance-covariance matrix of the regression parameters in Model 2.
+\end{enumerate}
+\end{exercise1}
+
+%-------------------------------------------------------
+\begin{exercise1}
+\label{exercise:rcfatigue.sigma.test}
+Refer to Exercise~\ref{exercise:rcfatigue.graphical}. There is some
+evidence that the Weibull shape parameter depends on
+stress, but it might be argued that
+the observed differences are due to random variation in the data.
+\begin{enumerate}
+\item
+Fit separate two-parameter Weibull distributions to the data
+at each level of stress.
+\item
+Fit a regression model with an indicator variable allowing for a
+different Weibull scale parameter $\weibscale=\exp(\mu)$ at each
+level of stress. Hold $\sigma=1/\beta$ (the reciprocal of the
+Weibull shape parameter $\beta$) constant over all levels of stress.
+\item
+Do a likelihood ratio test to see if there is evidence that
+the values of $\sigma$ differ with stress.
+\end{enumerate}
+\end{exercise1}
+
+%-------------------------------------------------------
+\begin{exercise} 
+Return to the capacitor life test data in
+Example~\ref{example:zelen.data}.  Physical theory suggests that the
+Weibull shape parameter $\beta=1/\sigma$ will depend on temperature if
+there is unit-to-unit variability in both the initial level of
+dielectric degradation and in dielectric degradation rate. Insulation
+engineers were interested in using these data to see if there was
+evidence for a temperature or voltage effect on $\beta=1/\sigma$.
+\begin{enumerate}
+\item
+\label{exer.part:zelen.indiv}
+Use the fitted model 
+in Table~\ref{table:zelen.cap.data} giving the Weibull
+distribution estimates at each combination of the individual
+experimental conditions. Compute the sum of the log likelihoods for all
+of the conditions.
+\item
+Plot, on Weibull probability paper, the estimates of the Weibull cdfs
+for each test condition, as done in
+Figure~\ref{figure:zelencap.groupi.ps}.
+\item
+\label{exer.part:zelen.csig}
+Fit an indicator-variable regression model to the capacitor life test data
+such that there is a constant value of $\sigma$ but that
+a separate value of $\mu$ is estimated at each test condition.
+\item
+Compare the sum of the likelihoods from
+part~\ref{exer.part:zelen.indiv} with the likelihood obtained from the
+model in part~\ref{exer.part:zelen.csig}. Use these results to test
+if there is evidence for nonconstant $\sigma$ in these data.
+What do you conclude?
+\end{enumerate}
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise1}
+Write a time transformation function corresponding to
+model~(\ref{equation:quad.mu.lin.sigma.model}).
+\end{exercise1}
+
+%-------------------------------------------------------
+\begin{exercise1} 
+Show that (\ref{equation:ph.def.h}) implies (\ref{equation:ph.def.s}).
+\end{exercise1}
+
+%-------------------------------------------------------
+\begin{exercise}
+Refer to Example~\ref{example:zelen.data.int.model} and
+Figure~\ref{figure:zelencap.cellquan.int.ps}.  The two points
+corresponding to the subexperiments at 250 and 300 volts and
+180$\degreesc$ seem to be out of line from the other points. Use the
+individual subexperiment results given in
+Table~\ref{table:zelen.cap.data} to compute a confidence interval for
+$t_{.5}$ at 300 volts and 180$\degreesc$.  What does this suggest
+about the two outlying points?
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise}
+Refer to Example~\ref{example:zelen.data.int.model} and the numerical
+results in Table~\ref{table:zelen.mles}. For both models,
+compute the ML estimates of
+$t_{.5}$ for the 8 factor-level combinations and plot these on a graph
+like that in Figure~\ref{figure:zelencap.cellquan.int.ps}.  What do
+you conclude?
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise}
+Consider the two-variable regression model
+with interaction given in Section~\ref{section:two.var.with.int}.
+Show that $\beta_{1} + \beta_{3}x_{2}$ is the change in $\mu$ for
+a one-unit change in $x_{1}$.
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise}
+In some reliability applications it is common to use transformations
+of explanatory variables in regression modeling (models involving such
+transformations are described in
+Chapter~\ref{chapter:accelerated.test.models}). Also, it might be
+possible to find a distribution other than the Weibull that will
+provide a better fit to the data.  Use the glass capacitor data
+in Examples~\ref{example:zelen.data} and
+\ref{example:zelen.data.int.model}, and fit the following
+alternative models.
+\begin{enumerate}
+\item
+\label{exer.part:zelen.tran.expvar}
+In the two variable regression model, use the transformations
+$x_{1}=1/(\mbox{temp}\degreesc+ 273.15)$ (known as the Arrhenius
+relationship) and $x_{2}=\log(\mbox{Voltage})$ (known as the inverse
+power relationship). 
+Compare estimates of $t_{.5}$ at the different levels of
+temperature and voltage used in the life test. Is there evidence
+that these factors affect life? Explain.
+\item
+Repeat the analysis in part~\ref{exer.part:zelen.tran.expvar},
+using the normal distribution instead of the Weibull distribution.
+Again, compare estimates of $t_{.5}$ at the different levels of
+temperature and voltage used in the life test.
+\end{enumerate}
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise}
+The Weibull SAFT regression model is also a PH model. Thus fitting a
+parametric PH model with a Weibull baseline distribution is equivalent
+to fitting a Weibull regression model in which $\mu=\log(\weibscale)$
+is a function of explanatory variables and $\sigma=1/\beta$ is
+constant.
+\begin{enumerate}
+\item
+Why is the Cox PH model called ``semiparametric?''
+\item
+What are some advantages of using the semiparametric Cox PH model,
+when compared to using the parametric Weibull model.
+\item
+What are some advantages of using the parametric Weibull model, when
+compared to using the semiparametric Cox PH model?  
+\end{enumerate}
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise1}
+Show that a parametric SAFT model is also a parametric PH model if and
+only if the underlying distribution is a Weibull.
+Hint: divide the proof in the following steps:
+\begin{enumerate}
+\item
+(Sufficient Condition). Assume that $\rv(\xvec_{0})$ has a Weibull
+distribution. Then show that
+$\rv(\xvec)=\rv(\xvec_{0})/\AF(\xvec)$ has
+Weibull distribution and that
+$h(\realrv; \xvec)=\Psi(\xvec) h(\realrv; \xvec_{0})$.
+\item
+(Necessary Condition). Assume that
+$\rv(\xvec)=\rv(\xvec_{0})/\AF(\xvec)$ and
+that
+$h(\realrv; \xvec)=\Psi(\xvec) h(\realrv; \xvec_{0})$.
+First show that
+$S[\AF(\xvec) t;\xvec_{0}] = [S(t;\xvec_{0})]^{\Psi(\xvec)}$. 
+Then argue that this can only be true if
+a Weibull probability plot of $F(\realrv;\xvec_{0})$
+is a straight line.
+\end{enumerate}
+\end{exercise1}

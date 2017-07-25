@@ -1,0 +1,1509 @@
+%chapter 1
+%original by wqmeeker  12 Jan 94
+%edited by wqmeeker  18-19 Feb 94
+%edited by wqmeeker  24-28 Feb 94
+%edited by driker 4 March 94
+%edited by wqmeeker 5 March 94
+%edited by driker 18 march 94
+%edited by wqmeeker 20 March 94
+%edited by wqmeeker 30 March 94 trivial changes
+%edited by driker 13 july 94
+%edited by wqmeeker 16 july 94 clean up and put place holders
+%edited by wqmeeker  2 aug 94
+%edited by wqmeeker  9 aug 94
+%edited by wqmeeker  12 aug 94
+%edited by driker 25 aug 94
+%edited by wqmeeker  8-13 sept 94
+%edited by wqmeeker  22 sept 94
+%edited by wqmeeker  02 oct 94  Luis's comments
+%edited by driker 20 oct 94
+%edited by wqmeeker 13 nov 94 minor additions from 1st br trip
+%edited by driker 14 dec 94
+%edited by driker 2 feb 95
+%edited by wqmeeker  5/6 feb 95
+%edited by driker 19 june 95
+%edited by driker 27 june 95
+%edited by wqmeeker 17 aug 95
+%edited by driker 16 nov 95
+%edited by driker 8 dec 95
+%edited by driker 9 may 96
+%edited by wqmeeker 22 june 96
+%edited by driker 27 june 96
+%edited by driker 19 nov 96
+\setcounter{chapter}{0}
+
+\chapter{Reliability Concepts and Reliability Data}
+\label{chapter:reliability.data}
+
+\input{\chapterhome/common_heading.tex}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+ 
+ \section*{Objectives}
+This chapter explains:
+\begin{itemize} 
+\item
+Basic ideas behind product reliability.
+\item 
+Reasons for collecting reliability data.
+\item 
+Distinguishing features of reliability data.
+\item 
+General models for reliability data.
+\item 
+Examples of reliability data and describe the
+motivation for the collection of the data.
+\item 
+A general strategy that can be used
+for data analysis, modeling, and inference from reliability data.
+\end{itemize}
+
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section*{Overview}
+This chapter introduces some of the basic concepts of product
+reliability. Section~\ref{section:intro} explains the relationship
+between quality and reliability and outlines how statistical studies are
+used to obtain information that can be used to assess and improve product
+reliability.
+Section~\ref{section:data.examples} presents examples to
+illustrate studies that resulted in different kinds of reliability
+data. These examples are used in data analysis and
+exercises in subsequent chapters.
+Section~\ref{section:general.models.for.rel.data} describes, in
+general terms, important qualitative aspects of statistical models
+that are used to describe populations and processes in reliability
+applications.  Section~\ref{section:repair.nonrepair} emphasizes the
+important distinction between studies focusing on data from repairable
+systems or nonrepairable units. Section~\ref{section:strategy.intro}
+describes a general strategy for exploring, analyzing, and drawing
+conclusions from reliability data. This strategy is illustrated in
+examples throughout the book and in the case studies in
+Chapter~\ref{chapter:case.studies}.
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\section{Introduction}
+\label{section:intro}
+%----------------------------------------------------------------------
+\subsection{Quality and reliability}
+\label{section:qual.rel}
+Rapid advances in technology, development of highly sophisticated
+products, intense global competition, and increasing customer
+expectations have put new pressures on manufacturers to produce high
+quality products.  Customers expect purchased products to be reliable
+and safe.  Systems, vehicles, machines, devices and so on should, with
+high probability, be able to perform their intended function under
+usual operating conditions, for some specified period of time.
+
+Technically, reliability is often defined as the probability that a
+system, vehicle, machine, device, and so on, will perform its intended
+function under operating conditions, for a specified
+period of time. Improving reliability is an important part of the
+larger overall picture of improving product quality. There are many
+definitions of quality, but general agreement that an unreliable
+product is {\em not} a high quality product.  Condra~(1993) emphasizes
+that ``reliability is quality over time.''
+
+Modern programs for improving reliability of existing products and for
+assuring continued high reliability for the next generation of
+products require quantitative methods for predicting and assessing
+various aspects of product reliability.  In most cases this will
+involve the collection of reliability data from studies such as
+laboratory tests (or designed experiments) of materials, devices, and
+components, tests on early prototype units, careful monitoring of
+early-production units in the field, analysis of warranty data, and
+systematic longer-term tracking of product in the field.
+ 
+%-------------------------------------------------------------------
+\subsection{Reasons for collecting reliability data}
+
+There are many possible reasons for collecting reliability data.
+Examples include the following:
+
+\begin{itemize} 
+\item
+Assessing characteristics of materials over a warranty period or over
+the product's design life.
+\item 
+Predicting product reliability.
+\item 
+Predicting product warranty costs.
+\item
+Providing needed inputs for system-failure risk assessment.
+\item
+Assessing the effect of a proposed design change.
+\item
+Assessing whether customer requirements and government regulations
+have
+been met.
+\item
+Tracking product in the field to provide information on
+causes of failures and methods of improving product reliability.
+\item 
+Supporting programs to improve reliability through the use of
+laboratory experiments, including accelerated life tests.
+\item 
+Comparing components from two or more different manufacturers, materials,
+production periods, operating environments, etc.
+\item
+Checking the veracity of an advertising claim.
+\end{itemize}
+
+
+
+%-------------------------------------------------------------------
+\subsection{Distinguishing features of reliability data}
+
+Reliability data can have a number of special features requiring
+the use of special statistical methods. For example,
+
+\begin{itemize} 
+\item 
+Reliability data are typically censored (exact failure times are not
+known). The most common reason for censoring is the frequent need to
+analyze life test data before all units have failed.  More
+generally, censoring arises when actual response values (e.g.,
+failure times) cannot be observed for some or all units under
+study. Thus censored observations provide a bound or bounds on the
+actual failure times.
+
+\item 
+Most reliability data are modeled using distributions for positive
+random variables like the exponential, Weibull, gamma, and lognormal.
+Relatively few applications use the normal distribution as a model for
+product life.
+
+\item 
+Inferences and predictions involving extrapolation are often required.
+For example, we might want to estimate the proportion of the
+population that will fail after $900$ hours, based on a test that runs
+only 400 hours (extrapolation in time). Also we might want to estimate
+the time at which 1\% of a product population will fail at $50
+\degreesc$ based on tests at $85 \degreesc$ (extrapolation in
+operating conditions).
+
+\item 
+It is often necessary to use past experience or other scientific or
+engineering judgment to provide information as input to the analysis
+of data or to a decision-making process. This information may take the
+form of a physically-based model and/or the specification of one or
+more parameters (e.g., physical constants or materials properties) of
+such a model.  This is also a form of extrapolation from the past to
+the present or future behavior of a process or product.
+
+\item 
+Typically, the traditional parameters of a statistical model (e.g., mean and
+standard deviation) are {\em not} of primary interest. Instead,
+design engineers, reliability engineers, managers, and customers are
+interested in specific measures of product reliability or particular
+characteristics of a failure-time distribution (e.g., failure probabilities,
+quantiles of the life distribution, failure rates, and so on).
+
+
+\item
+Especially with censored data, model fitting requires computer
+implementation of numerical methods, and often there is no {\em exact}
+theory for statistical inferences.
+
+\item 
+Integrated software to do all of the needed analyses is not available
+yet. There are useful, but limited, capabilities in commercial
+packages like BMDP, MINITAB, SAS, \splus, SYSTAT, and WinSMITH. The
+examples in this book were done with extensions of the \splus system,
+as described in the preface.
+
+
+\end{itemize}
+
+This book emphasizes the analysis of data from studies conducted to
+assess or improve product reliability.  Data from reliability studies,
+however, closely resemble data from time-to-event studies in other
+areas of science and industry including biology, ecology, medicine,
+economics and sociology. The methods of analysis in these other
+areas are the same or similar to those used in reliability data
+analysis. Some synonyms for reliability data are failure-time data,
+life data, survival data (used in medicine and  biological sciences),
+and event-time data (used in the social sciences). 
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+\section{Examples of Reliability Data}
+\label{section:data.examples}
+
+This section describes examples and data sets
+that illustrate the wide range of applications and
+characteristics of reliability data. These and other examples 
+are used in subsequent chapters 
+to illustrate the application
+of statistical methods for analyzing 
+and drawing conclusions from such data.
+
+%----------------------------------------------------------------------
+
+\subsection{Failure-time data with no explanatory variables}
+\label{section:ttf.with.no.exp}
+
+In many applications reliability data will be collected on a 
+sample of units that are assumed to have come from a particular
+process or population and to have been tested or operated under
+nominally identical conditions. More realistically, there are
+physical differences among units (e.g., strength or hardness)
+and operating conditions (e.g., temperature, humidity, or stress)
+and these contribute to the variability in the data. The 
+assumption used in drawing inferences from such {\em single
+distribution} data is that these differences accurately 
+reflect the variability in life caused by the
+actual differences in the population or process of
+interest.
+
+\begin{example}
+\label{example:ball.bearing.data}
+{\bf Ball bearing fatigue data.}
+Lieblein and Zelen~(1956) describe and give data from 
+fatigue endurance tests for deep-groove ball bearings.
+The ball bearings came from four
+different major bearing companies. There was
+disagreement in the industry on the appropriate parameter
+values to use to describe the relationship between fatigue life and
+stress loading. The main objective of the study was to
+estimate values of the parameters in the equation relating 
+bearing life to load. 
+
+
+\begin{table}
+\caption{Ball bearing failure times in millions of revolutions.}
+\centering\small
+\begin{tabular}{*{6}{r}}
+\\[-.5ex]
+\hline
+     17.88 &      
+     28.92  &       
+     33.00  &       
+     41.52  &       
+     42.12  &       
+     45.60 \\      
+     48.40   &      
+     51.84  &       
+     51.96  &       
+     54.12   &      
+     55.56  &       
+     67.80  \\     
+     68.64  &       
+     68.64  &       
+     68.88   &      
+     84.12  &       
+     93.12  &       
+     98.64  \\     
+    105.12   &      
+    105.84  &       
+    127.92  &       
+    128.04   &      
+    173.40  \\
+\hline      
+\end{tabular}\\
+\begin{minipage}[t]{4in}
+Data from Lawless~(1982).
+\end{minipage}
+\label{table:lz.bbearing.data}
+\end{table}
+The data shown in Table~\ref{table:lz.bbearing.data} are a subset of
+$n=23$ bearing failure times for units tested at one level of stress,
+reported and analyzed by Lawless~(1982).
+Figure~\ref{figure:lzbearing.histogram.ps} shows that the data are
+skewed to the right. Because of the lower bound on cycles (or time) to
+failure at zero, this distribution shape is typical of reliability data.
+Figure~\ref{figure:lzbearing.censoringfig.ps} illustrates the failure
+pattern over time.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/lzbearing.histogram.ps}
+\caption{Histogram of the ball bearing failure data.}
+\label{figure:lzbearing.histogram.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\xfigbookfigure{\figurehome/lzbearing.censoringfig.ps}
+\caption{Display of the ball bearing failure data.}
+\label{figure:lzbearing.censoringfig.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+Modern electronic systems may contain anywhere from hundreds to
+hundreds of thousands of integrated circuits (ICs). In order for the
+system to have high reliability, it is necessary for the individual
+ICs and other components to have extremely high reliability, as in the
+following example.
+
+\begin{example}
+\label{example:lfp.data}
+{\bf Integrated circuit life test data.} Meeker~(1987) reports the
+results of a life test of $n=4156$ integrated circuits tested for
+1370 hours at accelerated conditions of $80 \degreesc$ and 80\%
+relative humidity.  The accelerated conditions were used to shorten
+the test by causing defective units to fail more rapidly. 
+The primary purpose of the
+experiment was to estimate the proportion of defective units being
+manufactured in the current production process and to estimate the
+amount of ``burn-in'' time that would be required to remove most of
+the defective units from the product population.  The reliability
+engineers were also interested in whether it might be possible to get
+the needed information about the state of the production process, in
+the future, using much shorter tests (say 200 or 300 hours).
+The data are
+reproduced in Table~\ref{table:lfp.data}.  There were 25 failures in
+the first 100 hours, three more between 100 and 600 hours, and no more
+failures out to 1370 hours, when the test was terminated. Ties in the
+data indicate that failures were detected at inspection times. A
+subset of the data is depicted in
+Figure~\ref{figure:lfp.censoringfig.ps}.  
+\begin{table}
+\caption{Integrated circuit failure times in hours.}
+\centering\small
+\begin{tabular}{*{6}{r}}
+\\[-.5ex]
+\hline
+ .10 & .10 & .15 & .60 & .80& .80\\ 
+1.20 & 2.50 & 3.00 & 4.00 & 4.00 & 6.00 \\ 
+10.00 & 10.00 & 12.50 & 20.00 & 20.00 & 43.00\\ 
+43.00 & 48.00 & 48.00 & 54.00 & 74.00 & 84.00  \\ 
+94.00  & 168.00 & 263.00 & 593.00\\
+\hline
+\end{tabular}\\
+\begin{minipage}[t]{4in}
+When the test ended at 1370 hours, there were 
+4128 unfailed units. Data from Meeker~(1987).
+\end{minipage}
+\label{table:lfp.data}
+\end{table}
+%-------------------------------------------------------------------
+\begin{figure}
+\xfigbookfigure{\figurehome/lfp.censoringfig.ps}
+\caption{General failure pattern of the integrated circuit life test,
+showing a subset of the data
+where 28 out of 4156 units failed in the 1370 hour test.}
+\label{figure:lfp.censoringfig.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+\begin{example}
+\label{example:electronic.subsystem.data}
+{\bf Circuit pack reliability field trial.}
+Table~\ref{table:cirpack.track.data} gives information on the number
+of failures observed during periodic inspections in a field trial of
+early-production circuit packs employing new technology devices.  The
+circuit packs were manufactured under the same design, but by two
+different vendors. The trial ran for 10,000 hours. The 4993 circuit
+packs from Vendor~1 came straight from production.  The 4993 circuit
+packs from Vendor~2 had already seen 1000 hours of burn-in testing at
+the manufacturing plant under operating conditions similar to those in
+the field trial. Such circuit packs were sold at a higher price
+because field reliability was supposed to have been improved by the
+burn-in screening of circuit packs containing defective components.
+Failures during the first 1000 hours of burn-in were not recorded.
+This is the reason for the unknown entries in the table and for having
+information out to 11,000 hours for Vendor~2.  The data in
+Table~\ref{table:cirpack.track.data} is for the first failure in a
+position; information on circuit packs replaced after initial failure
+in a position was not part of the study.
+
+Inspections were costly and were spaced more closely at the beginning
+of the study because more failures were expected there.  The early
+``infant mortality'' failures were caused by component defects in a
+small proportion of the circuit packs.  Such failures are typical for
+an immature product. For such products, burn-in of circuit packs can
+be used to weed out most of the packs with weak components.  Such
+burn-in, however, is expensive, and one of the manufacturer's goals
+was to develop robust design and manufacturing processes that would
+eliminate or reduce, as quickly as possible, the occurrence of such
+defects in future generations of similar products.
+
+There were several goals for this study:
+\begin{itemize}
+\item
+Determine if there was an important difference in the reliability
+of the products from the two different vendors.
+\item
+Determine the specific causes of failures so that the information
+could be used to improve product design or manufacturing methods.
+\item 
+Estimate the circuit pack ``hazard function'' (a measure of failure
+propensity defined in
+Chapter~\ref{chapter:np.models.censoring.likelihood}) out to 10,000 hours.
+\item 
+Estimate the point at which the hazard function levels off.
+After this point in time, burn-in would not be useful for improving
+the reliability of the circuit packs.
+\item
+Judge if and when the burn-in period can be used effectively to improve
+early-life reliability.
+\item
+Estimate the failure-time distribution for the first 10,000 hours
+of life (the warranty period for the product).
+\item
+Estimate the proportion of units that will fail in the first 50,000 hours
+of life (expected technological life of the units).
+\end{itemize}
+\end{example}
+
+%-------------------------------------------------------------------
+\begin{table}
+\caption{Failure data from a circuit pack field tracking study.}
+\centering\small
+\begin{tabular}{rrrrr}
+\\[-.5ex]
+\hline
+\multicolumn{2} {c} {Operating Hours}\\
+\cline{1-2}
+\multicolumn{2} {c} {Interval Endpoint}&&\multicolumn{2} {c}
+{Number Failing}\\
+\cline{1-2} \cline{4-5}
+\multicolumn{1} {r} {Lower}&
+\multicolumn{1} {r} {Upper}&&
+\multicolumn{1} {c} {Vendor 1}&\multicolumn{1} {c} {Vendor 2}\\
+\hline  
+0 & 1 && 10& unknown\\
+1 & 2 && 1& unknown \\
+2 & 5 && 3& unknown\\  
+5 & 10 && 1& unknown\\
+10 & 20 && 2& unknown\\
+20 & 50 && 6& unknown\\
+50 & 100 && 3& unknown\\
+100 & 200 && 2& unknown\\
+200 & 500 && 8& unknown\\
+500 & 1,000 && 4& unknown\\
+1,000 & 2,000 && 5& 2    \\
+2,000 & 5,000 && 6& 5   \\
+5,000 & 6,000 && 3& 6   \\
+6,000 & 7,000 && 9& 11   \\
+7,000 & 8,000 && 10& 7  \\
+8,000 & 9,000 && 16& 14   \\
+9,000 & 10,000 && 7& 10  \\
+10,000 & 11,000 && unknown & 14  \\
+\hline
+\end{tabular}\\
+\begin{minipage}[t]{4in}
+After 10,000 hours of operation, there were 4,897 unfailed packs for
+Vendor~1 and after 11,000 hours of operation there were 4,924 unfailed
+packs for Vendor~2.
+\end{minipage}
+\label{table:cirpack.track.data}
+\end{table}
+
+
+
+\begin{example}
+\label{example:fan.data}
+{\bf Diesel generator fan failure data.} Nelson~(1982, page 133) gives
+data on diesel generator fan failures.  Failures in 12 of $70$
+generator fans were reported at times ranging between 450 hours and
+8,750 hours. Of the 58 units that did not fail, the reported running
+times (i.e., censoring times) ranged between 460 and 11,500 hours.
+Different fans had different running times because units were
+introduced into service at different times and because 
+their use-rates differed. The data are reproduced in Appendix
+Table~\ref{atable:fan.data}.  Figure~\ref{figure:fan.histogram.ps}
+provides an initial graphical representation of the data.  
+Figure~\ref{figure:fan.censorfig.ps} shows the censoring data. 
+The data
+were collected to answer questions like:
+\begin{itemize} 
+\item 
+What percentage of the units will fail
+under warranty?
+\item
+Would the fan-failure problem get better or worse in the future? In
+reliability terminology, does hazard function (sometimes called
+failure rate) for fans increase or decrease with fan age?
+\end{itemize}
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/fan.histogram.ps}
+\caption{Histogram showing failure times (light shade)
+and running times (dark shade)
+for the diesel generator fan data.}
+\label{figure:fan.histogram.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\xfigbookfigure{\figurehome/fan.censorfig.ps}
+\caption{Figure showing the failure pattern in 
+a subset of the diesel generator
+fan data. There were 12 fan failures and 58
+right-censored
+observations.}
+\label{figure:fan.censorfig.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+
+%----------------------------------------------------------------------
+\begin{example}
+\label{example:heat.exchanger.data}
+{\bf Heat exchanger tube crack data.} Nuclear power plants use heat
+exchangers to transfer energy from the reactor to steam turbines.  A
+typical heat exchanger contains thousands of tubes through which steam
+flows continuously when the heat exchanger is in service.  With age,
+heat exchanger tubes develop cracks, usually due to some combination
+of stress-corrosion and fatigue. A heat exchanger can continue to
+operate safely when the cracks are small.  If cracks get large enough,
+however, leaks can develop, and these could lead to serious safety
+problems and expensive, unplanned plant shut-down time. To protect
+against having leaks, heat exchangers are taken out of service
+periodically so that its tubes (and other components) can be inspected
+with nondestructive evaluation techniques.  At the end of each
+inspection period, tubes with detected cracks are plugged so that
+water will no longer pass through them.  This reduces plant
+efficiency, but extends the life of the expensive heat exchangers.
+With this in mind, heat exchangers are built with extra capacity and
+can remain in operation up until the point where a certain percentage
+(e.g., 5\%) of the tubes have been plugged.
+
+Figure~\ref{figure:heatex.year.datafig.ps} illustrates the inspection
+data, available at the end of 1983, from three different power
+plants.  At this point in time, Plant~1 had been in operation for 3
+years, Plant~2 for 2 years, and Plant~3 for only 1 year.  Because all
+of the heat exchangers were manufactured according to the same design
+and specifications and because the heat exchangers were operated in
+generating plants run under similar tightly controlled conditions, it
+seemed that it should be reasonable to combine the data from the
+different plants for the sake of making inferences and predictions
+about the time-to-crack distribution of the heat exchanger tubes.
+Figure~\ref{figure:heatex.stime.datafig.ps} illustrates the same data
+displayed in terms of amount of operating time instead of calendar time.
+
+The engineers were interested in predicting tube life of a larger
+population of tubes in similar heat exchangers in other plants, for
+purposes of proper accounting and depreciation and so that the company
+could develop efficient inspection and replacement strategies.  They
+also wanted to know if the tube failure rate was constant over time or
+if suspected wearout mechanisms (corrosion and fatigue) would, as
+suspected, begin 
+to cause failures to occur with higher frequency 
+as the heat exchanger ages.
+%-------------------------------------------------------------------
+\begin{figure}
+\xfigbookfigure{\figurehome/heatex.year.datafig.ps}
+\caption{Heat exchanger tube crack inspection data in calendar time.}
+\label{figure:heatex.year.datafig.ps}
+\end{figure}
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\begin{figure}
+\xfigbookfigure{\figurehome/heatex.stime.datafig.ps}
+\caption{Heat exchanger tube crack inspection data in operating time.}
+\label{figure:heatex.stime.datafig.ps}
+\end{figure}
+\end{example}
+%-------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+\begin{example}
+{\bf Transmitter vacuum tube data.}
+\label{example:heat.transmitter.tube.data}
+Table~\ref{table:v7.transmitter.tube} gives life data for a certain
+kind of transmitter vacuum tube (designated as ``V7'' within a
+particular transmitter design). Although solid-state electronics has
+made vacuum tubes obsolete for most applications, such tubes are
+still widely used in the output stage of high-power transmitters.
+These data were originally analyzed in Davis~(1952).  As seen in many
+practical situations, the exact failure times were not reported.
+Instead we have only the number of failures in each interval or bin.
+Such data are known as grouped data, interval data, binned data, or
+read-out data.
+\begin{table}
+\caption{Failure times for the V7 transmitter tube.}
+\centering\small
+\begin{tabular}{*{3}{r}}
+\\[-.5ex]
+\hline
+\multicolumn{2} {c} {Days}\\
+\cline{1-2} 
+\multicolumn{2} {c} {Interval Endpoint}& Number\\
+\cline{1-2} 
+\multicolumn{1} {c} {Lower}&
+\multicolumn{1} {c} {Upper}&
+\multicolumn{1} {c} {Failing} \\
+\cline{1-3} 
+ 0 & 25 & 109\\
+25 & 50 & 42 \\
+50 & 75 & 17 \\
+75 & 100 & 7 \\
+100 & $\infty$ & 13 \\
+\hline
+\end{tabular}\\
+\begin{minipage}[t]{2in}
+Data from Davis~(1952).
+\end{minipage}
+\label{table:v7.transmitter.tube}
+\end{table}
+\end{example}
+
+
+%-------------------------------------------------------------------
+\begin{example}
+\label{example:turbine.wheel.data}
+{\bf Turbine wheel crack initiation data.} Nelson~(1982) describes a
+study to estimate the distribution of time to crack initiation for
+turbine wheels.  Each of $432$ wheels was inspected once to determine
+if it had started to crack or not.  At the time of the inspections,
+the wheels had different amounts of service time (age). A unit found
+to be {\em cracked} at its inspection was {\em left}-censored at its
+age (because the crack had initiated at some unknown point before its
+inspection age).  A unit found to be {\em uncracked} at its inspection
+was {\em right}-censored at its age (because a crack would be
+initiated at some unknown point after that age). The data in
+Table~\ref{table:turbine.data}, taken from Nelson~(1982), show the
+number of cracked and uncracked wheels in different age categories,
+showing the midpoint of the time intervals given by Nelson.  The data
+were put into intervals to facilitate simpler analyses.
+
+In some applications components with an initiated crack could continue
+in service for rather long periods of time with the expectation that
+in-service inspections, scheduled frequently enough, could detect
+cracks before they grow to a size that could cause a safety hazard.
+
+The important objectives of the study,
+were to obtain information that could be used to:
+\begin{itemize}
+\item 
+Estimate the distribution of the time to crack initiation.
+\item
+Schedule in-service inspections.
+
+\item
+Assess whether the wheel's crack initiation rate is increasing as the
+wheels age. An increasing rate would suggest 
+preventive replacement of
+the wheels by some age when the risk of cracking gets too high.
+\end{itemize}
+
+\begin{table}
+\caption{Turbine wheel inspection data summary at time of study.}
+\centering\small
+\begin{tabular}{cccc}
+\\[-.5ex]
+\hline
+$100$-hours of Exposure & Interval \\ 
+Interval & Midpoint & \# Cracked & \# Not Cracked  \\
+\hline
+0-8 & 4 & 0 & 39 \\ 8-12 & 10 & 4 & 49 \\ 12-16 & 14 & 2 & 31 \\ 
+16-20 & 18 & 7 & 66 \\ 20-24 & 22 & 5 & 25 \\ 24-28 & 26 &
+9 & 30 \\ 28-32 & 30 & 9 & 33 \\ 32-36 & 34 & 6 & 7 \\ 
+36-40 & 38 & 22 & 12 \\ 40-44 & 42 & 21 & 19 \\ 44+ & 46 & 21
+& 15\\
+\hline
+\end{tabular}\\
+\begin{minipage}[t]{4in}
+Data from Nelson~(1982), page 409.
+\end{minipage}
+\label{table:turbine.data}
+\end{table}
+The failure/censoring pattern of these data is quite different from
+the previous examples and is illustrated in
+Figure~\ref{figure:turbine.datafig.ps}. The analysts did not know the
+initiation time for any of the wheels. Instead, all they knew about
+each wheel was its age and whether a crack had initiated or not.
+%-------------------------------------------------------------------
+\begin{figure}
+\xfigbookfigure{\figurehome/turbine.datafig.ps}
+\caption{Turbine wheel inspection data summary at time of study.}
+\label{figure:turbine.datafig.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+
+
+
+%----------------------------------------------------------------------
+
+
+
+%----------------------------------------------------------------------
+\subsection{Failure-time data with explanatory variables}
+\label{section:ttf.with.exp}
+
+%----------------------------------------------------------------------
+\begin{example}
+\label{example:caf.alt.data}
+{\bf Printed circuit board accelerated life test data.} Meeker and
+LuValle~(1995) give data from an accelerated life test on failure of
+printed circuit boards. The purpose of the experiment was to study the
+effect of the stresses on the failure-time distribution and to
+predict reliability under normal operating conditions. More
+specifically, the experiment was designed to study a particular
+failure mode---the formation and growth of conductive anodic
+filaments between copper-plated through-holes in the printed circuit
+boards.  Actual growth of the filaments could not be monitored. Only
+failure time (defined as a short circuit) could be observed
+directly.  Special test boards were constructed for the experiment.
+The data described here are part of the results of a much larger
+experiment aimed at determining the effects of temperature, relative
+humidity, and electric field on the reliability of printed circuit
+boards.
+
+Spacing between the holes in the test boards was chosen to simulate
+the spacing in actual printed circuit boards.  Each test vehicle
+contained three identical $8\times 18$ matrices of holes with
+alternate columns charged positively and negatively.  These matrices,
+or ``boards'', were the observational units in the experiment.  Data
+analysis indicated that any clustering effect of boards within test
+boards was small enough to ignore in the study.
+
+Meeker and LuValle~(1995) give the number of failures that was
+observed in each of a series of 4-hour and 12-hour long intervals over
+the life-test period.  This experiment resulted in interval-censored
+data because only the interval in which each failure occurred was
+known.  In this example all test units had the same inspection times.
+A graph of the data in Figure~\ref{figure:luvalle.scatter.ps} plots
+the midpoint of the intervals containing failures versus relative
+humidity.  The graph shows that failures occur earlier at higher
+levels of humidity.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/luvalle.scatter.ps}
+\caption{Scatter plot of printed circuit board accelerated life test data.}
+\label{figure:luvalle.scatter.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+%----------------------------------------------------------------------
+\begin{example}
+\label{example:spacecraft.battery}
+{\bf Accelerated test of spacecraft nickel-cadmium battery cells.}
+Brown and Mains~(1979) present the results of an extensive experiment
+to evaluate the long-term performance of rechargable nickel-cadmium
+battery cells that were to be used in spacecraft. The study used 8
+experimental factors. The first five factors shown in the table were
+environmental or accelerating factors (set to higher than usual levels
+to obtain failure information more quickly).  The other three factors
+were product-design factors that could be adjusted in the product
+design to optimize performance and reliability of the batteries to be
+manufactured.  The experiment ran 82 batteries, each containing 5
+individual cells.  Each battery was tested at a combination of factor
+levels determined according to a central composite experimental plan
+(see page~487 of Box and Draper 1987 for information on central
+composite experimental designs).
+\end{example}
+
+\subsection{Degradation data with no explanatory variables}
+\label{section:degradation.with.no.exp}
+
+\begin{example}
+\label{example:bk.fatigue.data}
+{\bf Fatigue crack-size data.} Figure~\ref{figure:bk.fatigue.data.ps}
+and Appendix Table~\ref{atable:bk.fatigue.data} give the size of
+fatigue cracks as a function of number of cycles of applied stress for
+21 test specimens. This is an example of degradation data.  The data
+were reported originally in Hudak, Saxena, Bucci, and Malcolm~(1978).
+The data were collected to obtain information on crack growth rates
+for the alloy. The data in Appendix Table~\ref{atable:bk.fatigue.data}
+were obtained visually from Figure 4.5.2 of Bogdanoff and Kozin~(1985,
+page 242).  For our analysis in the examples in
+Chapter~\ref{chapter:degradation.data}, we will refer to these data as
+Alloy-A and assume that a crack of size of 1.6 inches is considered to
+be a failure.
+%-------------------------------------------------------------------
+\begin{figure}
+\splusbookfigure{\figurehome/bk.fatigue.data.ps}
+\caption{Alloy-A fatigue crack size as a function of number of cycles.}
+\label{figure:bk.fatigue.data.ps}
+\end{figure}
+%-------------------------------------------------------------------
+\end{example}
+
+
+
+\section{General Models for Reliability Data}
+\label{section:general.models.for.rel.data}
+
+%-------------------------------------------------------------------
+\subsection{Definition of the target population or process}
+\label{section:def.of.population}
+Unless there is a clear definition of the target process or
+population, conclusions from a statistical study will appear fuzzy.
+Clear definition of the target population or process also allows
+precise statements about assumptions needed for the validity
+of conclusions to be drawn from a study.
+
+As suggested by Deming~(1975), statistical studies can be divided,
+broadly, into two different categories:
+\begin{itemize} 
+\item
+{\bf Enumerative studies}  answer
+questions about {\em populations} that consist of a finite set of
+identifiable units.  In
+the product reliability context, these units may be in service in the
+field or they may be stored in boxes in a warehouse. Typically the
+statistical study is conducted by selecting a random sample from the
+population, carefully evaluating the units in the sample, and then making an
+inference or inferences about the larger population from which the
+sample was taken.
+\item
+{\bf Analytic studies} answer questions about 
+{\em processes} that generate units or other
+output over time. Again, in the reliability context,
+interest might center
+on the life distribution of electric motors
+that will be produced, in the future, by a particular production process.
+\end{itemize}
+Although the statistical data presentation and analysis methods
+may appear to be the same or very similar for these two different
+types of studies, the underlying assumptions required to make
+inferences (and thus statements of conclusions from a study)
+are quite different. In an enumerative study, the key assumption
+is that the sampling frame (list of population
+units from which the sample will
+be randomly selected) accurately represents the actual units in the
+population. In an analytic study, there is no population.
+Instead, the key assumption needed for inferences about characteristics 
+of the process is that the process will behave in the future
+as it has in the past. Most reliability studies are analytic studies.
+For a more  detailed
+description of these ideas, other examples, and references,
+see Deming~(1975) and Chapter 1 of Hahn and Meeker~(1991).
+
+
+%-------------------------------------------------------------------
+\subsection{Causes of failure and degradation leading to failure}
+\label{section:def.of.degradation}
+
+Many failure modes can be traced to some underlying degradation
+process. For example, fatigue cracks will initiate and grow in a steel
+frame if there are sufficiently high stresses.  Tread on
+automobile tires and friction material on automobile brake pads and
+clutches wear with use.  Corrosion causes thinning of walls of pipes in
+a chemical reactor.  Filament material in operating incandescent
+light bulbs evaporates over time.
+
+Traditionally, most statistical studies of product reliability have
+been based on failure-time data. For some reliability tests,
+however, it is possible to record the actual level of degradation on
+units as a function of time. Such data can, particularly in
+applications where few or no failures are expected, provide
+considerably more reliability information than would be available from
+traditional failure-time data.  For most products it is difficult,
+expensive, or impossible to obtain degradation measurements and only
+(censored) failure-time data will be available.  Thus, because of
+its continuing importance in reliability analysis, most of the
+material in this book focuses on failure-time data.
+Chapters~\ref{chapter:degradation.data} and
+\ref{chapter:accelerated.degradation}, however, describe methods for
+using degradation data for making inferences on reliability. Examples of
+degradation data are given there 
+and in Section~\ref{section:degradation.with.no.exp}.
+
+Not all failures can be traced to degradation; some product failures
+are caused by sudden accidents. For example, a tire may be punctured
+by a nail in the road, or a computer modem may fail from a
+lightning-induced charge on an unprotected telephone line.
+
+Especially when the goal of a reliability study is to develop a highly
+reliable product or to improve the reliability of an existing product,
+it is important to consider the cause or causes of product failure
+(sometimes known as ``modes'' of failure).  Understanding the physical
+and chemical mechanisms (including sources of variability in these
+mechanisms) and random risk factors leading to failure can suggest
+methods for eliminating failure modes or reducing the probability of a
+failure mode, thereby improving reliability.
+
+%-------------------------------------------------------------------
+\subsection{Environmental effects on reliability} 
+\label{section:effect.of.environment}
+Environmental factors play an important part in product reliability.
+Automobiles corrode more rapidly in geographic areas with heavy use of
+salt on icy roads.  An automobile battery would be expected to last
+longer in the warm climate of Florida than in the stressfully cold
+climate of Alaska. Due to increased heat and ultra-violet ray
+exposure, paints and other coating materials degrade more rapidly in
+the sunny southern parts of the United States.  Driving automobiles on
+poorly maintained roads will cause fatigue failures of certain
+components to occur more rapidly than on smooth roads.  Electronic
+components installed in the engine compartment of an automobile are
+subjected to much higher failure-causing heat, humidity, and vibration
+than are similar components installed in an air-conditioned office.
+Closely related is the effect of harsher-than-usual handling or
+operation of a product.  For example, some household sump pumps are
+designed for a 50\% duty cycle.  If such a pump, in an emergency
+situation, has to run continuously, the temperature of the electric
+motor's components will become exceedingly high and the motor's life
+will be much shorter than expected.  Excessive acceleration and
+braking of an automobile will lead to excessive wear on brake pads,
+relative to the number of miles driven. Attaching a trailer to an
+automobile can put additional strain on the engine and transmission as
+well as on parts of the electrical system.
+
+A large proportion of product reliability problems result from
+unanticipated failure modes caused by environmental effects that were
+not part of the initial reliability-evaluation program. When making an
+assessment of reliability it is important to consider environmental
+effects.  Data from designed experiments or field-tracking studies can
+be used to assess the effect that anticipated environmental factors
+and operational variables will have on reliability.
+
+In some applications it is possible to protect products from harsh
+environments. Alternatively, products can be designed to be robust
+enough to withstand the harshest expected environments. Such products
+may increase cost, but could be expected to have exceedingly high
+reliability in more benign environments.  One of the challenges of
+product design is to discover and develop economical means of building
+in robustness to environmental and other factors that manufacturers
+and users are unable to control. See the Epilogue of this
+book for further discussion and Hamada~(1995a,b) for a description of
+some particular examples.
+
+
+%-------------------------------------------------------------------
+\subsection{Definition of time scale}
+\label{section:def.of.time.scale}
+The life of many products can be measured on more than one scale.  For
+example, the lifetimes of many automobile components are measured in
+terms of distance driven; others are measured in terms of calendar
+age. Light bulb life is typically measured in terms of the number of
+hours of use, but the number of on-off cycles could also affect life
+length. For factory life tests of products like washing machines and
+toasters, life would be measured in number of use-cycles.  For data
+from the field, information on the number of use-cycles may not be
+available for individual units; time in service and average-use
+profiles are more commonly available.
+
+As suggested by these examples, the choice of a time for measuring
+product life is often suggested by an underlying process leading to
+failure, even if the degradation process cannot be observed directly.
+For example, in a population of washing machines with different
+use-rates, wear on washing machine components is more directly related
+to use-cycles than to months in service.  There would be more relative
+variability in the months-in-service data than in the
+number-of-use-cycles data.
+
+In some cases there may be more than one measure of product life.  For
+example, the ability of an automobile battery to hold a charge depends
+on the battery's age {\em and} on the number of charge/discharge
+cycles it has seen. There are a number of possible methods that could
+be used for handling such data. For example, it may be possible to
+estimate (directly or indirectly) the effect that both use-cycles and
+charge/discharge cycles have on degradation of battery-cell components
+(as described in Chapter~\ref{chapter:degradation.data}) and use this
+information to develop a suitable measure of the amount of battery
+life as a function of these variables.  Alternatively one could
+develop a statistical model that uses the observed number of
+charge/discharge cycles to help explain the variability in the time to
+failure measured in real time (see
+Chapter~\ref{chapter:regression.analysis}).
+
+%-------------------------------------------------------------------
+\subsection{Definitions of time origin and failure time}
+\label{section:def.of.time.origin}
+When conducting a study of lifetimes of a product or material it is
+important to define clearly the begin-point and the end-point of life.
+The definition may be arbitrary, but should be purposeful.  For
+example, in a constant-burn life test of incandescent light bulbs, the
+definitions would be clear and unambiguous. The beginning of life of a
+refrigerator installed in the field may, however, be more difficult to
+define or determine. Possibilities, with varying degrees of
+accessibility and relevance, include the date manufactured, date of sale, or
+reported date of installation.  Similarly, end of life of customers'
+automobile tires often depends on subjective judgment on the amount of
+remaining tread, made at a convenient time (e.g., when the automobile
+is being serviced).  In life tests of fluorescent light bulbs
+manufacturers define failure as the time when a bulb reaches $60\%$ of
+its initial lumens output.
+
+%----------------------------------------------------------------------
+\section{Repairable Systems and Nonrepairable Units}
+\label{section:repair.nonrepair}
+It is important to distinguish between data from and models for
+the following two situations:
+\begin{itemize} 
+\item
+The time of failure (or other clearly specified event) for
+nonrepairable units or components (including data in {\em
+nonrepairable} components within a {\em repairable} system),
+or time to {\em first} failure of a system (whether it is
+repaired or not).
+\item
+A sequence of reported system failure times
+(or the times of other events) for a repairable system.
+\end{itemize}
+Both of these applications can be important in reliability analyses.
+The models and data analysis methods appropriate for these two
+different areas are, however, generally quite different.
+
+%----------------------------------------------------------------------
+\subsection{Reliability data from 
+components and other nonrepairable units}
+\label{section:rel.data.from.nonrepair}
+
+Data from {\em nonrepairable} units
+arise from many different kinds of reliability studies.  Examples
+include:
+\begin{itemize}
+\item
+Laboratory tests to study durability, wear, or other life-time
+properties of particular materials or components.
+\item
+Operational life tests on complete systems or subsystems, conducted
+before a product is released to customers when information is obtained
+on components and subsystems that are replaced upon failure.
+\item
+Data from customer field operation of larger integrated systems or
+subsystems, especially, when information is obtained on components and
+subsystems that are replaced upon failure.
+\end{itemize}
+When reliability tests are conducted on larger systems and subsystems
+(even those that may be repaired), it is essential that
+component-level information on cause of failure be obtained if the
+purpose of the data collection is improvement of system reliability,
+as opposed to mere assessment of overall system reliability.
+
+
+In some simple situations it might be possible to assume that
+failure-time data from a sample of nonrepairable units or
+components can be modeled as a sample from a particular population or
+manufacturing process having a single failure-time distribution.
+In other situations, failure-time depends on explanatory variables
+(which we will denote collectively by a vector $\xvec$) such as
+environmental variables, operating conditions, manufacturer, date
+manufactured, and so on. Starting in
+Chapter~\ref{chapter:regression.analysis}, the focus of this book will
+turn to models and methods that use explanatory variables in the
+modeling and analysis of reliability data. In more complicated
+situations,
+the failure-time distribution may depend on the age (or more
+accurately
+on the physical condition) of the system in which it is installed.
+
+
+%----------------------------------------------------------------------
+\subsection{Repairable systems reliability data}
+
+The purpose of some reliability studies is to describe the failure
+trends and patterns of an {\em overall system} or population of
+systems.  System failures are followed by system repairs and data
+consist of a sequence of failure times for one or more copies of the
+system.  When a single component or subsystem in a larger system is
+repaired or replaced after a failure, the distribution of the time to
+the next system failure will depend on the overall state of the system
+at the time just before the current failure and the nature of the
+repair.  Thus, repairable system data, in many situations, could be
+described with models that allow for changes in the state of the
+system over time or for dependencies between failures over time.
+There are also simpler models that describe a system's failure
+intensity (rate of occurrence of failures) as a function of system age
+and, perhaps, other explanatory variables.  Such models are also
+useful for describing the failure time distribution of repairable
+systems. Basic models and methods of analysis of repairable system
+data are covered in Chapter~\ref{chapter:repairable.system}.
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+%-------------------------------------------------------------------
+%-------------------------------------------------------------------
+\section{Strategy for Data Collection, Modeling, and Analysis}
+\label{section:strategy.intro}
+Reliability studies involving, for example, laboratory experimentation or
+field tracking, require careful planning and execution.  Mistakes can
+be extremely costly in terms of material and time, not to mention the
+possibility of drawing erroneous conclusions. Even if a mistake is
+recognized, rarely will there be enough time or money to comfortably
+repeat a flawed reliability study.
+
+The rest of this book develops and illustrates the use of statistical
+methods for reliability data analysis.
+Chapters~\ref{chapter:np.models.censoring.likelihood} to
+\ref{chapter:parametric.ml.ls} describe basic models and
+reliability data analysis. Chapters~\ref{chapter:test-planning},
+\ref{chapter:alt.test.planning},
+and Section~\ref{section:planning.accelerated.degradation.tests}
+describe methods of planning reliability studies that will provide the
+desired degree of precision for estimating or predicting reliability.
+The other chapters describe more advanced methods and models for
+analyzing reliability data.
+
+%-------------------------------------------------------------------
+\subsection{Planning a reliability study}
+Discussion of technical details for planning reliability studies is
+delayed until data analysis methods have been covered. This is necessary
+because proper planning depends on knowledge and, in many cases,
+simulated use of analysis methods {\em before} the final study plan is
+specified.
+
+The initial stages of a reliability study should include :
+\begin{itemize}
+\item
+Careful definition of the problem to be solved (including a precise
+specification of the target population or process) and the questions
+to be answered by the study, in particular, the estimates to be
+obtained.
+\item
+Consideration of the resources available for the study
+(time, money, materials, equipment, personnel, etc.).
+\item
+Design of the experiment or study, including a careful assessment of
+precision of estimates as a function of the size of the study (i.e.,
+sample size and expected number of failures). Because estimation
+precision generally depends on unknown model parameters, making such
+an assessment requires planning values of unknown population and
+process characteristics.
+\item
+In some situations, when little is known about the target population
+or process, it is often useful to conduct a pilot study to obtain the
+information needed for success of the main study.
+\item
+In new or unfamiliar situations, it is useful, before the test, to
+conduct a trial analysis of data simulated from a proposed model
+suggested from available information, engineering judgment, or
+previous experience.  These ideas are illustrated in
+Chapters~\ref{chapter:test-planning} and
+\ref{chapter:alt.test.planning} and 
+in Section~\ref{section:planning.accelerated.degradation.tests}.
+\end{itemize}
+
+%-------------------------------------------------------------------
+\subsection{Strategy for data analysis and modeling}
+\label{section:strategy.for.data.analysis}
+After the data collection has been completed, or at various points
+in time during the study, available data will be analyzed.
+The data analyses
+described in this book illustrate the steps in 
+the following general strategy.
+
+\begin{itemize}
+\item
+Begin the analysis by looking at the data without making any
+distributional or other strong model assumptions. This will allow
+information to pass to the analyst without distortion that could be
+caused by making inappropriate model assumptions.  The primary tool
+for these initial steps is graphical analysis, as illustrated in
+Section~\ref{section:data.examples} and in examples throughout this
+book. Chapters~\ref{chapter:nonparametric.estimation} and
+\ref{chapter:probability.plotting} introduce other graphical analysis
+methods. 
+\item
+For many applications it will be useful to fit one or more parametric
+models to the data, for purposes of description, estimation, or
+prediction.  Generally this process progresses from simple to more
+elaborate models, depending on the purpose of the study, the amount of
+data and other information that is available.  In some cases it might
+be desirable or necessary to combine current data with previous data
+or other prior information.
+Chapter~\ref{chapter:ls.parametric.models} describes some simple
+commonly used distributions for reliability data. Chapter
+\ref{chapter:other.parametric.models} describes more
+advanced distributional
+models for reliability data.
+Methods of fitting such distributions to data are described starting in
+Chapter~\ref{chapter:parametric.ml.one.par}.
+\item
+Before using a fitted model for estimation or prediction, one should
+examine appropriate diagnostics and use other tools for assessing the
+adequacy of model assumptions.  Graphical tools are especially useful
+for this purpose.  It is important to remember that, especially in
+situations where there is little data, it will be difficult to detect
+small-to-moderate departures from model assumptions and that just
+because we have no strong evidence against model assumptions, does not
+mean that those assumptions can be trusted.
+\item
+If there are no obvious departures from the assumed model, one will
+generally proceed, with caution, to estimating parameters or
+predicting future outcomes (e.g., number of failures). For most
+reliability applications, such estimates and predictions include
+statistical intervals to reflect uncertainty and variability.
+\item
+In addition to using graphical methods for initial analyses
+and for diagnostics, it is helpful to 
+display {\em results} of the analysis graphically, including estimates or
+predictions and uncertainty bounds (e.g., confidence or prediction
+intervals).
+\item
+Finally, it may be possible to use the results of the study to draw
+conclusions about product reliability, perhaps contingent on
+particular model assumptions. For some model assumptions it is
+possible to use the available data to assess the adequacy of the
+assumption (e.g., adequacy of model fit within the range of the data).
+For other assumptions, the data may provide no information about model
+adequacy.  In situations where there is no information to assess the
+adequacy of assumptions, it is useful (even important) to vary
+assumptions and assess the {\em impact} that such perturbations have
+on final answers. The additional uncertainty uncovered by such
+sensitivity analyses should be reported along with conclusions.
+\end{itemize}
+
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+\section*{Bibliographic Notes}
+
+Nelson~(1982, 1990a) and Lawless~(1982) provide other interesting
+reliability data sets. Hahn and Meeker~(1982a,b) describe basic
+concepts and outline potential pitfalls of life data analysis.
+Chapter 1 of Hahn and Meeker~(1991) provides a detailed discussion of
+implicit assumptions that are required to draw valid inferences from
+statistical studies. These assumptions parallel those needed to make
+inferences from reliability data.  Ansell and Phillips~(1989) describe
+some of the practical problems that arise in the analysis of
+reliability data. Nelson~(1990a, page 237) outlines the capabilities
+of a variety of software packages that have procedures for analyzing
+censored reliability data.  Kalbfleisch and Lawless~(1988), Lawless
+and Kalbfleisch~(1992), and Baxter and Tortorella~(1994) describe some
+technical methods for dealing with field reliability data.
+
+Kordonsky and Gertsbakh~(1993) discuss the important problem of
+choosing appropriate time scales when analyzing reliability data. They
+formalize and discuss the concepts of optimal and good time scales and
+they show how to find a best linear combination of observable time
+scales when the criteria is minimizing the coefficient of variation of
+the time scale.  Kordonsky and Gertsbakh~(1995a) discuss theoretical
+aspects of finding a best time scale for monitoring systems whose
+failure has serious consequences (airplanes, nuclear power plants,
+etc.). They present a method for calculating this scale when the
+observed data are complete (noncensored) on two observable time scales
+like operational time and number of cycles.  Kordonsky and
+Gertsbakh~(1995b) generalize these results to the case in which the
+data are censored.  For another view on combining multiple time scales
+into a single time scale for life testing with complete data, see
+Farewell and Cox~(1979).
+
+
+
+\section*{Exercises}
+
+%-------------------------------------------------------
+\begin{exercise}
+Discuss the assumptions that would be needed to take the heat
+exchanger data for calendar time in
+Figure~\ref{figure:heatex.year.datafig.ps} and convert them to
+operating-time data shown in
+Figure~\ref{figure:heatex.stime.datafig.ps} and then use these data
+for purposes of analysis and inference on the life distribution of
+heat exchanger tubes of the type in these exchangers.
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise}
+It has been argued both that quality is a part of reliability and that
+reliability is a part of quality. Discuss the relationship between
+these two disciplines. To help make your discussion concrete, use your
+knowledge of a particular product to help express your ideas.
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise}
+In the development and presentation of traditional statistical
+methods, description and inference are often presented in terms of
+means and variances (or standard deviations) of distributions.
+\begin{enumerate}
+\item
+Use some of the examples in this chapter to explain why, in many
+applications, reliability or design engineers would be more interested
+in the time at which $1\%$ (or some smaller percentage) of a
+particular component will fail instead of the time at which $50\%$
+would fail.
+\item
+Explain why means and variances of time to failure may not be of such
+high interest in reliability studies.
+\item
+Give at least one example of a product for which mean time to failure
+would be of interest. Explain why.
+\end{enumerate}
+\end{exercise}
+
+
+%-------------------------------------------------------
+\begin{exercise}
+Consider the following situations. For each, discuss the reasons why
+the study might be considered to be either analytic or enumerative.
+For each example outline the assumptions needed so that the
+sample data will be useful for making inferences about the population
+or process of interest.
+\begin{enumerate}
+\item
+Ten light bulbs were selected at random points in time from a
+production process. One of these bulbs was then selected at random and
+put aside for future use. The other nine bulbs were tested until
+failure. The data from the nine failures were to be used to construct a
+prediction interval for the last bulb.
+\item
+A company has entered into a contract to buy a large lot of light
+bulbs. The price will be determined as a function of the average
+failure time of a random sample of $100$ bulbs.
+\item
+Example~\ref{example:heat.exchanger.data}
+\item
+Example~\ref{example:spacecraft.battery}
+\end{enumerate}
+\end{exercise}
+
+
+%-------------------------------------------------------
+\begin{exercise}
+\label{exercise:time.scale}
+An important part of quantifying product reliability is specification
+of an appropriate time scale (or time scales) on which life should be
+measured (e.g., hours of operation, cycles of operation, etc.). For
+each of the following products, suggest and give reasons for an
+appropriate scale (or scales) upon which one might measure life for
+the following products. Also, discuss possible environmental factors
+that might affect the lifetime of individual units.
+\begin{enumerate}
+\item
+Painted surface of an automobile.
+\item
+Automobile lead-acid battery.
+\item
+Automobile windshield wipers.
+\item
+Automobile tires.
+\item
+Incandescent light bulb.
+\end{enumerate}
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise}
+For each of the products listed in
+Exercise~\ref{exercise:time.scale}, explain your best understanding
+of the underlying failure mechanism. Also, describe possible ways in
+which an analyst could define failure.
+\end{exercise}
+
+
+%-------------------------------------------------------
+\begin{exercise}
+\label{exercise:repair.or.not}
+For each of the following, discuss whether field failures of the unit
+or product should be considered to be a failure of a repairable
+system, a failure of replaceable unit within a system, or both.
+Explain why.
+\begin{enumerate}
+\item
+Automobile alternator.
+\item
+Video cassette recorder.
+\item
+Microwave oven.
+\item
+Home air conditioner.
+\item
+Hand-held calculator.
+\item
+Clothes dryer.
+\end{enumerate}
+\end{exercise}
+
+
+%-------------------------------------------------------
+\begin{exercise}
+For each of the products listed in
+Exercise~\ref{exercise:repair.or.not}, describe the range of
+environments that the product might encounter in use and the effect
+that environment could have on the product's reliability.
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise}
+Consider the turbine wheel data in 
+Table~\ref{table:turbine.data}.
+\begin{enumerate}
+\item
+Compute the proportion cracked at each level of exposure.
+\item
+How do you explain the fact that the
+proportion of cracked wheels decreases as age increased at 14, 30, and 42 
+hundred hours of exposure?
+\item
+Discuss the assumptions that one would have to make to answer the
+questions 
+raised by the objectives listed in 
+Example~\ref{example:turbine.wheel.data}.
+\end{enumerate}
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise}
+Construct a histogram for the V7 tube data in
+Table~\ref{table:v7.transmitter.tube}. Discuss alternative methods of
+handling the last open-ended time interval. What information does this
+plot provide?
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise}
+Figure~\ref{figure:fan.histogram.ps} shows both the number of failures
+and the number of censored observations in each of 6 time intervals.
+Explain why such a graphical display needs to be interpreted
+differently than a histogram of uncensored failure times like
+Figure~\ref{figure:lzbearing.histogram.ps}.
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise}
+A telephone electronic switching system contains a large number of
+nominally identical circuit packs.  When a circuit pack fails, only a
+small part of the system's functionality is lost. Failed packs are
+replaced, as soon as possible, with new circuit packs.  All of the
+circuit packs have serial numbers and detailed records are kept so
+that the failure times are known for all packs that fail and so that
+the running times are known for all of the packs that do not fail.  In
+practice, to assess circuit pack reliability, it would be
+common to treat the circuit packs in the system as a sample from a
+larger population of circuit packs and use the data to make inferences
+about the larger population.
+\begin{enumerate}
+\item
+\label{exercise:cirpack.population.def}
+List three distinct different {\em precise} 
+definitions for the larger population or process
+that could be of interest to
+reliability engineers, design engineers, or financial managers.
+\item
+For each of the definitions in
+part~\ref{exercise:cirpack.population.def}, state the assumptions that
+must be satisfied to make the desired inferences about the circuit
+pack life distribution. Comment on the reasonableness of these
+assumptions and how departures from the assumptions could result in
+misleading conclusions.
+\item
+Assume that you have been given the above description of a switching
+system and have been asked to attend a meeting where a study is to be
+planned to monitor, continuously, the early-life reliability (defined
+as the first 1000 hours) of circuit packs.  The purpose of the study
+is to determine the effect of recent design and manufacturing process
+changes on circuit pack reliability.  Data will be obtained from three
+particular systems that are physically close to the design and
+manufacturing facilities of the circuit pack manufacturer. Before
+offering advice on the plan you will need further information. Prepare
+a list of questions that you would ask of design engineers,
+reliability engineers, and manufacturing engineers who will be
+attending the meeting.
+\end{enumerate}
+\end{exercise}
+\begin{exercise}
+Explain how graphical methods can be used to complement analytical
+methods of data analysis.
+\end{exercise}
+
+%-------------------------------------------------------
+\begin{exercise}
+There was a considerable amount of censoring at low levels of
+humidity in the printed circuit accelerated life test data shown in
+Figure~\ref{figure:luvalle.scatter.ps}. Explain how such censoring 
+can obscure important information about the relationship between
+humidity and time to failure.
+\end{exercise}
+
