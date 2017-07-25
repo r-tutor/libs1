@@ -1,3 +1,29 @@
+# version 0.5-2
+
+* made ready for rwinlib/gdal2; #408
+
+* make `[.sf` for selections including `NA` values like `x[c(1,NA,2)]`; #403
+
+* add a `[<-` method for `sfc` objects; automatically replaces `NULL` with an empty geometry; #411
+
+* add `st_point_on_surface` function to return a point that is guaranteed to be on the surface (standard compliance)
+
+* `read_sf` now returns an sf-tibble, an object of class `c("sf", "tbl_df", "tbl", "data.frame")`
+
+* work around for `dplyr::filter` not dispatching geometry column subsetting to `sf::[.sfc`
+
+* allow `units` object `dist` argument to `st_buffer`; these must be convertable to `arc_degree` for geographic, and to the proper length unit for non-geographic data; #399
+
+* prevent gdal from crashing when trying to `st_transform` an empty geometry; #398
+
+* add `st_as_sfc` method for `bbox`, returning the bbox polygon; #377
+
+* strip file name extension from default layer name in `st_write`; #392
+
+* have `st_sf` replace `NULL` values in an `sfc` list-column with the appropriate empty geometry; #372
+
+* allow setting `ndiscr` through `ggplot2::coords_sf` to improve graticule plotting in `geom_sf`; #396
+
 # version 0.5-1
 
 * add spatial indexes to most binary geometry operations; #394 and http://r-spatial.org/r/2017/06/22/spatial-index.html
