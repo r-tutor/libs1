@@ -148,13 +148,14 @@ $(document).ready(function () {
 <li><a href="#geometrycollection">Geometrical operations</a></li>
 <li><a href="#non-valid-geometries">Non-valid geometries</a></li>
 </ul></li>
+<li><a href="#units">Units</a></li>
 <li><a href="#how-attributes-relate-to-geometries">How attributes relate to geometries</a></li>
 </ul>
 </div>
 
 <p><a href="https://en.wikipedia.org/wiki/Simple_Features">Simple features</a> or <a href="http://www.opengeospatial.org/standards/sfa"><em>simple feature access</em></a> refers to a formal standard (ISO 19125-1:2004) that describes how objects in the real world can be represented in computers, with emphasis on the <em>spatial</em> geometry of these objects. It also describes how such objects can be stored in and retrieved from databases, and which geometrical operations should be defined for them.</p>
 <p>The standard is widely implemented in spatial databases (such as PostGIS), commercial GIS (e.g., <a href="http://www.esri.com/">ESRI ArcGIS</a>) and forms the vector data basis for libraries such as <a href="http://www.gdal.org/">GDAL</a>. A subset of simple features forms the <a href="http://geojson.org/">GeoJSON</a> standard.</p>
-<p>R has well-supported classes for storing spatial data (<a href="https://CRAN.R-project.org/package=sp">sp</a>) and interfacing to the above mentioned environments (<a href="https://CRAN.R-project.org/package=rgdal">rgdal</a>, <a href="https://CRAN.R-project.org/package=rgeos">rgeos</a>), but has so far lacked a complete implementation of simple features, making conversions at times convoluted, inefficient or incomplete. The package <a href="http://github.com/edzer/sfr">sf</a> tries to fill this gap, and aims at succeeding <a href="https://CRAN.R-project.org/package=sp">sp</a> in the long term.</p>
+<p>R has well-supported classes for storing spatial data (<a href="https://CRAN.R-project.org/package=sp">sp</a>) and interfacing to the above mentioned environments (<a href="https://CRAN.R-project.org/package=rgdal">rgdal</a>, <a href="https://CRAN.R-project.org/package=rgeos">rgeos</a>), but has so far lacked a complete implementation of simple features, making conversions at times convoluted, inefficient or incomplete. The package <a href="http://github.com/r-spatial/sf">sf</a> tries to fill this gap, and aims at succeeding <a href="https://CRAN.R-project.org/package=sp">sp</a> in the long term.</p>
 <p>This vignette:</p>
 <ul>
 <li>explains what is meant by features, and by simple features</li>
@@ -308,7 +309,7 @@ $(document).ready(function () {
 <pre class="r"><code>library(sf)
 ## Linking to GEOS 3.5.1, GDAL 2.1.3, proj.4 4.9.2, lwgeom 2.3.2 r15302
 nc &lt;- st_read(system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;))
-## Reading layer `nc' from data source `/tmp/RtmphIQjm0/Rinst33d2685d5986/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/Rtmpefqt2Y/Rinst13d855d6dfb6/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -337,21 +338,21 @@ nc &lt;- st_read(system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;))
 </ul>
 <p>Methods for <code>sf</code> objects are</p>
 <pre class="r"><code>methods(class = &quot;sf&quot;)
-##  [1] $&lt;-               [                 [[&lt;-             
-##  [4] aggregate         cbind             coerce           
-##  [7] initialize        merge             plot             
-## [10] print             rbind             show             
-## [13] slotsFromS3       st_agr            st_agr&lt;-         
-## [16] st_as_sf          st_bbox           st_boundary      
-## [19] st_buffer         st_cast           st_centroid      
-## [22] st_convex_hull    st_coordinates    st_crs           
-## [25] st_crs&lt;-          st_difference     st_geometry      
-## [28] st_geometry&lt;-     st_intersection   st_is            
-## [31] st_line_merge     st_make_valid     st_polygonize    
-## [34] st_precision      st_segmentize     st_set_precision 
-## [37] st_simplify       st_split          st_sym_difference
-## [40] st_transform      st_triangulate    st_union         
-## [43] st_voronoi        st_zm            
+##  [1] $&lt;-                 [                   [[&lt;-               
+##  [4] aggregate           cbind               coerce             
+##  [7] initialize          merge               plot               
+## [10] print               rbind               show               
+## [13] slotsFromS3         st_agr              st_agr&lt;-           
+## [16] st_as_sf            st_bbox             st_boundary        
+## [19] st_buffer           st_cast             st_centroid        
+## [22] st_convex_hull      st_coordinates      st_crs             
+## [25] st_crs&lt;-            st_difference       st_geometry        
+## [28] st_geometry&lt;-       st_intersection     st_is              
+## [31] st_line_merge       st_make_valid       st_point_on_surface
+## [34] st_polygonize       st_precision        st_segmentize      
+## [37] st_set_precision    st_simplify         st_split           
+## [40] st_sym_difference   st_transform        st_triangulate     
+## [43] st_union            st_voronoi          st_zm              
 ## see '?methods' for accessing help and source code</code></pre>
 <p>It is also possible to create <code>data.frame</code> objects with geometry list-columns that are not of class <code>sf</code>, e.g. by</p>
 <pre class="r"><code>nc.no_sf &lt;- as.data.frame(nc)
@@ -406,20 +407,21 @@ plot(nc[w,1], col = 2:7)</code></pre>
 ## [1] &quot;sfc_MULTIPOLYGON&quot; &quot;sfc&quot;</code></pre>
 <p>Methods for geometry list-columns include</p>
 <pre class="r"><code>methods(class = 'sfc')
-##  [1] Ops               [                 as.data.frame    
-##  [4] c                 coerce            format           
-##  [7] initialize        print             show             
-## [10] slotsFromS3       st_as_binary      st_as_text       
-## [13] st_bbox           st_boundary       st_buffer        
-## [16] st_cast           st_centroid       st_convex_hull   
-## [19] st_coordinates    st_crs            st_crs&lt;-         
-## [22] st_difference     st_geometry       st_intersection  
-## [25] st_is             st_line_merge     st_make_valid    
-## [28] st_polygonize     st_precision      st_segmentize    
-## [31] st_set_precision  st_simplify       st_split         
-## [34] st_sym_difference st_transform      st_triangulate   
-## [37] st_union          st_voronoi        st_zm            
-## [40] str               summary          
+##  [1] Ops                 [                   [&lt;-                
+##  [4] as.data.frame       c                   coerce             
+##  [7] format              initialize          print              
+## [10] show                slotsFromS3         st_as_binary       
+## [13] st_as_text          st_bbox             st_boundary        
+## [16] st_buffer           st_cast             st_centroid        
+## [19] st_convex_hull      st_coordinates      st_crs             
+## [22] st_crs&lt;-            st_difference       st_geometry        
+## [25] st_intersection     st_is               st_line_merge      
+## [28] st_make_valid       st_point_on_surface st_polygonize      
+## [31] st_precision        st_segmentize       st_set_precision   
+## [34] st_simplify         st_split            st_sym_difference  
+## [37] st_transform        st_triangulate      st_union           
+## [40] st_voronoi          st_zm               str                
+## [43] summary            
 ## see '?methods' for accessing help and source code</code></pre>
 <p>Coordinate reference systems (<code>st_crs</code> and <code>st_transform</code>) are discussed in the section on <a href="#crs">coordinate reference systems</a>. <code>st_as_wkb</code> and <code>st_as_text</code> convert geometry list-columns into well-known-binary or well-known-text, explained <a href="#wkb">below</a>. <code>st_bbox</code> retrieves the coordinate bounding box.</p>
 <p>Attributes include</p>
@@ -573,7 +575,7 @@ st_as_sfc(structure(list(st_as_binary(x)), class = &quot;WKB&quot;))[[1]]
 <p>As we’ve seen above, reading spatial data from an external file can be done by</p>
 <pre class="r"><code>filename &lt;- system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;)
 nc &lt;- st_read(filename)
-## Reading layer `nc' from data source `/tmp/RtmphIQjm0/Rinst33d2685d5986/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/Rtmpefqt2Y/Rinst13d855d6dfb6/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -591,7 +593,7 @@ nc &lt;- st_read(filename)
 <p>If we repeat this, we get an error message that the file already exists, and we can overwrite by</p>
 <pre class="r"><code>st_write(nc, &quot;nc.shp&quot;, delete_layer = TRUE)
 ## Deleting layer `nc' using driver `ESRI Shapefile'
-## Writing layer `nc' to data source `/tmp/RtmphIQjm0/Rbuild33d25133bbee/sf/vignettes/nc.shp' using driver `ESRI Shapefile'
+## Writing layer `nc' to data source `/tmp/Rtmpefqt2Y/Rbuild13d8573414be/sf/vignettes/nc.shp' using driver `ESRI Shapefile'
 ## features:       100
 ## fields:         14
 ## geometry type:  Multi Polygon</code></pre>
@@ -717,9 +719,9 @@ methods(st_as_sfc)
 ##  [1] st_as_sfc.SpatialLines*       st_as_sfc.SpatialMultiPoints*
 ##  [3] st_as_sfc.SpatialPixels*      st_as_sfc.SpatialPoints*     
 ##  [5] st_as_sfc.SpatialPolygons*    st_as_sfc.WKB*               
-##  [7] st_as_sfc.blob*               st_as_sfc.character*         
-##  [9] st_as_sfc.factor*             st_as_sfc.list*              
-## [11] st_as_sfc.map*               
+##  [7] st_as_sfc.bbox*               st_as_sfc.blob*              
+##  [9] st_as_sfc.character*          st_as_sfc.factor*            
+## [11] st_as_sfc.list*               st_as_sfc.map*               
 ## see '?methods' for accessing help and source code
 # anticipate that sp::CRS will expand proj4strings:
 p4s &lt;- &quot;+proj=longlat +datum=NAD27 +no_defs +ellps=clrk66 +nadgrids=@conus,@alaska,@ntv2_0.gsb,@ntv1_can.dat&quot;
@@ -736,7 +738,9 @@ class(nc.sp)
 ## [1] &quot;sp&quot;
 nc2 &lt;- st_as_sf(nc.sp)
 all.equal(nc, nc2)
-## [1] &quot;Component \&quot;geometry\&quot;: Attributes: &lt; Component \&quot;crs\&quot;: Component \&quot;epsg\&quot;: 'is.NA' value mismatch: 1 in current 0 in target &gt;&quot;</code></pre>
+## [1] &quot;Attributes: &lt; Component \&quot;class\&quot;: Lengths (4, 2) differ (string compare on first 2) &gt;&quot;                                         
+## [2] &quot;Attributes: &lt; Component \&quot;class\&quot;: 1 string mismatch &gt;&quot;                                                                         
+## [3] &quot;Component \&quot;geometry\&quot;: Attributes: &lt; Component \&quot;crs\&quot;: Component \&quot;epsg\&quot;: 'is.NA' value mismatch: 1 in current 0 in target &gt;&quot;</code></pre>
 <p>As the <code>Spatial*</code> objects only support <code>MULTILINESTRING</code> and <code>MULTIPOLYGON</code>, <code>LINESTRING</code> and <code>POLYGON</code> geometries are automatically coerced into their <code>MULTI</code> form. When converting <code>Spatial*</code> into <code>sf</code>, if all geometries consist of a single <code>POLYGON</code> (possibly with holes), a <code>POLYGON</code> and otherwise all geometries are returned as <code>MULTIPOLYGON</code>: a mix of <code>POLYGON</code> and <code>MULTIPOLYGON</code> (such as common in shapefiles) is not created. Argument <code>forceMulti=TRUE</code> will override this, and create <code>MULTIPOLYGON</code>s in all cases. For <code>LINES</code> the situation is identical.</p>
 </div>
 <div id="geometrycollection" class="section level2">
@@ -834,17 +838,43 @@ st_is_valid(st_sfc(x2,x3))
 <p><img src="data:image/png;base64,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b3hl203ggbvIL2qs8hMI9Jnm9OGVC8zh7aIHGw4zFwyvnG6e5WK8vcyLhlfea3YeXF65swEP7Hwl+cWMVX4CgT7bfHR45evmyHbRgw1HmG8Mr3zEHO9ivAeak4dX/mH0FkG/2vue4IG9f0V+MWOVn0CgbzTPG155vatHxaGJ55k3Dq8817zZxXiPM/sPrzzWHOhiPGiG/OKmXX4Cgf5k7fpzq8sfbDZf63BeIORcs8vgweuvbL/uZy7G+6IZPqhz5hrz312MB82QX9y0y0/yNKZXmnXPPf2TL9lontnx1EDEM8zGl37yYyeuM692M96jjdnyopc/1Ji93IwHzZBf3LTKTyLQu1+1tnqMdc1Jd3Q9NZDwh+euqeZ77SlLbsb746HDB8m38EIIFcgvblrlJ3sp5+VvOu7ppzp5UhtI+MGpTzvuTVe4G++rj3/AfY/4tLvxoBnyi5sW+fFmIgAAliBQAABLECgAgCUIFADAEgQKAGAJAgUAsASBAgBYgkABACxBoAAAliBQAABLECgAgCUIFADAEgQKAGAJAgUAsASBAgBYgkABACxBoAAAliBQAABLECgAgCUIFADAEgQKAGAJAgUAsASBAgBYgkABACxBoAAAliBQAABLECgAgCUIFADAEgQKAGAJAgUAsASBAgBYgkABACxBoAAAliBQAABLECgAgCUIFADAEgQKAGAJAgUAsASBAgBYgkABACxBoAAAliBQAABLECgAgCUIFADAEgQKAGAJAgUAsASBAgBYgkABACxBoAAAliBQAABLECgAgCUIFADAEgQKAGAJAgUAsASBAgBYgkABACxBoAAAliBQAABLECgAgCUIFADAkv8PeITyo7vwBGoAAAAASUVORK5CYII=" width="672" /></p>
 </div>
 </div>
+<div id="units" class="section level1">
+<h1>Units</h1>
+<p>Where possible geometric operations such as <code>st_distance()</code>, <code>st_length()</code> and <code>st_area()</code> report results with a units attribute appropriate for the CRS:</p>
+<pre class="r"><code>a &lt;- st_area(nc[1,])
+attributes(a)
+## $units
+## $numerator
+## [1] &quot;m&quot; &quot;m&quot;
+## 
+## $denominator
+## character(0)
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;symbolic_units&quot;
+## 
+## $class
+## [1] &quot;units&quot;</code></pre>
+<p>The <strong>units</strong> package can be used to convert between units:</p>
+<pre class="r"><code>units::set_units(a, km^2) # result in square kilometers
+## 1137.389 km^2
+units::set_units(a, ha) # result in hectares
+## 113738.9 ha</code></pre>
+<p>The result can be stripped of their attributes if needs be:</p>
+<pre class="r"><code>as.numeric(a)
+## [1] 1137388604</code></pre>
+</div>
 <div id="how-attributes-relate-to-geometries" class="section level1">
 <h1>How attributes relate to geometries</h1>
 <p>(This will eventually be the topic of a new vignette; now here to explain the last attribute of <code>sf</code> objects)</p>
-<p>The standard documents about simple features are very detailed about the geometric aspects of features, but say nearly nothing about attributes, except that their values should be understood in another reference system (their <a href="https://CRAN.R-project.org/package=units">units of measurement</a>). But there is more to it. For variables like air temperature, interpolation makes usually sense, for others like human body temperature it doesn’t. The difference is that air temperature is a field, which continues between sensors, where body temperature is an object property that doesn’t extend beyond the body – in spatial statistics bodies would be called a point pattern, their temperature the point marks. For geometries that have a non-zero size (positive length or area), attribute values may refer to the every sub-geometry (every point), or may summarize the geometry. For example, a state’s population density summarizes the whole state, and is not a meaningful estimate of population density for a give point inside the state without the context of the state. On the other hand, land use or geological maps give polygons with constant land use or geology, every point inside the polygon is of that class. Some properties are spatially <a href="https://en.wikipedia.org/wiki/Intensive_and_extensive_properties">extensive</a>, meaning that attributes would summed up when two geometries are merged: population is an example. Other properties are spatially intensive, and should be averaged, with population density the example.</p>
+<p>The standard documents about simple features are very detailed about the geometric aspects of features, but say nearly nothing about attributes, except that their values should be understood in another reference system (their units of measurement, e.g. as implemented in the package <a href="https://CRAN.R-project.org/package=units"><strong>units</strong></a>). But there is more to it. For variables like air temperature, interpolation makes usually sense, for others like human body temperature it doesn’t. The difference is that air temperature is a field, which continues between sensors, where body temperature is an object property that doesn’t extend beyond the body – in spatial statistics bodies would be called a point pattern, their temperature the point marks. For geometries that have a non-zero size (positive length or area), attribute values may refer to the every sub-geometry (every point), or may summarize the geometry. For example, a state’s population density summarizes the whole state, and is not a meaningful estimate of population density for a give point inside the state without the context of the state. On the other hand, land use or geological maps give polygons with constant land use or geology, every point inside the polygon is of that class. Some properties are spatially <a href="https://en.wikipedia.org/wiki/Intensive_and_extensive_properties">extensive</a>, meaning that attributes would summed up when two geometries are merged: population is an example. Other properties are spatially intensive, and should be averaged, with population density the example.</p>
 <p>Simple feature objects of class <code>sf</code> have an <em>agr</em> attribute that points to the <em>attribute-geometry-relationship</em>, how attributes relate to their geometry. It can be defined at creation time:</p>
 <pre class="r"><code>nc &lt;- st_read(system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;),
     agr = c(AREA = &quot;aggregate&quot;, PERIMETER = &quot;aggregate&quot;, CNTY_ = &quot;identity&quot;,
         CNTY_ID = &quot;identity&quot;, NAME = &quot;identity&quot;, FIPS = &quot;identity&quot;, FIPSNO = &quot;identity&quot;,
         CRESS_ID = &quot;identity&quot;, BIR74 = &quot;aggregate&quot;, SID74 = &quot;aggregate&quot;, NWBIR74 = &quot;aggregate&quot;,
         BIR79 = &quot;aggregate&quot;, SID79 = &quot;aggregate&quot;, NWBIR79 = &quot;aggregate&quot;))
-## Reading layer `nc' from data source `/tmp/RtmphIQjm0/Rinst33d2685d5986/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/Rtmpefqt2Y/Rinst13d855d6dfb6/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## Attribute-geometry relationship: 0 constant, 8 aggregate, 6 identity
 ## geometry type:  MULTIPOLYGON

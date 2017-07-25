@@ -156,9 +156,9 @@ $(document).ready(function () {
 <pre class="r"><code>library(sf)
 fname &lt;- system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;)
 fname
-## [1] &quot;/tmp/RtmphIQjm0/Rinst33d2685d5986/sf/shape/nc.shp&quot;
+## [1] &quot;/tmp/Rtmpefqt2Y/Rinst13d855d6dfb6/sf/shape/nc.shp&quot;
 nc &lt;- st_read(fname)
-## Reading layer `nc' from data source `/tmp/RtmphIQjm0/Rinst33d2685d5986/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/Rtmpefqt2Y/Rinst13d855d6dfb6/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -202,7 +202,7 @@ Available layers:
 <p>Alternatively, a user can set the global option <code>stringsAsFactors</code>, and this will have the same effect:</p>
 <pre class="r"><code>options(stringsAsFactors = FALSE)
 st_read(fname)
-## Reading layer `nc' from data source `/tmp/RtmphIQjm0/Rinst33d2685d5986/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/Rtmpefqt2Y/Rinst13d855d6dfb6/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -464,9 +464,9 @@ methods(st_as_sfc)
 ##  [1] st_as_sfc.SpatialLines*       st_as_sfc.SpatialMultiPoints*
 ##  [3] st_as_sfc.SpatialPixels*      st_as_sfc.SpatialPoints*     
 ##  [5] st_as_sfc.SpatialPolygons*    st_as_sfc.WKB*               
-##  [7] st_as_sfc.blob*               st_as_sfc.character*         
-##  [9] st_as_sfc.factor*             st_as_sfc.list*              
-## [11] st_as_sfc.map*               
+##  [7] st_as_sfc.bbox*               st_as_sfc.blob*              
+##  [9] st_as_sfc.character*          st_as_sfc.factor*            
+## [11] st_as_sfc.list*               st_as_sfc.map*               
 ## see '?methods' for accessing help and source code</code></pre>
 <p>An example would be:</p>
 <pre class="r"><code>library(sp)

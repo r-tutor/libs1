@@ -270,6 +270,17 @@ title(st_as_text(x3))
 par(opar)
 
 ## ------------------------------------------------------------------------
+a <- st_area(nc[1,])
+attributes(a)
+
+## ------------------------------------------------------------------------
+units::set_units(a, km^2) # result in square kilometers
+units::set_units(a, ha) # result in hectares
+
+## ------------------------------------------------------------------------
+as.numeric(a)
+
+## ------------------------------------------------------------------------
 nc <- st_read(system.file("shape/nc.shp", package="sf"),
     agr = c(AREA = "aggregate", PERIMETER = "aggregate", CNTY_ = "identity",
         CNTY_ID = "identity", NAME = "identity", FIPS = "identity", FIPSNO = "identity",
