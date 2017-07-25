@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
+    <meta charset="utf-8">
+$for(author-meta)$
+    <meta name="author" content="$author-meta$" />
+$endfor$
+$if(date-meta)$
+    <meta name="date" content="$date-meta$" />
+$endif$
+$if(keywords)$
+    <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
+$endif$
+$for(header-includes)$
+    $header-includes$
+$endfor$
+$for(css)$
+    <link rel="stylesheet" href="$css$" type="text/css" />
+$endfor$
+  </head>
+  <body>
+    <textarea id="source">
+$if(title-slide)$
+$if(title)$
+class: center, middle, inverse, title-slide
+
+# $title$
+$if(subtitle)$
+## $subtitle$
+$endif$
+$for(author)$
+### $author$
+$endfor$
+$if(date)$
+### $date$
+$endif$
+
+---
+$endif$
+$endif$
+
+$for(include-before)$
+$include-before$
+$endfor$
+    </textarea>
+$for(include-after)$
+$include-after$
+$endfor$
+
+$if(math)$
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = '$if(mathjax-url)$$mathjax-url$$else$https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML$endif$';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+$endif$
+  </body>
+</html>
