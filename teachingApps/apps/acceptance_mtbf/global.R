@@ -1,1 +1,0 @@
-needs::needs(shiny, plotly)
