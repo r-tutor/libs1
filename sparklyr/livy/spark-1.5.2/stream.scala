@@ -11,12 +11,16 @@ import scala.language.existentials
 import io.netty.channel.{ChannelHandlerContext, SimpleChannelInboundHandler}
 import io.netty.channel.ChannelHandler.Sharable
 
-import Logging._
 import Serializer._
 
 object StreamHandler {
 
-  def read(msg: Array[Byte], classMap: Map[String, Object]): Array[Byte] = {
+  def read(
+    msg: Array[Byte],
+    classMap: Map[String, Object],
+    logger: Logger,
+    hostContext: String): Array[Byte] = {
+
     val bis = new ByteArrayInputStream(msg)
     val dis = new DataInputStream(bis)
 
@@ -32,30 +36,33 @@ object StreamHandler {
       methodName match {
         case "echo" =>
           val args = readArgs(numArgs, dis)
-          assert(numArgs == 1)
+          if (numArgs != 1) throw new IllegalArgumentException("echo should take a single argument")
 
           writeInt(dos, 0)
           writeObject(dos, args(0))
         case "rm" =>
           try {
             val t = readObjectType(dis)
-            assert(t == 'c')
+            if (t != 'c') throw new IllegalArgumentException("object removal expects a string")
             val objToRemove = readString(dis)
             JVMObjectTracker.remove(objToRemove)
             writeInt(dos, 0)
             writeObject(dos, null)
           } catch {
             case e: Exception =>
-              logError(s"Removing $objId failed", e)
+              logger.logError(s"failed to remove $objId", e)
               writeInt(dos, -1)
               writeString(dos, s"Removing $objId failed: ${e.getMessage}")
           }
+        case "getHostContext" =>
+          writeInt(dos, 0)
+          writeObject(dos, hostContext.asInstanceOf[AnyRef])
         case _ =>
           dos.writeInt(-1)
-        writeString(dos, s"Error: unknown method $methodName")
+          writeString(dos, s"Error: unknown method $methodName")
       }
     } else {
-      handleMethodCall(isStatic, objId, methodName, numArgs, dis, dos, classMap)
+      handleMethodCall(isStatic, objId, methodName, numArgs, dis, dos, classMap, logger)
     }
 
     bos.toByteArray
@@ -68,7 +75,8 @@ object StreamHandler {
     numArgs: Int,
     dis: DataInputStream,
     dos: DataOutputStream,
-    classMap: Map[String, Object]): Unit = {
+    classMap: Map[String, Object],
+    logger: Logger): Unit = {
       var obj: Object = null
       try {
         val cls = if (isStatic) {
@@ -89,13 +97,13 @@ object StreamHandler {
         }
 
         val args = readArgs(numArgs, dis)
-        val res = Invoke.invoke(cls, objId, obj, methodName, args)
+        val res = Invoke.invoke(cls, objId, obj, methodName, args, logger)
 
         writeInt(dos, 0)
         writeObject(dos, res.asInstanceOf[AnyRef])
       } catch {
         case e: Exception =>
-          logError(s"$methodName on $objId failed")
+          logger.logError(s"failed calling $methodName on $objId")
           writeInt(dos, -1)
           writeString(dos, Utils.exceptionString(
             if (e.getCause == null) e else e.getCause

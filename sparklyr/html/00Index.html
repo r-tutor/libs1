@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;sparklyr&rsquo; version 0.5.6</h2>
+</div><h2>Documentation for package &lsquo;sparklyr&rsquo; version 0.6.0</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 </ul>
@@ -20,9 +20,12 @@
 
 
 <p style="text-align: center;">
+<a href="#A">A</a>
 <a href="#C">C</a>
+<a href="#D">D</a>
 <a href="#E">E</a>
 <a href="#F">F</a>
+<a href="#G">G</a>
 <a href="#H">H</a>
 <a href="#I">I</a>
 <a href="#J">J</a>
@@ -35,15 +38,33 @@
 </p>
 
 
+<h2><a name="A">-- A --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="ml_glm_tidiers.html">augment.ml_model_generalized_linear_regression</a></td>
+<td>Tidying methods for Spark ML linear models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_glm_tidiers.html">augment.ml_model_linear_regression</a></td>
+<td>Tidying methods for Spark ML linear models</td></tr>
+</table>
+
 <h2><a name="C">-- C --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="checkpoint_directory.html">checkpoint_directory</a></td>
+<td>Set/Get Spark checkpoint directory</td></tr>
 <tr><td style="width: 25%;"><a href="compile_package_jars.html">compile_package_jars</a></td>
 <td>Compile Scala sources into a Java Archive (jar)</td></tr>
 <tr><td style="width: 25%;"><a href="connection_config.html">connection_config</a></td>
 <td>Read configuration values for a connection</td></tr>
 <tr><td style="width: 25%;"><a href="copy_to.spark_connection.html">copy_to.spark_connection</a></td>
 <td>Copy an R Data Frame to Spark</td></tr>
+</table>
+
+<h2><a name="D">-- D --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="download_scalac.html">download_scalac</a></td>
+<td>Downloads default Scala Compilers</td></tr>
 </table>
 
 <h2><a name="E">-- E --</a></h2>
@@ -70,6 +91,8 @@
 <td>Feature Transformation - Binarizer</td></tr>
 <tr><td style="width: 25%;"><a href="ft_bucketizer.html">ft_bucketizer</a></td>
 <td>Feature Transformation - Bucketizer</td></tr>
+<tr><td style="width: 25%;"><a href="ft_count_vectorizer.html">ft_count_vectorizer</a></td>
+<td>Feature Tranformation - CountVectorizer</td></tr>
 <tr><td style="width: 25%;"><a href="ft_discrete_cosine_transform.html">ft_discrete_cosine_transform</a></td>
 <td>Feature Transformation - Discrete Cosine Transform (DCT)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_elementwise_product.html">ft_elementwise_product</a></td>
@@ -92,11 +115,22 @@
 <td>Feature Transformation - VectorAssembler</td></tr>
 </table>
 
+<h2><a name="G">-- G --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="ml_glm_tidiers.html">glance.ml_model_generalized_linear_regression</a></td>
+<td>Tidying methods for Spark ML linear models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_glm_tidiers.html">glance.ml_model_linear_regression</a></td>
+<td>Tidying methods for Spark ML linear models</td></tr>
+</table>
+
 <h2><a name="H">-- H --</a></h2>
 
 <table width="100%">
 <tr><td style="width: 25%;"><a href="spark-api.html">hive_context</a></td>
 <td>Access the Spark API</td></tr>
+<tr><td style="width: 25%;"><a href="hive_context_config.html">hive_context_config</a></td>
+<td>Runtime configuration interface for Hive</td></tr>
 </table>
 
 <h2><a name="I">-- I --</a></h2>
@@ -143,6 +177,8 @@
 <td>Spark ML - Decision Trees</td></tr>
 <tr><td style="width: 25%;"><a href="ml_generalized_linear_regression.html">ml_generalized_linear_regression</a></td>
 <td>Spark ML - Generalized Linear Regression</td></tr>
+<tr><td style="width: 25%;"><a href="ml_glm_tidiers.html">ml_glm_tidiers</a></td>
+<td>Tidying methods for Spark ML linear models</td></tr>
 <tr><td style="width: 25%;"><a href="ml_gradient_boosted_trees.html">ml_gradient_boosted_trees</a></td>
 <td>Spark ML - Gradient-Boosted Tree</td></tr>
 <tr><td style="width: 25%;"><a href="ml_kmeans.html">ml_kmeans</a></td>
@@ -157,6 +193,8 @@
 <td>Spark ML - Logistic Regression</td></tr>
 <tr><td style="width: 25%;"><a href="ml_model.html">ml_model</a></td>
 <td>Create an ML Model Object</td></tr>
+<tr><td style="width: 25%;"><a href="ml_model_data.html">ml_model_data</a></td>
+<td>Extracts data associated with a Spark ML model</td></tr>
 <tr><td style="width: 25%;"><a href="ml_multilayer_perceptron.html">ml_multilayer_perceptron</a></td>
 <td>Spark ML - Multilayer Perceptron</td></tr>
 <tr><td style="width: 25%;"><a href="ml_naive_bayes.html">ml_naive_bayes</a></td>
@@ -208,10 +246,28 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="sdf-saveload.html">sdf-saveload</a></td>
 <td>Save / Load a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_along.html">sdf_along</a></td>
+<td>Create DataFrame for along Object</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_bind.html">sdf_bind</a></td>
+<td>Bind multiple Spark DataFrames by row and column</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_bind.html">sdf_bind_cols</a></td>
+<td>Bind multiple Spark DataFrames by row and column</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_bind.html">sdf_bind_rows</a></td>
+<td>Bind multiple Spark DataFrames by row and column</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_broadcast.html">sdf_broadcast</a></td>
+<td>Broadcast hint</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_checkpoint.html">sdf_checkpoint</a></td>
+<td>Checkpoint a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_coalesce.html">sdf_coalesce</a></td>
+<td>Coalesces a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_copy_to.html">sdf_copy_to</a></td>
 <td>Copy an Object into Spark</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_copy_to.html">sdf_import</a></td>
 <td>Copy an Object into Spark</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_last_index.html">sdf_last_index</a></td>
+<td>Returns the last index of a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_len.html">sdf_len</a></td>
+<td>Create DataFrame for Length</td></tr>
 <tr><td style="width: 25%;"><a href="sdf-saveload.html">sdf_load_parquet</a></td>
 <td>Save / Load a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf-saveload.html">sdf_load_table</a></td>
@@ -220,10 +276,14 @@
 <td>Mutate a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_mutate.html">sdf_mutate_</a></td>
 <td>Mutate a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_num_partitions.html">sdf_num_partitions</a></td>
+<td>Gets number of partitions of a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_partition.html">sdf_partition</a></td>
 <td>Partition a Spark Dataframe</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_persist.html">sdf_persist</a></td>
 <td>Persist a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_pivot.html">sdf_pivot</a></td>
+<td>Pivot a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_predict.html">sdf_predict</a></td>
 <td>Model Predictions with Spark DataFrames</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_quantile.html">sdf_quantile</a></td>
@@ -232,6 +292,14 @@
 <td>Read a Column from a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_register.html">sdf_register</a></td>
 <td>Register a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_repartition.html">sdf_repartition</a></td>
+<td>Repartition a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_residuals.html">sdf_residuals</a></td>
+<td>Model Residuals</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_residuals.html">sdf_residuals.ml_model_generalized_linear_regression</a></td>
+<td>Model Residuals</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_residuals.html">sdf_residuals.ml_model_linear_regression</a></td>
+<td>Model Residuals</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_sample.html">sdf_sample</a></td>
 <td>Randomly Sample Rows from a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf-saveload.html">sdf_save_parquet</a></td>
@@ -240,16 +308,22 @@
 <td>Save / Load a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_schema.html">sdf_schema</a></td>
 <td>Read the Schema of a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_separate_column.html">sdf_separate_column</a></td>
+<td>Separate a Vector Column into Scalar Columns</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_seq.html">sdf_seq</a></td>
+<td>Create DataFrame for Range</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_sort.html">sdf_sort</a></td>
 <td>Sort a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_with_sequential_id.html">sdf_with_sequential_id</a></td>
+<td>Add a Sequential ID Column to a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_with_unique_id.html">sdf_with_unique_id</a></td>
 <td>Add a Unique ID Column to a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="spark-api.html">spark-api</a></td>
 <td>Access the Spark API</td></tr>
 <tr><td style="width: 25%;"><a href="spark-connections.html">spark-connections</a></td>
 <td>Manage Spark Connections</td></tr>
-<tr><td style="width: 25%;"><a href="spark_install.html">spark_available_versions</a></td>
-<td>Download and install various versions of Spark</td></tr>
+<tr><td style="width: 25%;"><a href="spark_apply.html">spark_apply</a></td>
+<td>Apply an R Function in Spark</td></tr>
 <tr><td style="width: 25%;"><a href="spark_compilation_spec.html">spark_compilation_spec</a></td>
 <td>Define a Spark Compilation Specification</td></tr>
 <tr><td style="width: 25%;"><a href="spark_config.html">spark_config</a></td>
@@ -262,6 +336,8 @@
 <td>Manage Spark Connections</td></tr>
 <tr><td style="width: 25%;"><a href="spark-api.html">spark_context</a></td>
 <td>Access the Spark API</td></tr>
+<tr><td style="width: 25%;"><a href="spark_context_config.html">spark_context_config</a></td>
+<td>Runtime configuration interface for Spark.</td></tr>
 <tr><td style="width: 25%;"><a href="spark_dataframe.html">spark_dataframe</a></td>
 <td>Retrieve a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="spark_default_compilation_spec.html">spark_default_compilation_spec</a></td>
@@ -272,32 +348,38 @@
 <td>Manage Spark Connections</td></tr>
 <tr><td style="width: 25%;"><a href="spark-connections.html">spark_disconnect_all</a></td>
 <td>Manage Spark Connections</td></tr>
-<tr><td style="width: 25%;"><a href="spark_install.html">spark_install</a></td>
-<td>Download and install various versions of Spark</td></tr>
-<tr><td style="width: 25%;"><a href="spark_install.html">spark_installed_versions</a></td>
-<td>Download and install various versions of Spark</td></tr>
-<tr><td style="width: 25%;"><a href="spark_install.html">spark_install_dir</a></td>
-<td>Download and install various versions of Spark</td></tr>
-<tr><td style="width: 25%;"><a href="spark_install.html">spark_install_tar</a></td>
-<td>Download and install various versions of Spark</td></tr>
+<tr><td style="width: 25%;"><a href="checkpoint_directory.html">spark_get_checkpoint_dir</a></td>
+<td>Set/Get Spark checkpoint directory</td></tr>
+<tr><td style="width: 25%;"><a href="spark_home_set.html">spark_home_set</a></td>
+<td>Set the SPARK_HOME environment variable</td></tr>
+<tr><td style="width: 25%;"><a href="spark_install_sync.html">spark_install_sync</a></td>
+<td>helper function to sync sparkinstall project to sparklyr</td></tr>
 <tr><td style="width: 25%;"><a href="spark_jobj.html">spark_jobj</a></td>
 <td>Retrieve a Spark JVM Object Reference</td></tr>
 <tr><td style="width: 25%;"><a href="spark_load_table.html">spark_load_table</a></td>
-<td>Load a Spark Table into a Spark DataFrame.</td></tr>
+<td>Reads from a Spark Table into a Spark DataFrame.</td></tr>
 <tr><td style="width: 25%;"><a href="spark_log.html">spark_log</a></td>
 <td>View Entries in the Spark Log</td></tr>
 <tr><td style="width: 25%;"><a href="spark_read_csv.html">spark_read_csv</a></td>
 <td>Read a CSV file into a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="spark_read_jdbc.html">spark_read_jdbc</a></td>
+<td>Read from JDBC connection into a Spark DataFrame.</td></tr>
 <tr><td style="width: 25%;"><a href="spark_read_json.html">spark_read_json</a></td>
 <td>Read a JSON file into a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="spark_read_parquet.html">spark_read_parquet</a></td>
 <td>Read a Parquet file into a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="spark_read_source.html">spark_read_source</a></td>
+<td>Read from a generic source into a Spark DataFrame.</td></tr>
+<tr><td style="width: 25%;"><a href="spark_read_table.html">spark_read_table</a></td>
+<td>Reads from a Spark Table into a Spark DataFrame.</td></tr>
 <tr><td style="width: 25%;"><a href="spark_save_table.html">spark_save_table</a></td>
 <td>Saves a Spark DataFrame as a Spark table</td></tr>
 <tr><td style="width: 25%;"><a href="spark-api.html">spark_session</a></td>
 <td>Access the Spark API</td></tr>
-<tr><td style="width: 25%;"><a href="spark_install.html">spark_uninstall</a></td>
-<td>Download and install various versions of Spark</td></tr>
+<tr><td style="width: 25%;"><a href="checkpoint_directory.html">spark_set_checkpoint_dir</a></td>
+<td>Set/Get Spark checkpoint directory</td></tr>
+<tr><td style="width: 25%;"><a href="spark_table_name.html">spark_table_name</a></td>
+<td>Generate a Table Name from Expression</td></tr>
 <tr><td style="width: 25%;"><a href="spark_version.html">spark_version</a></td>
 <td>Get the Spark Version Associated with a Spark Connection</td></tr>
 <tr><td style="width: 25%;"><a href="spark_version_from_home.html">spark_version_from_home</a></td>
@@ -306,10 +388,18 @@
 <td>Open the Spark web interface</td></tr>
 <tr><td style="width: 25%;"><a href="spark_write_csv.html">spark_write_csv</a></td>
 <td>Write a Spark DataFrame to a CSV</td></tr>
+<tr><td style="width: 25%;"><a href="spark_write_jdbc.html">spark_write_jdbc</a></td>
+<td>Writes a Spark DataFrame into a JDBC table</td></tr>
 <tr><td style="width: 25%;"><a href="spark_write_json.html">spark_write_json</a></td>
 <td>Write a Spark DataFrame to a JSON file</td></tr>
 <tr><td style="width: 25%;"><a href="spark_write_parquet.html">spark_write_parquet</a></td>
 <td>Write a Spark DataFrame to a Parquet file</td></tr>
+<tr><td style="width: 25%;"><a href="spark_write_source.html">spark_write_source</a></td>
+<td>Writes a Spark DataFrame into a generic source</td></tr>
+<tr><td style="width: 25%;"><a href="spark_write_table.html">spark_write_table</a></td>
+<td>Writes a Spark DataFrame into a Spark table</td></tr>
+<tr><td style="width: 25%;"><a href="src_databases.html">src_databases</a></td>
+<td>Show database list</td></tr>
 </table>
 
 <h2><a name="T">-- T --</a></h2>
@@ -317,9 +407,13 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="tbl_cache.html">tbl_cache</a></td>
 <td>Cache a Spark Table</td></tr>
+<tr><td style="width: 25%;"><a href="tbl_change_db.html">tbl_change_db</a></td>
+<td>Use specific database</td></tr>
 <tr><td style="width: 25%;"><a href="tbl_uncache.html">tbl_uncache</a></td>
 <td>Uncache a Spark Table</td></tr>
-<tr><td style="width: 25%;"><a href="top_n.html">top_n</a></td>
-<td>Select top (or bottom) n rows (by value)</td></tr>
+<tr><td style="width: 25%;"><a href="ml_glm_tidiers.html">tidy.ml_model_generalized_linear_regression</a></td>
+<td>Tidying methods for Spark ML linear models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_glm_tidiers.html">tidy.ml_model_linear_regression</a></td>
+<td>Tidying methods for Spark ML linear models</td></tr>
 </table>
 </body></html>

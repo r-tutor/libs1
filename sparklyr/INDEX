@@ -1,11 +1,14 @@
+checkpoint_directory    Set/Get Spark checkpoint directory
 compile_package_jars    Compile Scala sources into a Java Archive (jar)
 connection_config       Read configuration values for a connection
 copy_to.spark_connection
                         Copy an R Data Frame to Spark
+download_scalac         Downloads default Scala Compilers
 ensure                  Enforce Specific Structure for R Objects
 find_scalac             Discover the Scala Compiler
 ft_binarizer            Feature Transformation - Binarizer
 ft_bucketizer           Feature Transformation - Bucketizer
+ft_count_vectorizer     Feature Tranformation - CountVectorizer
 ft_discrete_cosine_transform
                         Feature Transformation - Discrete Cosine
                         Transform (DCT)
@@ -20,6 +23,7 @@ ft_sql_transformer      Feature Transformation - SQLTransformer
 ft_string_indexer       Feature Transformation - StringIndexer
 ft_tokenizer            Feature Tranformation - Tokenizer
 ft_vector_assembler     Feature Transformation - VectorAssembler
+hive_context_config     Runtime configuration interface for Hive
 invoke                  Invoke a Method on a JVM Object
 livy_config             Create a Spark Configuration for Livy
 livy_service_start      Start Livy
@@ -34,6 +38,7 @@ ml_create_dummy_variables
 ml_decision_tree        Spark ML - Decision Trees
 ml_generalized_linear_regression
                         Spark ML - Generalized Linear Regression
+ml_glm_tidiers          Tidying methods for Spark ML linear models
 ml_gradient_boosted_trees
                         Spark ML - Gradient-Boosted Tree
 ml_kmeans               Spark ML - K-Means Clustering
@@ -42,6 +47,7 @@ ml_linear_regression    Spark ML - Linear Regression
 ml_logistic_regression
                         Spark ML - Logistic Regression
 ml_model                Create an ML Model Object
+ml_model_data           Extracts data associated with a Spark ML model
 ml_multilayer_perceptron
                         Spark ML - Multilayer Perceptron
 ml_naive_bayes          Spark ML - Naive-Bayes
@@ -61,39 +67,68 @@ na.replace              Replace Missing Values in Objects
 register_extension      Register a Package that Implements a Spark
                         Extension
 sdf-saveload            Save / Load a Spark DataFrame
+sdf_along               Create DataFrame for along Object
+sdf_bind                Bind multiple Spark DataFrames by row and
+                        column
+sdf_broadcast           Broadcast hint
+sdf_checkpoint          Checkpoint a Spark DataFrame
+sdf_coalesce            Coalesces a Spark DataFrame
 sdf_copy_to             Copy an Object into Spark
+sdf_last_index          Returns the last index of a Spark DataFrame
+sdf_len                 Create DataFrame for Length
 sdf_mutate              Mutate a Spark DataFrame
+sdf_num_partitions      Gets number of partitions of a Spark DataFrame
 sdf_partition           Partition a Spark Dataframe
 sdf_persist             Persist a Spark DataFrame
+sdf_pivot               Pivot a Spark DataFrame
 sdf_predict             Model Predictions with Spark DataFrames
 sdf_quantile            Compute (Approximate) Quantiles with a Spark
                         DataFrame
 sdf_read_column         Read a Column from a Spark DataFrame
 sdf_register            Register a Spark DataFrame
+sdf_repartition         Repartition a Spark DataFrame
+sdf_residuals.ml_model_generalized_linear_regression
+                        Model Residuals
 sdf_sample              Randomly Sample Rows from a Spark DataFrame
 sdf_schema              Read the Schema of a Spark DataFrame
+sdf_separate_column     Separate a Vector Column into Scalar Columns
+sdf_seq                 Create DataFrame for Range
 sdf_sort                Sort a Spark DataFrame
+sdf_with_sequential_id
+                        Add a Sequential ID Column to a Spark DataFrame
 sdf_with_unique_id      Add a Unique ID Column to a Spark DataFrame
 spark-api               Access the Spark API
 spark-connections       Manage Spark Connections
+spark_apply             Apply an R Function in Spark
 spark_compilation_spec
                         Define a Spark Compilation Specification
 spark_config            Read Spark Configuration
 spark_connection        Retrieve the Spark Connection Associated with
                         an R Object
+spark_context_config    Runtime configuration interface for Spark.
 spark_dataframe         Retrieve a Spark DataFrame
 spark_default_compilation_spec
                         Default Compilation Specification for Spark
                         Extensions
 spark_dependency        Define a Spark dependency
-spark_install           Download and install various versions of Spark
+spark_home_set          Set the SPARK_HOME environment variable
+spark_install_sync      helper function to sync sparkinstall project to
+                        sparklyr
 spark_jobj              Retrieve a Spark JVM Object Reference
-spark_load_table        Load a Spark Table into a Spark DataFrame.
+spark_load_table        Reads from a Spark Table into a Spark
+                        DataFrame.
 spark_log               View Entries in the Spark Log
 spark_read_csv          Read a CSV file into a Spark DataFrame
+spark_read_jdbc         Read from JDBC connection into a Spark
+                        DataFrame.
 spark_read_json         Read a JSON file into a Spark DataFrame
 spark_read_parquet      Read a Parquet file into a Spark DataFrame
+spark_read_source       Read from a generic source into a Spark
+                        DataFrame.
+spark_read_table        Reads from a Spark Table into a Spark
+                        DataFrame.
 spark_save_table        Saves a Spark DataFrame as a Spark table
+spark_table_name        Generate a Table Name from Expression
 spark_version           Get the Spark Version Associated with a Spark
                         Connection
 spark_version_from_home
@@ -101,8 +136,12 @@ spark_version_from_home
                         Installation
 spark_web               Open the Spark web interface
 spark_write_csv         Write a Spark DataFrame to a CSV
+spark_write_jdbc        Writes a Spark DataFrame into a JDBC table
 spark_write_json        Write a Spark DataFrame to a JSON file
 spark_write_parquet     Write a Spark DataFrame to a Parquet file
+spark_write_source      Writes a Spark DataFrame into a generic source
+spark_write_table       Writes a Spark DataFrame into a Spark table
+src_databases           Show database list
 tbl_cache               Cache a Spark Table
+tbl_change_db           Use specific database
 tbl_uncache             Uncache a Spark Table
-top_n                   Select top (or bottom) n rows (by value)
