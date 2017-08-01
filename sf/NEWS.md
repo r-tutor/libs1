@@ -1,3 +1,41 @@
+# version 0.5-3
+
+* support and propagate all Proj.4 +units=xx length units; #446
+
+* allow for arith ops on empty `sfc` objects
+
+* have `st_graticule` return an empty graticule object when argument `datum` is `NA`; 
+
+* export `as_Spatial`, to make it easer for packages to convert `sfc` objects without importing `sf`
+
+* `st_distance` gains a parameter `by_element` to obtain pairwise distances; #437
+
+* add the ability to `aggregate` using a simple feature `by` argument; #429
+
+* make the `op` argument to `[.sf` work
+
+* speed up `st_coordinates` for `POINT` geometries; #433
+
+* fix performance regression for `st_bbox`; #418
+
+* correct bug in `st_union`, `st_difference` and `st_sym_difference` introduced in 0.5-2; #431
+
+* inform gdal about the CRS always through the proj4string, never through the epsg; see #424
+
+* properly deal with kilometre units; #424 (fixed by Karl Dunkle Werner)
+
+* add `st_is_within_distance`, only to return a sparse index matrix; #419
+
+* have `st_graticule` work with world2 (0,360); #421, #422, fixed by Ben Best
+
+* `st_graticule` to return graticules in native crs; https://github.com/tidyverse/ggplot2/issues/2200 (WIP)
+
+* `st_graticule` to support data in `NA_crs_`; https://github.com/tidyverse/ggplot2/issues/2199
+
+* fix bug when joining an sf-tibble with a `tibble`; #414
+
+* read gdal `StringList`, `RealList`, and `IntegerList` fields into a list-column; #416
+
 # version 0.5-2
 
 * made ready for rwinlib/gdal2; #408
@@ -12,7 +50,7 @@
 
 * work around for `dplyr::filter` not dispatching geometry column subsetting to `sf::[.sfc`
 
-* allow `units` object `dist` argument to `st_buffer`; these must be convertable to `arc_degree` for geographic, and to the proper length unit for non-geographic data; #399
+* allow `units` object as `dist` argument to `st_buffer`; these must be convertable to `arc_degree` for geographic, and to a length unit for non-geographic data; #399
 
 * prevent gdal from crashing when trying to `st_transform` an empty geometry; #398
 

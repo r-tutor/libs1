@@ -52,7 +52,7 @@ methods(class = 'sfc')
 attributes(nc_geom)
 
 ## ------------------------------------------------------------------------
-(mix <- st_sfc(st_geometrycollection(list(st_point(1:2))), 
+(mix <- st_sfc(st_geometrycollection(list(st_point(1:2))),
     st_geometrycollection(list(st_linestring(matrix(1:4,2))))))
 class(mix)
 

@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;sf&rsquo; version 0.5-2</h2>
+</div><h2>Documentation for package &lsquo;sf&rsquo; version 0.5-3</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 <li><a href="../doc/index.html">User guides, package vignettes and other documentation.</a></li>
@@ -61,6 +61,8 @@
 <td>Dplyr verb methods for sf objects</td></tr>
 <tr><td style="width: 25%;"><a href="st.html">as.matrix.sfg</a></td>
 <td>Create simple feature from a numeric vector, matrix or list</td></tr>
+<tr><td style="width: 25%;"><a href="coerce-methods.html">as_Spatial</a></td>
+<td>Methods to coerce simple feature objects to 'Spatial*' objects</td></tr>
 </table>
 
 <h2><a name="B">-- B --</a></h2>
@@ -182,6 +184,8 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="st_agr.html">NA_agr_</a></td>
 <td>get or set relation_to_geometry attribute of an 'sf' object</td></tr>
+<tr><td style="width: 25%;"><a href="st_bbox.html">NA_bbox_</a></td>
+<td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_crs.html">NA_crs_</a></td>
 <td>Retrieve coordinate reference system from object</td></tr>
 <tr><td style="width: 25%;"><a href="dplyr.html">nest_.sf</a></td>
@@ -203,6 +207,8 @@
 <tr><td style="width: 25%;"><a href="plot.html">plot</a></td>
 <td>Plot sf object</td></tr>
 <tr><td style="width: 25%;"><a href="plot.html">plot.sf</a></td>
+<td>Plot sf object</td></tr>
+<tr><td style="width: 25%;"><a href="plot.html">plot.sfc_CIRCULARSTRING</a></td>
 <td>Plot sf object</td></tr>
 <tr><td style="width: 25%;"><a href="plot.html">plot.sfc_GEOMETRY</a></td>
 <td>Plot sf object</td></tr>
@@ -338,9 +344,17 @@
 <td>Return Well-known Text representation of simple feature geometry or coordinate reference system</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
+<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.CIRCULARSTRING</a></td>
+<td>Return bounding of a simple feature or simple feature set</td></tr>
+<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.COMPOUNDCURVE</a></td>
+<td>Return bounding of a simple feature or simple feature set</td></tr>
+<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.CURVEPOLYGON</a></td>
+<td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.GEOMETRYCOLLECTION</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.LINESTRING</a></td>
+<td>Return bounding of a simple feature or simple feature set</td></tr>
+<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.MULTICURVE</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.MULTILINESTRING</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
@@ -348,29 +362,21 @@
 <td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.MULTIPOLYGON</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
+<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.MULTISURFACE</a></td>
+<td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.POINT</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.POLYGON</a></td>
+<td>Return bounding of a simple feature or simple feature set</td></tr>
+<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.POLYHEDRALSURFACE</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.sf</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.sfc</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
-<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.sfc_GEOMETRY</a></td>
+<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.TIN</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
-<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.sfc_GEOMETRYCOLLECTION</a></td>
-<td>Return bounding of a simple feature or simple feature set</td></tr>
-<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.sfc_LINESTRING</a></td>
-<td>Return bounding of a simple feature or simple feature set</td></tr>
-<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.sfc_MULTILINESTRING</a></td>
-<td>Return bounding of a simple feature or simple feature set</td></tr>
-<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.sfc_MULTIPOINT</a></td>
-<td>Return bounding of a simple feature or simple feature set</td></tr>
-<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.sfc_MULTIPOLYGON</a></td>
-<td>Return bounding of a simple feature or simple feature set</td></tr>
-<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.sfc_POINT</a></td>
-<td>Return bounding of a simple feature or simple feature set</td></tr>
-<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.sfc_POLYGON</a></td>
+<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.TRIANGLE</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="bind.html">st_bind_cols</a></td>
 <td>Bind rows (features) of sf objects</td></tr>
@@ -379,6 +385,12 @@
 <tr><td style="width: 25%;"><a href="geos_unary.html">st_buffer</a></td>
 <td>Geometric unary operations on (pairs of) simple feature geometry sets</td></tr>
 <tr><td style="width: 25%;"><a href="st_cast.html">st_cast</a></td>
+<td>Cast geometry to another type: either simplify, or cast explicitly</td></tr>
+<tr><td style="width: 25%;"><a href="st_cast.html">st_cast.CIRCULARSTRING</a></td>
+<td>Cast geometry to another type: either simplify, or cast explicitly</td></tr>
+<tr><td style="width: 25%;"><a href="st_cast.html">st_cast.COMPOUNDCURVE</a></td>
+<td>Cast geometry to another type: either simplify, or cast explicitly</td></tr>
+<tr><td style="width: 25%;"><a href="st_cast.html">st_cast.CURVE</a></td>
 <td>Cast geometry to another type: either simplify, or cast explicitly</td></tr>
 <tr><td style="width: 25%;"><a href="st_cast.html">st_cast.GEOMETRYCOLLECTION</a></td>
 <td>Cast geometry to another type: either simplify, or cast explicitly</td></tr>
@@ -390,6 +402,8 @@
 <td>Cast geometry to another type: either simplify, or cast explicitly</td></tr>
 <tr><td style="width: 25%;"><a href="st_cast.html">st_cast.MULTIPOLYGON</a></td>
 <td>Cast geometry to another type: either simplify, or cast explicitly</td></tr>
+<tr><td style="width: 25%;"><a href="st_cast.html">st_cast.MULTISURFACE</a></td>
+<td>Cast geometry to another type: either simplify, or cast explicitly</td></tr>
 <tr><td style="width: 25%;"><a href="st_cast.html">st_cast.POINT</a></td>
 <td>Cast geometry to another type: either simplify, or cast explicitly</td></tr>
 <tr><td style="width: 25%;"><a href="st_cast.html">st_cast.POLYGON</a></td>
@@ -397,6 +411,8 @@
 <tr><td style="width: 25%;"><a href="st_cast.html">st_cast.sf</a></td>
 <td>Cast geometry to another type: either simplify, or cast explicitly</td></tr>
 <tr><td style="width: 25%;"><a href="st_cast.html">st_cast.sfc</a></td>
+<td>Cast geometry to another type: either simplify, or cast explicitly</td></tr>
+<tr><td style="width: 25%;"><a href="st_cast.html">st_cast.sfc_CIRCULARSTRING</a></td>
 <td>Cast geometry to another type: either simplify, or cast explicitly</td></tr>
 <tr><td style="width: 25%;"><a href="st_cast_sfc_default.html">st_cast_sfc_default</a></td>
 <td>Coerce geometry to MULTI* geometry</td></tr>
@@ -484,6 +500,8 @@
 <td>Dimension, simplicity or validity queries on simple feature geometries</td></tr>
 <tr><td style="width: 25%;"><a href="geos_query.html">st_is_valid</a></td>
 <td>Dimension, simplicity or validity queries on simple feature geometries</td></tr>
+<tr><td style="width: 25%;"><a href="geos_binary_pred.html">st_is_within_distance</a></td>
+<td>Geometric binary predicates on pairs of simple feature geometry sets</td></tr>
 <tr><td style="width: 25%;"><a href="st_join.html">st_join</a></td>
 <td>spatial left or inner join</td></tr>
 <tr><td style="width: 25%;"><a href="st_layers.html">st_layers</a></td>
