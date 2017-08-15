@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;shiny&rsquo; version 1.0.3</h2>
+</div><h2>Documentation for package &lsquo;shiny&rsquo; version 1.0.4</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 </ul>
@@ -63,6 +63,8 @@
 <td>Resource Publishing</td></tr>
 <tr><td style="width: 25%;"><a href="sliderInput.html">animationOptions</a></td>
 <td>Slider Input Widget</td></tr>
+<tr><td style="width: 25%;"><a href="insertTab.html">appendTab</a></td>
+<td>Dynamically insert/remove a tabPanel</td></tr>
 <tr><td style="width: 25%;"><a href="shinyApp.html">as.shiny.appobj</a></td>
 <td>Create a Shiny app object</td></tr>
 <tr><td style="width: 25%;"><a href="shinyApp.html">as.shiny.appobj.character</a></td>
@@ -222,6 +224,8 @@
 <td>Create a header panel</td></tr>
 <tr><td style="width: 25%;"><a href="helpText.html">helpText</a></td>
 <td>Create a help text element</td></tr>
+<tr><td style="width: 25%;"><a href="showTab.html">hideTab</a></td>
+<td>Dynamically hide/show a tabPanel</td></tr>
 <tr><td style="width: 25%;"><a href="hoverOpts.html">hoverOpts</a></td>
 <td>Create an object representing hover options</td></tr>
 <tr><td style="width: 25%;"><a href="builder.html">hr</a></td>
@@ -259,6 +263,8 @@
 <td>Reporting progress (functional API)</td></tr>
 <tr><td style="width: 25%;"><a href="inputPanel.html">inputPanel</a></td>
 <td>Input panel</td></tr>
+<tr><td style="width: 25%;"><a href="insertTab.html">insertTab</a></td>
+<td>Dynamically insert/remove a tabPanel</td></tr>
 <tr><td style="width: 25%;"><a href="insertUI.html">insertUI</a></td>
 <td>Insert UI objects</td></tr>
 <tr><td style="width: 25%;"><a href="installExprFunction.html">installExprFunction</a></td>
@@ -275,6 +281,8 @@
 <td>Include content only once</td></tr>
 <tr><td style="width: 25%;"><a href="isolate.html">isolate</a></td>
 <td>Create a non-reactive scope for an expression</td></tr>
+<tr><td style="width: 25%;"><a href="isRunning.html">isRunning</a></td>
+<td>Check whether a Shiny application is running</td></tr>
 <tr><td style="width: 25%;"><a href="req.html">isTruthy</a></td>
 <td>Check for required values</td></tr>
 </table>
@@ -359,6 +367,8 @@
 <td>Add callbacks for Shiny session bookmarking events</td></tr>
 <tr><td style="width: 25%;"><a href="onFlush.html">onSessionEnded</a></td>
 <td>Add callbacks for Shiny session events</td></tr>
+<tr><td style="width: 25%;"><a href="onStop.html">onStop</a></td>
+<td>Run code after an application or session ends</td></tr>
 <tr><td style="width: 25%;"><a href="outputOptions.html">outputOptions</a></td>
 <td>Set options for an output object.</td></tr>
 </table>
@@ -382,6 +392,8 @@
 <td>Run a plotting function and save the output as a PNG</td></tr>
 <tr><td style="width: 25%;"><a href="builder.html">pre</a></td>
 <td>HTML Builder Functions</td></tr>
+<tr><td style="width: 25%;"><a href="insertTab.html">prependTab</a></td>
+<td>Dynamically insert/remove a tabPanel</td></tr>
 <tr><td style="width: 25%;"><a href="shinyApp.html">print.shiny.appobj</a></td>
 <td>Create a Shiny app object</td></tr>
 <tr><td style="width: 25%;"><a href="Progress.html">Progress</a></td>
@@ -425,6 +437,8 @@
 <td>Show or remove a modal dialog</td></tr>
 <tr><td style="width: 25%;"><a href="showNotification.html">removeNotification</a></td>
 <td>Show or remove a notification</td></tr>
+<tr><td style="width: 25%;"><a href="insertTab.html">removeTab</a></td>
+<td>Dynamically insert/remove a tabPanel</td></tr>
 <tr><td style="width: 25%;"><a href="removeUI.html">removeUI</a></td>
 <td>Remove UI objects</td></tr>
 <tr><td style="width: 25%;"><a href="renderDataTable.html">renderDataTable</a></td>
@@ -502,6 +516,8 @@
 <td>Show or remove a notification</td></tr>
 <tr><td style="width: 25%;"><a href="showReactLog.html">showReactLog</a></td>
 <td>Reactive Log Visualizer</td></tr>
+<tr><td style="width: 25%;"><a href="showTab.html">showTab</a></td>
+<td>Dynamically hide/show a tabPanel</td></tr>
 <tr><td style="width: 25%;"><a href="sidebarLayout.html">sidebarLayout</a></td>
 <td>Layout a sidebar and main area</td></tr>
 <tr><td style="width: 25%;"><a href="sidebarPanel.html">sidebarPanel</a></td>
@@ -512,6 +528,10 @@
 <td>Slider Input Widget</td></tr>
 <tr><td style="width: 25%;"><a href="snapshotExclude.html">snapshotExclude</a></td>
 <td>Mark an output to be excluded from test snapshots</td></tr>
+<tr><td style="width: 25%;"><a href="snapshotPreprocessInput.html">snapshotPreprocessInput</a></td>
+<td>Add a function for preprocessing an input before taking a test snapshot</td></tr>
+<tr><td style="width: 25%;"><a href="snapshotPreprocessOutput.html">snapshotPreprocessOutput</a></td>
+<td>Add a function for preprocessing an output before taking a test snapshot</td></tr>
 <tr><td style="width: 25%;"><a href="builder.html">span</a></td>
 <td>HTML Builder Functions</td></tr>
 <tr><td style="width: 25%;"><a href="splitLayout.html">splitLayout</a></td>

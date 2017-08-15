@@ -47,11 +47,13 @@ htmlTemplate            Process an HTML template
 icon                    Create an icon
 include                 Include Content From a File
 inputPanel              Input panel
+insertTab               Dynamically insert/remove a tabPanel
 insertUI                Insert UI objects
 installExprFunction     Install an expression as a function
 invalidateLater         Scheduled Invalidation
 is.reactivevalues       Checks whether an object is a reactivevalues
                         object
+isRunning               Check whether a Shiny application is running
 isolate                 Create a non-reactive scope for an expression
 knit_print.html         Knitr S3 methods
 knitr_methods           Knitr S3 methods
@@ -72,6 +74,7 @@ observeEvent            Event handler
 onBookmark              Add callbacks for Shiny session bookmarking
                         events
 onFlush                 Add callbacks for Shiny session events
+onStop                  Run code after an application or session ends
 outputOptions           Set options for an output object.
 pageWithSidebar         Create a page with a sidebar
 parseQueryString        Parse a GET query string from a URL
@@ -125,12 +128,19 @@ showBookmarkUrlModal    Display a modal dialog for bookmarking
 showModal               Show or remove a modal dialog
 showNotification        Show or remove a notification
 showReactLog            Reactive Log Visualizer
+showTab                 Dynamically hide/show a tabPanel
 sidebarLayout           Layout a sidebar and main area
 sidebarPanel            Create a sidebar panel
 singleton               Include content only once
 sliderInput             Slider Input Widget
 snapshotExclude         Mark an output to be excluded from test
                         snapshots
+snapshotPreprocessInput
+                        Add a function for preprocessing an input
+                        before taking a test snapshot
+snapshotPreprocessOutput
+                        Add a function for preprocessing an output
+                        before taking a test snapshot
 splitLayout             Split layout
 stopApp                 Stop the currently running Shiny app
 submitButton            Create a submit button
