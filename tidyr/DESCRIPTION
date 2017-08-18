@@ -1,8 +1,9 @@
 Package: tidyr
 Title: Easily Tidy Data with 'spread()' and 'gather()' Functions
-Version: 0.6.3
+Version: 0.7.0
 Authors@R: c(
     person("Hadley", "Wickham", , "hadley@rstudio.com", c("aut", "cre")),
+    person("Lionel", "Henry", , "lionel@rstudio.com", "aut"),
     person("RStudio", role = "cph")
     )
 Description: An evolution of 'reshape2'. It's designed specifically for data
@@ -11,7 +12,8 @@ Description: An evolution of 'reshape2'. It's designed specifically for data
 Depends: R (>= 3.1.0)
 License: MIT + file LICENSE
 LazyData: true
-Imports: tibble, dplyr (>= 0.4), stringi, lazyeval, magrittr, Rcpp
+Imports: dplyr (>= 0.7.0), glue, magrittr, purrr, rlang, Rcpp, stringi,
+        tibble, tidyselect
 URL: http://tidyr.tidyverse.org, https://github.com/tidyverse/tidyr
 BugReports: https://github.com/tidyverse/tidyr/issues
 Suggests: knitr, testthat, covr, gapminder, rmarkdown
@@ -19,11 +21,12 @@ VignetteBuilder: knitr
 LinkingTo: Rcpp
 RoxygenNote: 6.0.1
 NeedsCompilation: yes
-Packaged: 2017-05-15 16:46:11 UTC; hadley
+Packaged: 2017-08-14 16:44:06 UTC; lionel
 Author: Hadley Wickham [aut, cre],
+  Lionel Henry [aut],
   RStudio [cph]
 Maintainer: Hadley Wickham <hadley@rstudio.com>
 Repository: CRAN
-Date/Publication: 2017-05-15 18:08:39 UTC
-Built: R 3.4.0; x86_64-w64-mingw32; 2017-05-15 21:59:21 UTC; windows
+Date/Publication: 2017-08-16 11:48:18 UTC
+Built: R 3.4.1; x86_64-w64-mingw32; 2017-08-17 07:41:01 UTC; windows
 Archs: i386, x64
