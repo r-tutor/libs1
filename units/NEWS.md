@@ -1,3 +1,15 @@
+# version 0.4-6
+
+* add `all.equal` method for `units`; #51
+
+* add `deparse_unit` to replace `as_cf`
+
+* add calender/time conversions between `udunits` time units like `minutes from 1900-0-0`, and R's `POSIXct` and `Date`
+
+* add `as_units` to replace `as.units`
+
+* rename `as.dt` to `as_difftime`
+
 # version 0.4-5
 
 * add support for user-defined unit conversion; #31

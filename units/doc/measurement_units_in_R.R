@@ -129,7 +129,7 @@ z/y
 
 ## ------------------------------------------------------------------------
 parse_unit("m2 s-1")
-as_cf(set_units(1, m^2*s^-1))
+deparse_unit(set_units(1, m^2*s^-1))
 
 ## ----fig=TRUE, height=3.8, width=7---------------------------------------
 library(units)
@@ -151,6 +151,13 @@ ggplot(mtcars) + geom_point(aes(1/displacement, 1/consumption))
 
 ## ------------------------------------------------------------------------
 (dt = diff(Sys.time() + c(0, 1, 1+60, 1+60+3600))) # class difftime
-(dt.u = as.units(dt))
-identical(as.dt(dt.u), dt) # as.difftime is not a generic
+(dt.u = as_units(dt))
+identical(as_difftime(dt.u), dt)
+
+## ------------------------------------------------------------------------
+(t1 <- as_units(as.POSIXct("2017-08-20 17:03:00")))
+(t2 <- as_units(as.POSIXct("2017-08-20 17:03:00"), "hours since 2017-08-20"))
+(d1 <- as_units(as.Date("2017-08-20")))
+as.POSIXct(t1)
+as.Date(d1)
 

@@ -361,10 +361,10 @@ x + y
 x/y
 z/y
 ```
-However, `parse_unit` parses such units, and `as_cf` returns such unit strings from `units` objects:
+However, `parse_unit` parses such units, and `deparse_unit` returns such unit strings from `units` objects:
 ```{r}
 parse_unit("m2 s-1")
-as_cf(set_units(1, m^2*s^-1))
+deparse_unit(set_units(1, m^2*s^-1))
 ```
 The `plot` and `hist` methods add units to default axis labels, an
 example is shown in the following figures. For [ggplot2](https://cran.r-project.org/package=ggplot2) plots
@@ -393,11 +393,21 @@ ggplot(mtcars) + geom_point(aes(1/displacement, 1/consumption))
 Automatic conversion between `units` and `difftime` is provided: 
 ```{r}
 (dt = diff(Sys.time() + c(0, 1, 1+60, 1+60+3600))) # class difftime
-(dt.u = as.units(dt))
-identical(as.dt(dt.u), dt) # as.difftime is not a generic
+(dt.u = as_units(dt))
+identical(as_difftime(dt.u), dt)
+```
+as well as to and from `POSIXct` or `Date`:
+```{r}
+(t1 <- as_units(as.POSIXct("2017-08-20 17:03:00")))
+(t2 <- as_units(as.POSIXct("2017-08-20 17:03:00"), "hours since 2017-08-20"))
+(d1 <- as_units(as.Date("2017-08-20")))
+as.POSIXct(t1)
+as.Date(d1)
 ```
 Objects of class `units` can be used as columns in `data.frame`
-objects, as well as in `tbl_df` [@tibble].
+objects, as well as in `tbl_df` [@tibble]. They can also be `matrix`
+or `array`, with the constraint that a single unit holds for all
+elements.
 
 ## Discussion and conclusions
 

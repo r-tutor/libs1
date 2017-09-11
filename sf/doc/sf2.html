@@ -156,9 +156,9 @@ $(document).ready(function () {
 <pre class="r"><code>library(sf)
 fname &lt;- system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;)
 fname
-## [1] &quot;/tmp/RtmpsIdJZY/Rinst2055595de8c5/sf/shape/nc.shp&quot;
+## [1] &quot;/tmp/RtmppjQxZ0/Rinst684996b2e8c/sf/shape/nc.shp&quot;
 nc &lt;- st_read(fname)
-## Reading layer `nc' from data source `/tmp/RtmpsIdJZY/Rinst2055595de8c5/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/RtmppjQxZ0/Rinst684996b2e8c/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -202,7 +202,7 @@ Available layers:
 <p>Alternatively, a user can set the global option <code>stringsAsFactors</code>, and this will have the same effect:</p>
 <pre class="r"><code>options(stringsAsFactors = FALSE)
 st_read(fname)
-## Reading layer `nc' from data source `/tmp/RtmpsIdJZY/Rinst2055595de8c5/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/RtmppjQxZ0/Rinst684996b2e8c/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -409,14 +409,14 @@ dbDisconnect(conn)</code></pre>
 <h3>Conversion to and from well-known text</h3>
 <p>The usual form in which we see simple features printed is well-known text:</p>
 <pre class="r"><code>st_point(c(0,1))
-## POINT(0 1)
+## POINT (0 1)
 st_linestring(matrix(0:9,ncol=2,byrow=TRUE))
-## LINESTRING(0 1, 2 3, 4 5, 6 7, 8 9)</code></pre>
+## LINESTRING (0 1, 2 3, 4 5, 6 7, 8 9)</code></pre>
 <p>We can create these well-known text strings explicitly using <code>st_as_wkt</code>:</p>
 <pre class="r"><code>x = st_linestring(matrix(0:9,ncol=2,byrow=TRUE))
 str = st_as_text(x)
 x
-## LINESTRING(0 1, 2 3, 4 5, 6 7, 8 9)</code></pre>
+## LINESTRING (0 1, 2 3, 4 5, 6 7, 8 9)</code></pre>
 <p>We can convert back from WKT by using <code>st_as_sfc</code>:</p>
 <pre class="r"><code>st_as_sfc(str)
 ## Geometry set for 1 feature 
@@ -425,7 +425,7 @@ x
 ## bbox:           xmin: 0 ymin: 1 xmax: 8 ymax: 9
 ## epsg (SRID):    NA
 ## proj4string:    NA
-## LINESTRING(0 1, 2 3, 4 5, 6 7, 8 9)</code></pre>
+## LINESTRING (0 1, 2 3, 4 5, 6 7, 8 9)</code></pre>
 </div>
 <div id="conversion-to-and-from-well-known-binary" class="section level3">
 <h3>Conversion to and from well-known binary</h3>
@@ -450,8 +450,8 @@ st_as_sfc(x)
 ## bbox:           xmin: 0 ymin: 1 xmax: 5 ymax: 6
 ## epsg (SRID):    NA
 ## proj4string:    NA
-## POINT(0 1)
-## POINT(5 6)</code></pre>
+## POINT (0 1)
+## POINT (5 6)</code></pre>
 </div>
 <div id="conversion-to-and-from-sp" class="section level3">
 <h3>Conversion to and from sp</h3>

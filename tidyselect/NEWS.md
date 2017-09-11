@@ -1,5 +1,97 @@
 
-# tidyselect 0.1.0
+# tidyselect 0.2.0
+
+The main point of this release is to revert a troublesome behaviour
+introduced in tidyselect 0.1.0. It also includes a few features.
+
+
+## Evaluation rules
+
+The special evaluation semantics for selection have been changed
+back to the old behaviour because the new rules were causing too
+much trouble and confusion. From now on data expressions (symbols
+and calls to `:` and `c()`) can refer to both registered variables
+and to objects from the context.
+
+However the semantics for context expressions (any calls other than
+to `:` and `c()`) remain the same. Those expressions are evaluated
+in the context only and cannot refer to registered variables.
+
+If you're writing functions and refer to contextual objects, it is
+still a good idea to avoid data expressions. Since registered
+variables are change as a function of user input and you never know
+if your local objects might be shadowed by a variable. Consider:
+
+```
+n <- 2
+vars_select(letters, 1:n)
+```
+
+Should that select up to the second element of `letters` or up to
+the 14th? Since the variables have precedence in a data expression,
+this will select the 14 first letters. This can be made more robust
+by turning the data expression into a context expression:
+
+```
+vars_select(letters, seq(1, n))
+```
+
+You can also use quasiquotation since unquoted arguments are
+guaranteed to be evaluated without any user data in scope. While
+equivalent because of the special rules for context expressions,
+this may be clearer to the reader accustomed to tidy eval:
+
+```{r}
+vars_select(letters, seq(1, !! n))
+```
+
+Finally, you may want to be more explicit in the opposite direction.
+If you expect a variable to be found in the data but not in the
+context, you can use the `.data` pronoun:
+
+```{r}
+vars_select(names(mtcars), .data$cyl : .data$drat)
+```
+
+## New features
+
+* The new select helper `last_col()` is helpful to select over a
+  custom range: `vars_select(vars, 3:last_col())`.
+
+* `:` and `-` now handle strings as well. This makes it easy to
+  unquote a column name: `(!! name) : last_col()` or `-(!! name)`.
+
+* `vars_select()` gains a `.strict` argument similar to
+  `rename_vars()`.  If set to `FALSE`, errors about unknown variables
+  are ignored.
+
+* `vars_select()` now treats `NULL` as empty inputs. This follows a
+  trend in the tidyverse tools.
+
+* `vars_rename()` now handles variable positions (integers or round
+  doubles) just like `vars_select()` (#20).
+
+* `vars_rename()` is now implemented with the tidy eval framework.
+  Like `vars_select()`, expressions are evaluated without any user
+  data in scope. In addition a variable context is now established so
+  you can write rename helpers. Those should return a single round
+  number or a string (variable position or variable name).
+
+* `has_vars()` is a predicate that tests whether a variable context
+  has been set (#21).
+
+* The selection helpers are now exported in a list
+  `vars_select_helpers`.  This is intended for APIs that embed the
+  helpers in the evaluation environment.
+
+
+## Fixes
+
+* `one_of()` argument `vars` has been renamed to `.vars` to avoid
+  spurious matching.
+
+
+# tidyselect 0.1.1
 
 tidyselect is the new home for the legacy functions
 `dplyr::select_vars()`, `dplyr::rename_vars()` and

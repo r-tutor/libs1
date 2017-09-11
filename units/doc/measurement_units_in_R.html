@@ -408,10 +408,11 @@ attr(e, &quot;condition&quot;)[[1]]
 ## [1] &quot;cannot convert cm*km/h/s into cm/s&quot;</code></pre>
 <p>The full set of methods and method groups for <code>units</code> objects is shown by</p>
 <pre class="r"><code>methods(class = &quot;units&quot;)
-##  [1] Math          Ops           Summary       [             as.data.frame
-##  [6] c             diff          format        hist          mean         
-## [11] median        plot          print         quantile      rep          
-## [16] set_units     summary       units         units&lt;-       weighted.mean
+##  [1] Math          Ops           Summary       [             all.equal    
+##  [6] as.Date       as.POSIXct    as.data.frame c             diff         
+## [11] format        hist          mean          median        plot         
+## [16] print         quantile      rep           set_units     summary      
+## [21] units         units&lt;-       weighted.mean
 ## see '?methods' for accessing help and source code</code></pre>
 <p>where the method groups</p>
 <ul>
@@ -440,10 +441,10 @@ x/y
 ## 1 (m2 s-1)*h/km^2
 z/y
 ## 0.0036 1</code></pre>
-<p>However, <code>parse_unit</code> parses such units, and <code>as_cf</code> returns such unit strings from <code>units</code> objects:</p>
+<p>However, <code>parse_unit</code> parses such units, and <code>deparse_unit</code> returns such unit strings from <code>units</code> objects:</p>
 <pre class="r"><code>parse_unit(&quot;m2 s-1&quot;)
 ## 1 m^2/s
-as_cf(set_units(1, m^2*s^-1))
+deparse_unit(set_units(1, m^2*s^-1))
 ## [1] &quot;m2 s-1&quot;</code></pre>
 <p>The <code>plot</code> and <code>hist</code> methods add units to default axis labels, an example is shown in the following figures. For <a href="https://cran.r-project.org/package=ggplot2">ggplot2</a> plots <span class="citation">(Wickham 2009)</span>, automatic unit placement in default axis label is provided by package <a href="https://cran.r-project.org/package=ggforce">ggforce</a> <span class="citation">(Pedersen 2016)</span>; <code>demo(ggforce)</code> gives an example.</p>
 <pre class="r"><code>library(units)
@@ -467,12 +468,23 @@ ggplot(mtcars) + geom_point(aes(1/displacement, 1/consumption))</code></pre>
 <pre class="r"><code>(dt = diff(Sys.time() + c(0, 1, 1+60, 1+60+3600))) # class difftime
 ## Time differences in secs
 ## [1]    1   60 3600
-(dt.u = as.units(dt))
+(dt.u = as_units(dt))
 ## Units: s
 ## [1]    1   60 3600
-identical(as.dt(dt.u), dt) # as.difftime is not a generic
+identical(as_difftime(dt.u), dt)
 ## [1] TRUE</code></pre>
-<p>Objects of class <code>units</code> can be used as columns in <code>data.frame</code> objects, as well as in <code>tbl_df</code> <span class="citation">(Wickham, Francois, and Müller 2016)</span>.</p>
+<p>as well as to and from <code>POSIXct</code> or <code>Date</code>:</p>
+<pre class="r"><code>(t1 &lt;- as_units(as.POSIXct(&quot;2017-08-20 17:03:00&quot;)))
+## 1503248580 (seconds since 1970-01-01 00:00:00 +00:00)
+(t2 &lt;- as_units(as.POSIXct(&quot;2017-08-20 17:03:00&quot;), &quot;hours since 2017-08-20&quot;))
+## 17.05 (hours since 2017-08-20)
+(d1 &lt;- as_units(as.Date(&quot;2017-08-20&quot;)))
+## 17398 (days since 1970-01-01)
+as.POSIXct(t1)
+## [1] &quot;2017-08-20 17:03:00 UTC&quot;
+as.Date(d1)
+## [1] &quot;2017-08-20&quot;</code></pre>
+<p>Objects of class <code>units</code> can be used as columns in <code>data.frame</code> objects, as well as in <code>tbl_df</code> <span class="citation">(Wickham, Francois, and Müller 2016)</span>. They can also be <code>matrix</code> or <code>array</code>, with the constraint that a single unit holds for all elements.</p>
 </div>
 <div id="discussion-and-conclusions" class="section level2">
 <h2>Discussion and conclusions</h2>

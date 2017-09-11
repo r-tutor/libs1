@@ -183,11 +183,11 @@ From `difftime` to `units`:
 t1 = Sys.time() 
 t2 = t1 + 3600 
 d = t2 - t1
-(du = as.units(d))
+(du = as_units(d))
 ```
 vice versa:
 ```{r}
-(dt = as.dt(du))
+(dt = as_difftime(du))
 class(dt)
 ```
 
@@ -237,9 +237,9 @@ Instead, we can tell R to parse such a string, which then allows simplification:
 z + y
 z / y
 ```
-Printing units in this form is done by
+Printing units in character form is done by
 ```{r}
-as_cf(z)
+deparse_unit(z)
 ```
 
 ## plotting

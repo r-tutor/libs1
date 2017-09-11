@@ -1,3 +1,29 @@
+# version 0.5-4
+
+* fix compatibility problems introduced by `tidyr` 0.7-0 using rlang magic
+
+* convert path names to UTF-8 in `st_read`, `st_write` and `st_layers`; #471
+
+* `st_sfc` converts `NULL` values into empty geometries, and correctly identifies empty `POINT`s; #466, #463
+
+* `st_write` abbreviates column names if driver is `ESRI Shapefile`; #464
+
+* add `of_largest_polygon` argument to `st_centroid`, to get the centroid of the largest polygon; #450
+
+* fix use of `st_relate` as join predicate for `st_join`; #454
+
+* fix bug where `st_intersects` with empty second argument would crash; #458
+
+* produce better WKT; #463
+
+* fix bug in `st_cast.sf`; #461, #462
+
+* change `st_read` SRS assignment logic; corrects reading projected geojson with gdal 2.2.0; #449
+
+* `st_intersection` etc. on `tbl` now also return `tbl`; #448
+
+* `[.sf` preserves class, e.g. of `tbl`; #448
+
 # version 0.5-3
 
 * support and propagate all Proj.4 +units=xx length units; #446
