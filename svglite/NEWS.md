@@ -1,3 +1,9 @@
+
+# svglite 1.2.1
+
+This release makes svglite compatible with gdtools 0.1.6.
+
+
 # svglite 1.2.0
 
 ## New features

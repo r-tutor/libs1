@@ -1,3 +1,10 @@
+# xml2 1.1.9000
+
+* Use Rcpp symbol registration and visibility to prevent symbol conflicts on Linux
+
+* `xml_add_child()` now requires less resources to insert a node when called
+  with `.where = 0L` (@heckendorfc, #175).
+
 # xml2 1.1.1
 
 * This is a small point release addressing installation issues found with older
