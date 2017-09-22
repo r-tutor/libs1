@@ -20,6 +20,7 @@ ft_quantile_discretizer
                         Feature Transformation - QuantileDiscretizer
 ft_regex_tokenizer      Feature Tranformation - RegexTokenizer
 ft_sql_transformer      Feature Transformation - SQLTransformer
+ft_stop_words_remover   Feature Tranformation - StopWordsRemover
 ft_string_indexer       Feature Transformation - StringIndexer
 ft_tokenizer            Feature Tranformation - Tokenizer
 ft_vector_assembler     Feature Transformation - VectorAssembler
@@ -83,6 +84,7 @@ sdf_partition           Partition a Spark Dataframe
 sdf_persist             Persist a Spark DataFrame
 sdf_pivot               Pivot a Spark DataFrame
 sdf_predict             Model Predictions with Spark DataFrames
+sdf_project             Project features onto principal components
 sdf_quantile            Compute (Approximate) Quantiles with a Spark
                         DataFrame
 sdf_read_column         Read a Column from a Spark DataFrame
@@ -101,6 +103,7 @@ sdf_with_unique_id      Add a Unique ID Column to a Spark DataFrame
 spark-api               Access the Spark API
 spark-connections       Manage Spark Connections
 spark_apply             Apply an R Function in Spark
+spark_apply_log         Log Writter for Spark Apply
 spark_compilation_spec
                         Define a Spark Compilation Specification
 spark_config            Read Spark Configuration
@@ -128,6 +131,7 @@ spark_read_source       Read from a generic source into a Spark
                         DataFrame.
 spark_read_table        Reads from a Spark Table into a Spark
                         DataFrame.
+spark_read_text         Read a Text file into a Spark DataFrame
 spark_save_table        Saves a Spark DataFrame as a Spark table
 spark_table_name        Generate a Table Name from Expression
 spark_version           Get the Spark Version Associated with a Spark
@@ -142,6 +146,7 @@ spark_write_json        Write a Spark DataFrame to a JSON file
 spark_write_parquet     Write a Spark DataFrame to a Parquet file
 spark_write_source      Writes a Spark DataFrame into a generic source
 spark_write_table       Writes a Spark DataFrame into a Spark table
+spark_write_text        Write a Spark DataFrame to a Text file
 src_databases           Show database list
 tbl_cache               Cache a Spark Table
 tbl_change_db           Use specific database
