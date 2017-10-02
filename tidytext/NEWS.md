@@ -1,3 +1,10 @@
+# tidytext 0.1.4
+
+* Fix tidier for quanteda dictionary for correct class (#71).
+* Add a [pkgdown site](https://juliasilge.github.io/tidytext).
+* Convert NSE from underscored function to tidyeval (`unnest_tokens`, `bind_tf_idf`, all sparse casters) (#67, #74).
+* Added tidiers for topic models from the `stm` package (#51).
+
 # tidytext 0.1.3
 
 * `get_sentiments` now works regardless of whether `tidytext` has been loaded or not (#50).
