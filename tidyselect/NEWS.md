@@ -1,4 +1,29 @@
 
+# tidyselect 0.2.2
+
+* `dplyr` is now correctly mentioned as suggested package.
+
+
+# tidyselect 0.2.1
+
+* `-` now supports character vectors in addition to strings. This
+  makes it easy to unquote column names to exclude from the set:
+
+  ```{r}
+  vars <- c("cyl", "am", "disp", "drat")
+  vars_select(names(mtcars), - (!! vars))
+  ```
+
+* `last_col()` now issues an error when the variable vector is empty.
+
+* `last_col()` now returns column positions rather than column names
+  for consistency with other helpers. This also makes it compatible
+  with functions like `seq()`.
+
+* `c()` now supports character vectors the same way as `-` and `seq()`.
+  (#37 @gergness)
+
+
 # tidyselect 0.2.0
 
 The main point of this release is to revert a troublesome behaviour
