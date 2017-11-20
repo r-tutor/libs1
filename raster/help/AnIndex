@@ -189,6 +189,7 @@ dropLayer,RasterBrick-method	addLayer
 dropLayer,RasterStack-method	addLayer
 endCluster	cluster
 erase	erase
+erase,SpatialLines,SpatialPolygons-method	erase
 erase,SpatialPolygons,SpatialPolygons-method	erase
 extend	extend
 extend,Extent-method	extend
@@ -203,13 +204,16 @@ extent,GridTopology-method	extent
 extent,list-method	extent
 extent,matrix-method	extent
 extent,numeric-method	extent
+extent,sf-method	extent
 extent,Spatial-method	extent
 Extent-class	Extent-class
 extent<-	setExtent
+extentFromCells	cellsFromExtent
 extract	extract
 extract,Raster,data.frame-method	extract
 extract,Raster,Extent-method	extract
 extract,Raster,matrix-method	extract
+extract,Raster,sf-method	extract
 extract,Raster,SpatialLines-method	extract
 extract,Raster,SpatialPoints-method	extract
 extract,Raster,SpatialPolygons-method	extract
@@ -332,6 +336,7 @@ log,Raster-method	Math-methods
 Logic,Raster,Raster-method	Logic-methods
 Logic-methods	Logic-methods
 mask	mask
+mask,Raster,sf-method	mask
 mask,Raster,Spatial-method	mask
 mask,RasterLayer,RasterLayer-method	mask
 mask,RasterLayer,RasterStackBrick-method	mask
@@ -451,6 +456,7 @@ rasterize	rasterize
 rasterize,data.frame,Raster-method	rasterize
 rasterize,Extent,Raster-method	rasterize
 rasterize,matrix,Raster-method	rasterize
+rasterize,sf,Raster-method	rasterize
 rasterize,SpatialLines,Raster-method	rasterize
 rasterize,SpatialPoints,Raster-method	rasterize
 rasterize,SpatialPolygons,Raster-method	rasterize

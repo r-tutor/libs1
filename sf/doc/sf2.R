@@ -66,7 +66,7 @@ st_write(nc, dsn = "nc1.shp", layer = "nc.shp", driver = "ESRI Shapefile")
 
 ## ----eval=FALSE----------------------------------------------------------
 #  conn = dbConnect(PostgreSQL(), dbname = "postgis")
-#  st_write_db(conn, meuse, dropTable = TRUE)
+#  st_write_db(conn, meuse, drop = TRUE)
 #  dbDisconnect(conn)
 
 ## ------------------------------------------------------------------------

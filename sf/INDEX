@@ -1,8 +1,8 @@
 Ops.sfg                 S3 Ops Group Generic Functions (multiply and
                         add/subtract) for affine transformation
 aggregate.sf            aggregate an 'sf' object
-as_Spatial              Methods to coerce simple feature objects to
-                        'Spatial*' objects
+as                      Methods to coerce simple feature geometries to
+                        corresponding 'Spatial*' objects
 bgMap                   This is data included in sf
 bind                    Bind rows (features) of sf objects
 db_drivers              Drivers for which update should be 'TRUE' by
@@ -17,8 +17,8 @@ geos_combine            Combine or union feature geometries
 geos_measures           Compute geometric measurements
 geos_query              Dimension, simplicity or validity queries on
                         simple feature geometries
-geos_unary              Geometric unary operations on (pairs of) simple
-                        feature geometry sets
+geos_unary              Geometric unary operations on simple feature
+                        geometry sets
 is_driver_available     Check if driver is available
 is_driver_can           Check if a driver can perform an action
 merge.sf                merge method for sf and data.frame object
@@ -29,8 +29,9 @@ rawToHex                Convert raw vector(s) into hexadecimal
 sf                      Create sf object
 sf_extSoftVersion       Provide the external dependencies versions of
                         the libraries linked to sf
-sfc                     Create simple feature collection object of
-                        class sfc from list
+sfc                     Create simple feature geometry list column
+sgbp                    Methods for dealing with sparse geometry binary
+                        predicate lists
 st                      Create simple feature from a numeric vector,
                         matrix or list
 st_agr                  get or set relation_to_geometry attribute of an
@@ -47,6 +48,10 @@ st_bbox                 Return bounding of a simple feature or simple
 st_cast                 Cast geometry to another type: either simplify,
                         or cast explicitly
 st_cast_sfc_default     Coerce geometry to MULTI* geometry
+st_collection_extract   Given an object with geometries of type
+                        'GEOMETRY' or 'GEOMETRYCOLLECTION', return an
+                        object consisting only of elements of the
+                        specified type.
 st_coordinates          retrieve coordinates in matrix form
 st_crs                  Retrieve coordinate reference system from
                         object
@@ -61,6 +66,7 @@ st_is                   test equality between the geometry type and a
                         class or set of classes
 st_is_longlat           Assert whether simple feature coordinates are
                         longlat degrees
+st_jitter               jitter geometries
 st_join                 spatial left or inner join
 st_layers               List layers in a datasource
 st_line_sample          Sample points on a linear geometry

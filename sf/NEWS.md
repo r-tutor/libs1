@@ -1,3 +1,57 @@
+# version 0.5-5
+
+* have `classInt` in Imports:, to not break other package checks
+
+* add vignettes 5: plotting sf objects and 6: miscellaneous; #324
+
+* add (default) color key to `plot.sf` if single map is plotted, contributed by @hughjonesd; #528 
+
+* `st_as_sfc` can now read EWKT; #530
+
+* argument `max.plot` takes its default from `options(sf_max.plot=n)`, if present; #516
+
+* `plot.sf` gets an arguments `pal` to specify a color palette function; #526
+
+* `plot.sf` gets arguments `breaks` and `nbreaks`; add support for `classInt::classIntervals` styles for finding class intervals (using `breaks`)
+
+* add `st_as_sf` methods for `ppp`, `lpp` and `psp` objects from spatstat.
+
+* allow for direct route to proj.4 ignoring GDAL (requiring liblwgeom); #509, #511
+
+* add `print` method for `crs` objects; #517
+
+* `sf_extSoftVersion` now reveals whether GDAL was linked to GEOS; #510
+
+* better check input of `st_polygon`; #514
+
+* add `st_node`, similar to `rgeos::gNode`
+
+* support for reading `OFTInteger64List` fields; #508
+
+* sparse geometric binary predicate lists now have a class, `sgbp`, and attributes `region.id` and `predicate`; #234, #524
+
+* prevent `st_split` from stopping the R session; #492
+
+* `st_intersection`, `st_union` and so on now also print a message when used directly on long/lat coordinates; #496
+
+* add `rep` method for `sfc` objects
+
+* comparing two `crs` objects now uses the GDAL function `IsSame`; #180
+
+* add `st_collection_extract`, which, given an object with geometries of type `GEOMETRY` or `GEOMETRYCOLLECTION`, returns an object consisting only of elements of the specified type; by Andy Teucher, #482
+
+* `st_write` exports GeoJSON with ANSI encoding on Windows; #444
+
+* move package methods from Imports: to Depends: ; #478
+
+* deal better with precision setting and propagation; #476
+
+* fix bug in `st_layers` in case layers have no geometry; #334
+
+* clarify argument `envelope` in `st_voronoi`; #474
+
+* change aggregate to make it return the same geometry as 'by', padding attributes with NA where needed; #453 
+
 # version 0.5-4
 
 * fix compatibility problems introduced by `tidyr` 0.7-0 using rlang magic

@@ -3,6 +3,18 @@
 \newcommand{\ghpr}{\href{https://github.com/RcppCore/RcppEigen/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/RcppCore/RcppEigen/issues/#1}{##1}}
 
+\section{Changes in RcppEigen version 0.3.3.3.1 (2017-11-19)}{
+  \itemize{
+    \item Compilation under Haiku-OS is now supported (Yu Gong in
+    \ghpr{45}). 
+    \item The \code{Rcpp.plugin.maker} helper function is called via
+    \code{::} as it is in fact exported (yet we had old code using
+    \code{:::}).
+    \item A spurious argument was removed from an example call.
+    \item Travis CI now uses https to fetch the test runner script.
+  }
+}
+
 \section{Changes in RcppEigen version 0.3.3.3.0 (2017-04-29)}{
   \itemize{
     \item Updated to version 3.3.3 of Eigen

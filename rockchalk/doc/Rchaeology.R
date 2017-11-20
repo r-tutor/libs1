@@ -2,13 +2,13 @@
 ### Encoding: UTF-8
 
 ###################################################
-### code chunk number 1: Rchaeology.Rnw:24-25
+### code chunk number 1: Rchaeology.Rnw:25-26
 ###################################################
   if(exists(".orig.enc")) options(encoding = .orig.enc)
 
 
 ###################################################
-### code chunk number 2: Rchaeology.Rnw:162-163
+### code chunk number 2: Rchaeology.Rnw:161-162
 ###################################################
 dir.create("plots", showWarnings=F)
 
@@ -23,7 +23,7 @@ pdf.options(onefile=F,family="Times",pointsize=12)
 
 
 ###################################################
-### code chunk number 4: Rchaeology.Rnw:281-292
+### code chunk number 4: Rchaeology.Rnw:277-288
 ###################################################
 dat <- data.frame(x1 = rnorm(100, m = 50), x2 = rnorm(100, m = 50),
   x3 = rnorm(100, m = 50), x4 = rnorm(100, m=50), y = rnorm(100))
@@ -50,7 +50,7 @@ newFmla[[3]][[2]][[2]]
 
 
 ###################################################
-### code chunk number 6: Rchaeology.Rnw:385-391
+### code chunk number 6: Rchaeology.Rnw:374-380
 ###################################################
 m1 <- lm(y ~ x1*x2, data = dat)
 coef(m1)
@@ -61,7 +61,7 @@ all.equal(m1, m2)
 
 
 ###################################################
-### code chunk number 7: Rchaeology.Rnw:527-532
+### code chunk number 7: Rchaeology.Rnw:507-512
 ###################################################
 m3 <- lm(y ~ x1*x2, data = dat)
 coef(m3)
@@ -71,7 +71,7 @@ coef(m4)
 
 
 ###################################################
-### code chunk number 8: Rchaeology.Rnw:559-563
+### code chunk number 8: Rchaeology.Rnw:538-542
 ###################################################
 f1 <- y ~ x1 + x2 + x3 + log(x4)
 class(f1)
@@ -80,7 +80,7 @@ coef(m5)
 
 
 ###################################################
-### code chunk number 9: Rchaeology.Rnw:570-576
+### code chunk number 9: Rchaeology.Rnw:549-555
 ###################################################
 f1[[1]]
 f1[[2]]
@@ -91,7 +91,7 @@ f1[[3]][[3]]
 
 
 ###################################################
-### code chunk number 10: Rchaeology.Rnw:592-595
+### code chunk number 10: Rchaeology.Rnw:570-573
 ###################################################
 f1exp <- expression(y ~ x1 + x2 + x3 + log(x4))
 class(f1exp)
@@ -99,7 +99,7 @@ m6 <- lm(eval(f1exp), data = dat)
 
 
 ###################################################
-### code chunk number 11: Rchaeology.Rnw:600-605
+### code chunk number 11: Rchaeology.Rnw:578-583
 ###################################################
 f1expeval <- eval(f1exp)
 class(f1expeval)
@@ -109,7 +109,7 @@ all.equal(coef(m5), coef(m6), coef(m7))
 
 
 ###################################################
-### code chunk number 12: Rchaeology.Rnw:612-615
+### code chunk number 12: Rchaeology.Rnw:590-593
 ###################################################
 f1[[3]][[2]] <- quote(x1 + log(x2))
 m8 <- lm(f1, data = dat)
@@ -117,7 +117,7 @@ coef(m8)
 
 
 ###################################################
-### code chunk number 13: Rchaeology.Rnw:746-749
+### code chunk number 13: Rchaeology.Rnw:718-721
 ###################################################
 plot(1:10, seq(1,5, length.out=10), type = "n", main="Illustrating Substitute with plotmath", xlab="x", ylab="y")
 text(5, 4, substitute(gamma + x1mean, list(x1mean = mean(dat$x1))))
@@ -125,26 +125,26 @@ text(5, 2, expression(paste(gamma, " plus the mean of x1")))
 
 
 ###################################################
-### code chunk number 14: Rchaeology.Rnw:772-773
+### code chunk number 14: Rchaeology.Rnw:744-745
 ###################################################
 sublist <- list(x1 = "alphabet", x2 = "zoology")
 
 
 ###################################################
-### code chunk number 15: Rchaeology.Rnw:783-784
+### code chunk number 15: Rchaeology.Rnw:755-756
 ###################################################
 substitute(expression(x1 + x2 + log(x1) + x3), sublist)
 
 
 ###################################################
-### code chunk number 16: Rchaeology.Rnw:799-801
+### code chunk number 16: Rchaeology.Rnw:771-773
 ###################################################
 sublist <- list(x1 = as.name("alphabet"), x2 = as.name("zoology"))
 substitute(expression(x1 + x2 + log(x1) + x3), sublist)
 
 
 ###################################################
-### code chunk number 17: Rchaeology.Rnw:813-816
+### code chunk number 17: Rchaeology.Rnw:784-787
 ###################################################
 dat <- data.frame(x1=1:10, x2=10:1, x3=rep(1:5,2), x4=gl(2,5))
 colnames(dat)
@@ -152,7 +152,7 @@ names(dat)
 
 
 ###################################################
-### code chunk number 18: Rchaeology.Rnw:822-825
+### code chunk number 18: Rchaeology.Rnw:793-796
 ###################################################
 newnames <- c("whatever","sounds","good","tome")
 colnames(dat) <- newnames
@@ -160,7 +160,7 @@ colnames(dat)
 
 
 ###################################################
-### code chunk number 19: Rchaeology.Rnw:833-836
+### code chunk number 19: Rchaeology.Rnw:804-807
 ###################################################
 dat2 <- setNames(data.frame(x1 = rnorm(10), x2 = rnorm(10),
     x3 = rnorm(10), x4 = gl(2,5)), c("good", "names", "tough", "find"))
@@ -168,7 +168,7 @@ head(dat2, 2)
 
 
 ###################################################
-### code chunk number 20: Rchaeology.Rnw:845-849
+### code chunk number 20: Rchaeology.Rnw:816-820
 ###################################################
 newnames <- c("iVar", "uVar", "heVar", "sheVar")
 datcommand <- expression(data.frame(x1=1:10, x2=10:1, x3=rep(1:5,2), x4=gl(2,5)))
@@ -177,7 +177,7 @@ dat3 <- setNames(eval(datcommand), newnames)
 
 
 ###################################################
-### code chunk number 21: Rchaeology.Rnw:964-976
+### code chunk number 21: Rchaeology.Rnw:929-941
 ###################################################
 biVec1 <- function(n = 3, n1s = 1) {
     c(rep(1, n1s), rep(0, n - n1s))
@@ -194,7 +194,7 @@ biVec2 <- function(n = 3, n1s = 1){
 
 
 ###################################################
-### code chunk number 22: Rchaeology.Rnw:988-996
+### code chunk number 22: Rchaeology.Rnw:953-961
 ###################################################
 biVec3 <- function(n = 3, n1s = 1) {
     X <- c(rep(1, n1s), rep(0, n - n1s))
@@ -207,14 +207,14 @@ ls()
 
 
 ###################################################
-### code chunk number 23: Rchaeology.Rnw:1022-1024
+### code chunk number 23: Rchaeology.Rnw:986-988
 ###################################################
 biVec1(3.3, 1.8)
 biVec2(3.3, 1.8)
 
 
 ###################################################
-### code chunk number 24: Rchaeology.Rnw:1032-1043
+### code chunk number 24: Rchaeology.Rnw:996-1007
 ###################################################
 is.wholenumber <- function(x, tol = .Machine$double.eps^0.5){
  abs(x - round(x)) < tol
@@ -230,7 +230,7 @@ biVec1 <- function(n = 3, n1s = 1) {
 
 
 ###################################################
-### code chunk number 25: Rchaeology.Rnw:1157-1160 (eval = FALSE)
+### code chunk number 25: Rchaeology.Rnw:1107-1110 (eval = FALSE)
 ###################################################
 ## dat <- data.frame(myx = c(1, 2, 3), myy = c(10, 5, 1))
 ## debug(plot.default)
@@ -238,20 +238,20 @@ biVec1 <- function(n = 3, n1s = 1) {
 
 
 ###################################################
-### code chunk number 26: Rchaeology.Rnw:1347-1349
+### code chunk number 26: Rchaeology.Rnw:1266-1268
 ###################################################
 formals(plot)
 formals(plot.default)
 
 
 ###################################################
-### code chunk number 27: Rchaeology.Rnw:1358-1359
+### code chunk number 27: Rchaeology.Rnw:1275-1276
 ###################################################
 formals(graphics:::plot.histogram)
 
 
 ###################################################
-### code chunk number 28: Rchaeology.Rnw:1502-1511
+### code chunk number 28: Rchaeology.Rnw:1414-1423
 ###################################################
 plotme <- function(x, y, data, ...){
     if(missing(data) | !is.data.frame(data)) 
@@ -265,13 +265,13 @@ dat <- data.frame(myx, myy)
 
 
 ###################################################
-### code chunk number 29: Rchaeology.Rnw:1516-1517 (eval = FALSE)
+### code chunk number 29: Rchaeology.Rnw:1428-1429 (eval = FALSE)
 ###################################################
 ## plotme("myx", "myy", data = dat)
 
 
 ###################################################
-### code chunk number 30: Rchaeology.Rnw:1544-1549
+### code chunk number 30: Rchaeology.Rnw:1456-1461
 ###################################################
 plotme <- function(x, y, z){
     plot(x, y, col = z)
@@ -281,35 +281,35 @@ myy <- rnorm(10)
 
 
 ###################################################
-### code chunk number 31: Rchaeology.Rnw:1556-1558 (eval = FALSE)
+### code chunk number 31: Rchaeology.Rnw:1468-1470 (eval = FALSE)
 ###################################################
 ## mycol <- 1:10
 ## plotme(myx, myy, z = mycol)
 
 
 ###################################################
-### code chunk number 32: Rchaeology.Rnw:1561-1563 (eval = FALSE)
+### code chunk number 32: Rchaeology.Rnw:1473-1475 (eval = FALSE)
 ###################################################
 ## mycol <- rainbow(10)
 ## plotme(myx, myy, z = mycol)
 
 
 ###################################################
-### code chunk number 33: Rchaeology.Rnw:1566-1568 (eval = FALSE)
+### code chunk number 33: Rchaeology.Rnw:1478-1480 (eval = FALSE)
 ###################################################
 ## mycol <- gray.colors(10)
 ## plotme(myx, myy, z = mycol)
 
 
 ###################################################
-### code chunk number 34: Rchaeology.Rnw:1574-1576 (eval = FALSE)
+### code chunk number 34: Rchaeology.Rnw:1486-1488 (eval = FALSE)
 ###################################################
 ## mycol <- rnorm(10)
 ## plotme(myx, myy, z = mycol)
 
 
 ###################################################
-### code chunk number 35: Rchaeology.Rnw:1585-1589 (eval = FALSE)
+### code chunk number 35: Rchaeology.Rnw:1497-1501 (eval = FALSE)
 ###################################################
 ## plotme <- function(x, y, z){
 ##     if (missing(z) | is.null(z)) z <- rep(2, length(x))   
@@ -318,14 +318,14 @@ myy <- rnorm(10)
 
 
 ###################################################
-### code chunk number 36: Rchaeology.Rnw:1602-1604 (eval = FALSE)
+### code chunk number 36: Rchaeology.Rnw:1513-1515 (eval = FALSE)
 ###################################################
 ## m1 <- lm(y ~ x, data = dat)
 ## plot(y ~ x, data = dat)
 
 
 ###################################################
-### code chunk number 37: Rchaeology.Rnw:1618-1622 (eval = FALSE)
+### code chunk number 37: Rchaeology.Rnw:1528-1532 (eval = FALSE)
 ###################################################
 ## plotme <- function(x, y, z = rainbow(length(x))){     
 ##     plot(x, y, col = z)
@@ -334,7 +334,7 @@ myy <- rnorm(10)
 
 
 ###################################################
-### code chunk number 38: Rchaeology.Rnw:1628-1633 (eval = FALSE)
+### code chunk number 38: Rchaeology.Rnw:1538-1543 (eval = FALSE)
 ###################################################
 ## plotme <- function(x, y, z){     
 ##   if(missing(z)) mycol <- rainbow(length(x))
@@ -344,7 +344,7 @@ myy <- rnorm(10)
 
 
 ###################################################
-### code chunk number 39: Rchaeology.Rnw:1644-1652 (eval = FALSE)
+### code chunk number 39: Rchaeology.Rnw:1554-1562 (eval = FALSE)
 ###################################################
 ## plotme <- function(x, y, z = getAColor(length(x)))
 ## {

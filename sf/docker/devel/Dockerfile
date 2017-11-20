@@ -6,7 +6,7 @@ MAINTAINER "edzerpebesma" edzer.pebesma@uni-muenster.de
 RUN apt-get install -y subversion
 
 RUN cd /tmp \
-&& svn co https://svn.r-project.org/R/trunk R-devel
+	&& svn co https://svn.r-project.org/R/trunk R-devel
 
 RUN /tmp/R-devel/tools/rsync-recommended
 ## Build and install according the standard 'recipe' I emailed/posted years ago
@@ -46,6 +46,8 @@ RUN cd /usr/local/bin \
 && ln -s Rdevel RD \
 && ln -s Rscriptdevel RDscript
 
+# reinstall all pkgs:
+RUN Rscriptdevel -e 'sel = installed.packages()[,"LibPath"] == "/usr/local/lib/R/site-library"; install.packages(names(which(sel)), dependencies = TRUE, repos = "https://cloud.r-project.org")'
 RUN rm -fr sf.Rcheck
 RUN RD CMD check --as-cran sf_*tar.gz
 

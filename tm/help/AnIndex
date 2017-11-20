@@ -2,6 +2,7 @@ acq	acq
 as.DocumentTermMatrix	matrix
 as.TermDocumentMatrix	matrix
 as.VCorpus	VCorpus
+Boost_tokenizer	tokenizer
 c.TermDocumentMatrix	combine
 c.term_frequency	combine
 c.TextDocument	combine
@@ -33,6 +34,8 @@ getElem.DirSource	Source
 getElem.URISource	Source
 getElem.VectorSource	Source
 getElem.XMLSource	Source
+getMeta	Source
+getMeta.DataframeSource	Source
 getReaders	Reader
 getSources	Source
 getTokenizers	getTokenizers
@@ -67,6 +70,7 @@ pGetElem.URISource	Source
 pGetElem.VectorSource	Source
 PlainTextDocument	PlainTextDocument
 plot.TermDocumentMatrix	plot
+readDataframe	readDataframe
 readDOC	readDOC
 Reader	Reader
 reader	Source
@@ -77,12 +81,12 @@ readRCV1	readRCV1
 readRCV1asPlain	readRCV1
 readReut21578XML	readReut21578XML
 readReut21578XMLasPlain	readReut21578XML
-readTabular	readTabular
 readTagged	readTagged
 readXML	readXML
 read_dtm_Blei_et_al	foreign
 read_dtm_MC	foreign
 removeNumbers	removeNumbers
+removeNumbers.character	removeNumbers
 removeNumbers.PlainTextDocument	removeNumbers
 removePunctuation	removePunctuation
 removePunctuation.character	removePunctuation

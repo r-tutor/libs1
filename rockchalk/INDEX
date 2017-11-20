@@ -17,9 +17,15 @@ cutByTable              Select most frequently occurring values from
 dir.create.unique       Create a uniquely named directory. Appends
                         number & optionally date to directory name.
 focalVals               Create a focal value vector.
+formatNumericSummaries
+                        Numeric output data.frame from summarize is
+                        reformatted as one column per variable with
+                        summary statistics in the rows
 formatVC                formatter for merMod objects copied from lme4
 genCorrelatedData       Generates a data frame for regression analysis
 genCorrelatedData2      Generates a data frame for regression analysis.
+genX                    Generate correlated data (predictors) for one
+                        unit
 getAuxRsq               retrieves estimates of the coefficient of
                         determination from a list of regressions
 getDeltaRsquare         Calculates the delta R-squares, also known as
@@ -83,6 +89,7 @@ predictOMatic           Create predicted values after choosing values
 print.factorSummaries   Prints out the contents of an object created by
                         summarizeFactors in the style of base::summary
 print.pctable           Display pctable objects
+print.summarize         print method for output from summarize
 print.summary.pctable   print method for summary.pctable objects
 religioncrime           Religious beliefs and crime rates
 residualCenter          Calculates a "residual-centered" interaction
@@ -91,14 +98,14 @@ rockchalk-package       rockchalk: regression functions
 skewness                Calculate skewness
 standardize             Estimate standardized regression coefficients
                         for all variables
-summarize               Sorts numeric from factor variables and returns
-                        separate summaries for those types of
+summarize               Sorts numeric from discrete variables and
+                        returns separate summaries for those types of
                         variables.
 summarizeFactors        Extracts non-numeric variables, calculates
                         summary information, including entropy as a
                         diversity indicator.
 summarizeNumerics       Extracts numeric variables and presents an
-                        alphabetized summary in a workable format.
+                        summary in a workable format.
 summary.factor          Tabulates observed values and calculates
                         entropy
 summary.pctable         Extract presentation from a pctable object

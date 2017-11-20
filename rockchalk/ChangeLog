@@ -1,3 +1,40 @@
+2017-07-17  Paul Johnson  <pauljohn@delllap-16>
+
+	* ../R/summarize.R (ncw): rename sumstat -> stats
+
+2016-11-25  Paul Johnson  <pauljohn@delllap-16>
+
+	* ../R/genCorrelatedData.R (genX): genX now returns a DATA FRAME
+	possibly including character column "unit" and "idx". Receiver
+	may need to cast this back as a matrix.
+
+2016-11-23  Paul Johnson  <pauljohn@delllap-16>
+
+	* ../R/genCorrelatedData.R (genCorrelatedData2): insert argument
+	"intercept" FALSE by default, then prune "Intercept" from x.mat
+	before returning.
+
+2016-11-22  Paul Johnson  <pauljohn@delllap-16>
+
+	* ../R/outreg.R (pline): remove extra "2" in number of columns
+	(BT): delete wide blank spaces that were breaking pandoc output of
+	HTML tables.
+
+2016-08-08  Paul Johnson  <pauljohn@dellap14>
+
+	* Rchaeology vignette: email from Alexandre Courtiol <alexandre.courtiol@gmail.com>
+
+2016-03-31  Paul Johnson  <pauljohn@dellap14>
+
+	* ../R/plotSlopes.R (plotSlopes.lm): clear up stop message explanations
+
+	* ../R/plotCurves.R: Logit model plot correction: re-scale DV as 0
+	and 1 so plot points come out correct.
+
+2016-03-11  Paul Johnson  <pauljohn@dellap14>
+
+	* ../R/mcDiagnose.R (lmAuxiliary): Minor cleanup
+
 2016-02-07  Paul Johnson  <pauljohn@dellap14>
 
 	* ../R/plotSlopes.R: pasted in giant chunk of importsFrom

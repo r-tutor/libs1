@@ -1,6 +1,5 @@
+SolrClient              Solr connection client
 add                     Add documents from R objects
-collectargs             Function to make a list of args passing arg
-                        names through multiargs function.
 collection_addreplica   Add a replica
 collection_addreplicaprop
                         Add a replica property
@@ -58,21 +57,22 @@ delete                  Delete documents by ID or query
 is.sr_facet             Test for sr_facet class
 makemultiargs           Function to make make multiple args of the same
                         name from a single input with length > 1
-optimize                Optimize
 ping                    Ping a Solr instance
 schema                  Get the schema for a collection or core
 solr_all                All purpose search
-solr_connect            Solr connection
 solr_facet              Faceted search
 solr_get                Real time get
 solr_group              Grouped search
 solr_highlight          Highlighting search
 solr_mlt                "more like this" search
+solr_optimize           Optimize
 solr_parse              Parse raw data from solr_search, solr_facet, or
                         solr_highlight.
 solr_search             Solr search
 solr_stats              Solr stats
 solrium-package         General purpose R interface to Solr.
-update_csv              Update documents using CSV
-update_json             Update documents using JSON
-update_xml              Update documents using XML
+update_atomic_json      Atomic updates with JSON data
+update_atomic_xml       Atomic updates with XML data
+update_csv              Update documents with CSV data
+update_json             Update documents with JSON data
+update_xml              Update documents with XML data

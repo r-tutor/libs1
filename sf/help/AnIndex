@@ -4,12 +4,17 @@ aggregate	aggregate.sf
 aggregate.sf	aggregate.sf
 anti_join.sf	dplyr
 arrange.sf	dplyr
+as	coerce-methods
 as.matrix.sfg	st
 as_Spatial	coerce-methods
 bgMap	bgMap
 bind	bind
 c.sfg	st
 cbind.sf	bind
+coerce,sf,Spatial-method	coerce-methods
+coerce,sfc,Spatial-method	coerce-methods
+coerce,Spatial,sf-method	coerce-methods
+coerce,Spatial,sfc-method	coerce-methods
 db_drivers	db_drivers
 distinct.sf	dplyr
 dplyr	dplyr
@@ -55,6 +60,7 @@ plot.sfg	plot
 plot_sf	plot
 prefix_map	prefix_map
 print.sfg	st
+print.sgbp	sgbp
 rawToHex	rawToHex
 rbind.sf	bind
 read_sf	st_read
@@ -70,6 +76,7 @@ sf	sf
 sf.colors	plot
 sfc	sfc
 sf_extSoftVersion	sf_extSoftVersion
+sgbp	sgbp
 slice.sf	dplyr
 spread.sf	dplyr
 st	st
@@ -82,7 +89,10 @@ st_as_binary.sfg	st_as_binary
 st_as_grob	st_as_grob
 st_as_sf	st_as_sf
 st_as_sf.data.frame	st_as_sf
+st_as_sf.lpp	st_as_sf
 st_as_sf.map	st_as_sf
+st_as_sf.ppp	st_as_sf
+st_as_sf.psp	st_as_sf
 st_as_sf.sf	st_as_sf
 st_as_sf.Spatial	st_as_sf
 st_as_sfc	st_as_sfc
@@ -140,6 +150,10 @@ st_cast.sfc	st_cast
 st_cast.sfc_CIRCULARSTRING	st_cast
 st_cast_sfc_default	st_cast_sfc_default
 st_centroid	geos_unary
+st_collection_extract	st_collection_extract
+st_collection_extract.sf	st_collection_extract
+st_collection_extract.sfc	st_collection_extract
+st_collection_extract.sfg	st_collection_extract
 st_combine	geos_combine
 st_contains	geos_binary_pred
 st_contains_properly	geos_binary_pred
@@ -182,6 +196,7 @@ st_is_longlat	st_is_longlat
 st_is_simple	geos_query
 st_is_valid	geos_query
 st_is_within_distance	geos_binary_pred
+st_jitter	st_jitter
 st_join	st_join
 st_layers	st_layers
 st_length	geos_measures
@@ -193,6 +208,7 @@ st_make_valid	valid
 st_multilinestring	st
 st_multipoint	st
 st_multipolygon	st
+st_node	geos_unary
 st_overlaps	geos_binary_pred
 st_point	st
 st_point_on_surface	geos_unary
@@ -232,6 +248,7 @@ st_zm	st_zm
 summarise	dplyr
 summarise.sf	dplyr
 summary.sfc	summary.sfc
+t.sgbp	sgbp
 tibble	tibble
 transmute.sf	dplyr
 type_sum.sfc	tibble
