@@ -120,19 +120,19 @@ gm1 <- glm(y3 ~ x1 + x2, data = dat)
 ###################################################
 ### code chunk number 16: outreg10
 ###################################################
-outreg(list(m1, m2, m3))
+or <- outreg(list(m1, m2, m3))
 
 
 ###################################################
 ### code chunk number 17: outreg20
 ###################################################
-outreg(list(m1, m3), tight = FALSE, modelLabels = c("The First Model with a Long Title", "Another Model"), alpha = c(0.05, 0.01, 0.001))
+or1 <- outreg(list("The First Model with a Long Title" = m1, "Another Model" = m3), tight = FALSE, alpha = c(0.05, 0.01, 0.001))
 
 
 ###################################################
 ### code chunk number 18: outreg70
 ###################################################
-outreg(list(m1,gm1), modelLabels=c("OLS:y","GLM: Categorized y"))
+or2 <- outreg(list(m1,gm1), modelLabels = c("OLS:y","GLM: Categorized y"))
 
 
 ###################################################
@@ -273,7 +273,7 @@ summary(m4s)
 ###################################################
 ### code chunk number 39: stdreg10
 ###################################################
-outreg(list(m4, m4s), tight = F, modelLabels = c("Not Standardized","Standardized"))
+or10 <- outreg(list(m4, m4s), tight = F, modelLabels = c("Not Standardized","Standardized"))
 
 
 ###################################################
@@ -303,7 +303,7 @@ m6rc <- residualCenter(m6int)
 ###################################################
 ### code chunk number 43: mcenter10
 ###################################################
-outreg(list(m6linear, m6int, m6mc, m6rc), tight=F, modelLabels=c("Linear", "Interaction","Mean-centered","Residual-centered"), alpha = c(0.05, 0.01))
+or11 <- outreg(list(m6linear, m6int, m6mc, m6rc), tight=F, modelLabels=c("Linear", "Interaction","Mean-centered","Residual-centered"), alpha = c(0.05, 0.01))
 
 
 ###################################################
