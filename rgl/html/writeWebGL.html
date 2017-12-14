@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Write scene to HTML.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for writeWebGL {rgl}"><tr><td>writeWebGL {rgl}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Write scene to HTML.
+</h2>
+
+<h3>Description</h3>
+
+<p>Writes the current scene to a collection of files that contain WebGL code to reproduce
+it in a browser.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+writeWebGL(dir = "webGL", filename = file.path(dir, "index.html"), 
+           template = system.file(file.path("WebGL", "template.html"), package = "rgl"),
+           prefix = "",
+           snapshot = TRUE, commonParts = TRUE, reuse = NULL, 
+           font = "Arial", width, height)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dir</code></td>
+<td>
+
+<p>Where to write the files.
+</p>
+</td></tr>
+<tr valign="top"><td><code>filename</code></td>
+<td>
+
+<p>The filename to use for the main file.  
+</p>
+</td></tr>
+<tr valign="top"><td><code>template</code></td>
+<td>
+
+<p>The template web page to which to write the Javascript for the scene.  See Details below.
+</p>
+</td></tr>
+<tr valign="top"><td><code>prefix</code></td>
+<td>
+
+<p>An optional prefix to use on global identifiers in the scene; use different prefixes
+for different scenes displayed on the same web page.  If not blank, it should be a legal identifier
+in Javascript and HTML.
+</p>
+</td></tr>
+<tr valign="top"><td><code>snapshot</code></td>
+<td>
+
+<p>Whether to include a snapshot of the scene, to be displayed in browsers that don't support WebGL, or
+a specification of the snapshot to use.  See
+details below.
+</p>
+</td></tr>
+<tr valign="top"><td><code>commonParts</code></td>
+<td>
+
+<p>Whether to include parts that would be common to several
+figures on the same page.  Currently this includes
+a reference to and copy of the &lsquo;<span class="file">CanvasMatrix.js</span>&rsquo;
+file in the output.
+</p>
+</td></tr>
+<tr valign="top"><td><code>reuse</code></td>
+<td>
+
+<p>When writing several figures on the same page, set this
+to a dataframe containing values to reuse.  See the Value section below.
+</p>
+</td></tr>
+<tr valign="top"><td><code>font</code></td>
+<td>
+
+<p>The font to use for text.
+</p>
+</td></tr>
+<tr valign="top"><td><code>width, height</code></td>
+<td>
+
+<p>The (optional) width and height in pixels of the image to display.  If omitted,
+the <code>par3d("windowRect")</code> dimensions will be used.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function writes out a web page containing Javascript that reconstructs the scene in WebGL.
+</p>
+<p>Use the <code>template</code> argument to give the filename of a web page that is to contain the
+code for the new scene.  It should contain a single line containing <code>paste0("%", prefix, "WebGL%")</code>, e.g.
+<code>%WebGL%</code> with the default empty prefix.  That line will be replaced by the Javascript and other
+code necessary to reproduce the current scene.  The template may also contain the string <code>"%rglVersion%"</code>
+which will be replaced with the current <span class="pkg">rgl</span> version number.  If
+<code>template</code> is <code>NULL</code>, the output will simply be written directly
+to the main file.
+</p>
+<p>To put more than one scene into a web page, use different values of <code>prefix</code> for each.  The prefix
+will be used in identifiers in both Javascript and HTML, so it is safest to start with a letter and
+only use alphanumeric characters.
+</p>
+<p>WebGL is a fairly new technology for displaying 3D scenes in browsers.  Most current browsers support it
+to some extent, though it may not be enabled by default; see <a href="http://get.webgl.org">http://get.webgl.org</a> for details.  A major
+exception currently is Microsoft's Internet Explorer, though plugins are available.
+</p>
+<p>Currently <code>writeWebGL</code> has a number of known limitations, some of which will be gradually eliminated as
+development progresses:
+</p>
+
+<ul>
+<li><p> The bounding box decorations are fixed; labels do not move as they do within <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span>.
+</p>
+</li>
+<li><p> User-defined mouse controls are not supported.
+</p>
+</li>
+<li><p> Missing values are not handled properly.
+</p>
+</li>
+<li><p> WebGL browsers generally do not support more than 65535 vertices per
+object.  <code>writeWebGL</code> will print a warning if this limit is exceeded, but it is up to the user
+to break his scene into smaller objects.  (And 65535 vertices may not be small enough!)
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>The <code>filename</code> is returned.  If <code>reuse</code> is not <code>NULL</code>,
+it will have an attribute called <code>"reuse"</code> which contains a dataframe
+with columns <code>"id"</code> and <code>"prefix"</code> identifying the prefix used
+for objects drawn in this scene.  This dataframe can be used as the <code>reuse</code>
+argument in subsequent calls to <code>writeWebGL</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function is deprecated in favour of the <code>rglwidget()</code> function.  
+</p>
+
+
+<h3>Note</h3>
+
+<p>If <code>commonParts</code> is <code>TRUE</code>, the output includes a binary copy of
+the CanvasMatrix Javascript library.  This
+file is necessary for the Javascript code written by <code>writeWebGL</code> to 
+function properly, but only one copy is needed if the output page
+contains multiple <code>writeWebGL</code> figures.  
+</p>
+<p>Its source (including 
+the copyright notice and license for free use) is included in the file named by
+<code>system.file("htmlwidgets/lib/CanvasMatrix.src.js", package = "rgl")</code>.  
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Duncan Murdoch.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.webgl.org">http://www.webgl.org</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="scene3d.html">scene3d</a></code> saves a copy of a scene to an R variable; <code><a href="writeASY.html">writeASY</a></code>,
+<code><a href="writePLY.html">writePLY</a></code>, <code><a href="writeOBJ.html">writeOBJ</a></code> and <code><a href="readSTL.html">writeSTL</a></code>
+write the scene to a file in various other formats.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  plot3d(rnorm(100), rnorm(100), rnorm(100), type = "s", col = "red")
+  # This writes a copy into temporary directory 'webGL', and then displays it
+  filename &lt;- writeWebGL(dir = file.path(tempdir(), "webGL"), 
+                       width = 500, reuse = TRUE)
+  # Display the "reuse" attribute
+  attr(filename, "reuse")
+
+  # Display the scene in a browser
+  if (interactive())
+    browseURL(paste0("file://", filename))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rgl</em> version 0.98.22 <a href="00Index.html">Index</a>]</div>
+</body></html>

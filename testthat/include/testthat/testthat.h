@@ -41,11 +41,19 @@
 #  pragma GCC diagnostic ignored "-Wparentheses"
 # endif
 
+namespace Catch {
+
+// Avoid 'R CMD check' warnings related to the use of 'std::rand()' and
+// 'std::srand()'. Since we don't call any Catch APIs that use these
+// functions, it suffices to just override them in the Catch namespace.
+inline void srand(unsigned) {}
+inline int rand() { return 42; }
+
 // Catch has calls to 'exit' on failure, which upsets R CMD check.
 // We won't bump into them during normal test execution so just override
 // it in the Catch namespace before we include 'catch'.
-namespace Catch {
-inline void exit(int status) throw() {}
+inline void exit(int) throw() {}
+
 }
 # include "vendor/catch.h"
 
@@ -92,14 +100,14 @@ protected:
 class r_ostream : public std::ostream {
 public:
   r_ostream() : std::ostream(new r_streambuf) {}
-
+  ~r_ostream() { delete rdbuf(); }
 };
 
 // Allow client packages to access the Catch::Session
 // exported by testthat.
 # ifdef CATCH_CONFIG_RUNNER
 
-Catch::Session& catchSession()
+inline Catch::Session& catchSession()
 {
   static Catch::Session instance;
   return instance;

@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Set up Background</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bg3d {rgl}"><tr><td>bg3d {rgl}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Set up Background</h2>
+
+<h3>Description</h3>
+
+<p>Set up the background of the scene.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bg3d(...) 
+rgl.bg( sphere = FALSE, fogtype = "none", color = c("black", "white"), 
+	back = "lines", ...)
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fogtype</code></td>
+<td>
+<p>fog type:
+</p>
+
+<dl>
+<dt>&quot;none&quot;</dt><dd><p>no fog</p>
+</dd>
+<dt>&quot;linear&quot;</dt><dd><p>linear fog function</p>
+</dd>
+<dt>&quot;exp&quot;</dt><dd><p>exponential fog function</p>
+</dd>
+<dt>&quot;exp2&quot;</dt><dd><p>squared exponential fog function</p>
+</dd>
+</dl>
+
+</td></tr>
+<tr valign="top"><td><code>sphere</code></td>
+<td>
+
+<p>logical, if true, an environmental sphere geometry is used for the background decoration.
+</p>
+</td></tr>
+<tr valign="top"><td><code>color</code></td>
+<td>
+
+<p>Primary color is used for background clearing and as fog color.
+Secondary color is used for background sphere geometry. See <code><a href="material.html">material3d</a></code> for details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>back</code></td>
+<td>
+
+<p>Specifies the fill style of the sphere geometry. See <code><a href="material.html">material3d</a></code> for details.
+</p>
+</td></tr>
+<tr valign="top"><td><code> ... </code></td>
+<td>
+<p>Material properties. See <code><a href="material.html">material3d</a></code> for details.</p>
+</td></tr>  
+</table>
+
+
+<h3>Details</h3>
+
+<p>If sphere is set to <code>TRUE</code>, an environmental sphere enclosing the whole scene is drawn.
+</p>
+<p>If not, but the material properties include a bitmap as a texture, the bitmap is drawn in the 
+background of the scene.  (The bitmap colors modify the general color setting.)
+</p>
+<p>If neither a sphere nor a bitmap background is drawn, the background is filled with a 
+solid color.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <code><a href="writeWebGL.html">writeWebGL</a></code> function only supports solid color backgrounds.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="material.html">material3d</a></code>, <code><a href="bgplot3d.html">bgplot3d</a></code> to add a 2D plot as background.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  open3d()
+  
+  # a simple white background
+  
+  bg3d("white")
+
+  # the holo-globe (inspired by star trek):
+
+  bg3d(sphere = TRUE, color = c("black", "green"), lit = FALSE, back = "lines" )
+
+  # an environmental sphere with a nice texture.
+
+  bg3d(sphere = TRUE, texture = system.file("textures/sunsleep.png", package = "rgl"), 
+         back = "filled" )
+         
+  # The same texture as a fixed background
+  
+  open3d()
+  bg3d(texture = system.file("textures/sunsleep.png", package = "rgl"), col = "white")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rgl</em> version 0.98.22 <a href="00Index.html">Index</a>]</div>
+</body></html>

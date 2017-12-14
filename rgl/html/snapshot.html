@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: export screenshot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rgl.snapshot {rgl}"><tr><td>rgl.snapshot {rgl}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>export screenshot</h2>
+
+<h3>Description</h3>
+
+<p>Saves the screenshot as png file.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rgl.snapshot( filename, fmt = "png", top = TRUE )
+snapshot3d( ... )
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>filename</code></td>
+<td>
+<p>full path to filename.</p>
+</td></tr>
+<tr valign="top"><td><code>fmt</code></td>
+<td>
+<p>image export format, currently supported: png </p>
+</td></tr>
+<tr valign="top"><td><code>top</code></td>
+<td>
+<p>whether to call <code><a href="rgl.bringtotop.html">rgl.bringtotop</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to pass to <code>rgl.snapshot</code> </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Animations can be created in a loop modifying the scene and saving 
+each screenshot to a file. Various graphics programs (e.g. ImageMagick)
+can put these together into a single animation. (See <code><a href="play3d.html">movie3d</a></code> or
+the example below.)
+</p>
+
+
+<h3>Note</h3>
+
+<p>On some systems, the snapshot
+will include content from other windows if they cover the active rgl
+window.  Setting <code>top = TRUE</code> (the default) will use 
+<code><a href="rgl.bringtotop.html">rgl.bringtotop</a></code> before the snapshot
+to avoid this.  
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="play3d.html">movie3d</a></code>, <code><a href="viewpoint.html">rgl.viewpoint</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## Not run: 
+
+#
+# create animation
+#
+
+shade3d(oh3d(), color = "red")
+rgl.bringtotop()
+rgl.viewpoint(0, 20)
+
+olddir &lt;- setwd(tempdir())
+for (i in 1:45) {
+  rgl.viewpoint(i, 20)
+  filename &lt;- paste("pic", formatC(i, digits = 1, flag = "0"), ".png", sep = "")
+  rgl.snapshot(filename)
+}
+## Now run ImageMagick in tempdir().  Use 'convert' instead of 'magick'
+## if you have an older version of ImageMagick:
+##    magick -delay 10 *.png -loop 0 pic.gif
+setwd(olddir)
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rgl</em> version 0.98.22 <a href="00Index.html">Index</a>]</div>
+</body></html>
