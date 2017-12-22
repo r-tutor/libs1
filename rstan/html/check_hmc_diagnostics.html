@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Check HMC diagnostics after sampling</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for check_hmc_diagnostics {rstan}"><tr><td>check_hmc_diagnostics {rstan}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Check HMC diagnostics after sampling</h2>
+
+<h3>Description</h3>
+
+<p>These functions print summaries of important HMC diagnostics.
+The <code>check_hmc_diagnostics</code> function calls the other functions internally
+and prints an overall summary, but the other functions can also be called 
+directly: 
+<code>check_divergences</code> prints the number (and percentage) of iterations that
+ended with a divergence, <code>check_treedepth</code> prints the number 
+(and percentage) of iterations that saturated the max treedepth, 
+and <code>check_energy</code> prints E-BFMI values for each chain for which E-BFMI 
+is less than 0.2.
+</p>
+<p>Brief explanations of some of the problems detected by these diagnostics can
+be found at <a href="http://mc-stan.org/misc/warnings.html">http://mc-stan.org/misc/warnings.html</a>. For more depth see
+Betancourt (2017).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+check_hmc_diagnostics(object)
+check_divergences(object)
+check_treedepth(object)
+check_energy(object)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>A stanfit object.</p>
+</td></tr>
+</table>
+
+
+<h3>References</h3>
+
+<p>The Stan Development Team 
+<em>Stan Modeling Language User's Guide and Reference Manual</em>. 
+<a href="http://mc-stan.org/">http://mc-stan.org/</a>. 
+</p>
+<p>Betancourt, M. (2017). A conceptual introduction to Hamiltonian Monte Carlo.
+<a href="https://arxiv.org/abs/1701.02434">https://arxiv.org/abs/1701.02434</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+schools &lt;- stan_demo("eight_schools")
+check_hmc_diagnostics(schools)
+check_divergences(schools)
+check_treedepth(schools)
+check_energy(schools)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstan</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

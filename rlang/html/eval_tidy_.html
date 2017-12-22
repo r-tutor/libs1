@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Tidy evaluation in a custom environment</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for eval_tidy_ {rlang}"><tr><td>eval_tidy_ {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Tidy evaluation in a custom environment</h2>
+
+<h3>Description</h3>
+
+<p>We recommend using <code><a href="eval_tidy.html">eval_tidy()</a></code> in your DSLs as much as possible
+to ensure some consistency across packages (<code>.data</code> and <code>.env</code>
+pronouns, etc). However, some DSLs might need a different
+evaluation environment. In this case, you can call <code>eval_tidy_()</code>
+with the bottom and the top of your custom overscope (see
+<code><a href="as_overscope.html">as_overscope()</a></code> for more information).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+eval_tidy_(expr, bottom, top = NULL, env = caller_env())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>expr</code></td>
+<td>
+<p>An expression.</p>
+</td></tr>
+<tr valign="top"><td><code>bottom</code></td>
+<td>
+<p>This is the environment (or the bottom of a set of
+environments) containing definitions for overscoped symbols. The
+bottom environment typically contains pronouns (like <code>.data</code>)
+while its direct parents contain the overscoping bindings. The
+last one of these parents is the <code>top</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>top</code></td>
+<td>
+<p>The top environment of the overscope. During tidy
+evaluation, this environment is chained and rechained to lexical
+enclosures of self-evaluating formulas (or quosures). This is the
+mechanism that ensures hygienic scoping: the bindings in the
+overscope have precedence, but the bindings in the dynamic
+environment where the tidy quotes were created in the first place
+are in scope as well.</p>
+</td></tr>
+<tr valign="top"><td><code>env</code></td>
+<td>
+<p>The lexical environment in which to evaluate <code>expr</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Note that <code>eval_tidy_()</code> always installs a <code>.env</code> pronoun in the
+bottom environment of your dynamic scope. This pronoun provides a
+shortcut to the original lexical enclosure (typically, the dynamic
+environment of a captured argument, see <code><a href="quosure.html">enquo()</a></code>). It also
+cleans up the overscope after evaluation. See <code><a href="as_overscope.html">overscope_eval_next()</a></code>
+for evaluating several quosures in the same overscope.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

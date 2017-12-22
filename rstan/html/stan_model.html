@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Construct a Stan model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stan_model {rstan}"><tr><td>stan_model {rstan}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Construct a Stan model</h2>
+
+<h3>Description</h3>
+
+<p>Construct an instance of S4 class <code>stanmodel</code> from a model 
+specified in Stan's modeling language. A <code>stanmodel</code> object 
+can then be used to draw samples from the model. The Stan program
+(the model expressed in the Stan modeling language) is first translated to
+C++ code and then the C++ code for the model plus other auxiliary 
+code is compiled into a dynamic shared object (DSO) and then loaded. 
+The loaded DSO for the model can be executed to draw samples, allowing
+inference to be performed for the model and data.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  stan_model(file, model_name = "anon_model", 
+             model_code = "", stanc_ret = NULL, 
+             boost_lib = NULL, eigen_lib = NULL, 
+             save_dso = TRUE, verbose = FALSE, 
+             auto_write = rstan_options("auto_write"), 
+             obfuscate_model_name = TRUE, 
+             allow_undefined = FALSE, includes = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>A character string or a connection that <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> supports 
+specifying the Stan model specification in Stan's modeling language. 
+</p>
+</td></tr>
+<tr valign="top"><td><code>model_name</code></td>
+<td>
+<p>A character string naming the model; defaults 
+to <code>"anon_model"</code>. However, the model name will be derived from 
+<code>file</code> or <code>model_code</code> (if <code>model_code</code> is the name of a
+character string object) if <code>model_name</code> is not specified.</p>
+</td></tr>
+<tr valign="top"><td><code>model_code</code></td>
+<td>
+<p>Either a character string containing the model 
+specification or the name of a character string object in the workspace.
+This is an alternative to specifying the model via the <code>file</code>
+or <code>stanc_ret</code> arguments. 
+</p>
+</td></tr>
+<tr valign="top"><td><code>stanc_ret</code></td>
+<td>
+<p>A named list returned from a previous call to 
+the <code><a href="stanc.html">stanc</a></code> function. The list can be used to specify the model  
+instead of using the <code>file</code> or <code>model_code</code> arguments. 
+</p>
+</td></tr>
+<tr valign="top"><td><code>boost_lib</code></td>
+<td>
+<p>The path to a version of the Boost C++ library to
+use instead of the one in the <span class="pkg">BH</span> package.</p>
+</td></tr>
+<tr valign="top"><td><code>eigen_lib</code></td>
+<td>
+<p>The path to a version of the Eigen C++ library to
+use instead of the one in the <span class="pkg">RcppEigen</span> package.</p>
+</td></tr> 
+<tr valign="top"><td><code>save_dso</code></td>
+<td>
+<p>Logical, defaulting to <code>TRUE</code>, indicating 
+whether the  dynamic shared object (DSO) compiled from the C++ code for the 
+model will be saved or not. If <code>TRUE</code>, we can draw samples from
+the same model in another <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> session using the saved DSO (i.e., 
+without compiling the C++ code again).</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>Logical, defaulting to <code>FALSE</code>, indicating whether
+to report additional intermediate output to the console, 
+which might be helpful for debugging.</p>
+</td></tr>
+<tr valign="top"><td><code>auto_write</code></td>
+<td>
+<p>Logical, defaulting to the value of 
+<code>rstan_options("auto_write")</code>, indicating whether to write the
+object to the hard disk using <code><a href="../../base/html/readRDS.html">saveRDS</a></code>. Although this argument
+is <code>FALSE</code> by default, we recommend calling 
+<code>rstan_options("auto_write" = TRUE)</code> in order to avoid unnecessary 
+recompilations. If <code>file</code> is supplied and its <code><a href="../../base/html/basename.html">dirname</a></code> 
+is writable, then the object will be written to that same directory, 
+substituting a <code>.rds</code> extension for the <code>.stan</code> extension. 
+Otherwise, the object will be written to the <code><a href="../../base/html/tempfile.html">tempdir</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>obfuscate_model_name</code></td>
+<td>
+<p>A logical scalar that is <code>TRUE</code> by default and
+passed to <code><a href="stanc.html">stanc</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>allow_undefined</code></td>
+<td>
+<p>A logical scalar that is <code>FALSE</code> by default and
+passed to <code><a href="stanc.html">stanc</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>includes</code></td>
+<td>
+<p>If not <code>NULL</code> (the default), then a character vector of
+length one (possibly containing <code>"\n"</code>) of the form 
+<code>'#include "/full/path/to/my_header.hpp"'</code>, which will be inserted
+into the C++ code in the model's namespace and can be used to provide definitions 
+of functions that are declared but not defined in <code>file</code> or
+<code>model_code</code> when <code>allow_undefined = TRUE</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If a previously compiled <code>stanmodel</code> exists on the hard drive, its validity
+is checked and then returned without recompiling. The most common form of 
+invalidity seems to be Stan code that ends with a <code>}</code> rather than a blank
+line, which causes the hash checker to think that the current model is different
+than the one saved on the hard drive. To avoid reading previously 
+compiled <code>stanmodel</code>s from the hard drive, supply the <code>stanc_ret</code>
+argument rather than the <code>file</code> or <code>model_code</code> arguments.
+</p>
+<p>There are three ways to specify the model's code for <code>stan_model</code>: 
+</p>
+ 
+<ol>
+<li><p> parameter <code>model_code</code>: a character string containing the 
+Stan model specification,
+</p>
+</li>
+<li><p> parameter <code>file</code>: a file name (or a connection) from
+which to read the Stan model specification, or 
+</p>
+</li>
+<li><p> parameter <code>stanc_ret</code>: a list returned by <code>stanc</code>
+to be reused.
+</p>
+</li></ol>
+ 
+
+
+<h3>Value</h3>
+
+<p>An instance of S4 class <code><a href="stanmodel-class.html">stanmodel</a></code> that can be
+passed to the <code><a href="stanmodel-method-sampling.html">sampling</a></code>, <code><a href="stanmodel-method-optimizing.html">optimizing</a></code>, and 
+<code><a href="stanmodel-method-vb.html">vb</a></code> functions.
+</p>
+
+
+<h3>References</h3>
+
+<p>The Stan Development Team 
+<em>Stan Modeling Language User's Guide and Reference Manual</em>. 
+<a href="http://mc-stan.org/">http://mc-stan.org/</a>. 
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="stanmodel-class.html">stanmodel</a></code> for details on the class. 
+</p>
+<p><code><a href="stanmodel-method-sampling.html">sampling</a></code>, <code><a href="stanmodel-method-optimizing.html">optimizing</a></code>, and <code><a href="stanmodel-method-vb.html">vb</a></code>, 
+which take a <code>stanmodel</code> object as input, for estimating the model 
+parameters.
+</p>
+<p>More details on Stan, including the full user's guide and reference 
+manual, can be found at <a href="http://mc-stan.org/">http://mc-stan.org/</a>. 
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>## Not run: 
+stancode &lt;- 'data {real y_mean;} parameters {real y;} model {y ~ normal(y_mean,1);}'
+mod &lt;- stan_model(model_code = stancode)
+fit &lt;- sampling(mod, data = list(y_mean = 0))
+fit2 &lt;- sampling(mod, data = list(y_mean = 5))
+
+## End(Not run)</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstan</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

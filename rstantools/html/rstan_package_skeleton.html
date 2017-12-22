@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a skeleton for a new R package with Stan programs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rstan_package_skeleton {rstantools}"><tr><td>rstan_package_skeleton {rstantools}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a skeleton for a new <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> package with Stan programs</h2>
+
+<h3>Description</h3>
+
+<p>This function is very similar to <code><a href="../../utils/html/package.skeleton.html">package.skeleton</a></code> but is
+designed for source packages that want to include Stan Programs that can be
+built into binary versions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rstan_package_skeleton(name = "anRpackage", list = character(),
+  environment = .GlobalEnv, path = ".", force = FALSE,
+  code_files = character(), stan_files = character(), travis = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>name, list, environment, path, force, code_files</code></td>
+<td>
+<p>Same as in
+<code><a href="../../utils/html/package.skeleton.html">package.skeleton</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>stan_files</code></td>
+<td>
+<p>A character vector with paths to <code>.stan</code> files to
+include in the package. Otherwise similar to <code>code_files</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>travis</code></td>
+<td>
+<p>Should a <code>.travis.yml</code> file be added to the package
+directory? Defaults to <code>TRUE</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function first calls <code><a href="../../utils/html/package.skeleton.html">package.skeleton</a></code> and
+then adds the files listed in <code>stan_files</code> to an exec directory.
+Finally, it downloads several files from the <span class="pkg">rstanarm</span> package's
+<a href="http://github.com/stan-dev/rstanarm">GitHub repository</a> to facilitate
+building the resulting package. Note that <span class="pkg"><a href="../../rstanarm/html/rstanarm.html">rstanarm</a></span>
+is licensed under the GPL &gt;= 3, so package builders who do not want to be
+governed by that license should not use the downloaded files that contain
+<span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> code. Otherwise, it may be worth considering whether it would be easier
+to include your <code>.stan</code> programs and supporting <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> code in the
+<span class="pkg">rstanarm</span> package.
+</p>
+<p>After running <code>rstan_package_skeleton</code> see the
+<code>Read-and-delete-me</code> file created in the package directory. The
+content in that file contains the content of the <code>Read-and-delete-me</code>
+file created by <code><a href="../../utils/html/package.skeleton.html">package.skeleton</a></code> plus additional
+Stan-specific instructions.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>The <span class="pkg">rstanarm</span> repository on GitHub
+(<a href="https://github.com/stan-dev/rstanarm">https://github.com/stan-dev/rstanarm</a>) and a useR2016 presentation
+(<a href="https://channel9.msdn.com/Events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/How-to-Use-RStan-to-Estimate-Models-in-External-R-Packages">https://channel9.msdn.com/Events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/How-to-Use-RStan-to-Estimate-Models-in-External-R-Packages</a>).
+</p>
+
+<ul>
+<li><p> The guidelines for developers of <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> packages interfacing with Stan, a
+copy of which can be found in the package vignettes. See
+<code>browseVignettes("rstantools")</code> or <code>vignette(package =
+  "rstantools")</code>. The document is also available online at the
+<span class="pkg">rstantools</span> page on the
+<a href="https://CRAN.R-project.org/package=rstantools/vignettes/developer-guidelines.html">CRAN
+website</a>.
+</p>
+</li></ul>
+
+
+<ul>
+<li><p> The <a href="http://discourse.mc-stan.org">Stan Forums</a> and the
+<a href="https://github.com/stan-dev/rstantools/issues"><span class="pkg">rstantools</span> issue
+tracker</a> for assistance if you have trouble setting up your package.
+</p>
+</li></ul>
+
+
+<hr /><div style="text-align: center;">[Package <em>rstantools</em> version 1.4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

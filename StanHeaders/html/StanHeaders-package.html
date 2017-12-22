@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Stan C++ Library Headers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for StanHeaders-package {StanHeaders}"><tr><td>StanHeaders-package {StanHeaders}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+The Stan C++ Library Headers
+</h2>
+
+<h3>Description</h3>
+
+<p>The Stan project implements Markov Chain Monte Carlo and optimization for 
+statistical models. This R package provides the Stan header files so that
+they can easily be used by other R packages.
+</p>
+
+
+<h3>Details</h3>
+
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+Package: </td><td style="text-align: left;"> StanHeaders</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+Type: </td><td style="text-align: left;"> Package</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+Version: </td><td style="text-align: left;"> 2.9.0</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+Date: </td><td style="text-align: left;"> 2016-01-03</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+License: </td><td style="text-align: left;"> BSD 3 clause</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+<p>There are no R functions, only C++ headers. To use the Stan Math Library,
+it is sufficient to include <code>LinkingTo: StanHeaders</code> in the 
+<code>DESCRIPTION</code> file of another package. The Stan Math Library is
+sufficient for many purposes. If, in addition, another package needs to
+utilize the MCMC, optimization, or parsing facilities of
+<span class="pkg">StanHeaders</span>, then it is also necessary to include the <code>src</code>
+directory of <span class="pkg">StanHeaders</span> in the other package's 
+<code>PKG_CPPFLAGS</code>. For an example of such a <code>Makevars</code>, see
+<a href="https://raw.githubusercontent.com/stan-dev/rstan/develop/rstan/rstan/src/Makevars">https://raw.githubusercontent.com/stan-dev/rstan/develop/rstan/rstan/src/Makevars</a>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Ben Goodrich and Jiqiang Guo for the R package and the Stan Development 
+Team for Stan.
+Maintainer: Ben Goodrich &lt;benjamin.goodrich@columbia.edu&gt;
+</p>
+
+
+<h3>References</h3>
+
+<p>http://mc-stan.org
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  # No examples because there are no R functions.
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>StanHeaders</em> version 2.17.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

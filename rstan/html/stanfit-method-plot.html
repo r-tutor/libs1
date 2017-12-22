@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plots for stanfit objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plot-methods {rstan}"><tr><td>plot-methods {rstan}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plots for stanfit objects</h2>
+
+<h3>Description</h3>
+
+<p>The default plot shows posterior uncertainty intervals and point 
+estimates for parameters and generated quantities. The <code>plot</code> method can 
+also be used to call the other <strong>rstan</strong> plotting functions via the 
+<code>plotfun</code> argument (see Examples).</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  ## S4 method for signature 'stanfit,missing'
+plot(x, ..., plotfun)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An instance of class <code><a href="stanfit-class.html">stanfit</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>plotfun</code></td>
+<td>
+<p>A character string naming the plotting function to apply to the
+stanfit object. If <code>plotfun</code> is missing, the default is to call
+<code><a href="stan_plot.html">stan_plot</a></code>, which generates a plot of credible intervals and
+point estimates. See <code><a href="plotting-functions.html">rstan-plotting-functions</a></code> for the names and
+descriptions of the other plotting functions. <code>plotfun</code> can be either the
+full name of the plotting function (e.g. <code>"stan_hist"</code>) or can be 
+abbreviated to the part of the name following the underscore 
+(e.g. <code>"hist"</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments to <code>plotfun</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A <code><a href="../../ggplot2/html/ggplot.html">ggplot</a></code> object that can be further customized
+using the <span class="pkg">ggplot2</span> package.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Because the <span class="pkg">rstan</span> plotting functions use <span class="pkg">ggplot2</span> (and thus the 
+resulting plots behave like <code>ggplot</code> objects), when calling a plotting 
+function within a loop or when assigning a plot to a name 
+(e.g., <code>graph &lt;- plot(fit, plotfun = "rhat")</code>),
+if you also want the side effect of the plot being displayed you 
+must explicity print it (e.g., <code>(graph &lt;- plot(fit, plotfun = "rhat"))</code>, 
+<code>print(graph &lt;- plot(fit, plotfun = "rhat"))</code>).
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="plotting-functions.html">List of RStan plotting functions</a></code>,
+<code><a href="stan_plot_options.html">Plot options</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(rstan)
+fit &lt;- stan_demo("eight_schools")
+plot(fit)
+plot(fit, show_density = TRUE, ci_level = 0.5, fill_color = "purple")
+plot(fit, plotfun = "hist", pars = "theta", include = FALSE)
+plot(fit, plotfun = "trace", pars = c("mu", "tau"), inc_warmup = TRUE)
+plot(fit, plotfun = "rhat") + ggtitle("Example of adding title to plot")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstan</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

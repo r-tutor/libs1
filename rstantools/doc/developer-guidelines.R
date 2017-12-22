@@ -3,5 +3,5 @@
 #    install.packages("devtools")
 #    library("devtools")
 #  }
-#  install_github("stan-dev/rstanarm", args = "--preclean", build_vignettes = FALSE)
+#  install_github("stan-dev/rstanarm")
 

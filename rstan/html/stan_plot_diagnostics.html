@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: RStan Diagnostic plots</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Diagnostic plots {rstan}"><tr><td>Diagnostic plots {rstan}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>RStan Diagnostic plots</h2>
+
+<h3>Description</h3>
+
+<p>Diagnostic plots for HMC and NUTS using ggplot2. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  stan_diag(object, 
+            information = c("sample","stepsize", "treedepth","divergence"), 
+            chain = 0, ...)
+  stan_par(object, par, chain = 0, ...)
+  
+  stan_rhat(object, pars, ...)
+  stan_ess(object, pars, ...)
+  stan_mcse(object, pars, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>A stanfit or stanreg object.</p>
+</td></tr>
+<tr valign="top"><td><code>information</code></td>
+<td>
+<p>The information to be contained in the diagnostic plot.</p>
+</td></tr>
+<tr valign="top"><td><code>par,pars</code></td>
+<td>
+<p>The name of a single scalar parameter (<code>par</code>) or 
+one or more parameter names (<code>pars</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>chain</code></td>
+<td>
+<p>If <code>chain=0</code> (the default) all chains are combined.
+Otherwise the plot for <code>chain</code> is overlaid on the plot for all chains
+combined.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>For <code>stan_diag</code> and <code>stan_par</code>, optional arguments to 
+<code><a href="../../gridExtra/html/arrangeGrob.html">arrangeGrob</a></code>. For <code>stan_rhat</code>, <code>stan_ess</code>, 
+and <code>stan_mcse</code>, optional arguments to <code><a href="../../ggplot2/html/stat_bin.html">stat_bin</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<dl>
+<dt><code>stan_rhat</code>,<code>stan_ess</code>,<code>stan_mcse</code></dt><dd><p>Respectively, 
+these plots show the 
+distribution of the Rhat statistic, the ratio of effective sample size to 
+total sample size, and the ratio of Monte Carlo standard error
+to posterior standard deviation for the estimated parameters. These 
+plots are not intended to identify individual parameters, but rather to allow
+for quickly identifying if the estimated values of these quantities are
+desireable for all parameters.</p>
+</dd>
+<dt><code>stan_par</code></dt><dd><p>Calling <code>stan_par</code> generates three plots: 
+(i) a scatterplot of <code>par</code> vs. the accumulated log-posterior (<code>lp__</code>), 
+(ii) a scatterplot of <code>par</code> vs. the average Metropolis acceptance rate 
+(<code>accept_stat</code>), and 
+(iii) a violin plot showing the distribution of <code>par</code> at each of the 
+sampled step sizes (one per chain).
+For the scatterplots, red points are superimposed to indicate which 
+(if any) iterations encountered a divergent transition. Yellow points indicate 
+a transition that hit the maximum treedepth rather than terminated its 
+evolution normally.</p>
+</dd>
+<dt><code>stan_diag</code></dt><dd><p>The <code>information</code> argument is used to specify which 
+plots <code>stan_diag</code> should generate:
+</p>
+
+<ul>
+<li><p><code>information='sample'</code>Histograms of <code>lp__</code> 
+and <code>accept_stat</code>, as well as a scatterplot showing their 
+joint distribution.
+</p>
+</li>
+<li><p><code>information='stepsize'</code>Violin plots showing the 
+distributions of <code>lp__</code> and <code>accept_stat</code> at each of the sampled
+step sizes (one per chain).
+</p>
+</li>
+<li><p><code>information='treedepth'</code>Histogram of <code>treedepth</code> and 
+violin plots showing the distributions of <code>lp__</code> and 
+<code>accept_stat</code> for each value of <code>treedepth</code>.
+</p>
+</li>
+<li><p><code>information='divergence'</code>Violin plots showing the 
+distributions of <code>lp__</code> and <code>accept_stat</code> for iterations that
+encountered divergent transitions (<code>divergent=1</code>) and those that
+did not (<code>divergent=0</code>).
+</p>
+</li></ul>
+
+</dd>
+</dl>
+
+
+
+<h3>Value</h3>
+
+<p>For <code>stan_diag</code> and <code>stan_par</code>, a list containing the ggplot objects for 
+each of the displayed plots. For <code>stan_rhat</code>, <code>stan_ess</code>, 
+and <code>stan_mcse</code>, a single ggplot object.
+</p>
+
+
+<h3>Note</h3>
+
+<p>For details about the individual diagnostics and sampler parameters and their
+interpretations see the Stan Modeling Language User's Guide and Reference 
+Manual at <a href="http://mc-stan.org/documentation/">http://mc-stan.org/documentation/</a>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="plotting-functions.html">List of RStan plotting functions</a></code>,
+<code><a href="stan_plot_options.html">Plot options</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+fit &lt;- stan_demo("eight_schools")
+
+stan_diag(fit, info = 'sample') # shows three plots together
+samp_info &lt;- stan_diag(fit, info = 'sample') # saves the three plots in a list
+samp_info[[3]] # access just the third plot
+
+stan_diag(fit, info = 'sample', chain = 1) # overlay chain 1
+
+stan_par(fit, par = "mu")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstan</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

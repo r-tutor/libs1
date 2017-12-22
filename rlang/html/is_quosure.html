@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is an object a quosure or quosure-like?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for is_quosure {rlang}"><tr><td>is_quosure {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is an object a quosure or quosure-like?</h2>
+
+<h3>Description</h3>
+
+<p>These predicates test for <a href="quosure.html">quosure</a> objects.
+</p>
+
+<ul>
+<li> <p><code>is_quosure()</code> tests for a tidyeval quosure. These are one-sided
+formulas with a <code>quosure</code> class.
+</p>
+</li>
+<li> <p><code>is_quosureish()</code> tests for general R quosure objects: quosures,
+or one-sided formulas.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+is_quosure(x)
+
+is_quosureish(x, scoped = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An object to test.</p>
+</td></tr>
+<tr valign="top"><td><code>scoped</code></td>
+<td>
+<p>A boolean indicating whether the quosure or formula
+is scoped, that is, has a valid environment attribute. If <code>NULL</code>,
+the scope is not inspected.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="is_formula.html">is_formula()</a></code> and <code><a href="is_formula.html">is_formulaish()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Quosures are created with quo():
+quo(foo)
+is_quosure(quo(foo))
+
+# Formulas look similar to quosures but are not quosures:
+is_quosure(~foo)
+
+# But they are quosureish:
+is_quosureish(~foo)
+
+# Note that two-sided formulas are never quosureish:
+is_quosureish(a ~ b)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Look up the Stan function that corresponds to a R function or...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for lookup {rstan}"><tr><td>lookup {rstan}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Look up the Stan function that corresponds to a <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function or name.
+</h2>
+
+<h3>Description</h3>
+
+<p>This function helps to map between R functions and Stan functions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  lookup(FUN, ReturnType = character()) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>FUN</code></td>
+<td>
+<p>A character string naming a <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function or a <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function for
+which the (near) equivalent Stan function is sought. If no matching
+<span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function is found, <code>FUN</code> is reinterpreted as a <code><a href="../../base/html/regex.html">regexp</a></code> 
+and matches are sought.</p>
+</td></tr>
+<tr valign="top"><td><code>ReturnType</code></td>
+<td>
+<p>A character string of positive length naming a valid
+return type for a Stan function: <code>int</code>, <code>int[]</code>, <code>matrix</code>,
+<code>real</code>, <code>real[,]</code>, <code>real[]</code>, <code>row_vector</code>, 
+<code>T[]</code>, <code>vector</code>, or <code>void</code>. If <code>"ANY"</code> is passed,
+then the entire <code><a href="../../base/html/data.frame.html">data.frame</a></code> is returned and can be 
+inspected with the <code><a href="../../utils/html/View.html">View</a></code> function, for example.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Ordinarily, a data.frame with rows equal to the number of partial matches and four columns:
+</p>
+
+<ol>
+<li> <p><code>StanFunction</code> Character string for the Stan function's name.
+</p>
+</li>
+<li> <p><code>Arguments</code> Character string indicating the arguments to that Stan function. 
+</p>
+</li>
+<li> <p><code>ReturnType</code> Character string indicating the return type of that Stan function.
+</p>
+</li>
+<li> <p><code>Page</code> Integer indicating the page of the Stan reference manual where  
+that Stan function is defined. 
+</p>
+</li></ol>
+
+<p>If there are no matching Stan functions, a character string indicating so is returned.
+</p>
+
+
+<h3>References</h3>
+
+<p>The Stan Development Team 
+<em>Stan Modeling Language User's Guide and Reference Manual</em>. 
+<a href="http://mc-stan.org/">http://mc-stan.org/</a>. 
+</p>
+<p>The Stan Development Team
+<em>CmdStan Interface User's Guide</em>.
+<a href="http://mc-stan.org">http://mc-stan.org</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+lookup(dnorm)      # Stan equivalents for the normal PDF (in log form)
+lookup("foo")      # fails
+lookup("Student")  # succeeds even though there is no such R function
+lookup("^poisson") # every Stan function that starts with poisson
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstan</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

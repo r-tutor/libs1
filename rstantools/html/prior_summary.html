@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Generic function for extracting information about prior...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for prior_summary {rstantools}"><tr><td>prior_summary {rstantools}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Generic function for extracting information about prior distributions</h2>
+
+<h3>Description</h3>
+
+<p>See <code><a href="../../rstanarm/html/prior_summary.stanreg.html">prior_summary.stanreg</a></code> in the
+<span class="pkg"><a href="../../rstanarm/html/rstanarm.html">rstanarm</a></span> package for an example.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+prior_summary(object, ...)
+
+## Default S3 method:
+prior_summary(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>The object to use.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Arguments passed to methods. See the methods in the <span class="pkg">rstanarm</span>
+package for examples.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>prior_summary</code> methods should return an object containing
+information about the prior distribution(s) used for the given model.
+The structure of this object will depend on the method.
+</p>
+<p>The default method just returns <code>object$prior.info</code>, which is
+<code>NULL</code> if there is no <code>'prior.info'</code> element.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li><p> The <span class="pkg"><a href="../../rstanarm/html/rstanarm.html">rstanarm</a></span> package for example methods
+(<a href="https://CRAN.R-project.org/package=rstanarm">CRAN</a>,
+<a href="https://github.com/stan-dev/rstanarm">GitHub</a>).
+</p>
+</li></ul>
+
+
+<ul>
+<li><p> The guidelines for developers of <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> packages interfacing with Stan, a
+copy of which can be found in the package vignettes. See
+<code>browseVignettes("rstantools")</code> or <code>vignette(package =
+  "rstantools")</code>. The document is also available online at the
+<span class="pkg">rstantools</span> page on the
+<a href="https://CRAN.R-project.org/package=rstantools/vignettes/developer-guidelines.html">CRAN
+website</a>.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+# See help("prior_summary", package = "rstanarm")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstantools</em> version 1.4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

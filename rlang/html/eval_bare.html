@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Evaluate an expression in an environment</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for eval_bare {rlang}"><tr><td>eval_bare {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Evaluate an expression in an environment</h2>
+
+<h3>Description</h3>
+
+<p><code>eval_bare()</code> is a lightweight version of the base function
+<code><a href="../../base/html/eval.html">base::eval()</a></code>. It does not accept supplementary data, but it is
+more efficient and does not clutter the evaluation stack.
+Technically, <code>eval_bare()</code> is a simple wrapper around the C
+function <code>Rf_eval()</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+eval_bare(expr, env = parent.frame())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>expr</code></td>
+<td>
+<p>An expression to evaluate.</p>
+</td></tr>
+<tr valign="top"><td><code>env</code></td>
+<td>
+<p>The environment in which to evaluate the expression.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>base::eval()</code> inserts two call frames in the stack, the second of
+which features the <code>envir</code> parameter as frame environment. This may
+unnecessarily clutter the evaluation stack and it can change
+evaluation semantics with stack sensitive functions in the case
+where <code>env</code> is an evaluation environment of a stack frame (see
+<code><a href="stack.html">ctxt_stack()</a></code>). Since the base function <code>eval()</code> creates a new
+evaluation context with <code>env</code> as frame environment there are
+actually two contexts with the same evaluation environment on the
+stack when <code>expr</code> is evaluated. Thus, any command that looks up
+frames on the stack (stack sensitive functions) may find the
+parasite frame set up by <code>eval()</code> rather than the original frame
+targetted by <code>env</code>. As a result, code evaluated with <code>base::eval()</code>
+does not have the property of stack consistency, and stack
+sensitive functions like <code><a href="../../base/html/return.html">base::return()</a></code>, <code><a href="../../base/html/parent.frame.html">base::parent.frame()</a></code>
+may return misleading results.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>with_env
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# eval_bare() works just like base::eval():
+env &lt;- child_env(NULL, foo = "bar")
+expr &lt;- quote(foo)
+eval_bare(expr, env)
+
+# To explore the consequences of stack inconsistent semantics, let's
+# create a function that evaluates `parent.frame()` deep in the call
+# stack, in an environment corresponding to a frame in the middle of
+# the stack. For consistency we R's lazy evaluation semantics, we'd
+# expect to get the caller of that frame as result:
+fn &lt;- function(eval_fn) {
+  list(
+    returned_env = middle(eval_fn),
+    actual_env = get_env()
+  )
+}
+middle &lt;- function(eval_fn) {
+  deep(eval_fn, get_env())
+}
+deep &lt;- function(eval_fn, eval_env) {
+  expr &lt;- quote(parent.frame())
+  eval_fn(expr, eval_env)
+}
+
+# With eval_bare(), we do get the expected environment:
+fn(rlang::eval_bare)
+
+# But that's not the case with base::eval():
+fn(base::eval)
+
+# Another difference of eval_bare() compared to base::eval() is
+# that it does not insert parasite frames in the evaluation stack:
+get_stack &lt;- quote(identity(ctxt_stack()))
+eval_bare(get_stack)
+eval(get_stack)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Extract dots with splicing semantics</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dots_list {rlang}"><tr><td>dots_list {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Extract dots with splicing semantics</h2>
+
+<h3>Description</h3>
+
+<p>These functions evaluate all arguments contained in <code>...</code> and
+return them as a list. They both splice their arguments if they
+qualify for splicing. See <code><a href="vector-construction.html">ll()</a></code> for information about splicing
+and below for the kind of arguments that qualify for splicing.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dots_list(..., .ignore_empty = c("trailing", "none", "all"))
+
+dots_splice(..., .ignore_empty = c("trailing", "none", "all"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Arguments with explicit (<code>dots_list()</code>) or list
+(<code>dots_splice()</code>) splicing semantics. The contents of spliced
+arguments are embedded in the returned list.</p>
+</td></tr>
+<tr valign="top"><td><code>.ignore_empty</code></td>
+<td>
+<p>Whether to ignore empty arguments. Can be one
+of <code>"trailing"</code>, <code>"none"</code>, <code>"all"</code>. If <code>"trailing"</code>, only the
+last argument is ignored if it is empty.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>dots_list()</code> has <em>explicit splicing semantics</em>: it splices lists
+that are explicitly marked for <a href="vector-construction.html">splicing</a> with the
+<code><a href="splice.html">splice()</a></code> adjective. <code>dots_splice()</code> on the other hand has <em>list
+splicing semantics</em>: in addition to lists marked explicitly for
+splicing, <a href="bare-type-predicates.html">bare</a> lists are spliced as well.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list of arguments. This list is always named: unnamed
+arguments are named with the empty string <code>""</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="expr.html">exprs()</a></code> for extracting dots without evaluation.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Compared to simply using list(...) to capture dots, dots_list()
+# splices explicitly:
+x &lt;- list(1, 2)
+dots_list(!!! x, 3)
+
+# Unlike dots_splice(), it doesn't splice bare lists:
+dots_list(x, 3)
+
+# Splicing is also helpful to workaround exact and partial matching
+# of arguments. Let's create a function taking named arguments and
+# dots:
+fn &lt;- function(data, ...) {
+  dots_list(...)
+}
+
+# You normally cannot pass an argument named `data` through the dots
+# as it will match `fn`'s `data` argument. The splicing syntax
+# provides a workaround:
+fn(some_data, !!! list(data = letters))
+
+# dots_splice() splices lists marked with splice() as well as bare
+# lists:
+x &lt;- list(1, 2)
+dots_splice(!!! x, 3)
+dots_splice(x, 3)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

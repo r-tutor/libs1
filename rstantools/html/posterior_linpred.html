@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Generic function for accessing the posterior distribution of...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for posterior_linpred {rstantools}"><tr><td>posterior_linpred {rstantools}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Generic function for accessing the posterior distribution of the linear
+predictor</h2>
+
+<h3>Description</h3>
+
+<p>Extract the posterior draws of the linear predictor, possibly transformed by
+the inverse-link function. See
+<code><a href="../../rstanarm/html/posterior_linpred.stanreg.html">posterior_linpred.stanreg</a></code> in the
+<span class="pkg"><a href="../../rstanarm/html/rstanarm.html">rstanarm</a></span> package for an example.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+posterior_linpred(object, transform = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>The object to use.</p>
+</td></tr>
+<tr valign="top"><td><code>transform</code></td>
+<td>
+<p>Should the linear predictor be transformed using the
+inverse-link function? The default is <code>FALSE</code>, in which case the
+untransformed linear predictor is returned.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Arguments passed to methods. See the methods in the <span class="pkg">rstanarm</span>
+package for examples.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>posterior_linpred</code> methods should return a <i>D</i> by <i>N</i>
+matrix, where <i>D</i> is the number of draws from the posterior
+distribution distribution and <i>N</i> is the number of data points.
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li><p> The <span class="pkg"><a href="../../rstanarm/html/rstanarm.html">rstanarm</a></span> package for example methods
+(<a href="https://CRAN.R-project.org/package=rstanarm">CRAN</a>,
+<a href="https://github.com/stan-dev/rstanarm">GitHub</a>).
+</p>
+</li></ul>
+
+
+<ul>
+<li><p> The guidelines for developers of <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> packages interfacing with Stan, a
+copy of which can be found in the package vignettes. See
+<code>browseVignettes("rstantools")</code> or <code>vignette(package =
+  "rstantools")</code>. The document is also available online at the
+<span class="pkg">rstantools</span> page on the
+<a href="https://CRAN.R-project.org/package=rstantools/vignettes/developer-guidelines.html">CRAN
+website</a>.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+# See help("posterior_linpred", package = "rstanarm")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstantools</em> version 1.4.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

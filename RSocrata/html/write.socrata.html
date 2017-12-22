@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Write to a Socrata dataset (full replace or upsert)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for write.socrata {RSocrata}"><tr><td>write.socrata {RSocrata}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Write to a Socrata dataset (full replace or upsert)</h2>
+
+<h3>Description</h3>
+
+<p>Method for updating Socrata datasets
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+write.socrata(dataframe, dataset_json_endpoint, update_mode, email, password,
+  app_token = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dataframe</code></td>
+<td>
+<p>- dataframe to upload to Socrata</p>
+</td></tr>
+<tr valign="top"><td><code>dataset_json_endpoint</code></td>
+<td>
+<p>- Socrata Open Data Application Program Interface (SODA) endpoint (JSON only for now)</p>
+</td></tr>
+<tr valign="top"><td><code>update_mode</code></td>
+<td>
+<p>- &quot;UPSERT&quot; or &quot;REPLACE&quot;; consult http://dev.socrata.com/publishers/getting-started.html</p>
+</td></tr>
+<tr valign="top"><td><code>email</code></td>
+<td>
+<p>- The email to the Socrata account with read access to the dataset</p>
+</td></tr>
+<tr valign="top"><td><code>password</code></td>
+<td>
+<p>- The password associated with the email to the Socrata account</p>
+</td></tr>
+<tr valign="top"><td><code>app_token</code></td>
+<td>
+<p>- a (non-required) string; SODA API token can be used to query the data 
+portal <a href="http://dev.socrata.com/consumers/getting-started.html">http://dev.socrata.com/consumers/getting-started.html</a></p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Mark Silverberg <a href="mailto:mark.silverberg@socrata.com">mark.silverberg@socrata.com</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Store user email and password
+socrataEmail &lt;- Sys.getenv("SOCRATA_EMAIL", "mark.silverberg+soda.demo@socrata.com")
+socrataPassword &lt;- Sys.getenv("SOCRATA_PASSWORD", "7vFDsGFDUG")
+
+datasetToAddToUrl &lt;- "https://soda.demo.socrata.com/resource/xh6g-yugi.json" # dataset
+
+# Generate some data
+x &lt;- sample(-1000:1000, 1)
+y &lt;- sample(-1000:1000, 1)
+df_in &lt;- data.frame(x,y)
+
+# Upload to Socrata
+write.socrata(df_in,datasetToAddToUrl,"UPSERT",socrataEmail,socrataPassword)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RSocrata</em> version 1.7.4-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

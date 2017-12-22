@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Summary method for stanfit objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for summary-methods {rstan}"><tr><td>summary-methods {rstan}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Summary method for stanfit objects</h2>
+
+<h3>Description</h3>
+
+<p>Summarize the distributions of estimated parameters and derived quantities 
+using the posterior draws.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  ## S4 method for signature 'stanfit'
+summary(object, pars, probs = c(0.025, 0.25, 0.50, 0.75, 0.975),
+  use_cache = TRUE, ...) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>An instance of class <code><a href="stanfit-class.html">stanfit</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>pars</code></td>
+<td>
+<p>A character vector of parameter names. Defaults to all parameters
+as well as the log-posterior (<code>lp__</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>probs</code></td>
+<td>
+<p>A numeric vector of <code><a href="../../stats/html/quantile.html">quantile</a></code>s of interest. 
+The default is <code>c(0.025,0.25,0.5,0.75,0.975)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>use_cache</code></td>
+<td>
+<p>Logical, defaulting to <code>TRUE</code>. When <code>use_cache=TRUE</code>
+the summary quantities for all parameters are computed and cached for future
+use. Setting <code>use_cache=FALSE</code> can be used to avoid performing the 
+summary computations for all parameters if <code>pars</code> is given as some 
+specific parameters.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Currently unused.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The <code>summary</code> method returns a named list with elements <code>summary</code> 
+and <code>c_summary</code>, which contain summaries for for all chains merged and 
+individual chains, respectively.
+Included in the summaries are quantiles, means, standard deviations (sd),
+effective sample sizes (n_eff), and split Rhats (the potential scale
+reduction derived from all chains after splitting each chain in half and
+treating the halves as chains). For the summary of all chains merged, 
+Monte Carlo standard errors (se_mean) are also reported.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="monitor.html">monitor</a></code>, which computes similar summaries but accepts an 
+array of MCMC draws as its input rather than a <code>stanfit</code> object.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>## Not run: 
+ecode &lt;- '
+  parameters {
+    real&lt;lower=0&gt; y[2];
+  } 
+  model {
+    y ~ exponential(1);
+  }
+'
+fit &lt;- stan(model_code = ecode)
+s &lt;- summary(fit, probs = c(0.1, 0.9))
+s$summary  # all chaines merged
+s$c_summary  # individual chains
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstan</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

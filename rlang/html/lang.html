@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a call</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for lang {rlang}"><tr><td>lang {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a call</h2>
+
+<h3>Description</h3>
+
+<p>Language objects are (with symbols) one of the two types of
+<a href="is_expr.html">symbolic</a> objects in R. These symbolic objects form
+the backbone of <a href="is_expr.html">expressions</a>. They represent a value,
+unlike literal objects which are their own values. While symbols
+are directly <a href="env_bind.html">bound</a> to a value, language objects
+represent <em>function calls</em>, which is why they are commonly referred
+to as calls.
+</p>
+
+<ul>
+<li> <p><code>lang()</code> creates a call from a function name (or a literal
+function to inline in the call) and a list of arguments.
+</p>
+</li>
+<li> <p><code>new_language()</code> is bare-bones and takes a head and a tail. The
+head must be <a href="is_callable.html">callable</a> and the tail must be a
+<a href="pairlist.html">pairlist</a>. See section on calls as parse trees below. This
+constructor is useful to avoid costly coercions between lists and
+pairlists of arguments.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+lang(.fn, ..., .ns = NULL)
+
+new_language(head, tail = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.fn</code></td>
+<td>
+<p>Function to call. Must be a callable object: a string,
+symbol, call, or a function.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Arguments to the call either in or out of a list. Dots
+are evaluated with <a href="dots_list.html">explicit splicing</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>.ns</code></td>
+<td>
+<p>Namespace with which to prefix <code>.fn</code>. Must be a string
+or symbol.</p>
+</td></tr>
+<tr valign="top"><td><code>head</code></td>
+<td>
+<p>A <a href="is_callable.html">callable</a> object: a symbol, call, or
+literal function.</p>
+</td></tr>
+<tr valign="top"><td><code>tail</code></td>
+<td>
+<p>A <a href="pairlist.html">pairlist</a> of arguments.</p>
+</td></tr>
+</table>
+
+
+<h3>Calls as parse tree</h3>
+
+<p>Language objects are structurally identical to
+<a href="pairlist.html">pairlists</a>. They are containers of two objects, the head
+and the tail (also called the CAR and the CDR).
+</p>
+
+<ul>
+<li><p> The head contains the function to call, either literally or
+symbolically. If a literal function, the call is said to be
+inlined. If a symbol, the call is named. If another call, it is
+recursive. <code>foo()()</code> would be an example of a recursive call
+whose head contains another call. See <code><a href="switch_lang.html">lang_type_of()</a></code> and
+<code><a href="is_callable.html">is_callable()</a></code>.
+</p>
+</li>
+<li><p> The tail contains the arguments and must be a <a href="pairlist.html">pairlist</a>.
+</p>
+</li></ul>
+
+<p>You can retrieve those components with <code><a href="lang_head.html">lang_head()</a></code> and
+<code><a href="lang_head.html">lang_tail()</a></code>. Since language nodes can contain other nodes (either
+calls or pairlists), they are capable of forming a tree. When R
+<a href="parse_expr.html">parses</a> an expression, it saves the parse tree in a
+data structure composed of language and pairlist nodes. It is
+precisely because the parse tree is saved in first-class R objects
+that it is possible for functions to <a href="expr.html">capture</a> their
+arguments unevaluated.
+</p>
+
+
+<h3>Call versus language</h3>
+
+<p><code>call</code> is the old S <a href="../../base/html/mode.html">mode</a> of these objects while
+<code>language</code> is the R <a href="../../base/html/typeof.html">type</a>. While it is usually
+better to avoid using S terminology, it would probably be even more
+confusing to systematically refer to &quot;calls&quot; as &quot;language&quot;. rlang
+still uses <code>lang</code> as particle for function dealing with calls for
+consistency.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>lang_modify
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# fn can either be a string, a symbol or a call
+lang("f", a = 1)
+lang(quote(f), a = 1)
+lang(quote(f()), a = 1)
+
+#' Can supply arguments individually or in a list
+lang(quote(f), a = 1, b = 2)
+lang(quote(f), splice(list(a = 1, b = 2)))
+
+# Creating namespaced calls:
+lang("fun", arg = quote(baz), .ns = "mypkg")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

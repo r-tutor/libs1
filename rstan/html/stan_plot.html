@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: ggplot2 for RStan</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Plots {rstan}"><tr><td>Plots {rstan}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>ggplot2 for RStan</h2>
+
+<h3>Description</h3>
+
+<p>Visual posterior analysis using ggplot2.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  stan_plot(object, pars, include = TRUE, unconstrain = FALSE, ...)
+  stan_trace(object, pars, include = TRUE, unconstrain = FALSE,
+            inc_warmup = FALSE, nrow = NULL, ncol = NULL, ..., 
+            window = NULL)
+  stan_scat(object, pars, unconstrain = FALSE,
+            inc_warmup = FALSE, nrow = NULL, ncol = NULL, ...)
+  stan_hist(object, pars, include = TRUE, unconstrain = FALSE,
+            inc_warmup = FALSE, nrow = NULL, ncol = NULL, ...)
+  stan_dens(object, pars, include = TRUE, unconstrain = FALSE,
+            inc_warmup = FALSE, nrow = NULL, ncol = NULL, ..., 
+            separate_chains = FALSE)
+  stan_ac(object, pars, include = TRUE, unconstrain = FALSE,
+            inc_warmup = FALSE, nrow = NULL, ncol = NULL, ..., 
+            separate_chains = FALSE, lags = 25, partial = FALSE)
+  quietgg(gg)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>A stanfit or stanreg object.</p>
+</td></tr>
+<tr valign="top"><td><code>pars</code></td>
+<td>
+<p>Optional character vector of parameter names. 
+If <code>object</code> is a stanfit object, the default is to show
+all user-defined parameters or the first 10 (if there are more 
+than 10). If <code>object</code> is a stanreg object, the default is 
+to show all (or the first 10) regression coefficients 
+(including the intercept). For <code>stan_scat</code> only, 
+<code>pars</code> should not be missing and should contain exactly 
+two parameter names.</p>
+</td></tr>
+<tr valign="top"><td><code>include</code></td>
+<td>
+<p>Should the parameters given by the <code>pars</code> argument be
+included (the default) or excluded from the plot?</p>
+</td></tr>
+<tr valign="top"><td><code>unconstrain</code></td>
+<td>
+<p>Should parameters be plotted on the unconstrained space?
+Defaults to <code>FALSE</code>. Only available if <code>object</code> is a 
+stanfit object.</p>
+</td></tr>
+<tr valign="top"><td><code>inc_warmup</code></td>
+<td>
+<p>Should warmup iterations be included? Defaults to
+<code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>nrow,ncol</code></td>
+<td>
+<p>Passed to <code><a href="../../ggplot2/html/facet_wrap.html">facet_wrap</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional additional named arguments passed to geoms 
+(e.g. for <code>stan_trace</code> the geom is <code><a href="../../ggplot2/html/geom_path.html">geom_path</a></code> 
+and we could specify <code>linetype</code>, <code>size</code>, <code>alpha</code>, etc.). 
+For <code>stan_plot</code> there are also additional arguments that can be specified 
+in <code>...</code> (see Details).</p>
+</td></tr>
+<tr valign="top"><td><code>window</code></td>
+<td>
+<p>For <code>stan_trace</code> <code>window</code> is used to control
+which iterations are shown in the plot. See <code><a href="stanfit-method-traceplot.html">traceplot</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>separate_chains</code></td>
+<td>
+<p>For <code>stan_dens</code>, should the density for each 
+chain be plotted? The default is <code>FALSE</code>, which means that for each 
+parameter the draws from all chains are combined. For <code>stan_ac</code>, 
+if <code>separate_chains=FALSE</code> (the default), the autocorrelation is
+averaged over the chains. If <code>TRUE</code> each chain is plotted separately.</p>
+</td></tr>
+<tr valign="top"><td><code>lags</code></td>
+<td>
+<p>For <code>stan_ac</code>, the maximum number of lags to show.</p>
+</td></tr>
+<tr valign="top"><td><code>partial</code></td>
+<td>
+<p>For <code>stan_ac</code>, should partial autocorrelations be 
+plotted instead? Defaults to <code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>gg</code></td>
+<td>
+<p>A ggplot object or an expression that creates one.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For <code>stan_plot</code>, there are additional arguments that can be specified in 
+<code>...</code>. The optional arguments and their default values are:
+</p>
+
+<dl>
+<dt><code>point_est = "median"</code></dt><dd><p>The point estimate to show. 
+Either &quot;median&quot; or &quot;mean&quot;.
+</p>
+</dd>
+<dt><code>show_density = FALSE</code></dt><dd><p>Should kernel density estimates be plotted 
+above the intervals?
+</p>
+</dd>
+<dt><code>ci_level = 0.8</code></dt><dd><p>The posterior uncertainty interval to highlight.
+Central <code>100*ci_level</code>% intervals are computed from the quantiles of 
+the posterior draws.</p>
+</dd>
+<dt><code>outer_level = 0.95</code></dt><dd><p>An outer interval to also draw as a line 
+(if <code>show_outer_line</code> is <code>TRUE</code>) but not highlight.
+</p>
+</dd>
+<dt><code>show_outer_line = TRUE</code></dt><dd><p>Should the <code>outer_level</code> interval 
+be shown or hidden? Defaults to = <code>TRUE</code> (to plot it).
+</p>
+</dd>
+<dt><code>fill_color</code>, <code>outline_color</code>, <code>est_color</code></dt><dd><p>Colors to 
+override the defaults for the highlighted interval, the outer interval 
+(and density outline), and the point estimate.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Value</h3>
+
+<p>A <code><a href="../../ggplot2/html/ggplot.html">ggplot</a></code> object that can be further customized
+using the <span class="pkg">ggplot2</span> package.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Because the <span class="pkg">rstan</span> plotting functions use <span class="pkg">ggplot2</span> (and thus the 
+resulting plots behave like <code>ggplot</code> objects), when calling a plotting 
+function within a loop or when assigning a plot to a name 
+(e.g., <code>graph &lt;- plot(fit, plotfun = "rhat")</code>),
+if you also want the side effect of the plot being displayed you 
+must explicity print it (e.g., <code>(graph &lt;- plot(fit, plotfun = "rhat"))</code>, 
+<code>print(graph &lt;- plot(fit, plotfun = "rhat"))</code>).
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="plotting-functions.html">List of RStan plotting functions</a></code>,
+<code><a href="stan_plot_options.html">Plot options</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+example("read_stan_csv")
+stan_plot(fit)
+stan_trace(fit)
+
+library(gridExtra)
+fit &lt;- stan_demo("eight_schools")
+
+stan_plot(fit)
+stan_plot(fit, point_est = "mean", show_density = TRUE, fill_color = "maroon")
+
+
+# histograms
+stan_hist(fit)
+# suppress ggplot2 messages about default bindwidth
+quietgg(stan_hist(fit))
+quietgg(h &lt;- stan_hist(fit, pars = "theta", binwidth = 5)) 
+
+# juxtapose histograms of tau and unconstrained tau 
+tau &lt;- stan_hist(fit, pars = "tau")
+tau_unc &lt;- stan_hist(fit, pars = "tau", unconstrain = TRUE) + 
+            xlab("tau unconstrained")
+grid.arrange(tau, tau_unc)
+
+# kernel density estimates
+stan_dens(fit)
+(dens &lt;- stan_dens(fit, fill = "skyblue", ))
+dens &lt;- dens + ggtitle("Kernel Density Estimates\n") + xlab("")
+dens
+
+(dens_sep &lt;- stan_dens(fit, separate_chains = TRUE, alpha = 0.3))
+dens_sep + scale_fill_manual(values = c("red", "blue", "green", "black"))
+(dens_sep_stack &lt;- stan_dens(fit, pars = "theta", alpha = 0.5,
+                             separate_chains = TRUE, position = "stack"))
+
+# traceplot
+trace &lt;- stan_trace(fit)
+trace +
+  scale_color_manual(values = c("red", "blue", "green", "black"))
+trace +
+  scale_color_brewer(type = "div") +
+  theme(legend.position = "none")
+
+facet_style &lt;- theme(strip.background = element_rect(fill = "white"),
+                     strip.text = element_text(size = 13, color = "black"))
+(trace &lt;- trace + facet_style)
+
+# scatterplot
+(mu_vs_tau &lt;- stan_scat(fit, pars = c("mu", "tau"), color = "blue", size = 4))
+mu_vs_tau + 
+  coord_flip() + 
+  theme(panel.background = element_rect(fill = "black"))
+  
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstan</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

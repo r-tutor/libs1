@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Set default appearance options</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rstan_gg_options {rstan}"><tr><td>rstan_gg_options {rstan}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Set default appearance options</h2>
+
+<h3>Description</h3>
+
+<p>Set default appearance options
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  rstan_gg_options(...)
+  
+  rstan_ggtheme_options(...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>For <code>rstan_ggtheme_options</code>, see
+<code><a href="../../ggplot2/html/theme.html">theme</a></code> for the theme elements that can be specified
+in <code>...</code>. For <code>rstan_gg_options</code>, <code>...</code> can be <code>fill</code>,
+<code>color</code>, <code>chain_colors</code>, <code>size</code>, <code>pt_color</code>, or
+<code>pt_size</code>. See Examples.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="plotting-functions.html">List of RStan plotting functions</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+rstan_ggtheme_options(panel.background = element_rect(fill = "gray"),
+                      legend.position = "top")
+rstan_gg_options(fill = "skyblue", color = "skyblue4", pt_color = "red")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstan</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

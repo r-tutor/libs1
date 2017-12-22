@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Coerce object to quosure</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for as_quosure {rlang}"><tr><td>as_quosure {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Coerce object to quosure</h2>
+
+<h3>Description</h3>
+
+<p>Quosure objects wrap an <a href="is_expr.html">expression</a> with a <a href="env.html">lexical
+enclosure</a>. This is a powerful quoting (see <code><a href="../../base/html/quote.html">base::quote()</a></code>
+and <code><a href="quosure.html">quo()</a></code>) mechanism that makes it possible to carry and
+manipulate expressions while making sure that its symbolic content
+(symbols and named calls, see <code><a href="is_expr.html">is_symbolic()</a></code>) is correctly looked
+up during evaluation.
+</p>
+
+<ul>
+<li> <p><code>new_quosure()</code> creates a quosure from a raw expression and an
+environment.
+</p>
+</li>
+<li> <p><code>as_quosure()</code> is useful for functions that expect quosures but
+allow specifying a raw expression as well. It has two possible
+effects: if <code>x</code> is not a quosure, it wraps it into a quosure
+bundling <code>env</code> as scope. If <code>x</code> is an unscoped quosure (see
+<code><a href="is_quosure.html">is_quosure()</a></code>), <code>env</code> is used as a default scope. On the other
+hand if <code>x</code> has a valid enclosure, it is returned as is (even if
+<code>env</code> is not the same as the formula environment).
+</p>
+</li>
+<li><p> While <code>as_quosure()</code> always returns a quosure (a one-sided
+formula), even when its input is a <a href="new_formula.html">formula</a> or a
+<a href="op-definition.html">definition</a>, <code>as_quosureish()</code> returns quosureish
+inputs as is.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+as_quosure(x, env = caller_env())
+
+as_quosureish(x, env = caller_env())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An object to convert.</p>
+</td></tr>
+<tr valign="top"><td><code>env</code></td>
+<td>
+<p>An environment specifying the lexical enclosure of the
+quosure.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="is_quosure.html">is_quosure()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Sometimes you get unscoped formulas because of quotation:
+f &lt;- ~~expr
+inner_f &lt;- f_rhs(f)
+str(inner_f)
+is_quosureish(inner_f, scoped = TRUE)
+
+# You can use as_quosure() to provide a default environment:
+as_quosure(inner_f, base_env())
+
+# Or convert expressions or any R object to a validly scoped quosure:
+as_quosure(quote(expr), base_env())
+as_quosure(10L, base_env())
+
+
+# While as_quosure() always returns a quosure (one-sided formula),
+# as_quosureish() returns quosureish objects:
+as_quosure(a := b)
+as_quosureish(a := b)
+as_quosureish(10L)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

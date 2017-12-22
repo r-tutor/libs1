@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: RStan - R interface to Stan</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rstan-package {rstan}"><tr><td>rstan-package {rstan}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>RStan &mdash; <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> interface to Stan</h2>
+
+<h3>Description</h3>
+
+
+<p><img src="../help/figures/stanlogo.png" width="50px" alt="mc-stan.org" />
+<em>Stan Development Team</em>
+
+</p>
+<p>RStan is the <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> interface to the <a href="http://mc-stan.org/">Stan</a> C++ package. 
+RStan provides
+</p>
+
+<ul>
+<li><p> full Bayesian inference using the No-U-Turn sampler (NUTS), 
+a variant of Hamiltonian Monte Carlo (HMC)
+</p>
+</li>
+<li><p> approximate Bayesian inference using automatic differentiation 
+variational inference (ADVI)
+</p>
+</li>
+<li><p> penalized maximum likelihood estimation using L-BFGS optimization
+</p>
+</li></ul>
+
+<p>For documentation on the Stan modeling language see the
+<a href="http://mc-stan.org/documentation/"><em>Stan Modeling Language User's Guide and Reference Manual</em></a>.
+</p>
+
+
+<h3>Other R packages from the Stan Development Team</h3>
+
+<p>Various related <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> packages are also available from the Stan Development Team: 
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+  <strong>Package</strong> </td><td style="text-align: left;"> <strong>Description</strong> </td><td style="text-align: left;"> <strong>Link</strong> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <span class="pkg">bayesplot</span> 
+    </td><td style="text-align: left;"> ggplot-based plotting library for graphing parameter estimates, 
+      MCMC diagnostics, and posterior predictive checks. 
+    </td><td style="text-align: left;"> <a href="../../bayesplot/html/bayesplot-package.html">bayesplot-package</a>
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <span class="pkg">shinystan</span> 
+    </td><td style="text-align: left;"> Interactive visual summaries and advanced posterior analysis of 
+      MCMC output. 
+    </td><td style="text-align: left;"> <a href="../../shinystan/html/shinystan-package.html">shinystan-package</a>
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <span class="pkg">loo</span> 
+    </td><td style="text-align: left;"> Out-of-sample predictive performance estimates and model comparison.
+    </td><td style="text-align: left;"> <a href="../../loo/html/loo-package.html">loo-package</a> 
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <span class="pkg">rstanarm</span> 
+    </td><td style="text-align: left;"> <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> formula interface for Bayesian applied regression modeling. 
+    </td><td style="text-align: left;"> <a href="../../rstanarm/html/rstanarm-package.html">rstanarm-package</a>
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+  <span class="pkg">rstantools</span> 
+    </td><td style="text-align: left;"> Tools for developers of R packages interfacing with Stan.
+    </td><td style="text-align: left;"> <a href="../../rstantools/html/rstantools-package.html">rstantools-package</a>
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  </td>
+</tr>
+
+</table>
+
+
+
+<h3>Author(s)</h3>
+
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+  Authors:</td><td style="text-align: left;"> Jiqiang Guo &lt;guojq28@gmail.com&gt;   </td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+          </td><td style="text-align: left;"> Ben Goodrich &lt;benjamin.goodrich@columbia.edu&gt; </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+          </td><td style="text-align: left;"> Jonah Gabry &lt;jsg2201@columbia.edu&gt; </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  </td>
+</tr>
+
+</table>
+
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+  Maintainer:</td><td style="text-align: left;"> Ben Goodrich &lt;benjamin.goodrich@columbia.edu&gt;    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  </td>
+</tr>
+
+</table>
+
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="stan.html">stan</a></code> for details on fitting models and 
+<code><a href="stanfit-class.html">stanfit</a></code> for information on the fitted model objects.
+</p>
+</li>
+<li> <p><a href="https://github.com/stan-dev/rstan/issues/">https://github.com/stan-dev/rstan/issues/</a> to submit a bug
+report or feature request.
+</p>
+</li>
+<li> <p><a href="http://discourse.mc-stan.org">http://discourse.mc-stan.org</a> to ask a 
+question on the Stan-users forum.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre>## Not run:  
+
+stanmodelcode &lt;- "
+data {
+  int&lt;lower=0&gt; N;
+  real y[N];
+} 
+
+parameters {
+  real mu;
+} 
+
+model {
+  target += normal_lpdf(mu | 0, 10);
+  target += normal_lpdf(y  | mu, 1);
+} 
+"
+
+y &lt;- rnorm(20) 
+dat &lt;- list(N = 20, y = y); 
+fit &lt;- stan(model_code = stanmodelcode, model_name = "example", 
+            data = dat, iter = 2012, chains = 3, sample_file = 'norm.csv',
+            verbose = TRUE) 
+print(fit)
+traceplot(fit)
+
+# extract samples 
+e &lt;- extract(fit, permuted = TRUE) # return a list of arrays 
+mu &lt;- e$mu 
+
+m &lt;- extract(fit, permuted = FALSE, inc_warmup = FALSE) # return an array 
+print(dimnames(m))
+
+# using as.array directly on stanfit objects 
+m2 &lt;- as.array(fit)
+
+
+## End(Not run)</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstan</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

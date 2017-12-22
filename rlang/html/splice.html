@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Splice a list within a vector</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for splice {rlang}"><tr><td>splice {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Splice a list within a vector</h2>
+
+<h3>Description</h3>
+
+<p>This adjective signals to functions taking dots that <code>x</code> should be
+spliced in a surrounding vector. Examples of functions that support
+such explicit splicing are <code><a href="vector-construction.html">ll()</a></code>, <code><a href="vector-construction.html">chr()</a></code>, etc. Generally, any
+functions taking dots with <code><a href="dots_list.html">dots_list()</a></code> or <code><a href="dots_list.html">dots_splice()</a></code>
+supports splicing.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+splice(x)
+
+is_spliced(x)
+
+is_spliced_bare(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A list to splice.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Note that all functions supporting dots splicing also support the
+syntactic operator <code>!!!</code>. For tidy capture and tidy evaluation,
+this operator directly manipulates the calls (see <code><a href="quosure.html">quo()</a></code> and
+<a href="quasiquotation.html">quasiquotation</a>). However manipulating the call is not appropriate
+when taking dots by value rather than by expression, because it is
+slow and the dots might contain large lists of data. For this
+reason we splice values rather than expressions when dots are not
+captured by expression. We do it in two steps: first mark the
+objects to be spliced, then splice the objects with <code><a href="flatten.html">flatten()</a></code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="vector-construction.html">vector-construction</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- list("a")
+
+# It makes sense for ll() to accept lists literally, so it doesn't
+# automatically splice them:
+ll(x)
+
+# But you can splice lists explicitly:
+y &lt;- splice(x)
+ll(y)
+
+# Or with the syntactic shortcut:
+ll(!!! x)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

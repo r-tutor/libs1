@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Expose user-defined Stan functions to R for testing and...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for expose_stan_functions {rstan}"><tr><td>expose_stan_functions {rstan}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Expose user-defined Stan functions to <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> for testing and simulation
+</h2>
+
+<h3>Description</h3>
+
+<p>The Stan modeling language allows users to define their own functions in a 
+<code>functions</code> block at the top of a Stan program. The 
+<code>expose_stan_functions</code> utility function uses
+<code><a href="../../Rcpp/html/sourceCpp.html">sourceCpp</a></code> to export those user-defined functions
+to the specified environment for testing inside <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> or for doing posterior
+predictive simulations in <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> rather than in the <code>generated 
+  quantities</code> block of a Stan program.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  expose_stan_functions(stanmodel, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>stanmodel</code></td>
+<td>
+
+<p>A <code><a href="stanmodel-class.html">stanmodel</a></code> object, a <code><a href="stanfit-class.html">stanfit</a></code> 
+object, a list produced by <code><a href="stanc.html">stanc</a></code> or the path to a Stan 
+program (<code>.stan</code> file). In any of these cases, the underlying Stan 
+program should contain a non-empty <code>functions</code> block.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Further arguments passed to <code><a href="../../Rcpp/html/sourceCpp.html">sourceCpp</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>There are a few special types of user-defined Stan functions for which some 
+additional details are relevant:
+</p>
+
+
+<h4>(P)RNG functions</h4>
+
+<p>If a user-defined Stan function ends in <code>_rng</code>, then it can
+use the Boost pseudo-random number generator used by Stan. When exposing
+such functions to <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span>, a <code>seed</code> argument will be added to the 
+<code><a href="../../base/html/formals.html">formals</a></code>. This <code>seed</code> argument defaults to <code>0L</code>, 
+but any non-negative integer can be passed as the <code>seed</code> the 
+<strong>first</strong> time <strong>any</strong> user-defined function ending in <code>_rng</code> 
+is called. In other words, the Boost pseudo-random number generator is 
+initialized with the given <code>seed</code> but is declared with the <code>static</code> 
+C++ keyword, meaning that it will not be reinitialized by subsequent calls 
+to user-defined functions ending in <code>_rng</code>.
+</p>
+
+
+
+<h4>LP functions</h4>
+
+<p>If a user-defined Stan function ends in <code>_lp</code>, then it can
+modify the log-probability used by Stan to evaluate Metropolis
+proposals or as an objective function for optimization. When exposing
+such functions to <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span>, a <code>lp__</code> argument will be added to the 
+<code><a href="../../base/html/formals.html">formals</a></code>. This <code>lp__</code> argument defaults to zero, but a 
+<code><a href="../../base/html/double.html">double</a></code> precision scalar may be  passed to this argument when the 
+function is called from <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span>. Such a user-defined Stan function can terminate 
+with <code>return target();</code> or can execute <code>print(target());</code> to verify that 
+the calculation is correct.
+</p>
+
+
+
+<h3>Value</h3>
+
+<p>The names of the new functions in <code>env</code> are returned invisibly.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../Rcpp/html/sourceCpp.html">sourceCpp</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  mc &lt;- 
+  '
+  functions {
+    int fibonacci(int x);
+    int fibonacci(int x) {
+      if (x &lt;= 0) reject("x must be positive");
+      return x &lt;= 2 ? 1 : fibonacci(x - 1) + fibonacci(x - 2);
+    }
+  }
+  '
+  cppcode &lt;- stanc(model_code = mc, model_name = "Fibonacci")
+  ## Not run: 
+  expose_stan_functions(cppcode)
+  
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstan</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

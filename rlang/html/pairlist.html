@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Helpers for pairlist and language nodes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for pairlist {rlang}"><tr><td>pairlist {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Helpers for pairlist and language nodes</h2>
+
+<h3>Description</h3>
+
+<p>Like any <a href="https://en.wikipedia.org/wiki/Parse_tree">parse tree</a>, R
+expressions are structured as trees of nodes. Each node has two
+components: the head and the tail (though technically there is
+actually a third component for argument names, see details). Due to
+R's <a href="https://en.wikipedia.org/wiki/CAR_and_CDR">lisp roots</a>, the
+head of a node (or cons cell) is called the CAR and the tail is
+called the CDR (pronounced <em>car</em> and <em>cou-der</em>). While R's ordinary
+subsetting operators have builtin support for indexing into these
+trees and replacing elements, it is sometimes useful to manipulate
+the nodes more directly. This is the purpose of functions like
+<code>node_car()</code> and <code>mut_node_car()</code>. They are particularly useful to
+prototype algorithms for your C-level functions.
+</p>
+
+<ul>
+<li> <p><code>node_car()</code> and <code>mut_node_car()</code> access or change the head of a node.
+</p>
+</li>
+<li> <p><code>node_cdr()</code> and <code>mut_node_cdr()</code> access or change the tail of a node.
+</p>
+</li>
+<li><p> Variants like <code>node_caar()</code> or <code>mut_node_cdar()</code> deal with the
+CAR of the CAR of a node or the CDR of the CAR of a node
+respectively. The letters in the middle indicate the type (CAR or
+CDR) and order of access.
+</p>
+</li>
+<li> <p><code>node_tag()</code> and <code>mut_node_tag()</code> access or change the tag of a
+node. This is meant for argument names and should only contain
+symbols (not strings).
+</p>
+</li>
+<li> <p><code>node()</code> creates a new node from two components.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+node(newcar, newcdr)
+
+node_car(x)
+
+node_cdr(x)
+
+node_caar(x)
+
+node_cadr(x)
+
+node_cdar(x)
+
+node_cddr(x)
+
+mut_node_car(x, newcar)
+
+mut_node_cdr(x, newcdr)
+
+mut_node_caar(x, newcar)
+
+mut_node_cadr(x, newcar)
+
+mut_node_cdar(x, newcdr)
+
+mut_node_cddr(x, newcdr)
+
+node_tag(x)
+
+mut_node_tag(x, newtag)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>newcar, newcdr</code></td>
+<td>
+<p>The new CAR or CDR for the node. These can be
+any R objects.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A language or pairlist node. Note that these functions are
+barebones and do not perform any type checking.</p>
+</td></tr>
+<tr valign="top"><td><code>newtag</code></td>
+<td>
+<p>The new tag for the node. This should be a symbol.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>R has two types of nodes to represent parse trees: language nodes,
+which represent function calls, and pairlist nodes, which represent
+arguments in a function call. These are the exact same data
+structures with a different name. This distinction is helpful for
+parsing the tree: the top-level node of a function call always has
+<em>language</em> type while its arguments have <em>pairlist</em> type.
+</p>
+<p>Note that it is risky to manipulate calls at the node level. First,
+the calls are changed inplace. This is unlike base R operators
+which create a new copy of the language tree for each modification.
+To make sure modifying a language object does not produce
+side-effects, rlang exports the <code>duplicate()</code> function to create
+deep copy (or optionally a shallow copy, i.e. only the top-level
+node is copied). The second danger is that R expects language trees
+to be structured as a <code>NULL</code>-terminated list. The CAR of a node is
+a data slot and can contain anything, including another node (which
+is how you form trees, as opposed to mere linked lists). On the
+other hand, the CDR has to be either another node, or <code>NULL</code>. If it
+is terminated by anything other than the <code>NULL</code> object, many R
+commands will crash, including functions like <code>str()</code>. It is up to
+you to ensure that the language list you have modified is
+<code>NULL</code>-terminated.
+</p>
+<p>Finally, all nodes can contain metadata in the TAG slot. This is
+meant for argument names and R expects tags to contain a symbol
+(not a string).
+</p>
+
+
+<h3>Value</h3>
+
+<p>Setters like <code>mut_node_car()</code> invisibly return <code>x</code> modified
+in place. Getters return the requested node component.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="duplicate.html">duplicate()</a></code> for creating copy-safe objects,
+<code><a href="lang_head.html">lang_head()</a></code> and <code><a href="lang_head.html">lang_tail()</a></code> as slightly higher level
+alternatives that check their input, and <code><a href="../../base/html/pairlist.html">base::pairlist()</a></code> for
+an easier way of creating a linked list of nodes.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Changing a node component happens in place and can have side
+# effects. Let's create a language object and a copy of it:
+lang &lt;- quote(foo(bar))
+copy &lt;- lang
+
+# Using R's builtin operators to change the language tree does not
+# create side effects:
+copy[[2]] &lt;- quote(baz)
+copy
+lang
+
+# On the other hand, the CAR and CDR operators operate in-place. Let's
+# create new objects since the previous examples triggered a copy:
+lang &lt;- quote(foo(bar))
+copy &lt;- lang
+
+# Now we change the argument pairlist of `copy`, making sure the new
+# arguments are NULL-terminated:
+mut_node_cdr(copy, node(quote(BAZ), NULL))
+
+# Or equivalently:
+mut_node_cdr(copy, pairlist(quote(BAZ)))
+copy
+
+# The original object has been changed in place:
+lang
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

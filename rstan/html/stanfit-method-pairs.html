@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a matrix of output plots from a 'stanfit' object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for pairs.stanfit {rstan}"><tr><td>pairs.stanfit {rstan}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a matrix of output plots from a <code>stanfit</code> object</h2>
+
+<h3>Description</h3>
+
+<p>A <code><a href="../../graphics/html/pairs.html">pairs</a></code> method that is customized for MCMC output</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  ## S3 method for class 'stanfit'
+pairs(x, labels = NULL, panel = NULL, ..., 
+    lower.panel = NULL, 
+    upper.panel = NULL, diag.panel = NULL, text.panel = NULL, 
+    label.pos = 0.5 + 1/3, cex.labels = NULL, font.labels = 1, 
+    row1attop = TRUE, gap = 1, log = "", pars = NULL, condition = "accept_stat__", 
+    include = TRUE) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An object of S4 class <code>stanfit</code></p>
+</td></tr>
+<tr valign="top"><td><code>labels, panel, ..., lower.panel, upper.panel, diag.panel</code></td>
+<td>
+<p>Same as in 
+<code><a href="../../graphics/html/pairs.html">pairs</a></code> syntactically but see the Details section for different
+default arguments</p>
+</td></tr>
+<tr valign="top"><td><code>text.panel, label.pos, cex.labels, font.labels, row1attop, gap</code></td>
+<td>
+<p>Same as in <code><a href="../../graphics/html/pairs.html">pairs.default</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+<p>Same as in <code><a href="../../graphics/html/pairs.html">pairs.default</a></code>, which makes it possible to
+utilize logarithmic axes and additionally accepts <code>log = TRUE</code>. See the
+Details section.</p>
+</td></tr>
+<tr valign="top"><td><code>pars</code></td>
+<td>
+<p>If not <code>NULL</code>, a character vector indicating which quantities
+to include in the plots, which is passed to <code><a href="stanfit-method-extract.html">extract</a></code>. Thus,
+by default, all unknown quantities are included, which may be far too many
+to visualize on a small computer screen. If <code>include = FALSE</code>, then
+the named parameters are excluded from the plot.</p>
+</td></tr>
+<tr valign="top"><td><code>condition</code></td>
+<td>
+<p>If <code>NULL</code>, it will plot roughly half of the
+chains in the lower panel and the rest in the upper panel. An
+integer vector can be passed to select some subset of the chains, of which
+roughly half will be plotted in the lower panel and the rest in the upper
+panel. A list of two integer vectors can be passed, each specifying a subset
+of the chains to be plotted in the lower and upper panels respectively.
+</p>
+<p>A single number between zero and one exclusive can be passed, which is 
+interpreted as the proportion of realizations (among all chains) to plot
+in the lower panel starting with the first realization in each chain, 
+with the complement (from the end of each chain) plotted in the upper panel.
+</p>
+<p>A (possibly abbreviated) character vector of length one can be passed among 
+<code>"accept_stat__", "stepsize__"</code>, <code>"treedepth__", "n_leapfrog__"</code>,
+<code>"divergent__"</code>,, <code>"energy__"</code>, or <code>"lp__"</code>, which are the 
+variables produced by <code><a href="stanfit-class.html">get_sampler_params</a></code> and 
+<code><a href="stanfit-class.html">get_logposterior</a></code>. In that case the lower panel will plot 
+realizations that are below the median of the indicated variable (or are zero 
+in the case of <code>"divergent__"</code>) and the upper panel will plot realizations 
+that are greater than or equal to the median of the indicated variable (or are 
+one in the case of <code>"divergent__"</code>). 
+Finally, any logical vector whose length is equal to the product of the number 
+of iterations and the number of chains can be passed, in which case realizations
+corresponding to <code>FALSE</code> and <code>TRUE</code> will be plotted in the lower 
+and upper panel respectively. The default is <code>"accept_stat__"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>include</code></td>
+<td>
+<p>Logical scalar indicating whether to include (the default) or
+excldue the parameters named in the <code>pars</code> argument from the plot.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This method differs from the default <code><a href="../../graphics/html/pairs.html">pairs</a></code> method in the following
+ways. If unspecified, the <code><a href="../../graphics/html/smoothScatter.html">smoothScatter</a></code> function is used for the
+off-diagonal plots, rather than <code><a href="../../graphics/html/points.html">points</a></code>, since the former is more
+appropriate for visualizing thousands of draws from a posterior distribution.
+Also, if unspecified, histograms of the marginal distribution of each quantity
+are placed on the diagonal of the plot, after pooling all of the chains specified
+by the <code>chain\_id</code> argument.
+</p>
+<p>The draws from the warmup phase are always discarded before plotting.
+</p>
+<p>By default, the lower (upper) triangle of the plot contains draws with below
+(above) median acceptance probability. Also, if <code>condition</code> is not
+<code>"divergent__"</code>, red points will be superimposed onto the smoothed
+density plots indicating which (if any) iterations encountered a divergent 
+transition. Otherwise, yellow points indicate a transition that hit the
+maximum treedepth rather than terminated its evolution normally.
+</p>
+<p>You may very well want to specify the <code>log</code> argument for non-negative
+parameters. However, the <code>pairs</code> function will drop (with a message)
+parameters that are either constant or duplicative with previous parameters.
+For example, if a correlation matrix is included among <code>pars</code>, then 
+neither its diagonal elements (which are always 1) nor its upper triangular
+elements (which are the same as the corresponding lower triangular elements)
+will be included. Thus, if <code>log</code> is an integer vector, it needs to
+pertain to the parameters after constant and duplicative ones are dropped.
+It is perhaps easiest to specify <code>log = TRUE</code>, which will utilize
+logarithmic axes for all non-negative parameters, except <code>lp__</code> and
+any integer valued quantities.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>S4 class <code><a href="stanfit-class.html">stanfit</a></code> and its method <code><a href="stanfit-method-extract.html">extract</a></code> as
+well as the <code><a href="../../graphics/html/pairs.html">pairs</a></code> generic function. Also, see
+<code><a href="stanfit-class.html">get_sampler_params</a></code> and <code><a href="stanfit-class.html">get_logposterior</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+example(read_stan_csv)
+pairs(fit, pars = c("mu", "sigma", "alpha", "lp__"), log = TRUE, las = 1)
+# sigma and alpha will have logarithmic axes
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstan</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

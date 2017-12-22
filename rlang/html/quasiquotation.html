@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Quasiquotation of an expression</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for quasiquotation {rlang}"><tr><td>quasiquotation {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Quasiquotation of an expression</h2>
+
+<h3>Description</h3>
+
+<p>Quasiquotation is the mechanism that makes it possible to program
+flexibly with
+<a href="http://rlang.tidyverse.org/articles/tidy-evaluation.html">tidyeval</a>
+grammars like dplyr. It is enabled in all tidyeval functions, the
+most fundamental of which are <code><a href="quosure.html">quo()</a></code> and <code><a href="expr.html">expr()</a></code>.
+</p>
+<p>Quasiquotation is the combination of quoting an expression while
+allowing immediate evaluation (unquoting) of part of that
+expression. We provide both syntactic operators and functional
+forms for unquoting.
+</p>
+
+<ul>
+<li> <p><code>UQ()</code> and the <code>!!</code> operator unquote their argument. It gets
+evaluated immediately in the surrounding context.
+</p>
+</li>
+<li> <p><code>UQE()</code> is like <code>UQ()</code> but retrieves the expression of
+<a href="is_quosure.html">quosureish</a> objects. It is a shortcut for <code>!! get_expr(x)</code>. Use this with care: it is potentially unsafe to
+discard the environment of the quosure.
+</p>
+</li>
+<li> <p><code>UQS()</code> and the <code>!!!</code> operators unquote and splice their
+argument. The argument should evaluate to a vector or an
+expression. Each component of the vector is embedded as its own
+argument in the surrounding call. If the vector is named, the
+names are used as argument names.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+UQ(x)
+
+UQE(x)
+
+"!!"(x)
+
+UQS(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An expression to unquote.</p>
+</td></tr>
+</table>
+
+
+<h3>Theory</h3>
+
+<p>Formally, <code>quo()</code> and <code>expr()</code> are quasiquote functions, <code>UQ()</code> is
+the unquote operator, and <code>UQS()</code> is the unquote splice operator.
+These terms have a rich history in Lisp languages, and live on in
+modern languages like
+<a href="https://docs.julialang.org/en/stable/manual/metaprogramming/">Julia</a>
+and
+<a href="https://docs.racket-lang.org/reference/quasiquote.html">Racket</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Quasiquotation functions act like base::quote()
+quote(foo(bar))
+expr(foo(bar))
+quo(foo(bar))
+
+# In addition, they support unquoting:
+expr(foo(UQ(1 + 2)))
+expr(foo(!! 1 + 2))
+quo(foo(!! 1 + 2))
+
+# The !! operator is a handy syntactic shortcut for unquoting with
+# UQ().  However you need to be a bit careful with operator
+# precedence. All arithmetic and comparison operators bind more
+# tightly than `!`:
+quo(1 +  !! (1 + 2 + 3) + 10)
+
+# For this reason you should always wrap the unquoted expression
+# with parentheses when operators are involved:
+quo(1 + (!! 1 + 2 + 3) + 10)
+
+# Or you can use the explicit unquote function:
+quo(1 + UQ(1 + 2 + 3) + 10)
+
+
+# Use !!! or UQS() if you want to add multiple arguments to a
+# function It must evaluate to a list
+args &lt;- list(1:10, na.rm = TRUE)
+quo(mean( UQS(args) ))
+
+# You can combine the two
+var &lt;- quote(xyz)
+extra_args &lt;- list(trim = 0.9, na.rm = TRUE)
+quo(mean(UQ(var) , UQS(extra_args)))
+
+
+# Unquoting is especially useful for transforming successively a
+# captured expression:
+quo &lt;- quo(foo(bar))
+quo &lt;- quo(inner(!! quo, arg1))
+quo &lt;- quo(outer(!! quo, !!! syms(letters[1:3])))
+quo
+
+# Since we are building the expression in the same environment, you
+# can also start with raw expressions and create a quosure in the
+# very last step to record the dynamic environment:
+expr &lt;- expr(foo(bar))
+expr &lt;- expr(inner(!! expr, arg1))
+quo &lt;- quo(outer(!! expr, !!! syms(letters[1:3])))
+quo
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

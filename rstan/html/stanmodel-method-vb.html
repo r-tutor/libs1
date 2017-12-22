@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Run Stan's variational algorithm for approximate posterior...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for vb {rstan}"><tr><td>vb {rstan}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Run Stan's variational algorithm for approximate posterior sampling</h2>
+
+<h3>Description</h3>
+
+<p>Approximately draw from a posterior distribution using variational inference.
+We recommend calling <code><a href="stan.html">stan</a></code> or <code><a href="stanmodel-method-sampling.html">sampling</a></code> for 
+final inferences and only using <code>vb</code> to get a rough idea of the parameter
+distributions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  
+  ## S4 method for signature 'stanmodel'
+vb(object, data = list(), pars = NA, include = TRUE,
+    seed = sample.int(.Machine$integer.max, 1), 
+    init = 'random', check_data = TRUE, 
+    sample_file = tempfile(fileext = '.csv'),
+    algorithm = c("meanfield", "fullrank"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>An object of class <code><a href="stanmodel-class.html">stanmodel</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>A named <code>list</code> or <code>environment</code>
+providing the data for the model or a character vector 
+for all the names of objects used as data. 
+See the Note section in <code><a href="stan.html">stan</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>pars</code></td>
+<td>
+<p>If not <code>NA</code>, then a character vector naming parameters,
+which are included in the output if <code>include = TRUE</code> and excluded
+if <code>include = FALSE</code>. By default, all parameters are included.</p>
+</td></tr>
+<tr valign="top"><td><code>include</code></td>
+<td>
+<p>Logical scalar defaulting to <code>TRUE</code> indicating
+whether to include or exclude the parameters given by the 
+<code>pars</code> argument. If <code>FALSE</code>, only entire multidimensional
+parameters can be excluded, rather than particular elements of them.</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>The seed for random number generation. The default is generated 
+from 1 to the maximum integer supported by <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> on the machine. Even if 
+multiple chains are used, only one seed is needed, with other chains having 
+seeds derived from that of the first chain to avoid dependent samples.
+When a seed is specified by a number, <code>as.integer</code> will be applied to it. 
+If <code>as.integer</code> produces <code>NA</code>, the seed is generated randomly. 
+The seed can also be specified as a character string of digits, such as
+<code>"12345"</code>, which is converted to integer.</p>
+</td></tr>
+<tr valign="top"><td><code>init</code></td>
+<td>
+<p>Initial values specification. See the detailed documentation for 
+the init argument in <code><a href="stan.html">stan</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>check_data</code></td>
+<td>
+<p>Logical, defaulting to <code>TRUE</code>. If <code>TRUE</code> 
+the data will be preprocessed; otherwise not.
+See the Note section in <code><a href="stan.html">stan</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>sample_file</code></td>
+<td>
+<p>A character string of file name for specifying where to 
+write samples for <em>all</em> parameters and other saved quantities. 
+This defaults to a temporary file.</p>
+</td></tr>
+<tr valign="top"><td><code>algorithm</code></td>
+<td>
+<p>Either <code>"meanfield"</code> (the default) or <code>"fullrank"</code>, 
+indicating which variational inference algorithm is used. The <code>"meanfield"</code> 
+option uses a fully factorized Gaussian for the approximation whereas the 
+<code>fullrank</code> option uses a Gaussian with a full-rank covariance matrix 
+for the approximation. Details and additional references are available in 
+the Stan manual.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Other optional parameters:
+</p>
+
+<ul>
+<li> <p><code>iter</code> (positive <code>integer</code>), the maximum number 
+of iterations, defaulting to 10000.
+</p>
+</li>
+<li> <p><code>grad_samples</code> (positive <code>integer</code>), the number of samples
+for Monte Carlo estimate of gradients, defaulting to 1.
+</p>
+</li>
+<li> <p><code>elbo_samples</code> (positive <code>integer</code>), the number of samples
+for Monte Carlo estimate of ELBO (objective function), defaulting to 100.
+(ELBO stands for &quot;the evidence lower bound&quot;.)
+</p>
+</li>
+<li> <p><code>eta</code> (<code>double</code>), positive stepsize weighting parameter
+for variational inference but is ignored if adaptation is engaged, which
+is the case by default.
+</p>
+</li>
+<li> <p><code>adapt_engaged</code> (<code>logical</code>), a flag indicating whether to
+automatically adapt the stepsize, defaulting to <code>TRUE</code>.
+</p>
+</li>
+<li> <p><code>tol_rel_obj</code> (positive <code>double</code>), the convergence tolerance 
+on the relative norm of the objective, defaulting to 0.01. 
+</p>
+</li>
+<li> <p><code>eval_elbo</code> (positive <code>integer</code>), evaluate ELBO every Nth 
+iteration, defaulting to 100.
+</p>
+</li>
+<li> <p><code>output_samples</code> (positive <code>integer</code>), number of posterior
+samples to draw and save, defaults to 1000.
+</p>
+</li>
+<li> <p><code>adapt_iter</code> (positive <code>integer</code>), the maximum number of 
+iterations to adapt the stepsize, defaulting to 50. Ignored if 
+<code>adapt_engaged = FALSE</code>.
+</p>
+</li></ul>
+
+<p>Refer to the manuals for both CmdStan and Stan for more details. 
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of <code><a href="stanfit-class.html">stanfit-class</a></code>.
+</p>
+
+
+<h3>Methods</h3>
+
+
+<dl>
+<dt>vb</dt><dd><p><code>signature(object = "stanmodel")</code></p>
+</dd></dl>
+
+
+<p>Call Stan's variational Bayes methods
+for the model defined by S4 class <code>stanmodel</code> 
+given the data, initial values, etc. 
+
+
+</p>
+
+
+<h3>References</h3>
+
+<p>The Stan Development Team 
+<em>Stan Modeling Language User's Guide and Reference Manual</em>. 
+<a href="http://mc-stan.org">http://mc-stan.org</a>. 
+</p>
+<p>The Stan Development Team
+<em>CmdStan Interface User's Guide</em>.
+<a href="http://mc-stan.org">http://mc-stan.org</a>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="stanmodel-class.html">stanmodel</a></code>
+</p>
+<p>The manuals of CmdStan and Stan. 
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>## Not run: 
+m &lt;- stan_model(model_code = 'parameters {real y;} model {y ~ normal(0,1);}')
+f &lt;- vb(m)
+
+## End(Not run)</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstan</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Return the head or tail of a call object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for lang_head {rlang}"><tr><td>lang_head {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Return the head or tail of a call object</h2>
+
+<h3>Description</h3>
+
+<p>These functions return the head or the tail of a call. See section
+on calls as parse trees in <code><a href="lang.html">lang()</a></code>. They are equivalent to
+<code><a href="pairlist.html">node_car()</a></code> and <code><a href="pairlist.html">node_cdr()</a></code> but support quosures and check that
+the input is indeed a call before retrieving the head or tail (it
+is unsafe to do this without type checking).
+</p>
+<p><code>lang_head()</code> returns the head of the call without any conversion,
+unlike <code><a href="lang_name.html">lang_name()</a></code> which checks that the head is a symbol and
+converts it to a string. <code>lang_tail()</code> returns the pairlist of
+arguments (while <code><a href="lang_args.html">lang_args()</a></code> returns the same object converted to
+a regular list)
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+lang_head(lang)
+
+lang_tail(lang)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lang</code></td>
+<td>
+<p>Can be a call (language object), a formula quoting a
+call in the right-hand side, or a frame object from which to
+extract the call expression.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><a href="pairlist.html">pairlist</a>, <code><a href="lang_args.html">lang_args()</a></code>, <code><a href="lang.html">lang()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+lang &lt;- quote(foo(bar, baz))
+lang_head(lang)
+lang_tail(lang)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+</body></html>
