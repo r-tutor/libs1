@@ -1,0 +1,391 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bayesian generalized linear models via Stan</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stan_glm {rstanarm}"><tr><td>stan_glm {rstanarm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Bayesian generalized linear models via Stan</h2>
+
+<h3>Description</h3>
+
+<p>Generalized linear modeling with optional prior distributions for the
+coefficients, intercept, and auxiliary parameters.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stan_glm(formula, family = gaussian(), data, weights, subset,
+  na.action = NULL, offset = NULL, model = TRUE, x = FALSE, y = TRUE,
+  contrasts = NULL, ..., prior = normal(), prior_intercept = normal(),
+  prior_aux = exponential(), prior_PD = FALSE, algorithm = c("sampling",
+  "optimizing", "meanfield", "fullrank"), adapt_delta = NULL, QR = FALSE,
+  sparse = FALSE)
+
+stan_glm.nb(formula, data, weights, subset, na.action = NULL, offset = NULL,
+  model = TRUE, x = FALSE, y = TRUE, contrasts = NULL, link = "log",
+  ..., prior = normal(), prior_intercept = normal(),
+  prior_aux = exponential(), prior_PD = FALSE, algorithm = c("sampling",
+  "optimizing", "meanfield", "fullrank"), adapt_delta = NULL, QR = FALSE)
+
+stan_glm.fit(x, y, weights = rep(1, NROW(y)), offset = rep(0, NROW(y)),
+  family = gaussian(), ..., prior = normal(), prior_intercept = normal(),
+  prior_aux = exponential(), prior_smooth = exponential(autoscale = FALSE),
+  prior_ops = NULL, group = list(), prior_PD = FALSE,
+  algorithm = c("sampling", "optimizing", "meanfield", "fullrank"),
+  adapt_delta = NULL, QR = FALSE, sparse = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>formula, data, subset</code></td>
+<td>
+<p>Same as <code><a href="../../stats/html/glm.html">glm</a></code>, 
+but <em>we strongly advise against omitting the <code>data</code>
+argument</em>. Unless <code>data</code> is specified (and is a data frame) many
+post-estimation functions (including <code>update</code>, <code>loo</code>,
+<code>kfold</code>) are not guaranteed to work properly.</p>
+</td></tr>
+<tr valign="top"><td><code>family</code></td>
+<td>
+<p>Same as <code><a href="../../stats/html/glm.html">glm</a></code>, except negative binomial GLMs
+are also possible using the <code><a href="neg_binomial_2.html">neg_binomial_2</a></code> family object.</p>
+</td></tr>
+<tr valign="top"><td><code>na.action, contrasts</code></td>
+<td>
+<p>Same as <code><a href="../../stats/html/glm.html">glm</a></code>, but
+rarely specified.</p>
+</td></tr>
+<tr valign="top"><td><code>model, offset, weights</code></td>
+<td>
+<p>Same as <code><a href="../../stats/html/glm.html">glm</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>In <code>stan_glm</code>, logical scalar indicating whether to
+return the design matrix. In <code>stan_glm.fit</code>, usually a design matrix
+but can also be a list of design matrices with the same number of rows, in
+which case the first element of the list is interpreted as the primary design
+matrix and the remaining list elements collectively constitute a basis for a
+smooth nonlinear function of the predictors indicated by the <code>formula</code>
+argument to <code><a href="stan_gamm4.html">stan_gamm4</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>In <code>stan_glm</code>, logical scalar indicating whether to
+return the response vector. In <code>stan_glm.fit</code>, a response vector.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Further arguments passed to the function in the <span class="pkg">rstan</span> 
+package (<code><a href="../../rstan/html/sampling.html">sampling</a></code>, <code><a href="../../rstan/html/vb.html">vb</a></code>, or 
+<code><a href="../../rstan/html/optimizing.html">optimizing</a></code>), corresponding to the estimation method 
+named by <code>algorithm</code>. For example, if <code>algorithm</code> is
+<code>"sampling"</code> it is possibly to specify <code>iter</code>, <code>chains</code>,
+<code>cores</code>, <code>refresh</code>, etc.</p>
+</td></tr>
+<tr valign="top"><td><code>prior</code></td>
+<td>
+<p>The prior distribution for the regression coefficients. 
+<code>prior</code> should be a call to one of the various functions provided by 
+<span class="pkg">rstanarm</span> for specifying priors. The subset of these functions that 
+can be used for the prior on the coefficients can be grouped into several 
+&quot;families&quot;:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+  <strong>Family</strong> </td><td style="text-align: left;"> <strong>Functions</strong> </td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+  <em>Student t family</em> </td><td style="text-align: left;"> <code>normal</code>, <code>student_t</code>, <code>cauchy</code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+  <em>Hierarchical shrinkage family</em> </td><td style="text-align: left;"> <code>hs</code>, <code>hs_plus</code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+  <em>Laplace family</em> </td><td style="text-align: left;"> <code>laplace</code>, <code>lasso</code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <em>Product normal family</em> </td><td style="text-align: left;"> <code>product_normal</code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+<p>See the <a href="priors.html">priors help page</a> for details on the families and 
+how to specify the arguments for all of the functions in the table above.
+To omit a prior &mdash;i.e., to use a flat (improper) uniform prior&mdash;
+<code>prior</code> can be set to <code>NULL</code>, although this is rarely a good
+idea.
+</p>
+<p><strong>Note:</strong> Unless <code>QR=TRUE</code>, if <code>prior</code> is from the Student t
+family or Laplace family, and if the <code>autoscale</code> argument to the 
+function used to specify the prior (e.g. <code><a href="priors.html">normal</a></code>) is left at 
+its default and recommended value of <code>TRUE</code>, then the default or 
+user-specified prior scale(s) may be adjusted internally based on the
+scales of the predictors. See the <a href="priors.html">priors help page</a> and the
+<em>Prior Distributions</em> vignette for details on the rescaling and the
+<code><a href="prior_summary.stanreg.html">prior_summary</a></code> function for a summary of the priors used for a
+particular model.</p>
+</td></tr>
+<tr valign="top"><td><code>prior_intercept</code></td>
+<td>
+<p>The prior distribution for the intercept. 
+<code>prior_intercept</code> can be a call to <code>normal</code>, <code>student_t</code> or 
+<code>cauchy</code>. See the <a href="priors.html">priors help page</a> for details on 
+these functions. To omit a prior on the intercept &mdash;i.e., to use a flat
+(improper) uniform prior&mdash; <code>prior_intercept</code> can be set to
+<code>NULL</code>.
+</p>
+<p><strong>Note:</strong> If using a dense representation of the design matrix 
+&mdash;i.e., if the <code>sparse</code> argument is left at its default value of 
+<code>FALSE</code>&mdash; then the prior distribution for the intercept is set so it 
+applies to the value <em>when all predictors are centered</em>. If you prefer
+to specify a prior on the intercept without the predictors being
+auto-centered, then you have to omit the intercept from the
+<code><a href="../../stats/html/formula.html">formula</a></code> and include a column of ones as a predictor,
+in which case some element of <code>prior</code> specifies the prior on it,
+rather than <code>prior_intercept</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>prior_aux</code></td>
+<td>
+<p>The prior distribution for the &quot;auxiliary&quot; parameter (if
+applicable). The &quot;auxiliary&quot; parameter refers to a different parameter 
+depending on the <code>family</code>. For Gaussian models <code>prior_aux</code> 
+controls <code>"sigma"</code>, the error 
+standard deviation. For negative binomial models <code>prior_aux</code> controls 
+<code>"reciprocal_dispersion"</code>, which is similar to the 
+<code>"size"</code> parameter of <code><a href="../../stats/html/rnbinom.html">rnbinom</a></code>:
+smaller values of <code>"reciprocal_dispersion"</code> correspond to 
+greater dispersion. For gamma models <code>prior_aux</code> sets the prior on 
+to the <code>"shape"</code> parameter (see e.g., 
+<code><a href="../../stats/html/rgamma.html">rgamma</a></code>), and for inverse-Gaussian models it is the 
+so-called <code>"lambda"</code> parameter (which is essentially the reciprocal of
+a scale parameter). Binomial and Poisson models do not have auxiliary 
+parameters. 
+</p>
+<p><code>prior_aux</code> can be a call to <code>exponential</code> to 
+use an exponential distribution, or <code>normal</code>, <code>student_t</code> or 
+<code>cauchy</code>, which results in a half-normal, half-t, or half-Cauchy 
+prior. See <code><a href="priors.html">priors</a></code> for details on these functions. To omit a 
+prior &mdash;i.e., to use a flat (improper) uniform prior&mdash; set 
+<code>prior_aux</code> to <code>NULL</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>prior_PD</code></td>
+<td>
+<p>A logical scalar (defaulting to <code>FALSE</code>) indicating
+whether to draw from the prior predictive distribution instead of
+conditioning on the outcome.</p>
+</td></tr>
+<tr valign="top"><td><code>algorithm</code></td>
+<td>
+<p>A string (possibly abbreviated) indicating the 
+estimation approach to use. Can be <code>"sampling"</code> for MCMC (the
+default), <code>"optimizing"</code> for optimization, <code>"meanfield"</code> for
+variational inference with independent normal distributions, or
+<code>"fullrank"</code> for variational inference with a multivariate normal
+distribution. See <code><a href="rstanarm-package.html">rstanarm-package</a></code> for more details on the
+estimation algorithms. NOTE: not all fitting functions support all four
+algorithms.</p>
+</td></tr>
+<tr valign="top"><td><code>adapt_delta</code></td>
+<td>
+<p>Only relevant if <code>algorithm="sampling"</code>. See 
+<code><a href="adapt_delta.html">adapt_delta</a></code> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>QR</code></td>
+<td>
+<p>A logical scalar defaulting to <code>FALSE</code>, but if <code>TRUE</code> 
+applies a scaled <code><a href="../../Matrix/html/qr-methods.html">qr</a></code> decomposition to the design matrix, 
+<i>X = Q* R*</i>, where <i>Q* = 
+Q (n-1)^0.5</i> and <i>R* = (n-1)^(-0.5) 
+R</i>. The coefficients relative to <i>Q*</i> are obtained and then 
+premultiplied by the inverse of <i>R*</i> to obtain coefficients 
+relative to the original predictors, <i>X</i>. These transformations do not 
+change the likelihood of the data but are recommended for computational 
+reasons when there are multiple predictors. Importantly, while the columns
+of <i>X</i> are almost always correlated, the columns of <i>Q*</i>
+are uncorrelated by design, which often makes sampling from the posterior
+easier. However, because when <code>QR</code> is <code>TRUE</code> the <code>prior</code>
+argument applies to the coefficients relative to <i>Q*</i> (and
+those are not very interpretable), setting <code>QR=TRUE</code> is only
+recommended if you do not have an informative prior for the regression
+coefficients. 
+</p>
+<p>For more details see the Stan case study 
+<em>The QR Decomposition For Regression Models</em> at 
+<a href="http://mc-stan.org/users/documentation/case-studies/qr_regression.html">http://mc-stan.org/users/documentation/case-studies/qr_regression.html</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>sparse</code></td>
+<td>
+<p>A logical scalar (defaulting to <code>FALSE</code>) indicating
+whether to use a sparse representation of the design (X) matrix. 
+If <code>TRUE</code>, the the design matrix is not centered (since that would 
+destroy the sparsity) and likewise it is not possible to specify both 
+<code>QR = TRUE</code> and <code>sparse = TRUE</code>. Depending on how many zeros
+there are in the design matrix, setting <code>sparse = TRUE</code> may make
+the code run faster and can consume much less RAM.</p>
+</td></tr>
+<tr valign="top"><td><code>link</code></td>
+<td>
+<p>For <code>stan_glm.nb</code> only, the link function to use. See 
+<code><a href="neg_binomial_2.html">neg_binomial_2</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>prior_smooth</code></td>
+<td>
+<p>The prior distribution for the hyperparameters in GAMs,
+with lower values yielding less flexible smooth functions.
+</p>
+<p><code>prior_smooth</code> can be a call to <code>exponential</code> to 
+use an exponential distribution, or <code>normal</code>, <code>student_t</code> or 
+<code>cauchy</code>, which results in a half-normal, half-t, or half-Cauchy 
+prior. See <code><a href="priors.html">priors</a></code> for details on these functions. To omit a 
+prior &mdash;i.e., to use a flat (improper) uniform prior&mdash; set 
+<code>prior_smooth</code> to <code>NULL</code>. The number of hyperparameters depends
+on the model specification but a scalar prior will be recylced as necessary
+to the appropriate length.</p>
+</td></tr>
+<tr valign="top"><td><code>prior_ops</code></td>
+<td>
+<p>Deprecated. See <a href="rstanarm-deprecated.html">rstanarm-deprecated</a> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>group</code></td>
+<td>
+<p>A list, possibly of length zero (the default), but otherwise
+having the structure of that produced by <code><a href="../../lme4/html/mkReTrms.html">mkReTrms</a></code> to
+indicate the group-specific part of the model. In addition, this list must
+have elements for the <code>regularization</code>, <code>concentration</code> 
+<code>shape</code>, and <code>scale</code> components of a <code><a href="priors.html">decov</a></code>
+prior for the covariance matrices among the group-specific coefficients.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>stan_glm</code> function is similar in syntax to 
+<code><a href="../../stats/html/glm.html">glm</a></code> but rather than performing maximum likelihood 
+estimation of generalized linear models, full Bayesian estimation is 
+performed (if <code>algorithm</code> is <code>"sampling"</code>) via MCMC. The Bayesian
+model adds priors (independent by default) on the coefficients of the GLM.
+The <code>stan_glm</code> function calls the workhorse <code>stan_glm.fit</code>
+function, but it is also possible to call the latter directly.
+</p>
+<p>The <code>stan_glm.nb</code> function, which takes the extra argument 
+<code>link</code>, is a wrapper for <code>stan_glm</code> with <code>family = 
+  <a href="neg_binomial_2.html">neg_binomial_2</a>(link)</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A <a href="stanreg-objects.html">stanreg</a> object is returned 
+for <code>stan_glm, stan_glm.nb</code>.
+</p>
+<p>A <a href="../../rstan/html/stanfit-class.html">stanfit</a> object (or a slightly modified 
+stanfit object) is returned if <code>stan_glm.fit</code> is called directly.
+</p>
+
+
+<h3>References</h3>
+
+<p>Gelman, A. and Hill, J. (2007). <em>Data Analysis Using
+Regression and Multilevel/Hierarchical Models.</em> Cambridge University Press,
+Cambridge, UK. (Ch. 3-6)
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="stanreg-methods.html">stanreg-methods</a></code> and 
+<code><a href="../../stats/html/glm.html">glm</a></code>.
+</p>
+<p>The various vignettes for <code>stan_glm</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (!grepl("^sparc",  R.version$platform)) {
+### Linear regression
+fit &lt;- stan_glm(mpg / 10 ~ ., data = mtcars, QR = TRUE,
+                algorithm = "fullrank") # for speed of example only
+plot(fit, prob = 0.5)
+plot(fit, prob = 0.5, pars = "beta")
+}
+
+### Logistic regression
+head(wells)
+wells$dist100 &lt;- wells$dist / 100
+fit2 &lt;- stan_glm(
+  switch ~ dist100 + arsenic, 
+  data = wells, 
+  family = binomial(link = "logit"), 
+  prior_intercept = normal(0, 10),
+  QR = TRUE,
+  chains = 2, iter = 200 # for speed of example only
+)
+print(fit2)
+prior_summary(fit2)
+
+plot(fit2, plotfun = "areas", prob = 0.9, # ?bayesplot::mcmc_areas
+     pars = c("(Intercept)", "arsenic"))
+pp_check(fit2, plotfun = "error_binned")  # ?bayesplot::ppc_error_binned
+
+
+### Poisson regression (example from help("glm")) 
+counts &lt;- c(18,17,15,20,10,20,25,13,12)
+outcome &lt;- gl(3,1,9)
+treatment &lt;- gl(3,3)
+fit3 &lt;- stan_glm(counts ~ outcome + treatment, family = poisson(link="log"),
+                 prior = normal(0, 1), prior_intercept = normal(0, 5),
+                 chains = 2, iter = 250) # for speed of example only
+print(fit3)
+
+bayesplot::color_scheme_set("green")
+plot(fit3)
+plot(fit3, regex_pars = c("outcome", "treatment"))
+plot(fit3, plotfun = "combo", regex_pars = "treatment") # ?bayesplot::mcmc_combo
+
+### Gamma regression (example from help("glm"))
+clotting &lt;- data.frame(log_u = log(c(5,10,15,20,30,40,60,80,100)),
+                       lot1 = c(118,58,42,35,27,25,21,19,18),
+                       lot2 = c(69,35,26,21,18,16,13,12,12))
+fit4 &lt;- stan_glm(lot1 ~ log_u, data = clotting, family = Gamma(link="log"),
+                 chains = 2, iter = 300) # for speed of example only 
+print(fit4, digits = 2)
+fit5 &lt;- update(fit4, formula = lot2 ~ log_u)
+
+### Negative binomial regression
+fit6 &lt;- stan_glm.nb(Days ~ Sex/(Age + Eth*Lrn), data = MASS::quine, 
+                    link = "log", prior_aux = exponential(1),
+                    chains = 2, iter = 200) # for speed of example only
+
+prior_summary(fit6)
+bayesplot::color_scheme_set("brightblue")
+plot(fit6)
+pp_check(fit6, plotfun = "hist", nreps = 5)
+
+# 80% interval of estimated reciprocal_dispersion parameter
+posterior_interval(fit6, pars = "reciprocal_dispersion", prob = 0.8)
+plot(fit6, "areas", pars = "reciprocal_dispersion", prob = 0.8)
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstanarm</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

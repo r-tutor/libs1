@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bayesian multivariate generalized linear models with...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stan_mvmer {rstanarm}"><tr><td>stan_mvmer {rstanarm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Bayesian multivariate generalized linear models with correlated 
+group-specific terms via Stan</h2>
+
+<h3>Description</h3>
+
+<p>Bayesian inference for multivariate GLMs with group-specific coefficients 
+that are assumed to be correlated across the GLM submodels.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stan_mvmer(formula, data, family = gaussian, weights, prior = normal(),
+  prior_intercept = normal(), prior_aux = cauchy(0, 5),
+  prior_covariance = lkj(), prior_PD = FALSE, algorithm = c("sampling",
+  "meanfield", "fullrank"), adapt_delta = NULL, max_treedepth = 10L,
+  init = "random", QR = FALSE, sparse = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>formula</code></td>
+<td>
+<p>A two-sided linear formula object describing both the 
+fixed-effects and random-effects parts of the longitudinal submodel  
+(see <code><a href="../../lme4/html/glmer.html">glmer</a></code> for details). For a multivariate GLM this 
+should be a list of such formula objects, with each element
+of the list providing the formula for one of the GLM submodels.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>A data frame containing the variables specified in
+<code>formula</code>. For a multivariate GLM, this can
+be either a single data frame which contains the data for all 
+GLM submodels, or it can be a list of data frames where each
+element of the list provides the data for one of the GLM submodels.</p>
+</td></tr>
+<tr valign="top"><td><code>family</code></td>
+<td>
+<p>The family (and possibly also the link function) for the 
+GLM submodel(s). See <code><a href="../../lme4/html/glmer.html">glmer</a></code> for details. 
+If fitting a multivariate GLM, then this can optionally be a
+list of families, in which case each element of the list specifies the
+family for one of the GLM submodels. In other words, a different family
+can be specified for each GLM submodel.</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>Same as in <code><a href="../../stats/html/glm.html">glm</a></code>,
+except that when fitting a multivariate GLM and a list of data frames 
+is provided in <code>data</code> then a corresponding list of weights 
+must be provided. If weights are 
+provided for one of the GLM submodels, then they must be provided for 
+all GLM submodels.</p>
+</td></tr>
+<tr valign="top"><td><code>prior, prior_intercept, prior_aux</code></td>
+<td>
+<p>Same as in <code><a href="stan_glmer.html">stan_glmer</a></code>
+except that for a multivariate GLM a list of priors can be provided for 
+any of <code>prior</code>, <code>prior_intercept</code> or <code>prior_aux</code> arguments. 
+That is, different priors can optionally be specified for each of the GLM  
+submodels. If a list is not provided, then the same prior distributions are 
+used for each GLM submodel. Note that the <code>"product_normal"</code> prior is
+not allowed for <code>stan_mvmer</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>prior_covariance</code></td>
+<td>
+<p>Cannot be <code>NULL</code>; see <code><a href="priors.html">priors</a></code> for
+more information about the prior distributions on covariance matrices.
+Note however that the default prior for covariance matrices in 
+<code>stan_mvmer</code> is slightly different to that in <code><a href="stan_glmer.html">stan_glmer</a></code> 
+(the details of which are described on the <code><a href="priors.html">priors</a></code> page).</p>
+</td></tr>
+<tr valign="top"><td><code>prior_PD</code></td>
+<td>
+<p>A logical scalar (defaulting to <code>FALSE</code>) indicating
+whether to draw from the prior predictive distribution instead of
+conditioning on the outcome.</p>
+</td></tr>
+<tr valign="top"><td><code>algorithm</code></td>
+<td>
+<p>A string (possibly abbreviated) indicating the 
+estimation approach to use. Can be <code>"sampling"</code> for MCMC (the
+default), <code>"optimizing"</code> for optimization, <code>"meanfield"</code> for
+variational inference with independent normal distributions, or
+<code>"fullrank"</code> for variational inference with a multivariate normal
+distribution. See <code><a href="rstanarm-package.html">rstanarm-package</a></code> for more details on the
+estimation algorithms. NOTE: not all fitting functions support all four
+algorithms.</p>
+</td></tr>
+<tr valign="top"><td><code>adapt_delta</code></td>
+<td>
+<p>Only relevant if <code>algorithm="sampling"</code>. See 
+<code><a href="adapt_delta.html">adapt_delta</a></code> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>max_treedepth</code></td>
+<td>
+<p>A positive integer specifying the maximum treedepth 
+for the non-U-turn sampler. See the <code>control</code> argument in 
+<code><a href="../../rstan/html/stan.html">stan</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>init</code></td>
+<td>
+<p>The method for generating initial values. See
+<code><a href="../../rstan/html/stan.html">stan</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>QR</code></td>
+<td>
+<p>A logical scalar defaulting to <code>FALSE</code>, but if <code>TRUE</code> 
+applies a scaled <code><a href="../../Matrix/html/qr-methods.html">qr</a></code> decomposition to the design matrix, 
+<i>X = Q* R*</i>, where <i>Q* = 
+Q (n-1)^0.5</i> and <i>R* = (n-1)^(-0.5) 
+R</i>. The coefficients relative to <i>Q*</i> are obtained and then 
+premultiplied by the inverse of <i>R*</i> to obtain coefficients 
+relative to the original predictors, <i>X</i>. These transformations do not 
+change the likelihood of the data but are recommended for computational 
+reasons when there are multiple predictors. Importantly, while the columns
+of <i>X</i> are almost always correlated, the columns of <i>Q*</i>
+are uncorrelated by design, which often makes sampling from the posterior
+easier. However, because when <code>QR</code> is <code>TRUE</code> the <code>prior</code>
+argument applies to the coefficients relative to <i>Q*</i> (and
+those are not very interpretable), setting <code>QR=TRUE</code> is only
+recommended if you do not have an informative prior for the regression
+coefficients. 
+</p>
+<p>For more details see the Stan case study 
+<em>The QR Decomposition For Regression Models</em> at 
+<a href="http://mc-stan.org/users/documentation/case-studies/qr_regression.html">http://mc-stan.org/users/documentation/case-studies/qr_regression.html</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>sparse</code></td>
+<td>
+<p>A logical scalar (defaulting to <code>FALSE</code>) indicating
+whether to use a sparse representation of the design (X) matrix. 
+If <code>TRUE</code>, the the design matrix is not centered (since that would 
+destroy the sparsity) and likewise it is not possible to specify both 
+<code>QR = TRUE</code> and <code>sparse = TRUE</code>. Depending on how many zeros
+there are in the design matrix, setting <code>sparse = TRUE</code> may make
+the code run faster and can consume much less RAM.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Further arguments passed to the function in the <span class="pkg">rstan</span> 
+package (<code><a href="../../rstan/html/sampling.html">sampling</a></code>, <code><a href="../../rstan/html/vb.html">vb</a></code>, or 
+<code><a href="../../rstan/html/optimizing.html">optimizing</a></code>), corresponding to the estimation method 
+named by <code>algorithm</code>. For example, if <code>algorithm</code> is
+<code>"sampling"</code> it is possibly to specify <code>iter</code>, <code>chains</code>,
+<code>cores</code>, <code>refresh</code>, etc.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>stan_mvmer</code> function can be used to fit a multivariate
+generalized linear model (GLM) with group-specific terms. The model consists
+of distinct GLM submodels, each which contains group-specific terms; within
+a grouping factor (for example, patient ID) the grouping-specific terms are
+assumed to be correlated across the different GLM submodels. It is 
+possible to specify a different outcome type (for example a different
+family and/or link function) for each of the GLM submodels. <br />
+<br />
+Bayesian estimation of the model is performed via MCMC, in the same way as 
+for <code><a href="stan_glmer.html">stan_glmer</a></code>. Also, similar to <code><a href="stan_glmer.html">stan_glmer</a></code>,
+an unstructured covariance matrix is used for the group-specific terms 
+within a given grouping factor, with priors on the terms of a decomposition
+of the covariance matrix.See <code><a href="priors.html">priors</a></code> for more information about 
+the priors distributions that are available for the covariance matrices, 
+the regression coefficients and the intercept and auxiliary parameters.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A <a href="stanreg-objects.html">stanmvreg</a> object is returned.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="stan_glmer.html">stan_glmer</a></code>, <code><a href="stan_jm.html">stan_jm</a></code>,
+<code><a href="stanreg-objects.html">stanreg-objects</a></code>, <code><a href="stanmvreg-methods.html">stanmvreg-methods</a></code>, 
+<code><a href="print.stanreg.html">print.stanmvreg</a></code>, <code><a href="summary.stanreg.html">summary.stanmvreg</a></code>,
+<code><a href="posterior_predict.stanreg.html">posterior_predict</a></code>, <code><a href="posterior_interval.stanreg.html">posterior_interval</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+#####
+# A multivariate GLM with two submodels. For the grouping factor 'id', the 
+# group-specific intercept from the first submodel (logBili) is assumed to
+# be correlated with the group-specific intercept and linear slope in the 
+# second submodel (albumin)
+f1 &lt;- stan_mvmer(
+        formula = list(
+          logBili ~ year + (1 | id), 
+          albumin ~ sex + year + (year | id)),
+        data = pbcLong, 
+        # this next line is only to keep the example small in size!
+        chains = 1, cores = 1, seed = 12345, iter = 1000)
+summary(f1) 
+
+#####
+# A multivariate GLM with one bernoulli outcome and one
+# gaussian outcome. We will artificially create the bernoulli
+# outcome by dichotomising log serum bilirubin
+pbcLong$ybern &lt;- as.integer(pbcLong$logBili &gt;= mean(pbcLong$logBili))
+f2 &lt;- stan_mvmer(
+        formula = list(
+          ybern ~ year + (1 | id), 
+          albumin ~ sex + year + (year | id)),
+        data = pbcLong,
+        family = list(binomial, gaussian),
+        chains = 1, cores = 1, seed = 12345, iter = 1000)
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstanarm</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

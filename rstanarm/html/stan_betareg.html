@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bayesian beta regression models via Stan</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stan_betareg {rstanarm}"><tr><td>stan_betareg {rstanarm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Bayesian beta regression models via Stan</h2>
+
+<h3>Description</h3>
+
+<p>Beta regression modeling with optional prior distributions for the 
+coefficients, intercept, and auxiliary parameter <code>phi</code> (if applicable).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stan_betareg(formula, data, subset, na.action, weights, offset,
+  link = c("logit", "probit", "cloglog", "cauchit", "log", "loglog"),
+  link.phi = NULL, model = TRUE, y = TRUE, x = FALSE, ...,
+  prior = normal(), prior_intercept = normal(), prior_z = normal(),
+  prior_intercept_z = normal(), prior_phi = exponential(),
+  prior_PD = FALSE, algorithm = c("sampling", "optimizing", "meanfield",
+  "fullrank"), adapt_delta = NULL, QR = FALSE)
+
+stan_betareg.fit(x, y, z = NULL, weights = rep(1, NROW(x)),
+  offset = rep(0, NROW(x)), link = c("logit", "probit", "cloglog",
+  "cauchit", "log", "loglog"), link.phi = NULL, ..., prior = normal(),
+  prior_intercept = normal(), prior_z = normal(),
+  prior_intercept_z = normal(), prior_phi = exponential(),
+  prior_PD = FALSE, algorithm = c("sampling", "optimizing", "meanfield",
+  "fullrank"), adapt_delta = NULL, QR = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>formula, data, subset</code></td>
+<td>
+<p>Same as <code><a href="../../betareg/html/betareg.html">betareg</a></code>, 
+but <em>we strongly advise against omitting the <code>data</code>
+argument</em>. Unless <code>data</code> is specified (and is a data frame) many
+post-estimation functions (including <code>update</code>, <code>loo</code>,
+<code>kfold</code>) are not guaranteed to work properly.</p>
+</td></tr>
+<tr valign="top"><td><code>na.action</code></td>
+<td>
+<p>Same as <code><a href="../../betareg/html/betareg.html">betareg</a></code>, but
+rarely specified.</p>
+</td></tr>
+<tr valign="top"><td><code>link</code></td>
+<td>
+<p>Character specification of the link function used in the model 
+for mu (specified through <code>x</code>). Currently, &quot;logit&quot;, &quot;probit&quot;,
+&quot;cloglog&quot;, &quot;cauchit&quot;, &quot;log&quot;, and &quot;loglog&quot; are supported.</p>
+</td></tr>
+<tr valign="top"><td><code>link.phi</code></td>
+<td>
+<p>If applicable, character specification of the link function 
+used in the model for <code>phi</code> (specified through <code>z</code>). Currently, 
+&quot;identity&quot;, &quot;log&quot; (default), and &quot;sqrt&quot; are supported. Since the &quot;sqrt&quot;
+link function is known to be unstable, it is advisable to specify a
+different link function (or to model <code>phi</code> as a scalar parameter
+instead of via a linear predictor by excluding <code>z</code> from the
+<code>formula</code> and excluding <code>link.phi</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>model, offset, weights</code></td>
+<td>
+<p>Same as <code><a href="../../betareg/html/betareg.html">betareg</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>x, y</code></td>
+<td>
+<p>In <code>stan_betareg</code>, logical scalars indicating whether to
+return the design matrix and response vector. In <code>stan_betareg.fit</code>,
+a design matrix and response vector.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Further arguments passed to the function in the <span class="pkg">rstan</span> 
+package (<code><a href="../../rstan/html/sampling.html">sampling</a></code>, <code><a href="../../rstan/html/vb.html">vb</a></code>, or 
+<code><a href="../../rstan/html/optimizing.html">optimizing</a></code>), corresponding to the estimation method 
+named by <code>algorithm</code>. For example, if <code>algorithm</code> is
+<code>"sampling"</code> it is possibly to specify <code>iter</code>, <code>chains</code>,
+<code>cores</code>, <code>refresh</code>, etc.</p>
+</td></tr>
+<tr valign="top"><td><code>prior</code></td>
+<td>
+<p>The prior distribution for the regression coefficients. 
+<code>prior</code> should be a call to one of the various functions provided by 
+<span class="pkg">rstanarm</span> for specifying priors. The subset of these functions that 
+can be used for the prior on the coefficients can be grouped into several 
+&quot;families&quot;:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+  <strong>Family</strong> </td><td style="text-align: left;"> <strong>Functions</strong> </td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+  <em>Student t family</em> </td><td style="text-align: left;"> <code>normal</code>, <code>student_t</code>, <code>cauchy</code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+  <em>Hierarchical shrinkage family</em> </td><td style="text-align: left;"> <code>hs</code>, <code>hs_plus</code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+  <em>Laplace family</em> </td><td style="text-align: left;"> <code>laplace</code>, <code>lasso</code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <em>Product normal family</em> </td><td style="text-align: left;"> <code>product_normal</code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+<p>See the <a href="priors.html">priors help page</a> for details on the families and 
+how to specify the arguments for all of the functions in the table above.
+To omit a prior &mdash;i.e., to use a flat (improper) uniform prior&mdash;
+<code>prior</code> can be set to <code>NULL</code>, although this is rarely a good
+idea.
+</p>
+<p><strong>Note:</strong> Unless <code>QR=TRUE</code>, if <code>prior</code> is from the Student t
+family or Laplace family, and if the <code>autoscale</code> argument to the 
+function used to specify the prior (e.g. <code><a href="priors.html">normal</a></code>) is left at 
+its default and recommended value of <code>TRUE</code>, then the default or 
+user-specified prior scale(s) may be adjusted internally based on the
+scales of the predictors. See the <a href="priors.html">priors help page</a> and the
+<em>Prior Distributions</em> vignette for details on the rescaling and the
+<code><a href="prior_summary.stanreg.html">prior_summary</a></code> function for a summary of the priors used for a
+particular model.</p>
+</td></tr>
+<tr valign="top"><td><code>prior_intercept</code></td>
+<td>
+<p>The prior distribution for the intercept. 
+<code>prior_intercept</code> can be a call to <code>normal</code>, <code>student_t</code> or 
+<code>cauchy</code>. See the <a href="priors.html">priors help page</a> for details on 
+these functions. To omit a prior on the intercept &mdash;i.e., to use a flat
+(improper) uniform prior&mdash; <code>prior_intercept</code> can be set to
+<code>NULL</code>.
+</p>
+<p><strong>Note:</strong> If using a dense representation of the design matrix 
+&mdash;i.e., if the <code>sparse</code> argument is left at its default value of 
+<code>FALSE</code>&mdash; then the prior distribution for the intercept is set so it 
+applies to the value <em>when all predictors are centered</em>. If you prefer
+to specify a prior on the intercept without the predictors being
+auto-centered, then you have to omit the intercept from the
+<code><a href="../../stats/html/formula.html">formula</a></code> and include a column of ones as a predictor,
+in which case some element of <code>prior</code> specifies the prior on it,
+rather than <code>prior_intercept</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>prior_z</code></td>
+<td>
+<p>Prior distribution for the coefficients in the model for 
+<code>phi</code> (if applicable). Same options as for <code>prior</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>prior_intercept_z</code></td>
+<td>
+<p>Prior distribution for the intercept in the model 
+for <code>phi</code> (if applicable). Same options as for <code>prior_intercept</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>prior_phi</code></td>
+<td>
+<p>The prior distribution for <code>phi</code> if it is <em>not</em> 
+modeled as a function of predictors. If <code>z</code> variables are specified 
+then <code>prior_phi</code> is ignored and <code>prior_intercept_z</code> and 
+<code>prior_z</code> are used to specify the priors on the intercept and
+coefficients in the model for <code>phi</code>. When applicable, <code>prior_phi</code>
+can be a call to <code>exponential</code> to use an exponential distribution, or
+one of <code>normal</code>, <code>student_t</code> or <code>cauchy</code> to use half-normal,
+half-t, or half-Cauchy prior. See <code><a href="priors.html">priors</a></code> for details on these
+functions. To omit a prior &mdash;i.e., to use a flat (improper) uniform
+prior&mdash; set <code>prior_phi</code> to <code>NULL</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>prior_PD</code></td>
+<td>
+<p>A logical scalar (defaulting to <code>FALSE</code>) indicating
+whether to draw from the prior predictive distribution instead of
+conditioning on the outcome.</p>
+</td></tr>
+<tr valign="top"><td><code>algorithm</code></td>
+<td>
+<p>A string (possibly abbreviated) indicating the 
+estimation approach to use. Can be <code>"sampling"</code> for MCMC (the
+default), <code>"optimizing"</code> for optimization, <code>"meanfield"</code> for
+variational inference with independent normal distributions, or
+<code>"fullrank"</code> for variational inference with a multivariate normal
+distribution. See <code><a href="rstanarm-package.html">rstanarm-package</a></code> for more details on the
+estimation algorithms. NOTE: not all fitting functions support all four
+algorithms.</p>
+</td></tr>
+<tr valign="top"><td><code>adapt_delta</code></td>
+<td>
+<p>Only relevant if <code>algorithm="sampling"</code>. See 
+<code><a href="adapt_delta.html">adapt_delta</a></code> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>QR</code></td>
+<td>
+<p>A logical scalar defaulting to <code>FALSE</code>, but if <code>TRUE</code> 
+applies a scaled <code><a href="../../Matrix/html/qr-methods.html">qr</a></code> decomposition to the design matrix, 
+<i>X = Q* R*</i>, where <i>Q* = 
+Q (n-1)^0.5</i> and <i>R* = (n-1)^(-0.5) 
+R</i>. The coefficients relative to <i>Q*</i> are obtained and then 
+premultiplied by the inverse of <i>R*</i> to obtain coefficients 
+relative to the original predictors, <i>X</i>. These transformations do not 
+change the likelihood of the data but are recommended for computational 
+reasons when there are multiple predictors. Importantly, while the columns
+of <i>X</i> are almost always correlated, the columns of <i>Q*</i>
+are uncorrelated by design, which often makes sampling from the posterior
+easier. However, because when <code>QR</code> is <code>TRUE</code> the <code>prior</code>
+argument applies to the coefficients relative to <i>Q*</i> (and
+those are not very interpretable), setting <code>QR=TRUE</code> is only
+recommended if you do not have an informative prior for the regression
+coefficients. 
+</p>
+<p>For more details see the Stan case study 
+<em>The QR Decomposition For Regression Models</em> at 
+<a href="http://mc-stan.org/users/documentation/case-studies/qr_regression.html">http://mc-stan.org/users/documentation/case-studies/qr_regression.html</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>z</code></td>
+<td>
+<p>For <code>stan_betareg.fit</code>, a regressor matrix for <code>phi</code>.
+Defaults to an intercept only.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>stan_betareg</code> function is similar in syntax to 
+<code><a href="../../betareg/html/betareg.html">betareg</a></code> but rather than performing maximum 
+likelihood estimation, full Bayesian estimation is performed (if 
+<code>algorithm</code> is <code>"sampling"</code>) via MCMC. The Bayesian model adds 
+priors (independent by default) on the coefficients of the beta regression
+model. The <code>stan_betareg</code> function calls the workhorse
+<code>stan_betareg.fit</code> function, but it is also possible to call the
+latter directly.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A <a href="stanreg-objects.html">stanreg</a> object is returned 
+for <code>stan_betareg</code>.
+</p>
+<p>A <a href="../../rstan/html/stanfit-class.html">stanfit</a> object (or a slightly modified 
+stanfit object) is returned if <code>stan_betareg.fit</code> is called directly.
+</p>
+
+
+<h3>References</h3>
+
+<p>Ferrari, SLP and Cribari-Neto, F (2004). Beta regression for 
+modeling rates and proportions. <em>Journal of Applied Statistics</em>.
+31(7), 799&ndash;815.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="stanreg-methods.html">stanreg-methods</a></code> and 
+<code><a href="../../betareg/html/betareg.html">betareg</a></code>.
+</p>
+<p>The vignette for <code>stan_betareg</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+### Simulated data
+N &lt;- 200
+x &lt;- rnorm(N, 2, 1)
+z &lt;- rnorm(N, 2, 1)
+mu &lt;- binomial(link = "logit")$linkinv(1 + 0.2*x)
+phi &lt;- exp(1.5 + 0.4*z)
+y &lt;- rbeta(N, mu * phi, (1 - mu) * phi)
+hist(y, col = "dark grey", border = FALSE, xlim = c(0,1))
+fake_dat &lt;- data.frame(y, x, z)
+
+fit &lt;- stan_betareg(y ~ x | z, data = fake_dat, 
+                    link = "logit", link.phi = "log", 
+                    algorithm = "optimizing")
+print(fit, digits = 2)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstanarm</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

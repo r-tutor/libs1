@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Graphical posterior predictive checks</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for pp_check.stanreg {rstanarm}"><tr><td>pp_check.stanreg {rstanarm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Graphical posterior predictive checks</h2>
+
+<h3>Description</h3>
+
+<p>Interface to the <a href="../../bayesplot/html/PPC.html">PPC</a> (posterior predictive checking) module
+in the <span class="pkg"><a href="../../bayesplot/html/bayesplot-package.html">bayesplot</a></span> package, providing various plots comparing the 
+observed outcome variable <i>y</i> to simulated datasets <i>yrep</i> 
+from the posterior predictive distribution. The <code>pp_check</code> method for 
+<a href="stanreg-objects.html">stanreg-objects</a> prepares the arguments required for the specified 
+<span class="pkg">bayesplot</span> PPC plotting function and then calls that function. It is 
+also straightforward to use the functions from the <span class="pkg">bayesplot</span> package 
+directly rather than via the <code>pp_check</code> method. Examples of both are
+given below.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'stanreg'
+pp_check(object, plotfun = "dens_overlay", nreps = NULL,
+  seed = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>A fitted model object returned by one of the 
+<span class="pkg">rstanarm</span> modeling functions. See <code><a href="stanreg-objects.html">stanreg-objects</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>plotfun</code></td>
+<td>
+<p>A character string naming the <span class="pkg">bayesplot</span> 
+<a href="../../bayesplot/html/PPC.html">PPC</a> function to use. The default is to call
+<code><a href="../../bayesplot/html/ppc_dens_overlay.html">ppc_dens_overlay</a></code>. <code>plotfun</code> can be specified
+either as the full name of a <span class="pkg">bayesplot</span> plotting function (e.g.
+<code>"ppc_hist"</code>) or can be abbreviated to the part of the name following
+the <code>"ppc_"</code> prefix (e.g. <code>"hist"</code>). To get the names of all
+available PPC functions see <code><a href="../../bayesplot/html/available_ppc.html">available_ppc</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>nreps</code></td>
+<td>
+<p>The number of <i>yrep</i> datasets to generate from the 
+<a href="posterior_predict.stanreg.html">posterior predictive distribution</a> and show in
+the plots. The default depends on <code>plotfun</code>. For functions that plot
+each <code>yrep</code> dataset separately (e.g. <code>ppc_hist</code>), <code>nreps</code>
+defaults to a small value to make the plots readable. For functions that
+overlay many <code>yrep</code> datasets (e.g., <code>ppc_dens_overlay</code>) a larger
+number is used by default, and for other functions (e.g. <code>ppc_stat</code>)
+the default is to set <code>nreps</code> equal to the posterior sample size.</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>An optional <code><a href="../../base/html/Random.html">seed</a></code> to pass to 
+<code><a href="posterior_predict.stanreg.html">posterior_predict</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additonal arguments passed to the <span class="pkg"><a href="../../bayesplot/html/bayesplot-package.html">bayesplot</a></span> function 
+called. For many plotting functions <code>...</code> is optional, however for 
+functions that require a <code>group</code> or <code>x</code> argument, these arguments
+should be specified in <code>...</code>. If specifying <code>group</code> and/or 
+<code>x</code>, they can be provided as either strings naming variables (in which
+case they are searched for in the model frame) or as vectors containing the
+actual values of the variables. See the <strong>Examples</strong> section, below.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>pp_check</code> returns a ggplot object that can be further
+customized using the <span class="pkg">ggplot2</span> package.
+</p>
+
+
+<h3>Note</h3>
+
+<p>For binomial data, plots of <i>y</i> and <i>yrep</i> show the 
+proportion of 'successes' rather than the raw count. Also for binomial 
+models see <code><a href="../../bayesplot/html/ppc_error_binned.html">ppc_error_binned</a></code> for binned residual
+plots.
+</p>
+
+
+<h3>References</h3>
+
+<p>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari,
+A., and Rubin, D. B. (2013). <em>Bayesian Data Analysis.</em> Chapman &amp; Hall/CRC
+Press, London, third edition. (Ch. 6)
+</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li><p> The vignettes in the <span class="pkg">bayesplot</span> package for many examples.
+Examples of posterior predictive checks can also be found in the
+<span class="pkg">rstanarm</span> vignettes and demos.
+</p>
+</li>
+<li> <p><code><a href="../../bayesplot/html/PPC-overview.html">PPC-overview</a></code> (<span class="pkg">bayesplot</span>) for links to 
+the documentation for all the available plotting functions.
+</p>
+</li>
+<li> <p><code><a href="posterior_predict.stanreg.html">posterior_predict</a></code> for drawing from the posterior 
+predictive distribution. 
+</p>
+</li>
+<li> <p><code><a href="../../bayesplot/html/color_scheme_set.html">color_scheme_set</a></code> to change the color scheme 
+of the plots.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+fit &lt;- stan_glmer(mpg ~ wt + am + (1|cyl), data = mtcars, 
+                  iter = 400, chains = 2) # just to keep example quick
+
+# Compare distribution of y to distributions of multiple yrep datasets
+pp_check(fit)
+pp_check(fit, plotfun = "boxplot", nreps = 10, notch = FALSE)
+pp_check(fit, plotfun = "hist", nreps = 3)
+
+
+# Same plot (up to RNG noise) using bayesplot package directly
+bayesplot::ppc_hist(y = mtcars$mpg, yrep = posterior_predict(fit, draws = 3))
+
+# Check histograms of test statistics by level of grouping variable 'cyl'
+pp_check(fit, plotfun = "stat_grouped", stat = "median", group = "cyl")
+
+# Defining a custom test statistic
+q25 &lt;- function(y) quantile(y, probs = 0.25) 
+pp_check(fit, plotfun = "stat_grouped", stat = "q25", group = "cyl")
+
+# Scatterplot of two test statistics
+pp_check(fit, plotfun = "stat_2d", stat = c("mean", "sd"))
+
+# Scatterplot of y vs. average yrep
+pp_check(fit, plotfun = "scatter_avg") # y vs. average yrep
+# Same plot (up to RNG noise) using bayesplot package directly
+bayesplot::ppc_scatter_avg(y = mtcars$mpg, yrep = posterior_predict(fit))
+
+# Scatterplots of y vs. several individual yrep datasets
+pp_check(fit, plotfun = "scatter", nreps = 3)
+
+# Same plot (up to RNG noise) using bayesplot package directly
+bayesplot::ppc_scatter(y = mtcars$mpg, yrep = posterior_predict(fit, draws = 3))
+
+# yrep intervals with y points overlaid
+# by default 1:length(y) used on x-axis but can also specify an x variable
+pp_check(fit, plotfun = "intervals")
+pp_check(fit, plotfun = "intervals", x = "wt") + ggplot2::xlab("wt")
+
+# Same plot (up to RNG noise) using bayesplot package directly
+bayesplot::ppc_intervals(y = mtcars$mpg, yrep = posterior_predict(fit), 
+                         x = mtcars$wt) + ggplot2::xlab("wt")
+
+# predictive errors
+pp_check(fit, plotfun = "error_hist", nreps = 6)
+pp_check(fit, plotfun = "error_scatter_avg_vs_x", x = "wt") + 
+  ggplot2::xlab("wt")
+  
+# Example of a PPC for ordinal models (stan_polr)
+fit2 &lt;- stan_polr(tobgp ~ agegp, data = esoph, method = "probit",
+                  prior = R2(0.2, "mean"), init_r = 0.1)
+pp_check(fit2, plotfun = "bars", nreps = 500, prob = 0.5)
+pp_check(fit2, plotfun = "bars_grouped", group = esoph$agegp, 
+         nreps = 500, prob = 0.5)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstanarm</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

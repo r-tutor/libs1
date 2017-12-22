@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Compute a Bayesian version of R-squared for regression models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bayes_R2.stanreg {rstanarm}"><tr><td>bayes_R2.stanreg {rstanarm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Compute a Bayesian version of R-squared for regression models</h2>
+
+<h3>Description</h3>
+
+<p>Compute a Bayesian version of R-squared for regression models
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'stanreg'
+bayes_R2(object, newdata = NULL, re.form = NULL,
+  offset = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>A fitted model object returned by one of the 
+<span class="pkg">rstanarm</span> modeling functions. See <code><a href="stanreg-objects.html">stanreg-objects</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>newdata</code></td>
+<td>
+<p>Similar to the <code>newdata</code> argument to 
+<code><a href="posterior_linpred.stanreg.html">posterior_linpred</a></code> and <code><a href="posterior_predict.stanreg.html">posterior_predict</a></code> except,
+in addition to new observations of the predictors, new observations of the
+<em>outcome</em> must be also included. See the <strong>Examples</strong> section below.</p>
+</td></tr>
+<tr valign="top"><td><code>re.form, offset</code></td>
+<td>
+<p>For models with group-level terms, these arguments are 
+passed to <code><a href="posterior_linpred.stanreg.html">posterior_linpred</a></code> if the <code>newdata</code> argument is
+specified.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Currently ignored.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A vector of Bayesian R-squared values with length equal to the 
+posterior sample size.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="https://github.com/jgabry/bayes_R2">https://github.com/jgabry/bayes_R2</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+fit &lt;- stan_glm(mpg ~ wt + cyl, data = mtcars, QR = TRUE, chains = 2)
+rsq &lt;- bayes_R2(fit)
+print(median(rsq))
+
+# specifying newdata (including outcome variable 'mpg')
+nd &lt;- data.frame(mpg = c(10, 20, 30), wt = c(4, 3, 2), cyl = c(8, 6, 4))
+rsq_new &lt;- bayes_R2(fit, newdata = nd)
+print(median(rsq_new))
+
+# multilevel binomial model
+if (!exists("example_model")) example(example_model)
+print(example_model)
+median(bayes_R2(example_model))
+median(bayes_R2(example_model, re.form = NA)) # exclude group-level
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstanarm</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

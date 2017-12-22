@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bayesian regularized linear models via Stan</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stan_aov {rstanarm}"><tr><td>stan_aov {rstanarm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Bayesian regularized linear models via Stan</h2>
+
+<h3>Description</h3>
+
+<p>Bayesian inference for linear modeling with regularizing priors on the 
+model parameters that are driven by prior beliefs about <i>R^2</i>, the 
+proportion of variance in the outcome attributable to the predictors. See 
+<code><a href="priors.html">priors</a></code> for an explanation of this critical point. 
+<code><a href="stan_glm.html">stan_glm</a></code> with <code>family="gaussian"</code> also estimates a 
+linear model with normally-distributed errors and allows for various other 
+priors on the coefficients.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stan_aov(formula, data, projections = FALSE, contrasts = NULL, ...,
+  prior = R2(stop("'location' must be specified")), prior_PD = FALSE,
+  algorithm = c("sampling", "meanfield", "fullrank"), adapt_delta = NULL)
+
+stan_lm(formula, data, subset, weights, na.action, model = TRUE, x = FALSE,
+  y = FALSE, singular.ok = TRUE, contrasts = NULL, offset, ...,
+  prior = R2(stop("'location' must be specified")), prior_intercept = NULL,
+  prior_PD = FALSE, algorithm = c("sampling", "meanfield", "fullrank"),
+  adapt_delta = NULL)
+
+stan_lm.wfit(x, y, w, offset = NULL, singular.ok = TRUE, ...,
+  prior = R2(stop("'location' must be specified")), prior_intercept = NULL,
+  prior_PD = FALSE, algorithm = c("sampling", "meanfield", "fullrank"),
+  adapt_delta = NULL)
+
+stan_lm.fit(x, y, offset = NULL, singular.ok = TRUE, ...,
+  prior = R2(stop("'location' must be specified")), prior_intercept = NULL,
+  prior_PD = FALSE, algorithm = c("sampling", "meanfield", "fullrank"),
+  adapt_delta = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>formula, data, subset</code></td>
+<td>
+<p>Same as <code><a href="../../stats/html/lm.html">lm</a></code>, 
+but <em>we strongly advise against omitting the <code>data</code>
+argument</em>. Unless <code>data</code> is specified (and is a data frame) many
+post-estimation functions (including <code>update</code>, <code>loo</code>,
+<code>kfold</code>) are not guaranteed to work properly.</p>
+</td></tr>
+<tr valign="top"><td><code>projections</code></td>
+<td>
+<p>For <code>stan_aov</code>, a logical scalar (defaulting to
+<code>FALSE</code>) indicating whether <code><a href="../../stats/html/proj.html">proj</a></code> should be called
+on the fit.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Further arguments passed to the function in the <span class="pkg">rstan</span> 
+package (<code><a href="../../rstan/html/sampling.html">sampling</a></code>, <code><a href="../../rstan/html/vb.html">vb</a></code>, or 
+<code><a href="../../rstan/html/optimizing.html">optimizing</a></code>), corresponding to the estimation method 
+named by <code>algorithm</code>. For example, if <code>algorithm</code> is
+<code>"sampling"</code> it is possibly to specify <code>iter</code>, <code>chains</code>,
+<code>cores</code>, <code>refresh</code>, etc.</p>
+</td></tr>
+<tr valign="top"><td><code>prior</code></td>
+<td>
+<p>Must be a call to <code><a href="priors.html">R2</a></code> with its 
+<code>location</code> argument specified or <code>NULL</code>, which would
+indicate a standard uniform prior for the <i>R^2</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>prior_PD</code></td>
+<td>
+<p>A logical scalar (defaulting to <code>FALSE</code>) indicating
+whether to draw from the prior predictive distribution instead of
+conditioning on the outcome.</p>
+</td></tr>
+<tr valign="top"><td><code>algorithm</code></td>
+<td>
+<p>A string (possibly abbreviated) indicating the 
+estimation approach to use. Can be <code>"sampling"</code> for MCMC (the
+default), <code>"optimizing"</code> for optimization, <code>"meanfield"</code> for
+variational inference with independent normal distributions, or
+<code>"fullrank"</code> for variational inference with a multivariate normal
+distribution. See <code><a href="rstanarm-package.html">rstanarm-package</a></code> for more details on the
+estimation algorithms. NOTE: not all fitting functions support all four
+algorithms.</p>
+</td></tr>
+<tr valign="top"><td><code>adapt_delta</code></td>
+<td>
+<p>Only relevant if <code>algorithm="sampling"</code>. See 
+<code><a href="adapt_delta.html">adapt_delta</a></code> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>na.action, singular.ok, contrasts</code></td>
+<td>
+<p>Same as <code><a href="../../stats/html/lm.html">lm</a></code>, but 
+rarely specified.</p>
+</td></tr>
+<tr valign="top"><td><code>model, offset, weights</code></td>
+<td>
+<p>Same as <code><a href="../../stats/html/lm.html">lm</a></code>, but
+rarely specified.</p>
+</td></tr>
+<tr valign="top"><td><code>x, y</code></td>
+<td>
+<p>In <code>stan_lm, stan_aov</code>, logical scalars indicating whether to
+return the design matrix and response vector. In <code>stan_lm.fit or stan_lm.wfit</code>,
+a design matrix and response vector.</p>
+</td></tr>
+<tr valign="top"><td><code>prior_intercept</code></td>
+<td>
+<p>Either <code>NULL</code> (the default) or a call to
+<code><a href="priors.html">normal</a></code>. If a <code><a href="priors.html">normal</a></code> prior is specified
+without a <code>scale</code>, then the standard deviation is taken to be
+the marginal standard deviation of the outcome divided by the square
+root of the sample size, which is legitimate because the marginal
+standard deviation of the outcome is a primitive parameter being
+estimated.</p>
+</td></tr>
+<tr valign="top"><td><code>w</code></td>
+<td>
+<p>Same as in <code><a href="../../stats/html/lm.wfit.html">lm.wfit</a></code> but rarely specified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>stan_lm</code> function is similar in syntax to the 
+<code><a href="../../stats/html/lm.html">lm</a></code> function but rather than choosing the parameters to
+minimize the sum of squared residuals, samples from the posterior 
+distribution are drawn using MCMC (if <code>algorithm</code> is
+<code>"sampling"</code>). The <code>stan_lm</code> function has a formula-based
+interface and would usually be called by users but the <code>stan_lm.fit</code>
+and <code>stan_lm.wfit</code> functions might be called by other functions that
+parse the data themselves and are analagous to <code><a href="../../stats/html/lm.fit.html">lm.fit</a></code>
+and <code><a href="../../stats/html/lm.wfit.html">lm.wfit</a></code> respectively.
+</p>
+<p>In addition to estimating <code>sigma</code> &mdash; the standard deviation of the
+normally-distributed errors &mdash; this model estimates a positive parameter
+called <code>log-fit_ratio</code>. If it is positive, the marginal posterior 
+variance of the outcome will exceed the sample variance of the outcome
+by a multiplicative factor equal to the square of <code>fit_ratio</code>.
+Conversely if <code>log-fit_ratio</code> is negative, then the model underfits.
+Given the regularizing nature of the priors, a slight underfit is good.
+</p>
+<p>Finally, the posterior predictive distribution is generated with the
+predictors fixed at their sample means. This quantity is useful for
+checking convergence because it is reasonably normally distributed
+and a function of all the parameters in the model.
+</p>
+<p>The <code>stan_aov</code> function is similar to <code><a href="../../stats/html/aov.html">aov</a></code> and
+has a somewhat customized <code><a href="../../base/html/print.html">print</a></code> method but basically just 
+calls <code>stan_lm</code> with dummy variables to do a Bayesian analysis of
+variance.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A <a href="stanreg-objects.html">stanreg</a> object is returned 
+for <code>stan_lm, stan_aov</code>.
+</p>
+<p>A <a href="../../rstan/html/stanfit-class.html">stanfit</a> object (or a slightly modified 
+stanfit object) is returned if <code>stan_lm.fit or stan_lm.wfit</code> is called directly.
+</p>
+
+
+<h3>References</h3>
+
+<p>Lewandowski, D., Kurowicka D., and Joe, H. (2009). Generating random
+correlation matrices based on vines and extended onion method. 
+<em>Journal of Multivariate Analysis</em>. <strong>100</strong>(9), 1989&ndash;2001.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>The vignettes for <code>stan_lm</code> and <code>stan_aov</code>, which have more
+thorough descriptions and examples.
+</p>
+<p>Also see <code><a href="stan_glm.html">stan_glm</a></code>, which &mdash; if <code>family =
+gaussian(link="identity")</code> &mdash; also estimates a linear model with
+normally-distributed errors but specifies different priors.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+op &lt;- options(contrasts = c("contr.helmert", "contr.poly"))
+stan_aov(yield ~ block + N*P*K, data = npk,
+         prior = R2(0.5), seed = 12345) 
+options(op)
+
+            
+(fit &lt;- stan_lm(mpg ~ wt + qsec + am, data = mtcars, prior = R2(0.75), 
+                # the next line is only to make the example go fast enough
+                chains = 1, iter = 500, seed = 12345))
+plot(fit, prob = 0.8)
+plot(fit, "hist", pars = c("wt", "am", "qsec", "sigma"), 
+     transformations = list(sigma = "log"))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstanarm</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Extract the posterior sample</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for as.matrix.stanreg {rstanarm}"><tr><td>as.matrix.stanreg {rstanarm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Extract the posterior sample</h2>
+
+<h3>Description</h3>
+
+<p>For models fit using MCMC (<code>algorithm="sampling"</code>), the posterior sample
+&mdash;the post-warmup draws from the posterior distribution&mdash; can be extracted 
+from a fitted model object as a matrix, data frame, or array. The 
+<code>as.matrix</code> and <code>as.data.frame</code> methods merge all chains together, 
+whereas the <code>as.array</code> method keeps the chains separate. For models fit 
+using optimization (<code>"optimizing"</code>) or variational inference 
+(<code>"meanfield"</code> or <code>"fullrank"</code>), there is no posterior sample but 
+rather a matrix (or data frame) of 1000 draws from either the asymptotic
+multivariate Gaussian sampling distribution of the parameters or the
+variational approximation to the posterior distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'stanreg'
+as.matrix(x, ..., pars = NULL, regex_pars = NULL)
+
+## S3 method for class 'stanreg'
+as.array(x, ..., pars = NULL, regex_pars = NULL)
+
+## S3 method for class 'stanreg'
+as.data.frame(x, ..., pars = NULL, regex_pars = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A fitted model object returned by one of the 
+<span class="pkg">rstanarm</span> modeling functions. See <code><a href="stanreg-objects.html">stanreg-objects</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Ignored.</p>
+</td></tr>
+<tr valign="top"><td><code>pars</code></td>
+<td>
+<p>An optional character vector of parameter names.</p>
+</td></tr>
+<tr valign="top"><td><code>regex_pars</code></td>
+<td>
+<p>An optional character vector of <a href="../../base/html/grep.html">regular 
+expressions</a> to use for parameter selection. <code>regex_pars</code> can be used
+in place of <code>pars</code> or in addition to <code>pars</code>. Currently, all
+functions that accept a <code>regex_pars</code> argument ignore it for models fit
+using optimization.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A matrix, data.frame, or array, the dimensions of which depend on
+<code>pars</code> and <code>regex_pars</code>, as well as the model and estimation
+algorithm (see the Description section above).
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="stanreg-methods.html">stanreg-methods</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+if (!exists("example_model")) example(example_model)
+# Extract posterior sample after MCMC
+draws &lt;- as.matrix(example_model)
+print(dim(draws))
+
+# For example, we can see that the median of the draws for the intercept 
+# is the same as the point estimate rstanarm uses
+print(median(draws[, "(Intercept)"]))
+print(example_model$coefficients[["(Intercept)"]])
+
+# The as.array method keeps the chains separate
+draws_array &lt;- as.array(example_model)
+print(dim(draws_array)) # iterations x chains x parameters
+
+# Extract draws from asymptotic Gaussian sampling distribution 
+# after optimization
+fit &lt;- stan_glm(mpg ~ wt, data = mtcars, algorithm = "optimizing")
+draws &lt;- as.data.frame(fit)
+print(colnames(draws))
+print(nrow(draws)) # 1000 draws are taken
+
+# Extract draws from variational approximation to the posterior distribution
+fit2 &lt;- update(fit, algorithm = "meanfield")
+draws &lt;- as.data.frame(fit2, pars = "wt")
+print(colnames(draws))
+print(nrow(draws)) # 1000 draws are taken
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstanarm</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

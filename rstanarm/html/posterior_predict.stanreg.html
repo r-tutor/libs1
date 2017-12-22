@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Draw from posterior predictive distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for posterior_predict.stanreg {rstanarm}"><tr><td>posterior_predict.stanreg {rstanarm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Draw from posterior predictive distribution</h2>
+
+<h3>Description</h3>
+
+<p>The posterior predictive distribution is the distribution of the outcome
+implied by the model after using the observed data to update our beliefs
+about the unknown parameters in the model. Simulating data from the posterior
+predictive distribution using the observed predictors is useful for checking
+the fit of the model. Drawing from the posterior predictive distribution at
+interesting values of the predictors also lets us visualize how a
+manipulation of a predictor affects (a function of) the outcome(s). With new
+observations of predictor variables we can use the posterior predictive
+distribution to generate predicted outcomes.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'stanreg'
+posterior_predict(object, newdata = NULL, draws = NULL,
+  re.form = NULL, fun = NULL, seed = NULL, offset = NULL, ...)
+
+## S3 method for class 'stanmvreg'
+posterior_predict(object, m = 1, newdata = NULL,
+  draws = NULL, re.form = NULL, fun = NULL, seed = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>A fitted model object returned by one of the 
+<span class="pkg">rstanarm</span> modeling functions. See <code><a href="stanreg-objects.html">stanreg-objects</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>newdata</code></td>
+<td>
+<p>Optionally, a data frame in which to look for variables with
+which to predict. If omitted, the model matrix is used. If <code>newdata</code>
+is provided and any variables were transformed (e.g. rescaled) in the data
+used to fit the model, then these variables must also be transformed in
+<code>newdata</code>. This only applies if variables were transformed before
+passing the data to one of the modeling functions and <em>not</em> if
+transformations were specified inside the model formula. Also see the Note
+section below for a note about using the <code>newdata</code> argument with with
+binomial models.</p>
+</td></tr>
+<tr valign="top"><td><code>draws</code></td>
+<td>
+<p>An integer indicating the number of draws to return. The default
+and maximum number of draws is the size of the posterior sample.</p>
+</td></tr>
+<tr valign="top"><td><code>re.form</code></td>
+<td>
+<p>If <code>object</code> contains <code><a href="stan_glmer.html">group-level</a></code>
+parameters, a formula indicating which group-level parameters to
+condition on when making predictions. <code>re.form</code> is specified in the
+same form as for <code><a href="../../lme4/html/predict.merMod.html">predict.merMod</a></code>. The default,
+<code>NULL</code>, indicates that all estimated group-level parameters are
+conditioned on. To refrain from conditioning on any group-level parameters,
+specify <code>NA</code> or <code>~0</code>. The <code>newdata</code> argument may include new
+<em>levels</em> of the grouping factors that were specified when the model
+was estimated, in which case the resulting posterior predictions
+marginalize over the relevant variables.</p>
+</td></tr>
+<tr valign="top"><td><code>fun</code></td>
+<td>
+<p>An optional function to apply to the results. <code>fun</code> is found
+by a call to <code><a href="../../base/html/match.fun.html">match.fun</a></code> and so can be specified as a function
+object, a string naming a function, etc.</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>An optional <code><a href="../../base/html/Random.html">seed</a></code> to use.</p>
+</td></tr>
+<tr valign="top"><td><code>offset</code></td>
+<td>
+<p>A vector of offsets. Only required if <code>newdata</code> is
+specified and an <code>offset</code> argument was specified when fitting the
+model.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>For <code>stanmvreg</code> objects, argument <code>m</code> can be specified
+indicating the submodel for which you wish to obtain predictions.</p>
+</td></tr>
+<tr valign="top"><td><code>m</code></td>
+<td>
+<p>Integer specifying the number or name of the submodel</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A <code>draws</code> by <code>nrow(newdata)</code> matrix of simulations from the
+posterior predictive distribution. Each row of the matrix is a vector of 
+predictions generated using a single draw of the model parameters from the 
+posterior distribution. The returned matrix will also have class
+<code>"ppd"</code> to indicate it contains draws from the posterior predictive
+distribution.
+</p>
+
+
+<h3>Note</h3>
+
+<p>For binomial models with a number of trials greater than one (i.e., not
+Bernoulli models), if <code>newdata</code> is specified then it must include all
+variables needed for computing the number of binomial trials to use for the
+predictions. For example if the left-hand side of the model formula is
+<code>cbind(successes, failures)</code> then both <code>successes</code> and
+<code>failures</code> must be in <code>newdata</code>. The particular values of
+<code>successes</code> and <code>failures</code> in <code>newdata</code> do not matter so
+long as their sum is the desired number of trials. If the left-hand side of
+the model formula were <code>cbind(successes, trials - successes)</code> then
+both <code>trials</code> and <code>successes</code> would need to be in <code>newdata</code>,
+probably with <code>successes</code> set to <code>0</code> and <code>trials</code> specifying
+the number of trials. See the Examples section below and the
+<em>How to Use the rstanarm Package</em> for examples.
+</p>
+<p>For models estimated with <code><a href="stan_clogit.html">stan_clogit</a></code>, the number of 
+successes per stratum is ostensibly fixed by the research design. Thus, when
+doing posterior prediction with new data, the <code>data.frame</code> passed to
+the <code>newdata</code> argument must contain an outcome variable and a stratifying
+factor, both with the same name as in the original <code>data.frame</code>. Then, the 
+posterior predictions will condition on this outcome in the new data.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="pp_check.stanreg.html">pp_check</a></code> for graphical posterior predictive checks.
+Examples of posterior predictive checking can also be found in the
+<span class="pkg">rstanarm</span> vignettes and demos.
+</p>
+<p><code><a href="predictive_error.stanreg.html">predictive_error</a></code> and <code><a href="predictive_interval.stanreg.html">predictive_interval</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (!exists("example_model")) example(example_model)
+yrep &lt;- posterior_predict(example_model)
+table(yrep)
+
+
+# Using newdata
+counts &lt;- c(18,17,15,20,10,20,25,13,12)
+outcome &lt;- gl(3,1,9)
+treatment &lt;- gl(3,3)
+fit3 &lt;- stan_glm(counts ~ outcome + treatment, family = poisson(link="log"),
+                prior = normal(0, 1), prior_intercept = normal(0, 5))
+nd &lt;- data.frame(treatment = factor(rep(1,3)), outcome = factor(1:3))
+ytilde &lt;- posterior_predict(fit3, nd, draws = 500)
+print(dim(ytilde))  # 500 by 3 matrix (draws by nrow(nd))
+ytilde &lt;- data.frame(count = c(ytilde),
+                     outcome = rep(nd$outcome, each = 500))
+ggplot2::ggplot(ytilde, ggplot2::aes(x=outcome, y=count)) +
+  ggplot2::geom_boxplot() +
+  ggplot2::ylab("predicted count")
+
+
+# Using newdata with a binomial model.
+# example_model is binomial so we need to set
+# the number of trials to use for prediction.
+# This could be a different number for each
+# row of newdata or the same for all rows.
+# Here we'll use the same value for all.
+nd &lt;- lme4::cbpp
+print(formula(example_model))  # cbind(incidence, size - incidence) ~ ...
+nd$size &lt;- max(nd$size) + 1L   # number of trials
+nd$incidence &lt;- 0  # set to 0 so size - incidence = number of trials
+ytilde &lt;- posterior_predict(example_model, newdata = nd)
+
+
+# Using fun argument to transform predictions
+mtcars2 &lt;- mtcars
+mtcars2$log_mpg &lt;- log(mtcars2$mpg)
+fit &lt;- stan_glm(log_mpg ~ wt, data = mtcars2)
+ytilde &lt;- posterior_predict(fit, fun = exp)
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstanarm</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

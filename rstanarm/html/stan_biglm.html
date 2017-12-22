@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bayesian regularized linear but big models via Stan</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stan_biglm {rstanarm}"><tr><td>stan_biglm {rstanarm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Bayesian regularized linear but big models via Stan</h2>
+
+<h3>Description</h3>
+
+<p>This is the same model as with <code><a href="stan_lm.html">stan_lm</a></code> but it utilizes the
+output from <code><a href="../../biglm/html/biglm.html">biglm</a></code> in the <span class="pkg">biglm</span> package in order to
+proceed when the data is too large to fit in memory.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stan_biglm(biglm, xbar, ybar, s_y, ...,
+  prior = R2(stop("'location' must be specified")), prior_intercept = NULL,
+  prior_PD = FALSE, algorithm = c("sampling", "meanfield", "fullrank"),
+  adapt_delta = NULL)
+
+stan_biglm.fit(b, R, SSR, N, xbar, ybar, s_y, has_intercept = TRUE, ...,
+  prior = R2(stop("'location' must be specified")), prior_intercept = NULL,
+  prior_PD = FALSE, algorithm = c("sampling", "meanfield", "fullrank"),
+  adapt_delta = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>biglm</code></td>
+<td>
+<p>The list output by <code><a href="../../biglm/html/biglm.html">biglm</a></code> in the <span class="pkg">biglm</span>
+package.</p>
+</td></tr>
+<tr valign="top"><td><code>xbar</code></td>
+<td>
+<p>A numeric vector of column means in the implicit design matrix 
+excluding the intercept for the observations included in the model.</p>
+</td></tr>
+<tr valign="top"><td><code>ybar</code></td>
+<td>
+<p>A numeric scalar indicating the mean of the outcome for the
+observations included in the model.</p>
+</td></tr>
+<tr valign="top"><td><code>s_y</code></td>
+<td>
+<p>A numeric scalar indicating the unbiased sample standard deviation
+of the outcome for the observations included in the model.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Further arguments passed to the function in the <span class="pkg">rstan</span> 
+package (<code><a href="../../rstan/html/sampling.html">sampling</a></code>, <code><a href="../../rstan/html/vb.html">vb</a></code>, or 
+<code><a href="../../rstan/html/optimizing.html">optimizing</a></code>), corresponding to the estimation method 
+named by <code>algorithm</code>. For example, if <code>algorithm</code> is
+<code>"sampling"</code> it is possibly to specify <code>iter</code>, <code>chains</code>,
+<code>cores</code>, <code>refresh</code>, etc.</p>
+</td></tr>
+<tr valign="top"><td><code>prior</code></td>
+<td>
+<p>Must be a call to <code><a href="priors.html">R2</a></code> with its <code>location</code>
+argument specified or <code>NULL</code>, which would indicate a standard uniform
+prior for the <i>R^2</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>prior_intercept</code></td>
+<td>
+<p>Either <code>NULL</code> (the default) or a call to 
+<code><a href="priors.html">normal</a></code>. If a <code><a href="priors.html">normal</a></code> prior is specified without
+a <code>scale</code>, then the standard deviation is taken to be the marginal
+standard deviation of the outcome divided by the square root of the sample
+size, which is legitimate because the marginal standard deviation of the
+outcome is a primitive parameter being estimated.</p>
+</td></tr>
+<tr valign="top"><td><code>prior_PD</code></td>
+<td>
+<p>A logical scalar (defaulting to <code>FALSE</code>) indicating
+whether to draw from the prior predictive distribution instead of
+conditioning on the outcome.</p>
+</td></tr>
+<tr valign="top"><td><code>algorithm</code></td>
+<td>
+<p>A string (possibly abbreviated) indicating the 
+estimation approach to use. Can be <code>"sampling"</code> for MCMC (the
+default), <code>"optimizing"</code> for optimization, <code>"meanfield"</code> for
+variational inference with independent normal distributions, or
+<code>"fullrank"</code> for variational inference with a multivariate normal
+distribution. See <code><a href="rstanarm-package.html">rstanarm-package</a></code> for more details on the
+estimation algorithms. NOTE: not all fitting functions support all four
+algorithms.</p>
+</td></tr>
+<tr valign="top"><td><code>adapt_delta</code></td>
+<td>
+<p>Only relevant if <code>algorithm="sampling"</code>. See 
+<code><a href="adapt_delta.html">adapt_delta</a></code> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>b</code></td>
+<td>
+<p>A numeric vector of OLS coefficients, excluding the intercept</p>
+</td></tr>
+<tr valign="top"><td><code>R</code></td>
+<td>
+<p>A square upper-triangular matrix from the QR decomposition of the 
+design matrix, excluding the intercept</p>
+</td></tr>
+<tr valign="top"><td><code>SSR</code></td>
+<td>
+<p>A numeric scalar indicating the sum-of-squared residuals for OLS</p>
+</td></tr>
+<tr valign="top"><td><code>N</code></td>
+<td>
+<p>A integer scalar indicating the number of included observations</p>
+</td></tr>
+<tr valign="top"><td><code>has_intercept</code></td>
+<td>
+<p>A logical scalar indicating whether to add an intercept 
+to the model when estimating it.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>stan_biglm</code> function is intended to be used in the same 
+circumstances as the <code><a href="../../biglm/html/biglm.html">biglm</a></code> function in the <span class="pkg">biglm</span>
+package but with an informative prior on the <i>R^2</i> of the regression. 
+Like <code><a href="../../biglm/html/biglm.html">biglm</a></code>, the memory required to estimate the model 
+depends largely on the number of predictors rather than the number of 
+observations. However, <code>stan_biglm</code> and <code>stan_biglm.fit</code> have 
+additional required arguments that are not necessary in 
+<code><a href="../../biglm/html/biglm.html">biglm</a></code>, namely <code>xbar</code>, <code>ybar</code>, and <code>s_y</code>.
+If any observations have any missing values on any of the predictors or the 
+outcome, such observations do not contribute to these statistics.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The output of both <code>stan_biglm</code> and <code>stan_biglm.fit</code> is an
+object of <code><a href="../../rstan/html/stanfit-class.html">stanfit-class</a></code> rather than
+<code><a href="stanreg-objects.html">stanreg-objects</a></code>, which is more limited and less convenient
+but necessitated by the fact that <code>stan_biglm</code> does not bring the full
+design matrix into memory. Without the full design matrix,some of the
+elements of a <code><a href="stanreg-objects.html">stanreg-objects</a></code> object cannot be calculated,
+such as residuals. Thus, the functions in the <span class="pkg">rstanarm</span> package that
+input <code><a href="stanreg-objects.html">stanreg-objects</a></code>, such as 
+<code><a href="posterior_predict.stanreg.html">posterior_predict</a></code> cannot be used.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# create inputs
+ols &lt;- lm(mpg ~ wt + qsec + am, data = mtcars, # all row are complete so ...
+          na.action = na.exclude)              # not necessary in this case
+b &lt;- coef(ols)[-1]
+R &lt;- qr.R(ols$qr)[-1,-1]
+SSR &lt;- crossprod(ols$residuals)[1]
+not_NA &lt;- !is.na(fitted(ols))
+N &lt;- sum(not_NA)
+xbar &lt;- colMeans(mtcars[not_NA,c("wt", "qsec", "am")])
+y &lt;- mtcars$mpg[not_NA]
+ybar &lt;- mean(y)
+s_y &lt;- sd(y)
+post &lt;- stan_biglm.fit(b, R, SSR, N, xbar, ybar, s_y, prior = R2(.75),
+                       # the next line is only to make the example go fast
+                       chains = 1, iter = 500, seed = 12345)
+cbind(lm = b, stan_lm = rstan::get_posterior_mean(post)[13:15,]) # shrunk
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstanarm</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

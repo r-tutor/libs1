@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Pointwise log-likelihood matrix</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for log_lik.stanreg {rstanarm}"><tr><td>log_lik.stanreg {rstanarm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Pointwise log-likelihood matrix</h2>
+
+<h3>Description</h3>
+
+<p>For models fit using MCMC only, the <code>log_lik</code> method returns the
+<i>S</i> by <i>N</i> pointwise log-likelihood matrix, where <i>S</i> is the size
+of the posterior sample and <i>N</i> is the number of data points, or in the
+case of the <code>stanmvreg</code> method (when called on <code><a href="stan_jm.html">stan_jm</a></code>
+model objects) an <i>S</i> by <i>Npat</i> matrix where <i>Npat</i> is the number 
+of individuals.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'stanreg'
+log_lik(object, newdata = NULL, offset = NULL, ...)
+
+## S3 method for class 'stanmvreg'
+log_lik(object, m = 1, newdata = NULL, ...)
+
+## S3 method for class 'stanjm'
+log_lik(object, newdataLong = NULL, newdataEvent = NULL,
+  ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>A fitted model object returned by one of the 
+<span class="pkg">rstanarm</span> modeling functions. See <code><a href="stanreg-objects.html">stanreg-objects</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>newdata</code></td>
+<td>
+<p>An optional data frame of new data (e.g. holdout data) to use
+when evaluating the log-likelihood. See the description of <code>newdata</code>
+for <code><a href="posterior_predict.stanreg.html">posterior_predict</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>offset</code></td>
+<td>
+<p>A vector of offsets. Only required if <code>newdata</code> is
+specified and an <code>offset</code> was specified when fitting the model.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Currently ignored.</p>
+</td></tr>
+<tr valign="top"><td><code>m</code></td>
+<td>
+<p>Integer specifying the number or name of the submodel</p>
+</td></tr>
+<tr valign="top"><td><code>newdataLong, newdataEvent</code></td>
+<td>
+<p>Optional data frames containing new data 
+(e.g. holdout data) to use when evaluating the log-likelihood for a 
+model estimated using <code><a href="stan_jm.html">stan_jm</a></code>. If the fitted model 
+was a multivariate joint model (i.e. more than one longitudinal outcome),
+then <code>newdataLong</code> is allowed to be a list of data frames. If supplying 
+new data, then <code>newdataEvent</code> should also include variables corresponding
+to the event time and event indicator as these are required for evaluating the
+log likelihood for the event submodel. For more details, see the description 
+of <code>newdataLong</code> and <code>newdataEvent</code> for <code><a href="posterior_survfit.html">posterior_survfit</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>For the <code>stanreg</code> and <code>stanmvreg</code> methods an <i>S</i> by 
+<i>N</i> matrix, where <i>S</i> is the size of the posterior sample and 
+<i>N</i> is the number of data points. For the <code>stanjm</code> method 
+an <i>S</i> by <i>Npat</i> matrix where <i>Npat</i> is the number of individuals.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+ roaches$roach100 &lt;- roaches$roach1 / 100
+ fit &lt;- stan_glm(
+    y ~ roach100 + treatment + senior,
+    offset = log(exposure2),
+    data = roaches,
+    family = poisson(link = "log"),
+    prior = normal(0, 2.5),
+    prior_intercept = normal(0, 10),
+    iter = 500 # to speed up example
+ )
+ ll &lt;- log_lik(fit)
+ dim(ll)
+ all.equal(ncol(ll), nobs(fit))
+
+ # using newdata argument
+ nd &lt;- roaches[1:2, ]
+ nd$treatment[1:2] &lt;- c(0, 1)
+ ll2 &lt;- log_lik(fit, newdata = nd, offset = c(0, 0))
+ head(ll2)
+ dim(ll2)
+ all.equal(ncol(ll2), nrow(nd))
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstanarm</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

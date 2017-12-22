@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Using the ShinyStan GUI with rstanarm models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for launch_shinystan.stanreg {rstanarm}"><tr><td>launch_shinystan.stanreg {rstanarm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Using the ShinyStan GUI with rstanarm models</h2>
+
+<h3>Description</h3>
+
+<p>The ShinyStan interface provides visual and numerical summaries of model
+parameters and convergence diagnostics.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'stanreg'
+launch_shinystan(object, ppd = TRUE, seed = 1234,
+  model_name = NULL, note = NULL,
+  rstudio = getOption("shinystan.rstudio"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>A fitted model object returned by one of the 
+<span class="pkg">rstanarm</span> modeling functions. See <code><a href="stanreg-objects.html">stanreg-objects</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>ppd</code></td>
+<td>
+<p>Should <span class="pkg">rstanarm</span> draw from the posterior predictive 
+distribution before launching ShinyStan? The default is <code>TRUE</code>, 
+although for very large objects it can be convenient to set it to 
+<code>FALSE</code> as drawing from the posterior predictive distribution can be 
+time consuming. If <code>ppd</code> is <code>TRUE</code> then graphical posterior 
+predictive checks are available when ShinyStan is launched.</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>Passed to <code><a href="pp_check.html">pp_check</a></code> (<span class="pkg">rstanarm</span>) if 
+<code>ppd</code> is <code>TRUE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>model_name, note</code></td>
+<td>
+<p>Optional arguments passed to
+<code><a href="../../shinystan/html/as.shinystan.html">as.shinystan</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>rstudio</code></td>
+<td>
+<p>Only relevant for 'RStudio' users. The default (<code>FALSE</code>)
+is to launch the app in the user's default web browser rather than the 
+pop-up Viewer provided by 'RStudio'. Users can change the default to
+<code>TRUE</code> by setting the global option <code>options(shinystan.rstudio =
+TRUE)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments passed to <code><a href="../../shiny/html/runApp.html">runApp</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code><a href="../../shinystan/html/launch_shinystan.html">launch_shinystan</a></code> function will accept a
+<code><a href="stanreg-objects.html">stanreg</a></code> object as input. Currently, almost 
+any model fit using one of <span class="pkg">rstanarm</span>'s model-fitting functions can be 
+used with ShinyStan. The only exception is that ShinyStan does not 
+currently support <span class="pkg">rstanarm</span> models fit using 
+<code>algorithm='optimizing'</code>. See the 
+<span class="pkg"><a href="../../shinystan/html/shinystan-package.html">shinystan</a></span> package documentation for more 
+information.
+</p>
+
+
+<h3>Faster launch times</h3>
+
+<p>For some <span class="pkg">rstanarm</span> models ShinyStan may take a very long time to launch.
+If this is the case with one of your models you may be able to speed up
+<code>launch_shinystan</code> in one of several ways:
+</p>
+
+<dl>
+<dt>Prevent ShinyStan from preparing graphical posterior predictive
+checks:</dt><dd>
+<p>When used with a <code><a href="stanreg-objects.html">stanreg</a></code> object 
+(<span class="pkg">rstanarm</span> model object) ShinyStan will draw from the posterior 
+predictive distribution and prepare graphical posterior predictive checks 
+before launching. That way when you go to the PPcheck page the plots are 
+immediately available. This can be time consuming for models fit to very
+large datasets and you can prevent this behavior by creating a shinystan
+object before calling <code>launch_shinystan</code>. To do this use 
+<code><a href="../../shinystan/html/as.shinystan.html">as.shinystan</a></code> with optional argument <code>ppd</code> set
+to <code>FALSE</code> (see the Examples section below). When you then launch
+ShinyStan and go to the PPcheck page the plots will no longer be 
+automatically generated and you will be presented with the standard
+interface requiring you to first specify the appropriate <i>y</i> and
+<i>yrep</i>, which can be done for many but not all <span class="pkg">rstanarm</span> models.
+</p>
+</dd>
+<dt>Use a shinystan object:</dt><dd>
+<p>Even if you don't want to prevent ShinyStan from preparing graphical
+posterior predictive checks, first creating a shinystan object using
+<code><a href="../../shinystan/html/as.shinystan.html">as.shinystan</a></code> can reduce <em>future</em> launch
+times. That is, <code>launch_shinystan(sso)</code> will be faster than
+<code>launch_shinystan(fit)</code>, where <code>sso</code> is a shinystan object and
+<code>fit</code> is a stanreg object. It still may take some time for 
+<code>as.shinystan</code> to create <code>sso</code> initially, but each time you
+subsequently call <code>launch_shinystan(sso)</code> it will reuse <code>sso</code>
+instead of internally creating a shinystan object every time. See the
+Examples section below.</p>
+</dd>
+</dl>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+if (!exists("example_model")) example(example_model) 
+
+# Launch the ShinyStan app without saving the resulting shinystan object
+if (interactive()) launch_shinystan(example_model)
+
+# Launch the ShinyStan app (saving resulting shinystan object as sso)
+if (interactive()) sso &lt;- launch_shinystan(example_model)
+
+# First create shinystan object then call launch_shinystan
+sso &lt;- shinystan::as.shinystan(example_model)
+if (interactive()) launch_shinystan(sso)
+
+# Prevent ShinyStan from preparing graphical posterior predictive checks that
+# can be time consuming. example_model is small enough that it won't matter
+# much here but in general this can help speed up launch_shinystan
+sso &lt;- shinystan::as.shinystan(example_model, ppd = FALSE)
+if (interactive()) launch_shinystan(sso)
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstanarm</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

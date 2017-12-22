@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Fitted model objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stanreg-objects {rstanarm}"><tr><td>stanreg-objects {rstanarm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Fitted model objects</h2>
+
+<h3>Description</h3>
+
+<p>The <span class="pkg">rstanarm</span> model-fitting functions return an object of class 
+<code>'stanreg'</code>, which is a list containing at a minimum the components listed 
+below. Each <code>stanreg</code> object will also have additional classes (e.g. 'aov', 
+'betareg', 'glm', 'polr', etc.) and several additional components depending
+on the model and estimation algorithm. <br />
+<br />
+Some additional details apply to models estimated using the <code><a href="stan_mvmer.html">stan_mvmer</a></code>
+or <code><a href="stan_jm.html">stan_jm</a></code> modelling functions. The <code><a href="stan_mvmer.html">stan_mvmer</a></code> modelling 
+function returns an object of class <code>'stanmvreg'</code>, which inherits the 
+<code>'stanreg'</code> class, but has a number of additional elements described in the 
+subsection below. The <code><a href="stan_jm.html">stan_jm</a></code> modelling function returns an object of class
+<code>'stanjm'</code>, which inherits both the <code>'stanmvreg'</code> and <code>'stanreg'</code> 
+classes, but has a number of additional elements described in the subsection below. 
+Both the <code>'stanjm'</code> and <code>'stanmvreg'</code> classes have several of their own 
+methods for situations in which the default <code>'stanreg'</code> methods are not 
+suitable; see the <strong>See Also</strong> section below.
+</p>
+
+
+<h3>Elements for <code>stanreg</code> objects</h3>
+
+
+<dl>
+<dt><code>coefficients</code></dt><dd>
+<p>Point estimates, as described in <code><a href="print.stanreg.html">print.stanreg</a></code>.
+</p>
+</dd>
+<dt><code>ses</code></dt><dd>
+<p>Standard errors based on <code><a href="../../stats/html/mad.html">mad</a></code>, as described in
+<code><a href="print.stanreg.html">print.stanreg</a></code>.
+</p>
+</dd>
+<dt><code>residuals</code></dt><dd>
+<p>Residuals of type <code>'response'</code>.
+</p>
+</dd>
+<dt><code>fitted.values</code></dt><dd>
+<p>Fitted mean values. For GLMs the linear predictors are transformed by the
+inverse link function.
+</p>
+</dd>
+<dt><code>linear.predictors</code></dt><dd>
+<p>Linear fit on the link scale. For linear models this is the same as
+<code>fitted.values</code>.
+</p>
+</dd>
+<dt><code>covmat</code></dt><dd>
+<p>Variance-covariance matrix for the coefficients based on draws from the
+posterior distribution, the variational approximation, or the asymptotic 
+sampling distribution, depending on the estimation algorithm.
+</p>
+</dd>
+<dt><code>model,x,y</code></dt><dd>
+<p>If requested, the the model frame, model matrix and response variable used, 
+respectively.
+</p>
+</dd>
+<dt><code>family</code></dt><dd>
+<p>The <code><a href="../../stats/html/family.html">family</a></code> object used.
+</p>
+</dd>
+<dt><code>call</code></dt><dd>
+<p>The matched call.
+</p>
+</dd>
+<dt><code>formula</code></dt><dd>
+<p>The model <code><a href="../../stats/html/formula.html">formula</a></code>.
+</p>
+</dd>
+<dt><code>data,offset,weights</code></dt><dd>
+<p>The <code>data</code>, <code>offset</code>, and <code>weights</code> arguments.
+</p>
+</dd>
+<dt><code>algorithm</code></dt><dd>
+<p>The estimation method used.
+</p>
+</dd>
+<dt><code>prior.info</code></dt><dd>
+<p>A list with information about the prior distributions used.
+</p>
+</dd>
+<dt><code>stanfit,stan_summary</code></dt><dd>
+<p>The object of <code><a href="../../rstan/html/stanfit-class.html">stanfit-class</a></code> returned by RStan and a
+matrix of various summary statistics from the stanfit object.
+</p>
+</dd>
+<dt><code>rstan_version</code></dt><dd>
+<p>The version of the <span class="pkg">rstan</span> package that was used to fit the model.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Elements for <code>stanmvreg</code> objects</h3>
+
+
+<p>The <code>stanmvreg</code> objects contain the majority of the elements described
+above for <code>stanreg</code> objects, but in most cases these will be a list with each
+elements of the list correponding to one of the submodels (for example, 
+the <code>family</code> element of a <code>stanmvreg</code> object will be a list with each 
+element of the list containing the <code><a href="../../stats/html/family.html">family</a></code> object for one
+submodel). In addition, <code>stanmvreg</code> objects contain the following additional 
+elements:
+</p>
+<dl>
+<dt><code>cnms</code></dt><dd>
+<p>The names of the grouping factors and group specific parameters, collapsed 
+across the longitudinal or glmer submodels.
+</p>
+</dd>
+<dt><code>flevels</code></dt><dd>
+<p>The unique factor levels for each grouping factor, collapsed across the 
+longitudinal or glmer submodels.
+</p>
+</dd> 
+<dt><code>n_markers</code></dt><dd>
+<p>The number of longitudinal or glmer submodels.
+</p>
+</dd> 
+<dt><code>n_yobs</code></dt><dd>
+<p>The number of observations for each longitudinal or glmer submodel.
+</p>
+</dd>
+<dt><code>n_grps</code></dt><dd>
+<p>The number of levels for each grouping factor (for models estimated using 
+<code><a href="stan_jm.html">stan_jm</a></code>, this will be equal to <code>n_subjects</code> if the 
+individual is the only grouping factor).
+</p>
+</dd>
+<dt><code>runtime</code></dt><dd>
+<p>The time taken to fit the model (in minutes).
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Additional elements for <code>stanjm</code> objects</h3>
+
+
+<p>The <code>stanjm</code> objects contain the elements described above for 
+<code>stanmvreg</code> objects, but also contain the following additional 
+elements:
+</p>
+<dl>
+<dt><code>id_var,time_var</code></dt><dd>
+<p>The names of the variables distinguishing between individuals, and 
+representing time in the longitudinal submodel.
+</p>
+</dd> 
+<dt><code>n_subjects</code></dt><dd>
+<p>The number of individuals.
+</p>
+</dd>
+<dt><code>n_events</code></dt><dd>
+<p>The number of non-censored events.
+</p>
+</dd>  
+<dt><code>eventtime,status</code></dt><dd>
+<p>The event (or censoring) time and status indicator for each individual.
+</p>
+</dd>
+<dt><code>basehaz</code></dt><dd>
+<p>A list containing information about the baseline hazard.
+</p>
+</dd>
+<dt><code>assoc</code></dt><dd>
+<p>An array containing information about the association structure.
+</p>
+</dd>
+<dt><code>epsilon</code></dt><dd>
+<p>The width of the one-sided difference used to numerically evaluate the 
+slope of the longitudinal trajectory; only relevant if a slope-based 
+association structure was specified (e.g. etaslope, muslope, etc).
+</p>
+</dd>
+<dt><code>qnodes</code></dt><dd>
+<p>The number of Gauss-Kronrod quadrature nodes used to evaluate the 
+cumulative hazard in the joint likelihood function.
+</p>
+</dd>        
+</dl>
+
+
+
+<h3>Note</h3>
+
+<p>The <code><a href="stan_biglm.html">stan_biglm</a></code> function is an exception. It returns a 
+<a href="../../rstan/html/stanfit.html">stanfit</a> object rather than a stanreg object.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="stanreg-methods.html">stanreg-methods</a></code>, <code><a href="stanmvreg-methods.html">stanmvreg-methods</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstanarm</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Family function for negative binomial GLMs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for neg_binomial_2 {rstanarm}"><tr><td>neg_binomial_2 {rstanarm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Family function for negative binomial GLMs</h2>
+
+<h3>Description</h3>
+
+<p>Specifies the information required to fit a Negative Binomial GLM in a 
+similar way to <code><a href="../../MASS/html/negative.binomial.html">negative.binomial</a></code>. However, here the 
+overdispersion parameter <code>theta</code> is not specified by the user and always
+estimated (really the <em>reciprocal</em> of the dispersion parameter is
+estimated). A call to this function can be passed to the <code>family</code>
+argument of <code><a href="stan_glm.html">stan_glm</a></code> or <code><a href="stan_glmer.html">stan_glmer</a></code> to estimate a
+Negative Binomial model. Alternatively, the <code><a href="stan_glm.html">stan_glm.nb</a></code> and 
+<code><a href="stan_glmer.html">stan_glmer.nb</a></code> wrapper functions may be used, which call 
+<code>neg_binomial_2</code> internally.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+neg_binomial_2(link = "log")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>link</code></td>
+<td>
+<p>The same as for <code><a href="../../stats/html/family.html">poisson</a></code>, typically a character
+vector of length one among <code>"log"</code>, <code>"identity"</code>, and
+<code>"sqrt"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code><a href="../../stats/html/family.html">family</a></code> very similar to
+that of <code><a href="../../stats/html/poisson.html">poisson</a></code> but with a different family name.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (!grepl("^sparc",  R.version$platform))
+stan_glm(Days ~ Sex/(Age + Eth*Lrn), data = MASS::quine, seed = 123,
+         family = neg_binomial_2, QR = TRUE, algorithm = "optimizing") 
+                
+# or, equivalently, call stan_glm.nb() without specifying the family
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstanarm</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

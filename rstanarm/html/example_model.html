@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Example model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for example_model {rstanarm}"><tr><td>example_model {rstanarm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Example model</h2>
+
+<h3>Description</h3>
+
+<p>A model for use in <span class="pkg">rstanarm</span> examples.
+</p>
+
+
+<h3>Format</h3>
+
+<p>Calling <code>example("example_model")</code> will run the model in the 
+Examples section, below, and the resulting stanreg object will then be
+available in the global environment. The <code>chains</code> and <code>iter</code>
+arguments are specified to make this example be small in size. In practice,
+we recommend that they be left unspecified in order to use the default
+values (4 and 2000 respectively) or increased if there are convergence
+problems. The <code>cores</code> argument is optional and on a multicore system,
+the user may well want to set that equal to the number of chains being
+executed.</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../lme4/html/cbpp.html">cbpp</a></code> for a description of the data.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+example_model &lt;- 
+  stan_glmer(cbind(incidence, size - incidence) ~ size + period + (1|herd),
+             data = lme4::cbpp, family = binomial,
+             # this next line is only to keep the example small in size!
+             chains = 2, cores = 1, seed = 12345, iter = 500)
+example_model
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstanarm</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

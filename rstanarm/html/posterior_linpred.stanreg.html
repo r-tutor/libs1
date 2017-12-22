@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Posterior distribution of the linear predictor</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for posterior_linpred.stanreg {rstanarm}"><tr><td>posterior_linpred.stanreg {rstanarm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Posterior distribution of the linear predictor</h2>
+
+<h3>Description</h3>
+
+<p>Extract the posterior draws of the linear predictor, possibly transformed by 
+the inverse-link function. This function is occasionally useful, but it 
+should be used sparingly. Inference and model checking should generally be 
+carried out using the posterior predictive distribution (i.e., using 
+<code><a href="posterior_predict.stanreg.html">posterior_predict</a></code>).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'stanreg'
+posterior_linpred(object, transform = FALSE,
+  newdata = NULL, re.form = NULL, offset = NULL, XZ = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>A fitted model object returned by one of the 
+<span class="pkg">rstanarm</span> modeling functions. See <code><a href="stanreg-objects.html">stanreg-objects</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>transform</code></td>
+<td>
+<p>Should the linear predictor be transformed using the
+inverse-link function? The default is <code>FALSE</code>, in which case the
+untransformed linear predictor is returned.</p>
+</td></tr>
+<tr valign="top"><td><code>newdata, re.form, offset</code></td>
+<td>
+<p>Same as for <code><a href="posterior_predict.stanreg.html">posterior_predict</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>XZ</code></td>
+<td>
+<p>If <code>TRUE</code> then instead of computing the linear predictor the 
+design matrix <code>X</code> (or <code>cbind(X,Z)</code> for models with group-specific
+terms) constructed from <code>newdata</code> is returned. The default is 
+<code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Currently ignored.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The default is to return a <code>draws</code> by <code>nrow(newdata)</code>
+matrix of simulations from the posterior distribution of the (possibly
+transformed) linear predictor. The exception is if the argument <code>XZ</code>
+is set to <code>TRUE</code> (see the <code>XZ</code> argument description above).
+</p>
+
+
+<h3>Note</h3>
+
+<p>For models estimated with <code><a href="stan_clogit.html">stan_clogit</a></code>, the number of 
+successes per stratum is ostensibly fixed by the research design. Thus,
+when calling <code>posterior_linpred</code> with new data and <code>transform =
+  TRUE</code>, the <code>data.frame</code> passed to the <code>newdata</code> argument must
+contain an outcome variable and a stratifying factor, both with the same
+name as in the original <code>data.frame</code>. Then, the probabilities will
+condition on this outcome in the new data.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="posterior_predict.stanreg.html">posterior_predict</a></code> to draw from the posterior 
+predictive distribution of the outcome, which is typically preferable.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (!exists("example_model")) example(example_model)
+print(family(example_model))
+
+# linear predictor on log-odds scale
+linpred &lt;- posterior_linpred(example_model)
+colMeans(linpred)
+
+# probabilities
+probs &lt;- posterior_linpred(example_model, transform = TRUE)
+colMeans(probs)
+
+# not conditioning on any group-level parameters
+probs2 &lt;- posterior_linpred(example_model, transform = TRUE, re.form = NA)
+apply(probs2, 2, median)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstanarm</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

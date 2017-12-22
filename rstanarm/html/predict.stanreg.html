@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Predict method for stanreg objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for predict.stanreg {rstanarm}"><tr><td>predict.stanreg {rstanarm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Predict method for stanreg objects</h2>
+
+<h3>Description</h3>
+
+<p>This method is primarily intended to be used only for models fit using 
+optimization. For models fit using MCMC or one of the variational
+approximations, see <code><a href="posterior_predict.stanreg.html">posterior_predict</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'stanreg'
+predict(object, ..., newdata = NULL, type = c("link",
+  "response"), se.fit = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>A fitted model object returned by one of the 
+<span class="pkg">rstanarm</span> modeling functions. See <code><a href="stanreg-objects.html">stanreg-objects</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Ignored.</p>
+</td></tr>
+<tr valign="top"><td><code>newdata</code></td>
+<td>
+<p>Optionally, a data frame in which to look for variables with 
+which to predict. If omitted, the model matrix is used.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>The type of prediction. The default <code>'link'</code> is on the scale
+of the linear predictors; the alternative <code>'response'</code> is on the scale
+of the response variable.</p>
+</td></tr>
+<tr valign="top"><td><code>se.fit</code></td>
+<td>
+<p>A logical scalar indicating if standard errors should be 
+returned. The default is <code>FALSE</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A vector if <code>se.fit</code> is <code>FALSE</code> and a list if <code>se.fit</code>
+is <code>TRUE</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="posterior_predict.stanreg.html">posterior_predict</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstanarm</em> version 2.17.2 <a href="00Index.html">Index</a>]</div>
+</body></html>
