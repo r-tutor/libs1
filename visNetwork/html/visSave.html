@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Save a a visNetwork object to an HTML file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for visSave {visNetwork}"><tr><td>visSave {visNetwork}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Save a a visNetwork object to an HTML file</h2>
+
+<h3>Description</h3>
+
+<p>Save a a visNetwork object to an HTML file for sharing with others. The HTML can
+include it's dependencies in an adjacent directory or can bundle all
+dependencies into the HTML file (via base64 encoding).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+visSave(graph, file, selfcontained = TRUE, background = "white")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>graph</code></td>
+<td>
+<p>: a visNetwork object</p>
+</td></tr>
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>: File to save HTML into. See <a href="../../taucharts/html/taucharts-exports.html">saveWidget</a></p>
+</td></tr>
+<tr valign="top"><td><code>selfcontained</code></td>
+<td>
+<p>: Whether to save the HTML as a single self-contained file (with external resources base64 encoded) or a file with external resources placed in an adjacent directory.</p>
+</td></tr>
+<tr valign="top"><td><code>background</code></td>
+<td>
+<p>: Text string giving the html background color of the widget. Defaults to white.</p>
+</td></tr>
+</table>
+
+
+<h3>References</h3>
+
+<p>See online documentation <a href="http://datastorm-open.github.io/visNetwork/">http://datastorm-open.github.io/visNetwork/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="visExport.html">visExport</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## Not run: 
+
+nodes &lt;- data.frame(id = 1:3, group = c("B", "A", "B"))
+edges &lt;- data.frame(from = c(1,2), to = c(2,3))
+
+network &lt;- visNetwork(nodes, edges)
+network
+
+network %&gt;% visSave(file = "network.html", background = "black")
+
+# same as
+visSave(network, file = "network.html", background = "black")
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>visNetwork</em> version 2.0.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

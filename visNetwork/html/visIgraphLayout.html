@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Use a igraph layout for compute coordinates &amp; fast rendering</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for visIgraphLayout {visNetwork}"><tr><td>visIgraphLayout {visNetwork}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Use a igraph layout for compute coordinates &amp; fast rendering</h2>
+
+<h3>Description</h3>
+
+<p>Use a igraph layout for compute coordinates and fast rendering. 
+This function affect x and y coordinates to nodes data.frame using a igraph layout, 
+and then render network faster with no stabilization. 
+We set some options as : visNodes(physics = FALSE) &amp;
+visEdges(smooth = FALSE) &amp; visPhysics(stabilization= FALSE), but you can overwrite
+them using arguments or by add another call after visIgraphLayout
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+visIgraphLayout(graph, layout = "layout_nicely", physics = FALSE,
+  smooth = FALSE, type = "square", randomSeed = NULL,
+  layoutMatrix = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>graph</code></td>
+<td>
+<p>: a visNetwork object</p>
+</td></tr>
+<tr valign="top"><td><code>layout</code></td>
+<td>
+<p>: Character Name of igraph layout function to use. Default to &quot;layout_nicely&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>physics</code></td>
+<td>
+<p>: Boolean. Default to FALSE. Enabled physics on nodes ?</p>
+</td></tr>
+<tr valign="top"><td><code>smooth</code></td>
+<td>
+<p>: Boolean. Default to FALSE. Use smooth edges ?</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>: Character Type of scale from igrah to vis.js. &quot;square&quot; (defaut) render in a square limit by height. &quot;full&quot; use width and height to scale in a rectangle.</p>
+</td></tr>
+<tr valign="top"><td><code>randomSeed</code></td>
+<td>
+<p>: Number. The nodes are randomly positioned initially. This means that the settled result is different every time. If you provide a random seed manually, the layout will be the same every time.</p>
+</td></tr>
+<tr valign="top"><td><code>layoutMatrix</code></td>
+<td>
+<p>: in case of layout = 'layout.norm'. the 'layout' argument (A matrix with two or three columns, the layout to normalize)</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>: Adding arguments to layout function</p>
+</td></tr>
+</table>
+
+
+<h3>References</h3>
+
+<p>See online documentation <a href="http://datastorm-open.github.io/visNetwork/">http://datastorm-open.github.io/visNetwork/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="visNodes.html">visNodes</a> for nodes options, <a href="visEdges.html">visEdges</a> for edges options, <a href="visGroups.html">visGroups</a> for groups options, 
+<a href="visLegend.html">visLegend</a> for adding legend, <a href="visOptions.html">visOptions</a> for custom option, <a href="visLayout.html">visLayout</a> &amp; <a href="visHierarchicalLayout.html">visHierarchicalLayout</a> for layout, 
+<a href="visPhysics.html">visPhysics</a> for control physics, <a href="visInteraction.html">visInteraction</a> for interaction, <a href="visNetwork-shiny.html">visNetworkProxy</a> &amp; <a href="visFocus.html">visFocus</a> &amp; <a href="visFit.html">visFit</a> for animation within shiny,
+<a href="visDocumentation.html">visDocumentation</a>, <a href="visEvents.html">visEvents</a>, <a href="visConfigure.html">visConfigure</a> ...
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## Not run: 
+nnodes &lt;- 200
+nnedges &lt;- 400
+
+nodes &lt;- data.frame(id = 1:nnodes)
+edges &lt;- data.frame(from = sample(1:nnodes, nnedges, replace = T), 
+                   to = sample(1:nnodes, nnedges, replace = T))
+
+# with defaut layout
+visNetwork(nodes, edges) %&gt;% 
+ visIgraphLayout()
+
+# use full space
+visNetwork(nodes, edges) %&gt;% 
+ visIgraphLayout(type = "full")
+
+# in circle ?
+visNetwork(nodes, edges) %&gt;% 
+ visIgraphLayout(layout = "layout_in_circle") %&gt;%
+ visOptions(highlightNearest = list(enabled = T, hover = T), 
+   nodesIdSelection = T)
+ 
+# keep physics with smooth curves ?
+visNetwork(nodes, edges) %&gt;% 
+ visIgraphLayout(physics = TRUE, smooth = TRUE)
+
+# fix radomSeed to keep position
+visNetwork(nodes, edges) %&gt;% 
+ visIgraphLayout(randomSeed = 123)
+ 
+visNetwork(nodes, edges) %&gt;% 
+ visIgraphLayout(randomSeed = 123)
+
+# layout_with_sugiyama
+nodes &lt;- data.frame(id = 1:5)
+edges &lt;- data.frame(from = c(1, 2, 2, 4), to = c(2, 3, 4, 5))
+
+visNetwork(nodes, edges) %&gt;%
+ visIgraphLayout(layout = "layout_with_sugiyama", layers = c(1, 2, 3, 3, 4))
+
+visNetwork(nodes, edges) %&gt;%
+ visIgraphLayout(layout = "layout_with_sugiyama")
+ 
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>visNetwork</em> version 2.0.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

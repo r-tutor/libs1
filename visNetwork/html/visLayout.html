@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Network visualization layout options</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for visLayout {visNetwork}"><tr><td>visLayout {visNetwork}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Network visualization layout options</h2>
+
+<h3>Description</h3>
+
+<p>Network visualization layout options. For full documentation, have a look at <a href="visDocumentation.html">visDocumentation</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+visLayout(graph, randomSeed = NULL, improvedLayout = NULL,
+  hierarchical = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>graph</code></td>
+<td>
+<p>: a visNetwork object</p>
+</td></tr>
+<tr valign="top"><td><code>randomSeed</code></td>
+<td>
+<p>: Number. When NOT using the hierarchical layout, the nodes are randomly positioned initially. This means that the settled result is different every time. If you provide a random seed manually, the layout will be the same every time. Ideally you try with an undefined seed, reload until you are happy with the layout and use the getSeed() method to ascertain the seed.</p>
+</td></tr>
+<tr valign="top"><td><code>improvedLayout</code></td>
+<td>
+<p>: Boolean. Default to true. When enabled, the network will use the Kamada Kawai algorithm for initial layout. For networks larger than 100 nodes, clustering will be performed automatically to reduce the amount of nodes. This can greatly improve the stabilization times. If the network is very interconnected (no or few leaf nodes), this may not work and it will revert back to the old method. Performance will be improved in the future.</p>
+</td></tr>
+<tr valign="top"><td><code>hierarchical</code></td>
+<td>
+<p>: Boolean. Default to false. When true, the layout engine positions the nodes in a hierarchical fashion using default settings. For customization you can use <a href="visHierarchicalLayout.html">visHierarchicalLayout</a></p>
+</td></tr>
+</table>
+
+
+<h3>References</h3>
+
+<p>See online documentation <a href="http://datastorm-open.github.io/visNetwork/">http://datastorm-open.github.io/visNetwork/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="visNodes.html">visNodes</a> for nodes options, <a href="visEdges.html">visEdges</a> for edges options, <a href="visGroups.html">visGroups</a> for groups options, 
+<a href="visLegend.html">visLegend</a> for adding legend, <a href="visOptions.html">visOptions</a> for custom option, <a href="visLayout.html">visLayout</a> &amp; <a href="visHierarchicalLayout.html">visHierarchicalLayout</a> for layout, 
+<a href="visPhysics.html">visPhysics</a> for control physics, <a href="visInteraction.html">visInteraction</a> for interaction, <a href="visNetwork-shiny.html">visNetworkProxy</a> &amp; <a href="visFocus.html">visFocus</a> &amp; <a href="visFit.html">visFit</a> for animation within shiny,
+<a href="visDocumentation.html">visDocumentation</a>, <a href="visEvents.html">visEvents</a>, <a href="visConfigure.html">visConfigure</a> ...
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+nodes &lt;- data.frame(id = 1:10)
+edges &lt;- data.frame(from = round(runif(8)*10), to = round(runif(8)*10))
+
+# fix seed, so you retrieve same network each time...!
+visNetwork(nodes, edges) %&gt;%
+ visLayout(randomSeed = 123) 
+
+visNetwork(nodes, edges) %&gt;%
+ visLayout(randomSeed = 123)   
+ 
+# hierarchical
+visNetwork(nodes, edges) %&gt;%
+ visLayout(hierarchical = TRUE) 
+ 
+visNetwork(nodes, edges) %&gt;%
+ visHierarchicalLayout(direction = "LR")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>visNetwork</em> version 2.0.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

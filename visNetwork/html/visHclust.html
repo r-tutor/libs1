@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Visualize Hierarchical cluster analysis.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for visHclust {visNetwork}"><tr><td>visHclust {visNetwork}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Visualize Hierarchical cluster analysis.</h2>
+
+<h3>Description</h3>
+
+<p>Visualize Hierarchical cluster analysis <code>hclust</code>. This function compute distance using <code>dist</code>, and
+Hierarchical cluster analysis using <code>hclust</code> (from stats package or flashClust if installed), and
+render the tree with visNetwork, adding informations. Can also be called on a <code>hclust</code> or <code>dist</code> object.
+Needed packages : shiny, sparkline (graphics on tooltip), ggraph, igraph, flashClust
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+visHclust(object, ...)
+
+## Default S3 method:
+visHclust(object, ...)
+
+## S3 method for class 'data.frame'
+visHclust(object, main = "", submain = "",
+  footer = "", distColumns = NULL, distMethod = "euclidean",
+  hclustMethod = "complete", cutree = 0, tooltipColumns = 1:ncol(object),
+  colorEdges = "black", colorGroups = substr(rainbow(cutree), 1, 7),
+  highlightNearest = TRUE, minNodeSize = 50, maxNodeSize = 200,
+  nodesPopSize = TRUE, height = "600px", width = "100%", export = TRUE,
+  ...)
+
+## S3 method for class 'dist'
+visHclust(object, data = NULL, main = "", submain = "",
+  footer = "", cutree = 0, hclustMethod = "complete",
+  tooltipColumns = if (!is.null(data)) {     1:ncol(data) } else {     NULL },
+  colorEdges = "black", colorGroups = substr(rainbow(cutree), 1, 7),
+  highlightNearest = TRUE, minNodeSize = 50, maxNodeSize = 200,
+  nodesPopSize = TRUE, height = "600px", width = "100%", export = TRUE,
+  ...)
+
+## S3 method for class 'hclust'
+visHclust(object, data = NULL, main = "", submain = "",
+  footer = "", cutree = 0, tooltipColumns = if (!is.null(data)) {    
+  1:ncol(data) } else {     NULL }, colorEdges = "black",
+  colorGroups = substr(rainbow(cutree), 1, 7), highlightNearest = TRUE,
+  minNodeSize = 50, maxNodeSize = 200, nodesPopSize = TRUE,
+  height = "600px", width = "100%", export = TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p><code>hclust | dist | data.frame</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Nothing</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>For add a title. See <a href="visNetwork.html">visNetwork</a></p>
+</td></tr>
+<tr valign="top"><td><code>submain</code></td>
+<td>
+<p>For add a subtitle. See <a href="visNetwork.html">visNetwork</a></p>
+</td></tr>
+<tr valign="top"><td><code>footer</code></td>
+<td>
+<p>For add a footer. See <a href="visNetwork.html">visNetwork</a></p>
+</td></tr>
+<tr valign="top"><td><code>distColumns</code></td>
+<td>
+<p><code>numeric</code> indice of columns used for compute distance. 
+If NULL (default), keep all <code>numeric</code> and <code>integer</code> columns. 
+If Not NULL, we keep only  <code>numeric</code> and <code>integer</code> columns</p>
+</td></tr>
+<tr valign="top"><td><code>distMethod</code></td>
+<td>
+<p><code>character</code> the distance measure to be used for dist function. Default to 'euclidean'. See <code><a href="../../stats/html/dist.html">dist</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>hclustMethod</code></td>
+<td>
+<p><code>character</code> the agglomeration method to be used for hclust function. Default to 'complete'. See <code><a href="../../stats/html/hclust.html">hclust</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>cutree</code></td>
+<td>
+<p><code>numeric</code> or <code>integer</code> desired number of groups. Default to 0</p>
+</td></tr>
+<tr valign="top"><td><code>tooltipColumns</code></td>
+<td>
+<p><code>numeric</code> indice of columns used in tooltip. All by default.
+So, we add a boxplot or a pie focus on sub-population and all population using <code>sparkline</code> package.</p>
+</td></tr>
+<tr valign="top"><td><code>colorEdges</code></td>
+<td>
+<p><code>character</code> color of edges. Default to 'black'</p>
+</td></tr>
+<tr valign="top"><td><code>colorGroups</code></td>
+<td>
+<p><code>character</code>, color for group in exa (&quot;#00FF00&quot;). Default rainbow.</p>
+</td></tr>
+<tr valign="top"><td><code>highlightNearest</code></td>
+<td>
+<p><code>boolean</code> highlight sub-tree on click.</p>
+</td></tr>
+<tr valign="top"><td><code>minNodeSize</code></td>
+<td>
+<p><code>numeric</code>, in case of <code>nodesPopSize</code>, minimum size of a node. Defaut to 15. Else, nodes size is minNodeSize + maxNodeSize / 2</p>
+</td></tr>
+<tr valign="top"><td><code>maxNodeSize</code></td>
+<td>
+<p><code>numeric</code>, in case of <code>nodesPopSize</code>, maximum size of a node. Defaut to 30. Else, nodes size is minNodeSize + maxNodeSize / 2</p>
+</td></tr>
+<tr valign="top"><td><code>nodesPopSize</code></td>
+<td>
+<p><code>boolean</code>, nodes sizes depends on population ? Default to FALSE</p>
+</td></tr>
+<tr valign="top"><td><code>height</code></td>
+<td>
+<p><code>character</code>, default to &quot;600px&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p><code>character</code>, default to &quot;100%&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>export</code></td>
+<td>
+<p><code>boolean</code>, add button for export. Default to TRUE</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p><code>data.frame</code> data.frame with data. Only for <code>hclust</code> or <code>dist</code> object.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## Not run: 
+
+#--------------
+# data.frame
+#--------------
+
+# default call on data.frame
+visHclust(iris, cutree = 3, colorEdges = "red")
+
+# update some parameters
+visHclust(iris, cutree = 3,
+  tooltipColumns = c(1, 5),
+  colorGroups = c("red", "blue", "green"))
+  
+# no graphics on tooltip
+visHclust(iris, cutree = 3,
+  tooltipColumns = NULL,
+  main = "Hclust on iris")
+  
+# update group / individual nodes
+visHclust(iris, cutree = 8) %&gt;% 
+ visGroups(groupname = "group", color ="#00FF00", shape = "square")  %&gt;% 
+ visGroups(groupname = "individual", color ="#FF0000")
+
+#--------------
+# dist
+#--------------
+
+# without adding data &amp; info in tooltip
+visHclust(dist(iris[,1:4]), cutree = 3)
+  
+# adding data &amp; info in tooltip
+visHclust(dist(iris[,1:4]), cutree = 3, 
+    data = iris)
+
+#--------------
+# hclust
+#--------------
+
+# without adding data &amp; info in tooltip
+visHclust(hclust(dist(iris[,1:4])), cutree = 3)
+  
+# adding data &amp; info in tooltip
+visHclust(hclust(dist(iris[,1:4])), cutree = 3, 
+    data = iris) 
+  
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>visNetwork</em> version 2.0.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

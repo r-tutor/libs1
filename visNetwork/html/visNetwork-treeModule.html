@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Module shiny for visualize and customize a 'rpart' tree</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for visNetwork-treeModule {visNetwork}"><tr><td>visNetwork-treeModule {visNetwork}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Module shiny for visualize and customize a <code>rpart</code> tree</h2>
+
+<h3>Description</h3>
+
+<p>Needed packages : shiny, rpart, colourpicker, shinyWidgets
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+visTreeModuleServer(input, output, session, data, main = "", submain = "",
+  footer = "", direction = "UD", fallenLeaves = FALSE, rules = TRUE,
+  simplifyRules = TRUE, shapeVar = "dot", shapeY = "square",
+  colorVar = NULL, colorY = NULL, colorEdges = "#8181F7",
+  nodesFontSize = 16, edgesFontSize = 14, edgesFontAlign = "horizontal",
+  legend = TRUE, legendNodesSize = 22, legendFontSize = 16,
+  legendWidth = 0.1, legendNcol = 1, legendPosition = "left",
+  nodesPopSize = FALSE, minNodeSize = 15, maxNodeSize = 30,
+  highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0),
+  hover = FALSE, algorithm = "hierarchical"), collapse = list(enabled = TRUE,
+  fit = TRUE, resetHighlight = TRUE, clusterOptions = list(fixed = TRUE, physics
+  = FALSE)), updateShape = TRUE, tooltipDelay = 500, digits = 3,
+  height = 650, width = "100%", export = TRUE)
+
+visTreeModuleUI(id, rpartParams = TRUE, visTreeParams = TRUE,
+  quitButton = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>input</code></td>
+<td>
+<p><code>list</code> shiny input</p>
+</td></tr>
+<tr valign="top"><td><code>output</code></td>
+<td>
+<p><code>list</code>, shiny output</p>
+</td></tr>
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p><code>list</code>, shiny session</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p><code>reactive</code>, a <code>data.frame</code> or a <code>rpart</code> result. Must be a reactive object</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>For add a title. See <a href="visNetwork.html">visNetwork</a></p>
+</td></tr>
+<tr valign="top"><td><code>submain</code></td>
+<td>
+<p>For add a subtitle. See <a href="visNetwork.html">visNetwork</a></p>
+</td></tr>
+<tr valign="top"><td><code>footer</code></td>
+<td>
+<p>For add a footer. See <a href="visNetwork.html">visNetwork</a></p>
+</td></tr>
+<tr valign="top"><td><code>direction</code></td>
+<td>
+<p><code>character</code>, The direction of the hierarchical layout.
+The available options are: UD, DU, LR, RL. To simplify:
+up-down, down-up, left-right, right-left. Default UD. See <a href="visHierarchicalLayout.html">visHierarchicalLayout</a></p>
+</td></tr>
+<tr valign="top"><td><code>fallenLeaves</code></td>
+<td>
+<p><code>boolean</code> leaf nodes at the bottom of the graph ? Default to FALSE</p>
+</td></tr>
+<tr valign="top"><td><code>rules</code></td>
+<td>
+<p><code>boolean</code>, add rules in tooltips ? Default to TRUE</p>
+</td></tr>
+<tr valign="top"><td><code>simplifyRules</code></td>
+<td>
+<p><code>boolean</code>, simplify rules writing</p>
+</td></tr>
+<tr valign="top"><td><code>shapeVar</code></td>
+<td>
+<p><code>character</code>, shape for variables nodes See <a href="visNodes.html">visNodes</a></p>
+</td></tr>
+<tr valign="top"><td><code>shapeY</code></td>
+<td>
+<p><code>character</code>, shape for terminal nodes See <a href="visNodes.html">visNodes</a></p>
+</td></tr>
+<tr valign="top"><td><code>colorVar</code></td>
+<td>
+<p><code>character</code> colors to use or <code>data.frame</code> To set color of variables. 2 columns :
+</p>
+
+<ul>
+<li><p>&quot;variable&quot; : names of variables
+</p>
+</li>
+<li><p>&quot;color&quot; : colors (in hexa). See examples
+</p>
+</li></ul>
+</td></tr>
+<tr valign="top"><td><code>colorY</code></td>
+<td>
+<p>if classification tree : <code>character</code> colors to use or <code>data.frame</code> 2 columns :
+</p>
+
+<ul>
+<li><p>&quot;modality&quot; : levels of Y
+</p>
+</li>
+<li><p>&quot;color&quot; : colors (in hexa)
+</p>
+</li></ul>
+
+<p>if regression tree : <code>character</code>, 2 colors (min and max, in hexa)</p>
+</td></tr>
+<tr valign="top"><td><code>colorEdges</code></td>
+<td>
+<p><code>character</code> color of edges, in hexa. Default to #8181F7</p>
+</td></tr>
+<tr valign="top"><td><code>nodesFontSize</code></td>
+<td>
+<p><code>numeric</code>, size of labels of nodes. Default to 16</p>
+</td></tr>
+<tr valign="top"><td><code>edgesFontSize</code></td>
+<td>
+<p><code>numeric</code>, size of labels of edges Default to 14</p>
+</td></tr>
+<tr valign="top"><td><code>edgesFontAlign</code></td>
+<td>
+<p><code>character</code>, for edges only. Default tp 'horizontal'. Possible options: 'horizontal' (Default),'top','middle','bottom'. See <a href="visEdges.html">visEdges</a></p>
+</td></tr>
+<tr valign="top"><td><code>legend</code></td>
+<td>
+<p><code>boolean</code>, add legend ? Default TRUE. <a href="visLegend.html">visLegend</a></p>
+</td></tr>
+<tr valign="top"><td><code>legendNodesSize</code></td>
+<td>
+<p><code>numeric</code>, size of nodes in legend. Default to 22</p>
+</td></tr>
+<tr valign="top"><td><code>legendFontSize</code></td>
+<td>
+<p><code>numeric</code>, size of labels of nodes in legend. Default to 16</p>
+</td></tr>
+<tr valign="top"><td><code>legendWidth</code></td>
+<td>
+<p><code>numeric</code>, legend width, between 0 and 1. Default 0.1</p>
+</td></tr>
+<tr valign="top"><td><code>legendNcol</code></td>
+<td>
+<p><code>numeric</code>, number of columns in legend. Default 1</p>
+</td></tr>
+<tr valign="top"><td><code>legendPosition</code></td>
+<td>
+<p><code>character</code>, one of &quot;left&quot; (Default) or &quot;right&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>nodesPopSize</code></td>
+<td>
+<p><code>boolean</code>, nodes sizes depends on population ? Default to FALSE</p>
+</td></tr>
+<tr valign="top"><td><code>minNodeSize</code></td>
+<td>
+<p><code>numeric</code>, in case of <code>nodesPopSize</code>, minimum size of a node. Defaut to 15. Else, nodes size is minNodeSize + maxNodeSize / 2</p>
+</td></tr>
+<tr valign="top"><td><code>maxNodeSize</code></td>
+<td>
+<p><code>numeric</code>, in case of <code>nodesPopSize</code>, maximum size of a node. Defaut to 30. Else, nodes size is minNodeSize + maxNodeSize / 2</p>
+</td></tr>
+<tr valign="top"><td><code>highlightNearest</code></td>
+<td>
+<p><code>list</code>, Highlight nearest nodes. See <a href="visOptions.html">visOptions</a></p>
+</td></tr>
+<tr valign="top"><td><code>collapse</code></td>
+<td>
+<p><code>list</code>, collapse or not using double click on a node ? See <a href="visOptions.html">visOptions</a></p>
+</td></tr>
+<tr valign="top"><td><code>updateShape</code></td>
+<td>
+<p><code>boolean</code>, in case of collapse, udpate cluster node shape as terminal node ? Default to TRUE</p>
+</td></tr>
+<tr valign="top"><td><code>tooltipDelay</code></td>
+<td>
+<p><code>numeric</code>, delay for tooltips in millisecond. Default 500</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p><code>numeric</code>, number of digits. Default to 3</p>
+</td></tr>
+<tr valign="top"><td><code>height</code></td>
+<td>
+<p><code>character</code>, default to &quot;600px&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p><code>character</code>, default to &quot;100%&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>export</code></td>
+<td>
+<p><code>boolean</code>, add export button. Default to TRUE</p>
+</td></tr>
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p><code>character</code> id of module, linked to  <a href="visNetwork-treeModule.html">visTreeModuleServer</a></p>
+</td></tr>
+<tr valign="top"><td><code>rpartParams</code></td>
+<td>
+<p><code>boolean</code>, add tabs for rpart parameters (in case of <code>data.frame</code> in input)</p>
+</td></tr>
+<tr valign="top"><td><code>visTreeParams</code></td>
+<td>
+<p><code>boolean</code>, add tabs for visTree parameters. Default to TRUE. Force to TRUE if <code>rpartParams</code></p>
+</td></tr>
+<tr valign="top"><td><code>quitButton</code></td>
+<td>
+<p><code>boolean</code>, add a button to quit module and get back network in R ?</p>
+</td></tr>
+</table>
+
+
+<h3>References</h3>
+
+<p>See online documentation <a href="http://datastorm-open.github.io/visNetwork/">http://datastorm-open.github.io/visNetwork/</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+# simple module editor on rpart
+data &lt;- iris
+shiny::shinyApp(ui = shiny::fluidPage(
+visTreeModuleUI(id = "id1", rpartParams = FALSE, visTreeParams = FALSE)), 
+ server = function(input, output, session) {
+ shiny::callModule(visTreeModuleServer, "id1", data = shiny::reactive(rpart(data)))
+})
+
+# full module editor on rpart
+data &lt;- iris
+shiny::shinyApp(ui = shiny::fluidPage(
+ visTreeModuleUI(id = "id1", rpartParams = FALSE, visTreeParams = TRUE)), 
+ server = function(input, output, session) {
+ shiny::callModule(visTreeModuleServer, "id1", data = shiny::reactive(rpart(data)))
+})
+
+# module on data.frame
+shiny::shinyApp(ui = shiny::fluidPage(visTreeModuleUI(id = "id1",
+ rpartParams = TRUE)), 
+ server = function(input, output, session) {
+ shiny::callModule(visTreeModuleServer, "id1", data = shiny::reactive(data))
+})
+
+# multiple modules
+shiny::shinyApp(ui = 
+navbarPage("Menu",shiny::tabPanel(
+  "tt1",shiny::fluidPage(visTreeModuleUI(id = "id1", 
+  rpartParams = TRUE,
+  visTreeParams = TRUE))
+),
+shiny::tabPanel(
+  "tt2",shiny::fluidPage(visTreeModuleUI(id = "id2", 
+  rpartParams = FALSE,
+  visTreeParams = FALSE)))
+), 
+server = function(input, output, session) {
+  shiny::callModule(visTreeModuleServer, "id1", data = shiny::reactive(iris))
+  shiny::callModule(visTreeModuleServer, "id2", data = shiny::reactive(rpart(iris)))
+})
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>visNetwork</em> version 2.0.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

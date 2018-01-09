@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Run and edit a visTree, and get back in R</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for visTreeEditor {visNetwork}"><tr><td>visTreeEditor {visNetwork}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Run and edit a visTree, and get back in R</h2>
+
+<h3>Description</h3>
+
+<p>Needed packages : shiny, rpart, colourpicker, shinyWidgets
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+visTreeEditor(data, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p><code>rpart or data.drame</code></p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>all arguments except <code>object</code> present in <a href="visTree.html">visTree</a></p>
+</td></tr>
+</table>
+
+
+<h3>References</h3>
+
+<p>See online documentation <a href="http://datastorm-open.github.io/visNetwork/">http://datastorm-open.github.io/visNetwork/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="visTree.html">visTree</a>, <a href="visNetwork-treeModule.html">visTreeModuleServer</a>, <a href="visNetworkEditor.html">visNetworkEditor</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## Not run: 
+
+net &lt;- visTreeEditor(data = iris)
+net &lt;- visTreeEditor(data = rpart(iris), main = "visTree Editor")
+net
+
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>visNetwork</em> version 2.0.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

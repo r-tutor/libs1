@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Network visualization groups options</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for visGroups {visNetwork}"><tr><td>visGroups {visNetwork}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Network visualization groups options</h2>
+
+<h3>Description</h3>
+
+<p>Network visualization groups options. For full documentation, have a look at <a href="visDocumentation.html">visDocumentation</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+visGroups(graph, useDefaultGroups = TRUE, groupname = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>graph</code></td>
+<td>
+<p>: a visNetwork object</p>
+</td></tr>
+<tr valign="top"><td><code>useDefaultGroups</code></td>
+<td>
+<p>: Boolean. Default to true. If your nodes have groups defined that are not in the Groups module, the module loops over the groups it does have, allocating one for each unknown group. When all are used, it goes back to the first group. By setting this to false, the default groups will not be used in this cycle.</p>
+</td></tr>
+<tr valign="top"><td><code>groupname</code></td>
+<td>
+<p>: String. Name of target group.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>: <a href="visNodes.html">visNodes</a>. You can add multiple groups containing styling information that applies to a certain subset of groups. All options described in the nodes module that make sense can be used here (you're not going to set the same id or x,y position for a group of nodes)</p>
+</td></tr>
+</table>
+
+
+<h3>References</h3>
+
+<p>See online documentation <a href="http://datastorm-open.github.io/visNetwork/">http://datastorm-open.github.io/visNetwork/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="visNodes.html">visNodes</a> for nodes options, <a href="visEdges.html">visEdges</a> for edges options, <a href="visGroups.html">visGroups</a> for groups options, 
+<a href="visLegend.html">visLegend</a> for adding legend, <a href="visOptions.html">visOptions</a> for custom option, <a href="visLayout.html">visLayout</a> &amp; <a href="visHierarchicalLayout.html">visHierarchicalLayout</a> for layout, 
+<a href="visPhysics.html">visPhysics</a> for control physics, <a href="visInteraction.html">visInteraction</a> for interaction, <a href="visNetwork-shiny.html">visNetworkProxy</a> &amp; <a href="visFocus.html">visFocus</a> &amp; <a href="visFit.html">visFit</a> for animation within shiny,
+<a href="visDocumentation.html">visDocumentation</a>, <a href="visEvents.html">visEvents</a>, <a href="visConfigure.html">visConfigure</a> ...
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+nodes &lt;- data.frame(id = 1:10, label = paste("Label", 1:10), 
+ group = sample(c("A", "B"), 10, replace = TRUE))
+ edges &lt;- data.frame(from = c(2,5,10), to = c(1,2,10))
+
+visNetwork(nodes, edges) %&gt;%
+ visLegend() %&gt;%
+ visGroups(groupname = "A", color = "red", shape = "database") %&gt;%
+ visGroups(groupname = "B", color = "yellow", shape = "triangle")
+ 
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>visNetwork</em> version 2.0.3 <a href="00Index.html">Index</a>]</div>
+</body></html>
