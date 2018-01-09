@@ -11,6 +11,9 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
 ```{r echo=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)
 ```
@@ -99,7 +102,7 @@ introduced in R.
 ## SI
 
 The [BIPM](http://www.bipm.org/) (Bureau International des Poids et
-Mesures) is the "_the intergovernmental organization through which
+Mesures) is "_the intergovernmental organization through which
 Member States act together on matters related to measurement science
 and measurement standards.  Its recommended practical system of units
 of measurement is the International System of Units (Syst\`{e}me
@@ -344,26 +347,18 @@ When possible, new units are simplified:
 a = set_units(1:10, m/s)
 b = set_units(1:10, h)
 a * b
-make_unit(m100_a) / make_unit(dm100_b)
+ustr1 = paste(rep("m", 101), collapse = "*")
+ustr2 = "dm^100"
+as_units(ustr1) / as_units(ustr2)
 ```
 
 Units are printed as simple R expressions, e.g.
 ```{r}
 set_units(1, m^5/s^4)
 ```
-Another way to print units commonly seen in Climate and Forecast Conventions\footnote{CF, \url{http://cfconventions.org/Data/cf-standard-names/34/build/cf-standard-name-table.html}} is `m2 s-1` for m$^2$/s. These are not R expressions, but as they are understood by udunits,
-they can be converted (by udunits) but not simplified (by R):
+Another way to print units commonly seen in Climate and Forecast Conventions\footnote{CF, \url{http://cfconventions.org/Data/cf-standard-names/34/build/cf-standard-name-table.html}} is `m2 s-1` for m$^2$/s. These are not R expressions, but they can be parsed by `as_units`, and created by `deparse_unit`:
 ```{r}
-x = make_unit("m2 s-1")
-y = set_units(1, km^2/h)
-z = set_units(1, m^2/s)
-x + y
-x/y
-z/y
-```
-However, `parse_unit` parses such units, and `deparse_unit` returns such unit strings from `units` objects:
-```{r}
-parse_unit("m2 s-1")
+as_units("m2 s-1")
 deparse_unit(set_units(1, m^2*s^-1))
 ```
 The `plot` and `hist` methods add units to default axis labels, an
@@ -377,7 +372,7 @@ gallon = make_unit("gallon")
 # initialize units:
 mtcars$consumption = set_units(mtcars$mpg, mi/gallon)
 # "in" is also a reserved R keyword, and needs special treatment:
-mtcars$displacement = set_units(mtcars$disp, ud_units[["in"]]^3)
+mtcars$displacement = set_units(mtcars$disp, `in`^3)
 # convert to SI:
 mtcars$consumption = set_units(mtcars$consumption, km/l)
 mtcars$displacement = set_units(mtcars$displacement, cm^3)
@@ -387,7 +382,8 @@ with(mtcars, plot(1/displacement, 1/consumption))
 
 ```{r fig=TRUE, height=3.8, width=7}
 library(ggforce)
-ggplot(mtcars) + geom_point(aes(1/displacement, 1/consumption))
+if (utils::packageVersion("ggplot2") > "2.2.1")
+  ggplot(mtcars) + geom_point(aes(x = 1/displacement, y = 1/consumption))
 ```
 
 Automatic conversion between `units` and `difftime` is provided: 

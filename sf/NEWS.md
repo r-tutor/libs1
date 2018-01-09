@@ -1,3 +1,41 @@
+# version 0.6-0
+
+* add `pillar` to Imports: to provide method for printing WKT geometries in tibbles
+
+* `st_as_text`, and subsequently `format` and `print`, now use argument `digits` (or `options(digits = n)`) to control the number of digits used for printing coordinates; default is now `options("digits")`, which is typically 7.
+
+* `st_is_within_distance` now works with geographic coordinates
+
+* `st_cast` from `MULTIPOLYGON` to `MULTILINESTRING` no longer changes the number of features/feature geometries, but conversion from `MULTIPOLYGON` to `LINESTRING` now (typically) does; #596
+
+* `st_distance` for long/lat geographic coordinates now uses `lwgeom`, accepting all geometry types; argument `dist_fun` is deprecated as a consequence, and distance calculations are different from those in sf versions 0.5-5 or earlier; #593
+
+* add package `lwgeom` to Suggests; `st_area`, `st_length`, `st_distance`, `st_segmentize` for long/lat CRS now use functions from package `lwgeom` instead of `geosphere`; #593
+
+* `st_length` now returns zero for polygon-type geometries; #593
+
+* if present, add units of attribute to default plot title; #591
+
+* add `unnest` method, which depends on `tidyr` > 0.7-2; #570 PR by @karldw
+
+* add `largest` option to `st_join` to get largest intersection match only; #547, by @tiernanmartin
+
+* change default maximum number of feature to print to 10, controllable by `options(sf_max_print)`; #556
+
+* add `Hausdorff` (and `Frechet` for those with GEOS 3.7.0) as options to `st_distance`; add `par` for densified versions
+
+* add `st_snap`, for snapping geometries to other geometries, within a tolerance
+
+* make `st_wrap_dateline` a generic, with methods for `sf`, `sfc` and `sfg`; #541
+
+* `plot.sf` and `st_as_grob` (used by ggplot2) are now robust against misspecified ring directions (holes that have the same direction as the exterior rings), by using `rule = "evenodd"`; #540
+
+* functions depending on `liblwgeom` (`st_make_valid`, `st_geohash`, `st_plit`) have been moved to their own package, https://github.com/r-spatial/lwgeom; argument `use_gdal` of `st_transform` has been deprecated, instead one can now use `lwgeom::st_transform_proj`; sf now no longer tries to link to liblwgeom; #509, #537, #487
+
+* `st_read`, `st_sf` and `st_sfc` gain a parameter `check_ring_dir` (default: `FALSE`) that checks ring directions and corrects to: exterior counter clockwise, holes clockwise, when seen from above.
+
+* get rid of `classInt::classIntervals` warning if number of unique values is smaller than the number of breaks asked for
+
 # version 0.5-5
 
 * have `classInt` in Imports:, to not break other package checks
@@ -40,7 +78,7 @@
 
 * add `st_collection_extract`, which, given an object with geometries of type `GEOMETRY` or `GEOMETRYCOLLECTION`, returns an object consisting only of elements of the specified type; by Andy Teucher, #482
 
-* `st_write` exports GeoJSON with ANSI encoding on Windows; #444
+* `st_write` exports GeoJSON with UTF-8 encoding on Windows; #444
 
 * move package methods from Imports: to Depends: ; #478
 

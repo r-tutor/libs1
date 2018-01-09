@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Tidy DocumentTermMatrix, TermDocumentMatrix, and related...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for tdm_tidiers {tidytext}"><tr><td>tdm_tidiers {tidytext}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Tidy DocumentTermMatrix, TermDocumentMatrix, and related objects
+from the tm package</h2>
+
+<h3>Description</h3>
+
+<p>Tidy a DocumentTermMatrix or TermDocumentMatrix into
+a three-column data frame: <code>term{}</code>, and value (with
+zeros missing), with one-row-per-term-per-document.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'DocumentTermMatrix'
+tidy(x, ...)
+
+## S3 method for class 'TermDocumentMatrix'
+tidy(x, ...)
+
+## S3 method for class 'dfm'
+tidy(x, ...)
+
+## S3 method for class 'dfmSparse'
+tidy(x, ...)
+
+## S3 method for class 'simple_triplet_matrix'
+tidy(x, row_names = NULL, col_names = NULL,
+  ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A DocumentTermMatrix or TermDocumentMatrix object</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Extra arguments, not used</p>
+</td></tr>
+<tr valign="top"><td><code>row_names</code></td>
+<td>
+<p>Specify row names</p>
+</td></tr>
+<tr valign="top"><td><code>col_names</code></td>
+<td>
+<p>Specify column names</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+if (requireNamespace("topicmodels", quietly = TRUE)) {
+  data("AssociatedPress", package = "topicmodels")
+  AssociatedPress
+
+  tidy(AssociatedPress)
+}
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidytext</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

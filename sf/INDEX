@@ -15,10 +15,11 @@ geos_binary_pred        Geometric binary predicates on pairs of simple
                         feature geometry sets
 geos_combine            Combine or union feature geometries
 geos_measures           Compute geometric measurements
-geos_query              Dimension, simplicity or validity queries on
-                        simple feature geometries
+geos_query              Dimension, simplicity, validity or is_empty
+                        queries on simple feature geometries
 geos_unary              Geometric unary operations on simple feature
                         geometry sets
+internal                Internal functions
 is_driver_available     Check if driver is available
 is_driver_can           Check if a driver can perform an action
 merge.sf                merge method for sf and data.frame object
@@ -29,6 +30,7 @@ rawToHex                Convert raw vector(s) into hexadecimal
 sf                      Create sf object
 sf_extSoftVersion       Provide the external dependencies versions of
                         the libraries linked to sf
+sf_project              directly transform a set of coordinates
 sfc                     Create simple feature geometry list column
 sgbp                    Methods for dealing with sparse geometry binary
                         predicate lists
@@ -56,8 +58,6 @@ st_coordinates          retrieve coordinates in matrix form
 st_crs                  Retrieve coordinate reference system from
                         object
 st_drivers              Get GDAL drivers
-st_geohash              compute geohash from (average) coordinates
-                        (requires lwgeom)
 st_geometry             Get, set, or replace geometry from an sf object
 st_geometry_type        Return geometry type of an object
 st_graticule            Compute graticules and their parameters
@@ -79,8 +79,6 @@ st_relate               Compute DE9-IM relation between pairs of
                         geometries, or match it to a given pattern
 st_sample               sample points on or in (sets of) spatial
                         features
-st_split                Return a collection of geometries resulting by
-                        splitting a geometry
 st_transform            Transform or convert coordinates of simple
                         feature
 st_viewport             Create viewport from sf, sfc or sfg object
@@ -90,4 +88,3 @@ st_zm                   Drop or add Z and/or M dimensions from feature
                         geometries
 summary.sfc             Summarize simple feature column
 tibble                  Summarize simple feature type for tibble
-valid                   Make an invalid geometry valid

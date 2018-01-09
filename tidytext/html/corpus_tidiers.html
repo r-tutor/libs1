@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Tidiers for a corpus object from the quanteda package</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for corpus_tidiers {tidytext}"><tr><td>corpus_tidiers {tidytext}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Tidiers for a corpus object from the quanteda package</h2>
+
+<h3>Description</h3>
+
+<p>Tidy a corpus object from the quanteda package. <code>tidy</code> returns a
+tbl_df with one-row-per-document, with a <code>text</code> column containing
+the document's text, and one column for each document-level metadata.
+<code>glance</code> returns a one-row tbl_df with corpus-level metadata,
+such as source and created. For Corpus objects from the tm package,
+see <code><a href="tidy.Corpus.html">tidy.Corpus</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'corpus'
+tidy(x, ...)
+
+## S3 method for class 'corpus'
+glance(x, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A Corpus object, such as a VCorpus or PCorpus</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Extra arguments, not used</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For the most part, the <code>tidy</code> output is equivalent to the
+&quot;documents&quot; data frame in the corpus object, except that it is converted
+to a tbl_df, and <code>texts</code> column is renamed to <code>text</code>
+to be consistent with other uses in tidytext.
+</p>
+<p>Similarly, the <code>glance</code> output is simply the &quot;metadata&quot; object,
+with NULL fields removed and turned into a one-row tbl_df.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+if (requireNamespace("quanteda", quietly = TRUE)) {
+ data("data_corpus_inaugural", package = "quanteda")
+
+ data_corpus_inaugural
+
+ tidy(data_corpus_inaugural)
+}
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidytext</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Define new symbolic units</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for install_symbolic_unit {units}"><tr><td>install_symbolic_unit {units}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Define new symbolic units</h2>
+
+<h3>Description</h3>
+
+<p>Adding a symbolic unit allows it to be used in <code>as_units</code>,
+<code>make_units</code> and <code>set_units</code>. No installation is performed if the
+unit is already known by udunits.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+install_symbolic_unit(chr, warn = TRUE)
+
+uninstall_symbolic_unit(chr, all = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>chr</code></td>
+<td>
+<p>a length 1 character vector that is the new unit name or symbol.</p>
+</td></tr>
+<tr valign="top"><td><code>warn</code></td>
+<td>
+<p>warns if the supplied unit symbol is already a valid unit symbol
+recognized by udunits.</p>
+</td></tr>
+<tr valign="top"><td><code>all</code></td>
+<td>
+<p>if <code>TRUE</code>, uninstalls all user defined custom symbolic units</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>units</em> version 0.5-1 <a href="00Index.html">Index</a>]</div>
+</body></html>

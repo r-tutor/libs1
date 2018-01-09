@@ -78,14 +78,15 @@ if (utils::packageVersion("ggplot2") > "2.2.1")
 
 ## ------------------------------------------------------------------------
 if (utils::packageVersion("ggplot2") > "2.2.1")
-  ggplot() + geom_sf(data = nc, aes(fill = BIR74))
+  ggplot() + geom_sf(data = nc, aes(fill = BIR74)) + scale_y_continuous(breaks = 34:36)
 
 ## ------------------------------------------------------------------------
 library(dplyr)
 library(tidyr)
 nc2 <- nc %>% select(SID74, SID79, geom) %>% gather(VAR, SID, -geom)
 if (utils::packageVersion("ggplot2") > "2.2.1")
-  ggplot() + geom_sf(data = nc2, aes(fill = SID)) + facet_wrap(~VAR, ncol = 1)
+  ggplot() + geom_sf(data = nc2, aes(fill = SID)) + facet_wrap(~VAR, ncol = 1) +
+	scale_y_continuous(breaks = 34:36)
 
 ## ------------------------------------------------------------------------
 library(mapview)

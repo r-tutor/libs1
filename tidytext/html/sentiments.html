@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Sentiment lexicons from three sources</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sentiments {tidytext}"><tr><td>sentiments {tidytext}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Sentiment lexicons from three sources</h2>
+
+<h3>Description</h3>
+
+<p>Three lexicons for sentiment analysis are combined here in a tidy data frame.
+The lexicons are the NRC Emotion Lexicon from Saif Mohammad and Peter Turney,
+the sentiment lexicon from Bing Liu and collaborators, of
+Finn Arup Nielsen, and of Tim Loughran and Bill Loughran.
+Words with non-ASCII characters were removed from the
+lexicons.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sentiments
+</pre>
+
+
+<h3>Format</h3>
+
+<p>A data frame with 27,314 rows and 4 variables:
+</p>
+
+<dl>
+<dt>word</dt><dd><p>An English word</p>
+</dd>
+<dt>sentiment</dt><dd><p>A sentiment whose possible values depend on the lexicon.
+The &quot;afinn&quot; lexicon has no sentiment category (all are NA), and each of the
+others can be &quot;positive&quot; or &quot;negative&quot;. The NRC lexicon can also be
+&quot;anger&quot;, &quot;anticipation&quot;, &quot;disgust&quot;, &quot;fear&quot;, &quot;joy&quot;, &quot;sadness&quot;, &quot;surprise&quot;,
+or &quot;trust&quot;, and the Loughran lexicon can also be &quot;litigious&quot;, &quot;uncertainty&quot;,
+&quot;constraining&quot;, and &quot;superfluous&quot;.</p>
+</dd>
+<dt>lexicon</dt><dd><p>The source of the sentiment for the word. One of either
+&quot;nrc&quot;, &quot;bing&quot;, or &quot;AFINN&quot;.</p>
+</dd>
+<dt>score</dt><dd><p>A numerical score for the sentiment. This value is <code>NA</code>
+for the Bing and NRC lexicons, and runs between -5 and 5 for the AFINN
+lexicon.</p>
+</dd>
+</dl>
+
+
+<h3>Details</h3>
+
+<p>Note that the loughran lexicon is best suited for financial text,
+(e.g. where words like &quot;share&quot; is not necessarily positive, and &quot;liability&quot;
+not necessarily negative).
+</p>
+
+
+<h3>Source</h3>
+
+
+<ul>
+<li> <p><a href="http://saifmohammad.com/WebPages/lexicons.html">http://saifmohammad.com/WebPages/lexicons.html</a>
+</p>
+</li>
+<li> <p><a href="https://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html">https://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html</a>
+</p>
+</li>
+<li> <p><a href="http://www2.imm.dtu.dk/pubdb/views/publication_details.php?id=6010">http://www2.imm.dtu.dk/pubdb/views/publication_details.php?id=6010</a>
+</p>
+</li>
+<li> <p><a href="http://www3.nd.edu/~mcdonald/Word_Lists.html">http://www3.nd.edu/~mcdonald/Word_Lists.html</a>
+</p>
+</li></ul>
+
+
+<hr /><div style="text-align: center;">[Package <em>tidytext</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

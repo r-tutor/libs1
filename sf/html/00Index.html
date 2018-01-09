@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;sf&rsquo; version 0.5-5</h2>
+</div><h2>Documentation for package &lsquo;sf&rsquo; version 0.6-0</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 <li><a href="../doc/index.html">User guides, package vignettes and other documentation.</a></li>
@@ -40,7 +40,6 @@
 <a href="#S">S</a>
 <a href="#T">T</a>
 <a href="#U">U</a>
-<a href="#V">V</a>
 <a href="#W">W</a>
 <a href="#misc">misc</a>
 </p>
@@ -61,6 +60,8 @@
 <td>Methods to coerce simple feature geometries to corresponding 'Spatial*' objects</td></tr>
 <tr><td style="width: 25%;"><a href="st.html">as.matrix.sfg</a></td>
 <td>Create simple feature from a numeric vector, matrix or list</td></tr>
+<tr><td style="width: 25%;"><a href="sgbp.html">as.matrix.sgbp</a></td>
+<td>Methods for dealing with sparse geometry binary predicate lists</td></tr>
 <tr><td style="width: 25%;"><a href="coerce-methods.html">as_Spatial</a></td>
 <td>Methods to coerce simple feature geometries to corresponding 'Spatial*' objects</td></tr>
 </table>
@@ -90,6 +91,8 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="db_drivers.html">db_drivers</a></td>
 <td>Drivers for which update should be 'TRUE' by default</td></tr>
+<tr><td style="width: 25%;"><a href="sgbp.html">dim.sgbp</a></td>
+<td>Methods for dealing with sparse geometry binary predicate lists</td></tr>
 <tr><td style="width: 25%;"><a href="dplyr.html">distinct.sf</a></td>
 <td>Dplyr verb methods for sf objects</td></tr>
 <tr><td style="width: 25%;"><a href="dplyr.html">dplyr</a></td>
@@ -130,7 +133,7 @@
 <tr><td style="width: 25%;"><a href="geos_measures.html">geos_measures</a></td>
 <td>Compute geometric measurements</td></tr>
 <tr><td style="width: 25%;"><a href="geos_query.html">geos_query</a></td>
-<td>Dimension, simplicity or validity queries on simple feature geometries</td></tr>
+<td>Dimension, simplicity, validity or is_empty queries on simple feature geometries</td></tr>
 <tr><td style="width: 25%;"><a href="geos_unary.html">geos_unary</a></td>
 <td>Geometric unary operations on simple feature geometry sets</td></tr>
 <tr><td style="width: 25%;"><a href="dplyr.html">group_by.sf</a></td>
@@ -149,6 +152,10 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="dplyr.html">inner_join.sf</a></td>
 <td>Dplyr verb methods for sf objects</td></tr>
+<tr><td style="width: 25%;"><a href="internal.html">internal</a></td>
+<td>Internal functions</td></tr>
+<tr><td style="width: 25%;"><a href="st_bbox.html">is.na.bbox</a></td>
+<td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_crs.html">is.na.crs</a></td>
 <td>Retrieve coordinate reference system from object</td></tr>
 <tr><td style="width: 25%;"><a href="is_driver_available.html">is_driver_available</a></td>
@@ -226,6 +233,8 @@
 <td>Plot sf object</td></tr>
 <tr><td style="width: 25%;"><a href="prefix_map.html">prefix_map</a></td>
 <td>Map prefix to driver</td></tr>
+<tr><td style="width: 25%;"><a href="sf.html">print.sf</a></td>
+<td>Create sf object</td></tr>
 <tr><td style="width: 25%;"><a href="st.html">print.sfg</a></td>
 <td>Create simple feature from a numeric vector, matrix or list</td></tr>
 <tr><td style="width: 25%;"><a href="sgbp.html">print.sgbp</a></td>
@@ -268,6 +277,8 @@
 <td>Create simple feature geometry list column</td></tr>
 <tr><td style="width: 25%;"><a href="sf_extSoftVersion.html">sf_extSoftVersion</a></td>
 <td>Provide the external dependencies versions of the libraries linked to sf</td></tr>
+<tr><td style="width: 25%;"><a href="sf_project.html">sf_project</a></td>
+<td>directly transform a set of coordinates</td></tr>
 <tr><td style="width: 25%;"><a href="sgbp.html">sgbp</a></td>
 <td>Methods for dealing with sparse geometry binary predicate lists</td></tr>
 <tr><td style="width: 25%;"><a href="dplyr.html">slice.sf</a></td>
@@ -362,15 +373,21 @@
 <td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.MULTISURFACE</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
+<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.numeric</a></td>
+<td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.POINT</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.POLYGON</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.POLYHEDRALSURFACE</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
+<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.Raster</a></td>
+<td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.sf</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.sfc</a></td>
+<td>Return bounding of a simple feature or simple feature set</td></tr>
+<tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.Spatial</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.TIN</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
@@ -462,8 +479,10 @@
 <td>Retrieve coordinate reference system from object</td></tr>
 <tr><td style="width: 25%;"><a href="geos_binary_ops.html">st_difference</a></td>
 <td>Geometric operations on pairs of simple feature geometry sets</td></tr>
+<tr><td style="width: 25%;"><a href="geos_binary_ops.html">st_difference.sfc</a></td>
+<td>Geometric operations on pairs of simple feature geometry sets</td></tr>
 <tr><td style="width: 25%;"><a href="geos_query.html">st_dimension</a></td>
-<td>Dimension, simplicity or validity queries on simple feature geometries</td></tr>
+<td>Dimension, simplicity, validity or is_empty queries on simple feature geometries</td></tr>
 <tr><td style="width: 25%;"><a href="geos_binary_pred.html">st_disjoint</a></td>
 <td>Geometric binary predicates on pairs of simple feature geometry sets</td></tr>
 <tr><td style="width: 25%;"><a href="geos_measures.html">st_distance</a></td>
@@ -474,8 +493,6 @@
 <td>Geometric binary predicates on pairs of simple feature geometry sets</td></tr>
 <tr><td style="width: 25%;"><a href="geos_binary_pred.html">st_equals_exact</a></td>
 <td>Geometric binary predicates on pairs of simple feature geometry sets</td></tr>
-<tr><td style="width: 25%;"><a href="st_geohash.html">st_geohash</a></td>
-<td>compute geohash from (average) coordinates (requires lwgeom)</td></tr>
 <tr><td style="width: 25%;"><a href="st_geometry.html">st_geometry</a></td>
 <td>Get, set, or replace geometry from an sf object</td></tr>
 <tr><td style="width: 25%;"><a href="st_geometry.html">st_geometry.sf</a></td>
@@ -496,16 +513,22 @@
 <td>Areal-weighted interpolation of polygon data</td></tr>
 <tr><td style="width: 25%;"><a href="geos_binary_ops.html">st_intersection</a></td>
 <td>Geometric operations on pairs of simple feature geometry sets</td></tr>
+<tr><td style="width: 25%;"><a href="geos_binary_ops.html">st_intersection.sf</a></td>
+<td>Geometric operations on pairs of simple feature geometry sets</td></tr>
+<tr><td style="width: 25%;"><a href="geos_binary_ops.html">st_intersection.sfc</a></td>
+<td>Geometric operations on pairs of simple feature geometry sets</td></tr>
 <tr><td style="width: 25%;"><a href="geos_binary_pred.html">st_intersects</a></td>
 <td>Geometric binary predicates on pairs of simple feature geometry sets</td></tr>
 <tr><td style="width: 25%;"><a href="st_is.html">st_is</a></td>
 <td>test equality between the geometry type and a class or set of classes</td></tr>
+<tr><td style="width: 25%;"><a href="geos_query.html">st_is_empty</a></td>
+<td>Dimension, simplicity, validity or is_empty queries on simple feature geometries</td></tr>
 <tr><td style="width: 25%;"><a href="st_is_longlat.html">st_is_longlat</a></td>
 <td>Assert whether simple feature coordinates are longlat degrees</td></tr>
 <tr><td style="width: 25%;"><a href="geos_query.html">st_is_simple</a></td>
-<td>Dimension, simplicity or validity queries on simple feature geometries</td></tr>
+<td>Dimension, simplicity, validity or is_empty queries on simple feature geometries</td></tr>
 <tr><td style="width: 25%;"><a href="geos_query.html">st_is_valid</a></td>
-<td>Dimension, simplicity or validity queries on simple feature geometries</td></tr>
+<td>Dimension, simplicity, validity or is_empty queries on simple feature geometries</td></tr>
 <tr><td style="width: 25%;"><a href="geos_binary_pred.html">st_is_within_distance</a></td>
 <td>Geometric binary predicates on pairs of simple feature geometry sets</td></tr>
 <tr><td style="width: 25%;"><a href="st_jitter.html">st_jitter</a></td>
@@ -524,8 +547,6 @@
 <td>Sample points on a linear geometry</td></tr>
 <tr><td style="width: 25%;"><a href="st_make_grid.html">st_make_grid</a></td>
 <td>Make a rectangular grid over the bounding box of a sf or sfc object</td></tr>
-<tr><td style="width: 25%;"><a href="valid.html">st_make_valid</a></td>
-<td>Make an invalid geometry valid</td></tr>
 <tr><td style="width: 25%;"><a href="st.html">st_multilinestring</a></td>
 <td>Create simple feature from a numeric vector, matrix or list</td></tr>
 <tr><td style="width: 25%;"><a href="st.html">st_multipoint</a></td>
@@ -552,6 +573,8 @@
 <td>Transform or convert coordinates of simple feature</td></tr>
 <tr><td style="width: 25%;"><a href="st_read.html">st_read</a></td>
 <td>Read simple features or layers from file or database</td></tr>
+<tr><td style="width: 25%;"><a href="st_read.html">st_read.default</a></td>
+<td>Read simple features or layers from file or database</td></tr>
 <tr><td style="width: 25%;"><a href="st_read.html">st_read_db</a></td>
 <td>Read simple features or layers from file or database</td></tr>
 <tr><td style="width: 25%;"><a href="st_relate.html">st_relate</a></td>
@@ -574,8 +597,8 @@
 <td>Create simple feature geometry list column</td></tr>
 <tr><td style="width: 25%;"><a href="geos_unary.html">st_simplify</a></td>
 <td>Geometric unary operations on simple feature geometry sets</td></tr>
-<tr><td style="width: 25%;"><a href="st_split.html">st_split</a></td>
-<td>Return a collection of geometries resulting by splitting a geometry</td></tr>
+<tr><td style="width: 25%;"><a href="geos_binary_ops.html">st_snap</a></td>
+<td>Geometric operations on pairs of simple feature geometry sets</td></tr>
 <tr><td style="width: 25%;"><a href="geos_binary_ops.html">st_sym_difference</a></td>
 <td>Geometric operations on pairs of simple feature geometry sets</td></tr>
 <tr><td style="width: 25%;"><a href="geos_binary_pred.html">st_touches</a></td>
@@ -600,7 +623,17 @@
 <td>Geometric binary predicates on pairs of simple feature geometry sets</td></tr>
 <tr><td style="width: 25%;"><a href="st_transform.html">st_wrap_dateline</a></td>
 <td>Transform or convert coordinates of simple feature</td></tr>
+<tr><td style="width: 25%;"><a href="st_transform.html">st_wrap_dateline.sf</a></td>
+<td>Transform or convert coordinates of simple feature</td></tr>
+<tr><td style="width: 25%;"><a href="st_transform.html">st_wrap_dateline.sfc</a></td>
+<td>Transform or convert coordinates of simple feature</td></tr>
+<tr><td style="width: 25%;"><a href="st_transform.html">st_wrap_dateline.sfg</a></td>
+<td>Transform or convert coordinates of simple feature</td></tr>
 <tr><td style="width: 25%;"><a href="st_write.html">st_write</a></td>
+<td>Write simple features object to file or database</td></tr>
+<tr><td style="width: 25%;"><a href="st_write.html">st_write.sf</a></td>
+<td>Write simple features object to file or database</td></tr>
+<tr><td style="width: 25%;"><a href="st_write.html">st_write.sfc</a></td>
 <td>Write simple features object to file or database</td></tr>
 <tr><td style="width: 25%;"><a href="st_write.html">st_write_db</a></td>
 <td>Write simple features object to file or database</td></tr>
@@ -634,13 +667,8 @@
 <td>Dplyr verb methods for sf objects</td></tr>
 <tr><td style="width: 25%;"><a href="dplyr.html">unite.sf</a></td>
 <td>Dplyr verb methods for sf objects</td></tr>
-</table>
-
-<h2><a name="V">-- V --</a></h2>
-
-<table width="100%">
-<tr><td style="width: 25%;"><a href="valid.html">valid</a></td>
-<td>Make an invalid geometry valid</td></tr>
+<tr><td style="width: 25%;"><a href="dplyr.html">unnest.sf</a></td>
+<td>Dplyr verb methods for sf objects</td></tr>
 </table>
 
 <h2><a name="W">-- W --</a></h2>
@@ -655,6 +683,8 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="st_crs.html">$.crs</a></td>
 <td>Retrieve coordinate reference system from object</td></tr>
+<tr><td style="width: 25%;"><a href="internal.html">.stop_geos</a></td>
+<td>Internal functions</td></tr>
 <tr><td style="width: 25%;"><a href="sf.html">[.sf</a></td>
 <td>Create sf object</td></tr>
 </table>

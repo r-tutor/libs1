@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bind the term frequency and inverse document frequency of a...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bind_tf_idf {tidytext}"><tr><td>bind_tf_idf {tidytext}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Bind the term frequency and inverse document frequency of a tidy text
+dataset to the dataset</h2>
+
+<h3>Description</h3>
+
+<p>Calculate and bind the term frequency and inverse document frequency of a
+tidy text dataset, along with the product, tf-idf, to the dataset. Each of
+these values are added as columns. This function supports non-standard
+evaluation through the tidyeval framework.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bind_tf_idf(tbl, term, document, n)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>tbl</code></td>
+<td>
+<p>A tidy text dataset with one-row-per-term-per-document</p>
+</td></tr>
+<tr valign="top"><td><code>term</code></td>
+<td>
+<p>Column containing terms as string or symbol</p>
+</td></tr>
+<tr valign="top"><td><code>document</code></td>
+<td>
+<p>Column containing document IDs as string or symbol</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>Column containing document-term counts as string or symbol</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The arguments <code>term</code>, <code>document</code>, and <code>n</code>
+are passed by expression and support <a href="../../rlang/html/quasiquotation.html">quasiquotation</a>;
+you can unquote strings and symbols.
+</p>
+<p>If the dataset is grouped, the groups are ignored but are
+retained.
+</p>
+<p>The dataset must have exactly one row per document-term combination
+for this to work.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+library(dplyr)
+library(janeaustenr)
+
+book_words &lt;- austen_books() %&gt;%
+  unnest_tokens(word, text) %&gt;%
+  count(book, word, sort = TRUE) %&gt;%
+  ungroup()
+
+book_words
+
+# find the words most distinctive to each document
+book_words %&gt;%
+  bind_tf_idf(word, book, n) %&gt;%
+  arrange(desc(tf_idf))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidytext</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

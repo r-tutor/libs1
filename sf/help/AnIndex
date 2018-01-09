@@ -1,11 +1,13 @@
 $.crs	st_crs
 %>%	reexports
+.stop_geos	internal
 aggregate	aggregate.sf
 aggregate.sf	aggregate.sf
 anti_join.sf	dplyr
 arrange.sf	dplyr
 as	coerce-methods
 as.matrix.sfg	st
+as.matrix.sgbp	sgbp
 as_Spatial	coerce-methods
 bgMap	bgMap
 bind	bind
@@ -16,6 +18,7 @@ coerce,sfc,Spatial-method	coerce-methods
 coerce,Spatial,sf-method	coerce-methods
 coerce,Spatial,sfc-method	coerce-methods
 db_drivers	db_drivers
+dim.sgbp	sgbp
 distinct.sf	dplyr
 dplyr	dplyr
 extension_map	extension_map
@@ -33,6 +36,8 @@ geos_unary	geos_unary
 group_by.sf	dplyr
 head.sfg	st
 inner_join.sf	dplyr
+internal	internal
+is.na.bbox	st_bbox
 is.na.crs	st_crs
 is_driver_available	is_driver_available
 is_driver_can	is_driver_can
@@ -59,6 +64,7 @@ plot.sfc_POLYGON	plot
 plot.sfg	plot
 plot_sf	plot
 prefix_map	prefix_map
+print.sf	sf
 print.sfg	st
 print.sgbp	sgbp
 rawToHex	rawToHex
@@ -76,6 +82,7 @@ sf	sf
 sf.colors	plot
 sfc	sfc
 sf_extSoftVersion	sf_extSoftVersion
+sf_project	sf_project
 sgbp	sgbp
 slice.sf	dplyr
 spread.sf	dplyr
@@ -123,11 +130,14 @@ st_bbox.MULTILINESTRING	st_bbox
 st_bbox.MULTIPOINT	st_bbox
 st_bbox.MULTIPOLYGON	st_bbox
 st_bbox.MULTISURFACE	st_bbox
+st_bbox.numeric	st_bbox
 st_bbox.POINT	st_bbox
 st_bbox.POLYGON	st_bbox
 st_bbox.POLYHEDRALSURFACE	st_bbox
+st_bbox.Raster	st_bbox
 st_bbox.sf	st_bbox
 st_bbox.sfc	st_bbox
+st_bbox.Spatial	st_bbox
 st_bbox.TIN	st_bbox
 st_bbox.TRIANGLE	st_bbox
 st_bind_cols	bind
@@ -173,13 +183,13 @@ st_crs<-	st_crs
 st_crs<-.sf	st_crs
 st_crs<-.sfc	st_crs
 st_difference	geos_binary_ops
+st_difference.sfc	geos_binary_ops
 st_dimension	geos_query
 st_disjoint	geos_binary_pred
 st_distance	geos_measures
 st_drivers	st_drivers
 st_equals	geos_binary_pred
 st_equals_exact	geos_binary_pred
-st_geohash	st_geohash
 st_geometry	st_geometry
 st_geometry.sf	st_geometry
 st_geometry.sfc	st_geometry
@@ -190,8 +200,11 @@ st_geometry_type	st_geometry_type
 st_graticule	st_graticule
 st_interpolate_aw	st_interpolate_aw
 st_intersection	geos_binary_ops
+st_intersection.sf	geos_binary_ops
+st_intersection.sfc	geos_binary_ops
 st_intersects	geos_binary_pred
 st_is	st_is
+st_is_empty	geos_query
 st_is_longlat	st_is_longlat
 st_is_simple	geos_query
 st_is_valid	geos_query
@@ -204,7 +217,6 @@ st_linestring	st
 st_line_merge	geos_unary
 st_line_sample	st_line_sample
 st_make_grid	st_make_grid
-st_make_valid	valid
 st_multilinestring	st
 st_multipoint	st
 st_multipolygon	st
@@ -218,6 +230,7 @@ st_precision	st_precision
 st_precision<-	st_precision
 st_proj_info	st_transform
 st_read	st_read
+st_read.default	st_read
 st_read_db	st_read
 st_relate	st_relate
 st_sample	st_sample
@@ -229,7 +242,7 @@ st_set_precision	st_precision
 st_sf	sf
 st_sfc	sfc
 st_simplify	geos_unary
-st_split	st_split
+st_snap	geos_binary_ops
 st_sym_difference	geos_binary_ops
 st_touches	geos_binary_pred
 st_transform	st_transform
@@ -242,7 +255,12 @@ st_viewport	st_viewport
 st_voronoi	geos_unary
 st_within	geos_binary_pred
 st_wrap_dateline	st_transform
+st_wrap_dateline.sf	st_transform
+st_wrap_dateline.sfc	st_transform
+st_wrap_dateline.sfg	st_transform
 st_write	st_write
+st_write.sf	st_write
+st_write.sfc	st_write
 st_write_db	st_write
 st_zm	st_zm
 summarise	dplyr
@@ -254,6 +272,6 @@ transmute.sf	dplyr
 type_sum.sfc	tibble
 ungroup.sf	dplyr
 unite.sf	dplyr
-valid	valid
+unnest.sf	dplyr
 write_sf	st_write
 [.sf	sf

@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: set_units</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for set_units {units}"><tr><td>set_units {units}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>set_units</h2>
+
+<h3>Description</h3>
+
+<p>A pipe friendly version of <code>units&lt;-</code>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+set_units(x, value, ..., mode = units_options("set_units_mode"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a numeric to be assigned units, or a units object to have units
+converted</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>a <code>units</code> object, or something coercible to one with
+<code>as_units</code>. Depending on <code>mode</code>, the unit is constructed from the
+supplied bare expression or from the supplied value via standard
+evaluation.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>passed on to <code>as_units</code></p>
+</td></tr>
+<tr valign="top"><td><code>mode</code></td>
+<td>
+<p>if <code>"symbols"</code> (the default), then unit is constructed from
+the expression supplied. Otherwise, if<code>mode = "standard"</code>,
+standard evaluation is used for the supplied value This argument can be set
+via a global option <code>units_options(set_units_mode = "standard")</code></p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="as_units.html">as_units</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>units</em> version 0.5-1 <a href="00Index.html">Index</a>]</div>
+</body></html>

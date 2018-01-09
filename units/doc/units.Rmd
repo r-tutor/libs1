@@ -194,7 +194,7 @@ class(dt)
 ## units in `matrix` objects
 ```{r}
 set_units(matrix(1:4,2,2), m/s)
-set_units(matrix(1:4,2,2), m/s * 4 * m/s)
+set_units(matrix(1:4,2,2), m/s * m/s)
 ```
 but
 ```{r}
@@ -218,28 +218,18 @@ d[1, "yz"]
 ## formatting
 
 Units are often written in the form `m2 s-1`, for square meter per second. This
-can be defined as unit, but is not interpreted by R:
+can be defined as unit, and also parsed by `as_units`:
 ```{r}
-(x = 1:10 * make_unit("m2 s-1"))
+(x = 1:10 * as_units("m2 s-1"))
 ```
 udunits understands such string, and can convert them
 ```{r}
 y = 1:10 * with(ud_units, m^2/s)
 x + y
 ```
-but R cannot simplify them:
+Printing units in this form is done by
 ```{r}
-x/y
-```
-Instead, we can tell R to parse such a string, which then allows simplification:
-```{r}
-(z = 1:10 * parse_unit("m2 s-1"))
-z + y
-z / y
-```
-Printing units in character form is done by
-```{r}
-deparse_unit(z)
+deparse_unit(x)
 ```
 
 ## plotting
@@ -277,7 +267,7 @@ More complex units can be plotted either with negative powers, or as divisions,
 by modifying one of `units`'s global options using `units_options`:
 
 ```{r}
-gallon = make_unit("gallon")
+gallon = as_units("gallon")
 consumption = mtcars$mpg * with(ud_units, mi/gallon)
 units(consumption) = with(ud_units, km/l)
 par(mar = mar)

@@ -114,21 +114,15 @@ methods(class = "units")
 a = set_units(1:10, m/s)
 b = set_units(1:10, h)
 a * b
-make_unit(m100_a) / make_unit(dm100_b)
+ustr1 = paste(rep("m", 101), collapse = "*")
+ustr2 = "dm^100"
+as_units(ustr1) / as_units(ustr2)
 
 ## ------------------------------------------------------------------------
 set_units(1, m^5/s^4)
 
 ## ------------------------------------------------------------------------
-x = make_unit("m2 s-1")
-y = set_units(1, km^2/h)
-z = set_units(1, m^2/s)
-x + y
-x/y
-z/y
-
-## ------------------------------------------------------------------------
-parse_unit("m2 s-1")
+as_units("m2 s-1")
 deparse_unit(set_units(1, m^2*s^-1))
 
 ## ----fig=TRUE, height=3.8, width=7---------------------------------------
@@ -138,7 +132,7 @@ gallon = make_unit("gallon")
 # initialize units:
 mtcars$consumption = set_units(mtcars$mpg, mi/gallon)
 # "in" is also a reserved R keyword, and needs special treatment:
-mtcars$displacement = set_units(mtcars$disp, ud_units[["in"]]^3)
+mtcars$displacement = set_units(mtcars$disp, `in`^3)
 # convert to SI:
 mtcars$consumption = set_units(mtcars$consumption, km/l)
 mtcars$displacement = set_units(mtcars$displacement, cm^3)
@@ -147,7 +141,8 @@ with(mtcars, plot(1/displacement, 1/consumption))
 
 ## ----fig=TRUE, height=3.8, width=7---------------------------------------
 library(ggforce)
-ggplot(mtcars) + geom_point(aes(1/displacement, 1/consumption))
+if (utils::packageVersion("ggplot2") > "2.2.1")
+  ggplot(mtcars) + geom_point(aes(x = 1/displacement, y = 1/consumption))
 
 ## ------------------------------------------------------------------------
 (dt = diff(Sys.time() + c(0, 1, 1+60, 1+60+3600))) # class difftime

@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Write simple features object to file or database</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for st_write {sf}"><tr><td>st_write {sf}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Write simple features object to file or database</h2>
+
+<h3>Description</h3>
+
+<p>Write simple features object to file or database
+</p>
+<p>Write simple feature table to a spatial database
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+st_write(obj, dsn, layer, ...)
+
+## S3 method for class 'sfc'
+st_write(obj, dsn, layer, ...)
+
+## S3 method for class 'sf'
+st_write(obj, dsn, layer = file_path_sans_ext(basename(dsn)),
+  ..., driver = guess_driver_can_write(dsn), dataset_options = NULL,
+  layer_options = NULL, quiet = FALSE, factorsAsCharacter = TRUE,
+  update = driver %in% db_drivers, delete_dsn = FALSE,
+  delete_layer = FALSE)
+
+write_sf(..., quiet = TRUE, delete_layer = TRUE)
+
+st_write_db(conn = NULL, obj, table = deparse(substitute(obj)),
+  geom_name = "wkb_geometry", ..., drop = FALSE, debug = FALSE,
+  binary = TRUE, append = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>obj</code></td>
+<td>
+<p>object of class <code>sf</code> or <code>sfc</code></p>
+</td></tr>
+<tr valign="top"><td><code>dsn</code></td>
+<td>
+<p>data source name (interpretation varies by driver - for some drivers, dsn is a file name, but may also be a
+folder or contain a database name)</p>
+</td></tr>
+<tr valign="top"><td><code>layer</code></td>
+<td>
+<p>layer name (varies by driver, may be a file name without extension); if layer is missing, the
+<a href="../../base/html/basename.html">basename</a> of <code>dsn</code> is taken.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>ignored for <code>st_write</code>, for <code>st_write_db</code> arguments passed on to <code>dbWriteTable</code></p>
+</td></tr>
+<tr valign="top"><td><code>driver</code></td>
+<td>
+<p>character; driver name to be used, if missing, a driver name is guessed from <code>dsn</code>;
+<code>st_drivers()</code> returns the drivers that are available with their properties; links to full driver documentation
+are found at <a href="http://www.gdal.org/ogr_formats.html">http://www.gdal.org/ogr_formats.html</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>dataset_options</code></td>
+<td>
+<p>character; driver dependent dataset creation options; multiple options supported.</p>
+</td></tr>
+<tr valign="top"><td><code>layer_options</code></td>
+<td>
+<p>character; driver dependent layer creation options; multiple options supported.</p>
+</td></tr>
+<tr valign="top"><td><code>quiet</code></td>
+<td>
+<p>logical; suppress info on name, driver, size and spatial reference</p>
+</td></tr>
+<tr valign="top"><td><code>factorsAsCharacter</code></td>
+<td>
+<p>logical; convert <code>factor</code> objects into character strings (default), else into numbers by
+<code>as.numeric</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>update</code></td>
+<td>
+<p>logical; <code>FALSE</code> by default for single-layer drivers but <code>TRUE</code> by default for database drivers
+as defined by <code>db_drivers</code>.
+For database-type drivers (e.g. GPKG) <code>TRUE</code> values will make <code>GDAL</code> try
+to update (append to) the existing data source, e.g. adding a table to an existing database.</p>
+</td></tr>
+<tr valign="top"><td><code>delete_dsn</code></td>
+<td>
+<p>logical; delete data source <code>dsn</code> before attempting to write?</p>
+</td></tr>
+<tr valign="top"><td><code>delete_layer</code></td>
+<td>
+<p>logical; delete layer <code>layer</code> before attempting to write? (not yet implemented)</p>
+</td></tr>
+<tr valign="top"><td><code>conn</code></td>
+<td>
+<p>open database connection</p>
+</td></tr>
+<tr valign="top"><td><code>table</code></td>
+<td>
+<p>character; name for the table in the database, possibly of length 2, <code>c("schema", "name")</code>; default schema is <code>public</code></p>
+</td></tr>
+<tr valign="top"><td><code>geom_name</code></td>
+<td>
+<p>name of the geometry column in the database</p>
+</td></tr>
+<tr valign="top"><td><code>drop</code></td>
+<td>
+<p>logical; should <code>table</code> be dropped first?</p>
+</td></tr>
+<tr valign="top"><td><code>debug</code></td>
+<td>
+<p>logical; print SQL statements to screen before executing them.</p>
+</td></tr>
+<tr valign="top"><td><code>binary</code></td>
+<td>
+<p>logical; use well-known-binary for transfer?</p>
+</td></tr>
+<tr valign="top"><td><code>append</code></td>
+<td>
+<p>logical; append to table? (NOTE: experimental, might not work)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>columns (variables) of a class not supported are dropped with a warning. When deleting layers or
+data sources is not successful, no error is emitted. <code>delete_dsn</code> and <code>delete_layers</code> should be
+handled with care; the former may erase complete directories or databases.
+</p>
+<p>st_write_db was written with help of Josh London, see <a href="https://github.com/r-spatial/sf/issues/285">https://github.com/r-spatial/sf/issues/285</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="st_drivers.html">st_drivers</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+nc = st_read(system.file("shape/nc.shp", package="sf"))
+st_write(nc, "nc.shp")
+st_write(nc, "nc.shp", delete_layer = TRUE) # overwrites
+data(meuse, package = "sp") # loads data.frame from sp
+meuse_sf = st_as_sf(meuse, coords = c("x", "y"), crs = 28992)
+st_write(meuse_sf, "meuse.csv", layer_options = "GEOMETRY=AS_XY") # writes X and Y as columns
+st_write(meuse_sf, "meuse.csv", layer_options = "GEOMETRY=AS_WKT", delete_dsn=TRUE) # overwrites
+## Not run: 
+ library(sp)
+ example(meuse, ask = FALSE, echo = FALSE)
+ try(st_write(st_as_sf(meuse), "PG:dbname=postgis", "meuse_sf",
+     layer_options = c("OVERWRITE=yes", "LAUNDER=true")))
+ demo(nc, ask = FALSE)
+ try(st_write(nc, "PG:dbname=postgis", "sids", layer_options = "OVERWRITE=true"))
+
+## End(Not run)
+## Not run: 
+  library(sp)
+  data(meuse)
+  sf = st_as_sf(meuse, coords = c("x", "y"), crs = 28992)
+  library(RPostgreSQL)
+  try(conn &lt;- dbConnect(PostgreSQL(), dbname = "postgis"))
+  if (exists("conn") &amp;&amp; !inherits(conn, "try-error"))
+    st_write_db(conn, sf, "meuse_tbl", drop = FALSE)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sf</em> version 0.6-0 <a href="00Index.html">Index</a>]</div>
+</body></html>

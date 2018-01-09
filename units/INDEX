@@ -5,6 +5,7 @@ as_difftime             convert units object into difftime object
 as_units                convert object to a units object
 deparse_unit            deparse unit to string in product power form
                         (e.g. km m-2 s-1)
+drop_units              drop units
 hist.units              histogram for unit objects
 install_conversion_constant
                         Install a function for conversion between
@@ -12,14 +13,17 @@ install_conversion_constant
 install_conversion_function
                         Install a function for conversion between
                         user-defined units.
-make_unit               Create a new unit from a unit name.
-parse_unit              parse unit in product power form (e.g. km m-2
-                        s-1)
+install_symbolic_unit   Define new symbolic units
+make_unit               Deprecated functions
+matmult                 matrix multiplication
 plot.units              create axis label with appropriate labels
-type_sum.units          type_sum for tidy tibble printing
+seq.units               seq method for units objects
+set_units               set_units
+tibble                  type_sum function for units
 ud_units                List containing pre-defined units from the
                         udunits2 package.
 unitless                The "unit" type for vectors that are actually
                         dimension-less.
 units                   Set measurement units on a numeric vector
 units_options           set one or more units global options
+valid_udunits           Get information about valid units

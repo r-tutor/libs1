@@ -1,3 +1,36 @@
+# version 0.5-0
+
+* deal with trigonometric functions for units degree; return units rad on inverse trigonometric functions.
+
+* Unit creation has been significantly refactored. `units<-` now accepts strings
+or quoted language objects on the right hand side, powered by new S3 methods for
+`as_units`. All valid unit symbols and unit names recognized by package 'udunits2' are 
+now accepted. New user facing function `make_units()` (plural s) is also
+provided. See `?as_units` for details. @t-kalinowski
+
+* new functions `valid_udunits()` and `valid_udunits_prefixes()` generate tidy
+dataframes listing all the valid unit names, symbols, and prefixes recognized by
+udunits. @t-kalinowski
+
+* new function `install_symbolic_unit()` for adding custom, user-defined units. 
+@t-kalinowski
+
+* `make_unit` and `parse_unit` (singular unit) have been deprecated, please use 
+`as_units` instead.
+
+* `ud_units` is no longer necessary and is soft-deprecated, and may be removed
+in a future release.
+
+* add `%*%` as an S3 generic; #54 
+
+* add `%%` and `%/%` to `Ops.units`
+
+* support unary + and - ; #56
+
+* add `seq` method for `units`, converting units to those of the first argument
+
+* Deprecate `as.dt` for `as_difftime`, `as.units` for `as_units` and `as_cf` for `deparse_unit`
+
 # version 0.4-6
 
 * add `all.equal` method for `units`; #51

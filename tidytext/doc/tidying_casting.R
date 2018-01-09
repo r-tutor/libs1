@@ -1,5 +1,6 @@
 ## ----echo = FALSE--------------------------------------------------------
-knitr::opts_chunk$set(fig.width = 7, fig.height = 7, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(fig.width = 7, fig.height = 7, message = FALSE, warning = FALSE,
+                      eval = requireNamespace("tm", quietly = TRUE) && requireNamespace("quanteda", quietly = TRUE) && requireNamespace("topicmodels", quietly = TRUE))
 library(ggplot2)
 theme_set(theme_bw())
 
