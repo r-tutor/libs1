@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Handsontable widget</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for hot_context_menu {rhandsontable}"><tr><td>hot_context_menu {rhandsontable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Handsontable widget</h2>
+
+<h3>Description</h3>
+
+<p>Configure the options for the right-click context menu.  See
+<a href="http://docs.handsontable.com/0.16.1/demo-context-menu.html">Context Menu</a> and
+<a href="http://swisnl.github.io/jQuery-contextMenu/docs.html">jquery contextMenu</a>
+for details.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+hot_context_menu(hot, allowRowEdit = TRUE, allowColEdit = TRUE,
+  allowReadOnly = FALSE, allowComments = FALSE,
+  allowCustomBorders = FALSE, customOpts = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>hot</code></td>
+<td>
+<p>rhandsontable object</p>
+</td></tr>
+<tr valign="top"><td><code>allowRowEdit</code></td>
+<td>
+<p>logical enabling row editing</p>
+</td></tr>
+<tr valign="top"><td><code>allowColEdit</code></td>
+<td>
+<p>logical enabling column editing. Note that
+Handsontable does not support column add/remove when column types
+are defined (i.e. useTypes == TRUE in rhandsontable).</p>
+</td></tr>
+<tr valign="top"><td><code>allowReadOnly</code></td>
+<td>
+<p>logical enabling read-only toggle</p>
+</td></tr>
+<tr valign="top"><td><code>allowComments</code></td>
+<td>
+<p>logical enabling comments</p>
+</td></tr>
+<tr valign="top"><td><code>allowCustomBorders</code></td>
+<td>
+<p>logical enabling custom borders</p>
+</td></tr>
+<tr valign="top"><td><code>customOpts</code></td>
+<td>
+<p>list</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>ignored</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(rhandsontable)
+DF = data.frame(val = 1:10, bool = TRUE, big = LETTERS[1:10],
+                small = letters[1:10],
+                dt = seq(from = Sys.Date(), by = "days", length.out = 10),
+                stringsAsFactors = FALSE)
+
+rhandsontable(DF) %&gt;%
+  hot_context_menu(allowRowEdit = FALSE, allowColEdit = FALSE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rhandsontable</em> version 0.3.5 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Handsontable widget</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for hot_heatmap {rhandsontable}"><tr><td>hot_heatmap {rhandsontable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Handsontable widget</h2>
+
+<h3>Description</h3>
+
+<p>Add heatmap to table.  See
+<a href="http://docs.handsontable.com/0.16.1/demo-chromajs.html">Heatmaps for values in a column</a>
+for details.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+hot_heatmap(hot, cols, color_scale = c("#ED6D47", "#17F556"),
+  renderer = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>hot</code></td>
+<td>
+<p>rhandsontable object</p>
+</td></tr>
+<tr valign="top"><td><code>cols</code></td>
+<td>
+<p>numeric vector of columns to include in the heatmap. If missing
+all columns are used.</p>
+</td></tr>
+<tr valign="top"><td><code>color_scale</code></td>
+<td>
+<p>character vector that includes the lower and upper
+colors</p>
+</td></tr>
+<tr valign="top"><td><code>renderer</code></td>
+<td>
+<p>character defining a Javascript function to be used
+to determine the cell colors. If missing,
+<code>rhandsontable:::renderer_heatmap</code> is used.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+MAT = matrix(rnorm(50), nrow = 10, dimnames = list(LETTERS[1:10],
+             letters[1:5]))
+
+rhandsontable(MAT) %&gt;%
+ hot_heatmap()
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rhandsontable</em> version 0.3.5 <a href="00Index.html">Index</a>]</div>
+</body></html>
