@@ -46,11 +46,13 @@ namespace stan {
                  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>& H) {
       H.resize(x.size(), x.size());
       grad.resize(x.size());
+/*
       // size 0 separate because nothing to loop over in main body
       if (x.size() == 0) {
-        //fx = f(x);
+        fx = f(x);
         return;
       }
+*/
       try {
         for (int i = 0; i < x.size(); ++i) {
           start_nested();

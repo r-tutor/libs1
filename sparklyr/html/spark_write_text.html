@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Write a Spark DataFrame to a Text file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for spark_write_text {sparklyr}"><tr><td>spark_write_text {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Write a Spark DataFrame to a Text file</h2>
+
+<h3>Description</h3>
+
+<p>Serialize a Spark DataFrame to the plain text format.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+spark_write_text(x, path, mode = NULL, options = list(),
+  partition_by = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A Spark DataFrame or dplyr operation</p>
+</td></tr>
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>The path to the file. Needs to be accessible from the cluster.
+Supports the <span class="samp">"hdfs://"</span>, <span class="samp">"s3a://"</span> and <span class="samp">"file://"</span> protocols.</p>
+</td></tr>
+<tr valign="top"><td><code>mode</code></td>
+<td>
+<p>A <code>character</code> element. Specifies the behavior when data or
+table already exists. Supported values include: 'error', 'append', 'overwrite' and
+ignore. Notice that 'overwrite' will also change the column structure.
+</p>
+<p>For more details see also <a href="http://spark.apache.org/docs/latest/sql-programming-guide.html#save-modes">http://spark.apache.org/docs/latest/sql-programming-guide.html#save-modes</a>
+for your version of Spark.</p>
+</td></tr>
+<tr valign="top"><td><code>options</code></td>
+<td>
+<p>A list of strings with additional options.</p>
+</td></tr>
+<tr valign="top"><td><code>partition_by</code></td>
+<td>
+<p>A <code>character</code> vector. Partitions the output by the given columns on the file system.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments; currently unused.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p>Other Spark serialization routines: <code><a href="spark_load_table.html">spark_load_table</a></code>,
+<code><a href="spark_read_csv.html">spark_read_csv</a></code>,
+<code><a href="spark_read_jdbc.html">spark_read_jdbc</a></code>,
+<code><a href="spark_read_json.html">spark_read_json</a></code>,
+<code><a href="spark_read_libsvm.html">spark_read_libsvm</a></code>,
+<code><a href="spark_read_parquet.html">spark_read_parquet</a></code>,
+<code><a href="spark_read_source.html">spark_read_source</a></code>,
+<code><a href="spark_read_table.html">spark_read_table</a></code>,
+<code><a href="spark_read_text.html">spark_read_text</a></code>,
+<code><a href="spark_save_table.html">spark_save_table</a></code>,
+<code><a href="spark_write_csv.html">spark_write_csv</a></code>,
+<code><a href="spark_write_jdbc.html">spark_write_jdbc</a></code>,
+<code><a href="spark_write_json.html">spark_write_json</a></code>,
+<code><a href="spark_write_parquet.html">spark_write_parquet</a></code>,
+<code><a href="spark_write_source.html">spark_write_source</a></code>,
+<code><a href="spark_write_table.html">spark_write_table</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

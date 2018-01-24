@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Make a handle</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for handle {crul}"><tr><td>handle {crul}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Make a handle</h2>
+
+<h3>Description</h3>
+
+<p>Make a handle
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+handle(url, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>url</code></td>
+<td>
+<p>(character) A url. required.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>options passed on to <code><a href="../../curl/html/new_handle.html">curl::new_handle()</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+handle("https://httpbin.org")
+
+# handles - pass in your own handle
+h &lt;- handle("https://httpbin.org")
+(res &lt;- HttpClient$new(handle = h))
+out &lt;- res$get("get")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>crul</em> version 0.5.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

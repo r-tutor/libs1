@@ -23,7 +23,7 @@ namespace stan {
      * function theorem. The call to Jacobian() occurs outside the call to
      * chain() -- this prevents malloc issues.
      */
-    template <typename FS, typename F, typename T, typename FX>
+    template <typename Fs, typename F, typename T, typename Fx>
     struct algebra_solver_vari : public vari {
       /** vector of parameters */
       vari** y_;
@@ -36,14 +36,14 @@ namespace stan {
       /** Jacobian of the solution w.r.t parameters */
       double* Jx_y_;
 
-      algebra_solver_vari(const FS& fs,
+      algebra_solver_vari(const Fs& fs,
                           const F& f,
                           const Eigen::VectorXd& x,
                           const Eigen::Matrix<T, Eigen::Dynamic, 1>& y,
                           const std::vector<double>& dat,
                           const std::vector<int>& dat_int,
                           const Eigen::VectorXd& theta_dbl,
-                          FX& fx,
+                          Fx& fx,
                           std::ostream* msgs)
         : vari(theta_dbl(0)),
           y_(ChainableStack::memalloc_.alloc_array<vari*>(y.size())),
@@ -63,7 +63,7 @@ namespace stan {
 
         // Compute the Jacobian and store in array, using the
         // implicit function theorem, i.e. Jx_y = Jf_y / Jf_x
-        typedef hybrj_functor_solver<FS, F, double, double> f_y;
+        typedef hybrj_functor_solver<Fs, F, double, double> f_y;
         Map<MatrixXd>(&Jx_y_[0], x_size_, y_size_)
           = - mdivide_left(fx.get_jacobian(theta_dbl),
                            f_y(fs, f, theta_dbl, value_of(y),
@@ -157,10 +157,10 @@ namespace stan {
                          "", ", must be greater than 0");
 
       // Create functor for algebraic system
-      typedef system_functor<F, double, double, true> FS;
-      typedef hybrj_functor_solver<FS, F, double, double> FX;
-      FX fx(FS(), f, x, y, dat, dat_int, msgs);
-      Eigen::HybridNonLinearSolver<FX> solver(fx);
+      typedef system_functor<F, double, double, true> Fs;
+      typedef hybrj_functor_solver<Fs, F, double, double> Fx;
+      Fx fx(Fs(), f, x, y, dat, dat_int, msgs);
+      Eigen::HybridNonLinearSolver<Fx> solver(fx);
 
       // Check dimension unknowns equals dimension of system output
       check_matching_sizes("algebra_solver",
@@ -262,13 +262,13 @@ namespace stan {
       // TODO(charlesm93): a similar object gets constructed inside
       // the call to algebra_solver. Cache the previous result
       // and use it here (if possible).
-      typedef system_functor<F, double, double, true> FS;
-      typedef hybrj_functor_solver<FS, F, double, double> FX;
-      FX fx(FS(), f, x, value_of(y), dat, dat_int, msgs);
+      typedef system_functor<F, double, double, true> Fs;
+      typedef hybrj_functor_solver<Fs, F, double, double> Fx;
+      Fx fx(Fs(), f, x, value_of(y), dat, dat_int, msgs);
 
       // Construct vari
-      algebra_solver_vari<FY, F,  T, FX>* vi0
-        = new algebra_solver_vari<FY, F, T, FX>(FY(), f, x, y, dat, dat_int,
+      algebra_solver_vari<FY, F,  T, Fx>* vi0
+        = new algebra_solver_vari<FY, F, T, Fx>(FY(), f, x, y, dat, dat_int,
                                                 theta_dbl, fx, msgs);
       Eigen::Matrix<var, Eigen::Dynamic, 1> theta(x.size());
       theta(0) = var(vi0->theta_[0]);

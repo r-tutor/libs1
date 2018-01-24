@@ -17,7 +17,7 @@ title(ylab = "Frequency", family = "gochi", cex.lab = 2)
 text(2, 70, "N = 1000", family = "bell", cex = 2.5)
 
 ## ----echo=FALSE, message=FALSE, fig.align='center', fig.showtext=TRUE----
-showtext.end()
+showtext_end()
 
 set.seed(123)
 hist(rnorm(1000), breaks = 30, col = "steelblue", border = "white",

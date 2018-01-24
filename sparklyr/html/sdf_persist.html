@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Persist a Spark DataFrame</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sdf_persist {sparklyr}"><tr><td>sdf_persist {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Persist a Spark DataFrame</h2>
+
+<h3>Description</h3>
+
+<p>Persist a Spark DataFrame, forcing any pending computations and (optionally)
+serializing the results to disk.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sdf_persist(x, storage.level = "MEMORY_AND_DISK")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code>spark_connection</code>, <code>ml_pipeline</code>, or a <code>tbl_spark</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>storage.level</code></td>
+<td>
+<p>The storage level to be used. Please view the
+<a href="http://spark.apache.org/docs/latest/programming-guide.html#rdd-persistence">Spark Documentation</a>
+for information on what storage levels are accepted.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Spark DataFrames invoke their operations lazily &ndash; pending operations are
+deferred until their results are actually needed. Persisting a Spark
+DataFrame effectively 'forces' any pending computations, and then persists
+the generated Spark DataFrame as requested (to memory, to disk, or
+otherwise).
+</p>
+<p>Users of Spark should be careful to persist the results of any computations
+which are non-deterministic &ndash; otherwise, one might see that the values
+within a column seem to 'change' as new operations are performed on that
+data set.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

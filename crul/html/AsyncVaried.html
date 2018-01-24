@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Async client for different request types</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for AsyncVaried {crul}"><tr><td>AsyncVaried {crul}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Async client for different request types</h2>
+
+<h3>Description</h3>
+
+<p>Async client for different request types
+</p>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>..., .list</code></td>
+<td>
+<p>Any number of objects of class <code><a href="HttpRequest.html">HttpRequest()</a></code>,
+must supply inputs to one of these parameters, but not both</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><strong>Methods</strong>
+</p>
+
+<dl>
+<dt><code>request()</code></dt><dd>
+<p>Execute asynchronous requests
+- returns: nothing, responses stored inside object,
+though will print messages if you choose verbose output
+</p>
+</dd>
+<dt><code>requests()</code></dt><dd>
+<p>list requests
+- returns: a list of <code>HttpRequest</code> objects, empty list before
+requests made
+</p>
+</dd>
+<dt><code>responses()</code></dt><dd>
+<p>list responses
+- returns: a list of <code>HttpResponse</code> objects, empty list before
+requests made
+</p>
+</dd>
+<dt><code>parse(encoding = "UTF-8")</code></dt><dd>
+<p>parse content
+- returns: character vector, empty character vector before
+requests made
+</p>
+</dd>
+<dt><code>status_code()</code></dt><dd>
+<p>(integer) HTTP status codes
+- returns: numeric vector, empty numeric vector before
+requests made
+</p>
+</dd>
+<dt><code>status()</code></dt><dd>
+<p>(list) HTTP status objects
+- returns: a list of <code>http_code</code> objects, empty list before
+requests made
+</p>
+</dd>
+<dt><code>content()</code></dt><dd>
+<p>raw content
+- returns: raw list, empty list before requests made
+</p>
+</dd>
+<dt><code>times()</code></dt><dd>
+<p>curl request times
+- returns: list of named numeric vectors, empty list before
+requests made
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>AsyncVaried</code> with variables and methods.
+Responses are returned in the order they are passed in.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other async: <code><a href="Async.html">Async</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# pass in requests via ...
+req1 &lt;- HttpRequest$new(
+  url = "https://httpbin.org/get",
+  opts = list(verbose = TRUE),
+  headers = list(foo = "bar")
+)$get()
+req2 &lt;- HttpRequest$new(url = "https://httpbin.org/post")$post()
+
+# Create an AsyncVaried object
+out &lt;- AsyncVaried$new(req1, req2)
+
+# before you make requests, the methods return empty objects
+out$status()
+out$status_code()
+out$content()
+out$times()
+out$parse()
+out$responses()
+
+# make requests
+out$request()
+
+# access various parts
+## http status objects
+out$status()
+## status codes
+out$status_code()
+## content (raw data)
+out$content()
+## times
+out$times()
+## parsed content
+out$parse()
+## response objects
+out$responses()
+
+# pass in requests in a list via .list param
+reqlist &lt;- list(
+  HttpRequest$new(url = "https://httpbin.org/get")$get(),
+  HttpRequest$new(url = "https://httpbin.org/post")$post(),
+  HttpRequest$new(url = "https://httpbin.org/put")$put(),
+  HttpRequest$new(url = "https://httpbin.org/delete")$delete(),
+  HttpRequest$new(url = "https://httpbin.org/get?g=5")$get(),
+  HttpRequest$new(
+    url = "https://httpbin.org/post")$post(body = list(y = 9)),
+  HttpRequest$new(
+    url = "https://httpbin.org/get")$get(query = list(hello = "world"))
+)
+
+out &lt;- AsyncVaried$new(.list = reqlist)
+out$request()
+out$status()
+out$status_code()
+out$content()
+out$times()
+out$parse()
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>crul</em> version 0.5.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

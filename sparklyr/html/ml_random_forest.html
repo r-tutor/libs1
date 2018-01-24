@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Spark ML - Random Forest</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ml_random_forest_classifier {sparklyr}"><tr><td>ml_random_forest_classifier {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Spark ML &ndash; Random Forest</h2>
+
+<h3>Description</h3>
+
+<p>Perform classification and regression using random forests.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ml_random_forest_classifier(x, formula = NULL, num_trees = 20L,
+  subsampling_rate = 1, max_depth = 5L, min_instances_per_node = 1L,
+  feature_subset_strategy = "auto", impurity = "gini", min_info_gain = 0,
+  max_bins = 32L, seed = NULL, thresholds = NULL,
+  checkpoint_interval = 10L, cache_node_ids = FALSE,
+  max_memory_in_mb = 256L, features_col = "features", label_col = "label",
+  prediction_col = "prediction", probability_col = "probability",
+  raw_prediction_col = "rawPrediction",
+  uid = random_string("random_forest_classifier_"), ...)
+
+ml_random_forest(x, formula = NULL, type = c("auto", "regression",
+  "classification"), features_col = "features", label_col = "label",
+  prediction_col = "prediction", probability_col = "probability",
+  raw_prediction_col = "rawPrediction", feature_subset_strategy = "auto",
+  impurity = "auto", checkpoint_interval = 10L, max_bins = 32L,
+  max_depth = 5L, num_trees = 20L, min_info_gain = 0,
+  min_instances_per_node = 1L, subsampling_rate = 1, seed = NULL,
+  thresholds = NULL, cache_node_ids = FALSE, max_memory_in_mb = 256L,
+  uid = random_string("random_forest_"), response = NULL, features = NULL,
+  ...)
+
+ml_random_forest_regressor(x, formula = NULL, num_trees = 20L,
+  subsampling_rate = 1, max_depth = 5L, min_instances_per_node = 1L,
+  feature_subset_strategy = "auto", impurity = "variance",
+  min_info_gain = 0, max_bins = 32L, seed = NULL,
+  checkpoint_interval = 10L, cache_node_ids = FALSE,
+  max_memory_in_mb = 256L, features_col = "features", label_col = "label",
+  prediction_col = "prediction",
+  uid = random_string("random_forest_regressor_"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code>spark_connection</code>, <code>ml_pipeline</code>, or a <code>tbl_spark</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>formula</code></td>
+<td>
+<p>Used when <code>x</code> is a <code>tbl_spark</code>. R formula as a character string or a formula. This is used to transform the input dataframe before fitting, see <a href="ft_r_formula.html">ft_r_formula</a> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>num_trees</code></td>
+<td>
+<p>Number of trees to train (&gt;= 1). If 1, then no bootstrapping is used. If &gt; 1, then bootstrapping is done.</p>
+</td></tr>
+<tr valign="top"><td><code>subsampling_rate</code></td>
+<td>
+<p>Fraction of the training data used for learning each decision tree, in range (0, 1]. (default = 1.0)</p>
+</td></tr>
+<tr valign="top"><td><code>max_depth</code></td>
+<td>
+<p>Maximum depth of the tree (&gt;= 0); that is, the maximum
+number of nodes separating any leaves from the root of the tree.</p>
+</td></tr>
+<tr valign="top"><td><code>min_instances_per_node</code></td>
+<td>
+<p>Minimum number of instances each child must
+have after split.</p>
+</td></tr>
+<tr valign="top"><td><code>feature_subset_strategy</code></td>
+<td>
+<p>The number of features to consider for splits at each tree node. See details for options.</p>
+</td></tr>
+<tr valign="top"><td><code>impurity</code></td>
+<td>
+<p>Criterion used for information gain calculation. Supported: &quot;entropy&quot;
+and &quot;gini&quot; (default) for classification and &quot;variance&quot; (default) for regression. For
+<code>ml_decision_tree</code>, setting <code>"auto"</code> will default to the appropriate
+criterion based on model type.</p>
+</td></tr>
+<tr valign="top"><td><code>min_info_gain</code></td>
+<td>
+<p>Minimum information gain for a split to be considered
+at a tree node. Should be &gt;= 0, defaults to 0.</p>
+</td></tr>
+<tr valign="top"><td><code>max_bins</code></td>
+<td>
+<p>The maximum number of bins used for discretizing
+continuous features and for choosing how to split on features at
+each node. More bins give higher granularity.</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>Seed for random numbers.</p>
+</td></tr>
+<tr valign="top"><td><code>thresholds</code></td>
+<td>
+<p>Thresholds in multi-class classification to adjust the probability of predicting each class. Array must have length equal to the number of classes, with values &gt; 0 excepting that at most one value may be 0. The class with largest value <code>p/t</code> is predicted, where <code>p</code> is the original probability of that class and <code>t</code> is the class's threshold.</p>
+</td></tr>
+<tr valign="top"><td><code>checkpoint_interval</code></td>
+<td>
+<p>Set checkpoint interval (&gt;= 1) or disable checkpoint (-1).
+E.g. 10 means that the cache will get checkpointed every 10 iterations, defaults to 10.</p>
+</td></tr>
+<tr valign="top"><td><code>cache_node_ids</code></td>
+<td>
+<p>If <code>FALSE</code>, the algorithm will pass trees to executors to match instances with nodes.
+If <code>TRUE</code>, the algorithm will cache node IDs for each instance. Caching can speed up training of deeper trees.
+Defaults to <code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>max_memory_in_mb</code></td>
+<td>
+<p>Maximum memory in MB allocated to histogram aggregation.
+If too small, then 1 node will be split per iteration,
+and its aggregates may exceed this size. Defaults to 256.</p>
+</td></tr>
+<tr valign="top"><td><code>features_col</code></td>
+<td>
+<p>Features column name, as a length-one character vector. The column should be single vector column of numeric values. Usually this column is output by <code><a href="ft_r_formula.html">ft_r_formula</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>label_col</code></td>
+<td>
+<p>Label column name. The column should be a numeric column. Usually this column is output by <code><a href="ft_r_formula.html">ft_r_formula</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>prediction_col</code></td>
+<td>
+<p>Prediction column name.</p>
+</td></tr>
+<tr valign="top"><td><code>probability_col</code></td>
+<td>
+<p>Column name for predicted class conditional probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>raw_prediction_col</code></td>
+<td>
+<p>Raw prediction (a.k.a. confidence) column name.</p>
+</td></tr>
+<tr valign="top"><td><code>uid</code></td>
+<td>
+<p>A character string used to uniquely identify the ML estimator.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments; see Details.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>The type of model to fit. <code>"regression"</code> treats the response
+as a continuous variable, while <code>"classification"</code> treats the response
+as a categorical variable. When <code>"auto"</code> is used, the model type is
+inferred based on the response variable type &ndash; if it is a numeric type,
+then regression is used; classification otherwise.</p>
+</td></tr>
+<tr valign="top"><td><code>response</code></td>
+<td>
+<p>(Deprecated) The name of the response column (as a length-one character vector.)</p>
+</td></tr>
+<tr valign="top"><td><code>features</code></td>
+<td>
+<p>(Deprecated) The name of features (terms) to use for the model fit.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When <code>x</code> is a <code>tbl_spark</code> and <code>formula</code> (alternatively, <code>response</code> and <code>features</code>) is specified, the function returns a <code>ml_model</code> object wrapping a <code>ml_pipeline_model</code> which contains data pre-processing transformers, the ML predictor, and, for classification models, a post-processing transformer that converts predictions into class labels. For classification, an optional argument <code>predicted_label_col</code> (defaults to <code>"predicted_label"</code>) can be used to specify the name of the predicted label column. In addition to the fitted <code>ml_pipeline_model</code>, <code>ml_model</code> objects also contain a <code>ml_pipeline</code> object where the ML predictor stage is an estimator ready to be fit against data. This is utilized by <code><a href="ml-persistence.html">ml_save</a></code> with <code>type = "pipeline"</code> to faciliate model refresh workflows.
+</p>
+<p>The supported options for <code>feature_subset_strategy</code> are
+</p>
+
+<ul>
+<li> <p><code>"auto"</code>: Choose automatically for task: If <code>num_trees == 1</code>, set to <code>"all"</code>. If <code>num_trees &gt; 1</code> (forest), set to <code>"sqrt"</code> for classification and to <code>"onethird"</code> for regression.
+</p>
+</li>
+<li> <p><code>"all"</code>: use all features
+</p>
+</li>
+<li> <p><code>"onethird"</code>: use 1/3 of the features
+</p>
+</li>
+<li> <p><code>"sqrt"</code>: use use sqrt(number of features)
+</p>
+</li>
+<li> <p><code>"log2"</code>: use log2(number of features)
+</p>
+</li>
+<li> <p><code>"n"</code>: when <code>n</code> is in the range (0, 1.0], use n * number of features. When <code>n</code> is in the range (1, number of features), use <code>n</code> features. (default = <code>"auto"</code>)
+</p>
+</li></ul>
+
+<p><code>ml_random_forest</code> is a wrapper around <code>ml_random_forest_regressor.tbl_spark</code> and <code>ml_random_forest_classifier.tbl_spark</code> and calls the appropriate method based on model type.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The object returned depends on the class of <code>x</code>.
+</p>
+
+<ul>
+<li> <p><code>spark_connection</code>: When <code>x</code> is a <code>spark_connection</code>, the function returns an instance of a <code>ml_predictor</code> object. The object contains a pointer to
+a Spark <code>Predictor</code> object and can be used to compose
+<code>Pipeline</code> objects.
+</p>
+</li>
+<li> <p><code>ml_pipeline</code>: When <code>x</code> is a <code>ml_pipeline</code>, the function returns a <code>ml_pipeline</code> with
+the predictor appended to the pipeline.
+</p>
+</li>
+<li> <p><code>tbl_spark</code>: When <code>x</code> is a <code>tbl_spark</code>, a predictor is constructed then
+immediately fit with the input <code>tbl_spark</code>, returning a prediction model.
+</p>
+</li>
+<li> <p><code>tbl_spark</code>, with <code>formula</code>: specified When <code>formula</code>
+is specified, the input <code>tbl_spark</code> is first transformed using a
+<code>RFormula</code> transformer before being fit by
+the predictor. The object returned in this case is a <code>ml_model</code> which is a
+wrapper of a <code>ml_pipeline_model</code>.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p>See <a href="http://spark.apache.org/docs/latest/ml-classification-regression.html">http://spark.apache.org/docs/latest/ml-classification-regression.html</a> for
+more information on the set of supervised learning algorithms.
+</p>
+<p>Other ml algorithms: <code><a href="ml_aft_survival_regression.html">ml_aft_survival_regression</a></code>,
+<code><a href="ml_decision_tree.html">ml_decision_tree_classifier</a></code>,
+<code><a href="ml_gradient_boosted_trees.html">ml_gbt_classifier</a></code>,
+<code><a href="ml_generalized_linear_regression.html">ml_generalized_linear_regression</a></code>,
+<code><a href="ml_isotonic_regression.html">ml_isotonic_regression</a></code>,
+<code><a href="ml_linear_regression.html">ml_linear_regression</a></code>,
+<code><a href="ml_linear_svc.html">ml_linear_svc</a></code>,
+<code><a href="ml_logistic_regression.html">ml_logistic_regression</a></code>,
+<code><a href="ml_multilayer_perceptron_classifier.html">ml_multilayer_perceptron_classifier</a></code>,
+<code><a href="ml_naive_bayes.html">ml_naive_bayes</a></code>,
+<code><a href="ml_one_vs_rest.html">ml_one_vs_rest</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;sparklyr&rsquo; version 0.6.4</h2>
+</div><h2>Documentation for package &lsquo;sparklyr&rsquo; version 0.7.0</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 </ul>
@@ -88,33 +88,77 @@
 <tr><td style="width: 25%;"><a href="find_scalac.html">find_scalac</a></td>
 <td>Discover the Scala Compiler</td></tr>
 <tr><td style="width: 25%;"><a href="ft_binarizer.html">ft_binarizer</a></td>
-<td>Feature Transformation - Binarizer</td></tr>
+<td>Feature Transformation - Binarizer (Transformer)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_lsh.html">ft_bucketed_random_projection_lsh</a></td>
+<td>Feature Tranformation - LSH (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_bucketizer.html">ft_bucketizer</a></td>
-<td>Feature Transformation - Bucketizer</td></tr>
+<td>Feature Transformation - Bucketizer (Transformer)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_chisq_selector.html">ft_chisq_selector</a></td>
+<td>Feature Tranformation - ChiSqSelector (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_count_vectorizer.html">ft_count_vectorizer</a></td>
-<td>Feature Tranformation - CountVectorizer</td></tr>
-<tr><td style="width: 25%;"><a href="ft_discrete_cosine_transform.html">ft_discrete_cosine_transform</a></td>
-<td>Feature Transformation - Discrete Cosine Transform (DCT)</td></tr>
-<tr><td style="width: 25%;"><a href="ft_elementwise_product.html">ft_elementwise_product</a></td>
-<td>Feature Transformation - ElementwiseProduct</td></tr>
-<tr><td style="width: 25%;"><a href="ft_index_to_string.html">ft_index_to_string</a></td>
-<td>Feature Transformation - IndexToString</td></tr>
-<tr><td style="width: 25%;"><a href="ft_one_hot_encoder.html">ft_one_hot_encoder</a></td>
-<td>Feature Transformation - OneHotEncoder</td></tr>
-<tr><td style="width: 25%;"><a href="ft_quantile_discretizer.html">ft_quantile_discretizer</a></td>
-<td>Feature Transformation - QuantileDiscretizer</td></tr>
-<tr><td style="width: 25%;"><a href="ft_regex_tokenizer.html">ft_regex_tokenizer</a></td>
-<td>Feature Tranformation - RegexTokenizer</td></tr>
-<tr><td style="width: 25%;"><a href="ft_sql_transformer.html">ft_sql_transformer</a></td>
+<td>Feature Tranformation - CountVectorizer (Estimator)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_dct.html">ft_dct</a></td>
+<td>Feature Transformation - Discrete Cosine Transform (DCT) (Transformer)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_dct.html">ft_discrete_cosine_transform</a></td>
+<td>Feature Transformation - Discrete Cosine Transform (DCT) (Transformer)</td></tr>
+<tr><td style="width: 25%;"><a href="sql-transformer.html">ft_dplyr_transformer</a></td>
 <td>Feature Transformation - SQLTransformer</td></tr>
+<tr><td style="width: 25%;"><a href="ft_elementwise_product.html">ft_elementwise_product</a></td>
+<td>Feature Transformation - ElementwiseProduct (Transformer)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_hashing_tf.html">ft_hashing_tf</a></td>
+<td>Feature Transformation - HashingTF (Transformer)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_idf.html">ft_idf</a></td>
+<td>Feature Tranformation - IDF (Estimator)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_imputer.html">ft_imputer</a></td>
+<td>Feature Transformation - Imputer (Estimator)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_index_to_string.html">ft_index_to_string</a></td>
+<td>Feature Transformation - IndexToString (Transformer)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_interaction.html">ft_interaction</a></td>
+<td>Feature Transformation - Interaction (Transformer)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_lsh.html">ft_lsh</a></td>
+<td>Feature Tranformation - LSH (Estimator)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_lsh_utils.html">ft_lsh_utils</a></td>
+<td>Utility functions for LSH models</td></tr>
+<tr><td style="width: 25%;"><a href="ft_max_abs_scaler.html">ft_max_abs_scaler</a></td>
+<td>Feature Tranformation - MaxAbsScaler (Estimator)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_lsh.html">ft_minhash_lsh</a></td>
+<td>Feature Tranformation - LSH (Estimator)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_min_max_scaler.html">ft_min_max_scaler</a></td>
+<td>Feature Tranformation - MinMaxScaler (Estimator)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_ngram.html">ft_ngram</a></td>
+<td>Feature Tranformation - NGram (Transformer)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_normalizer.html">ft_normalizer</a></td>
+<td>Feature Transformation - Normalizer (Transformer)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_one_hot_encoder.html">ft_one_hot_encoder</a></td>
+<td>Feature Transformation - OneHotEncoder (Transformer)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_pca.html">ft_pca</a></td>
+<td>Feature Tranformation - PCA (Estimator)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_polynomial_expansion.html">ft_polynomial_expansion</a></td>
+<td>Feature Transformation - PolynomialExpansion (Transformer)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_quantile_discretizer.html">ft_quantile_discretizer</a></td>
+<td>Feature Transformation - QuantileDiscretizer (Estimator)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_regex_tokenizer.html">ft_regex_tokenizer</a></td>
+<td>Feature Tranformation - RegexTokenizer (Transformer)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_r_formula.html">ft_r_formula</a></td>
+<td>Feature Tranformation - RFormula (Estimator)</td></tr>
+<tr><td style="width: 25%;"><a href="sql-transformer.html">ft_sql_transformer</a></td>
+<td>Feature Transformation - SQLTransformer</td></tr>
+<tr><td style="width: 25%;"><a href="ft_standard_scaler.html">ft_standard_scaler</a></td>
+<td>Feature Tranformation - StandardScaler (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_stop_words_remover.html">ft_stop_words_remover</a></td>
-<td>Feature Tranformation - StopWordsRemover</td></tr>
+<td>Feature Tranformation - StopWordsRemover (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_string_indexer.html">ft_string_indexer</a></td>
-<td>Feature Transformation - StringIndexer</td></tr>
+<td>Feature Tranformation - StringIndexer (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_tokenizer.html">ft_tokenizer</a></td>
-<td>Feature Tranformation - Tokenizer</td></tr>
+<td>Feature Tranformation - Tokenizer (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_vector_assembler.html">ft_vector_assembler</a></td>
-<td>Feature Transformation - VectorAssembler</td></tr>
+<td>Feature Transformation - VectorAssembler (Transformer)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_vector_indexer.html">ft_vector_indexer</a></td>
+<td>Feature Tranformation - VectorIndexer (Estimator)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_vector_slicer.html">ft_vector_slicer</a></td>
+<td>Feature Transformation - VectorSlicer (Transformer)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_word2vec.html">ft_word2vec</a></td>
+<td>Feature Tranformation - Word2Vec (Estimator)</td></tr>
 </table>
 
 <h2><a name="G">-- G --</a></h2>
@@ -144,6 +188,10 @@
 <td>Invoke a Method on a JVM Object</td></tr>
 <tr><td style="width: 25%;"><a href="invoke.html">invoke_static</a></td>
 <td>Invoke a Method on a JVM Object</td></tr>
+<tr><td style="width: 25%;"><a href="ml-transform-methods.html">is_ml_estimator</a></td>
+<td>Spark ML - Transform, fit, and predict methods (ml_ interface)</td></tr>
+<tr><td style="width: 25%;"><a href="ml-transform-methods.html">is_ml_transformer</a></td>
+<td>Spark ML - Transform, fit, and predict methods (ml_ interface)</td></tr>
 </table>
 
 <h2><a name="J">-- J --</a></h2>
@@ -167,64 +215,152 @@
 <h2><a name="M">-- M --</a></h2>
 
 <table width="100%">
-<tr><td style="width: 25%;"><a href="ml_als_factorization.html">ml_als_factorization</a></td>
-<td>Spark ML - Alternating Least Squares (ALS) matrix factorization.</td></tr>
-<tr><td style="width: 25%;"><a href="ml_binary_classification_eval.html">ml_binary_classification_eval</a></td>
-<td>Spark ML - Binary Classification Evaluator</td></tr>
-<tr><td style="width: 25%;"><a href="ml_classification_eval.html">ml_classification_eval</a></td>
-<td>Spark ML - Classification Evaluator</td></tr>
-<tr><td style="width: 25%;"><a href="ml_create_dummy_variables.html">ml_create_dummy_variables</a></td>
-<td>Create Dummy Variables</td></tr>
+<tr><td style="width: 25%;"><a href="ml-params.html">ml-params</a></td>
+<td>Spark ML - ML Params</td></tr>
+<tr><td style="width: 25%;"><a href="ml-persistence.html">ml-persistence</a></td>
+<td>Spark ML - Model Persistence</td></tr>
+<tr><td style="width: 25%;"><a href="ml-transform-methods.html">ml-transform-methods</a></td>
+<td>Spark ML - Transform, fit, and predict methods (ml_ interface)</td></tr>
+<tr><td style="width: 25%;"><a href="ml-tuning.html">ml-tuning</a></td>
+<td>Spark ML - Tuning</td></tr>
+<tr><td style="width: 25%;"><a href="ml_aft_survival_regression.html">ml_aft_survival_regression</a></td>
+<td>Spark ML - Survival Regression</td></tr>
+<tr><td style="width: 25%;"><a href="ml_als.html">ml_als</a></td>
+<td>Spark ML - ALS</td></tr>
+<tr><td style="width: 25%;"><a href="ml_als.html">ml_als_factorization</a></td>
+<td>Spark ML - ALS</td></tr>
+<tr><td style="width: 25%;"><a href="ft_lsh_utils.html">ml_approx_nearest_neighbors</a></td>
+<td>Utility functions for LSH models</td></tr>
+<tr><td style="width: 25%;"><a href="ft_lsh_utils.html">ml_approx_similarity_join</a></td>
+<td>Utility functions for LSH models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_fpgrowth.html">ml_association_rules</a></td>
+<td>Frequent Pattern Mining - FPGrowth</td></tr>
+<tr><td style="width: 25%;"><a href="ml_evaluator.html">ml_binary_classification_eval</a></td>
+<td>Spark ML - Evaluators</td></tr>
+<tr><td style="width: 25%;"><a href="ml_evaluator.html">ml_binary_classification_evaluator</a></td>
+<td>Spark ML - Evaluators</td></tr>
+<tr><td style="width: 25%;"><a href="ml_bisecting_kmeans.html">ml_bisecting_kmeans</a></td>
+<td>Spark ML - Bisecting K-Means Clustering</td></tr>
+<tr><td style="width: 25%;"><a href="ml_evaluator.html">ml_classification_eval</a></td>
+<td>Spark ML - Evaluators</td></tr>
+<tr><td style="width: 25%;"><a href="ml_kmeans.html">ml_compute_cost</a></td>
+<td>Spark ML - K-Means Clustering</td></tr>
+<tr><td style="width: 25%;"><a href="ml-tuning.html">ml_cross_validator</a></td>
+<td>Spark ML - Tuning</td></tr>
 <tr><td style="width: 25%;"><a href="ml_decision_tree.html">ml_decision_tree</a></td>
 <td>Spark ML - Decision Trees</td></tr>
+<tr><td style="width: 25%;"><a href="ml_decision_tree.html">ml_decision_tree_classifier</a></td>
+<td>Spark ML - Decision Trees</td></tr>
+<tr><td style="width: 25%;"><a href="ml_decision_tree.html">ml_decision_tree_regressor</a></td>
+<td>Spark ML - Decision Trees</td></tr>
+<tr><td style="width: 25%;"><a href="ml_default_stop_words.html">ml_default_stop_words</a></td>
+<td>Default stop words</td></tr>
+<tr><td style="width: 25%;"><a href="ml_lda.html">ml_describe_topics</a></td>
+<td>Spark ML - Latent Dirichlet Allocation</td></tr>
+<tr><td style="width: 25%;"><a href="ml_evaluate.html">ml_evaluate</a></td>
+<td>Spark ML - Evaluate prediction frames with evaluators</td></tr>
+<tr><td style="width: 25%;"><a href="ml_evaluator.html">ml_evaluator</a></td>
+<td>Spark ML - Evaluators</td></tr>
+<tr><td style="width: 25%;"><a href="ft_word2vec.html">ml_find_synonyms</a></td>
+<td>Feature Tranformation - Word2Vec (Estimator)</td></tr>
+<tr><td style="width: 25%;"><a href="ml-transform-methods.html">ml_fit</a></td>
+<td>Spark ML - Transform, fit, and predict methods (ml_ interface)</td></tr>
+<tr><td style="width: 25%;"><a href="ml-transform-methods.html">ml_fit_and_transform</a></td>
+<td>Spark ML - Transform, fit, and predict methods (ml_ interface)</td></tr>
+<tr><td style="width: 25%;"><a href="ml_fpgrowth.html">ml_fpgrowth</a></td>
+<td>Frequent Pattern Mining - FPGrowth</td></tr>
+<tr><td style="width: 25%;"><a href="ml_fpgrowth.html">ml_freq_itemsets</a></td>
+<td>Frequent Pattern Mining - FPGrowth</td></tr>
+<tr><td style="width: 25%;"><a href="ml_gaussian_mixture.html">ml_gaussian_mixture</a></td>
+<td>Spark ML - Gaussian Mixture clustering.</td></tr>
+<tr><td style="width: 25%;"><a href="ml_gradient_boosted_trees.html">ml_gbt_classifier</a></td>
+<td>Spark ML - Gradient Boosted Trees</td></tr>
+<tr><td style="width: 25%;"><a href="ml_gradient_boosted_trees.html">ml_gbt_regressor</a></td>
+<td>Spark ML - Gradient Boosted Trees</td></tr>
 <tr><td style="width: 25%;"><a href="ml_generalized_linear_regression.html">ml_generalized_linear_regression</a></td>
 <td>Spark ML - Generalized Linear Regression</td></tr>
 <tr><td style="width: 25%;"><a href="ml_glm_tidiers.html">ml_glm_tidiers</a></td>
 <td>Tidying methods for Spark ML linear models</td></tr>
 <tr><td style="width: 25%;"><a href="ml_gradient_boosted_trees.html">ml_gradient_boosted_trees</a></td>
-<td>Spark ML - Gradient-Boosted Tree</td></tr>
+<td>Spark ML - Gradient Boosted Trees</td></tr>
+<tr><td style="width: 25%;"><a href="ml_isotonic_regression.html">ml_isotonic_regression</a></td>
+<td>Spark ML - Isotonic Regression</td></tr>
+<tr><td style="width: 25%;"><a href="ml-params.html">ml_is_set</a></td>
+<td>Spark ML - ML Params</td></tr>
 <tr><td style="width: 25%;"><a href="ml_kmeans.html">ml_kmeans</a></td>
 <td>Spark ML - K-Means Clustering</td></tr>
+<tr><td style="width: 25%;"><a href="ft_string_indexer.html">ml_labels</a></td>
+<td>Feature Tranformation - StringIndexer (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ml_lda.html">ml_lda</a></td>
 <td>Spark ML - Latent Dirichlet Allocation</td></tr>
 <tr><td style="width: 25%;"><a href="ml_linear_regression.html">ml_linear_regression</a></td>
 <td>Spark ML - Linear Regression</td></tr>
-<tr><td style="width: 25%;"><a href="ml_saveload.html">ml_load</a></td>
-<td>Save / Load a Spark ML Model Fit</td></tr>
+<tr><td style="width: 25%;"><a href="ml_linear_svc.html">ml_linear_svc</a></td>
+<td>Spark ML - LinearSVC</td></tr>
+<tr><td style="width: 25%;"><a href="ml-persistence.html">ml_load</a></td>
+<td>Spark ML - Model Persistence</td></tr>
 <tr><td style="width: 25%;"><a href="ml_logistic_regression.html">ml_logistic_regression</a></td>
 <td>Spark ML - Logistic Regression</td></tr>
-<tr><td style="width: 25%;"><a href="ml_model.html">ml_model</a></td>
-<td>Create an ML Model Object</td></tr>
+<tr><td style="width: 25%;"><a href="ml_lda.html">ml_log_likelihood</a></td>
+<td>Spark ML - Latent Dirichlet Allocation</td></tr>
+<tr><td style="width: 25%;"><a href="ml_lda.html">ml_log_perplexity</a></td>
+<td>Spark ML - Latent Dirichlet Allocation</td></tr>
 <tr><td style="width: 25%;"><a href="ml_model_data.html">ml_model_data</a></td>
 <td>Extracts data associated with a Spark ML model</td></tr>
-<tr><td style="width: 25%;"><a href="ml_multilayer_perceptron.html">ml_multilayer_perceptron</a></td>
+<tr><td style="width: 25%;"><a href="ml_evaluator.html">ml_multiclass_classification_evaluator</a></td>
+<td>Spark ML - Evaluators</td></tr>
+<tr><td style="width: 25%;"><a href="ml_multilayer_perceptron_classifier.html">ml_multilayer_perceptron</a></td>
+<td>Spark ML - Multilayer Perceptron</td></tr>
+<tr><td style="width: 25%;"><a href="ml_multilayer_perceptron_classifier.html">ml_multilayer_perceptron_classifier</a></td>
 <td>Spark ML - Multilayer Perceptron</td></tr>
 <tr><td style="width: 25%;"><a href="ml_naive_bayes.html">ml_naive_bayes</a></td>
 <td>Spark ML - Naive-Bayes</td></tr>
 <tr><td style="width: 25%;"><a href="ml_one_vs_rest.html">ml_one_vs_rest</a></td>
-<td>Spark ML - One vs Rest</td></tr>
-<tr><td style="width: 25%;"><a href="ml_options.html">ml_options</a></td>
-<td>Options for Spark ML Routines</td></tr>
-<tr><td style="width: 25%;"><a href="ml_pca.html">ml_pca</a></td>
-<td>Spark ML - Principal Components Analysis</td></tr>
-<tr><td style="width: 25%;"><a href="ml_prepare_dataframe.html">ml_prepare_dataframe</a></td>
-<td>Prepare a Spark DataFrame for Spark ML Routines</td></tr>
-<tr><td style="width: 25%;"><a href="ml_prepare_inputs.html">ml_prepare_features</a></td>
-<td>Pre-process the Inputs to a Spark ML Routine</td></tr>
-<tr><td style="width: 25%;"><a href="ml_prepare_inputs.html">ml_prepare_inputs</a></td>
-<td>Pre-process the Inputs to a Spark ML Routine</td></tr>
-<tr><td style="width: 25%;"><a href="ml_prepare_inputs.html">ml_prepare_response_features_intercept</a></td>
-<td>Pre-process the Inputs to a Spark ML Routine</td></tr>
+<td>Spark ML - OneVsRest</td></tr>
+<tr><td style="width: 25%;"><a href="ml-params.html">ml_param</a></td>
+<td>Spark ML - ML Params</td></tr>
+<tr><td style="width: 25%;"><a href="ml-params.html">ml_params</a></td>
+<td>Spark ML - ML Params</td></tr>
+<tr><td style="width: 25%;"><a href="ml-params.html">ml_param_map</a></td>
+<td>Spark ML - ML Params</td></tr>
+<tr><td style="width: 25%;"><a href="ft_pca.html">ml_pca</a></td>
+<td>Feature Tranformation - PCA (Estimator)</td></tr>
+<tr><td style="width: 25%;"><a href="ml_pipeline.html">ml_pipeline</a></td>
+<td>Spark ML - Pipelines</td></tr>
+<tr><td style="width: 25%;"><a href="ml-transform-methods.html">ml_predict</a></td>
+<td>Spark ML - Transform, fit, and predict methods (ml_ interface)</td></tr>
+<tr><td style="width: 25%;"><a href="ml-transform-methods.html">ml_predict.ml_model_classification</a></td>
+<td>Spark ML - Transform, fit, and predict methods (ml_ interface)</td></tr>
 <tr><td style="width: 25%;"><a href="ml_random_forest.html">ml_random_forest</a></td>
-<td>Spark ML - Random Forests</td></tr>
-<tr><td style="width: 25%;"><a href="ml_saveload.html">ml_save</a></td>
-<td>Save / Load a Spark ML Model Fit</td></tr>
-<tr><td style="width: 25%;"><a href="ml_saveload.html">ml_saveload</a></td>
-<td>Save / Load a Spark ML Model Fit</td></tr>
-<tr><td style="width: 25%;"><a href="ml_survival_regression.html">ml_survival_regression</a></td>
+<td>Spark ML - Random Forest</td></tr>
+<tr><td style="width: 25%;"><a href="ml_random_forest.html">ml_random_forest_classifier</a></td>
+<td>Spark ML - Random Forest</td></tr>
+<tr><td style="width: 25%;"><a href="ml_random_forest.html">ml_random_forest_regressor</a></td>
+<td>Spark ML - Random Forest</td></tr>
+<tr><td style="width: 25%;"><a href="ml_als.html">ml_recommend</a></td>
+<td>Spark ML - ALS</td></tr>
+<tr><td style="width: 25%;"><a href="ml_evaluator.html">ml_regression_evaluator</a></td>
+<td>Spark ML - Evaluators</td></tr>
+<tr><td style="width: 25%;"><a href="ml-persistence.html">ml_save</a></td>
+<td>Spark ML - Model Persistence</td></tr>
+<tr><td style="width: 25%;"><a href="ml-persistence.html">ml_save.ml_model</a></td>
+<td>Spark ML - Model Persistence</td></tr>
+<tr><td style="width: 25%;"><a href="ml_stage.html">ml_stage</a></td>
+<td>Spark ML - Pipeline stage extraction</td></tr>
+<tr><td style="width: 25%;"><a href="ml_stage.html">ml_stages</a></td>
+<td>Spark ML - Pipeline stage extraction</td></tr>
+<tr><td style="width: 25%;"><a href="ml_summary.html">ml_summary</a></td>
+<td>Spark ML - Extraction of summary metrics</td></tr>
+<tr><td style="width: 25%;"><a href="ml_aft_survival_regression.html">ml_survival_regression</a></td>
 <td>Spark ML - Survival Regression</td></tr>
+<tr><td style="width: 25%;"><a href="ml-tuning.html">ml_train_validation_split</a></td>
+<td>Spark ML - Tuning</td></tr>
+<tr><td style="width: 25%;"><a href="ml-transform-methods.html">ml_transform</a></td>
+<td>Spark ML - Transform, fit, and predict methods (ml_ interface)</td></tr>
 <tr><td style="width: 25%;"><a href="ml_tree_feature_importance.html">ml_tree_feature_importance</a></td>
 <td>Spark ML - Feature Importance for Tree Models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_uid.html">ml_uid</a></td>
+<td>Spark ML - UID</td></tr>
 </table>
 
 <h2><a name="N">-- N --</a></h2>
@@ -237,6 +373,8 @@
 <h2><a name="R">-- R --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="random_string.html">random_string</a></td>
+<td>Random string generation</td></tr>
 <tr><td style="width: 25%;"><a href="register_extension.html">registered_extensions</a></td>
 <td>Register a Package that Implements a Spark Extension</td></tr>
 <tr><td style="width: 25%;"><a href="register_extension.html">register_extension</a></td>
@@ -248,6 +386,8 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="sdf-saveload.html">sdf-saveload</a></td>
 <td>Save / Load a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="sdf-transform-methods.html">sdf-transform-methods</a></td>
+<td>Spark ML - Transform, fit, and predict methods (sdf_ interface)</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_along.html">sdf_along</a></td>
 <td>Create DataFrame for along Object</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_bind.html">sdf_bind</a></td>
@@ -264,8 +404,14 @@
 <td>Coalesces a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_copy_to.html">sdf_copy_to</a></td>
 <td>Copy an Object into Spark</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_describe.html">sdf_describe</a></td>
+<td>Compute summary statistics for columns of a data frame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_dim.html">sdf_dim</a></td>
 <td>Support for Dimension Operations</td></tr>
+<tr><td style="width: 25%;"><a href="sdf-transform-methods.html">sdf_fit</a></td>
+<td>Spark ML - Transform, fit, and predict methods (sdf_ interface)</td></tr>
+<tr><td style="width: 25%;"><a href="sdf-transform-methods.html">sdf_fit_and_transform</a></td>
+<td>Spark ML - Transform, fit, and predict methods (sdf_ interface)</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_copy_to.html">sdf_import</a></td>
 <td>Copy an Object into Spark</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_last_index.html">sdf_last_index</a></td>
@@ -292,8 +438,8 @@
 <td>Persist a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_pivot.html">sdf_pivot</a></td>
 <td>Pivot a Spark DataFrame</td></tr>
-<tr><td style="width: 25%;"><a href="sdf_predict.html">sdf_predict</a></td>
-<td>Model Predictions with Spark DataFrames</td></tr>
+<tr><td style="width: 25%;"><a href="sdf-transform-methods.html">sdf_predict</a></td>
+<td>Spark ML - Transform, fit, and predict methods (sdf_ interface)</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_project.html">sdf_project</a></td>
 <td>Project features onto principal components</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_quantile.html">sdf_quantile</a></td>
@@ -324,6 +470,8 @@
 <td>Create DataFrame for Range</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_sort.html">sdf_sort</a></td>
 <td>Sort a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="sdf-transform-methods.html">sdf_transform</a></td>
+<td>Spark ML - Transform, fit, and predict methods (sdf_ interface)</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_with_sequential_id.html">sdf_with_sequential_id</a></td>
 <td>Add a Sequential ID Column to a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_with_unique_id.html">sdf_with_unique_id</a></td>
@@ -337,7 +485,7 @@
 <tr><td style="width: 25%;"><a href="spark_apply_bundle.html">spark_apply_bundle</a></td>
 <td>Create Bundle for Spark Apply</td></tr>
 <tr><td style="width: 25%;"><a href="spark_apply_log.html">spark_apply_log</a></td>
-<td>Log Writter for Spark Apply</td></tr>
+<td>Log Writer for Spark Apply</td></tr>
 <tr><td style="width: 25%;"><a href="spark_compilation_spec.html">spark_compilation_spec</a></td>
 <td>Define a Spark Compilation Specification</td></tr>
 <tr><td style="width: 25%;"><a href="spark_config.html">spark_config</a></td>
@@ -380,6 +528,8 @@
 <td>Read from JDBC connection into a Spark DataFrame.</td></tr>
 <tr><td style="width: 25%;"><a href="spark_read_json.html">spark_read_json</a></td>
 <td>Read a JSON file into a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="spark_read_libsvm.html">spark_read_libsvm</a></td>
+<td>Read libsvm file into a Spark DataFrame.</td></tr>
 <tr><td style="width: 25%;"><a href="spark_read_parquet.html">spark_read_parquet</a></td>
 <td>Read a Parquet file into a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="spark_read_source.html">spark_read_source</a></td>

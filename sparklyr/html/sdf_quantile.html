@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Compute (Approximate) Quantiles with a Spark DataFrame</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sdf_quantile {sparklyr}"><tr><td>sdf_quantile {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Compute (Approximate) Quantiles with a Spark DataFrame</h2>
+
+<h3>Description</h3>
+
+<p>Given a numeric column within a Spark DataFrame, compute
+approximate quantiles (to some relative error).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sdf_quantile(x, column, probabilities = c(0, 0.25, 0.5, 0.75, 1),
+  relative.error = 1e-05)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code>spark_connection</code>, <code>ml_pipeline</code>, or a <code>tbl_spark</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>column</code></td>
+<td>
+<p>The column for which quantiles should be computed.</p>
+</td></tr>
+<tr valign="top"><td><code>probabilities</code></td>
+<td>
+<p>A numeric vector of probabilities, for
+which quantiles should be computed.</p>
+</td></tr>
+<tr valign="top"><td><code>relative.error</code></td>
+<td>
+<p>The relative error &ndash; lower values imply more
+precision in the computed quantiles.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

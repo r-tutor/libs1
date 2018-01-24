@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Model Residuals</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sdf_residuals.ml_model_generalized_linear_regression {sparklyr}"><tr><td>sdf_residuals.ml_model_generalized_linear_regression {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Model Residuals</h2>
+
+<h3>Description</h3>
+
+<p>This generic method returns a Spark DataFrame with model
+residuals added as a column to the model training data.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'ml_model_generalized_linear_regression'
+sdf_residuals(object,
+  type = c("deviance", "pearson", "working", "response"), ...)
+
+## S3 method for class 'ml_model_linear_regression'
+sdf_residuals(object, ...)
+
+sdf_residuals(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>Spark ML model object.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>type of residuals which should be returned.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional arguments</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,5 +1,5 @@
-#ifndef STAN_MATH_REV_MAT_FUN_TRACE_QUAD_FORM_HPP
-#define STAN_MATH_REV_MAT_FUN_TRACE_QUAD_FORM_HPP
+#ifndef STaN_MATH_REV_MAT_FUN_TRaCE_QUAD_FORM_HPP
+#define STaN_MATH_REV_MAT_FUN_TRaCE_QUAD_FORM_HPP
 
 #include <boost/utility/enable_if.hpp>
 #include <boost/type_traits.hpp>
@@ -16,11 +16,11 @@
 namespace stan {
   namespace math {
     namespace {
-      template <typename TA, int RA, int CA, typename TB, int RB, int CB>
+      template <typename Ta, int Ra, int Ca, typename Tb, int Rb, int Cb>
       class trace_quad_form_vari_alloc : public chainable_alloc {
       public:
-        trace_quad_form_vari_alloc(const Eigen::Matrix<TA, RA, CA>& A,
-                                   const Eigen::Matrix<TB, RB, CB>& B)
+        trace_quad_form_vari_alloc(const Eigen::Matrix<Ta, Ra, Ca>& A,
+                                   const Eigen::Matrix<Tb, Rb, Cb>& B)
           : A_(A), B_(B)
         { }
 
@@ -29,43 +29,43 @@ namespace stan {
                                  value_of(B_));
         }
 
-        Eigen::Matrix<TA, RA, CA>  A_;
-        Eigen::Matrix<TB, RB, CB>  B_;
+        Eigen::Matrix<Ta, Ra, Ca>  A_;
+        Eigen::Matrix<Tb, Rb, Cb>  B_;
       };
 
-      template <typename TA, int RA, int CA, typename TB, int RB, int CB>
+      template <typename Ta, int Ra, int Ca, typename Tb, int Rb, int Cb>
       class trace_quad_form_vari : public vari {
       protected:
-        static inline void chainA(Eigen::Matrix<double, RA, CA>& A,
-                                  const Eigen::Matrix<double, RB, CB>& Bd,
+        static inline void chainA(Eigen::Matrix<double, Ra, Ca>& A,
+                                  const Eigen::Matrix<double, Rb, Cb>& Bd,
                                   double adjC) {}
-        static inline void chainB(Eigen::Matrix<double, RB, CB>& B,
-                                  const Eigen::Matrix<double, RA, CA>& Ad,
-                                  const Eigen::Matrix<double, RB, CB>& Bd,
+        static inline void chainB(Eigen::Matrix<double, Rb, Cb>& B,
+                                  const Eigen::Matrix<double, Ra, Ca>& Ad,
+                                  const Eigen::Matrix<double, Rb, Cb>& Bd,
                                   double adjC) {}
 
-        static inline void chainA(Eigen::Matrix<var, RA, CA>& A,
-                                  const Eigen::Matrix<double, RB, CB>& Bd,
+        static inline void chainA(Eigen::Matrix<var, Ra, Ca>& A,
+                                  const Eigen::Matrix<double, Rb, Cb>& Bd,
                                   double adjC) {
-          Eigen::Matrix<double, RA, CA>     adjA(adjC*Bd*Bd.transpose());
+          Eigen::Matrix<double, Ra, Ca>     adjA(adjC*Bd*Bd.transpose());
           for (int j = 0; j < A.cols(); j++)
             for (int i = 0; i < A.rows(); i++)
               A(i, j).vi_->adj_ += adjA(i, j);
         }
-        static inline void chainB(Eigen::Matrix<var, RB, CB>& B,
-                                  const Eigen::Matrix<double, RA, CA>& Ad,
-                                  const Eigen::Matrix<double, RB, CB>& Bd,
+        static inline void chainB(Eigen::Matrix<var, Rb, Cb>& B,
+                                  const Eigen::Matrix<double, Ra, Ca>& Ad,
+                                  const Eigen::Matrix<double, Rb, Cb>& Bd,
                                   double adjC) {
-          Eigen::Matrix<double, RA, CA>     adjB(adjC*(Ad + Ad.transpose())*Bd);
+          Eigen::Matrix<double, Ra, Ca>     adjB(adjC*(Ad + Ad.transpose())*Bd);
           for (int j = 0; j < B.cols(); j++)
             for (int i = 0; i < B.rows(); i++)
               B(i, j).vi_->adj_ += adjB(i, j);
         }
 
-        inline void chainAB(Eigen::Matrix<TA, RA, CA>& A,
-                            Eigen::Matrix<TB, RB, CB>& B,
-                            const Eigen::Matrix<double, RA, CA>& Ad,
-                            const Eigen::Matrix<double, RB, CB>& Bd,
+        inline void chainAB(Eigen::Matrix<Ta, Ra, Ca>& A,
+                            Eigen::Matrix<Tb, Rb, Cb>& B,
+                            const Eigen::Matrix<double, Ra, Ca>& Ad,
+                            const Eigen::Matrix<double, Rb, Cb>& Bd,
                             double adjC) {
           chainA(A, Bd, adjC);
           chainB(B, Ad, Bd, adjC);
@@ -74,7 +74,7 @@ namespace stan {
       public:
         explicit
         trace_quad_form_vari
-        (trace_quad_form_vari_alloc<TA, RA, CA, TB, RB, CB> *impl)
+        (trace_quad_form_vari_alloc<Ta, Ra, Ca, Tb, Rb, Cb> *impl)
           : vari(impl->compute()), impl_(impl) { }
 
         virtual void chain() {
@@ -83,26 +83,26 @@ namespace stan {
                   adj_);
         }
 
-        trace_quad_form_vari_alloc<TA, RA, CA, TB, RB, CB> *impl_;
+        trace_quad_form_vari_alloc<Ta, Ra, Ca, Tb, Rb, Cb> *impl_;
       };
     }
 
-    template <typename TA, int RA, int CA, typename TB, int RB, int CB>
+    template <typename Ta, int Ra, int Ca, typename Tb, int Rb, int Cb>
     inline typename
-    boost::enable_if_c< boost::is_same<TA, var>::value ||
-    boost::is_same<TB, var>::value,
+    boost::enable_if_c< boost::is_same<Ta, var>::value ||
+    boost::is_same<Tb, var>::value,
                         var >::type
-      trace_quad_form(const Eigen::Matrix<TA, RA, CA>& A,
-                      const Eigen::Matrix<TB, RB, CB>& B) {
+      trace_quad_form(const Eigen::Matrix<Ta, Ra, Ca>& A,
+                      const Eigen::Matrix<Tb, Rb, Cb>& B) {
       check_square("trace_quad_form", "A", A);
       check_multiplicable("trace_quad_form",
                           "A", A,
                           "B", B);
 
-      trace_quad_form_vari_alloc<TA, RA, CA, TB, RB, CB> *baseVari
-        = new trace_quad_form_vari_alloc<TA, RA, CA, TB, RB, CB>(A, B);
+      trace_quad_form_vari_alloc<Ta, Ra, Ca, Tb, Rb, Cb> *baseVari
+        = new trace_quad_form_vari_alloc<Ta, Ra, Ca, Tb, Rb, Cb>(A, B);
 
-      return var(new trace_quad_form_vari<TA, RA, CA, TB, RB, CB>(baseVari));
+      return var(new trace_quad_form_vari<Ta, Ra, Ca, Tb, Rb, Cb>(baseVari));
     }
 
   }
