@@ -20,7 +20,7 @@ of how to check for whole numbers.
 <h3>Usage</h3>
 
 <pre>
-is_integerish(x, n = NULL)
+is_integerish(x, n = NULL, finite = TRUE)
 
 is_bare_integerish(x, n = NULL)
 
@@ -39,6 +39,11 @@ is_scalar_integerish(x)
 <td>
 <p>Expected length of a vector.</p>
 </td></tr>
+<tr valign="top"><td><code>finite</code></td>
+<td>
+<p>Whether values must be finite. Examples of non-finite
+values are <code>Inf</code>, <code>-Inf</code> and <code>NaN</code>.</p>
+</td></tr>
 </table>
 
 
@@ -54,9 +59,10 @@ base numeric type (a bare double or integer vector).
 <pre>
 is_integerish(10L)
 is_integerish(10.0)
+is_integerish(10.0, n = 2)
 is_integerish(10.000001)
 is_integerish(TRUE)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6.9003 <a href="00Index.html">Index</a>]</div>
 </body></html>
