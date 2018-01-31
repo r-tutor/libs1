@@ -9,9 +9,26 @@
 
 <h3>Description</h3>
 
-<p>This pronoun is installed by functions performing <a href="eval_tidy.html">tidy
-evaluation</a>. It allows you to refer to overscoped data
-explicitly.
+<p>This pronoun allows you to be explicit when you refer to an object
+inside the data. Referring to the <code>.data</code> pronoun rather than to
+the original data frame has several advantages:
+</p>
+
+<ul>
+<li><p> Sometimes a computation is not about the whole data but about a
+subset. For example if you supply a grouped data frame to a dplyr
+verb, the <code>.data</code> pronoun contains the group subset.
+</p>
+</li>
+<li><p> It lets dplyr know that you're referring to a column from the
+data which is helpful to generate correct queries when the source
+is a database.
+</p>
+</li></ul>
+
+<p>The <code>.data</code> object exported here is useful to import in your
+package namespace to avoid a <code>R CMD check</code> note when referring to
+objects from the data mask.
 </p>
 
 
@@ -24,21 +41,7 @@ explicitly.
 
 <h3>Format</h3>
 
-<p>An object of class <code>dictionary</code> of length 0.</p>
+<p>An object of class <code>rlang_data_pronoun</code> of length 0.</p>
 
-
-<h3>Details</h3>
-
-<p>You can import this object in your package namespace to avoid <code>R CMD check</code> errors when referring to overscoped objects.
-</p>
-
-
-<h3>Examples</h3>
-
-<pre>
-quo &lt;- quo(.data$foo)
-eval_tidy(quo, list(foo = "bar"))
-</pre>
-
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6.9003 <a href="00Index.html">Index</a>]</div>
 </body></html>
