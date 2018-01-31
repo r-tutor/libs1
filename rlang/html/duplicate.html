@@ -13,8 +13,8 @@
 modifying the copy leaves the original object intact. Since,
 copying data in memory is an expensive operation, copies in R are
 as lazy as possible. They only happen when the new object is
-actually modified. However, some operations (like <code><a href="pairlist.html">mut_node_car()</a></code>
-or <code><a href="pairlist.html">mut_node_cdr()</a></code>) do not support copy-on-write. In those cases,
+actually modified. However, some operations (like <code><a href="node.html">node_poke_car()</a></code>
+or <code><a href="node.html">node_poke_cdr()</a></code>) do not support copy-on-write. In those cases,
 it is necessary to duplicate the object manually in order to
 preserve copy-by-value semantics.
 </p>
@@ -57,5 +57,5 @@ still the same.</p>
 <p>pairlist
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6.9003 <a href="00Index.html">Index</a>]</div>
 </body></html>
