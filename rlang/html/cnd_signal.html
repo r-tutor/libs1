@@ -23,9 +23,13 @@ condition.
 <h3>Usage</h3>
 
 <pre>
-cnd_signal(.cnd, ..., .msg = NULL, .call = FALSE, .mufflable = TRUE)
+cnd_signal(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = TRUE)
 
-cnd_abort(.cnd, ..., .msg = NULL, .call = FALSE, .mufflable = FALSE)
+cnd_inform(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = FALSE)
+
+cnd_warn(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = FALSE)
+
+cnd_abort(.cnd, ..., .msg = NULL, .call = NULL, .mufflable = FALSE)
 </pre>
 
 
@@ -34,7 +38,7 @@ cnd_abort(.cnd, ..., .msg = NULL, .call = FALSE, .mufflable = FALSE)
 <table summary="R argblock">
 <tr valign="top"><td><code>.cnd</code></td>
 <td>
-<p>Either a condition object (see <code><a href="new_cnd.html">new_cnd()</a></code>), or the
+<p>Either a condition object (see <code><a href="cnd.html">cnd()</a></code>), or the
 name of a s3 class from which a new condition will be created.</p>
 </td></tr>
 <tr valign="top"><td><code>...</code></td>
@@ -52,8 +56,11 @@ splicing</a>.</p>
 <p>Whether to display the call of the frame in which the
 condition is signalled. If <code>TRUE</code>, the call is stored in the
 <code>call</code> field of the condition object: this field is displayed by
-R when an error is issued. The call information is also stored in
-the <code>.call</code> field in all cases.</p>
+R when an error is issued. If a number <code>n</code>, the call is taken
+from the nth frame on the <a href="stack.html">call stack</a>. If <code>NULL</code>,
+the call is taken from the <code>.call</code> field that was supplied to the
+condition constructor (e.g. <code><a href="cnd.html">cnd()</a></code>). In all cases the <code>.call</code>
+field is updated with the actual call.</p>
 </td></tr>
 <tr valign="top"><td><code>.mufflable</code></td>
 <td>
@@ -106,7 +113,7 @@ handlers.
 
 <pre>
 # Creating a condition of type "foo"
-cnd &lt;- new_cnd("foo")
+cnd &lt;- cnd("foo")
 
 # If no handler capable of dealing with "foo" is established on the
 # stack, signalling the condition has no effect:
@@ -135,6 +142,14 @@ with_handlers(foo = undesirable_handler,
   }))
 
 
+# cnd_warn() and cnd_inform() signal a condition and display a
+# warning or message:
+## Not run: 
+cnd_inform(cnd)
+cnd_warn(cnd)
+
+## End(Not run)
+
 # You can signal a critical condition with cnd_abort(). Unlike
 # cnd_signal() which has no side effect besides signalling the
 # condition, cnd_abort() makes the program terminate with an error
@@ -145,10 +160,10 @@ cnd_abort(cnd)
 ## End(Not run)
 
 # If you don't specify a .msg or .call, the default message/call
-# (supplied to new_cnd()) are displayed. Otherwise, the ones
+# (supplied to cnd()) are displayed. Otherwise, the ones
 # supplied to cnd_abort() and cnd_signal() take precedence:
 ## Not run: 
-critical &lt;- new_cnd("my_error",
+critical &lt;- cnd("my_error",
   .msg = "default 'my_error' msg",
   .call = quote(default(call))
 )
@@ -168,5 +183,5 @@ fn(arg = foo(bar))
 # condition.
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6.9003 <a href="00Index.html">Index</a>]</div>
 </body></html>
