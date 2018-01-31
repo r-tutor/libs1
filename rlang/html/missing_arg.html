@@ -10,15 +10,24 @@
 <h3>Description</h3>
 
 <p>These functions help using the missing argument as a regular R
-object. It is valid to generate a missing argument and assign it in
-the current environment or in a list. However, once assigned in the
-environment, the missing argument normally cannot be touched.
-<code>maybe_missing()</code> checks whether the object is the missing
-argument, and regenerate it if needed to prevent R from throwing a
-missing error. In addition, <code>is_missing()</code> lets you check for a
-missing argument in a larger range of situations than
-<code><a href="../../base/html/missing.html">base::missing()</a></code> (see examples).
+object.
 </p>
+
+<ul>
+<li> <p><code>missing_arg()</code> generates a missing argument.
+</p>
+</li>
+<li> <p><code>is_missing()</code> is like <code><a href="../../base/html/missing.html">base::missing()</a></code> but also supports
+testing for missing arguments contained in other objects like
+lists.
+</p>
+</li>
+<li> <p><code>maybe_missing()</code> is useful to pass down an input that might be
+missing to another function. It avoids triggering an
+&quot;argument is missing&quot; error.
+</p>
+</li></ul>
+
 
 
 <h3>Usage</h3>
@@ -42,40 +51,109 @@ maybe_missing(x)
 </table>
 
 
+<h3>Other ways to reify the missing argument</h3>
+
+
+<ul>
+<li> <p><code>base::quote(expr = )</code> is the canonical way to create a missing
+argument object.
+</p>
+</li>
+<li> <p><code>expr()</code> called without argument creates a missing argument.
+</p>
+</li>
+<li> <p><code>quo()</code> called without argument creates an empty quosure, i.e. a
+quosure containing the missing argument object.
+</p>
+</li></ul>
+
+
+
+<h3>Fragility of the missing argument object</h3>
+
+<p>The missing argument is an object that triggers an error if and
+only if it is the result of evaluating a symbol. No error is
+produced when a function call evaluates to the missing argument
+object. This means that expressions like <code>x[[1]] &lt;- missing_arg()</code>
+are perfectly safe. Likewise, <code>x[[1]]</code> is safe even if the result
+is the missing object.
+</p>
+<p>However, as soon as the missing argument is passed down between
+functions through an argument, you're at risk of triggering a
+missing error. This is because arguments are passed through
+symbols. To work around this, <code>is_missing()</code> and <code>maybe_missing(x)</code>
+use a bit of magic to determine if the input is the missing
+argument without triggering a missing error.
+</p>
+<p><code>maybe_missing()</code> is particularly useful for prototyping
+meta-programming algorithm in R. The missing argument is a likely
+input when computing on the language because it is a standard
+object in formals lists. While C functions are always allowed to
+return the missing argument and pass it to other C functions, this
+is not the case on the R side. If you're implementing your
+meta-programming algorithm in R, use <code>maybe_missing()</code> when an
+input might be the missing argument object.
+</p>
+<p>[[1]: R:[1
+[[1]: R:[1
+</p>
+
+
+<h3>Life cycle</h3>
+
+
+<ul>
+<li> <p><code>missing_arg()</code> and <code>is_missing()</code> are stable.
+</p>
+</li>
+<li><p> Like the rest of rlang, <code>maybe_missing()</code> is maturing.
+</p>
+</li></ul>
+
+
+
 <h3>Examples</h3>
 
 <pre>
-# The missing argument can be useful to generate calls
-quo(f(x = !! missing_arg()))
-quo(f(x = !! NULL))
+# The missing argument usually arises inside a function when the
+# user omits an argument that does not have a default:
+fn &lt;- function(x) is_missing(x)
+fn()
 
+# Creating a missing argument can also be useful to generate calls
+args &lt;- list(1, missing_arg(), 3, missing_arg())
+quo(fn(!!! args))
+
+# Other ways to create that object include:
+quote(expr = )
+expr()
 
 # It is perfectly valid to generate and assign the missing
-# argument.
+# argument in a list.
 x &lt;- missing_arg()
 l &lt;- list(missing_arg())
 
-# Note that accessing a missing argument contained in a list does
-# not trigger an error:
+# Just don't evaluate a symbol that contains the empty argument.
+# Evaluating the object `x` that we created above would trigger an
+# error.
+# x  # Not run
+
+# On the other hand accessing a missing argument contained in a
+# list does not trigger an error because subsetting is a function
+# call:
 l[[1]]
 is.null(l[[1]])
 
-# But if the missing argument is assigned in the current
-# environment, it is no longer possible to touch it. The following
-# lines would all return errors:
-#&gt; x
-#&gt; is.null(x)
-
-# In these cases, you can use maybe_missing() to manipulate an
-# object that might be the missing argument without triggering a
-# missing error:
+# In case you really need to access a symbol that might contain the
+# empty argument object, use maybe_missing():
 maybe_missing(x)
 is.null(maybe_missing(x))
 is_missing(maybe_missing(x))
 
 
-# base::missing() does not work well if you supply an
-# expression. The following lines would throw an error:
+# Note that base::missing() only works on symbols and does not
+# support complex expressions. For this reason the following lines
+# would throw an error:
 
 #&gt; missing(missing_arg())
 #&gt; missing(l[[1]])
@@ -85,5 +163,5 @@ is_missing(missing_arg())
 is_missing(l[[1]])
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6.9003 <a href="00Index.html">Index</a>]</div>
 </body></html>
