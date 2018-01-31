@@ -33,7 +33,7 @@ get_expr(x, default = x)
 <table summary="R argblock">
 <tr valign="top"><td><code>x</code></td>
 <td>
-<p>An expression or one-sided formula. In addition,
+<p>An expression, closure, or one-sided formula. In addition,
 <code>set_expr()</code> accept frames.</p>
 </td></tr>
 <tr valign="top"><td><code>value</code></td>
@@ -55,6 +55,13 @@ expression for <code>get_expr()</code>.
 </p>
 
 
+<h3>See Also</h3>
+
+<p><code><a href="quosure.html">quo_get_expr()</a></code> and <code><a href="quosure.html">quo_set_expr()</a></code> for versions of
+<code><a href="set_expr.html">get_expr()</a></code> and <code><a href="set_expr.html">set_expr()</a></code> that only work on quosures.
+</p>
+
+
 <h3>Examples</h3>
 
 <pre>
@@ -70,5 +77,5 @@ set_expr(f, quote(baz))
 set_expr(e, quote(baz))
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6.9003 <a href="00Index.html">Index</a>]</div>
 </body></html>
