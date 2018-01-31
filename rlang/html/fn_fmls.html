@@ -25,6 +25,10 @@ fn_fmls(fn = caller_fn())
 fn_fmls_names(fn = caller_fn())
 
 fn_fmls_syms(fn = caller_fn())
+
+fn_fmls(fn) &lt;- value
+
+fn_fmls_names(fn) &lt;- value
 </pre>
 
 
@@ -36,6 +40,10 @@ fn_fmls_syms(fn = caller_fn())
 <p>A function. It is lookep up in the calling frame if not
 supplied.</p>
 </td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>New formals or formals names for <code>fn</code>.</p>
+</td></tr>
 </table>
 
 
@@ -45,11 +53,25 @@ supplied.</p>
 functions. See <code><a href="is_function.html">is_function()</a></code> for a discussion of primitive and
 closure functions.
 </p>
+<p>Note that the argument names are taken from the closures that are
+created when passing the primitive to <code><a href="as_function.html">as_closure()</a></code>. For instance,
+while the arguments of the primitive operator <code>+</code> are labelled <code>e1</code>
+and <code>e2</code>, <code>fn_fmls_names()</code> will return <code>.x</code> and <code>.y</code>. Note that
+for many primitives the base R argument names are purely
+placeholders since they don't perform regular argument matching.
+E.g. this returns <code>5</code> instead of <code>-5</code>:</p>
+<pre>`-`(e2 = 10, 5)
+</pre>
+<p>To regularise the semantics of primitive functions, it is usually a
+good idea to coerce them to a closure first:</p>
+<pre>minus &lt;- as_closure(`-`)
+minus(.y = 10, 5)
+</pre>
 
 
 <h3>See Also</h3>
 
-<p><code><a href="lang_args.html">lang_args()</a></code> and <code><a href="lang_args.html">lang_args_names()</a></code>
+<p><code><a href="call_args.html">call_args()</a></code> and <code><a href="call_args.html">call_args_names()</a></code>
 </p>
 
 
@@ -64,8 +86,15 @@ fn()
 fn_fmls(base::switch)
 
 # fn_fmls_syms() makes it easy to forward arguments:
-lang("apply", !!! fn_fmls_syms(lapply))
+call2("apply", !!! fn_fmls_syms(lapply))
+
+# You can also change the formals:
+fn_fmls(fn) &lt;- list(A = 10, B = 20)
+fn()
+
+fn_fmls_names(fn) &lt;- c("foo", "bar")
+fn()
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6.9003 <a href="00Index.html">Index</a>]</div>
 </body></html>
