@@ -51,6 +51,12 @@ more suited for experimenting with the R language.
 </p>
 
 
+<h3>Life cycle</h3>
+
+<p>These functions are experimental. Expect API changes.
+</p>
+
+
 <h3>Examples</h3>
 
 <pre>
@@ -76,13 +82,13 @@ g &lt;- function(env) {
 fn()
 
 
-# Since env is passed to as_env(), it can be any object with an
-# as_env() method. For strings, the pkg_env() is returned:
+# Since env is passed to as_environment(), it can be any object with an
+# as_environment() method. For strings, the pkg_env() is returned:
 with_env("base", ~mtcars)
 
 # This can be handy to put dictionaries in scope:
 with_env(mtcars, cyl)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6.9003 <a href="00Index.html">Index</a>]</div>
 </body></html>
