@@ -55,6 +55,25 @@ modified in place.
 </p>
 
 
+<h3>Life cycle</h3>
+
+<p>These functions are experimental, expect API changes.
+</p>
+
+<ul>
+<li> <p><code>set_attrs()</code> should probably set the attributes as a
+whole. Another function with <code>add_</code> prefix would be in charge of
+adding an attribute to the set.
+</p>
+</li>
+<li> <p><code>mut_attrs()</code> should be renamed to use the <code>poke_</code> prefix. Also
+it may be useful to allow any kind of objects, not just
+<a href="is_copyable.html">non-copyable</a> ones.
+</p>
+</li></ul>
+
+
+
 <h3>Examples</h3>
 
 <pre>
@@ -78,5 +97,5 @@ mut_attrs(env, foo = "bar")
 env
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6.9003 <a href="00Index.html">Index</a>]</div>
 </body></html>
