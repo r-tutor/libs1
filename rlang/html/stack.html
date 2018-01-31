@@ -79,16 +79,11 @@ stack.
 frame to query: <code>which</code> and <code>n</code>. The <code>n</code> argument is
 straightforward: it's the number of frames to go down the stack,
 with <code>n = 1</code> referring to the current context. The <code>which</code> argument
-is more complicated and changes meaning for values lower than
-</p>
-
-<ol>
-<li><p> For the sake of consistency, the lazyeval functions all take the
+is more complicated and changes meaning for values lower than 1.
+For the sake of consistency, the lazyeval functions all take the
 same kind of argument <code>n</code>. This argument has a single meaning (the
 number of frames to go down the stack) and cannot be lower than 1.
 </p>
-</li></ol>
-
 <p>Note finally that <code>parent.frame(1)</code> corresponds to
 <code>call_frame(2)$env</code>, as <code>n = 1</code> always refers to the current
 frame. This makes the <code>_frame()</code> and <code>_stack()</code> functions
@@ -101,6 +96,15 @@ frame as well. This way, <code>call_stack(call_depth())</code> is the same as
 </p>
 <p>[[2]: R:[2
 [base::sys.nframe()]: R:base::sys.nframe()
+</p>
+
+
+<h3>Life cycle</h3>
+
+<p>These functions are in the questioning stage. We are no longer
+convinced they belong in rlang as they are mostly for REPL
+interaction and runtime inspection rather than function
+development.
 </p>
 
 
@@ -168,5 +172,5 @@ g(2)
 g(3)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6.9003 <a href="00Index.html">Index</a>]</div>
 </body></html>
