@@ -25,6 +25,8 @@ environments).
 get_env(env = caller_env(), default = NULL)
 
 set_env(env, new_env = caller_env())
+
+env_poke_parent(env, new_env)
 </pre>
 
 
@@ -34,7 +36,7 @@ set_env(env, new_env = caller_env())
 <tr valign="top"><td><code>env</code></td>
 <td>
 <p>An environment or an object bundling an environment,
-e.g. a formula, <a href="quosure.html">quosure</a> or <a href="is_function.html">closure</a>.</p>
+e.g. a formula, <a href="quotation.html">quosure</a> or <a href="is_function.html">closure</a>.</p>
 </td></tr>
 <tr valign="top"><td><code>default</code></td>
 <td>
@@ -48,6 +50,24 @@ an error is issued.</p>
 object handled by <code>get_env()</code>.</p>
 </td></tr>
 </table>
+
+
+<h3>Details</h3>
+
+<p>While <code>set_env()</code> returns a modified copy and does not have side
+effects, <code>env_poke_parent()</code> operates changes the environment by
+side effect. This is because environments are
+<a href="is_copyable.html">uncopyable</a>. Be careful not to change environments
+that you don't own, e.g. a parent environment of a function from a
+package.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="quosure.html">quo_get_env()</a></code> and <code><a href="quosure.html">quo_set_env()</a></code> for versions of
+<code><a href="get_env.html">get_env()</a></code> and <code><a href="get_env.html">set_env()</a></code> that only work on quosures.
+</p>
 
 
 <h3>Examples</h3>
@@ -106,5 +126,5 @@ fn &lt;- set_env(fn, other_env)
 identical(get_env(fn), other_env)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6.9003 <a href="00Index.html">Index</a>]</div>
 </body></html>
