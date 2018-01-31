@@ -1,26 +1,18 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a dynamic scope for tidy evaluation</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create an overscope</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
 <table width="100%" summary="page for as_overscope {rlang}"><tr><td>as_overscope {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Create a dynamic scope for tidy evaluation</h2>
+<h2>Create an overscope</h2>
 
 <h3>Description</h3>
 
-<p>Tidy evaluation works by rescoping a set of symbols (column names
-of a data frame for example) to custom bindings. While doing this,
-it is important to keep the original environment of captured
-expressions in scope. The gist of tidy evaluation is to create a
-dynamic scope containing custom bindings that should have
-precedence when expressions are evaluated, and chain this scope
-(set of linked environments) to the lexical enclosure of formulas
-under evaluation. During tidy evaluation, formulas are transformed
-into formula-promises and will self-evaluate their RHS as soon as
-they are called. The main trick of tidyeval is to consistently
-rechain the dynamic scope to the lexical enclosure of each tidy
-quote under evaluation.
+<p>These functions have been soft-deprecated in rlang 0.2.0. Please
+use <code><a href="as_data_mask.html">as_data_mask()</a></code> and <code><a href="as_data_mask.html">new_data_mask()</a></code> instead. We no longer
+require the mask to be cleaned up so <code>overscope_clean()</code> does not
+have a replacement.
 </p>
 
 
@@ -31,8 +23,6 @@ as_overscope(quo, data = NULL)
 
 new_overscope(bottom, top = NULL, enclosure = base_env())
 
-overscope_eval_next(overscope, quo, env = base_env())
-
 overscope_clean(overscope)
 </pre>
 
@@ -42,127 +32,33 @@ overscope_clean(overscope)
 <table summary="R argblock">
 <tr valign="top"><td><code>quo</code></td>
 <td>
-<p>A <a href="quosure.html">quosure</a>.</p>
+<p>A <a href="quotation.html">quosure</a>.</p>
 </td></tr>
 <tr valign="top"><td><code>data</code></td>
 <td>
-<p>Additional data to put in scope.</p>
+<p>A data frame or named vector of masking data.</p>
 </td></tr>
 <tr valign="top"><td><code>bottom</code></td>
 <td>
-<p>This is the environment (or the bottom of a set of
-environments) containing definitions for overscoped symbols. The
-bottom environment typically contains pronouns (like <code>.data</code>)
-while its direct parents contain the overscoping bindings. The
-last one of these parents is the <code>top</code>.</p>
+<p>The environment containing masking objects if the
+data mask is one environment deep. The bottom environment if the
+data mask comprises multiple environment.</p>
 </td></tr>
 <tr valign="top"><td><code>top</code></td>
 <td>
-<p>The top environment of the overscope. During tidy
-evaluation, this environment is chained and rechained to lexical
-enclosures of self-evaluating formulas (or quosures). This is the
-mechanism that ensures hygienic scoping: the bindings in the
-overscope have precedence, but the bindings in the dynamic
-environment where the tidy quotes were created in the first place
-are in scope as well.</p>
+<p>The last environment of the data mask. If the data mask
+is only one environment deep, <code>top</code> should be the same as
+<code>bottom</code>.</p>
 </td></tr>
 <tr valign="top"><td><code>enclosure</code></td>
 <td>
-<p>The default enclosure. After a quosure is done
-self-evaluating, the overscope is rechained to the default
-enclosure.</p>
+<p>The <code>parent</code> argument of <code><a href="as_data_mask.html">new_data_mask()</a></code>.</p>
 </td></tr>
 <tr valign="top"><td><code>overscope</code></td>
 <td>
-<p>A valid overscope containing bindings for <code>~</code>,
-<code>.top_env</code> and <code>_F</code> and whose parents contain overscoped bindings
-for tidy evaluation.</p>
-</td></tr>
-<tr valign="top"><td><code>env</code></td>
-<td>
-<p>The lexical enclosure in case <code>quo</code> is not a validly
-scoped quosure. This is the <a href="scoped_env.html">base environment</a> by
-default.</p>
+<p>A data mask.</p>
 </td></tr>
 </table>
 
-
-<h3>Details</h3>
-
-<p>These functions are useful for embedding the tidy evaluation
-framework in your own DSLs with your own evaluating function. They
-let you create a custom dynamic scope. That is, a set of chained
-environments whose bottom serves as evaluation environment and
-whose top is rechained to the current lexical enclosure. But most
-of the time, you can just use <code><a href="eval_tidy_.html">eval_tidy_()</a></code> as it will take
-care of installing the tidyeval components in your custom dynamic
-scope.
-</p>
-
-<ul>
-<li> <p><code>as_overscope()</code> is the function that powers <code><a href="eval_tidy.html">eval_tidy()</a></code>. It
-could be useful if you cannot use <code>eval_tidy()</code> for some reason,
-but serves mostly as an example of how to build a dynamic scope
-for tidy evaluation. In this case, it creates pronouns <code>.data</code>
-and <code>.env</code> and buries all dynamic bindings from the supplied
-<code>data</code> in new environments.
-</p>
-</li>
-<li> <p><code>new_overscope()</code> is called by <code>as_overscope()</code> and
-<code><a href="eval_tidy_.html">eval_tidy_()</a></code>. It installs the definitions for making
-formulas self-evaluate and for formula-guards. It also installs
-the pronoun <code>.top_env</code> that helps keeping track of the boundary
-of the dynamic scope. If you evaluate a tidy quote with
-<code><a href="eval_tidy_.html">eval_tidy_()</a></code>, you don't need to use this.
-</p>
-</li>
-<li> <p><code>eval_tidy_()</code> is useful when you have several quosures to
-evaluate in a same dynamic scope. That's a simple wrapper around
-<code><a href="eval_bare.html">eval_bare()</a></code> that updates the <code>.env</code> pronoun and rechains the
-dynamic scope to the new formula enclosure to evaluate.
-</p>
-</li>
-<li><p> Once an expression has been evaluated in the tidy environment,
-it's a good idea to clean up the definitions that make
-self-evaluation of formulas possible <code>overscope_clean()</code>.
-Otherwise your users may face unexpected results in specific
-corner cases (e.g. when the evaluation environment is leaked, see
-examples). Note that this function is automatically called by
-<code><a href="eval_tidy_.html">eval_tidy_()</a></code>.
-</p>
-</li></ul>
-
-
-
-<h3>Value</h3>
-
-<p>An overscope environment.
-</p>
-<p>A valid overscope: a child environment of <code>bottom</code>
-containing the definitions enabling tidy evaluation
-(self-evaluating quosures, formula-unguarding, ...).
-</p>
-
-
-<h3>Examples</h3>
-
-<pre>
-# Evaluating in a tidy evaluation environment enables all tidy
-# features:
-expr &lt;- quote(list(.data$cyl, ~letters))
-f &lt;- as_quosure(expr)
-overscope &lt;- as_overscope(f, data = mtcars)
-overscope_eval_next(overscope, f)
-
-# However you need to cleanup the environment after evaluation.
-# Otherwise the leftover definitions for self-evaluation of
-# formulas might cause unexpected results:
-fn &lt;- overscope_eval_next(overscope, ~function() ~letters)
-fn()
-
-overscope_clean(overscope)
-fn()
-</pre>
-
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6.9003 <a href="00Index.html">Index</a>]</div>
 </body></html>
