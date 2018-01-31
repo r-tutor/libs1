@@ -1,242 +1,150 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create quosures</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Quosure getters, setters and testers</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
 <table width="100%" summary="page for quosure {rlang}"><tr><td>quosure {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Create quosures</h2>
+<h2>Quosure getters, setters and testers</h2>
 
 <h3>Description</h3>
 
-<p>Quosures are quoted <a href="is_expr.html">expressions</a> that keep track of an
-<a href="env.html">environment</a> (just like <a href="http://adv-r.had.co.nz/Functional-programming.html#closures">closurefunctions</a>).
-They are implemented as a subclass of one-sided formulas. They are
-an essential piece of the tidy evaluation framework.
+<p>You can access the quosure components (its expression and its
+environment) with:
 </p>
 
 <ul>
-<li> <p><code>quo()</code> quotes its input (i.e. captures R code without
-evaluation), captures the current environment, and bundles them
-in a quosure.
+<li> <p><code><a href="set_expr.html">get_expr()</a></code> and <code><a href="get_env.html">get_env()</a></code>. These getters also support other
+kinds of objects such as formulas
 </p>
 </li>
-<li> <p><code>enquo()</code> takes a symbol referring to a function argument, quotes
-the R code that was supplied to this argument, captures the
-environment where the function was called (and thus where the R
-code was typed), and bundles them in a quosure.
-</p>
-</li>
-<li> <p><code><a href="quosures.html">quos()</a></code> is a bit different to other functions as it returns a
-list of quosures. You can supply several expressions directly,
-e.g. <code>quos(foo, bar)</code>, but more importantly you can also supply
-dots: <code>quos(...)</code>. In the latter case, expressions forwarded
-through dots are captured and transformed to quosures. The
-environments bundled in those quosures are the ones where the
-code was supplied as arguments, even if the dots were forwarded
-multiple times across several function calls.
-</p>
-</li>
-<li> <p><code>new_quosure()</code> is the only constructor that takes its arguments
-by value. It lets you create a quosure from an expression and an
-environment.
+<li> <p><code>quo_get_expr()</code> and <code>quo_get_env()</code>. These getters only work
+with quosures and throw an error with other types of input.
 </p>
 </li></ul>
 
+<p>Test if an object is a quosure with <code>is_quosure()</code>. If you know an
+object is a quosure, use the <code>quo_</code> prefixed predicates to check
+its contents, <code>quo_is_missing()</code>, <code>quo_is_symbol()</code>, etc.
+</p>
 
 
 <h3>Usage</h3>
 
 <pre>
-quo(expr)
+is_quosure(x)
 
-new_quosure(expr, env = caller_env())
+quo_is_missing(quo)
 
-enquo(arg)
+quo_is_symbol(quo)
+
+quo_is_lang(quo)
+
+quo_is_symbolic(quo)
+
+quo_is_null(quo)
+
+quo_get_expr(quo)
+
+quo_get_env(quo)
+
+quo_set_expr(quo, expr)
+
+quo_set_env(quo, env)
+
+is_quosures(x)
 </pre>
 
 
 <h3>Arguments</h3>
 
 <table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An object to test.</p>
+</td></tr>
+<tr valign="top"><td><code>quo</code></td>
+<td>
+<p>A quosure to test.</p>
+</td></tr>
 <tr valign="top"><td><code>expr</code></td>
 <td>
-<p>An expression.</p>
+<p>A new expression for the quosure.</p>
 </td></tr>
 <tr valign="top"><td><code>env</code></td>
 <td>
-<p>An environment specifying the lexical enclosure of the
-quosure.</p>
-</td></tr>
-<tr valign="top"><td><code>arg</code></td>
-<td>
-<p>A symbol referring to an argument. The expression
-supplied to that argument will be captured unevaluated.</p>
+<p>A new environment for the quosure.</p>
 </td></tr>
 </table>
 
 
-<h3>Value</h3>
+<h3>Empty quosures</h3>
 
-<p>A formula whose right-hand side contains the quoted
-expression supplied as argument.
+<p>When missing arguments are captured as quosures, either through
+<code><a href="quotation.html">enquo()</a></code> or <code><a href="quotation.html">quos()</a></code>, they are returned as an empty quosure. These
+quosures contain the <a href="missing_arg.html">missing argument</a> and typically
+have the <a href="empty_env.html">empty environment</a> as enclosure.
 </p>
 
 
-<h3>Role of quosures for tidy evaluation</h3>
+<h3>Life cycle</h3>
 
-<p>Quosures play an essential role thanks to these features:
-</p>
 
 <ul>
-<li><p> They allow consistent scoping of quoted expressions by recording
-an expression along with its local environment.
+<li> <p><code>is_quosure()</code> is stable.
 </p>
 </li>
-<li> <p><code>quo()</code>, <code>quos()</code> and <code>enquo()</code> all support <a href="quasiquotation.html">quasiquotation</a>. By
-unquoting other quosures, you can safely combine expressions even
-when they come from different contexts. You can also unquote
-values and raw expressions depending on your needs.
+<li> <p><code>quo_get_expr()</code> and <code>quo_get_env()</code> are stable.
 </p>
 </li>
-<li><p> Unlike formulas, quosures self-evaluate (see <code><a href="eval_tidy.html">eval_tidy()</a></code>)
-within their own environment, which is why you can unquote a
-quosure inside another quosure and evaluate it like you've
-unquoted a raw expression.
+<li> <p><code>is_quosureish()</code> is deprecated as of rlang 0.2.0. This function
+assumed that quosures are formulas which is currently true but
+might not be in the future.
 </p>
 </li></ul>
 
-<p>See the <a href="http://dplyr.tidyverse.org/articles/programming.html">programming withdplyr</a>
-vignette for practical examples. For developers, the <a href="http://rlang.tidyverse.org/articles/tidy-evaluation.html">tidyevaluation</a>
-vignette provides an overview of this approach. The
-<a href="quasiquotation.html">quasiquotation</a> page goes in detail over the unquoting and
-splicing operators.
-</p>
 
 
 <h3>See Also</h3>
 
-<p><code><a href="expr.html">expr()</a></code> for quoting a raw expression with quasiquotation.
-The <a href="quasiquotation.html">quasiquotation</a> page goes over unquoting and splicing.
+<p><code><a href="quotation.html">quo()</a></code> for creating quosures by quotation; <code><a href="as_quosure.html">as_quosure()</a></code>
+and <code><a href="as_quosure.html">new_quosure()</a></code> for constructing quosures manually.
 </p>
 
 
 <h3>Examples</h3>
 
 <pre>
-# quo() is a quotation function just like expr() and quote():
-expr(mean(1:10 * 2))
-quo(mean(1:10 * 2))
-
-# It supports quasiquotation and allows unquoting (evaluating
-# immediately) part of the quoted expression:
-quo(mean(!! 1:10 * 2))
-
-# What makes quo() often safer to use than quote() and expr() is
-# that it keeps track of the contextual environment. This is
-# especially important if you're referring to local variables in
-# the expression:
-var &lt;- "foo"
-quo &lt;- quo(var)
+quo &lt;- quo(my_quosure)
 quo
 
-# Here `quo` quotes `var`. Let's check that it also captures the
-# environment where that symbol is defined:
-identical(get_env(quo), get_env())
-env_has(quo, "var")
 
+# Access and set the components of a quosure:
+quo_get_expr(quo)
+quo_get_env(quo)
 
-# Keeping track of the environment is important when you quote an
-# expression in a context (that is, a particular function frame)
-# and pass it around to other functions (which will be run in their
-# own evaluation frame):
-fn &lt;- function() {
-  foobar &lt;- 10
-  quo(foobar * 2)
-}
-quo &lt;- fn()
+quo &lt;- quo_set_expr(quo, quote(baz))
+quo &lt;- quo_set_env(quo, empty_env())
 quo
 
-# `foobar` is not defined here but was defined in `fn()`'s
-# evaluation frame. However, the quosure keeps track of that frame
-# and is safe to evaluate:
-eval_tidy(quo)
+# Test wether an object is a quosure:
+is_quosure(quo)
 
+# If it is a quosure, you can use the specialised type predicates
+# to check what is inside it:
+quo_is_symbol(quo)
+quo_is_lang(quo)
+quo_is_null(quo)
 
-# Like other formulas, quosures are normally self-quoting under
-# evaluation:
-eval(~var)
-eval(quo(var))
+# quo_is_missing() checks for a special kind of quosure, the one
+# that contains the missing argument:
+quo()
+quo_is_missing(quo())
 
-# But eval_tidy() evaluates expressions in a special environment
-# (called the overscope) where they become promises. They
-# self-evaluate under evaluation:
-eval_tidy(~var)
-eval_tidy(quo(var))
-
-# Note that it's perfectly fine to unquote quosures within
-# quosures, as long as you evaluate with eval_tidy():
-quo &lt;- quo(letters)
-quo &lt;- quo(toupper(!! quo))
-quo
-eval_tidy(quo)
-
-
-# Quoting as a quosure is necessary to preserve scope information
-# and make sure objects are looked up in the right place. However,
-# there are situations where it can get in the way. This is the
-# case when you deal with non-tidy NSE functions that do not
-# understand formulas. You can inline the RHS of a formula in a
-# call thanks to the UQE() operator:
-nse_function &lt;- function(arg) substitute(arg)
-var &lt;- locally(quo(foo(bar)))
-quo(nse_function(UQ(var)))
-quo(nse_function(UQE(var)))
-
-# This is equivalent to unquoting and taking the RHS:
-quo(nse_function(!! get_expr(var)))
-
-# One of the most important old-style NSE function is the dollar
-# operator. You need to use UQE() for subsetting with dollar:
-var &lt;- quo(cyl)
-quo(mtcars$UQE(var))
-
-# `!!`() is also treated as a shortcut. It is meant for situations
-# where the bang operator would not parse, such as subsetting with
-# $. Since that's its main purpose, we've made it a shortcut for
-# UQE() rather than UQ():
-var &lt;- quo(cyl)
-quo(mtcars$`!!`(var))
-
-
-# When a quosure is printed in the console, the brackets indicate
-# if the enclosure is the global environment or a local one:
-locally(quo(foo))
-
-# Literals are enquosed with the empty environment because they can
-# be evaluated anywhere. The brackets indicate "empty":
-quo(10L)
-
-# To differentiate local environments, use str(). It prints the
-# machine address of the environment:
-quo1 &lt;- locally(quo(foo))
-quo2 &lt;- locally(quo(foo))
-quo1; quo2
-str(quo1); str(quo2)
-
-# You can also see this address by printing the environment at the
-# console:
-get_env(quo1)
-get_env(quo2)
-
-
-# new_quosure() takes by value an expression that is already quoted:
-expr &lt;- quote(mtcars)
-env &lt;- as_env("datasets")
-quo &lt;- new_quosure(expr, env)
-quo
-eval_tidy(quo)
+fn &lt;- function(arg) enquo(arg)
+fn()
+quo_is_missing(fn())
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6.9003 <a href="00Index.html">Index</a>]</div>
 </body></html>
