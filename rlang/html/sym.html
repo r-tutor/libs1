@@ -40,5 +40,17 @@ syms(x)
 <p>A symbol for <code>sym()</code> and a list of symbols for <code>syms()</code>.
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+
+<h3>Examples</h3>
+
+<pre>
+# The empty string returns the missing argument:
+sym("")
+
+# This way sym() and as_string() are inverse of each other:
+as_string(missing_arg())
+sym(as_string(missing_arg()))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6.9003 <a href="00Index.html">Index</a>]</div>
 </body></html>
