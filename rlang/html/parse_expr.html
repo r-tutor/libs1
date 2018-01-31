@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
-<table width="100%" summary="page for parse_expr {rlang}"><tr><td>parse_expr {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+<table width="100%" summary="page for parse_quosures {rlang}"><tr><td>parse_quosures {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
 <h2>Parse R code</h2>
 
@@ -18,13 +18,15 @@ written by a programmer.
 <h3>Usage</h3>
 
 <pre>
+parse_quosures(x, env = caller_env())
+
 parse_expr(x)
 
 parse_exprs(x)
 
-parse_quosure(x, env = caller_env())
+parse_quo(x, env = caller_env())
 
-parse_quosures(x, env = caller_env())
+parse_quos(x, env = caller_env())
 </pre>
 
 
@@ -40,9 +42,9 @@ it will be automatically closed and destroyed.</p>
 </td></tr>
 <tr valign="top"><td><code>env</code></td>
 <td>
-<p>The environment for the formulas. Defaults to the
+<p>The environment for the quosures. Defaults to the
 context in which the parse_expr function was called. Can be any
-object with a <code>as_env()</code> method.</p>
+object with a <code>as_environment()</code> method.</p>
 </td></tr>
 </table>
 
@@ -50,22 +52,35 @@ object with a <code>as_env()</code> method.</p>
 <h3>Details</h3>
 
 <p><code>parse_expr()</code> returns one expression. If the text contains more
-than one expression (separated by colons or new lines), an error is
+than one expression (separated by semicolons or new lines), an error is
 issued. On the other hand <code>parse_exprs()</code> can handle multiple
 expressions. It always returns a list of expressions (compare to
 <code><a href="../../base/html/parse.html">base::parse()</a></code> which returns an base::expression vector). All
 functions also support R connections.
 </p>
-<p>The versions prefixed with <code>f_</code> return expressions quoted in
-formulas rather than raw expressions.
+<p>The versions suffixed with <code>_quo</code> and <code>quos</code> return
+<a href="quotation.html">quosures</a> rather than raw expressions.
 </p>
 
 
 <h3>Value</h3>
 
-<p><code>parse_expr()</code> returns a formula, <code>parse_exprs()</code> returns a
-list of formulas.
+<p><code>parse_expr()</code> returns an <a href="is_expression.html">expression</a>,
+<code>parse_exprs()</code> returns a list of expressions.
 </p>
+
+
+<h3>Life cycle</h3>
+
+
+<ul>
+<li> <p><code>parse_quosure()</code> and <code>parse_quosures()</code> were soft-deprecated in
+rlang 0.2.0 and renamed to <code>parse_quo()</code> and <code>parse_quos()</code>. This
+is consistent with the rule that abbreviated suffixes indicate
+the return type of a function.
+</p>
+</li></ul>
+
 
 
 <h3>See Also</h3>
@@ -77,20 +92,20 @@ list of formulas.
 <h3>Examples</h3>
 
 <pre>
-# parse_expr() can parse_expr any R expression:
+# parse_expr() can parse any R expression:
 parse_expr("mtcars %&gt;% dplyr::mutate(cyl_prime = cyl / sd(cyl))")
 
 # A string can contain several expressions separated by ; or \n
 parse_exprs("NULL; list()\n foo(bar)")
 
-# The versions suffixed with _f return formulas:
-parse_quosure("foo %&gt;% bar()")
-parse_quosures("1; 2; mtcars")
+# The versions suffixed with _quosure/s return quosures:
+parse_quo("foo %&gt;% bar()")
+parse_quos("1; 2; mtcars")
 
-# The env argument is passed to as_env(). It can be e.g. a string
+# The env argument is passed to as_environment(). It can be e.g. a string
 # representing a scoped package environment:
-parse_quosure("identity(letters)", env = empty_env())
-parse_quosures("identity(letters); mtcars", env = "base")
+parse_quo("identity(letters)", env = empty_env())
+parse_quos("identity(letters); mtcars", env = "base")
 
 
 # You can also parse source files by passing a R connection. Let's
@@ -102,5 +117,5 @@ cat("1; 2; mtcars", file = path)
 parse_exprs(file(path))
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6.9003 <a href="00Index.html">Index</a>]</div>
 </body></html>
