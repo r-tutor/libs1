@@ -32,6 +32,12 @@ the locale codeset.
 </p>
 </li></ul>
 
+<p>When translating to UTF-8, the strings are parsed for serialised
+unicode points (e.g. strings looking like &quot;U+xxxx&quot;) with
+<code><a href="chr_unserialise_unicode.html">chr_unserialise_unicode()</a></code>. This helps to alleviate the effects of
+character-to-symbol-to-character roundtrips on systems with
+non-UTF-8 native encoding.
+</p>
 
 
 <h3>Usage</h3>
@@ -77,5 +83,5 @@ as_bytes(latin1)
 ## End(Not run)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.1.6.9003 <a href="00Index.html">Index</a>]</div>
 </body></html>
