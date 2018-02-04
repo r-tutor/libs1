@@ -59,7 +59,7 @@ are as output by <a href="viridis_pal.html">viridis_pal</a>. If -1, the order of
 <td>
 <p>A character string indicating the colormap option to use. Four
 options are available: &quot;magma&quot; (or &quot;A&quot;), &quot;inferno&quot; (or &quot;B&quot;), &quot;plasma&quot; (or &quot;C&quot;),
-and &quot;viridis&quot; (or &quot;D&quot;, the default option).</p>
+&quot;viridis&quot; (or &quot;D&quot;, the default option) and &quot;cividis&quot; (or &quot;E&quot;).</p>
 </td></tr>
 </table>
 
@@ -124,10 +124,11 @@ grid.arrange(
   gg + scale_fill_viridis(option="B") + labs(x="Virdis B", y=NULL),
   gg + scale_fill_viridis(option="C") + labs(x="Virdis C", y=NULL),
   gg + scale_fill_viridis(option="D") + labs(x="Virdis D", y=NULL),
-  ncol=2, nrow=2
+  gg + scale_fill_viridis(option="E") + labs(x="Virdis E", y=NULL),
+  ncol=3, nrow=2
 )
 
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>viridis</em> version 0.4.1 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>viridis</em> version 0.5.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

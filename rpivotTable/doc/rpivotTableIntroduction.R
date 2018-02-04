@@ -5,6 +5,9 @@ knitr::opts_chunk$set(echo = TRUE)
 # devtools::install_github(c("ramnathv/htmlwidgets", "smartinsightsfromdata/rpivotTable"))
 
 ## ---- fig.show='hold'----------------------------------------------------
+# install.packages('htmlwidgets', 'rpivotTable')
+
+## ---- fig.show='hold'----------------------------------------------------
 library(rpivotTable)  # No need to explicitly load htmlwidgets: this is done automatically
 
 ## ---- fig.show='hold'----------------------------------------------------
@@ -20,10 +23,14 @@ rpivotTable(data = HairEyeColor, rows = "Hair",cols="Eye", vals = "Freq", aggreg
 library(rpivotTable)
 data(HairEyeColor)
 rpivotTable(data = HairEyeColor, rows = "Hair",cols="Eye", vals = "Freq", aggregatorName = "Sum", rendererName = "Table", sorters = "
-function(attr) { 
+function(attr) {
 var sortAs = $.pivotUtilities.sortAs;
 if (attr == \"Hair\") { return sortAs([\"Red\", \"Brown\", \"Blond\", \"Black\"]); }
 }", width="100%", height="400px")
+
+## ---- fig.show='hold'----------------------------------------------------
+data(mtcars)
+rpivotTable(mtcars,rows="gear", cols=c("cyl","carb"),subtotals=TRUE, width="100%", height="400px")
 
 ## ---- fig.show='hold'----------------------------------------------------
 # suppressMessages(
