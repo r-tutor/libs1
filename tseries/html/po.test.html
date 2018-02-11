@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Phillips-Ouliaris Cointegration Test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for po.test {tseries}"><tr><td>po.test {tseries}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Phillips&ndash;Ouliaris Cointegration Test</h2>
+
+<h3>Description</h3>
+
+<p>Computes the Phillips-Ouliaris test for the null hypothesis that
+<code>x</code> is not cointegrated.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+po.test(x, demean = TRUE, lshort = TRUE) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a matrix or multivariate time series.</p>
+</td></tr>
+<tr valign="top"><td><code>demean</code></td>
+<td>
+<p>a logical indicating whether an intercept is included in
+the cointegration regression or not.</p>
+</td></tr>
+<tr valign="top"><td><code>lshort</code></td>
+<td>
+<p>a logical indicating whether the short or long version
+of the truncation lag parameter is used.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The Phillips-Perron Z(alpha) statistic for a unit root in the
+residuals of the cointegration regression is computed, see also
+<code><a href="pp.test.html">pp.test</a></code>. The unit root is estimated from a regression of
+the first variable (column) of <code>x</code> on the remaining variables of
+<code>x</code> without a constant and a linear trend.  To estimate
+<code>sigma^2</code> the Newey-West estimator is used.  If <code>lshort</code> is
+<code>TRUE</code>, then the truncation lag parameter is set to
+<code>trunc(n/100)</code>, otherwise <code>trunc(n/30)</code> is used.  The
+p-values are interpolated from Table Ia and Ib, p. 189 of Phillips and
+Ouliaris (1990).  If the computed statistic is outside the table of
+critical values, then a warning message is generated.
+</p>
+<p>The dimension of <code>x</code> is restricted to six variables.  Missing
+values are not handled.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with class <code>"htest"</code> containing the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>statistic</code></td>
+<td>
+<p>the value of the test statistic.</p>
+</td></tr>
+<tr valign="top"><td><code>parameter</code></td>
+<td>
+<p>the truncation lag parameter.</p>
+</td></tr>
+<tr valign="top"><td><code>p.value</code></td>
+<td>
+<p>the p-value of the test.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>a character string indicating what type of test was
+performed.</p>
+</td></tr> 
+<tr valign="top"><td><code>data.name</code></td>
+<td>
+<p>a character string giving the name of the data.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>A. Trapletti</p>
+
+
+<h3>References</h3>
+
+<p>P. C. B. Phillips and S. Ouliaris (1990):
+Asymptotic Properties of Residual Based Tests for Cointegration.
+<em>Econometrica</em> <b>58</b>, 165&ndash;193.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="pp.test.html">pp.test</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- ts(diffinv(matrix(rnorm(2000),1000,2)))  # no cointegration
+po.test(x)
+
+x &lt;- diffinv(rnorm(1000))
+y &lt;- 2.0-3.0*x+rnorm(x,sd=5)
+z &lt;- ts(cbind(x,y))  # cointegrated
+po.test(z)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tseries</em> version 0.10-43 <a href="00Index.html">Index</a>]</div>
+</body></html>

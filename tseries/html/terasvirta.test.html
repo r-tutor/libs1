@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Teraesvirta Neural Network Test for Nonlinearity</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for terasvirta.test {tseries}"><tr><td>terasvirta.test {tseries}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Teraesvirta Neural Network Test for Nonlinearity</h2>
+
+<h3>Description</h3>
+
+<p>Generically computes Teraesvirta's neural network test for neglected
+nonlinearity either for the time series <code>x</code> or the regression
+<code>y~x</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'ts'
+terasvirta.test(x, lag = 1, type = c("Chisq","F"),
+                scale = TRUE, ...)
+## Default S3 method:
+terasvirta.test(x, y, type = c("Chisq","F"),
+                scale = TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a numeric vector, matrix, or time series.</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>a numeric vector.</p>
+</td></tr>
+<tr valign="top"><td><code>lag</code></td>
+<td>
+<p>an integer which specifies the model order in terms of
+lags.</p>
+</td></tr> 
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>a string indicating whether the Chi-Squared test or the
+F-test is computed. Valid types are <code>"Chisq"</code> and <code>"F"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>scale</code></td>
+<td>
+<p>a logical indicating whether the data should be scaled 
+before computing the test statistic. The default arguments to
+<code><a href="../../base/html/scale.html">scale</a></code> are used.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments to be passed from or to methods.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The null is the hypotheses of linearity in
+&ldquo;mean&rdquo;. This test uses a Taylor series expansion of the activation
+function to arrive at a suitable test statistic. If <code>type</code> equals
+<code>"F"</code>, then the F-statistic instead of the Chi-Squared statistic
+is used in analogy to the classical linear regression. 
+</p>
+<p>Missing values are not allowed.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with class <code>"htest"</code> containing the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>statistic</code></td>
+<td>
+<p>the value of the test statistic.</p>
+</td></tr>
+<tr valign="top"><td><code>p.value</code></td>
+<td>
+<p>the p-value of the test.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>a character string indicating what type of test was
+performed.</p>
+</td></tr>
+<tr valign="top"><td><code>parameter</code></td>
+<td>
+<p>a list containing the additional parameters used to
+compute the test statistic.</p>
+</td></tr>
+<tr valign="top"><td><code>data.name</code></td>
+<td>
+<p>a character string giving the name of the data.</p>
+</td></tr>
+<tr valign="top"><td><code>arguments</code></td>
+<td>
+<p>additional arguments used to compute the test statistic.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>A. Trapletti</p>
+
+
+<h3>References</h3>
+
+<p>T. Teraesvirta, C. F. Lin, and C. W. J. Granger (1993): Power of the
+Neural Network Linearity Test. <em>Journal of Time Series Analysis</em>
+14, 209-220.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="white.test.html">white.test</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+n &lt;- 1000
+
+x &lt;- runif(1000, -1, 1)  # Non-linear in ``mean'' regression 
+y &lt;- x^2 - x^3 + 0.1*rnorm(x)
+terasvirta.test(x, y)
+
+## Is the polynomial of order 2 misspecified?
+terasvirta.test(cbind(x,x^2,x^3), y)
+
+## Generate time series which is nonlinear in ``mean''
+x[1] &lt;- 0.0
+for(i in (2:n)) {
+  x[i] &lt;- 0.4*x[i-1] + tanh(x[i-1]) + rnorm(1, sd=0.5)
+}
+x &lt;- as.ts(x)
+plot(x)
+terasvirta.test(x)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tseries</em> version 0.10-43 <a href="00Index.html">Index</a>]</div>
+</body></html>

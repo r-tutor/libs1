@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: NA Handling Routines for Time Series</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for na.remove {tseries}"><tr><td>na.remove {tseries}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>NA Handling Routines for Time Series</h2>
+
+<h3>Description</h3>
+
+<p>Observations with missing values in some of the variables are
+removed.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+na.remove(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>a numeric matrix, vector, univariate, or multivariate
+time series.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments to be passed to or from methods.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For <code>na.remove.ts</code> this changes the &ldquo;intrinsic&rdquo; time scale.  It
+is assumed that both, the new and the old time scale are synchronized
+at the first and the last valid observation.  In between, the new
+series is equally spaced in the new time scale.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object without missing values.  The attribute <code>"na.removed"</code>
+contains the indices of the removed missing values in <code>object</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>A. Trapletti</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/na.fail.html">na.omit</a></code>,
+<code><a href="../../stats/html/na.fail.html">na.fail</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x&lt;-ts(c(5453.08,5409.24,5315.57,5270.53, # one and a half week stock index
+        5211.66,NA,NA,5160.80,5172.37))  # data including a weekend
+na.remove(x)  # eliminate weekend and introduce ``business'' time scale
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tseries</em> version 0.10-43 <a href="00Index.html">Index</a>]</div>
+</body></html>

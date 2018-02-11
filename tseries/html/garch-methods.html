@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Methods for Fitted GARCH Models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for garch-methods {tseries}"><tr><td>garch-methods {tseries}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Methods for Fitted GARCH Models</h2>
+
+<h3>Description</h3>
+
+<p>Methods for fitted GARCH model objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'garch'
+predict(object, newdata, genuine = FALSE, ...)
+## S3 method for class 'garch'
+coef(object, ...)
+## S3 method for class 'garch'
+vcov(object, ...)
+## S3 method for class 'garch'
+residuals(object, ...)
+## S3 method for class 'garch'
+fitted(object, ...)
+## S3 method for class 'garch'
+print(x, digits = max(3, getOption("digits") - 3), ...)
+## S3 method for class 'garch'
+plot(x, ask = interactive(), ...)
+## S3 method for class 'garch'
+logLik(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object, x</code></td>
+<td>
+<p>an object of class <code>"garch"</code>; usually, a result
+of a call to <code><a href="garch.html">garch</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>newdata</code></td>
+<td>
+<p>a numeric vector or time series to compute GARCH
+predictions.  Defaults to <code>eval(parse(text=object$series))</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>genuine</code></td>
+<td>
+<p>a logical indicating whether a genuine prediction
+should be made, i.e., a prediction for which there is no target
+observation available.</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>see <code><a href="../../stats/html/printCoefmat.html">printCoefmat</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>ask</code></td>
+<td>
+<p>Should the <code>plot</code> method work interactively?  See
+<code><a href="../../base/html/interactive.html">interactive</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed to or from other methods.</p>
+</td></tr> 
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>predict</code> returns +/- the conditional standard deviation
+predictions from a fitted GARCH model.
+</p>
+<p><code>coef</code> returns the coefficient estimates.
+</p>
+<p><code>vcov</code> the associated covariance matrix estimate (outer product of gradients estimator).
+</p>
+<p><code>residuals</code> returns the GARCH residuals, i.e., the time series
+used to fit the model divided by the computed conditional standard
+deviation predictions for this series. Under the assumption of
+conditional normality the residual series should be i.i.d. standard
+normal.  
+</p>
+<p><code>fitted</code> returns +/- the conditional standard deviation
+predictions for the series which has been used to fit the model.
+</p>
+<p><code>plot</code> graphically investigates normality and remaining ARCH
+effects for the residuals.
+</p>
+<p><code>logLik</code> returns the log-likelihood value of the GARCH(p, q)
+model represented by <code>object</code> evaluated at the estimated
+coefficients. It is assumed that first max(p, q) values are fixed.
+</p>
+
+
+<h3>Value</h3>
+
+<p>For <code>predict</code> a bivariate time series (two-column matrix) of
+predictions. 
+</p>
+<p>For <code>coef</code>, a numeric vector, for <code>residuals</code> and
+<code>fitted</code> a univariate (vector) and a bivariate time series
+(two-column matrix), respectively.
+</p>
+<p>For <code>plot</code> and <code>print</code>, the fitted GARCH model object.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>A. Trapletti
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>tseries</em> version 0.10-43 <a href="00Index.html">Index</a>]</div>
+</body></html>

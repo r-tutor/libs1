@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Read Time Series Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for read.ts {tseries}"><tr><td>read.ts {tseries}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read Time Series Data</h2>
+
+<h3>Description</h3>
+
+<p>Reads a time series file.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+read.ts(file, header = FALSE, sep = "", skip = 0, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>the name of the file which the data are to be read from.
+Each line of the file contains one observation of the variables.</p>
+</td></tr>
+<tr valign="top"><td><code>header</code></td>
+<td>
+<p>a logical value indicating whether the file contains
+the names of the variables as its first line.</p>
+</td></tr>
+<tr valign="top"><td><code>sep</code></td>
+<td>
+<p>the field separator character.  Values on each line of the
+file are separated by this character.</p>
+</td></tr>
+<tr valign="top"><td><code>skip</code></td>
+<td>
+<p>the number of lines of the data file to skip before
+beginning to read data.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments for <code><a href="../../stats/html/ts.html">ts</a></code> such as, e.g.,
+<code>start</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Each row of the file represents an observation and each column
+contains a variable.  The first row possibly contains the names of the
+variables.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>A. Trapletti</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/ts.html">ts</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(sunspots)
+st &lt;- start(sunspots)
+fr &lt;- frequency(sunspots)
+write(sunspots, "sunspots", ncolumns=1)
+x &lt;- read.ts("sunspots", start=st, frequency=fr)
+plot(x)
+unlink("sunspots")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tseries</em> version 0.10-43 <a href="00Index.html">Index</a>]</div>
+</body></html>
