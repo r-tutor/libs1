@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Financial Centers DST Rules</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rulesFinCenter {timeDate}"><tr><td>rulesFinCenter {timeDate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Financial Centers DST Rules</h2>
+
+<h3>Description</h3>
+
+<p>Returns DST rules for a financial center.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rulesFinCenter(FinCenter = "")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>FinCenter</code></td>
+<td>
+
+<p>a character with the the location of the
+financial center named as &quot;continent/city&quot;.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function <code>rulesFinCenter</code>, lists the daylight saving rules 
+for a selected financial center.
+</p>
+<p>There is no dependency on the POSIX implementation of your operating
+system because all time zone and day light saving time information 
+is stored locally in ASCII files. 
+</p>
+
+
+<h3>Value</h3>
+
+<p>returns a list of time zones and DST rules available in the database.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## rulesFinCenter - 
+   rulesFinCenter("Zurich")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>timeDate</em> version 3043.102 <a href="00Index.html">Index</a>]</div>
+</body></html>

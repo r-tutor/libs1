@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Terminal Times and Range</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for start {timeDate}"><tr><td>start {timeDate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Terminal Times and Range</h2>
+
+<h3>Description</h3>
+
+<p>Extracts the time the first or last 
+observation was taken, or computes the
+range.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'timeDate'
+start(x, ...)
+
+## S3 method for class 'timeDate'
+end(x, ...)
+
+## S3 method for class 'timeDate'
+min(..., na.rm = FALSE)
+
+## S3 method for class 'timeDate'
+max(..., na.rm = FALSE)
+
+## S3 method for class 'timeDate'
+range(..., na.rm = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+
+<p>an object of class <code>timeDate</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>[start][end] - <br />
+not used, <br />
+[min][max] -
+'timeDates' objects.
+</p>
+</td></tr> 
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+
+<p>not used.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Note, the series will be time ordered before the start or
+end time stamps are extracted. Sorting is done in the
+way that the first observation appears in time before the 
+last observation.
+</p>
+
+
+<h3>Value</h3>
+
+<p>returns an object of class <code>timeDate</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>  
+## timeCalendar - 
+   # Random Calendar Dates:
+   tR = sample(timeCalendar())
+   sort(tR)
+   tR
+    
+## start | end  -
+   start(tR)
+   end(tR)
+   
+## The First and Last Time Stamp:
+   tR[1]
+   tR[length(tR)]
+   rev(tR)[1]
+   
+## The Range:
+   c(start(tR), end(tR))
+   range(tR)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>timeDate</em> version 3043.102 <a href="00Index.html">Index</a>]</div>
+</body></html>

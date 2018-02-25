@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Midnight Standard</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for midnightStandard {timeDate}"><tr><td>midnightStandard {timeDate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Midnight Standard</h2>
+
+<h3>Description</h3>
+
+<p>Corrects 'timeDate' objects if they do not fulfill the
+ISO8601 midnight standard.
+</p>
+<p><code>midnightStandard2()</code> relies on <code><a href="../../base/html/strptime.html">strptime</a></code> wherever
+possible, and there simply returns
+<code><a href="../../base/html/as.POSIXlt.html">as.POSIXct</a>(<a href="../../base/html/strptime.html">strptime</a>(charvec, format, tz = "GMT"))</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+midnightStandard (charvec, format)
+midnightStandard2(charvec, format)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>charvec</code></td>
+<td>
+<p>a character string or vector of dates and times.</p>
+</td></tr>
+<tr valign="top"><td><code>format</code></td>
+<td>
+<p>a string, the format specification of the input
+character vector.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>midnightStandard</code> returns a <code>character</code> and
+<code>midnightStandard2</code> a <code><a href="../../base/html/DateTimeClasses.html">POSIXct</a></code> object.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+   ch &lt;- "2007-12-31 24:00"
+   midnightStandard(ch)
+   (ms2 &lt;- midnightStandard2(ch))
+   class(ms2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>timeDate</em> version 3043.102 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;rlang&rsquo; version 0.1.6.9003</h2>
+</div><h2>Documentation for package &lsquo;rlang&rsquo; version 0.2.0</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 </ul>
@@ -155,7 +155,7 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="vector-construction.html">dbl</a></td>
 <td>Create vectors</td></tr>
-<tr><td style="width: 25%;"><a href="dots_list.html">dots_list</a></td>
+<tr><td style="width: 25%;"><a href="tidy-dots.html">dots_list</a></td>
 <td>Collect dots tidily</td></tr>
 <tr><td style="width: 25%;"><a href="dots_n.html">dots_n</a></td>
 <td>How many arguments are currently forwarded in dots?</td></tr>
@@ -491,6 +491,8 @@
 <td>Create vectors</td></tr>
 <tr><td style="width: 25%;"><a href="lifecycle.html">lifecycle</a></td>
 <td>Life cycle of the rlang package</td></tr>
+<tr><td style="width: 25%;"><a href="tidy-dots.html">list2</a></td>
+<td>Collect dots tidily</td></tr>
 <tr><td style="width: 25%;"><a href="vector-construction.html">ll</a></td>
 <td>Create vectors</td></tr>
 <tr><td style="width: 25%;"><a href="with_env.html">locally</a></td>
@@ -525,18 +527,50 @@
 <td>Missing values</td></tr>
 <tr><td style="width: 25%;"><a href="missing.html">na_lgl</a></td>
 <td>Missing values</td></tr>
+<tr><td style="width: 25%;"><a href="new-vector.html">new-vector</a></td>
+<td>Create vectors matching a given length</td></tr>
+<tr><td style="width: 25%;"><a href="new-vector-along.html">new-vector-along</a></td>
+<td>Create vectors matching the length of a given vector</td></tr>
 <tr><td style="width: 25%;"><a href="box.html">new_box</a></td>
 <td>Box a value</td></tr>
+<tr><td style="width: 25%;"><a href="new-vector.html">new_character</a></td>
+<td>Create vectors matching a given length</td></tr>
+<tr><td style="width: 25%;"><a href="new-vector-along.html">new_character_along</a></td>
+<td>Create vectors matching the length of a given vector</td></tr>
+<tr><td style="width: 25%;"><a href="new-vector.html">new_complex</a></td>
+<td>Create vectors matching a given length</td></tr>
+<tr><td style="width: 25%;"><a href="new-vector-along.html">new_complex_along</a></td>
+<td>Create vectors matching the length of a given vector</td></tr>
 <tr><td style="width: 25%;"><a href="as_data_mask.html">new_data_mask</a></td>
 <td>Create a data mask</td></tr>
+<tr><td style="width: 25%;"><a href="new-vector.html">new_double</a></td>
+<td>Create vectors matching a given length</td></tr>
+<tr><td style="width: 25%;"><a href="new-vector-along.html">new_double_along</a></td>
+<td>Create vectors matching the length of a given vector</td></tr>
 <tr><td style="width: 25%;"><a href="env.html">new_environment</a></td>
 <td>Create a new environment</td></tr>
 <tr><td style="width: 25%;"><a href="new_formula.html">new_formula</a></td>
 <td>Create a formula</td></tr>
 <tr><td style="width: 25%;"><a href="new_function.html">new_function</a></td>
 <td>Create a function</td></tr>
+<tr><td style="width: 25%;"><a href="new-vector.html">new_integer</a></td>
+<td>Create vectors matching a given length</td></tr>
+<tr><td style="width: 25%;"><a href="new-vector-along.html">new_integer_along</a></td>
+<td>Create vectors matching the length of a given vector</td></tr>
+<tr><td style="width: 25%;"><a href="new-vector.html">new_list</a></td>
+<td>Create vectors matching a given length</td></tr>
+<tr><td style="width: 25%;"><a href="new-vector-along.html">new_list_along</a></td>
+<td>Create vectors matching the length of a given vector</td></tr>
+<tr><td style="width: 25%;"><a href="new-vector.html">new_logical</a></td>
+<td>Create vectors matching a given length</td></tr>
+<tr><td style="width: 25%;"><a href="new-vector-along.html">new_logical_along</a></td>
+<td>Create vectors matching the length of a given vector</td></tr>
 <tr><td style="width: 25%;"><a href="as_quosure.html">new_quosure</a></td>
 <td>Coerce object to quosure</td></tr>
+<tr><td style="width: 25%;"><a href="new-vector.html">new_raw</a></td>
+<td>Create vectors matching a given length</td></tr>
+<tr><td style="width: 25%;"><a href="new-vector-along.html">new_raw_along</a></td>
+<td>Create vectors matching the length of a given vector</td></tr>
 </table>
 
 <h2><a name="O">-- O --</a></h2>
@@ -594,7 +628,7 @@
 <td>Quosure getters, setters and testers</td></tr>
 <tr><td style="width: 25%;"><a href="quosure.html">quo_get_expr</a></td>
 <td>Quosure getters, setters and testers</td></tr>
-<tr><td style="width: 25%;"><a href="quosure.html">quo_is_lang</a></td>
+<tr><td style="width: 25%;"><a href="quosure.html">quo_is_call</a></td>
 <td>Quosure getters, setters and testers</td></tr>
 <tr><td style="width: 25%;"><a href="quosure.html">quo_is_missing</a></td>
 <td>Quosure getters, setters and testers</td></tr>
@@ -621,6 +655,8 @@
 <h2><a name="R">-- R --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="new-vector-along.html">rep_along</a></td>
+<td>Create vectors matching the length of a given vector</td></tr>
 <tr><td style="width: 25%;"><a href="restarting.html">restarting</a></td>
 <td>Create a restarting handler</td></tr>
 <tr><td style="width: 25%;"><a href="return_from.html">return_from</a></td>
@@ -687,7 +723,7 @@
 <h2><a name="T">-- T --</a></h2>
 
 <table width="100%">
-<tr><td style="width: 25%;"><a href="dots_list.html">tidy-dots</a></td>
+<tr><td style="width: 25%;"><a href="tidy-dots.html">tidy-dots</a></td>
 <td>Collect dots tidily</td></tr>
 <tr><td style="width: 25%;"><a href="tidyeval-data.html">tidyeval-data</a></td>
 <td>Data pronoun for tidy evaluation</td></tr>

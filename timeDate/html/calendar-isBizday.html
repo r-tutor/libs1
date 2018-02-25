@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Business and Holidays</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for isBizday {timeDate}"><tr><td>isBizday {timeDate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Business and Holidays</h2>
+
+<h3>Description</h3>
+
+<p>Tests if a date is a business day or not.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+isBizday(x, holidays = holidayNYSE(), wday = 1:5)
+isHoliday(x, holidays = holidayNYSE(), wday = 1:5)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an object of class <code>timeDate</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>holidays</code></td>
+<td>
+
+<p>holiday dates from a holiday calendar.  An object of class
+<code>timeDate</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>wday</code></td>
+<td>
+
+<p>Specify which days should be considered as weekdays. By default
+from Mondays to Fridays.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a logical vector of the same length as <code>x</code> indicating if a date
+is a business day, or a holiday, respectively.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>## Dates in April, currentYear:
+   currentYear = getRmetricsOptions("currentYear")
+   tS = timeSequence(
+      from = paste(currentYear, "-03-01", sep = ""),
+      to = paste(currentYear, "-04-30", sep = ""))
+   tS
+
+## Subset Business Days at NYSE:
+   holidayNYSE()
+   isBizday(tS, holidayNYSE())
+   tS[isBizday(tS, holidayNYSE())]
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>timeDate</em> version 3043.102 <a href="00Index.html">Index</a>]</div>
+</body></html>
