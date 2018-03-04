@@ -1,7 +1,7 @@
 Package: RcppParallel
 Type: Package
 Title: Parallel Programming Tools for 'Rcpp'
-Version: 4.3.20.2
+Version: 4.4.0
 Authors@R: c(
     person("JJ", "Allaire", role = c("aut"), email = "jj@rstudio.com"),
     person("Romain", "Francois", role = c("aut", "cph")),
@@ -26,9 +26,10 @@ SystemRequirements: GNU make, Windows: cmd.exe and cscript.exe,
 License: GPL-2
 URL: http://rcppcore.github.io/RcppParallel,
         https://github.com/RcppCore/RcppParallel
-Collate: 'build.R' 'hooks.R' 'options.R'
+Biarch: TRUE
+Collate: 'build.R' 'hooks.R' 'options.R' 'skeleton.R'
 NeedsCompilation: yes
-Packaged: 2018-02-14 14:35:00 UTC; ripley
+Packaged: 2018-02-26 17:49:26 UTC; kevin
 Author: JJ Allaire [aut],
   Romain Francois [aut, cph],
   Kevin Ushey [aut, cre],
@@ -39,15 +40,8 @@ Author: JJ Allaire [aut],
   Intel [aut, cph] (Intel TBB library,
     https://www.threadingbuildingblocks.org/),
   Microsoft [cph]
-Maintainer: ORPHANED
+Maintainer: Kevin Ushey <kevin@rstudio.com>
 Repository: CRAN
-Date/Publication: 2018-02-14 14:36:53 UTC
-X-CRAN-Original-Maintainer: Kevin Ushey <kevin@rstudio.com>
-X-CRAN-Comment: Orphaned and corrected on 2018-02-14 as check errors
-        were not corrected despite reminders.
- .
- Including pragmas and compilation flags.
- .
- Hard-coding of PIC_KEY was too hard to fix in a reasonable time.
-Built: R 3.4.3; x86_64-w64-mingw32; 2018-02-15 17:45:57 UTC; windows
+Date/Publication: 2018-03-02 17:21:41 UTC
+Built: R 3.4.3; x86_64-w64-mingw32; 2018-03-04 05:08:14 UTC; windows
 Archs: i386, x64
