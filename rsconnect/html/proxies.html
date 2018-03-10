@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: HTTP Proxy Configuration</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rsconnectProxies {rsconnect}"><tr><td>rsconnectProxies {rsconnect}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>HTTP Proxy Configuration</h2>
+
+<h3>Description</h3>
+
+<p>If your system is behind an HTTP proxy then additional configuration may be required to connect to the ShinyApp service. The required configuration varies depending on what type of HTTP connection you are making to the server.
+</p>
+<p>The default HTTP connection type is <code>rcurl</code> however addition connection types <code>curl</code> and <code>internal</code> are also supported. The HTTP connection type is configured using the <code><a href="rsconnectOptions.html">rsconnect.http</a></code> global option.
+</p>
+
+
+<h3>HTTP Proxy Environment Variable</h3>
+
+<p>The most straightforward way to specify a proxy for <code>rcurl</code> and <code>curl</code> connections is to set the <span class="env">http_proxy</span> environment variable. For example, you could add the following code to your <code>.Rprofile</code>:
+</p>
+<pre>
+Sys.setenv(http_proxy = "http://proxy.example.com")
+</pre>
+<p>Proxy settings can include a host-name, port, and username/password if necessary. The following are all valid values for the <code>http_proxy</code> environment variable:
+</p>
+<pre>
+http://proxy.example.com/
+http://proxy.example.com:1080/
+http://username:password@proxy.example.com:1080/
+</pre>
+
+
+<h3>Setting RCurl Proxy Options</h3>
+
+<p>The default HTTP connection type is <code>rcurl</code>. If you need more configurability than affored by the <code>http_proxy</code> environment variable you can specify RCurl proxy options explicity using <code>RCurlOptions</code>. For example, you could add the following code to your <code>.Rprofile</code>:
+</p>
+<pre>
+options(RCurlOptions = list(proxy = "http://proxy.example.com")
+</pre>
+<p>You can set any underling curl option using this mechanism. To do this you translate curl options to lowercase and remove the <code>CURL_</code> prefix (for example, <code>CURLOPT_PROXYPORT</code> becomes <code>proxyport</code>).
+</p>
+
+
+<h3>Using Internet Explorer Proxy Settings</h3>
+
+<p>If you are running on Windows and have difficulty configuring proxy settings for <code>rcurl</code> or <code>curl</code> connections, it's possible to re-use your Internet Explorer proxy settings for connections to the server. To do this you set the http connection type to <code>internal</code> as follows:
+</p>
+<pre>
+options(rsconnect.http = "internal")
+</pre>
+<p>The <code>internal</code> connection type uses an insecure (non-encrypted) http connection to the server. If you require an encrypted https connection it's recommended that you use an <code>rcurl</code> or <code>curl</code> connection.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rsconnect</em> version 0.8.8 <a href="00Index.html">Index</a>]</div>
+</body></html>
