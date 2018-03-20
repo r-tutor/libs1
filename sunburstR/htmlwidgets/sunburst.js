@@ -148,9 +148,30 @@ function draw (el, instance, dispatch_) {
         .attr("r", radius)
         .style("opacity", 0);
 
-    // Turn the data into a d3 hierarchy and calculate the sums.
-    var root = d3Hierarchy.hierarchy(json)
-        .sum(function(d) { return d[x.options.valueField || "size"]; });
+    // Turn the data into a d3 hierarchy
+    var root = d3Hierarchy.hierarchy(json);
+    
+    if(x.options.sumNodes === true) {
+      // Calculate sums unless x.options.sumNodes is false
+      root
+        .sum(function(d) {
+          // only sum if no children (or is leaf)
+          return d[x.options.valueField || "size"];
+        });
+    } else {
+      // Move valueField or "size" to node.value
+      root.each(function(d) {
+        d.value = d.data[x.options.valueField || "size"];
+      });
+
+      // Then we need to calculate root sum
+      root.value = root.children.reduce(
+        function(left, right) {
+          return left + right.value
+        },
+        0
+      );
+    }
 
     // check for sort function
     if(x.options.sortFunction){
@@ -180,8 +201,14 @@ function draw (el, instance, dispatch_) {
     // Get total size of the tree = value of root node from partition.
     totalSize = path.datum().value;
 
-    drawLegend(nodes);
-    d3Selection.select(el).select(".sunburst-togglelegend").on("click", toggleLegend);
+    if(x.options.legend !== false) {
+      drawLegend(nodes);
+      d3Selection.select(el).select(".sunburst-togglelegend")
+        .style("visibility", "")
+        .on("click", toggleLegend);
+    } else {
+      removeLegend();
+    }
 
    }
 
@@ -280,12 +307,19 @@ function draw (el, instance, dispatch_) {
 
   function initializeBreadcrumbTrail() {
     // Add the svg area.
-    var trail = d3Selection.select(el).select(".sunburst-sequence").append("svg")
-        .attr("width", width)
-        //.attr("height", 50)
+    var trail = d3Selection.select(el).select(".sunburst-sequence").select("svg");
+    if(trail.nodes().length === 0) {
+      trail = d3Selection.select(el).select(".sunburst-sequence").append("svg")
         .attr("id", el.id + "-trail");
+      trail.append("text");
+    }
+
+    trail
+      .attr("width", width);
+      //.attr("height", 50)
+
     // Add the label at the end, for the percentage.
-    trail.append("text")
+    trail.select("text")
       .attr("id", el.id + "-endlabel")
       .style("fill", "#000");
   }
@@ -507,6 +541,10 @@ function draw (el, instance, dispatch_) {
         .style("fill", function(d) {
           return d3plusColor.colorContrast(colors.call(this, d.data.name));
         });
+  }
+
+  function removeLegend() {
+    d3Selection.select(el).select(".sunburst-sidebar").remove();
   }
 
   function toggleLegend() {

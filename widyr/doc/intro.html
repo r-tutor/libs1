@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,7 +12,7 @@
 
 <meta name="author" content="David Robinson" />
 
-<meta name="date" content="2017-08-13" />
+<meta name="date" content="2018-03-10" />
 
 <title>widyr: Widen, process, and re-tidy a dataset</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">widyr: Widen, process, and re-tidy a dataset</h1>
 <h4 class="author"><em>David Robinson</em></h4>
-<h4 class="date"><em>2017-08-13</em></h4>
+<h4 class="date"><em>2018-03-10</em></h4>
 
 
 
@@ -91,23 +91,31 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="example-gapminder" class="section level2">
 <h2>Example: gapminder</h2>
 <p>Consider the gapminder dataset in the <a href="https://CRAN.R-project.org/package=gapminder">gapminder package</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
-<span class="kw">library</span>(gapminder)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)</code></pre></div>
+<pre><code>## 
+## Attaching package: 'dplyr'</code></pre>
+<pre><code>## The following objects are masked from 'package:stats':
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(gapminder)
 
 gapminder</code></pre></div>
 <pre><code>## # A tibble: 1,704 x 6
-##        country continent  year lifeExp      pop gdpPercap
-##         &lt;fctr&gt;    &lt;fctr&gt; &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
-##  1 Afghanistan      Asia  1952  28.801  8425333  779.4453
-##  2 Afghanistan      Asia  1957  30.332  9240934  820.8530
-##  3 Afghanistan      Asia  1962  31.997 10267083  853.1007
-##  4 Afghanistan      Asia  1967  34.020 11537966  836.1971
-##  5 Afghanistan      Asia  1972  36.088 13079460  739.9811
-##  6 Afghanistan      Asia  1977  38.438 14880372  786.1134
-##  7 Afghanistan      Asia  1982  39.854 12881816  978.0114
-##  8 Afghanistan      Asia  1987  40.822 13867957  852.3959
-##  9 Afghanistan      Asia  1992  41.674 16317921  649.3414
-## 10 Afghanistan      Asia  1997  41.763 22227415  635.3414
+##    country     continent  year lifeExp      pop gdpPercap
+##    &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+##  1 Afghanistan Asia       1952    28.8  8425333       779
+##  2 Afghanistan Asia       1957    30.3  9240934       821
+##  3 Afghanistan Asia       1962    32.0 10267083       853
+##  4 Afghanistan Asia       1967    34.0 11537966       836
+##  5 Afghanistan Asia       1972    36.1 13079460       740
+##  6 Afghanistan Asia       1977    38.4 14880372       786
+##  7 Afghanistan Asia       1982    39.9 12881816       978
+##  8 Afghanistan Asia       1987    40.8 13867957       852
+##  9 Afghanistan Asia       1992    41.7 16317921       649
+## 10 Afghanistan Asia       1997    41.8 22227415       635
 ## # ... with 1,694 more rows</code></pre>
 <p>This tidy format (one-row-per-country-per-year) is very useful for grouping, summarizing, and filtering operations. But if we want to <em>compare pairs of countries</em> (for example, to find countries that are similar to each other), we would have to reshape this dataset. Note that here, country is the <strong>item</strong>, while year is the <strong>feature</strong> column.</p>
 <div id="pairwise-operations" class="section level4">
@@ -118,71 +126,71 @@ gapminder</code></pre></div>
 gapminder <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">pairwise_dist</span>(country, year, lifeExp)</code></pre></div>
 <pre><code>## # A tibble: 20,022 x 3
-##         item1       item2  distance
-##        &lt;fctr&gt;      &lt;fctr&gt;     &lt;dbl&gt;
-##  1    Albania Afghanistan 107.41825
-##  2    Algeria Afghanistan  76.75286
-##  3     Angola Afghanistan   4.64934
-##  4  Argentina Afghanistan 109.50686
-##  5  Australia Afghanistan 128.95745
-##  6    Austria Afghanistan 123.51771
-##  7    Bahrain Afghanistan  98.13426
-##  8 Bangladesh Afghanistan  45.33990
-##  9    Belgium Afghanistan 125.41156
-## 10      Benin Afghanistan  39.32262
+##    item1      item2       distance
+##    &lt;fct&gt;      &lt;fct&gt;          &lt;dbl&gt;
+##  1 Albania    Afghanistan   107   
+##  2 Algeria    Afghanistan    76.8 
+##  3 Angola     Afghanistan     4.65
+##  4 Argentina  Afghanistan   110   
+##  5 Australia  Afghanistan   129   
+##  6 Austria    Afghanistan   124   
+##  7 Bahrain    Afghanistan    98.1 
+##  8 Bangladesh Afghanistan    45.3 
+##  9 Belgium    Afghanistan   125   
+## 10 Benin      Afghanistan    39.3 
 ## # ... with 20,012 more rows</code></pre>
 <p>In a single step, this finds the Euclidean distance between the <code>lifeExp</code> value in each pair of countries, matching pairs based on year. We could find the closest pairs of countries overall with <code>arrange()</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gapminder <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">pairwise_dist</span>(country, year, lifeExp) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">arrange</span>(distance)</code></pre></div>
 <pre><code>## # A tibble: 20,022 x 3
-##             item1          item2 distance
-##            &lt;fctr&gt;         &lt;fctr&gt;    &lt;dbl&gt;
-##  1        Germany        Belgium 1.075702
-##  2        Belgium        Germany 1.075702
-##  3 United Kingdom    New Zealand 1.509025
-##  4    New Zealand United Kingdom 1.509025
-##  5         Norway    Netherlands 1.557933
-##  6    Netherlands         Norway 1.557933
-##  7          Italy         Israel 1.662690
-##  8         Israel          Italy 1.662690
-##  9        Finland        Austria 1.936558
-## 10        Austria        Finland 1.936558
+##    item1          item2          distance
+##    &lt;fct&gt;          &lt;fct&gt;             &lt;dbl&gt;
+##  1 Germany        Belgium            1.08
+##  2 Belgium        Germany            1.08
+##  3 United Kingdom New Zealand        1.51
+##  4 New Zealand    United Kingdom     1.51
+##  5 Norway         Netherlands        1.56
+##  6 Netherlands    Norway             1.56
+##  7 Italy          Israel             1.66
+##  8 Israel         Italy              1.66
+##  9 Finland        Austria            1.94
+## 10 Austria        Finland            1.94
 ## # ... with 20,012 more rows</code></pre>
 <p>Notice that this includes duplicates (Germany/Belgium and Belgium/Germany). To avoid those (the upper triangle of the distance matrix), use <code>upper = FALSE</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gapminder <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">pairwise_dist</span>(country, year, lifeExp, <span class="dt">upper =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">arrange</span>(distance)</code></pre></div>
 <pre><code>## # A tibble: 10,011 x 3
-##          item1          item2 distance
-##         &lt;fctr&gt;         &lt;fctr&gt;    &lt;dbl&gt;
-##  1     Belgium        Germany 1.075702
-##  2 New Zealand United Kingdom 1.509025
-##  3 Netherlands         Norway 1.557933
-##  4      Israel          Italy 1.662690
-##  5     Austria        Finland 1.936558
-##  6     Belgium United Kingdom 1.949243
-##  7     Iceland         Sweden 2.005176
-##  8     Comoros     Mauritania 2.008199
-##  9     Belgium  United States 2.092081
-## 10     Germany        Ireland 2.097239
+##    item1       item2          distance
+##    &lt;fct&gt;       &lt;fct&gt;             &lt;dbl&gt;
+##  1 Belgium     Germany            1.08
+##  2 New Zealand United Kingdom     1.51
+##  3 Netherlands Norway             1.56
+##  4 Israel      Italy              1.66
+##  5 Austria     Finland            1.94
+##  6 Belgium     United Kingdom     1.95
+##  7 Iceland     Sweden             2.01
+##  8 Comoros     Mauritania         2.01
+##  9 Belgium     United States      2.09
+## 10 Germany     Ireland            2.10
 ## # ... with 10,001 more rows</code></pre>
 <p>In some analyses, we may be interested in correlation rather than distance of pairs. For this we would use <code>pairwise_cor</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gapminder <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">pairwise_cor</span>(country, year, lifeExp, <span class="dt">upper =</span> <span class="ot">FALSE</span>, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## # A tibble: 10,011 x 3
-##           item1                 item2 correlation
-##          &lt;fctr&gt;                &lt;fctr&gt;       &lt;dbl&gt;
-##  1    Indonesia            Mauritania   0.9996291
-##  2      Morocco               Senegal   0.9995515
-##  3 Saudi Arabia    West Bank and Gaza   0.9995156
-##  4       Brazil                France   0.9994246
-##  5      Bahrain               Reunion   0.9993649
-##  6     Malaysia Sao Tome and Principe   0.9993233
-##  7         Peru                 Syria   0.9993063
-##  8      Bolivia                Gambia   0.9992930
-##  9    Indonesia               Morocco   0.9992799
-## 10        Libya               Senegal   0.9992710
+##    item1        item2                 correlation
+##    &lt;fct&gt;        &lt;fct&gt;                       &lt;dbl&gt;
+##  1 Indonesia    Mauritania                  1.000
+##  2 Morocco      Senegal                     1.000
+##  3 Saudi Arabia West Bank and Gaza          1.000
+##  4 Brazil       France                      0.999
+##  5 Bahrain      Reunion                     0.999
+##  6 Malaysia     Sao Tome and Principe       0.999
+##  7 Peru         Syria                       0.999
+##  8 Bolivia      Gambia                      0.999
+##  9 Indonesia    Morocco                     0.999
+## 10 Libya        Senegal                     0.999
 ## # ... with 10,001 more rows</code></pre>
 </div>
 </div>
@@ -194,7 +202,7 @@ gapminder <span class="op">%&gt;%</span>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

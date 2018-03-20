@@ -1,4 +1,13 @@
-# withr 2.1.0.9000
+# withr 2.1.2
+
+- `set_makevars()` is now exported (#68, @gaborcsardi).
+
+- `with_temp_libpaths()` gains an `action` argument, to specify how the
+  temporary library path will be added (#66, @krlmlr).
+
+# withr 2.1.1
+
+- Fixes test failures with testthat 2.0.0
 
 - `with_file()` function to automatically remove files.
 

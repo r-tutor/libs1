@@ -1,12 +1,22 @@
-# sunbust 1.0.3
+# sunburstR 2.0.0
+
+* add `sumNodes` argument to correctly handle pre-summed trees, like `treemap::treemap` to not double count the aggregate (see (issue)[https://github.com/timelyportfolio/sunburstR/issues/62])
+
+* add `sund2b()` htmlwidget for a [d2b](http://www.d2bjs.org/) sunburst chart
+
+* allow turning off the legend with argument `legend = FALSE` (see (issue)[https://github.com/timelyportfolio/sunburstR/issues/61])
+
+* fix bug to not duplicate svg for breadcrumbs on resize or re-render
+
+# sunburstR 1.0.3
 
 * change text color in legend and breadcrumb to white or black for legibility using d3plus
 
-# sunburst 1.0.2
+# sunburstR 1.0.2
 
 * changes required in downstream d3r to work with new tidyr (0.7.0), so now working and tested
 
-# sunburst 1.0.1
+# sunburstR 1.0.1
 
 * improve internal `csv_to_hier()` with delimiter argument and smart convert for root level
 
