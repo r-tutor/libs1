@@ -70,7 +70,7 @@ st_wrap_dateline(x, options = "WRAPDATELINE=YES",
 </td></tr>
 <tr valign="top"><td><code>use_gdal</code></td>
 <td>
-<p>logical; this parameter is deprecated. Use <a href="../../lwgeom/html/st_transform_proj.html">st_transform_proj</a> instead</p>
+<p>logical; this parameter is deprecated. For transformations using PROJ.4 directly rather than indirectly through GDAL, use <a href="../../lwgeom/html/st_transform_proj.html">st_transform_proj</a> of package <code>lwgeom</code> (see Details)</p>
 </td></tr>
 <tr valign="top"><td><code>type</code></td>
 <td>
@@ -90,6 +90,10 @@ st_wrap_dateline(x, options = "WRAPDATELINE=YES",
 <h3>Details</h3>
 
 <p>Transforms coordinates of object to new projection. Features that cannot be transformed are returned as empty geometries.
+</p>
+<p><code>st_transform</code> uses GDAL for coordinate transformations; internally, GDAL converts the <code>proj4string</code> into a well-known-text representation, before passing that on to PROJ.4. In this process, some information can get lost. Adding parameter <code>+wktext</code> to the <code>proj4string</code> definition may resolve this; see <a href="https://github.com/edzer/sp/issues/42">https://github.com/edzer/sp/issues/42</a>.
+</p>
+<p>Some PROJ.4 projections are not supported by GDAL, e.g. <code>"+proj=wintri"</code> because it does not have an inverse projection. Projecting to unsupported projections can be done by <a href="../../lwgeom/html/st_transform_proj.html">st_transform_proj</a>, part of package lwgeom. Note that the unsupported <code>proj4string</code> cannot be passed as argument to <a href="st_crs.html">st_crs</a>, but has to be given as character string.
 </p>
 <p>The <code>st_transform</code> method for <code>sfg</code> objects assumes that the CRS of the object is available as an attribute of that name.
 </p>
@@ -125,5 +129,5 @@ wrld_moll &lt;- st_transform(wrld_wrap, "+proj=moll")
 plot(st_geometry(wrld_moll), col = "transparent")
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>sf</em> version 0.6-0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>sf</em> version 0.6-1 <a href="00Index.html">Index</a>]</div>
 </body></html>

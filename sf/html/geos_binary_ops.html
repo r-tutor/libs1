@@ -61,10 +61,10 @@ st_snap(x, y, tolerance)
 </p>
 <p>when called with a missing <code>y</code>, the <code>sf</code> method for <code>st_intersection</code> returns an <code>sf</code> object with attributes taken from the contributing feature with lowest index; two fields are added: <code>n.overlaps</code> with the number of overlapping features in <code>x</code>, and a list-column <code>origins</code> with indexes of all overlapping features.
 </p>
-<p>When <code>st_difference</code> is called with a single argument, 
+<p>When <code>st_difference</code> is called with a single argument,
 overlapping areas are erased from geometries that are indexed at greater
-numbers in the argument to <code>x</code>; geometries that are empty 
-or contained fully inside geometries with higher priority are removed entirely. 
+numbers in the argument to <code>x</code>; geometries that are empty
+or contained fully inside geometries with higher priority are removed entirely.
 The <code>st_difference.sfc</code> method with a single argument returns an object with
 an <code>"idx"</code> attribute with the orginal index for returned geometries.
 </p>
@@ -114,5 +114,5 @@ summary(i$n.overlaps - lengths(i$origins))
 st_erase = function(x, y) st_difference(x, st_union(st_combine(y)))
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>sf</em> version 0.6-0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>sf</em> version 0.6-1 <a href="00Index.html">Index</a>]</div>
 </body></html>

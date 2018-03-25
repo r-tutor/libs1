@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Deprecated SE version of functions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bind_tf_idf_ {tidytext}"><tr><td>bind_tf_idf_ {tidytext}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Deprecated SE version of functions</h2>
+
+<h3>Description</h3>
+
+<p>tidytext used to offer twin versions of each verb suffixed with an
+underscore, like dplyr and the main tidyverse packages. These
+versions had standard evaluation (SE) semantics; rather than taking
+arguments by code, like NSE verbs, they took arguments by value.
+Their purpose was to make it possible to program with tidytext.
+However, tidytext now uses tidy evaluation semantics. NSE verbs
+still capture their arguments, but you can now unquote parts of
+these arguments. This offers full programmability with NSE verbs.
+Thus, the underscored versions are now superfluous.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bind_tf_idf_(tbl, term, document, n)
+
+cast_sparse_(data, row, column, value)
+
+cast_tdm_(data, term, document, value, weighting = tm::weightTf, ...)
+
+cast_dtm_(data, document, term, value, weighting = tm::weightTf, ...)
+
+cast_dfm_(data, document, term, value, ...)
+
+unnest_tokens_(tbl, output, input, token = "words", format = c("text",
+  "man", "latex", "html", "xml"), to_lower = TRUE, drop = TRUE,
+  collapse = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>tbl</code></td>
+<td>
+<p>A data frame.</p>
+</td></tr>
+<tr valign="top"><td><code>term, document, n</code></td>
+<td>
+<p>Strings giving names of term, document, and count columns.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>A tbl</p>
+</td></tr>
+<tr valign="top"><td><code>row</code></td>
+<td>
+<p>Column name to use as row names in sparse matrix, as string or symbol</p>
+</td></tr>
+<tr valign="top"><td><code>column</code></td>
+<td>
+<p>Column name to use as column names in sparse matrix, as string or symbol</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>Column name to use as sparse matrix values (default 1) as string or symbol</p>
+</td></tr>
+<tr valign="top"><td><code>weighting</code></td>
+<td>
+<p>The weighting function for the DTM/TDM
+(default is term-frequency, effectively unweighted)</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Extra arguments to pass on to <code><a href="../../Matrix/html/sparseMatrix.html">sparseMatrix</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>output, input</code></td>
+<td>
+<p>Name of columns.</p>
+</td></tr>
+<tr valign="top"><td><code>token</code></td>
+<td>
+<p>Unit for tokenizing, or a custom tokenizing function. Built-in
+options are &quot;words&quot; (default), &quot;characters&quot;, &quot;character_shingles&quot;, &quot;ngrams&quot;, &quot;skip_ngrams&quot;,
+&quot;sentences&quot;, &quot;lines&quot;, &quot;paragraphs&quot;, and &quot;regex&quot;. If a function, should take
+a character vector and return a list of character vectors of the same length.</p>
+</td></tr>
+<tr valign="top"><td><code>format</code></td>
+<td>
+<p>Either &quot;text&quot;, &quot;man&quot;, &quot;latex&quot;, &quot;html&quot;, or &quot;xml&quot;. If not text,
+this uses the hunspell tokenizer, and can tokenize only by &quot;word&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>to_lower</code></td>
+<td>
+<p>Whether to turn column lowercase.</p>
+</td></tr>
+<tr valign="top"><td><code>drop</code></td>
+<td>
+<p>Whether original input column should get dropped. Ignored
+if the original input and new output column have the same name.</p>
+</td></tr>
+<tr valign="top"><td><code>collapse</code></td>
+<td>
+<p>Whether to combine text with newlines first in case tokens
+(such as sentences or paragraphs) span multiple lines. If NULL, collapses
+when token method is &quot;ngrams&quot;, &quot;skip_ngrams&quot;, &quot;sentences&quot;, &quot;lines&quot;,
+&quot;paragraphs&quot;, or &quot;regex&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>output_col, input_col</code></td>
+<td>
+<p>Strings giving names of output and input columns.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Unquoting triggers immediate evaluation of its operand and inlines
+the result within the captured expression. This result can be a
+value or an expression to be evaluated later with the rest of the
+argument.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>tidytext</em> version 0.1.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

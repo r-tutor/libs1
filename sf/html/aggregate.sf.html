@@ -31,7 +31,7 @@ aggregate(x, by, FUN, ..., do_union = TRUE, simplify = TRUE,
 </td></tr>
 <tr valign="top"><td><code>by</code></td>
 <td>
-<p>either a list of grouping elements, each as long as the variables in the data frame <code>x</code> (see <a href="../../stats/html/aggregate.html">aggregate</a>), or an object of class <code>sf</code> or <code>sfc</code>, the geometries of which are used to find aggregation groups of <code>x</code> by using function <code>join</code></p>
+<p>either a list of grouping vectors with length equal to <code>nrow(x)</code> (see <a href="../../stats/html/aggregate.html">aggregate</a>), or an object of class <code>sf</code> or <code>sfc</code> with geometries that are used to generate groupings, using the binary predicate specified by the argument <code>join</code></p>
 </td></tr>
 <tr valign="top"><td><code>FUN</code></td>
 <td>
@@ -62,6 +62,12 @@ aggregate(x, by, FUN, ..., do_union = TRUE, simplify = TRUE,
 </p>
 
 
+<h3>Note</h3>
+
+<p>Does not work using the formula notation involving <code>~</code> defined in <a href="../../stats/html/aggregate.html">aggregate</a>.
+</p>
+
+
 <h3>Examples</h3>
 
 <pre>
@@ -84,7 +90,10 @@ m3 = cbind(c(0, 0, -0.1, 0), c(0, 0.1, 0.1, 0))
 pol = st_sfc(st_polygon(list(m3)), st_polygon(list(m1)), st_polygon(list(m2)))
 (p_ag3 = aggregate(p, pol, mean))
 plot(p_ag3)
+# In case we need to pass an argument to the join function:
+(p_ag4 = aggregate(p, pol, mean, 
+     join = function(x, y) st_is_within_distance(x, y, dist = 0.3)))
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>sf</em> version 0.6-0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>sf</em> version 0.6-1 <a href="00Index.html">Index</a>]</div>
 </body></html>

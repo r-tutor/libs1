@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get a tidy data frame of a single sentiment lexicon</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for get_sentiments {tidytext}"><tr><td>get_sentiments {tidytext}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get a tidy data frame of a single sentiment lexicon</h2>
+
+<h3>Description</h3>
+
+<p>Get specific sentiment lexicons in a tidy format, with one row per word,
+in a form that can be joined with a one-word-per-row dataset.
+Each of these comes from the included <code><a href="sentiments.html">sentiments</a></code> data frame,
+but this performs the filtering for a specific lexicon, and removes
+columns that are not used in that lexicon.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+get_sentiments(lexicon = c("afinn", "bing", "nrc", "loughran"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lexicon</code></td>
+<td>
+<p>The sentiment lexicon to retrieve;
+either &quot;afinn&quot;, &quot;bing&quot;, &quot;nrc&quot;, or &quot;loughran&quot;</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A tbl_df with a <code>word</code> column, and either a <code>sentiment</code>
+column (if <code>lexicon</code> is not &quot;afinn&quot;) or a numeric <code>score</code> column
+(if <code>lexicon</code> is &quot;afinn&quot;).
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+library(dplyr)
+get_sentiments("afinn")
+get_sentiments("bing")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidytext</em> version 0.1.8 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,3 +1,9 @@
+## ----setup, include = FALSE----------------------------------------------
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
 ## ------------------------------------------------------------------------
 library(tokenizers)
 options(max.print = 25)
@@ -21,7 +27,8 @@ james <- paste0(
 tokenize_characters(james)[[1]] 
 
 ## ------------------------------------------------------------------------
-tokenize_character_shingles(james, strip_non_alphanum = FALSE)[[1]][1:20]
+tokenize_character_shingles(james, n = 3, n_min = 3, 
+                            strip_non_alphanum = FALSE)[[1]][1:20]
 
 ## ------------------------------------------------------------------------
 tokenize_words(james)
@@ -30,17 +37,35 @@ tokenize_words(james)
 tokenize_word_stems(james)
 
 ## ------------------------------------------------------------------------
-tokenize_words(james, stopwords = stopwords())
+library(stopwords)
+tokenize_words(james, stopwords = stopwords::stopwords("en"))
 
 ## ------------------------------------------------------------------------
+tokenize_ptb(james)
+
+## ------------------------------------------------------------------------
+tokenize_ngrams(james, n = 5, n_min = 2,
+                stopwords = stopwords::stopwords("en"))
+
+## ------------------------------------------------------------------------
+tokenize_skip_ngrams(james, n = 5, n_min = 2, k = 2,
+                     stopwords = stopwords::stopwords("en"))
+
+## ------------------------------------------------------------------------
+tokenize_tweets("Welcome, @user, to the tokenizers package. #rstats #forever")
+
+## ---- collapse=FALSE-----------------------------------------------------
 tokenize_sentences(james) 
 tokenize_paragraphs(james)
 
 ## ------------------------------------------------------------------------
-tokenize_ngrams(james, n = 5, n_min = 2)
-tokenize_skip_ngrams(james, n = 5, k = 2)
+chunks <- chunk_text(mobydick, chunk_size = 100, doc_id = "mobydick")
+length(chunks)
+chunks[5:6]
+tokenize_words(chunks[5:6])
 
 ## ------------------------------------------------------------------------
-tokenize_lines(james)
-tokenize_regex(james, pattern = "[,.;]")
+count_words(mobydick)
+count_characters(mobydick)
+count_sentences(mobydick)
 

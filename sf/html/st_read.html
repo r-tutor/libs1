@@ -114,8 +114,10 @@ and a warning is given when precision is lost (i.e., values are larger than 2^53
 
 <h3>Details</h3>
 
-<p>for <code>geometry_column</code>, see also <a href="https://trac.osgeo.org/gdal/wiki/rfc41_multiple_geometry_fields">https://trac.osgeo.org/gdal/wiki/rfc41_multiple_geometry_fields</a>; for <code>type</code>
-values see <a href="https://en.wikipedia.org/wiki/Well-known_text#Well-known_binary">https://en.wikipedia.org/wiki/Well-known_text#Well-known_binary</a>, but note that not every target value
+<p>for <code>geometry_column</code>, see also <a href="https://trac.osgeo.org/gdal/wiki/rfc41_multiple_geometry_fields">https://trac.osgeo.org/gdal/wiki/rfc41_multiple_geometry_fields</a>
+</p>
+<p>for values for <code>type</code>
+see <a href="https://en.wikipedia.org/wiki/Well-known_text#Well-known_binary">https://en.wikipedia.org/wiki/Well-known_text#Well-known_binary</a>, but note that not every target value
 may lead to successful conversion. The typical conversion from POLYGON (3) to MULTIPOLYGON (6) should work; the other
 way around (type=3), secondary rings from MULTIPOLYGONS may be dropped without warnings. <code>promote_to_multi</code> is handled on a per-geometry column basis; <code>type</code> may be specified for each geometry column.
 </p>
@@ -124,8 +126,8 @@ way around (type=3), secondary rings from MULTIPOLYGONS may be dropped without w
 <p><code>read_sf</code> and <code>write_sf</code> are aliases for <code>st_read</code> and <code>st_write</code>, respectively, with some
 modified default arguments.
 <code>read_sf</code> and <code>write_sf</code> are quiet by default: they do not print information
-about the data source.
-<code>write_sf</code> delete layers by default: it overwrites existing files.
+about the data source. <code>read_sf</code> returns an sf-tibble rather than an sf-data.frame.
+<code>write_sf</code> delete layers by default: it overwrites existing files without asking or warning.
 </p>
 <p>if <code>table</code> is not given but <code>query</code> is, the spatial reference system (crs) of the table queried is only available in case it has been stored into each geometry record (e.g., by PostGIS, when using EWKB)
 </p>
@@ -184,5 +186,5 @@ if (exists("conn") &amp;&amp; !inherits(conn, "try-error")) {
 ## End(Not run)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>sf</em> version 0.6-0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>sf</em> version 0.6-1 <a href="00Index.html">Index</a>]</div>
 </body></html>

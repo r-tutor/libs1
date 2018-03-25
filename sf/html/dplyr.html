@@ -20,9 +20,7 @@ filter.sf(.data, ..., .dots)
 
 arrange.sf(.data, ..., .dots)
 
-distinct.sf(.data, ..., .dots, .keep_all = FALSE)
-
-group_by.sf(.data, ..., .dots, add = FALSE)
+group_by.sf(.data, ..., add = FALSE)
 
 ungroup.sf(x, ...)
 
@@ -37,6 +35,8 @@ rename.sf(.data, ...)
 slice.sf(.data, ..., .dots)
 
 summarise.sf(.data, ..., .dots, do_union = TRUE)
+
+distinct.sf(.data, ..., .keep_all = FALSE)
 
 gather.sf(data, key, value, ..., na.rm = FALSE, convert = FALSE,
   factor_key = FALSE)
@@ -88,10 +88,6 @@ anti_join.sf(x, y, by = NULL, copy = FALSE, ...)
 <td>
 <p>see corresponding function in package <code>dplyr</code></p>
 </td></tr>
-<tr valign="top"><td><code>.keep_all</code></td>
-<td>
-<p>see corresponding function in dplyr</p>
-</td></tr>
 <tr valign="top"><td><code>add</code></td>
 <td>
 <p>see corresponding function in dplyr</p>
@@ -103,6 +99,10 @@ anti_join.sf(x, y, by = NULL, copy = FALSE, ...)
 <tr valign="top"><td><code>do_union</code></td>
 <td>
 <p>logical; should geometries be unioned by using <a href="geos_combine.html">st_union</a>, or simply be combined using <a href="geos_combine.html">st_combine</a>? Using <a href="geos_combine.html">st_union</a> resolves internal boundaries, but in case of unioning points may also change the order of the points.</p>
+</td></tr>
+<tr valign="top"><td><code>.keep_all</code></td>
+<td>
+<p>see corresponding function in dplyr</p>
 </td></tr>
 <tr valign="top"><td><code>data</code></td>
 <td>
@@ -207,6 +207,8 @@ anti_join.sf(x, y, by = NULL, copy = FALSE, ...)
 
 <p><code>select</code> keeps the geometry regardless whether it is selected or not; to deselect it, first pipe through <code>as.data.frame</code> to let dplyr's own <code>select</code> drop it.
 </p>
+<p><code>distinct.sf</code> gives distinct records for which all attributes and geometries are distinct; <a href="geos_binary_pred.html">st_equals</a> is used to find out which geometries are distinct.
+</p>
 <p><code>nest.sf</code> assumes that a simple feature geometry list-column was among the columns that were nested.
 </p>
 
@@ -221,7 +223,6 @@ nc %&gt;% filter(AREA &gt; .1) %&gt;% plot()
 st_geometry(nc) %&gt;% plot()
 nc %&gt;% select(AREA) %&gt;% arrange(AREA) %&gt;% slice(1:10) %&gt;% plot(add = TRUE, col = 'grey')
 title("the ten counties with smallest area")
-nc[c(1:100, 1:10), ] %&gt;% distinct() %&gt;% nrow()
 nc$area_cl = cut(nc$AREA, c(0, .1, .12, .15, .25))
 nc %&gt;% group_by(area_cl) %&gt;% class()
 nc2 &lt;- nc %&gt;% mutate(area10 = AREA/10)
@@ -238,8 +239,9 @@ nc.g &lt;- nc %&gt;% group_by(area_cl)
 nc.g %&gt;% summarise(mean(AREA))
 nc.g %&gt;% summarise(mean(AREA)) %&gt;% plot(col = grey(3:6 / 7))
 nc %&gt;% as.data.frame %&gt;% summarise(mean(AREA))
+nc[c(1:100, 1:10), ] %&gt;% distinct() %&gt;% nrow()
 library(tidyr)
-nc %&gt;% select(SID74, SID79, geometry) %&gt;% gather(VAR, SID, -geometry) %&gt;% summary()
+nc %&gt;% select(SID74, SID79) %&gt;% gather(VAR, SID, -geometry) %&gt;% summary()
 library(tidyr)
 nc$row = 1:100 # needed for spread to work
 nc %&gt;% select(SID74, SID79, geometry, row) %&gt;%
@@ -252,5 +254,5 @@ trs.sf = st_sf(x[,1:2], trs)
 plot(trs.sf["year"], axes = TRUE)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>sf</em> version 0.6-0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>sf</em> version 0.6-1 <a href="00Index.html">Index</a>]</div>
 </body></html>

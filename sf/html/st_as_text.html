@@ -53,7 +53,10 @@ st_as_text(x, ..., EWKT = FALSE)
 
 <h3>Details</h3>
 
-<p>To suppress printing of SRID, <code>EWKT=FALSE</code> can be passed as parameter.
+<p>The returned WKT representation of simple feature geometry conforms to the
+<a href="http://www.opengeospatial.org/standards/sfa">simple features access</a> specification and extensions,
+<a href="http://postgis.net/docs/using_postgis_dbmanagement.html#EWKB_EWKT">known as EWKT</a>, supported by
+PostGIS and other simple features implementations for addition of SRID to a WKT string.
 </p>
 
 
@@ -61,7 +64,8 @@ st_as_text(x, ..., EWKT = FALSE)
 
 <pre>
 st_as_text(st_point(1:2))
+st_as_text(st_sfc(st_point(c(-90,40)), crs = 4326), EWKT = TRUE)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>sf</em> version 0.6-0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>sf</em> version 0.6-1 <a href="00Index.html">Index</a>]</div>
 </body></html>

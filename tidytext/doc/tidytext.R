@@ -12,7 +12,7 @@ library(stringr)
 
 original_books <- austen_books() %>%
   group_by(book) %>%
-  mutate(linenumber = row_number(),
+  mutate(line = row_number(),
          chapter = cumsum(str_detect(text, regex("^chapter [\\divxlc]",
                                                  ignore_case = TRUE)))) %>%
   ungroup()
@@ -27,9 +27,8 @@ tidy_books <- original_books %>%
 tidy_books
 
 ## ------------------------------------------------------------------------
-data("stop_words")
 cleaned_books <- tidy_books %>%
-  anti_join(stop_words)
+  anti_join(get_stopwords())
 
 ## ------------------------------------------------------------------------
 cleaned_books %>%
@@ -50,7 +49,7 @@ bing <- get_sentiments("bing")
 
 janeaustensentiment <- tidy_books %>%
   inner_join(bing) %>%
-  count(book, index = linenumber %/% 80, sentiment) %>%
+  count(book, index = line %/% 80, sentiment) %>%
   spread(sentiment, n, fill = 0) %>%
   mutate(sentiment = positive - negative)
 
@@ -75,9 +74,9 @@ bing_word_counts %>%
   mutate(n = ifelse(sentiment == "negative", -n, n)) %>%
   mutate(word = reorder(word, n)) %>%
   ggplot(aes(word, n, fill = sentiment)) +
-  geom_bar(stat = "identity") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  ylab("Contribution to sentiment")
+  geom_col() +
+  coord_flip() +
+  labs(y = "Contribution to sentiment")
 
 ## ---- fig.height=6, fig.width=6------------------------------------------
 library(wordcloud)

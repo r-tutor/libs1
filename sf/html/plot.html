@@ -21,8 +21,10 @@
 ## S3 method for class 'sf'
 plot(x, y, ..., col = NULL, main, pal = NULL, nbreaks = 10,
   breaks = "pretty", max.plot = if (is.null(n &lt;-
-  options("sf_max.plot")[[1]])) 9 else n, key.pos = if (ncol(x) &gt; 2) NULL else
-  4, key.size = lcm(1.8))
+  options("sf_max.plot")[[1]])) 9 else n, key.pos = get_key_pos(x, ...),
+  key.size = lcm(1.8), reset = TRUE)
+
+get_key_pos(x, ...)
 
 ## S3 method for class 'sfc_POINT'
 plot(x, y, ..., pch = 1, cex = 1, col = 1, bg = 0,
@@ -113,11 +115,15 @@ sf.colors(n = 10, cutoff.tails = c(0.35, 0.2), alpha = 1,
 </td></tr>
 <tr valign="top"><td><code>key.pos</code></td>
 <td>
-<p>integer; which side to plot a color key: 1 bottom, 2 left, 3 top, 4 right. Set to <code>NULL</code> for no key. Currently ignored if multiple columns are plotted.</p>
+<p>integer; side to plot a color key: 1 bottom, 2 left, 3 top, 4 right; set to <code>NULL</code> to omit key. Ignored if multiple columns are plotted in a single function call. Default depends on plot size, map aspect, and, if set, parameter <code>asp</code>.</p>
 </td></tr>
 <tr valign="top"><td><code>key.size</code></td>
 <td>
 <p>amount of space reserved for the key (labels)</p>
+</td></tr>
+<tr valign="top"><td><code>reset</code></td>
+<td>
+<p>logical; if <code>FALSE</code>, keep the plot in a mode that allows adding further map elements; if <code>TRUE</code> restore original mode after plotting; see details.</p>
 </td></tr>
 <tr valign="top"><td><code>pch</code></td>
 <td>
@@ -237,6 +243,8 @@ set parameter <code>mfrow</code> with <code>par</code> prior to plotting,  and p
 <p><code>plot.sfc</code> plots the geometry, additional parameters can be passed on
 to control color, lines or symbols.
 </p>
+<p>When setting <code>reset</code> to <code>FALSE</code>, the original device parameters are lost, and the device must be reset using <code>dev.off()</code> in order to reset it.
+</p>
 <p><code>plot_sf</code> sets up the plotting area, axes, graticule, or webmap background; it
 is called by all <code>plot</code> methods before anything is drawn.
 </p>
@@ -315,5 +323,5 @@ plot(gc, cex = gc$a, col = gc$a, border = rev(gc$a) + 2, lwd = 2)
 sf.colors(10)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>sf</em> version 0.6-0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>sf</em> version 0.6-1 <a href="00Index.html">Index</a>]</div>
 </body></html>

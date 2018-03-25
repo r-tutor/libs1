@@ -1,3 +1,29 @@
+# version 0.6-1
+
+* method `distinct` now works; #669, #672
+
+* `+`, `-`, `*` and `/` for pairs of geometries (`sfg`, `sfc`) now return geometric union, difference, intersection and symmetric difference, respectively.
+
+* `st_cast` from `MULTIPOLYGON` to `MULTILINESTRING` should now work properly; #660
+
+* all Rcpp interfaces needed by package `stars` have now been moved into `sf`; pkg `stars` is now R-only, and only `sf` needs linking to GDAL.
+
+* interface the 9 gdal utils using the C++ API; see R function `gdal_utils()`
+
+* improve resetting (base) plots; add `reset = FALSE` in a call to `plot` to enable adding to plots that have a legend
+
+* `st_read` now returns a `data.frame` when a table contains no geometries, rather than giving an error; it does emit a warning in this case. See https://stat.ethz.ch/pipermail/r-sig-geo/2018-February/026344.html
+
+* move `pillar` from `Imports:` to `Suggests:`
+
+* update to the new rwinlib distribution of gdal (adds JPG2000); #639
+
+* speed up computation of centroids for largest polygon; #623
+
+* add `st_as_sfc.raw` method
+
+* Bugfix: binary operations (`st_intersection`, `st_difference`, etc) no longer fail when operating on data frames of class `"tbl_df"` with common column names; #644
+
 # version 0.6-0
 
 * add `pillar` to Imports: to provide method for printing WKT geometries in tibbles

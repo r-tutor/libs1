@@ -1,5 +1,3 @@
-Ops.sfg                 S3 Ops Group Generic Functions (multiply and
-                        add/subtract) for affine transformation
 aggregate.sf            aggregate an 'sf' object
 as                      Methods to coerce simple feature geometries to
                         corresponding 'Spatial*' objects
@@ -9,6 +7,10 @@ db_drivers              Drivers for which update should be 'TRUE' by
                         default
 dplyr                   Dplyr verb methods for sf objects
 extension_map           Map extension to driver
+gdal                    functions to interact with gdal not meant to be
+                        called directly by users (but e.g. by
+                        stars::st_stars)
+gdal_utils              Native interface to gdal utils
 geos_binary_ops         Geometric operations on pairs of simple feature
                         geometry sets
 geos_binary_pred        Geometric binary predicates on pairs of simple
@@ -23,6 +25,8 @@ internal                Internal functions
 is_driver_available     Check if driver is available
 is_driver_can           Check if a driver can perform an action
 merge.sf                merge method for sf and data.frame object
+ops                     S3 Ops Group Generic Functions (multiply and
+                        add/subtract) for affine transformation
 plot                    Plot sf object
 prefix_map              Map prefix to driver
 rawToHex                Convert raw vector(s) into hexadecimal
@@ -86,5 +90,7 @@ st_write                Write simple features object to file or
                         database
 st_zm                   Drop or add Z and/or M dimensions from feature
                         geometries
+stars                   functions only exported to be used internally
+                        by stars
 summary.sfc             Summarize simple feature column
 tibble                  Summarize simple feature type for tibble
