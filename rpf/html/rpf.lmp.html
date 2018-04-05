@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create logistic function of a monotonic polynomial (LMP)...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rpf.lmp {rpf}"><tr><td>rpf.lmp {rpf}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create logistic function of a monotonic polynomial (LMP) model</h2>
+
+<h3>Description</h3>
+
+<p>This model is a dichotomous response model originally proposed by
+Liang (2007) and is implemented using the parameterization by
+Falk &amp; Cai (in press).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rpf.lmp(k = 0, multidimensional = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>k</code></td>
+<td>
+<p>a non-negative integer that controls the order of the
+polynomial (2k+1) with a default of k=0 (1st order polynomial = 2PL).</p>
+</td></tr>
+<tr valign="top"><td><code>multidimensional</code></td>
+<td>
+<p>whether to use a multidimensional model.
+Defaults to <code>FALSE</code>. The multidimensional version is not yet
+available.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The LMP model replaces the linear predictor part of the
+two-parameter logistic function with a monotonic polynomial,
+<i>m(theta, omega, alpha, tau)</i>,
+</p>
+<p style="text-align: center;"><i>P(pick=1|omega,xi,alpha,tau,th) = 1/(1+exp(-(xi + m(theta,omega,xi,alpha,tau))))</i></p>
+
+<p>where <i>alpha</i> and <i>tau</i> are vectors
+of length k.
+</p>
+<p>The order of the polynomial is always odd and is controlled by
+the user specified non-negative integer, k. The model contains
+2+2*k parameters and are used as input to the <code>rpf.prob</code>
+function in the following order:
+<i>omega</i> - the natural log of the slope of the item model when k=0,
+<i>xi</i> - the intercept,
+<i>alpha</i> and <i>tau</i> - two parameters that control bends in
+the polynomial. These latter parameters are repeated in the same order for
+models with k&gt;1. For example, a k=2 polynomial with have an item
+parameter vector of: <i>
+omega, xi, alpha1, tau1, alpha2, tau2</i>.
+</p>
+<p>See Falk &amp; Cai (in press) for more details as to how the
+polynomial is constructed. In general, the polynomial looks like the
+following, but coefficients, b, are not directly estimated, but
+are a function of the item parameters.
+</p>
+<p style="text-align: center;"><i>m(theta) = xi + b_1*theta + b_2*theta^2 + &hellip; + b_(2k+1)*theta^{2k+1}</i></p>
+
+<p>At the lowest order polynomial (k=0) the model reduces to the
+two-parameter logistic (2PL) model. However, parameterization of the
+slope parameter, <i>omega</i>, is currently different than
+the 2PL (i.e., slope = exp(<i>omega</i>)). This parameterization
+ensures that the response function is always monotonically increasing
+without requiring constrained optimization.
+</p>
+<p>Please note that the functions implementing this item model
+may eventually be replaced or subsumed by an alternative
+item model. That is, backwards compatability will not necessarily
+be guaranteed and this item model should be considered experimental
+until further notice.
+</p>
+<p>For example, Falk &amp; Cai present a polytomous item model derived from
+the generalized partial credit model that also uses a monotonic
+polynomial as the linear predictor, referred to as a GPC-MP item
+model. Since the GPC-MP reduces to the LMP when the number of
+categories is 2, this is a potential candidate for replacing the
+LMP item model. An alternative may include the retention of a
+dichotomous response model, but with a lower (and upper)
+asymptote that further reduces to the three-parameter logistic
+(or four-parameter logistic) item model when k=0. Finally,
+future versions may reparameterize <i>omega</i>, or allow
+the option to release constraints on monotonicity. For instance,
+releasing constraints on <i>omega</i> may be desirable
+in cases where the user wishes to have the option of a
+monotonically decreasing response function. Further releasing
+constraints on <i>tau</i> would allow nonmontonicity and would
+be equivalent to replacing the linear predictor with a polynomial.
+</p>
+
+
+<h3>Value</h3>
+
+<p>an item model
+</p>
+
+
+<h3>References</h3>
+
+<p>Falk, C. F., &amp; Cai, L. (in press). Maximum marginal likelihood
+estimation of a monotonic polynomial generalized partial credit model with
+applications to multiple group analysis. <em>Psychometrika</em>.
+<a href="http://dx.doi.org/10.1007/s11336-014-9428-7">http://dx.doi.org/10.1007/s11336-014-9428-7</a>
+</p>
+<p>Liang (2007). <em>A semi-parametric approach to estimating item response
+functions</em>. Unpublished doctoral dissertation, Department of Psychology,
+The Ohio State University.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+spec &lt;- rpf.lmp(1) # 3rd order polynomial
+theta&lt;-seq(-3,3,.1)
+p&lt;-rpf.prob(spec, c(-.11,.37,.24,-.21),theta)
+
+spec &lt;- rpf.lmp(2) # 5th order polynomial
+p&lt;-rpf.prob(spec, c(.69,.71,-.5,-8.48,.52,-3.32),theta)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rpf</em> version 0.56.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

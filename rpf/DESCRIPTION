@@ -1,7 +1,7 @@
 Package: rpf
 Type: Package
 Title: Response Probability Functions
-Version: 0.56
+Version: 0.56.1
 Date: 2017-12-07
 Authors@R: c(person("Joshua",family="Pritikin", email="jpritikin@pobox.com",
     role=c('cre','aut')), person("Jonathan",family="Weeks",
@@ -13,7 +13,7 @@ Authors@R: c(person("Joshua",family="Pritikin", email="jpritikin@pobox.com",
     person(c("Carl", "F."), "Falk", email =
     "falkcarl@msu.edu", role = c("ctb"))
     )
-Maintainer: Joshua Pritikin <jpritikin@pobox.com>
+Maintainer: ORPHANED
 Description: The purpose of this package is to factor out logic and math common
     to Item Factor Analysis fitting, diagnostics, and analysis. It is
     envisioned as core support code suitable for more specialized IRT packages
@@ -32,9 +32,10 @@ Collate: 'init.R' 'classes.R' 'fit.R' 'drm.R' 'nrm.R' 'mcm.R' 'grm.R'
         'LSAT.R' 'sample.R' 'dataframe.R' 'diagnose.R' 'science.R'
         'kct.R' 'openmx.R' 'flexmirt.R' 'util.R' 'lmp.R'
 URL: https://github.com/jpritikin/rpf
+SystemRequirements: GNU make
 RoxygenNote: 6.0.1.9000
 NeedsCompilation: yes
-Packaged: 2017-12-07 15:59:48 UTC; joshua
+Packaged: 2018-04-03 10:38:34 UTC; ripley
 Author: Joshua Pritikin [cre, aut],
   Jonathan Weeks [ctb],
   Li Cai [ctb],
@@ -43,6 +44,10 @@ Author: Joshua Pritikin [cre, aut],
   Michael D. Hunter [ctb],
   Carl F. Falk [ctb]
 Repository: CRAN
-Date/Publication: 2017-12-08 00:13:48 UTC
-Built: R 3.4.3; x86_64-w64-mingw32; 2017-12-10 10:33:23 UTC; windows
+Date/Publication: 2018-04-03 10:42:03 UTC
+X-CRAN-Original-Maintainer: Joshua Pritikin <jpritikin@pobox.com>
+X-CRAN-Comment: Orphaned and corrected on 2018-04-03 as invalid
+        Makevars was not corrected nor GNU make declared, despite
+        requests.
+Built: R 3.4.4; x86_64-w64-mingw32; 2018-04-05 03:03:03 UTC; windows
 Archs: i386, x64

@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Computes local dependence indices for all pairs of items</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ChenThissen1997 {rpf}"><tr><td>ChenThissen1997 {rpf}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Computes local dependence indices for all pairs of items</h2>
+
+<h3>Description</h3>
+
+<p>Item Factor Analysis makes two assumptions: (1) that the latent
+distribution is reasonably approximated by the multivariate Normal
+and (2) that items are conditionally independent. This test
+examines the second assumption. The presence of locally dependent
+items can inflate the precision of estimates causing a test to
+seem more accurate than it really is.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ChenThissen1997(grp, ..., data = NULL, inames = NULL, qwidth = 6,
+  qpoints = 49, method = "pearson", .twotier = TRUE, .parallel = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>grp</code></td>
+<td>
+<p>a list with the spec, param, mean, and cov describing the group</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Not used.  Forces remaining arguments to be specified by name.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>data</p>
+</td></tr>
+<tr valign="top"><td><code>inames</code></td>
+<td>
+<p>a subset of items to examine</p>
+</td></tr>
+<tr valign="top"><td><code>qwidth</code></td>
+<td>
+<p>quadrature width</p>
+</td></tr>
+<tr valign="top"><td><code>qpoints</code></td>
+<td>
+<p>number of equally spaced quadrature points</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>method to use to calculate P values. The default is the
+Pearson X^2 statistic. Use &quot;lr&quot; for the similar likelihood ratio statistic.</p>
+</td></tr>
+<tr valign="top"><td><code>.twotier</code></td>
+<td>
+<p>whether to enable the two-tier optimization</p>
+</td></tr>
+<tr valign="top"><td><code>.parallel</code></td>
+<td>
+<p>whether to take advantage of multiple CPUs (default TRUE)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Statically significant entries suggest that the item pair has
+local dependence. Since log(.01)=-4.6, an absolute magitude of 5
+is a reasonable cut-off. Positive entries indicate that the two
+item residuals are more correlated than expected. These items may share an
+unaccounted for latent dimension. Consider a redesign of the items
+or the use of testlets for scoring. Negative entries indicate that
+the two item residuals are less correlated than expected.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a list with raw, pval and detail. The pval matrix is a
+lower triangular matrix of log P values with the sign
+determined by relative association between the observed and
+expected tables (see <code><a href="ordinal.gamma.html">ordinal.gamma</a></code>)
+</p>
+
+
+<h3>References</h3>
+
+<p>Chen, W.-H. &amp; Thissen, D. (1997). Local dependence
+indexes for item pairs using Item Response Theory. <em>Journal
+of Educational and Behavioral Statistics, 22</em>(3), 265-289.
+</p>
+<p>Thissen, D., Steinberg, L., &amp; Mooney, J. A. (1989). Trace lines for testlets: A use
+of multiple-categorical-response models. <em>Journal of Educational Measurement,
+26</em> (3), 247&ndash;260.
+</p>
+<p>Wainer, H. &amp; Kiely, G. L. (1987). Item clusters and computerized
+adaptive testing: A case for testlets.  <em>Journal of
+Educational measurement, 24</em>(3), 185&ndash;201.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="https://github.com/jpritikin/ifaTools">ifaTools</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rpf</em> version 0.56.1 <a href="00Index.html">Index</a>]</div>
+</body></html>
