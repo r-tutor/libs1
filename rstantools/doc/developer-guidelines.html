@@ -12,50 +12,12 @@
 
 <meta name="author" content="Stan Development Team" />
 
-<meta name="date" content="2017-12-21" />
+<meta name="date" content="2018-04-17" />
 
 <title>Guidelines for Developers of R Packages Interfacing with Stan</title>
 
 
 
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-</style>
 
 
 
@@ -70,7 +32,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Guidelines for Developers of R Packages Interfacing with Stan</h1>
 <h4 class="author"><em>Stan Development Team</em></h4>
-<h4 class="date"><em>2017-12-21</em></h4>
+<h4 class="date"><em>2018-04-17</em></h4>
 
 
 <div id="TOC">
@@ -104,23 +66,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul>
 <li><p>The <strong>rstantools</strong> package provides the <code>rstan_package_skeleton</code> function, which you should use to create the basic structure of your package. If you have trouble setting up your package using <code>rstan_package_skeleton</code> please consult the <a href="https://github.com/stan-dev/rstanarm"><strong>rstanarm</strong></a> repository and use it as a template and/or ask us for help on the <a href="http://discourse.mc-stan.org">Stan Forums group</a>.</p></li>
 <li><p>Use version control (e.g., git).</p></li>
-<li><p>Unless you are developing proprietary private software, organize your code in a repository that is <em>public</em> on <a href="https://github.com/">GitHub</a> (or a similar service, but preferably GitHub). It should be public even at early stages of development, not only when officially released. We recommend you add a note to your README file on how to install the development version of your package, like in the <a href="https://github.com/stan-dev/rstanarm#development-version"><strong>rstanarm</strong> README</a>:</p></li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">&quot;devtools&quot;</span>)) {
-  <span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)
-  <span class="kw">library</span>(<span class="st">&quot;devtools&quot;</span>)
-}
-<span class="kw">install_github</span>(<span class="st">&quot;stan-dev/rstanarm&quot;</span>)</code></pre></div>
-<ul>
-<li>Unit testing is essential. There are several R packages that make it relatively easy to write tests for your package. <strong>rstanarm</strong> uses the <a href="https://github.com/hadley/testthat"><strong>testthat</strong></a> package for this purpose, but if you prefer a different testing framework that’s fine. The <a href="https://github.com/jimhester/covr"><strong>covr</strong></a> package is useful for calculating the line coverage of your tests, and we recommend reaching at least 90% coverage before releasing a package. Good line coverage does not guarantee high quality tests, but it’s a good first step.</li>
+<li><p>Unless you are developing proprietary private software, organize your code in a repository that is <em>public</em> on <a href="https://github.com/">GitHub</a> (or a similar service, but preferably GitHub). It should be public even at early stages of development, not only when officially released. We recommend you add a note to your README file on how to install the development version of your package, like in the <a href="https://github.com/stan-dev/bayesplot#installation"><strong>bayesplot</strong> README</a></p></li>
+<li><p>Unit testing is essential. There are several R packages that make it relatively easy to write tests for your package. Most of our R packages (e.g., <strong>rstanarm</strong>, <strong>bayesplot</strong>, <strong>shinystan</strong>, <strong>loo</strong>) use the <a href="https://github.com/r-lib/testthat"><strong>testthat</strong></a> package for this purpose, but if you prefer a different testing framework that’s fine. The <a href="https://github.com/r-lib/covr"><strong>covr</strong></a> package is useful for calculating the line coverage of your tests, and we recommend reaching at least 90% coverage before releasing a package. Good line coverage does not guarantee high quality tests, but it’s a good first step.</p></li>
 </ul>
 </div>
 <div id="stan-code" class="section level3">
 <h3>Stan code</h3>
 <ul>
-<li><p>All Stan code for estimating models should be included in pre-written static .stan files that are compiled when the package is built (see the src/stan_files directory in the <strong>rstanarm</strong> repo for examples). You can also use its chunks subdirectory to include code chunks to be used in multiple .stan files (again see the <strong>rstanarm</strong> repo for examples). If you set up your package using <code>rstan_package_skeleton</code> this structure will be created for you. This means that your package should NOT write a Stan program when the user calls a model fitting function in your package, but rather use only Stan programs you have written by hand in advance (if you are working on a model for which you don’t think this is possible please let us know). There are several reasons for this.</p></li>
+<li><p>All Stan code for estimating models should be included in pre-written static .stan files that are compiled when the package is built (see the src/stan_files directory in the <strong>rstanarm</strong> repo for examples). You can also use subdirectories to include code chunks to be used in multiple .stan files (again see the <strong>rstanarm</strong> repo for examples). If you set up your package using <code>rstan_package_skeleton</code> this structure will be created for you. This means that <strong>your package should NOT write a Stan program when the user calls a model fitting function in your package</strong>, but rather use only Stan programs you have written by hand in advance (if you are working on a model for which you don’t think this is possible please let us know). There are several reasons for this.</p></li>
 <li>Pre-compiled Stan programs can be run by users of Windows or Mac OSX without having to install a C++ compiler, which dramatically expands the universe of potential users for your package.</li>
-<li>Pre-compiled Stan program will run immediately when called, avoiding compilation time.</li>
+<li>Pre-compiled Stan programs will run immediately when called, avoiding compilation time.</li>
 <li>CRAN policy permits long installation times but imposes restrictions on the time consumed by examples and unit tests that are much shorter than the time that it takes to compile even a simple Stan program. Thus, it is only possible to adequately test your package if it has pre-compiled Stan programs.</li>
 <li><p>Pre-compiled Stan programs can use custom C++ functions.</p></li>
 </ul>
@@ -134,7 +89,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h3>R code and documentation</h3>
 <ul>
 <li><p>Functions that provide useful post-estimation functionality should be given the same names as the corresponding functions in <strong>rstanarm</strong> (if applicable). For example, <code>posterior_predict</code> to draw from the posterior predictive distribution, <code>posterior_interval</code> for posterior uncertainty intervals, etc. To make this easier, these and similar <strong>rstanarm</strong> functions have been converted to S3 methods for the stanreg objects created by <strong>rstanarm</strong> and the S3 generic functions are included here in the <strong>rstantools</strong> package. Your package should import the generics from <strong>rstantools</strong> for whichever functions you want to include in your package and then provide methods for the fitted model objects returned by your model-fitting functions. For some other functions (e.g. <code>as.matrix</code>) the generics are already available in base R or core R packages. To be clear, we are not saying that the naming conventions used in <strong>rstanarm</strong>/<strong>rstantools</strong> are necessarily optimal. (If you think that one of our function names should be changed please let us know and suggest an alternative. If it is a substantial improvement we may consider renaming the function and deprecating the current version.) Rather, this guideline is intended to make function names consistent across Stan-based R packages, which will improve the user experience for those users who want to take advantage of a variety of these packages. It will be a mess if every R package using Stan has different names for the same functionality.</p></li>
-<li><p>The new <a href="https://github.com/stan-dev/bayesplot"><strong>bayesplot</strong></a> package will serve as the back-end for plotting for our various R packages (see for example <code>pp_check.stanreg</code> and <code>plot.stanreg</code> in <strong>rstanarm</strong> version <code>&gt;= 2.13.1</code>) and we hope developers of other Stan-based R packages will also use it. For any plot you intend to include in your package, if it is already available in <strong>bayesplot</strong> then we recommend using the available version or suggesting (or contributing) a better version. If it is not already available then there is a good chance we will be interested in including it in <strong>bayesplot</strong> if the plot would also be useful for other developers.</p></li>
+<li><p>The <a href="http://mc-stan.org/bayesplot/"><strong>bayesplot</strong></a> package serves as the back-end for plotting for <strong>rstanarm</strong> (see for example <code>pp_check.stanreg</code> and <code>plot.stanreg</code>) and many other packages and we hope developers of other Stan-based R packages will also use it. You can see all the other R packages using <strong>bayesplot</strong> (including <strong>rstanarm</strong>, <strong>brms</strong>, and many more) in the <em>Reverse dependencies</em> section of the <strong>bayesplot</strong> <a href="https://CRAN.R-project.org/package=bayesplot">CRAN page</a>. For any plot you intend to include in your package, if it is already available in <strong>bayesplot</strong> then we recommend using the available version or suggesting (or contributing) a better version. If it is not already available then there is a good chance we will be interested in including it in <strong>bayesplot</strong> if the plot would also be useful for other developers.</p></li>
 <li><p>Provide thorough and clear documentation. The documentation won’t be perfect (we’ve found many holes in our <strong>rstanarm</strong> documentation already and there are certainly more), but you should make every effort to provide clear and thorough documentation, using decent grammar and actual sentences wherever possible. The poor quality of the documentation in many (though certainly not all) R packages is insulting to users and an impediment to high quality research. In no way is the current state of R package documentation a reason to insufficiently document your own package. It is unfortunate that this needs to be said, but even a cursory review of popular R packages immediately reveals the necessity for guidelines like this one. Some of our own documentation does not always meet this high standard, but we are consistently making efforts to improve this.</p></li>
 </ul>
 </div>
@@ -148,7 +103,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="concluding-remarks" class="section level2">
 <h2>Concluding remarks</h2>
-<p>These guidelines are not set in stone. We expect them to evolve and we very much appreciate feedback on how they can be improved. And, of course, we look forward to seeing the packages you develop using Stan!</p>
+<p>These guidelines are not set in stone. We expect them to evolve and we very much appreciate feedback on how they can be improved. And, of course, we look forward to seeing the packages you develop using Stan, so please let us know about them!</p>
 <p>– The Stan Development Team</p>
 </div>
 

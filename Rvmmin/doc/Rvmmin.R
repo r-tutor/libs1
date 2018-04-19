@@ -98,6 +98,46 @@ xtabs(formula = ng ~ acctol + eps, data=resdf)
 
 
 ## ------------------------------------------------------------------------
+require(Rvmmin)
+sq<-function(x, exfs=1){
+  nn<-length(x)
+  yy<-(1:nn)*pi/4
+  f<-(10^exfs)*sum((yy-x)^2)
+  f
+}
+sq.g <- function(x, exfs=1){
+  nn<-length(x)
+  yy<-(1:nn)*pi/4
+  gg<- 2*(x - yy)*(10^exfs)
+}
+require(Rvmmin)
+nn <- 4
+xx0 <- rep(pi, nn) # crude start
+
+# Now build a table of results for different values of eps and acc
+veps <- c(1e-3, 1e-5, 1e-7, 1e-9, 1e-11)
+exfsi <- 1:6
+resdf <- data.frame(eps=NA, exfs=NA, nf=NA, ng=NA, fval=NA, gnorm=NA)
+for (eps in veps) {
+  for (exfs in exfsi) {
+    ans <- Rvmminu(xx0, sq, sq.g, 
+                   control=list(eps=eps, trace=0), exfs=exfs)
+    gn <- as.numeric(crossprod(sq.g(ans$par)))
+    resdf <- rbind(resdf, 
+                   c(eps, exfs, ans$counts[1], ans$counts[2], ans$value, gn))
+  }
+}
+resdf <- resdf[-1,]
+# Display the function value found for different tolerances
+xtabs(formula = fval ~ exfs + eps, data=resdf)
+# Display the gradient norm found for different tolerances
+xtabs(formula = gnorm ~ exfs + eps, data=resdf)
+# Display the number of function evaluations used for different tolerances
+xtabs(formula = nf ~ exfs + eps, data=resdf)
+# Display the number of gradient evaluations used for different tolerances
+xtabs(formula = ng ~ exfs + eps, data=resdf)
+
+## ------------------------------------------------------------------------
 ssq.f<-function(x){
    nn<-length(x)
    yy <- 1:nn
@@ -111,7 +151,7 @@ ssq.g <- function(x){
 }
 
 xy <- c(1, 1/10, 1/100, 1/1000)
-# note: checked gradient using numDeriv
+# note: gradient was checked using numDeriv
 veps <- c(1e-3, 1e-5, 1e-7, 1e-9, 1e-11)
 vacc <- c(.1, .01, .001, .0001, .00001, .000001)
 resdf <- data.frame(eps=NA, acctol=NA, nf=NA, ng=NA, fval=NA, gnorm=NA)
