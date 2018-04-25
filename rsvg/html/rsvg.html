@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Render SVG into Bitmap</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rsvg {rsvg}"><tr><td>rsvg {rsvg}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Render SVG into Bitmap</h2>
+
+<h3>Description</h3>
+
+<p>Render svg image into a high quality bitmap. When both <code>width</code> and <code>height</code>
+are <code>NULL</code>, the output resolution matches that of the input. When either <code>width</code>
+or <code>height</code> is specified, the image is scaled proportionally. When both <code>width</code>
+and <code>height</code> are specified, the image is stretched into the requested size.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rsvg(svg, width = NULL, height = NULL)
+
+rsvg_raw(svg, width = NULL, height = NULL)
+
+rsvg_webp(svg, file = NULL, width = NULL, height = NULL)
+
+rsvg_png(svg, file = NULL, width = NULL, height = NULL)
+
+rsvg_pdf(svg, file = NULL, width = NULL, height = NULL)
+
+rsvg_svg(svg, file = NULL, width = NULL, height = NULL)
+
+rsvg_ps(svg, file = NULL, width = NULL, height = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>svg</code></td>
+<td>
+<p>path/url to svg file or raw vector with svg data. Use <a href="../../base/html/rawConversion.html">charToRaw</a> to convert
+an SVG string into raw data.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>output width in pixels or <code>NULL</code> for default.</p>
+</td></tr>
+<tr valign="top"><td><code>height</code></td>
+<td>
+<p>output height in pixels or <code>NULL</code> for default</p>
+</td></tr>
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>path to output file or <code>NULL</code> to return content as raw vector</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+# create some svg
+options(example.ask=FALSE)
+tmp &lt;- tempfile()
+svglite::svglite(tmp, width = 10, height = 7)
+ggplot2::qplot(mpg, wt, data = mtcars, colour = factor(cyl))
+dev.off()
+
+# render it into a bitmap array
+bitmap &lt;- rsvg(tmp, height = 1440)
+dim(bitmap) # h*w*c
+
+png::writePNG(bitmap, "bitmap.png", dpi = 144)
+jpeg::writeJPEG(bitmap, "bitmap.jpg", quality = 1)
+webp::write_webp(bitmap, "bitmap.webp", quality = 100)
+
+
+# render straight to output format
+rsvg_pdf(tmp, "out.pdf")
+rsvg_png(tmp, "out.png")
+rsvg_svg(tmp, "out.svg")
+rsvg_ps(tmp, "out.ps")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rsvg</em> version 1.2 <a href="00Index.html">Index</a>]</div>
+</body></html>
