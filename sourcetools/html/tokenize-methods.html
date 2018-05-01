@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Tokenize R Code</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for tokenize_file {sourcetools}"><tr><td>tokenize_file {sourcetools}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Tokenize R Code</h2>
+
+<h3>Description</h3>
+
+<p>Tools for tokenizing <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> code.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+tokenize_file(path)
+
+tokenize_string(string)
+
+tokenize(file = "", text = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file, path</code></td>
+<td>
+<p>A file path.</p>
+</td></tr>
+<tr valign="top"><td><code>text, string</code></td>
+<td>
+<p><span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> code as a character vector of length one.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A <code>data.frame</code> with the following columns:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+<code>value</code>  </td><td style="text-align: left;"> The token's contents, as a string.     </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code>row</code>    </td><td style="text-align: left;"> The row where the token is located.    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code>column</code> </td><td style="text-align: left;"> The column where the token is located. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code>type</code>   </td><td style="text-align: left;"> The token type, as a string.           </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+
+
+<h3>Note</h3>
+
+<p>Line numbers are determined by existence of the <code>\n</code>
+line feed character, under the assumption that code being tokenized
+will use either <code>\n</code> to indicate newlines (as on modern
+Unix systems), or <code>\r\n</code> as on Windows.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+tokenize_string("x &lt;- 1 + 2")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sourcetools</em> version 0.1.7 <a href="00Index.html">Index</a>]</div>
+</body></html>
