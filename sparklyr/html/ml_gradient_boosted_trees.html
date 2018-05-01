@@ -17,11 +17,11 @@
 
 <pre>
 ml_gbt_classifier(x, formula = NULL, max_iter = 20L, max_depth = 5L,
-  step_size = 0.1, subsampling_rate = 1, min_instances_per_node = 1L,
-  max_bins = 32L, min_info_gain = 0, loss_type = "logistic",
-  seed = NULL, thresholds = NULL, checkpoint_interval = 10L,
-  cache_node_ids = FALSE, max_memory_in_mb = 256L,
-  features_col = "features", label_col = "label",
+  step_size = 0.1, subsampling_rate = 1, feature_subset_strategy = "auto",
+  min_instances_per_node = 1L, max_bins = 32L, min_info_gain = 0,
+  loss_type = "logistic", seed = NULL, thresholds = NULL,
+  checkpoint_interval = 10L, cache_node_ids = FALSE,
+  max_memory_in_mb = 256L, features_col = "features", label_col = "label",
   prediction_col = "prediction", probability_col = "probability",
   raw_prediction_col = "rawPrediction",
   uid = random_string("gbt_classifier_"), ...)
@@ -33,15 +33,17 @@ ml_gradient_boosted_trees(x, formula = NULL, type = c("auto", "regression",
   loss_type = c("auto", "logistic", "squared", "absolute"), max_bins = 32L,
   max_depth = 5L, max_iter = 20L, min_info_gain = 0,
   min_instances_per_node = 1L, step_size = 0.1, subsampling_rate = 1,
-  seed = NULL, thresholds = NULL, cache_node_ids = FALSE,
-  max_memory_in_mb = 256L, uid = random_string("gradient_boosted_trees_"),
-  response = NULL, features = NULL, ...)
+  feature_subset_strategy = "auto", seed = NULL, thresholds = NULL,
+  cache_node_ids = FALSE, max_memory_in_mb = 256L,
+  uid = random_string("gradient_boosted_trees_"), response = NULL,
+  features = NULL, ...)
 
 ml_gbt_regressor(x, formula = NULL, max_iter = 20L, max_depth = 5L,
-  step_size = 0.1, subsampling_rate = 1, min_instances_per_node = 1L,
-  max_bins = 32L, min_info_gain = 0, loss_type = "squared", seed = NULL,
-  checkpoint_interval = 10L, cache_node_ids = FALSE,
-  max_memory_in_mb = 256L, features_col = "features", label_col = "label",
+  step_size = 0.1, subsampling_rate = 1, feature_subset_strategy = "auto",
+  min_instances_per_node = 1L, max_bins = 32L, min_info_gain = 0,
+  loss_type = "squared", seed = NULL, checkpoint_interval = 10L,
+  cache_node_ids = FALSE, max_memory_in_mb = 256L,
+  features_col = "features", label_col = "label",
   prediction_col = "prediction", uid = random_string("gbt_regressor_"), ...)
 </pre>
 
@@ -73,6 +75,10 @@ number of nodes separating any leaves from the root of the tree.</p>
 <tr valign="top"><td><code>subsampling_rate</code></td>
 <td>
 <p>Fraction of the training data used for learning each decision tree, in range (0, 1]. (default = 1.0)</p>
+</td></tr>
+<tr valign="top"><td><code>feature_subset_strategy</code></td>
+<td>
+<p>The number of features to consider for splits at each tree node. See details for options.</p>
 </td></tr>
 <tr valign="top"><td><code>min_instances_per_node</code></td>
 <td>
@@ -171,6 +177,29 @@ then regression is used; classification otherwise.</p>
 
 <p>When <code>x</code> is a <code>tbl_spark</code> and <code>formula</code> (alternatively, <code>response</code> and <code>features</code>) is specified, the function returns a <code>ml_model</code> object wrapping a <code>ml_pipeline_model</code> which contains data pre-processing transformers, the ML predictor, and, for classification models, a post-processing transformer that converts predictions into class labels. For classification, an optional argument <code>predicted_label_col</code> (defaults to <code>"predicted_label"</code>) can be used to specify the name of the predicted label column. In addition to the fitted <code>ml_pipeline_model</code>, <code>ml_model</code> objects also contain a <code>ml_pipeline</code> object where the ML predictor stage is an estimator ready to be fit against data. This is utilized by <code><a href="ml-persistence.html">ml_save</a></code> with <code>type = "pipeline"</code> to faciliate model refresh workflows.
 </p>
+<p>The supported options for <code>feature_subset_strategy</code> are
+</p>
+
+<ul>
+<li> <p><code>"auto"</code>: Choose automatically for task: If <code>num_trees == 1</code>, set to <code>"all"</code>. If <code>num_trees &gt; 1</code> (forest), set to <code>"sqrt"</code> for classification and to <code>"onethird"</code> for regression.
+</p>
+</li>
+<li> <p><code>"all"</code>: use all features
+</p>
+</li>
+<li> <p><code>"onethird"</code>: use 1/3 of the features
+</p>
+</li>
+<li> <p><code>"sqrt"</code>: use use sqrt(number of features)
+</p>
+</li>
+<li> <p><code>"log2"</code>: use log2(number of features)
+</p>
+</li>
+<li> <p><code>"n"</code>: when <code>n</code> is in the range (0, 1.0], use n * number of features. When <code>n</code> is in the range (1, number of features), use <code>n</code> features. (default = <code>"auto"</code>)
+</p>
+</li></ul>
+
 <p><code>ml_gradient_boosted_trees</code> is a wrapper around <code>ml_gbt_regressor.tbl_spark</code> and <code>ml_gbt_classifier.tbl_spark</code> and calls the appropriate method based on model type.
 </p>
 
@@ -222,5 +251,5 @@ more information on the set of supervised learning algorithms.
 <code><a href="ml_random_forest.html">ml_random_forest_classifier</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2015-09-17" />
+<meta name="date" content="2018-04-30" />
 
 <title>Getting Started</title>
 
@@ -68,13 +68,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <h1 class="title toc-ignore">Getting Started</h1>
-<h4 class="date"><em>09/17/2015</em></h4>
+<h4 class="date"><em>2018-04-30</em></h4>
 
 
 <div id="TOC">
 <ul>
 <li><a href="#using-the-shinystan-app-with-different-types-of-objects">Using the ShinyStan app with different types of objects</a><ul>
-<li><a href="#stanfit-objects">stanfit objects</a></li>
+<li><a href="#stanfit-objects">stanfit objects</a><ul>
+<li><a href="#stanreg-and-brmsfit-objects">stanreg and brmsfit objects</a></li>
+</ul></li>
 <li><a href="#mcmc.list-objects">mcmc.list objects</a></li>
 <li><a href="#other-types-of-objects">Other types of objects</a><ul>
 <li><a href="#d-array">3-D array</a></li>
@@ -99,6 +101,12 @@ my_sso &lt;-<span class="st"> </span><span class="kw">launch_shinystan</span>(my
 <p>and ShinyStan will launch. Here <code>my_sso</code> is the name you want to use for the shinystan object that will be returned. If you simply run</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">launch_shinystan</span>(my_stanfit)</code></pre></div>
 <p>then ShinyStan will launch but no shinystan object will be saved upon quitting the app.</p>
+<p>Sometimes keeping only a subset of parameters before can improve performance. This can be done by creating an object with <code>as.shinystan</code> and specifying the <code>pars</code> argument. The resulting shinystan object can then be passed to <code>launch_shinystan()</code>.</p>
+<div id="stanreg-and-brmsfit-objects" class="section level3">
+<h3>stanreg and brmsfit objects</h3>
+<p>The <strong>rstanarm</strong> and <strong>brms</strong> packages provide <code>launch_shinystan</code> methods for stanreg and brmsfit objects, respectively. For example, the method for stanreg objects is documented at</p>
+<p><a href="http://mc-stan.org/rstanarm/reference/launch_shinystan.stanreg.html" class="uri">http://mc-stan.org/rstanarm/reference/launch_shinystan.stanreg.html</a></p>
+</div>
 </div>
 <div id="mcmc.list-objects" class="section level2">
 <h2>mcmc.list objects</h2>
@@ -131,11 +139,11 @@ my_sso &lt;-<span class="st"> </span><span class="kw">launch_shinystan</span>(<s
 <div id="generating-new-quantities" class="section level2">
 <h2>Generating new quantities</h2>
 <p>You can add a new parameter/quantity as a function of one or two existing parameters to your shinystan object by using the <code>generate_quantity</code> function. For example, assume <code>sso</code> is a shinystan object and two of the parameters are <code>alpha</code> and <code>beta</code>. We could add a parameter <code>gamma</code> that is the inverse logit of <code>beta</code> using the code</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inv_logit &lt;-<span class="st"> </span>function(x) <span class="dv">1</span>/(<span class="dv">1</span> +<span class="st"> </span><span class="kw">exp</span>(-x))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inv_logit &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="dv">1</span><span class="op">/</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>x))
 sso &lt;-<span class="st"> </span><span class="kw">generate_quantity</span>(sso, <span class="dt">fun =</span> inv_logit, <span class="dt">param1 =</span> <span class="st">&quot;beta&quot;</span>, <span class="dt">new_name =</span> <span class="st">&quot;gamma&quot;</span>)</code></pre></div>
 <p>Here, <code>fun</code> is the function we want to use, <code>param1</code> is the name of the parameter to apply the function to, and <code>new_name</code> is the name to give the new parameter.</p>
 <p>Adding a parameter as a function of two parameters just requires specifying the <code>param2</code> argument and providing a function of two variables. For example, we can add a parameter <code>delta</code> to <code>sso</code> that is the squared difference of <code>alpha</code> and <code>beta</code> like this</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sso &lt;-<span class="st"> </span><span class="kw">generate_quantity</span>(sso, <span class="dt">fun =</span> function(x,y) (x-y)^<span class="dv">2</span>,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sso &lt;-<span class="st"> </span><span class="kw">generate_quantity</span>(sso, <span class="dt">fun =</span> <span class="cf">function</span>(x,y) (x<span class="op">-</span>y)<span class="op">^</span><span class="dv">2</span>,
                        <span class="dt">param1 =</span> <span class="st">&quot;alpha&quot;</span>, <span class="dt">param2 =</span> <span class="st">&quot;beta&quot;</span>, <span class="dt">new_name =</span> <span class="st">&quot;delta&quot;</span>)</code></pre></div>
 </div>
 <div id="storing-your-model-code-in-a-shinystan-object" class="section level2">

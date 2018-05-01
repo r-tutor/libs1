@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Drop parameters from a 'shinystan' object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for drop_parameters {shinystan}"><tr><td>drop_parameters {shinystan}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Drop parameters from a <code>shinystan</code> object</h2>
+
+<h3>Description</h3>
+
+<p>Remove selected parameters from a <code>shinystan</code> object. This is useful if 
+you have a very large <code>shinystan</code> object when you only want to look at a
+subset of parameters. With a smaller <code>shinystan</code> object, 
+<code><a href="launch_shinystan.html">launch_shinystan</a></code> will be faster and you should experience 
+better performance (responsiveness) after launching when using the
+'ShinyStan' app.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+drop_parameters(sso, pars)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>sso</code></td>
+<td>
+<p>A <code><a href="as.shinystan.html">shinystan object</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>pars</code></td>
+<td>
+<p>A character vector of parameter names. If the name of a 
+non-scalar (e.g. vector, matrix) parameter is included in <code>pars</code> all 
+of its elements will be removed. Currently it is not possible to remove 
+only a subset of the elements of a non-scalar parameter.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>sso</code>, with <code>pars</code> dropped.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="generate_quantity.html">generate_quantity</a></code> to add a new quantity to a
+<code>shinystan</code> object.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Using example shinystan object 'eight_schools'
+print(eight_schools@param_names)
+
+# Remove the scalar parameters mu and tau
+sso &lt;- drop_parameters(eight_schools, pars = c("mu", "tau"))
+print(sso@param_names)
+
+# Remove all elements of the parameter vector theta
+sso &lt;- drop_parameters(sso, pars = "theta")
+print(sso@param_names)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinystan</em> version 2.5.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

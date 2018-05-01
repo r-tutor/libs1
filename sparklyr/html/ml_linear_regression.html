@@ -18,10 +18,10 @@
 <pre>
 ml_linear_regression(x, formula = NULL, fit_intercept = TRUE,
   elastic_net_param = 0, reg_param = 0, max_iter = 100L,
-  weight_col = NULL, solver = "auto", standardization = TRUE,
-  tol = 1e-06, features_col = "features", label_col = "label",
-  prediction_col = "prediction", uid = random_string("linear_regression_"),
-  ...)
+  weight_col = NULL, loss = "squaredError", solver = "auto",
+  standardization = TRUE, tol = 1e-06, features_col = "features",
+  label_col = "label", prediction_col = "prediction",
+  uid = random_string("linear_regression_"), ...)
 </pre>
 
 
@@ -55,6 +55,11 @@ ml_linear_regression(x, formula = NULL, fit_intercept = TRUE,
 <tr valign="top"><td><code>weight_col</code></td>
 <td>
 <p>The name of the column to use as weights for the model fit.</p>
+</td></tr>
+<tr valign="top"><td><code>loss</code></td>
+<td>
+<p>The loss function to be optimized. Supported options: &quot;squaredError&quot;
+and &quot;huber&quot;. Default: &quot;squaredError&quot;</p>
 </td></tr>
 <tr valign="top"><td><code>solver</code></td>
 <td>
@@ -144,5 +149,5 @@ more information on the set of supervised learning algorithms.
 <code><a href="ml_random_forest.html">ml_random_forest_classifier</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

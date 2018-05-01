@@ -21,8 +21,10 @@ quantiles.
 <h3>Usage</h3>
 
 <pre>
-ft_quantile_discretizer(x, input_col, output_col, handle_invalid = "error",
-  num_buckets = 2L, relative_error = 0.001, dataset = NULL,
+ft_quantile_discretizer(x, input_col = NULL, output_col = NULL,
+  num_buckets = 2L, input_cols = NULL, output_cols = NULL,
+  num_buckets_array = NULL, handle_invalid = "error",
+  relative_error = 0.001, dataset = NULL,
   uid = random_string("quantile_discretizer_"), ...)
 </pre>
 
@@ -42,16 +44,29 @@ ft_quantile_discretizer(x, input_col, output_col, handle_invalid = "error",
 <td>
 <p>The name of the output column.</p>
 </td></tr>
+<tr valign="top"><td><code>num_buckets</code></td>
+<td>
+<p>Number of buckets (quantiles, or categories) into which data
+points are grouped. Must be greater than or equal to 2.</p>
+</td></tr>
+<tr valign="top"><td><code>input_cols</code></td>
+<td>
+<p>Names of input columns.</p>
+</td></tr>
+<tr valign="top"><td><code>output_cols</code></td>
+<td>
+<p>Names of output columns.</p>
+</td></tr>
+<tr valign="top"><td><code>num_buckets_array</code></td>
+<td>
+<p>Array of number of buckets (quantiles, or categories)
+into which data points are grouped. Each value must be greater than or equal to 2.</p>
+</td></tr>
 <tr valign="top"><td><code>handle_invalid</code></td>
 <td>
 <p>(Spark 2.1.0+) Param for how to handle invalid entries. Options are
 'skip' (filter out rows with invalid values), 'error' (throw an error), or
 'keep' (keep invalid values in a special additional bucket). Default: &quot;error&quot;</p>
-</td></tr>
-<tr valign="top"><td><code>num_buckets</code></td>
-<td>
-<p>Number of buckets (quantiles, or categories) into which data
-points are grouped. Must be greater than or equal to 2.</p>
 </td></tr>
 <tr valign="top"><td><code>relative_error</code></td>
 <td>
@@ -146,6 +161,7 @@ columns in Spark.
 <code><a href="ft_chisq_selector.html">ft_chisq_selector</a></code>,
 <code><a href="ft_count_vectorizer.html">ft_count_vectorizer</a></code>, <code><a href="ft_dct.html">ft_dct</a></code>,
 <code><a href="ft_elementwise_product.html">ft_elementwise_product</a></code>,
+<code><a href="ft_feature_hasher.html">ft_feature_hasher</a></code>,
 <code><a href="ft_hashing_tf.html">ft_hashing_tf</a></code>, <code><a href="ft_idf.html">ft_idf</a></code>,
 <code><a href="ft_imputer.html">ft_imputer</a></code>,
 <code><a href="ft_index_to_string.html">ft_index_to_string</a></code>,
@@ -167,5 +183,5 @@ columns in Spark.
 <code><a href="ft_vector_slicer.html">ft_vector_slicer</a></code>, <code><a href="ft_word2vec.html">ft_word2vec</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

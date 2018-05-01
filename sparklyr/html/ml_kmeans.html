@@ -131,5 +131,18 @@ more information on the set of clustering algorithms.
 <code><a href="ml_gaussian_mixture.html">ml_gaussian_mixture</a></code>, <code><a href="ml_lda.html">ml_lda</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+sc &lt;- spark_connect(master = "local")
+iris_tbl &lt;- sdf_copy_to(sc, iris, name = "iris_tbl", overwrite = TRUE)
+ml_kmeans(iris_tbl, Species ~ .)
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

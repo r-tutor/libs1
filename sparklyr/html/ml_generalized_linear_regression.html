@@ -17,10 +17,10 @@
 
 <pre>
 ml_generalized_linear_regression(x, formula = NULL, family = "gaussian",
-  link = NULL, fit_intercept = TRUE, link_power = NULL,
-  link_prediction_col = NULL, reg_param = 0, max_iter = 25L,
-  weight_col = NULL, solver = "irls", tol = 1e-06, variance_power = 0,
-  features_col = "features", label_col = "label",
+  link = NULL, fit_intercept = TRUE, offset_col = NULL,
+  link_power = NULL, link_prediction_col = NULL, reg_param = 0,
+  max_iter = 25L, weight_col = NULL, solver = "irls", tol = 1e-06,
+  variance_power = 0, features_col = "features", label_col = "label",
   prediction_col = "prediction",
   uid = random_string("generalized_linear_regression_"), ...)
 </pre>
@@ -48,6 +48,10 @@ ml_generalized_linear_regression(x, formula = NULL, family = "gaussian",
 <tr valign="top"><td><code>fit_intercept</code></td>
 <td>
 <p>Boolean; should the model be fit with an intercept term?</p>
+</td></tr>
+<tr valign="top"><td><code>offset_col</code></td>
+<td>
+<p>Offset column name. If this is not set, we treat all instance offsets as 0.0. The feature specified as offset has a constant coefficient of 1.0.</p>
 </td></tr>
 <tr valign="top"><td><code>link_power</code></td>
 <td>
@@ -177,5 +181,5 @@ more information on the set of supervised learning algorithms.
 <code><a href="ml_random_forest.html">ml_random_forest_classifier</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

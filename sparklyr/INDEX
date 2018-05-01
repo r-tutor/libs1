@@ -19,6 +19,8 @@ ft_dct                  Feature Transformation - Discrete Cosine
 ft_elementwise_product
                         Feature Transformation - ElementwiseProduct
                         (Transformer)
+ft_feature_hasher       Feature Transformation - FeatureHasher
+                        (Transformer)
 ft_hashing_tf           Feature Transformation - HashingTF
                         (Transformer)
 ft_idf                  Feature Tranformation - IDF (Estimator)
@@ -76,12 +78,19 @@ ml_aft_survival_regression
                         Spark ML - Survival Regression
 ml_als                  Spark ML - ALS
 ml_bisecting_kmeans     Spark ML - Bisecting K-Means Clustering
+ml_chisquare_test       Chi-square hypothesis testing for categorical
+                        data.
+ml_clustering_evaluator
+                        Spark ML - Clustering Evaluator
+ml_corr                 Compute correlation matrix
 ml_decision_tree_classifier
                         Spark ML - Decision Trees
 ml_default_stop_words   Default stop words
 ml_evaluate             Spark ML - Evaluate prediction frames with
                         evaluators
 ml_evaluator            Spark ML - Evaluators
+ml_feature_importances
+                        Spark ML - Feature Importance for Tree Models
 ml_fpgrowth             Frequent Pattern Mining - FPGrowth
 ml_gaussian_mixture     Spark ML - Gaussian Mixture clustering.
 ml_gbt_classifier       Spark ML - Gradient Boosted Trees
@@ -106,8 +115,6 @@ ml_random_forest_classifier
                         Spark ML - Random Forest
 ml_stage                Spark ML - Pipeline stage extraction
 ml_summary              Spark ML - Extraction of summary metrics
-ml_tree_feature_importance
-                        Spark ML - Feature Importance for Tree Models
 ml_uid                  Spark ML - UID
 na.replace              Replace Missing Values in Objects
 random_string           Random string generation
@@ -159,6 +166,8 @@ spark_compilation_spec
 spark_config            Read Spark Configuration
 spark_connection        Retrieve the Spark Connection Associated with
                         an R Object
+spark_connection-class
+                        spark_connection class
 spark_context_config    Runtime configuration interface for Spark.
 spark_dataframe         Retrieve a Spark DataFrame
 spark_default_compilation_spec
@@ -166,9 +175,8 @@ spark_default_compilation_spec
                         Extensions
 spark_dependency        Define a Spark dependency
 spark_home_set          Set the SPARK_HOME environment variable
-spark_install_sync      helper function to sync sparkinstall project to
-                        sparklyr
 spark_jobj              Retrieve a Spark JVM Object Reference
+spark_jobj-class        spark_jobj class
 spark_load_table        Reads from a Spark Table into a Spark
                         DataFrame.
 spark_log               View Entries in the Spark Log

@@ -18,8 +18,9 @@ parameter.
 <h3>Usage</h3>
 
 <pre>
-ft_bucketizer(x, input_col, output_col, splits, handle_invalid = "error",
-  uid = random_string("bucketizer_"), ...)
+ft_bucketizer(x, input_col = NULL, output_col = NULL, splits = NULL,
+  input_cols = NULL, output_cols = NULL, splits_array = NULL,
+  handle_invalid = "error", uid = random_string("bucketizer_"), ...)
 </pre>
 
 
@@ -41,6 +42,19 @@ ft_bucketizer(x, input_col, output_col, splits, handle_invalid = "error",
 <tr valign="top"><td><code>splits</code></td>
 <td>
 <p>A numeric vector of cutpoints, indicating the bucket boundaries.</p>
+</td></tr>
+<tr valign="top"><td><code>input_cols</code></td>
+<td>
+<p>Names of input columns.</p>
+</td></tr>
+<tr valign="top"><td><code>output_cols</code></td>
+<td>
+<p>Names of output columns.</p>
+</td></tr>
+<tr valign="top"><td><code>splits_array</code></td>
+<td>
+<p>Parameter for specifying multiple splits parameters. Each
+element in this array can be used to map continuous features into buckets.</p>
 </td></tr>
 <tr valign="top"><td><code>handle_invalid</code></td>
 <td>
@@ -92,6 +106,7 @@ columns in Spark.
 <code><a href="ft_chisq_selector.html">ft_chisq_selector</a></code>,
 <code><a href="ft_count_vectorizer.html">ft_count_vectorizer</a></code>, <code><a href="ft_dct.html">ft_dct</a></code>,
 <code><a href="ft_elementwise_product.html">ft_elementwise_product</a></code>,
+<code><a href="ft_feature_hasher.html">ft_feature_hasher</a></code>,
 <code><a href="ft_hashing_tf.html">ft_hashing_tf</a></code>, <code><a href="ft_idf.html">ft_idf</a></code>,
 <code><a href="ft_imputer.html">ft_imputer</a></code>,
 <code><a href="ft_index_to_string.html">ft_index_to_string</a></code>,
@@ -114,5 +129,5 @@ columns in Spark.
 <code><a href="ft_vector_slicer.html">ft_vector_slicer</a></code>, <code><a href="ft_word2vec.html">ft_word2vec</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

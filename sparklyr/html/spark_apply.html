@@ -77,5 +77,35 @@ all packages will be used by default.</p>
 </td></tr>
 </table>
 
-<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+
+<h3>Configuration</h3>
+
+<p><code>spark_config()</code> settings can be specified to change the workers
+environment.
+</p>
+<p>For instance, to set additional environment variables to each
+worker node use the <code>sparklyr.apply.env.*</code> config, to launch workers
+without <code>--vanilla</code> use <code>sparklyr.apply.options.vanilla</code> set to
+<code>FALSE</code>, to run a custom script before launching Rscript use
+<code>sparklyr.apply.options.rscript.before</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+library(sparklyr)
+sc &lt;- spark_connect(master = "local")
+
+# creates an Spark data frame with 10 elements then multiply times 10 in R
+sdf_len(sc, 10) %&gt;% spark_apply(function(df) df * 10)
+
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

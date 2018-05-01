@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
-<table width="100%" summary="page for ml_tree_feature_importance {sparklyr}"><tr><td>ml_tree_feature_importance {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+<table width="100%" summary="page for ml_feature_importances {sparklyr}"><tr><td>ml_feature_importances {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
 <h2>Spark ML - Feature Importance for Tree Models</h2>
 
@@ -16,6 +16,8 @@
 <h3>Usage</h3>
 
 <pre>
+ml_feature_importances(model, ...)
+
 ml_tree_feature_importance(model, ...)
 </pre>
 
@@ -25,7 +27,7 @@ ml_tree_feature_importance(model, ...)
 <table summary="R argblock">
 <tr valign="top"><td><code>model</code></td>
 <td>
-<p>A decision tree-based <code>ml_model</code></p>
+<p>A decision tree-based model.</p>
 </td></tr>
 <tr valign="top"><td><code>...</code></td>
 <td>
@@ -36,8 +38,9 @@ ml_tree_feature_importance(model, ...)
 
 <h3>Value</h3>
 
-<p>A sorted data frame with feature labels and their relative importance.
+<p>For <code>ml_model</code>, a sorted data frame with feature labels and their relative importance.
+For <code>ml_prediction_model</code>, a vector of relative importances.
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

@@ -25,6 +25,7 @@ ft_dct	ft_dct
 ft_discrete_cosine_transform	ft_dct
 ft_dplyr_transformer	sql-transformer
 ft_elementwise_product	ft_elementwise_product
+ft_feature_hasher	ft_feature_hasher
 ft_hashing_tf	ft_hashing_tf
 ft_idf	ft_idf
 ft_imputer	ft_imputer
@@ -47,6 +48,7 @@ ft_sql_transformer	sql-transformer
 ft_standard_scaler	ft_standard_scaler
 ft_stop_words_remover	ft_stop_words_remover
 ft_string_indexer	ft_string_indexer
+ft_string_indexer_model	ft_string_indexer
 ft_tokenizer	ft_tokenizer
 ft_vector_assembler	ft_vector_assembler
 ft_vector_indexer	ft_vector_indexer
@@ -86,8 +88,11 @@ ml_association_rules	ml_fpgrowth
 ml_binary_classification_eval	ml_evaluator
 ml_binary_classification_evaluator	ml_evaluator
 ml_bisecting_kmeans	ml_bisecting_kmeans
+ml_chisquare_test	ml_chisquare_test
 ml_classification_eval	ml_evaluator
+ml_clustering_evaluator	ml_clustering_evaluator
 ml_compute_cost	ml_kmeans
+ml_corr	ml_corr
 ml_cross_validator	ml-tuning
 ml_decision_tree	ml_decision_tree
 ml_decision_tree_classifier	ml_decision_tree
@@ -96,6 +101,7 @@ ml_default_stop_words	ml_default_stop_words
 ml_describe_topics	ml_lda
 ml_evaluate	ml_evaluate
 ml_evaluator	ml_evaluator
+ml_feature_importances	ml_feature_importances
 ml_find_synonyms	ft_word2vec
 ml_fit	ml-transform-methods
 ml_fit_and_transform	ml-transform-methods
@@ -140,12 +146,16 @@ ml_save	ml-persistence
 ml_save.ml_model	ml-persistence
 ml_stage	ml_stage
 ml_stages	ml_stage
+ml_sub_models	ml-tuning
 ml_summary	ml_summary
 ml_survival_regression	ml_aft_survival_regression
+ml_topics_matrix	ml_lda
 ml_train_validation_split	ml-tuning
 ml_transform	ml-transform-methods
-ml_tree_feature_importance	ml_tree_feature_importance
+ml_tree_feature_importance	ml_feature_importances
 ml_uid	ml_uid
+ml_validation_metrics	ml-tuning
+ml_vocabulary	ft_count_vectorizer
 na.replace	na.replace
 print_jobj	print_jobj
 random_string	random_string
@@ -212,6 +222,7 @@ spark_config_exists	spark_config_exists
 spark_config_value	spark_config_value
 spark_connect	spark-connections
 spark_connection	spark_connection
+spark_connection-class	spark_connection-class
 spark_connection_is_open	spark-connections
 spark_context	spark-api
 spark_context_config	spark_context_config
@@ -231,6 +242,7 @@ spark_install_find	spark_install
 spark_install_sync	spark_install_sync
 spark_install_tar	spark_install
 spark_jobj	spark_jobj
+spark_jobj-class	spark_jobj-class
 spark_load_table	spark_load_table
 spark_log	spark_log
 spark_read_csv	spark_read_csv

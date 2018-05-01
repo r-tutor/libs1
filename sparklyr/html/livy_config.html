@@ -17,7 +17,8 @@
 
 <pre>
 livy_config(config = spark_config(), username = NULL, password = NULL,
-  custom_headers = list(`X-Requested-By` = "sparklyr"), ...)
+  negotiate = FALSE, custom_headers = list(`X-Requested-By` = "sparklyr"),
+  ...)
 </pre>
 
 
@@ -35,6 +36,10 @@ livy_config(config = spark_config(), username = NULL, password = NULL,
 <tr valign="top"><td><code>password</code></td>
 <td>
 <p>The password to use in the Authorization header</p>
+</td></tr>
+<tr valign="top"><td><code>negotiate</code></td>
+<td>
+<p>Whether to use gssnegotiate method or not</p>
 </td></tr>
 <tr valign="top"><td><code>custom_headers</code></td>
 <td>
@@ -95,5 +100,5 @@ in order to facilitate connection to Livy servers with CSRF protection enabled.
 <p>Named list with configuration data
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

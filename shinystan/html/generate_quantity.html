@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Add new quantity to shinystan object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for generate_quantity {shinystan}"><tr><td>generate_quantity {shinystan}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Add new quantity to shinystan object</h2>
+
+<h3>Description</h3>
+
+<p>Add to shinystan object a new parameter as a function of one or two existing
+parameters.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+generate_quantity(sso, param1, param2, fun, new_name)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>sso</code></td>
+<td>
+<p>A <code><a href="as.shinystan.html">shinystan object</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>param1</code></td>
+<td>
+<p>Name of first parameter as character string.</p>
+</td></tr>
+<tr valign="top"><td><code>param2</code></td>
+<td>
+<p>Optional. Name of second parameter as character string.</p>
+</td></tr>
+<tr valign="top"><td><code>fun</code></td>
+<td>
+<p>Function to call, i.e. <code>function(param1)</code> or 
+<code>function(param1,param2)</code>. See Examples, below.</p>
+</td></tr>
+<tr valign="top"><td><code>new_name</code></td>
+<td>
+<p>Name for the new parameter as character string.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>sso, updated. See Examples.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="drop_parameters.html">drop_parameters</a></code> to remove parameters from a
+<code>shinystan</code> object.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Using example shinystan object 'eight_schools'
+sso &lt;- eight_schools
+sso &lt;- generate_quantity(sso, fun = function(x) x^2, 
+                         param1 = "tau", new_name = "tau_sq")
+sso &lt;- generate_quantity(sso, fun = "-", 
+                         param1 = "theta[1]", param2 = "theta[2]", 
+                         new_name = "theta1minus2")
+                         
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinystan</em> version 2.5.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

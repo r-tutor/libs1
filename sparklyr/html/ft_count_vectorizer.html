@@ -19,6 +19,8 @@
 ft_count_vectorizer(x, input_col, output_col, binary = FALSE, min_df = 1,
   min_tf = 1, vocab_size = as.integer(2^18), dataset = NULL,
   uid = random_string("count_vectorizer_"), ...)
+
+ml_vocabulary(model)
 </pre>
 
 
@@ -80,6 +82,10 @@ feature &quot;transformer&quot; against <code>dataset</code>. See details.</p>
 <td>
 <p>Optional arguments; currently unused.</p>
 </td></tr>
+<tr valign="top"><td><code>model</code></td>
+<td>
+<p>A <code>ml_count_vectorizer_model</code>.</p>
+</td></tr>
 </table>
 
 
@@ -119,6 +125,8 @@ immediately applied to the input <code>tbl_spark</code>, returning a <code>tbl_s
 </p>
 </li></ul>
 
+<p><code>ml_vocabulary()</code> returns a vector of vocabulary built.
+</p>
 
 
 <h3>See Also</h3>
@@ -131,6 +139,7 @@ columns in Spark.
 <code><a href="ft_bucketizer.html">ft_bucketizer</a></code>,
 <code><a href="ft_chisq_selector.html">ft_chisq_selector</a></code>, <code><a href="ft_dct.html">ft_dct</a></code>,
 <code><a href="ft_elementwise_product.html">ft_elementwise_product</a></code>,
+<code><a href="ft_feature_hasher.html">ft_feature_hasher</a></code>,
 <code><a href="ft_hashing_tf.html">ft_hashing_tf</a></code>, <code><a href="ft_idf.html">ft_idf</a></code>,
 <code><a href="ft_imputer.html">ft_imputer</a></code>,
 <code><a href="ft_index_to_string.html">ft_index_to_string</a></code>,
@@ -153,5 +162,5 @@ columns in Spark.
 <code><a href="ft_vector_slicer.html">ft_vector_slicer</a></code>, <code><a href="ft_word2vec.html">ft_word2vec</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

@@ -21,9 +21,14 @@ is the inverse of <code><a href="ft_index_to_string.html">ft_index_to_string</a>
 
 <pre>
 ft_string_indexer(x, input_col, output_col, handle_invalid = "error",
-  dataset = NULL, uid = random_string("string_indexer_"), ...)
+  string_order_type = "frequencyDesc", dataset = NULL,
+  uid = random_string("string_indexer_"), ...)
 
 ml_labels(model)
+
+ft_string_indexer_model(x, input_col, output_col, labels,
+  handle_invalid = "error", uid = random_string("string_indexer_model_"),
+  ...)
 </pre>
 
 
@@ -48,6 +53,13 @@ ml_labels(model)
 'skip' (filter out rows with invalid values), 'error' (throw an error), or
 'keep' (keep invalid values in a special additional bucket). Default: &quot;error&quot;</p>
 </td></tr>
+<tr valign="top"><td><code>string_order_type</code></td>
+<td>
+<p>(Spark 2.3+)How to order labels of string column.
+The first label after ordering is assigned an index of 0. Options are
+<code>"frequencyDesc"</code>, <code>"frequencyAsc"</code>, <code>"alphabetDesc"</code>, and <code>"alphabetAsc"</code>.
+Defaults to <code>"frequencyDesc"</code>.</p>
+</td></tr>
 <tr valign="top"><td><code>dataset</code></td>
 <td>
 <p>(Optional) A <code>tbl_spark</code>. If provided, eagerly fit the (estimator)
@@ -64,6 +76,10 @@ feature &quot;transformer&quot; against <code>dataset</code>. See details.</p>
 <tr valign="top"><td><code>model</code></td>
 <td>
 <p>A fitted StringIndexer model returned by <code>ft_string_indexer()</code></p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+<p>Vector of labels, corresponding to indices to be assigned.</p>
 </td></tr>
 </table>
 
@@ -121,6 +137,7 @@ columns in Spark.
 <code><a href="ft_chisq_selector.html">ft_chisq_selector</a></code>,
 <code><a href="ft_count_vectorizer.html">ft_count_vectorizer</a></code>, <code><a href="ft_dct.html">ft_dct</a></code>,
 <code><a href="ft_elementwise_product.html">ft_elementwise_product</a></code>,
+<code><a href="ft_feature_hasher.html">ft_feature_hasher</a></code>,
 <code><a href="ft_hashing_tf.html">ft_hashing_tf</a></code>, <code><a href="ft_idf.html">ft_idf</a></code>,
 <code><a href="ft_imputer.html">ft_imputer</a></code>,
 <code><a href="ft_index_to_string.html">ft_index_to_string</a></code>,
@@ -142,5 +159,5 @@ columns in Spark.
 <code><a href="ft_vector_slicer.html">ft_vector_slicer</a></code>, <code><a href="ft_word2vec.html">ft_word2vec</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.0 <a href="00Index.html">Index</a>]</div>
 </body></html>
