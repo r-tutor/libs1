@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Define a Spark Compilation Specification</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for spark_compilation_spec {sparklyr}"><tr><td>spark_compilation_spec {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Define a Spark Compilation Specification</h2>
+
+<h3>Description</h3>
+
+<p>For use with <code><a href="compile_package_jars.html">compile_package_jars</a></code>. The Spark compilation
+specification is used when compiling Spark extension Java Archives, and
+defines which versions of Spark, as well as which versions of Scala, should
+be used for compilation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+spark_compilation_spec(spark_version = NULL, spark_home = NULL,
+  scalac_path = NULL, scala_filter = NULL, jar_name = NULL,
+  jar_path = NULL, jar_dep = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>spark_version</code></td>
+<td>
+<p>The Spark version to build against. This can
+be left unset if the path to a suitable Spark home is supplied.</p>
+</td></tr>
+<tr valign="top"><td><code>spark_home</code></td>
+<td>
+<p>The path to a Spark home installation. This can
+be left unset if <code>spark_version</code> is supplied; in such a case,
+<code>sparklyr</code> will attempt to discover the associated Spark
+installation using <code><a href="spark_home_dir.html">spark_home_dir</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>scalac_path</code></td>
+<td>
+<p>The path to the <code>scalac</code> compiler to be used
+during compilation of your Spark extension. Note that you should
+ensure the version of <code>scalac</code> selected matches the version of
+<code>scalac</code> used with the version of Spark you are compiling against.</p>
+</td></tr>
+<tr valign="top"><td><code>scala_filter</code></td>
+<td>
+<p>An optional <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function that can be used to filter
+which <code>scala</code> files are used during compilation. This can be
+useful if you have auxiliary files that should only be included with
+certain versions of Spark.</p>
+</td></tr>
+<tr valign="top"><td><code>jar_name</code></td>
+<td>
+<p>The name to be assigned to the generated <code>jar</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>jar_path</code></td>
+<td>
+<p>The path to the <code>jar</code> tool to be used
+during compilation of your Spark extension.</p>
+</td></tr>
+<tr valign="top"><td><code>jar_dep</code></td>
+<td>
+<p>An optional list of additional <code>jar</code> dependencies.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Most Spark extensions won't need to define their own compilation specification,
+and can instead rely on the default behavior of <code>compile_package_jars</code>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

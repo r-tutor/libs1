@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Summary function for 'S3' class '&quot;bdgraph&quot;'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for summary.bdgraph {BDgraph}"><tr><td>summary.bdgraph {BDgraph}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Summary function for <code>S3</code> class <code>"bdgraph"</code> </h2>
+
+<h3>Description</h3>
+
+<p>Provides a summary of the results for function <code><a href="bdgraph.html">bdgraph</a></code>.  
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'bdgraph'
+summary( object, round = 2, vis = TRUE, ... )
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p> An object of <code>S3</code> class <code>"bdgraph"</code>, from function <code><a href="bdgraph.html">bdgraph</a></code>. </p>
+</td></tr>
+<tr valign="top"><td><code>round</code></td>
+<td>
+<p> A value for rounding all probabilities to the specified number of decimal places. </p>
+</td></tr>
+<tr valign="top"><td><code>vis</code></td>
+<td>
+<p> Visualize the results. </p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>System reserved (no specific usage).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>best.graph</code></td>
+<td>
+<p>The adjacency matrix corresponding to the selected graph which has the highest posterior probability.</p>
+</td></tr>
+<tr valign="top"><td><code>p_links</code></td>
+<td>
+<p>An upper triangular matrix corresponding to the posterior probabilities of all possible links.</p>
+</td></tr>
+<tr valign="top"><td><code>K_hat</code></td>
+<td>
+<p>The estimated precision matrix.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p> Reza Mohammadi and Ernst Wit </p>
+
+
+<h3>References</h3>
+
+<p>Mohammadi, A. and E. Wit (2015). Bayesian Structure Learning in Sparse Gaussian Graphical Models, <em>Bayesian Analysis</em>, 10(1):109-138
+</p>
+<p>Mohammadi, A. and E. Wit (2015). <span class="pkg">BDgraph</span>: An <code>R</code> Package for Bayesian Structure Learning in Graphical Models, <em>arXiv preprint arXiv:1501.05108</em> 
+</p>
+<p>Dobra, A. and A. Mohammadi (2017). Loglinear Model Selection and Human Mobility, <em>arXiv preprint arXiv:1711.02623</em>
+</p>
+<p>Mohammadi, A. et al (2017). Bayesian modelling of Dupuytren disease by using Gaussian copula graphical models, <em>Journal of the Royal Statistical Society: Series C</em> 
+</p>
+<p>Mohammadi, A., Massam H., and G. Letac (2017). The Ratio of Normalizing Constants for Bayesian Graphical Gaussian Model Selection, <em>arXiv preprint arXiv:1706.04416</em> 
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="bdgraph.html">bdgraph</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# Generating multivariate normal data from a 'random' graph
+data.sim &lt;- bdgraph.sim( n = 50, p = 6, size = 7, vis = TRUE )
+   
+bdgraph.obj &lt;- bdgraph( data = data.sim )
+   
+summary( bdgraph.obj )
+   
+bdgraph.obj &lt;- bdgraph( data = data.sim, save.all = TRUE )
+   
+summary( bdgraph.obj )
+   
+summary( bdgraph.obj, vis = FALSE )
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>BDgraph</em> version 2.48 <a href="00Index.html">Index</a>]</div>
+</body></html>

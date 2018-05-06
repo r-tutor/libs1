@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Spark ML - Gaussian Mixture clustering.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ml_gaussian_mixture {sparklyr}"><tr><td>ml_gaussian_mixture {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Spark ML &ndash; Gaussian Mixture clustering.</h2>
+
+<h3>Description</h3>
+
+<p>This class performs expectation maximization for multivariate Gaussian Mixture Models (GMMs). A GMM represents a composite distribution of independent Gaussian distributions with associated &quot;mixing&quot; weights specifying each's contribution to the composite. Given a set of sample points, this class will maximize the log-likelihood for a mixture of k Gaussians, iterating until the log-likelihood changes by less than <code>tol</code>, or until it has reached the max number of iterations. While this process is generally guaranteed to converge, it is not guaranteed to find a global optimum.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ml_gaussian_mixture(x, formula = NULL, k = 2L, max_iter = 100L,
+  tol = 0.01, seed = NULL, features_col = "features",
+  prediction_col = "prediction", probability_col = "probability",
+  uid = random_string("gaussian_mixture_"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code>spark_connection</code>, <code>ml_pipeline</code>, or a <code>tbl_spark</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>formula</code></td>
+<td>
+<p>Used when <code>x</code> is a <code>tbl_spark</code>. R formula as a character string or a formula. This is used to transform the input dataframe before fitting, see <a href="ft_r_formula.html">ft_r_formula</a> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>k</code></td>
+<td>
+<p>The number of clusters to create</p>
+</td></tr>
+<tr valign="top"><td><code>max_iter</code></td>
+<td>
+<p>The maximum number of iterations to use.</p>
+</td></tr>
+<tr valign="top"><td><code>tol</code></td>
+<td>
+<p>Param for the convergence tolerance for iterative algorithms.</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>A random seed. Set this value if you need your results to be
+reproducible across repeated calls.</p>
+</td></tr>
+<tr valign="top"><td><code>features_col</code></td>
+<td>
+<p>Features column name, as a length-one character vector. The column should be single vector column of numeric values. Usually this column is output by <code><a href="ft_r_formula.html">ft_r_formula</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>prediction_col</code></td>
+<td>
+<p>Prediction column name.</p>
+</td></tr>
+<tr valign="top"><td><code>probability_col</code></td>
+<td>
+<p>Column name for predicted class conditional probabilities. Note: Not all models output well-calibrated probability estimates! These probabilities should be treated as confidences, not precise probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>uid</code></td>
+<td>
+<p>A character string used to uniquely identify the ML estimator.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments; currently unused.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The object returned depends on the class of <code>x</code>.
+</p>
+
+<ul>
+<li> <p><code>spark_connection</code>: When <code>x</code> is a <code>spark_connection</code>, the function returns an instance of a <code>ml_estimator</code> object. The object contains a pointer to
+a Spark <code>Estimator</code> object and can be used to compose
+<code>Pipeline</code> objects.
+</p>
+</li>
+<li> <p><code>ml_pipeline</code>: When <code>x</code> is a <code>ml_pipeline</code>, the function returns a <code>ml_pipeline</code> with
+the clustering estimator appended to the pipeline.
+</p>
+</li>
+<li> <p><code>tbl_spark</code>: When <code>x</code> is a <code>tbl_spark</code>, an estimator is constructed then
+immediately fit with the input <code>tbl_spark</code>, returning a clustering model.
+</p>
+</li>
+<li> <p><code>tbl_spark</code>, with <code>formula</code> or <code>features</code> specified: When <code>formula</code>
+is specified, the input <code>tbl_spark</code> is first transformed using a
+<code>RFormula</code> transformer before being fit by
+the estimator. The object returned in this case is a <code>ml_model</code> which is a
+wrapper of a <code>ml_pipeline_model</code>. This signature does not apply to <code>ml_lda()</code>.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p>See <a href="http://spark.apache.org/docs/latest/ml-clustering.html">http://spark.apache.org/docs/latest/ml-clustering.html</a> for
+more information on the set of clustering algorithms.
+</p>
+<p>Other ml clustering algorithms: <code><a href="ml_bisecting_kmeans.html">ml_bisecting_kmeans</a></code>,
+<code><a href="ml_kmeans.html">ml_kmeans</a></code>, <code><a href="ml_lda.html">ml_lda</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

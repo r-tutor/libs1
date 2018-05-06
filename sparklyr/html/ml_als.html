@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Spark ML - ALS</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ml_als {sparklyr}"><tr><td>ml_als {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Spark ML &ndash; ALS</h2>
+
+<h3>Description</h3>
+
+<p>Perform recommendation using Alternating Least Squares (ALS) matrix factorization.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ml_als(x, rating_col = "rating", user_col = "user", item_col = "item",
+  rank = 10L, reg_param = 0.1, implicit_prefs = FALSE, alpha = 1,
+  nonnegative = FALSE, max_iter = 10L, num_user_blocks = 10L,
+  num_item_blocks = 10L, checkpoint_interval = 10L,
+  cold_start_strategy = "nan",
+  intermediate_storage_level = "MEMORY_AND_DISK",
+  final_storage_level = "MEMORY_AND_DISK", uid = random_string("als_"), ...)
+
+ml_recommend(model, type = c("items", "users"), n = 1)
+
+ml_als_factorization(x, rating_col = "rating", user_col = "user",
+  item_col = "item", rank = 10L, reg_param = 0.1,
+  implicit_prefs = FALSE, alpha = 1, nonnegative = FALSE,
+  max_iter = 10L, num_user_blocks = 10L, num_item_blocks = 10L,
+  checkpoint_interval = 10L, cold_start_strategy = "nan",
+  intermediate_storage_level = "MEMORY_AND_DISK",
+  final_storage_level = "MEMORY_AND_DISK", uid = random_string("als_"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code>spark_connection</code>, <code>ml_pipeline</code>, or a <code>tbl_spark</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>rating_col</code></td>
+<td>
+<p>Column name for ratings. Default: &quot;rating&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>user_col</code></td>
+<td>
+<p>Column name for user ids. Ids must be integers. Other numeric types are supported for this column, but will be cast to integers as long as they fall within the integer value range. Default: &quot;user&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>item_col</code></td>
+<td>
+<p>Column name for item ids. Ids must be integers. Other numeric types are supported for this column, but will be cast to integers as long as they fall within the integer value range. Default: &quot;item&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>rank</code></td>
+<td>
+<p>Rank of the matrix factorization (positive). Default: 10</p>
+</td></tr>
+<tr valign="top"><td><code>reg_param</code></td>
+<td>
+<p>Regularization parameter.</p>
+</td></tr>
+<tr valign="top"><td><code>implicit_prefs</code></td>
+<td>
+<p>Whether to use implicit preference. Default: FALSE.</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>Alpha parameter in the implicit preference formulation (nonnegative).</p>
+</td></tr>
+<tr valign="top"><td><code>nonnegative</code></td>
+<td>
+<p>Whether to apply nonnegativity constraints. Default: FALSE.</p>
+</td></tr>
+<tr valign="top"><td><code>max_iter</code></td>
+<td>
+<p>Maximum number of iterations.</p>
+</td></tr>
+<tr valign="top"><td><code>num_user_blocks</code></td>
+<td>
+<p>Number of user blocks (positive). Default: 10</p>
+</td></tr>
+<tr valign="top"><td><code>num_item_blocks</code></td>
+<td>
+<p>Number of item blocks (positive). Default: 10</p>
+</td></tr>
+<tr valign="top"><td><code>checkpoint_interval</code></td>
+<td>
+<p>Set checkpoint interval (&gt;= 1) or disable checkpoint (-1).
+E.g. 10 means that the cache will get checkpointed every 10 iterations, defaults to 10.</p>
+</td></tr>
+<tr valign="top"><td><code>cold_start_strategy</code></td>
+<td>
+<p>(Spark 2.2.0+) Strategy for dealing with unknown or new users/items at prediction time. This may be useful in cross-validation or production scenarios, for handling user/item ids the model has not seen in the training data. Supported values: - &quot;nan&quot;: predicted value for unknown ids will be NaN. - &quot;drop&quot;: rows in the input DataFrame containing unknown ids will be dropped from the output DataFrame containing predictions. Default: &quot;nan&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>intermediate_storage_level</code></td>
+<td>
+<p>(Spark 2.0.0+) StorageLevel for intermediate datasets. Pass in a string representation of <code>StorageLevel</code>. Cannot be &quot;NONE&quot;. Default: &quot;MEMORY_AND_DISK&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>final_storage_level</code></td>
+<td>
+<p>(Spark 2.0.0+) StorageLevel for ALS model factors. Pass in a string representation of <code>StorageLevel</code>. Default: &quot;MEMORY_AND_DISK&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>uid</code></td>
+<td>
+<p>A character string used to uniquely identify the ML estimator.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments; currently unused.</p>
+</td></tr>
+<tr valign="top"><td><code>model</code></td>
+<td>
+<p>An ALS model object</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>What to recommend, one of <code>items</code> or <code>users</code></p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>Maximum number of recommendations to return</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>ml_recommend()</code> returns the top <code>n</code> users/items recommended for each item/user, for all items/users. The output has been transformed (exploded and separated) from the default Spark outputs to be more user friendly.
+</p>
+<p><code>ml_als_factorization()</code> is an alias for <code>ml_als()</code> for backwards compatibility.
+</p>
+
+
+<h3>Value</h3>
+
+<p>ALS attempts to estimate the ratings matrix R as the product of two lower-rank matrices, X and Y, i.e. X * Yt = R. Typically these approximations are called 'factor' matrices. The general approach is iterative. During each iteration, one of the factor matrices is held constant, while the other is solved for using least squares. The newly-solved factor matrix is then held constant while solving for the other factor matrix.
+</p>
+<p>This is a blocked implementation of the ALS factorization algorithm that groups the two sets of factors (referred to as &quot;users&quot; and &quot;products&quot;) into blocks and reduces communication by only sending one copy of each user vector to each product block on each iteration, and only for the product blocks that need that user's feature vector. This is achieved by pre-computing some information about the ratings matrix to determine the &quot;out-links&quot; of each user (which blocks of products it will contribute to) and &quot;in-link&quot; information for each product (which of the feature vectors it receives from each user block it will depend on). This allows us to send only an array of feature vectors between each user block and product block, and have the product block find the users' ratings and update the products based on these messages.
+</p>
+<p>For implicit preference data, the algorithm used is based on &quot;Collaborative Filtering for Implicit Feedback Datasets&quot;, available at <a href="http://dx.doi.org/10.1109/ICDM.2008.22">http://dx.doi.org/10.1109/ICDM.2008.22</a>, adapted for the blocked approach used here.
+</p>
+<p>Essentially instead of finding the low-rank approximations to the rating matrix R, this finds the approximations for a preference matrix P where the elements of P are 1 if r is greater than 0 and 0 if r is less than or equal to 0. The ratings then act as 'confidence' values related to strength of indicated user preferences rather than explicit ratings given to items.
+</p>
+<p>The object returned depends on the class of <code>x</code>.
+</p>
+
+<ul>
+<li> <p><code>spark_connection</code>: When <code>x</code> is a <code>spark_connection</code>, the function returns an instance of a <code>ml_als</code> recommender object, which is an Estimator.
+</p>
+</li>
+<li> <p><code>ml_pipeline</code>: When <code>x</code> is a <code>ml_pipeline</code>, the function returns a <code>ml_pipeline</code> with
+the recommender appended to the pipeline.
+</p>
+</li>
+<li> <p><code>tbl_spark</code>: When <code>x</code> is a <code>tbl_spark</code>, a recommender
+estimator is constructed then immediately fit with the input
+<code>tbl_spark</code>, returning a recommendation model, i.e. <code>ml_als_model</code>.
+</p>
+</li></ul>
+
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

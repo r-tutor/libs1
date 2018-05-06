@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Set the SPARK_HOME environment variable</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for spark_home_set {sparklyr}"><tr><td>spark_home_set {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Set the SPARK_HOME environment variable</h2>
+
+<h3>Description</h3>
+
+<p>Set the <code>SPARK_HOME</code> environment variable. This slightly speeds up some
+operations, including the connection time.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+spark_home_set(path = NULL, verbose = getOption("sparklyr.verbose",
+  is.null(path)))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>A string containing the path to the installation location of
+Spark. If <code>NULL</code>, the path to the most latest Spark/Hadoop versions is
+used.</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>Logical. Should the function explain what is it doing?</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The function is mostly invoked for the side-effect of setting the
+<code>SPARK_HOME</code> environment variable. It also returns <code>TRUE</code> if the
+environment was successfully set, and <code>FALSE</code> otherwise.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# Not run due to side-effects
+spark_home_set()
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

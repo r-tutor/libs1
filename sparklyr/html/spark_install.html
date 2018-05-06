@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Find a given Spark installation by version.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for spark_install_find {sparklyr}"><tr><td>spark_install_find {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Find a given Spark installation by version.</h2>
+
+<h3>Description</h3>
+
+<p>Find a given Spark installation by version.
+</p>
+<p>Install versions of Spark for use with local Spark connections
+(i.e. <code>spark_connect(master = "local"</code>)
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+spark_install_find(version = NULL, hadoop_version = NULL,
+  installed_only = TRUE, latest = FALSE, hint = FALSE)
+
+spark_install(version = NULL, hadoop_version = NULL, reset = TRUE,
+  logging = "INFO", verbose = interactive())
+
+spark_uninstall(version, hadoop_version)
+
+spark_install_dir()
+
+spark_install_tar(tarfile)
+
+spark_installed_versions()
+
+spark_available_versions(show_hadoop = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>version</code></td>
+<td>
+<p>Version of Spark to install. See <code>spark_available_versions</code> for a list of supported versions</p>
+</td></tr>
+<tr valign="top"><td><code>hadoop_version</code></td>
+<td>
+<p>Version of Hadoop to install. See <code>spark_available_versions</code> for a list of supported versions</p>
+</td></tr>
+<tr valign="top"><td><code>installed_only</code></td>
+<td>
+<p>Search only the locally installed versions?</p>
+</td></tr>
+<tr valign="top"><td><code>latest</code></td>
+<td>
+<p>Check for latest version?</p>
+</td></tr>
+<tr valign="top"><td><code>hint</code></td>
+<td>
+<p>On failure should the installation code be provided?</p>
+</td></tr>
+<tr valign="top"><td><code>reset</code></td>
+<td>
+<p>Attempts to reset settings to defaults.</p>
+</td></tr>
+<tr valign="top"><td><code>logging</code></td>
+<td>
+<p>Logging level to configure install. Supported options: &quot;WARN&quot;, &quot;INFO&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>Report information as Spark is downloaded / installed</p>
+</td></tr>
+<tr valign="top"><td><code>tarfile</code></td>
+<td>
+<p>Path to TAR file conforming to the pattern spark-###-bin-(hadoop)?### where ###
+reference spark and hadoop versions respectively.</p>
+</td></tr>
+<tr valign="top"><td><code>show_hadoop</code></td>
+<td>
+<p>Show Hadoop distributions?</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>List with information about the installed version.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

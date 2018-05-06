@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Nonparametric transfer</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bdgraph.npn {BDgraph}"><tr><td>bdgraph.npn {BDgraph}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Nonparametric transfer</h2>
+
+<h3>Description</h3>
+
+<p> Transfers non-Gaussian data to Gaussian.  </p>
+
+
+<h3>Usage</h3>
+
+<pre> bdgraph.npn( data, npn = "shrinkage", npn.thresh = NULL ) </pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p> An (<i>n x p</i>) matrix or a <code>data.frame</code> corresponding to the data (<i>n</i> is the sample size and <i>p</i> is the number of variables). </p>
+</td></tr>
+<tr valign="top"><td><code>npn</code></td>
+<td>
+ 
+<p>A character with three options <code>"shrinkage"</code> (default), <code>"truncation"</code>, and <code>"skeptic"</code>. Option <code>"shrinkage"</code> is for the 
+shrunken transformation, option <code>"truncation"</code> is for the truncated transformation and option <code>"skeptic"</code> is for the 
+non-paranormal skeptic transformation. For more details see references.
+</p>
+</td></tr>
+<tr valign="top"><td><code>npn.thresh</code></td>
+<td>
+<p> The truncation threshold; it is only for the truncated transformation (<code>npn=</code> <code>"truncation"</code>). 
+The default value is <i>1/(4n^{1/4} &radic;{&pi; \log(n)})</i>. </p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p> An (<i>n \times p</i>) matrix of transferred data, if <code>npn = "shrinkage" or "truncation"</code>, and 
+a non-paranormal correlation (<i>p \times p</i>) matrix, if <code>npn = "skeptic"</code>.  
+</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p> Reza Mohammadi </p>
+
+
+<h3>References</h3>
+
+<p>Liu, H., F. Han, M. Yuan, J. Lafferty, and L. Wasserman (2012). High Dimensional Semiparametric Gaussian Copula Graphical Models, <em>Annals of Statistics</em>  40(4):2293-2326
+</p>
+<p>Zhao, T. and H. Liu (2012). The <span class="pkg">huge</span> Package for High-dimensional Undirected Graph Estimation in <code>R</code>, <em>Journal of Machine Learning Research</em>, 13:1059-1062
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="bdgraph.sim.html">bdgraph.sim</a></code> and <code><a href="bdgraph.html">bdgraph</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# Generating multivariate normal data from a 'random' graph
+data.sim &lt;- bdgraph.sim( n = 6, p = 4, size = 4 )
+data     &lt;- ( data.sim $ data - 3 ) ^ 4
+data
+   
+# Transfer the data by truncation 
+bdgraph.npn( data, npn = "truncation" )
+  
+# Transfer the data by shrunken 
+bdgraph.npn( data, npn = "shrunken" )
+  
+# Transfer the data by skeptic 
+bdgraph.npn( data, npn = "skeptic" )
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>BDgraph</em> version 2.48 <a href="00Index.html">Index</a>]</div>
+</body></html>

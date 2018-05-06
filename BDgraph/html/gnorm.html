@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Normalizing constant for G-Wishart</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gnorm {BDgraph}"><tr><td>gnorm {BDgraph}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Normalizing constant for G-Wishart </h2>
+
+<h3>Description</h3>
+
+<p>Calculates log of the normalizing constant of G-Wishart distribution based on the Monte Carlo method, developed by Atay-Kayis and Massam (2005).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gnorm( adj.g, b = 3, D = diag( ncol( adj.g ) ), iter = 100 )
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>adj.g</code></td>
+<td>
+
+<p>The adjacency matrix corresponding to the graph structure. It is an upper triangular matrix in which 
+<i>aij = 1</i> if there is a link between notes <i>i</i> and <i>j</i>, 
+otherwise <i>aij = 0</i>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>b</code></td>
+<td>
+<p> The degree of freedom for G-Wishart distribution, <i>W_G(b, D)</i>. </p>
+</td></tr>
+<tr valign="top"><td><code>D</code></td>
+<td>
+
+<p>The positive definite <i>(p \times p)</i> &quot;scale&quot; matrix for G-Wishart distribution, 
+<i>W_G(b,D)</i>. The default is an identity matrix.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iter</code></td>
+<td>
+<p>The number of iteration for the Monte Carlo approximation.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Log of the normalizing constant approximation using Monte Carlo method for a G-Wishart distribution, <i>K \sim W_G(b, D)</i>, with density:
+</p>
+<p style="text-align: center;"><i>Pr(K) = \frac{1}{I(b, D)} |K| ^ {(b - 2) / 2} \exp &le;ft\{- \frac{1}{2} \mbox{trace}(K \times D)\right\}.</i></p>
+
+
+
+<h3>Value</h3>
+
+<p> Log of the normalizing constant of G-Wishart distribution. </p>
+
+
+<h3>Author(s)</h3>
+
+<p> Reza Mohammadi and Ernst Wit </p>
+
+
+<h3>References</h3>
+
+<p>Atay-Kayis, A. and H. Massam (2005). A monte carlo method for computing the marginal likelihood in nondecomposable Gaussian graphical models, <em>Biometrika</em>, 92(2):317-335
+</p>
+<p>Mohammadi, A. and E. Wit (2015). Bayesian Structure Learning in Sparse Gaussian Graphical Models, <em>Bayesian Analysis</em>, 10(1):109-138
+</p>
+<p>Mohammadi, A., Massam H., and G. Letac (2017). The Ratio of Normalizing Constants for Bayesian Graphical Gaussian Model Selection, <em>arXiv preprint arXiv:1706.04416</em> 
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# adj.g: adjacency matrix of graph with 3 nodes and 2 links
+adj.g &lt;- matrix( c( 0, 0, 1,
+                    0, 0, 1,
+                    0, 0, 0 ), 3, 3, byrow = TRUE )		                
+   
+gnorm( adj.g, b = 3, D = diag( 3 ) )
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>BDgraph</em> version 2.48 <a href="00Index.html">Index</a>]</div>
+</body></html>

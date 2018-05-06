@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Copy an Object into Spark</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sdf_copy_to {sparklyr}"><tr><td>sdf_copy_to {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Copy an Object into Spark</h2>
+
+<h3>Description</h3>
+
+<p>Copy an object into Spark, and return an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> object wrapping the
+copied object (typically, a Spark DataFrame).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sdf_copy_to(sc, x, name, memory, repartition, overwrite, ...)
+
+sdf_import(x, sc, name, memory, repartition, overwrite, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>sc</code></td>
+<td>
+<p>The associated Spark connection.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> object from which a Spark DataFrame can be generated.</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>The name to assign to the copied table in Spark.</p>
+</td></tr>
+<tr valign="top"><td><code>memory</code></td>
+<td>
+<p>Boolean; should the table be cached into memory?</p>
+</td></tr>
+<tr valign="top"><td><code>repartition</code></td>
+<td>
+<p>The number of partitions to use when distributing the
+table across the Spark cluster. The default (0) can be used to avoid
+partitioning.</p>
+</td></tr>
+<tr valign="top"><td><code>overwrite</code></td>
+<td>
+<p>Boolean; overwrite a pre-existing table with the name <code>name</code>
+if one already exists?</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments, passed to implementing methods.</p>
+</td></tr>
+</table>
+
+
+<h3>Advanced Usage</h3>
+
+<p><code>sdf_copy_to</code> is an S3 generic that, by default, dispatches to
+<code>sdf_import</code>. Package authors that would like to implement
+<code>sdf_copy_to</code> for a custom object type can accomplish this by
+implementing the associated method on <code>sdf_import</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other Spark data frames: <code><a href="sdf_partition.html">sdf_partition</a></code>,
+<code><a href="sdf_register.html">sdf_register</a></code>, <code><a href="sdf_sample.html">sdf_sample</a></code>,
+<code><a href="sdf_sort.html">sdf_sort</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+sc &lt;- spark_connect(master = "spark://HOST:PORT")
+sdf_copy_to(sc, iris)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Sort a Spark DataFrame</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sdf_sort {sparklyr}"><tr><td>sdf_sort {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Sort a Spark DataFrame</h2>
+
+<h3>Description</h3>
+
+<p>Sort a Spark DataFrame by one or more columns, with each column
+sorted in ascending order.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sdf_sort(x, columns)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An object coercable to a Spark DataFrame.</p>
+</td></tr>
+<tr valign="top"><td><code>columns</code></td>
+<td>
+<p>The column(s) to sort by.</p>
+</td></tr>
+</table>
+
+
+<h3>Transforming Spark DataFrames</h3>
+
+<p>The family of functions prefixed with <code>sdf_</code> generally access the Scala
+Spark DataFrame API directly, as opposed to the <code>dplyr</code> interface which
+uses Spark SQL. These functions will 'force' any pending SQL in a
+<code>dplyr</code> pipeline, such that the resulting <code>tbl_spark</code> object
+returned will no longer have the attached 'lazy' SQL operations. Note that
+the underlying Spark DataFrame <em>does</em> execute its operations lazily, so
+that even though the pending set of operations (currently) are not exposed at
+the <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> level, these operations will only be executed when you explicitly
+<code>collect()</code> the table.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other Spark data frames: <code><a href="sdf_copy_to.html">sdf_copy_to</a></code>,
+<code><a href="sdf_partition.html">sdf_partition</a></code>, <code><a href="sdf_register.html">sdf_register</a></code>,
+<code><a href="sdf_sample.html">sdf_sample</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

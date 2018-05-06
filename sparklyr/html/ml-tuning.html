@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Spark ML - Tuning</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ml-tuning {sparklyr}"><tr><td>ml-tuning {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Spark ML &ndash; Tuning</h2>
+
+<h3>Description</h3>
+
+<p>Perform hyper-parameter tuning using either K-fold cross validation or train-validation split.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ml_sub_models(model)
+
+ml_validation_metrics(model)
+
+ml_cross_validator(x, estimator, estimator_param_maps, evaluator,
+  num_folds = 3L, collect_sub_models = FALSE, parallelism = 1L,
+  seed = NULL, uid = random_string("cross_validator_"), ...)
+
+ml_train_validation_split(x, estimator, estimator_param_maps, evaluator,
+  train_ratio = 0.75, collect_sub_models = FALSE, parallelism = 1L,
+  seed = NULL, uid = random_string("train_validation_split_"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>model</code></td>
+<td>
+<p>A cross validation or train-validation-split model.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code>spark_connection</code>, <code>ml_pipeline</code>, or a <code>tbl_spark</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>estimator</code></td>
+<td>
+<p>A <code>ml_estimator</code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>estimator_param_maps</code></td>
+<td>
+<p>A named list of stages and hyper-parameter sets to tune. See details.</p>
+</td></tr>
+<tr valign="top"><td><code>evaluator</code></td>
+<td>
+<p>A <code>ml_evaluator</code> object, see <a href="ml_evaluator.html">ml_evaluator</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>num_folds</code></td>
+<td>
+<p>Number of folds for cross validation. Must be &gt;= 2. Default: 3</p>
+</td></tr>
+<tr valign="top"><td><code>collect_sub_models</code></td>
+<td>
+<p>Whether to collect a list of sub-models trained during tuning.
+If set to <code>FALSE</code>, then only the single best sub-model will be available after fitting.
+If set to true, then all sub-models will be available. Warning: For large models, collecting
+all sub-models can cause OOMs on the Spark driver.</p>
+</td></tr>
+<tr valign="top"><td><code>parallelism</code></td>
+<td>
+<p>The number of threads to use when running parallel algorithms. Default is 1 for serial execution.</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>A random seed. Set this value if you need your results to be
+reproducible across repeated calls.</p>
+</td></tr>
+<tr valign="top"><td><code>uid</code></td>
+<td>
+<p>A character string used to uniquely identify the ML estimator.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments; currently unused.</p>
+</td></tr>
+<tr valign="top"><td><code>train_ratio</code></td>
+<td>
+<p>Ratio between train and validation data. Must be between 0 and 1. Default: 0.75</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>ml_cross_validator()</code> performs k-fold cross validation while <code>ml_train_validation_split()</code> performs tuning on one pair of train and validation datasets.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The object returned depends on the class of <code>x</code>.
+</p>
+
+<ul>
+<li> <p><code>spark_connection</code>: When <code>x</code> is a <code>spark_connection</code>, the function returns an instance of a <code>ml_cross_validator</code> or <code>ml_traing_validation_split</code> object.
+</p>
+</li>
+<li> <p><code>ml_pipeline</code>: When <code>x</code> is a <code>ml_pipeline</code>, the function returns a <code>ml_pipeline</code> with
+the tuning estimator appended to the pipeline.
+</p>
+</li>
+<li> <p><code>tbl_spark</code>: When <code>x</code> is a <code>tbl_spark</code>, a tuning estimator is constructed then
+immediately fit with the input <code>tbl_spark</code>, returning a <code>ml_cross_validation_model</code> or a
+<code>ml_train_validation_split_model</code> object.
+</p>
+</li></ul>
+
+<p>For cross validation, <code>ml_sub_models()</code> returns a nested
+list of models, where the first layer represents fold indices and the
+second layer represents param maps. For train-validation split,
+<code>ml_sub_models()</code> returns a list of models, corresponding to the
+order of the estimator param maps.
+</p>
+<p><code>ml_validation_metrics()</code> returns a data frame of performance
+metrics and hyperparameter combinations.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

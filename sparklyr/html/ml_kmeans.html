@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Spark ML - K-Means Clustering</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ml_kmeans {sparklyr}"><tr><td>ml_kmeans {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Spark ML &ndash; K-Means Clustering</h2>
+
+<h3>Description</h3>
+
+<p>K-means clustering with support for k-means|| initialization proposed by Bahmani et al.
+Using 'ml_kmeans()' with the formula interface requires Spark 2.0+.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ml_kmeans(x, formula = NULL, k = 2L, max_iter = 20L, tol = 1e-04,
+  init_steps = 2L, init_mode = "k-means||", seed = NULL,
+  features_col = "features", prediction_col = "prediction",
+  uid = random_string("kmeans_"), ...)
+
+ml_compute_cost(model, dataset)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code>spark_connection</code>, <code>ml_pipeline</code>, or a <code>tbl_spark</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>formula</code></td>
+<td>
+<p>Used when <code>x</code> is a <code>tbl_spark</code>. R formula as a character string or a formula. This is used to transform the input dataframe before fitting, see <a href="ft_r_formula.html">ft_r_formula</a> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>k</code></td>
+<td>
+<p>The number of clusters to create</p>
+</td></tr>
+<tr valign="top"><td><code>max_iter</code></td>
+<td>
+<p>The maximum number of iterations to use.</p>
+</td></tr>
+<tr valign="top"><td><code>tol</code></td>
+<td>
+<p>Param for the convergence tolerance for iterative algorithms.</p>
+</td></tr>
+<tr valign="top"><td><code>init_steps</code></td>
+<td>
+<p>Number of steps for the k-means|| initialization mode. This is an advanced setting &ndash; the default of 2 is almost always enough. Must be &gt; 0. Default: 2.</p>
+</td></tr>
+<tr valign="top"><td><code>init_mode</code></td>
+<td>
+<p>Initialization algorithm. This can be either &quot;random&quot; to choose random points as initial cluster centers, or &quot;k-means||&quot; to use a parallel variant of k-means++ (Bahmani et al., Scalable K-Means++, VLDB 2012). Default: k-means||.</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>A random seed. Set this value if you need your results to be
+reproducible across repeated calls.</p>
+</td></tr>
+<tr valign="top"><td><code>features_col</code></td>
+<td>
+<p>Features column name, as a length-one character vector. The column should be single vector column of numeric values. Usually this column is output by <code><a href="ft_r_formula.html">ft_r_formula</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>prediction_col</code></td>
+<td>
+<p>Prediction column name.</p>
+</td></tr>
+<tr valign="top"><td><code>uid</code></td>
+<td>
+<p>A character string used to uniquely identify the ML estimator.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments; currently unused.</p>
+</td></tr>
+<tr valign="top"><td><code>model</code></td>
+<td>
+<p>A fitted K-means model returned by <code>ml_kmeans()</code></p>
+</td></tr>
+<tr valign="top"><td><code>dataset</code></td>
+<td>
+<p>Dataset on which to calculate K-means cost</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The object returned depends on the class of <code>x</code>.
+</p>
+
+<ul>
+<li> <p><code>spark_connection</code>: When <code>x</code> is a <code>spark_connection</code>, the function returns an instance of a <code>ml_estimator</code> object. The object contains a pointer to
+a Spark <code>Estimator</code> object and can be used to compose
+<code>Pipeline</code> objects.
+</p>
+</li>
+<li> <p><code>ml_pipeline</code>: When <code>x</code> is a <code>ml_pipeline</code>, the function returns a <code>ml_pipeline</code> with
+the clustering estimator appended to the pipeline.
+</p>
+</li>
+<li> <p><code>tbl_spark</code>: When <code>x</code> is a <code>tbl_spark</code>, an estimator is constructed then
+immediately fit with the input <code>tbl_spark</code>, returning a clustering model.
+</p>
+</li>
+<li> <p><code>tbl_spark</code>, with <code>formula</code> or <code>features</code> specified: When <code>formula</code>
+is specified, the input <code>tbl_spark</code> is first transformed using a
+<code>RFormula</code> transformer before being fit by
+the estimator. The object returned in this case is a <code>ml_model</code> which is a
+wrapper of a <code>ml_pipeline_model</code>. This signature does not apply to <code>ml_lda()</code>.
+</p>
+</li></ul>
+
+<p><code>ml_compute_cost()</code> returns the K-means cost (sum of
+squared distances of points to their nearest center) for the model
+on the given data.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>See <a href="http://spark.apache.org/docs/latest/ml-clustering.html">http://spark.apache.org/docs/latest/ml-clustering.html</a> for
+more information on the set of clustering algorithms.
+</p>
+<p>Other ml clustering algorithms: <code><a href="ml_bisecting_kmeans.html">ml_bisecting_kmeans</a></code>,
+<code><a href="ml_gaussian_mixture.html">ml_gaussian_mixture</a></code>, <code><a href="ml_lda.html">ml_lda</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+sc &lt;- spark_connect(master = "local")
+iris_tbl &lt;- sdf_copy_to(sc, iris, name = "iris_tbl", overwrite = TRUE)
+ml_kmeans(iris_tbl, Species ~ .)
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

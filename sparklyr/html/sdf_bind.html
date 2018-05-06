@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bind multiple Spark DataFrames by row and column</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sdf_bind {sparklyr}"><tr><td>sdf_bind {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Bind multiple Spark DataFrames by row and column</h2>
+
+<h3>Description</h3>
+
+<p><code>sdf_bind_rows()</code> and <code>sdf_bind_cols()</code> are implementation of the common pattern of
+<code>do.call(rbind, sdfs)</code> or <code>do.call(cbind, sdfs)</code> for binding many
+Spark DataFrames into one.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sdf_bind_rows(..., id = NULL)
+
+sdf_bind_cols(...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Spark tbls to combine.
+</p>
+<p>Each argument can either be a Spark DataFrame or a list of
+Spark DataFrames
+</p>
+<p>When row-binding, columns are matched by name, and any missing
+columns with be filled with NA.
+</p>
+<p>When column-binding, rows are matched by position, so all data
+frames must have the same number of rows.</p>
+</td></tr>
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>Data frame identifier.
+</p>
+<p>When <code>id</code> is supplied, a new column of identifiers is
+created to link each row to its original Spark DataFrame. The labels
+are taken from the named arguments to <code>sdf_bind_rows()</code>. When a
+list of Spark DataFrames is supplied, the labels are taken from the
+names of the list. If no names are found a numeric sequence is
+used instead.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The output of <code>sdf_bind_rows()</code> will contain a column if that column
+appears in any of the inputs.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>sdf_bind_rows()</code> and <code>sdf_bind_cols()</code> return <code>tbl_spark</code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+</body></html>
