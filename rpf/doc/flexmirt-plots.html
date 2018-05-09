@@ -215,7 +215,7 @@ template to your project.</p>
 
 <h2>Load data</h2>
 
-<p>Normally you would obtain model parameters from <a href="http://openmx.psyc.virginia.edu/">OpenMx</a>
+<p>Normally you would obtain model parameters from <a href="https://openmx.ssri.psu.edu/">OpenMx</a>
 (or flexMIRT with flexmirt.read), but here are some inline
 parameters for demonstration purposes.</p>
 
@@ -224,9 +224,8 @@ small$spec &lt;- list()
 small$spec[1:4] &lt;- rpf.nrm(outcomes=4, T.c= lower.tri(diag(3),TRUE) * -1)
 </code></pre>
 
-<pre><code>## Warning in `[&lt;-`(`*tmp*`, 1:4, value = list(&lt;S4 object of class
-## structure(&quot;rpf.mdim.nrm&quot;, package = &quot;rpf&quot;)&gt;, : implicit list embedding of
-## S4 objects is deprecated
+<pre><code>## Warning in `[&lt;-`(`*tmp*`, 1:4, value = list(new(&quot;rpf.mdim.nrm&quot;, spec =
+## c(3, : implicit list embedding of S4 objects is deprecated
 </code></pre>
 
 <h2>Item characteristic curve plots</h2>
