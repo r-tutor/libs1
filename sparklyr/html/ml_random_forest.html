@@ -249,5 +249,29 @@ more information on the set of supervised learning algorithms.
 <code><a href="ml_one_vs_rest.html">ml_one_vs_rest</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+sc &lt;- spark_connect(master = "local")
+iris_tbl &lt;- sdf_copy_to(sc, iris, name = "iris_tbl", overwrite = TRUE)#'
+
+partitions &lt;- iris_tbl %&gt;%
+  sdf_partition(training = 0.7, test = 0.3, seed = 1111)
+
+iris_training &lt;- partitions$training
+iris_test &lt;- partitions$test
+
+rf_model &lt;- iris_training %&gt;%
+  ml_random_forest(Species ~ ., type = "classification")
+
+pred &lt;- sdf_predict(iris_test, rf_model)
+
+ml_multiclass_classification_evaluator(pred)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 0.8.3 <a href="00Index.html">Index</a>]</div>
 </body></html>
