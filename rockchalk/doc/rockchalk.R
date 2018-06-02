@@ -258,14 +258,14 @@ addLines(from = m5pc, to = ppm5, col = m5pc$col)
 
 
 ###################################################
-### code chunk number 37: rockchalk.Rnw:801-803
+### code chunk number 37: rockchalk.Rnw:800-802
 ###################################################
 m4 <- lm (y4 ~ x1 * x2, data = dat)
 m4s <- standardize(m4)
 
 
 ###################################################
-### code chunk number 38: rockchalk.Rnw:809-810
+### code chunk number 38: rockchalk.Rnw:808-809
 ###################################################
 summary(m4s)
 
@@ -277,21 +277,21 @@ or10 <- outreg(list(m4, m4s), tight = F, modelLabels = c("Not Standardized","Sta
 
 
 ###################################################
-### code chunk number 40: rockchalk.Rnw:857-859
+### code chunk number 40: rockchalk.Rnw:855-857
 ###################################################
 m4mc <- meanCenter(m4)
 summary(m4mc)
 
 
 ###################################################
-### code chunk number 41: rockchalk.Rnw:892-894
+### code chunk number 41: rockchalk.Rnw:890-892
 ###################################################
 m4rc <- residualCenter(m4)
 summary(m4rc)
 
 
 ###################################################
-### code chunk number 42: rockchalk.Rnw:1036-1041
+### code chunk number 42: rockchalk.Rnw:1034-1039
 ###################################################
 dat2 <- genCorrelatedData(N=400, rho=.4, stde=300, beta=c(2,0.1,0.1,0.2))
 m6linear <- lm (y ~ x1 + x2, data=dat2)

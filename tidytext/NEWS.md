@@ -1,3 +1,10 @@
+# tidytext 0.1.9
+
+* Updates to documentation (#109) thanks to Emil Hvitfeldt.
+* Add new tokenizers for tweets, Penn Treebank to `unnest_tokens()`.
+* Better error message (#111) and code styling.
+* Declare dependency for tests.
+
 # tidytext 0.1.8
 
 * Updates to documentation (#102), README, and vignettes.

@@ -23,7 +23,7 @@ pdf.options(onefile=F,family="Times",pointsize=12)
 
 
 ###################################################
-### code chunk number 4: Rstyle.Rnw:892-899
+### code chunk number 4: Rstyle.Rnw:891-898
 ###################################################
 x <- runif(1000, min = 0, max = 100)
 xf <- cut(x, breaks = c(-1, 20, 50, 80, 101), labels = c("cold", "luke", "warm", "hot"))
@@ -35,7 +35,7 @@ head(dat)
 
 
 ###################################################
-### code chunk number 5: Rstyle.Rnw:907-918 (eval = FALSE)
+### code chunk number 5: Rstyle.Rnw:906-917 (eval = FALSE)
 ###################################################
 ## set.seed(12345)
 ## x1 <- rnorm(200, m = 300, s = 140)

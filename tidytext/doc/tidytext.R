@@ -63,8 +63,7 @@ ggplot(janeaustensentiment, aes(index, sentiment, fill = book)) +
 ## ------------------------------------------------------------------------
 bing_word_counts <- tidy_books %>%
   inner_join(bing) %>%
-  count(word, sentiment, sort = TRUE) %>%
-  ungroup()
+  count(word, sentiment, sort = TRUE)
 
 bing_word_counts
 

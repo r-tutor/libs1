@@ -1,8 +1,8 @@
-// Copyright (C) 2016 Yixuan Qiu <yixuan.qiu@cos.name>
+// Copyright (C) 2016-2018 Yixuan Qiu <yixuan.qiu@cos.name>
 //
 // This Source Code Form is subject to the terms of the Mozilla
 // Public License v. 2.0. If a copy of the MPL was not distributed
-// with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #ifndef DENSE_SYM_SHIFT_SOLVE_H
 #define DENSE_SYM_SHIFT_SOLVE_H
@@ -21,20 +21,21 @@ namespace Spectra {
 /// i.e., calculating \f$y=(A-\sigma I)^{-1}x\f$ for any real \f$\sigma\f$ and
 /// vector \f$x\f$. It is mainly used in the SymEigsShiftSolver eigen solver.
 ///
-template <typename Scalar>
+template <typename Scalar, int Uplo = Eigen::Lower>
 class DenseSymShiftSolve
 {
 private:
     typedef Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> Matrix;
     typedef Eigen::Matrix<Scalar, Eigen::Dynamic, 1> Vector;
-    typedef Eigen::Map<const Matrix> MapMat;
-    typedef Eigen::Map< Eigen::Matrix<Scalar, Eigen::Dynamic, 1> > MapVec;
+    typedef Eigen::Map<const Matrix> MapConstMat;
+    typedef Eigen::Map<const Vector> MapConstVec;
+    typedef Eigen::Map<Vector> MapVec;
 
     typedef const Eigen::Ref<const Matrix> ConstGenericMatrix;
 
-    const MapMat m_mat;
+    const MapConstMat m_mat;
     const int m_n;
-    Eigen::LDLT<Matrix> m_solver;
+    Eigen::LDLT<Matrix, Uplo> m_solver;
 
 public:
     ///
@@ -45,7 +46,7 @@ public:
     /// `Eigen::MatrixXf`), or its mapped version
     /// (e.g. `Eigen::Map<Eigen::MatrixXd>`).
     ///
-    DenseSymShiftSolve(ConstGenericMatrix &mat_) :
+    DenseSymShiftSolve(ConstGenericMatrix& mat_) :
         m_mat(mat_.data(), mat_.rows(), mat_.cols()),
         m_n(mat_.rows())
     {
@@ -56,11 +57,11 @@ public:
     ///
     /// Return the number of rows of the underlying matrix.
     ///
-    int rows() { return m_n; }
+    int rows() const { return m_n; }
     ///
     /// Return the number of columns of the underlying matrix.
     ///
-    int cols() { return m_n; }
+    int cols() const { return m_n; }
 
     ///
     /// Set the real shift \f$\sigma\f$.
@@ -77,10 +78,10 @@ public:
     /// \param y_out Pointer to the \f$y\f$ vector.
     ///
     // y_out = inv(A - sigma * I) * x_in
-    void perform_op(Scalar *x_in, Scalar *y_out)
+    void perform_op(const Scalar* x_in, Scalar* y_out) const
     {
-        MapVec x(x_in,  m_n);
-        MapVec y(y_out, m_n);
+        MapConstVec x(x_in,  m_n);
+        MapVec      y(y_out, m_n);
         y.noalias() = m_solver.solve(x);
     }
 };
@@ -88,4 +89,4 @@ public:
 
 } // namespace Spectra
 
-#endif // DENSESYMSHIFTSOLVE_H
+#endif // DENSE_SYM_SHIFT_SOLVE_H

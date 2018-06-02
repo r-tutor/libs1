@@ -1,6 +1,30 @@
 \name{NEWS}
 \title{News for Package "RSpectra"}
 
+\section{Changes in RSpectra version 0.13-1}{
+  \subsection{BUG FIXES}{
+     \itemize{
+       \item Updated Spectra to v0.6.2 that fixes regressions in v0.6.1
+             on some edge cases.
+     }
+   }
+}
+
+\section{Changes in RSpectra version 0.13-0}{
+  \subsection{NEW FEATURES}{
+    \itemize{
+      \item Using \pkg{prettydoc} to format vignette.
+      \item Updated Spectra to v0.6.1 that improves numerical accuracy of
+            eigen-solvers.
+    }
+  }
+  \subsection{BUG FIXES}{
+     \itemize{
+       \item Registered native routines per CRAN's policy.
+     }
+   }
+}
+
 \section{Changes in RSpectra version 0.12-0}{
   \subsection{NEW FEATURES}{
     \itemize{
@@ -33,7 +57,7 @@
   \subsection{BUG FIXES}{
     \itemize{
       \item Updated the backend Spectra library, which fixed the compatibility
-            with Eigen >= 3.2.6
+            with Eigen >= 3.2.6.
     }
   }
 }
@@ -41,7 +65,7 @@
 \section{Changes in rARPACK version 0.9-0}{
   \subsection{BUG FIXES}{
     \itemize{
-      \item Fixed a bug that causes the algorithm not converging on some matrices
+      \item Fixed a bug that causes the algorithm not converging on some matrices.
     }
   }
 }
@@ -49,7 +73,7 @@
 \section{Changes in rARPACK version 0.8-1}{
   \subsection{BUG FIXES}{
     \itemize{
-      \item Fixed a compilation problem on Solaris
+      \item Fixed a compilation problem on Solaris.
     }
   }
 }
@@ -67,9 +91,9 @@
   \subsection{BUG FIXES}{
     \itemize{
       \item Fixed a bug reported by xshi19
-            (\href{https://github.com/yixuan/rARPACK/issues/8}{#8})
+            (\href{https://github.com/yixuan/rARPACK/issues/8}{#8}).
       \item Fixed a performance issue reported by swajnautcz
-            (\href{https://github.com/yixuan/rARPACK/issues/10}{#10})
+            (\href{https://github.com/yixuan/rARPACK/issues/10}{#10}).
     }
   }
 }

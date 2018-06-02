@@ -230,7 +230,7 @@ biVec1 <- function(n = 3, n1s = 1) {
 
 
 ###################################################
-### code chunk number 25: Rchaeology.Rnw:1107-1110 (eval = FALSE)
+### code chunk number 25: Rchaeology.Rnw:1103-1106 (eval = FALSE)
 ###################################################
 ## dat <- data.frame(myx = c(1, 2, 3), myy = c(10, 5, 1))
 ## debug(plot.default)
@@ -238,20 +238,20 @@ biVec1 <- function(n = 3, n1s = 1) {
 
 
 ###################################################
-### code chunk number 26: Rchaeology.Rnw:1266-1268
+### code chunk number 26: Rchaeology.Rnw:1262-1264
 ###################################################
 formals(plot)
 formals(plot.default)
 
 
 ###################################################
-### code chunk number 27: Rchaeology.Rnw:1275-1276
+### code chunk number 27: Rchaeology.Rnw:1271-1272
 ###################################################
 formals(graphics:::plot.histogram)
 
 
 ###################################################
-### code chunk number 28: Rchaeology.Rnw:1414-1423
+### code chunk number 28: Rchaeology.Rnw:1410-1419
 ###################################################
 plotme <- function(x, y, data, ...){
     if(missing(data) | !is.data.frame(data)) 
@@ -265,13 +265,13 @@ dat <- data.frame(myx, myy)
 
 
 ###################################################
-### code chunk number 29: Rchaeology.Rnw:1428-1429 (eval = FALSE)
+### code chunk number 29: Rchaeology.Rnw:1424-1425 (eval = FALSE)
 ###################################################
 ## plotme("myx", "myy", data = dat)
 
 
 ###################################################
-### code chunk number 30: Rchaeology.Rnw:1456-1461
+### code chunk number 30: Rchaeology.Rnw:1452-1457
 ###################################################
 plotme <- function(x, y, z){
     plot(x, y, col = z)
@@ -281,35 +281,35 @@ myy <- rnorm(10)
 
 
 ###################################################
-### code chunk number 31: Rchaeology.Rnw:1468-1470 (eval = FALSE)
+### code chunk number 31: Rchaeology.Rnw:1464-1466 (eval = FALSE)
 ###################################################
 ## mycol <- 1:10
 ## plotme(myx, myy, z = mycol)
 
 
 ###################################################
-### code chunk number 32: Rchaeology.Rnw:1473-1475 (eval = FALSE)
+### code chunk number 32: Rchaeology.Rnw:1469-1471 (eval = FALSE)
 ###################################################
 ## mycol <- rainbow(10)
 ## plotme(myx, myy, z = mycol)
 
 
 ###################################################
-### code chunk number 33: Rchaeology.Rnw:1478-1480 (eval = FALSE)
+### code chunk number 33: Rchaeology.Rnw:1474-1476 (eval = FALSE)
 ###################################################
 ## mycol <- gray.colors(10)
 ## plotme(myx, myy, z = mycol)
 
 
 ###################################################
-### code chunk number 34: Rchaeology.Rnw:1486-1488 (eval = FALSE)
+### code chunk number 34: Rchaeology.Rnw:1482-1484 (eval = FALSE)
 ###################################################
 ## mycol <- rnorm(10)
 ## plotme(myx, myy, z = mycol)
 
 
 ###################################################
-### code chunk number 35: Rchaeology.Rnw:1497-1501 (eval = FALSE)
+### code chunk number 35: Rchaeology.Rnw:1493-1497 (eval = FALSE)
 ###################################################
 ## plotme <- function(x, y, z){
 ##     if (missing(z) | is.null(z)) z <- rep(2, length(x))   
@@ -318,14 +318,14 @@ myy <- rnorm(10)
 
 
 ###################################################
-### code chunk number 36: Rchaeology.Rnw:1513-1515 (eval = FALSE)
+### code chunk number 36: Rchaeology.Rnw:1509-1511 (eval = FALSE)
 ###################################################
 ## m1 <- lm(y ~ x, data = dat)
 ## plot(y ~ x, data = dat)
 
 
 ###################################################
-### code chunk number 37: Rchaeology.Rnw:1528-1532 (eval = FALSE)
+### code chunk number 37: Rchaeology.Rnw:1524-1528 (eval = FALSE)
 ###################################################
 ## plotme <- function(x, y, z = rainbow(length(x))){     
 ##     plot(x, y, col = z)
@@ -334,7 +334,7 @@ myy <- rnorm(10)
 
 
 ###################################################
-### code chunk number 38: Rchaeology.Rnw:1538-1543 (eval = FALSE)
+### code chunk number 38: Rchaeology.Rnw:1534-1539 (eval = FALSE)
 ###################################################
 ## plotme <- function(x, y, z){     
 ##   if(missing(z)) mycol <- rainbow(length(x))
@@ -344,7 +344,7 @@ myy <- rnorm(10)
 
 
 ###################################################
-### code chunk number 39: Rchaeology.Rnw:1554-1562 (eval = FALSE)
+### code chunk number 39: Rchaeology.Rnw:1550-1558 (eval = FALSE)
 ###################################################
 ## plotme <- function(x, y, z = getAColor(length(x)))
 ## {

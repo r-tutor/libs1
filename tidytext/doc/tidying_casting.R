@@ -26,7 +26,6 @@ library(tidyr)
 
 ap_sentiments %>%
   count(document, sentiment, wt = count) %>%
-  ungroup() %>%
   spread(sentiment, n, fill = 0) %>%
   mutate(sentiment = positive - negative) %>%
   arrange(sentiment)
@@ -36,7 +35,6 @@ library(ggplot2)
 
 ap_sentiments %>%
   count(sentiment, term, wt = count) %>%
-  ungroup() %>%
   filter(n >= 150) %>%
   mutate(n = ifelse(sentiment == "negative", -n, n)) %>%
   mutate(term = reorder(term, n)) %>%
@@ -108,7 +106,6 @@ inaug_words
 ## ------------------------------------------------------------------------
 inaug_freq <- inaug_words %>%
   count(Year, word) %>%
-  ungroup() %>%
   complete(Year, word, fill = list(n = 0)) %>%
   group_by(Year) %>%
   mutate(year_total = sum(n),

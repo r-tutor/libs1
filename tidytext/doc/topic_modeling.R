@@ -44,8 +44,7 @@ by_chapter_word <- by_chapter %>%
 
 word_counts <- by_chapter_word %>%
   anti_join(stop_words) %>%
-  count(title_chapter, word, sort = TRUE) %>%
-  ungroup()
+  count(title_chapter, word, sort = TRUE)
 
 word_counts
 
@@ -110,6 +109,7 @@ chapter_classifications
 ## ----book_topics----------------------------------------------------------------------------------
 book_topics <- chapter_classifications %>%
   count(title, topic) %>%
+  group_by(topic) %>%
   top_n(1, n) %>%
   ungroup() %>%
   transmute(consensus = title, topic)
@@ -144,7 +144,6 @@ wrong_words
 
 wrong_words %>%
   count(title, consensus, term, wt = count) %>%
-  ungroup() %>%
   arrange(desc(n))
 
 ## -------------------------------------------------------------------------------------------------
