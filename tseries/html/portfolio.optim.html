@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Portfolio Optimization</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for portfolio.optim {tseries}"><tr><td>portfolio.optim {tseries}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Portfolio Optimization</h2>
+
+<h3>Description</h3>
+
+<p>Computes an efficient portfolio from the given return series <code>x</code>
+in the mean-variance sense.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## Default S3 method:
+portfolio.optim(x, pm = mean(x), riskless = FALSE,
+                shorts = FALSE, rf = 0.0, reslow = NULL, reshigh = NULL,
+                covmat = cov(x), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a numeric matrix or multivariate time series consisting of a
+series of returns.</p>
+</td></tr>
+<tr valign="top"><td><code>pm</code></td>
+<td>
+<p>the desired mean portfolio return.</p>
+</td></tr>
+<tr valign="top"><td><code>riskless</code></td>
+<td>
+<p>a logical indicating whether there is a riskless
+lending and borrowing rate.</p>
+</td></tr>
+<tr valign="top"><td><code>shorts</code></td>
+<td>
+<p>a logical indicating whether shortsales on the risky
+securities are allowed.</p>
+</td></tr> 
+<tr valign="top"><td><code>rf</code></td>
+<td>
+<p>the riskfree interest rate.</p>
+</td></tr>
+<tr valign="top"><td><code>reslow</code></td>
+<td>
+<p>a vector specifying the (optional) lower bound on
+allowed portfolio weights.</p>
+</td></tr>  
+<tr valign="top"><td><code>reshigh</code></td>
+<td>
+<p>a vector specifying the (optional) upper bound on
+allowed portfolio weights.</p>
+</td></tr> 
+<tr valign="top"><td><code>covmat</code></td>
+<td>
+<p>the covariance matrix of asset returns.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments to be passed from or to methods.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The computed portfolio has the desired expected return <code>pm</code> and
+no other portfolio exists, which has the same mean return, but a
+smaller variance. Inequality restrictions of the form <i>w_l &lt;= w &lt;= w_h</i> can be imposed using the <code>reslow</code> and
+<code>reshigh</code> vectors. An alternative covariance matrix estimate can
+be supplied via the <code>covmat</code> argument. To solve the quadratic
+program, <code><a href="../../quadprog/html/solve.QP.html">solve.QP</a></code> is used.
+</p>
+<p><code>portfolio.optim</code> is a generic function with methods for
+multivariate <code>"ts"</code> and <code>default</code> for matrix.
+</p>
+<p>Missing values are not allowed.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list containing the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>pw</code></td>
+<td>
+<p>the portfolio weights.</p>
+</td></tr>
+<tr valign="top"><td><code>px</code></td>
+<td>
+<p>the returns of the overall portfolio.</p>
+</td></tr>
+<tr valign="top"><td><code>pm</code></td>
+<td>
+<p>the expected portfolio return.</p>
+</td></tr>
+<tr valign="top"><td><code>ps</code></td>
+<td>
+<p>the standard deviation of the portfolio returns.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>A. Trapletti</p>
+
+
+<h3>References</h3>
+
+<p>E. J. Elton and M. J. Gruber (1991): <em>Modern Portfolio Theory and
+Investment Analysis</em>, 4th Edition, Wiley, NY, pp. 65-93.
+</p>
+<p>C. Huang and R. H. Litzenberger (1988): <em>Foundations for
+Financial Economics</em>, Elsevier, NY, pp. 59-82.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../quadprog/html/solve.QP.html">solve.QP</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- rnorm(1000)
+dim(x) &lt;- c(500,2)
+res &lt;- portfolio.optim(x)
+res$pw
+
+require("zoo")			# For diff() method.
+X &lt;- diff(log(as.zoo(EuStockMarkets)))
+res &lt;- portfolio.optim(X)                 ## Long only
+res$pw
+res &lt;- portfolio.optim(X, shorts=TRUE)    ## Long/Short
+res$pw
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tseries</em> version 0.10-45 <a href="00Index.html">Index</a>]</div>
+</body></html>

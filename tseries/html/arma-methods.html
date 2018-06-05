@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Methods for Fitted ARMA Models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for arma-methods {tseries}"><tr><td>arma-methods {tseries}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Methods for Fitted ARMA Models</h2>
+
+<h3>Description</h3>
+
+<p>Methods for fitted ARMA model objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'arma'
+coef(object, ...)
+## S3 method for class 'arma'
+vcov(object, ...)
+## S3 method for class 'arma'
+residuals(object, ...)
+## S3 method for class 'arma'
+fitted(object, ...)
+## S3 method for class 'arma'
+print(x, digits = max(3, getOption("digits") - 3), ...)
+## S3 method for class 'arma'
+plot(x, ask = interactive(), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object, x</code></td>
+<td>
+<p>an object of class <code>"arma"</code>; usually, a result
+of a call to <code><a href="arma.html">arma</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>see <code><a href="../../stats/html/printCoefmat.html">printCoefmat</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>ask</code></td>
+<td>
+<p>Should the <code>plot</code> method work interactively?  See
+<code><a href="../../base/html/interactive.html">interactive</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed to or from other methods.</p>
+</td></tr> 
+</table>
+
+
+<h3>Value</h3>
+
+<p>For <code>coef</code>, a numeric vector; for <code>vcov</code>, a numeric matrix;
+for <code>residuals</code> and <code>fitted</code> a univariate time series;
+for <code>plot</code> and <code>print</code>, the fitted ARMA model object.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>A. Trapletti
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="arma.html">arma</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>tseries</em> version 0.10-45 <a href="00Index.html">Index</a>]</div>
+</body></html>

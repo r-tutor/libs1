@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Generate Surrogate Data and Statistics</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for surrogate {tseries}"><tr><td>surrogate {tseries}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Generate Surrogate Data and Statistics</h2>
+
+<h3>Description</h3>
+
+<p>Generates <code>ns</code> surrogate samples from the original data <code>x</code>
+and computes the standard error and the bias of <code>statistic</code> as in
+a bootstrap setup, if <code>statistic</code> is given.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+surrogate(x, ns = 1, fft = FALSE, amplitude = FALSE,
+          statistic = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a numeric vector or time series.</p>
+</td></tr>
+<tr valign="top"><td><code>ns</code></td>
+<td>
+<p>the number of surrogate series to compute.</p>
+</td></tr>
+<tr valign="top"><td><code>fft</code></td>
+<td>
+<p>a logical indicating whether phase randomized surrogate
+data is generated.</p>
+</td></tr>
+<tr valign="top"><td><code>amplitude</code></td>
+<td>
+<p>a logical indicating whether amplitude-adjusted
+surrogate data is computed.</p>
+</td></tr>
+<tr valign="top"><td><code>statistic</code></td>
+<td>
+<p>a function which when applied to a time series
+returns a vector containing the statistic(s) of interest.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments for <code>statistic</code> which are
+passed unchanged each time it is called.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>fft</code> is <code>FALSE</code>, then <code>x</code> is mixed in temporal
+order, so that all temporal dependencies are eliminated, but the
+histogram of the original data is preserved.  If <code>fft</code> is
+<code>TRUE</code>, then surrogate data with the same spectrum as <code>x</code> is
+computed by randomizing the phases of the Fourier coefficients of
+<code>x</code>.  If in addition <code>amplitude</code> is <code>TRUE</code>, then also
+the amplitude distribution of the original series is preserved.
+</p>
+<p>Note, that the interpretation of the computed standard error and bias
+is different than in a bootstrap setup.
+</p>
+<p>To compute the phase randomized surrogate and the amplitude adjusted
+data algorithm 1 and 2 from Theiler et al. (1992), pp. 183, 184 are
+used.
+</p>
+<p>Missing values are not allowed.
+</p>
+
+
+<h3>Value</h3>
+
+<p>If <code>statistic</code> is <code>NULL</code>, then it returns a matrix or time
+series with <code>ns</code> columns and <code>length(x)</code> rows containing the
+surrogate data. Each column contains one surrogate sample.
+</p>
+<p>If <code>statistic</code> is given, then a list of class
+<code>"resample.statistic"</code> with the following elements is returned:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>statistic</code></td>
+<td>
+<p>the results of applying <code>statistic</code> to each of
+the simulated time series.</p>
+</td></tr>
+<tr valign="top"><td><code>orig.statistic</code></td>
+<td>
+<p>the results of applying <code>statistic</code> to the
+original series.</p>
+</td></tr>
+<tr valign="top"><td><code>bias</code></td>
+<td>
+<p>the bias of the statistics computed as in a bootstrap
+setup.</p>
+</td></tr>
+<tr valign="top"><td><code>se</code></td>
+<td>
+<p>the standard error of the statistics computed as in a
+bootstrap setup.</p>
+</td></tr>
+<tr valign="top"><td><code>call</code></td>
+<td>
+<p>the original call of <code>surrogate</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>A. Trapletti</p>
+
+
+<h3>References</h3>
+
+<p>J. Theiler, B. Galdrikian, A. Longtin, S. Eubank, and J. D. Farmer
+(1992): Using Surrogate Data to Detect
+Nonlinearity in Time Series, in <em>Nonlinear Modelling and
+Forecasting</em>, Eds. M. Casdagli and S. Eubank, Santa Fe Institute,
+Addison Wesley, 163&ndash;188.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/sample.html">sample</a></code>, <code><a href="tsbootstrap.html">tsbootstrap</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- 1:10  # Simple example
+surrogate(x)
+
+n &lt;- 500  # Generate AR(1) process
+e &lt;- rnorm(n)  
+x &lt;- double(n)
+x[1] &lt;- rnorm(1)
+for(i in 2:n) {
+  x[i] &lt;- 0.4 * x[i-1] + e[i]
+}
+x &lt;- ts(x)
+
+theta &lt;- function(x)  # Autocorrelations up to lag 10
+  return(acf(x, plot=FALSE)$acf[2:11])
+
+surrogate(x, ns=50, fft=TRUE, statistic=theta) 
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tseries</em> version 0.10-45 <a href="00Index.html">Index</a>]</div>
+</body></html>

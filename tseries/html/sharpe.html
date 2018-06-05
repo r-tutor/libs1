@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Sharpe Ratio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sharpe {tseries}"><tr><td>sharpe {tseries}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Sharpe Ratio</h2>
+
+<h3>Description</h3>
+
+<p>This function computes the Sharpe ratio of the univariate time series
+(or vector) <code>x</code>.  
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sharpe(x, r = 0, scale = sqrt(250))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a numeric vector or univariate time series corresponding to a
+portfolio's cumulated returns.</p>
+</td></tr>
+<tr valign="top"><td><code>r</code></td>
+<td>
+<p>the risk free rate. Default corresponds to using portfolio
+returns not in excess of the riskless return.</p>
+</td></tr> 
+<tr valign="top"><td><code>scale</code></td>
+<td>
+<p>a scale factor. Default corresponds to an annualization
+when working with daily financial time series data.</p>
+</td></tr>  
+</table>
+
+
+<h3>Details</h3>
+
+<p>The Sharpe ratio is defined as a portfolio's mean return in excess of
+the riskless return divided by the portfolio's standard deviation. In
+finance the Sharpe Ratio represents a measure of the portfolio's
+risk-adjusted (excess) return. 
+</p>
+
+
+<h3>Value</h3>
+
+<p>a double representing the Sharpe ratio.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>A. Trapletti</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sterling.html">sterling</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(EuStockMarkets)
+dax &lt;- log(EuStockMarkets[,"DAX"])
+ftse &lt;- log(EuStockMarkets[,"FTSE"])
+sharpe(dax)
+sharpe(ftse)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tseries</em> version 0.10-45 <a href="00Index.html">Index</a>]</div>
+</body></html>

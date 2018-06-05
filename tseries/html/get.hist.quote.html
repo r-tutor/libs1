@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Download Historical Finance Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for get.hist.quote {tseries}"><tr><td>get.hist.quote {tseries}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Download Historical Finance Data</h2>
+
+<h3>Description</h3>
+
+<p>Download historical financial data from a given data provider over
+the WWW.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+get.hist.quote(instrument = "^gdax", start, end,
+               quote = c("Open", "High", "Low", "Close"),
+               provider = c("yahoo"), method = NULL,
+               origin = "1899-12-30", compression = "d",
+	       retclass = c("zoo", "ts"), quiet = FALSE, drop = FALSE) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>instrument</code></td>
+<td>
+<p>a character string giving the name of the quote
+symbol to download.  See the web page of the data provider for
+information about the available quote symbols.</p>
+</td></tr>
+<tr valign="top"><td><code>start</code></td>
+<td>
+<p>an R object specifying the date of the start of the
+period to download.  This must be in a form which is recognized by
+<code><a href="../../base/html/as.POSIXlt.html">as.POSIXct</a></code>, which includes R POSIX date/time objects,
+objects of class <code>"date"</code> (from package <code>date</code>) and
+<code>"chron"</code> and <code>"dates"</code> (from package <code>chron</code>), and
+character strings representing dates in ISO 8601 format.  Defaults
+to 1992-01-02.</p>
+</td></tr>
+<tr valign="top"><td><code>end</code></td>
+<td>
+<p>an R object specifying the end of the download period, see
+above.  Defaults to yesterday.</p>
+</td></tr>
+<tr valign="top"><td><code>quote</code></td>
+<td>
+<p>a character string or vector indicating whether to
+download opening, high, low, or closing quotes, or volume.  For the
+default provider, this can be specified as <code>"Open"</code>,
+<code>"High"</code>, <code>"Low"</code>, <code>"Close"</code>, <code>"Adjusted"</code>, and
+<code>"Volume"</code>, respectively.  Abbreviations are allowed.</p>
+</td></tr>
+<tr valign="top"><td><code>provider</code></td>
+<td>
+<p>a character string with the name of the data
+provider.  Currently, only <code>"yahoo"</code> is supported via 
+<code><a href="../../quantmod/html/getSymbols.yahoo.html">getSymbols</a></code> from package
+<span class="pkg">quantmod</span> for the Yahoo Finance source.
+Provider <code>"oanda"</code> is no longer available.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>No longer used.</p>
+</td></tr>
+<tr valign="top"><td><code>origin</code></td>
+<td>
+<p>an R object specifying the origin of the Julian dates, see
+above.  Defaults to 1899-12-30 (Popular spreadsheet programs
+internally also use Julian dates with this origin).</p>
+</td></tr>
+<tr valign="top"><td><code>compression</code></td>
+<td>
+<p>Governs the granularity of the retrieved data;
+<code>"d"</code> for daily, <code>"w"</code> for weekly or <code>"m"</code> for
+monthly.  Defaults to <code>"d"</code>.  For the provider <code>"oanda"</code>,
+this argument is ignored.</p>
+</td></tr>
+<tr valign="top"><td><code>retclass</code></td>
+<td>
+<p>character specifying which class the return value
+should have: can be either <code>"zoo"</code> (with <code>"Date"</code> index),
+or <code>"ts"</code> (with numeric index corresponding to days since
+<code>origin</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>quiet</code></td>
+<td>
+<p>logical. Should status messages (if any) be suppressed?</p>
+</td></tr>
+<tr valign="top"><td><code>drop</code></td>
+<td>
+<p>logical.  If <code>TRUE</code> the result is coerced to the
+lowest possible dimension.  Default is <code>FALSE</code>.</p>
+</td></tr> 
+</table>
+
+
+<h3>Value</h3>
+
+<p>A time series containing the data either as a <code>"zoo"</code> series
+(default) or a <code>"ts"</code> series.  The <code>"zoo"</code> series is created
+with <code><a href="../../zoo/html/zoo.html">zoo</a></code> and has an index of class <code>"Date"</code>.
+If a <code>"ts"</code> series is returned, the index is in physical time,
+i.e., weekends, holidays, and missing days are filled with <code>NA</code>s
+if not available.  The time scale is given in Julian dates (days since
+the <code>origin</code>).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>A. Trapletti</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../quantmod/html/getSymbols.html">getSymbols</a></code> for downloads from various
+providers; 
+<code><a href="../../zoo/html/zoo.html">zoo</a></code>,
+<code><a href="../../stats/html/ts.html">ts</a></code>,
+<code><a href="../../base/html/as.Date.html">as.Date</a></code>,
+<code><a href="../../base/html/as.POSIXlt.html">as.POSIXct</a></code>,
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+con &lt;- url("https://finance.yahoo.com")
+if(!inherits(try(open(con), silent = TRUE), "try-error")) {
+  close(con)
+  x &lt;- get.hist.quote(instrument = "^gspc", start = "1998-01-01",
+                      quote = "Close")
+  plot(x)
+
+  x &lt;- get.hist.quote(instrument = "ibm", quote = c("Cl", "Vol"))
+  plot(x, main = "International Business Machines Corp")
+
+  spc &lt;- get.hist.quote(instrument = "^gspc", start = "1998-01-01",
+         quote = "Close")
+  ibm &lt;- get.hist.quote(instrument = "ibm",  start = "1998-01-01",
+         quote = "Adj")
+  require("zoo")		# For merge() method.
+  x &lt;- merge(spc, ibm)
+  plot(x, main = "IBM vs S&amp;P 500")
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tseries</em> version 0.10-45 <a href="00Index.html">Index</a>]</div>
+</body></html>
