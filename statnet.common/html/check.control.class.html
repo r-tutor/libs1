@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Check if the class of the control list is one of those that...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for check.control.class {statnet.common}"><tr><td>check.control.class {statnet.common}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Check if the class of the control list is one of those that can be used by
+the calling function</h2>
+
+<h3>Description</h3>
+
+<p>This function can be called to check that the control list passed is
+appropriate for the function to be controlled. It does so by looking up the
+class of the <code>control</code> argument (defaulting to the <code>control</code>
+variable in the calling function) and checking if it matches a list of
+acceptable classes.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+check.control.class(OKnames = {     sc &lt;- sys.calls()    
+  as.character(sc[[length(sc) - 1]][[1]]) }, myname = {     sc &lt;- sys.calls() 
+     as.character(sc[[length(sc) - 1]][[1]]) }, control = get("control", pos =
+  parent.frame()))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>OKnames</code></td>
+<td>
+<p>List of control function names which are acceptable.</p>
+</td></tr>
+<tr valign="top"><td><code>myname</code></td>
+<td>
+<p>Name of the calling function (used in the error message).</p>
+</td></tr>
+<tr valign="top"><td><code>control</code></td>
+<td>
+<p>The control list. Defaults to the <code>control</code> variable in
+the calling function.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>In earlier versions, <code>OKnames</code> and <code>myname</code> were autodetected. This capability has been deprecated and results in a warning issued once per session. They now need to be set explicitly.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>set.control.class, print.control.list
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>statnet.common</em> version 4.1.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

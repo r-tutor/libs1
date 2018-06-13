@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Return the first argument passed (out of any number) that is...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ERRVL {statnet.common}"><tr><td>ERRVL {statnet.common}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Return the first argument passed (out of any number) that is not a
+<code>try-error</code> (result of <code><a href="../../base/html/try.html">try</a></code> encountering an error.</h2>
+
+<h3>Description</h3>
+
+<p>This function is inspired by <code><a href="NVL.html">NVL</a></code>, and simply returns the first
+argument that is not a <code>try-error</code>, raising an error if all arguments
+are <code>try-error</code>s.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ERRVL(...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Expressions to be tested; usually outputs of
+<code><a href="../../base/html/try.html">try</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The first argument that is not a <code>try-error</code>. Stops
+with an error if all are.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function uses lazy evaluation, so, for example <code>ERRVL(1, stop("Error!"))</code> will never evaluate the <code><a href="../../base/html/stop.html">stop</a></code> call and will
+not produce an error, whereas <code>ERRVL(try(solve(0)), stop("Error!"))</code> would.
+</p>
+<p>In addition, all expressions after the first may contain a <code>.</code>,
+which is substituted with the <code>try-error</code> object returned by the
+previous expression.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/try.html">try</a></code>, <code><a href="../../base/html/inherits.html">inherits</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+print(ERRVL(1,2,3)) # 1
+print(ERRVL(try(solve(0)),2,3)) # 2
+print(ERRVL(1, stop("Error!"))) # No error
+
+## Not run: 
+# Error:
+print(ERRVL(try(solve(0), silent=TRUE),
+            stop("Error!")))
+
+# Error with an elaborate message:
+print(ERRVL(try(solve(0), silent=TRUE),
+            stop("Stopped with an error: ", .)))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>statnet.common</em> version 4.1.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

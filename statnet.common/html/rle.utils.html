@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: RLE utilities</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rle.utils {statnet.common}"><tr><td>rle.utils {statnet.common}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>RLE utilities</h2>
+
+<h3>Description</h3>
+
+<p>Simple utilities for operations on RLE-encoded vectors.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'rle'
+c(...)
+
+## S3 method for class 'rle'
+!x
+
+binop.rle(e1, e2, FUN)
+
+## S3 method for class 'rle'
+e1 | e2
+
+## S3 method for class 'rle'
+e1 &amp; e2
+
+compact.rle(x)
+
+## S3 method for class 'rle'
+any(..., na.rm = FALSE)
+
+## S3 method for class 'rle'
+all(..., na.rm = FALSE)
+
+## S3 method for class 'rle'
+e1 * e2
+
+## S3 method for class 'rle'
+e1 / e2
+
+## S3 method for class 'rle'
+e1 - e2
+
+## S3 method for class 'rle'
+e1 + e2
+
+## S3 method for class 'rle'
+e1 ^ e2
+
+## S3 method for class 'rle'
+e1 %% e2
+
+## S3 method for class 'rle'
+e1 %/% e2
+
+## S3 method for class 'rle'
+e1 == e2
+
+## S3 method for class 'rle'
+e1 &gt; e2
+
+## S3 method for class 'rle'
+e1 &lt; e2
+
+## S3 method for class 'rle'
+e1 != e2
+
+## S3 method for class 'rle'
+e1 &lt;= e2
+
+## S3 method for class 'rle'
+e1 &gt;= e2
+
+## S3 method for class 'rle'
+sum(..., na.rm = FALSE)
+
+## S3 method for class 'rle'
+mean(x, na.rm = FALSE, ...)
+
+## S3 method for class 'rle'
+length(x)
+
+## S3 method for class 'rle'
+is.na(x)
+
+## S3 method for class 'rle'
+rep(x, ..., scale = c("element", "run"), doNotCompact = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>For <code>c</code>, objects to be concatenated. The first object
+must be of class <code><a href="../../base/html/rle.html">rle</a></code>. For <code>rep</code>, see documentation for
+<code><a href="../../base/html/rep.html">rep</a></code>. For <code>sum</code>, objects to be summed.</p>
+</td></tr>
+<tr valign="top"><td><code>x, e1, e2</code></td>
+<td>
+<p>Arguments to unary (<code>x</code>) and binary (<code>e1</code> and <code>e2</code>)
+operators.</p>
+</td></tr>
+<tr valign="top"><td><code>FUN</code></td>
+<td>
+<p>A binary function or operator or a name of one. It is
+assumed to be vectorized: it expects two vectors of equal lengths
+and outputs a vector of the same length.</p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p>see documentation for <code><a href="../../base/html/any.html">any</a></code>, <code><a href="../../base/html/all.html">all</a></code>, and <code><a href="../../base/html/sum.html">sum</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>scale</code></td>
+<td>
+<p>whether to replicate the elements of the
+RLE-compressed vector or the runs.</p>
+</td></tr>
+<tr valign="top"><td><code>doNotCompact</code></td>
+<td>
+<p>whether the method should call <code><a href="rle.utils.html">compact.rle</a></code>
+the results before returning. Methods liable to produce very long
+output vectors, like <code><a href="../../base/html/rep.html">rep</a></code>, have this set <code>FALSE</code> by default.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Unless otherwise stated, all functions return an <code><a href="../../base/html/rle.html">rle</a></code>
+object. By default, the functions and the operators do not merge
+adjacent runs with the same value. This must be done explicitly
+with <code><a href="rle.utils.html">compact.rle</a></code>.
+</p>
+<p><code><a href="../../base/html/any.html">any</a></code>, <code><a href="../../base/html/all.html">all</a></code>, <code><a href="../../base/html/sum.html">sum</a></code>, and <code><a href="../../base/html/length.html">length</a></code> return logical, logical, numeric, and numeric vectors, respectively.
+</p>
+
+
+<h3>Functions</h3>
+
+
+<ul>
+<li> <p><code>binop.rle</code>: Perform an arbitrary binary operation on the pair of vectors
+represented by the <code><a href="../../base/html/rle.html">rle</a></code> objects.
+</p>
+</li>
+<li> <p><code>compact.rle</code>: Compact the <code><a href="../../base/html/rle.html">rle</a></code> object by merging adjacent runs.
+</p>
+</li></ul>
+
+
+<h3>Note</h3>
+
+<p>Since <code><a href="../../base/html/rle.html">rle</a></code> stores run lengths as integers, <code><a href="rle.utils.html">compact.rle</a></code>
+will not merge runs that add up to lengths greater than what can
+be represented by a 32-bit signed integer
+(2147483647).
+</p>
+<p>The <code><a href="../../base/html/length.html">length</a></code> method returns the length of the vector
+represented by the object, obtained by summing the lengths of
+individual runs.
+</p>
+<p>The <code><a href="../../base/html/rep.html">rep</a></code> method for <code><a href="../../base/html/rle.html">rle</a></code> objects is very limited at
+this time. Even though the default setting is to replicate
+elements of the vector, only the run-replicating functionality is
+implemented at this time except for the simplest case (scalar
+<code>times</code> argument).
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+x &lt;- rle(as.logical(rbinom(10,1,.7)))
+y &lt;- rle(as.logical(rbinom(10,1,.3)))
+
+stopifnot(isTRUE(all.equal(c(inverse.rle(x),inverse.rle(y)),inverse.rle(c(x,y)))))
+
+stopifnot(isTRUE(all.equal((!inverse.rle(x)),inverse.rle(!x))))
+stopifnot(isTRUE(all.equal((inverse.rle(x)|inverse.rle(y)),inverse.rle(x|y))))
+stopifnot(isTRUE(all.equal((inverse.rle(x)&amp;inverse.rle(y)),inverse.rle(x&amp;y))))
+stopifnot(identical(rle(inverse.rle(x)&amp;inverse.rle(y)),compact.rle(x&amp;y)))
+
+big &lt;- structure(list(lengths=as.integer(rep(.Machine$integer.max/4,6)),
+                      values=rep(TRUE,6)), class="rle")
+
+stopifnot(all(aggregate(as.numeric(lengths)~values,
+                        data=as.data.frame(unclass(big)),FUN=sum)
+              ==
+              aggregate(as.numeric(lengths)~values,
+                        data=as.data.frame(unclass(compact.rle(big))),
+                        FUN=sum)))
+
+x &lt;- rle(as.logical(rbinom(10,1,.9)))
+y &lt;- rle(as.logical(rbinom(10,1,.1)))
+
+stopifnot(isTRUE(all.equal(any(x),any(inverse.rle(x)))))
+stopifnot(isTRUE(all.equal(any(y),any(inverse.rle(y)))))
+
+
+stopifnot(isTRUE(all.equal(all(x),all(inverse.rle(x)))))
+stopifnot(isTRUE(all.equal(all(y),all(inverse.rle(y)))))
+
+
+x &lt;- rle(sample(c(-1,+1), 10, c(.7,.3), replace=TRUE))
+y &lt;- rle(sample(c(-1,+1), 10, c(.3,.7), replace=TRUE))
+
+stopifnot(isTRUE(all.equal((inverse.rle(x)*inverse.rle(y)),inverse.rle(x*y))))
+stopifnot(isTRUE(all.equal((inverse.rle(x)/inverse.rle(y)),inverse.rle(x/y))))
+stopifnot(isTRUE(all.equal((-inverse.rle(y)),inverse.rle(-y))))
+stopifnot(isTRUE(all.equal((inverse.rle(x)-inverse.rle(y)),inverse.rle(x-y))))
+stopifnot(isTRUE(all.equal((+inverse.rle(y)),inverse.rle(+y))))
+stopifnot(isTRUE(all.equal((inverse.rle(x)+inverse.rle(y)),inverse.rle(x+y))))
+stopifnot(isTRUE(all.equal((inverse.rle(x)^inverse.rle(y)),inverse.rle(x^y))))
+stopifnot(isTRUE(all.equal((inverse.rle(x)%%inverse.rle(y)),inverse.rle(x%%y))))
+stopifnot(isTRUE(all.equal((inverse.rle(x)%/%inverse.rle(y)),inverse.rle(x%/%y))))
+stopifnot(isTRUE(all.equal(inverse.rle(x)==inverse.rle(y),inverse.rle(x==y))))
+stopifnot(isTRUE(all.equal((inverse.rle(x)&gt;inverse.rle(y)),inverse.rle(x&gt;y))))
+stopifnot(isTRUE(all.equal((inverse.rle(x)&lt;inverse.rle(y)),inverse.rle(x&lt;y))))
+stopifnot(isTRUE(all.equal((inverse.rle(x)!=inverse.rle(y)),inverse.rle(x!=y))))
+stopifnot(isTRUE(all.equal((inverse.rle(x)&lt;=inverse.rle(y)),inverse.rle(x&lt;=y))))
+stopifnot(isTRUE(all.equal((inverse.rle(x)&gt;=inverse.rle(y)),inverse.rle(x&gt;=y))))
+
+stopifnot(isTRUE(all.equal(sum(inverse.rle(x)),sum(x))))
+stopifnot(isTRUE(all.equal(sum(inverse.rle(y)),sum(y))))
+
+
+stopifnot(isTRUE(all.equal(mean(inverse.rle(x)),mean(x))))
+stopifnot(isTRUE(all.equal(mean(inverse.rle(y)),mean(y))))
+
+
+stopifnot(isTRUE(all.equal(length(inverse.rle(x)),length(x))))
+stopifnot(isTRUE(all.equal(length(inverse.rle(y)),length(y))))
+
+x$values[1] &lt;- NA
+y$values[1] &lt;- NA
+stopifnot(isTRUE(all.equal(is.na(inverse.rle(x)),inverse.rle(is.na(x)))))
+stopifnot(isTRUE(all.equal(is.na(inverse.rle(y)),inverse.rle(is.na(y)))))
+
+
+x &lt;- rle(sample(c(-1,+1), 10, c(.7,.3), replace=TRUE))
+y &lt;- rpois(length(x$lengths), 2)
+
+stopifnot(isTRUE(all.equal(rep(inverse.rle(x), rep(y, x$lengths)),
+                               inverse.rle(rep(x, y, scale="run")))))
+
+stopifnot(isTRUE(all.equal(rep(inverse.rle(x), max(y)),
+                               inverse.rle(rep(x, max(y), scale="element")))))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>statnet.common</em> version 4.1.2 <a href="00Index.html">Index</a>]</div>
+</body></html>
