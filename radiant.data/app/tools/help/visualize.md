@@ -1,8 +1,8 @@
 > Visualize data
 
-### Filter
+### Filter data
 
-Use the `Filter` box to select (or omit) specific sets of rows from the data. See the helpfile for <a href="https://radiant-rstats.github.io/docs/data/view.html" target="_blank">_Data > View_</a> for details.
+Use the `Filter data` box to select (or omit) specific sets of rows from the data. See the help file for <a href="https://radiant-rstats.github.io/docs/data/view.html" target="_blank">_Data > View_</a> for details.
 
 ### Pause plotting
 
@@ -55,12 +55,12 @@ To make plots bigger or smaller adjust the values in the height and width boxes 
 
 The best way to keep/store plots is to generate a `visualize` command by clicking the report (<i title='Report results' class='fa fa-edit'></i>) icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. Alternatively, click the <i title='Download' class='fa fa-download'></i> icon on the top right of your screen to save a png-file to disk.
 
-### Customizing plots in _R > Report_
+### Customizing plots in _Report > Rmd_
 
-To customize a plot first generate the `visualize` command by clicking the report (<i title='Report results' class='fa fa-edit'></i>) icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. The example below illustrates how to customize a command in the <a href="https://radiant-rstats.github.io/docs/data/report.html" target="_blank">_R > Report_</a> tab. Notice that `custom` is set to `TRUE`.
+To customize a plot first generate the `visualize` command by clicking the report (<i title='Report results' class='fa fa-edit'></i>) icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. The example below illustrates how to customize a command in the <a href="https://radiant-rstats.github.io/docs/data/report.html" target="_blank">_Report > Rmd_</a> tab. Notice that `custom` is set to `TRUE`.
 
 ```r
-visualize(dataset = "diamonds", yvar = "price", xvar = "carat", type = "scatter", custom = TRUE) +
+visualize(diamonds, yvar = "price", xvar = "carat", type = "scatter", custom = TRUE) +
   labs(
     title = "A scatterplot", 
     y = "Price in $",
@@ -82,6 +82,8 @@ visualize(dataset = "diamonds", yvar = "price", xvar = "carat", type = "scatter"
 * Change size range: `+ scale_size(range=c(1,6))`
 * Draw a horizontal line: `+ geom_hline(yintercept = 0.1)`
 * Draw a vertical line: `+ geom_vline(xintercept = 8)`
+* Scale the y-axis as a percentage: `+ scale_y_continuous(labels = scales::percent)`
+* Display y-axis in \$'s: `+ scale_y_continuous(labels = scales::dollar_format())`
 
 For more on how to customize plots for communication see <a href="http://r4ds.had.co.nz/graphics-for-communication.html" target="_blank">http://r4ds.had.co.nz/graphics-for-communication.html</a>.
 
@@ -91,7 +93,7 @@ Suppose we create a set of three bar charts in _Data > Visualize_ using the `Dia
 
 ```r
 plot_list <- visualize(
-  dataset = "diamonds", 
+  diamonds, 
   xvar = c("clarity", "cut", "color"), 
   yvar = "price", 
   type = "bar", 
@@ -101,3 +103,33 @@ gridExtra::grid.arrange(grobs = plot_list, top = "Three bar plots", ncol = 1)
 ```
 
 See the <a href="https://cran.r-project.org/web/packages/gridExtra/vignettes/arrangeGrob.html">gridExtra vignette</a> for additional information on how to customize groups of plots.
+
+
+### Making plots interactive in _Report > Rmd_
+
+It is possible to transform (most) plots generated in Radiant into interactive graphics using the `plotly` library. After setting `custom = TRUE` you can use the `ggplotly` function to convert a single plot. See example below:
+
+```r
+visualize(diamonds, xvar = c("price", "carat", "clarity", "cut"), custom = TRUE) %>%
+  ggplotly() %>%
+  render()
+```
+
+If more than one plot is created, you can use the `subplot` function from the `plotly` package. Provide a value for the `nrows` argument to setup the plot layout grid. In the example below four plots are created. Because `nrow = 2` the plots will be displayed in a 2 X 2 grid. 
+
+```r
+visualize(diamonds, xvar = c("carat", "clarity", "cut", "color"), custom = TRUE) %>%
+  subplot(nrows = 2) %>%
+  render()
+```
+
+For additional information on the `plotly` library see the links below:
+
+* Getting started: https://plot.ly/r/getting-started/
+* Reference: https://plot.ly/r/reference/
+* Book: https://cpsievert.github.io/plotly_book
+* Code: https://github.com/ropensci/plotly
+
+### R-functions
+
+For an overview of related R-functions used by Radiant to visualize data see <a href = " https://radiant-rstats.github.io/radiant.data/reference/index.html#section-data-visualize" target="_blank">_Data > Visualize_</a>

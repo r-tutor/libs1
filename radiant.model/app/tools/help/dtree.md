@@ -44,7 +44,7 @@ To reference another (sub)tree use the `dtree` function in the `variables` secti
 
 ```yaml
 variables:
-	tuesday_emv: dtree("tuesday_tree")
+  tuesday_emv: dtree("tuesday_tree")
 ```
 
 Then in the Monday tree you would refer to `tuesday_emv` in spots where you need the EMV from Tuesday's pricing decision.
@@ -75,7 +75,7 @@ The `Final` graph shows the optimal decision determined by `folding-back` the tr
 The EMV for `Sign with TV Network` is \$900,000. If we ignore costs the expected payoff from `Sign with Movie Company` is:
 
 $$
-	0.3 \times 200,000 + 0.6 \times 1,000,000 + 0.1 \times 3000,000 = 960,000
+  0.3 \times 200,000 + 0.6 \times 1,000,000 + 0.1 \times 3000,000 = 960,000
 $$
 
 The EMV from signing with the movie company is however $960,000 - 5,000 = 955,000$ because we do incur a cost of \$5,000 in legal fees. Hover the cursor over the chance node shown on screen to see a `tooltip` that shows the calculation. To highlight that a `cost` was specified the chance node in the figure has a dashed outer line.
@@ -84,12 +84,21 @@ In the `Sign contract` example it is clear that `Sign with Movie Company` is the
 
 <p align="center"><img src="https://radiant-rstats.github.io/docs/model/figures_model/dtree_sensitivity.png"></p>
 
+## Tutorials
+
+Tutorial videos are available on Youtube:
+
+* <a href = "https://www.youtube.com/watch?v=Wk5Mhd738_k" target = "_blank">Including multiple decision trees in a report</a>
+* <a href = "https://youtu.be/M1r89QjC89Y" target = "_blank">Evaluate sensitivity</a>
+
+The state file for the sensitivity analysis example is available <a href = " https://github.com/radiant-rstats/docs/raw/gh-pages/examples/decision-analysis-sensitivity-state.rda" target = "_blank">here</a>
+
 ## Buttons
 
 In the _Model_ tab:
 
 * To see this help file click the <i class="fa fa-question" ></i> icon
-* To generate a report about the decision tree in the _R > Report_ tab click the <i class="fa fa-edit" ></i> icon or press `ALT-enter` on your keyboard 
+* To generate a report about the decision tree in the _Report > Rmd_ tab click the <i class="fa fa-edit" ></i> icon or press `ALT-enter` on your keyboard 
 * Choose to maximize (`Max`) or minimize (`Min`) payoffs. Note that payoffs can be negative
 * Click the `Calculate` button or press `CTRL-enter` (`CMD-enter` on mac) to generate or update results
 * Specify a name for your decision tree in the text input next to the `Calculate` button. Clicking on the `Calculate` button will store your settings. If multiple tree structures are available there will also be a dropdown where you can select which structure to use and a `Remove` button to delete tree structures
@@ -100,7 +109,7 @@ In the _Model_ tab:
 In the _Plot_ tab:
 
 * To see this help file click the <i class="fa fa-question" ></i> icon
-* To generate a report about the decision tree in the _R > Report_ tab click the <i class="fa fa-edit" ></i> icon or press `ALT-enter` on your keyboard
+* To generate a report about the decision tree in the _Report > Rmd_ tab click the <i class="fa fa-edit" ></i> icon or press `ALT-enter` on your keyboard
 * Show either the `Initial` or `Final` decision tree
 * Click the `Calculate` button or press `CTRL-enter` (`CMD-enter` on mac) to generate or update results
 * Enter the number of decimal places to show in the plot (default is 2 for payoffs and 4 for probabilities)
@@ -112,7 +121,7 @@ It is not currently possible to add a title or caption directly to the `Decision
 In the _Sensitivity_ tab:
 
 * To see this help file click the <i class="fa fa-question" ></i> icon
-* To generate a report about the decision tree in the _R > Report_ tab click the <i class="fa fa-edit" ></i> icon or press `ALT-enter` on your keyboard
+* To generate a report about the decision tree in the _Report > Rmd_ tab click the <i class="fa fa-edit" ></i> icon or press `ALT-enter` on your keyboard
 * Select one or more `Decisions to evaluate`
 * Select variables in `Sensitivity to changes in`. These variables must be defined in the `variables` section of the decision tree structure in the _Model_ tab
 * Enter the minimum, maximum, and step size for the selected variable and press the <i class="fa fa-plus"></i> icon
@@ -147,3 +156,7 @@ You can also (un)fold lines using the small triangles next to the line numbers.
 For additional shortcuts see:
 
 <a href="https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts" target="_blank">https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts</a>
+
+### R-functions
+
+For an overview of related R-functions used by Radiant for decision analysis see <a href = "https://radiant-rstats.github.io/radiant.model/reference/index.html#section-model-decision-analysis" target="_blank">_Model > Decision analysis_</a>

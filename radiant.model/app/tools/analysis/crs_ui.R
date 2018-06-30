@@ -6,7 +6,7 @@ crs_inputs <- reactive({
   crs_args$data_filter <- if (input$show_filter) input$data_filter else ""
   crs_args$dataset <- input$dataset
   for (i in r_drop(names(crs_args)))
-    crs_args[[i]] <- input[[paste0("crs_",i)]]
+    crs_args[[i]] <- input[[paste0("crs_", i)]]
   crs_args
 })
 
@@ -15,8 +15,10 @@ crs_inputs <- reactive({
 ###############################################################
 output$ui_crs_id <- renderUI({
   vars <- c("None" = "", varnames())
-  selectInput(inputId = "crs_id", label = "User id:", choices = vars,
-    selected = state_single("crs_id", vars), multiple = FALSE)
+  selectInput(
+    inputId = "crs_id", label = "User id:", choices = vars,
+    selected = state_single("crs_id", vars), multiple = FALSE
+  )
 })
 
 output$ui_crs_prod <- renderUI({
@@ -24,22 +26,28 @@ output$ui_crs_prod <- renderUI({
   vars <- varnames()
   vars <- vars[-which(vars %in% input$crs_id)]
 
-  selectInput(inputId = "crs_prod", label = "Product id:", choices = vars,
-    selected = state_single("crs_prod", vars), multiple = FALSE)
+  selectInput(
+    inputId = "crs_prod", label = "Product id:", choices = vars,
+    selected = state_single("crs_prod", vars), multiple = FALSE
+  )
 })
 
 output$ui_crs_pred <- renderUI({
   req(input$crs_prod)
-  if (available(input$crs_prod))
-    levs <- .getdata()[[input$crs_prod]] %>% as.factor %>% levels
-  else
+  if (available(input$crs_prod)) {
+    levs <- .get_data()[[input$crs_prod]] %>% as.factor() %>% levels()
+  } else {
     levs <- c()
+  }
 
-  selectInput(inputId = "crs_pred", label = "Choose products to recommend:",
-              choices = levs,
-              selected = state_init("crs_pred", levs),
-              multiple = TRUE, size = min(3, length(levs)),
-              selectize = FALSE)
+  selectInput(
+    "crs_pred", "Choose products to recommend:",
+    choices = levs,
+    selected = state_init("crs_pred", levs),
+    multiple = TRUE,
+    size = min(3, length(levs)),
+    selectize = FALSE
+  )
 })
 
 output$ui_crs_rate <- renderUI({
@@ -47,151 +55,239 @@ output$ui_crs_rate <- renderUI({
   vars <- varnames()
   vars <- vars[-which(c(input$crs_id, input$crs_prod) %in% vars)]
 
-  selectInput(inputId = "crs_rate", label = "Ratings variable:", choices = vars,
-    selected = state_single("crs_rate", vars), multiple = FALSE)
+  selectInput(
+    inputId = "crs_rate", label = "Ratings variable:", choices = vars,
+    selected = state_single("crs_rate", vars), multiple = FALSE
+  )
+})
+
+output$ui_crs_store_pred_name <- renderUI({
+  req(input$dataset)
+  textInput("crs_store_pred_name", NULL, "", placeholder = "Provide data name")
+})
+
+observe({
+  ## dep on most inputs
+  input$data_filter
+  input$show_filter
+  sapply(r_drop(names(crs_args)), function(x) input[[paste0("crs_", x)]])
+
+  ## notify user when the regression needs to be updated
+  ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
+  if (pressed(input$crs_run)) {
+    if (is.null(input$crs_pred)) { 
+      updateTabsetPanel(session, "tabs_crs ", selected = "Summary")
+      updateActionButton(session, "crs_run", "Estimate model", icon = icon("play"))
+    } else if (isTRUE(attr(crs_inputs, "observable")$.invalidated)) {
+      updateActionButton(session, "crs_run", "Re-estimate model", icon = icon("refresh", class = "fa-spin"))
+    } else {
+      updateActionButton(session, "crs_run", "Estimate model", icon = icon("play"))
+    }
+  }
 })
 
 output$ui_crs <- renderUI({
   req(input$dataset)
   tagList(
     wellPanel(
-      actionButton("crs_run", "Estimate", width = "100%")
+      actionButton("crs_run", "Estimate model", width = "100%", icon = icon("play"), class = "btn-success")
     ),
-  	wellPanel(
-      uiOutput("ui_crs_id"),
-      uiOutput("ui_crs_prod"),
-      uiOutput("ui_crs_pred"),
-      uiOutput("ui_crs_rate")
-  	),
-    ## to store results
-    wellPanel(
-      tags$table(
-        # tags$td(textInput("crs_name", "Store recommendations:", "recommendations_cf")),
-        tags$td(textInput("crs_name", "Store recommendations:", paste0(input$dataset, "_cf"))),
-        tags$td(actionButton("crs_store_pred", "Store"), style="padding-top:30px;")
+    conditionalPanel(
+      "input.tabs_crs == 'Summary'",
+      wellPanel(
+        uiOutput("ui_crs_id"),
+        uiOutput("ui_crs_prod"),
+        uiOutput("ui_crs_pred"),
+        uiOutput("ui_crs_rate"),
+        HTML("<label>Store recommendations:</label>"), 
+        tags$table(
+          # tags$td(textInput("crs_store_pred_name", "Store recommendations:", paste0(input$dataset, "_cf"))),
+          tags$td(uiOutput("ui_crs_store_pred_name")),
+          # tags$td(actionButton("crs_store_pred", "Store", icon = icon("plus")), style = "padding-top:30px;")
+          tags$td(actionButton("crs_store_pred", "Store", icon = icon("plus")), style = "padding-top:5px;")
+        )
       )
     ),
-    help_and_report(modal_title = "Collaborative Filtering",
-  	                fun_name = "crs",
-  	                help_file = inclMD(file.path(getOption("radiant.path.model"),"app/tools/help/crs.md")))
-	)
+    help_and_report(
+      modal_title = "Collaborative Filtering",
+      fun_name = "crs",
+      help_file = inclMD(file.path(getOption("radiant.path.model"), "app/tools/help/crs.md"))
+    )
+  )
 })
 
-crs_plot <- reactive({
-  plot_height <- ceiling(length(input$crs_pred) / 4) * 200
+# crs_plot <- reactive({
+crs_plot <- eventReactive(input$crs_run, {
+  plot_height <- ceiling(length(input$crs_pred) / 3) * 300
   plot_width <- 650
   list(plot_width = plot_width, plot_height = plot_height)
 })
 
 crs_plot_width <- function()
-  crs_plot() %>% { if (is.list(.)) .$plot_width else 650 }
+  crs_plot() %>% {if (is.list(.)) .$plot_width else 650}
 
 crs_plot_height <- function()
-  crs_plot() %>% { if (is.list(.)) .$plot_height else 500 }
+  crs_plot() %>% {if (is.list(.)) .$plot_height else 500}
 
 # output is called from the main radiant ui.R
 output$crs <- renderUI({
-	register_print_output("summary_crs", ".summary_crs")
-	register_plot_output("plot_crs", ".plot_crs",
-                       	width_fun = "crs_plot_width",
-                       	height_fun = "crs_plot_height")
+  register_print_output("summary_crs", ".summary_crs")
+  register_plot_output(
+    "plot_crs", ".plot_crs",
+    width_fun = "crs_plot_width",
+    height_fun = "crs_plot_height"
+  )
 
-	# one output with components stacked
+  # one output with components stacked
   crs_output_panels <- tabsetPanel(
-     id = "tabs_crs",
-     tabPanel("Summary",
-       downloadLink("dl_crs_recommendations", "", class = "fa fa-download alignright"), br(),
-       verbatimTextOutput("summary_crs")
-     ),
-     tabPanel("Plot",
-       plot_downloader("crs", height = crs_plot_height()),
-       plotOutput("plot_crs", height = "100%")
+    id = "tabs_crs",
+    tabPanel(
+      "Summary",
+      download_link("dl_crs_recommendations"), br(),
+      verbatimTextOutput("summary_crs")
+    ),
+    tabPanel(
+      "Plot",
+      download_link("dlp_crs"),
+      plotOutput("plot_crs", height = "100%")
     )
   )
 
-	stat_tab_panel(menu = "Model > Recommend",
-	              tool = "Collaborative Filtering",
-	              tool_ui = "ui_crs",
-	             	output_panels = crs_output_panels)
+  stat_tab_panel(
+    menu = "Model > Recommend",
+    tool = "Collaborative Filtering",
+    tool_ui = "ui_crs",
+    output_panels = crs_output_panels
+  )
 })
 
 .crs <- eventReactive(input$crs_run, {
-  if (is_empty(input$crs_id))
-    return("This analysis requires a user id, a product id, and product ratings.\nIf these variables are not available please select another dataset.\n\n" %>% suggest_data("cf"))
-
-  if (!input$show_filter || is_empty(input$data_filter))
-    return("A data filter must be set to generate recommendations using\ncollaborative filtering. Add a filter in the Data > View tab.\nNote that the users in the training sample should not overlap\nwith the users in the validation sample." %>% add_class("crs"))
-
-  if (!is_empty(r_data$filter_error))
-    return("An invalid filter has been set for this dataset. Please\nadjust the filter in the Data > View tab and try again" %>% add_class("crs"))
-
-  if(length(input$crs_pred) < 1) return("Please select one or more products to generate recommendations" %>% add_class("crs"))
-
-  withProgress(message = "Estimating model", value = 1, {
-	  do.call(crs, crs_inputs())
-  })
+  if (is_empty(input$crs_id)) {
+    "This analysis requires a user id, a product id, and product ratings.\nIf these variables are not available please select another dataset.\n\n" %>% 
+      suggest_data("ratings")
+  } else if (!input$show_filter || is_empty(input$data_filter)) {
+    "A data filter must be set to generate recommendations using\ncollaborative filtering. Add a filter in the Data > View tab.\nNote that the users in the training sample should not overlap\nwith the users in the validation sample." %>% 
+      add_class("crs")
+  } else if (!is_empty(r_info[["filter_error"]])) {
+    "An invalid filter has been set for this dataset. Please\nadjust the filter in the Data > View tab and try again" %>% 
+      add_class("crs")
+  } else if (length(input$crs_pred) < 1) {
+    "Please select one or more products to generate recommendations" %>% 
+      add_class("crs")
+  } else {
+    withProgress(message = "Estimating model", value = 1, {
+      do.call(crs, crs_inputs())
+    })
+  }
 })
 
 .summary_crs <- reactive({
-  if (is_empty(input$crs_id))
-    return("This analysis requires a user id, a product id, and product ratings.\nIf these variables are not available please select another dataset.\n\n" %>% suggest_data("cf"))
-
-  if (not_pressed(input$crs_run)) return("** Press the Estimate button to generate recommendations **")
-  summary(.crs())
+  if (not_pressed(input$crs_run)) {
+    "** Press the Estimate button to generate recommendations **"
+  } else if (is_empty(input$crs_id)) {
+    "This analysis requires a user id, a product id, and product ratings.\nIf these variables are not available please select another dataset.\n\n" %>% 
+      suggest_data("ratings")
+  } else {
+    summary(.crs())
+  }
 })
 
 .plot_crs <- reactive({
-  if (is_empty(input$crs_id)) return(invisible())
   if (not_pressed(input$crs_run)) return("** Press the Estimate button to generate recommendations **")
-  plot.crs(.crs())
+  isolate({
+    if (is_empty(input$crs_id)) return(invisible())
+    withProgress(message = "Generating plots", value = 1, {
+      plot.crs(.crs())
+    })
+  })
 })
 
 ## Add reporting option
 observeEvent(input$crs_report, {
-  crs <- .crs() 
-  inp_out <- list(list(n = 36),"")
+  crs <- .crs()
   if (is.character(crs)) {
     return(invisible())
   } else if (!any(is.na(crs$act))) {
-    outputs <- c("summary","plot")
+    outputs <- c("summary", "plot")
     figs <- TRUE
   } else {
     outputs <- "summary"
     figs <- FALSE
   }
-  xcmd <- paste0("# store(result, name = \"", input$crs_name,"\")")
-  xcmd <- paste0(xcmd, "\n# write.csv(result$recommendations, file = \"~/recommendations_crs.csv\", row.names = FALSE)")
-
-  update_report(inp_main = clean_args(crs_inputs(), crs_args),
-                fun_name = "crs",
-                inp_out = inp_out,
-                outputs = outputs,
-                figs = figs,
-                fig.width = crs_plot_width(),
-                fig.height = crs_plot_height(),
-                xcmd = xcmd)
- })
-
-output$dl_crs_recommendations <- downloadHandler(
-  filename = function() { "recommendations_crs.csv" },
-  content = function(file) {
-    pred <- .crs()
-    if (!is.data.frame(pred$recommendations)) {
-      write.csv("No recommendations available", file = file, row.names = FALSE)
-    } else {
-      write.csv(pred$recommendations, file = file, row.names = FALSE)
-    }
+  if (nrow(crs$recommendations) > 36) {
+    inp_out <- list(list(n = 36), "")
+  } else {
+    inp_out <- list("", "")
   }
-)
+  if (!is_empty(input$crs_store_pred_name)) {
+    xcmd <- input$crs_store_pred_name %>% 
+      paste0(., " <- result$recommendations\nregister(\"", ., "\")")
+  } else {
+    xcmd <- ""
+  }
+
+  update_report(
+    inp_main = clean_args(crs_inputs(), crs_args),
+    fun_name = "crs",
+    inp_out = inp_out,
+    outputs = outputs,
+    figs = figs,
+    fig.width = crs_plot_width(),
+    fig.height = crs_plot_height(),
+    xcmd = xcmd
+  )
+})
 
 ## Store results
 observeEvent(input$crs_store_pred, {
+  req(input$crs_store_pred_name)
   pred <- .crs()
-  if (!is.data.frame(pred$recommendations)) return("No data selected to generate recommendations")
-  store(pred, input$crs_name)
+  if (!is.data.frame(pred$recommendations)) {
+    return("No data selected to generate recommendations")
+  }
+  name <- input$crs_store_pred_name
+  r_data[[name]] <- pred$recommendations
+  register(name)
 
-  ## alert user about new dataset
-  session$sendCustomMessage(type = "message",
-    message = paste0("Dataset '", input$crs_name, "' was successfully added to the datasets dropdown. Add code to R > Report to (re)create the dataset by clicking the report icon on the bottom left of your screen.")
+  ## See https://shiny.rstudio.com/reference/shiny/latest/modalDialog.html
+  showModal(
+    modalDialog(
+      title = "Data Stored",
+      span(
+        paste0("Dataset '", name, "' was successfully added 
+                to the datasets dropdown. Add code to Report > Rmd or 
+                Report > R to (re)create the dataset by clicking the 
+                report icon on the bottom left of your screen.")
+      ),
+      footer = modalButton("OK"),
+      size = "s",
+      easyClose = TRUE
+    )
   )
 })
+
+dl_crs_recommendations <- function(path) {
+  pred <- .crs()
+  if (!is.data.frame(pred$recommendations)) {
+    write.csv("No recommendations available", file = path, row.names = FALSE)
+  } else {
+    write.csv(pred$recommendations, file = path, row.names = FALSE)
+  }
+}
+
+download_handler(
+  id = "dl_crs_recommendations", 
+  fun = dl_crs_recommendations, 
+  fn = paste0(input$dataset, "_recommendations.csv"),
+  caption = "Download collaborative filtering recommendations"
+)
+
+download_handler(
+  id = "dlp_crs", 
+  fun = download_handler_plot, 
+  fn = paste0(input$dataset, "_recommendations.png"),
+  caption = "Download collaborative filtering plot",
+  plot = .plot_crs,
+  width = crs_plot_width,
+  height = crs_plot_height
+)

@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;radiant.data&rsquo; version 0.8.1</h2>
+</div><h2>Documentation for package &lsquo;radiant.data&rsquo; version 0.9.5</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 </ul>
@@ -55,8 +55,6 @@
 <td>Convenience function to add a class</td></tr>
 <tr><td style="width: 25%;"><a href="as_character.html">as_character</a></td>
 <td>Wrapper for as.character</td></tr>
-<tr><td style="width: 25%;"><a href="as_data_frame.html">as_data_frame</a></td>
-<td>Exporting as_data_frame</td></tr>
 <tr><td style="width: 25%;"><a href="as_distance.html">as_distance</a></td>
 <td>Distance in kilometers or miles between two locations based on lat-long Function based on &lt;URL: http://www.movable-type.co.uk/scripts/latlong.html&gt;. Uses the haversine formula</td></tr>
 <tr><td style="width: 25%;"><a href="as_dmy.html">as_dmy</a></td>
@@ -84,7 +82,7 @@
 <tr><td style="width: 25%;"><a href="as_numeric.html">as_numeric</a></td>
 <td>Convert variable to numeric avoiding potential issues with factors</td></tr>
 <tr><td style="width: 25%;"><a href="as_tibble.html">as_tibble</a></td>
-<td>Exporting as_tibble</td></tr>
+<td>Exporting as_tibble from tibble</td></tr>
 <tr><td style="width: 25%;"><a href="as_ymd.html">as_ymd</a></td>
 <td>Convert input in year-month-day format to date</td></tr>
 <tr><td style="width: 25%;"><a href="as_ymd_hm.html">as_ymd_hm</a></td>
@@ -100,18 +98,22 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="center.html">center</a></td>
 <td>Center</td></tr>
-<tr><td style="width: 25%;"><a href="changedata.html">changedata</a></td>
-<td>Change data</td></tr>
+<tr><td style="width: 25%;"><a href="choose_dir.html">choose_dir</a></td>
+<td>Choose a directory interactively</td></tr>
+<tr><td style="width: 25%;"><a href="choose_files.html">choose_files</a></td>
+<td>Choose files interactively</td></tr>
 <tr><td style="width: 25%;"><a href="ci_label.html">ci_label</a></td>
 <td>Labels for confidence intervals</td></tr>
 <tr><td style="width: 25%;"><a href="ci_perc.html">ci_perc</a></td>
 <td>Values at confidence levels</td></tr>
-<tr><td style="width: 25%;"><a href="combinedata.html">combinedata</a></td>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">combinedata</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
+<tr><td style="width: 25%;"><a href="combine_data.html">combine_data</a></td>
 <td>Combine datasets using dplyr's bind and join functions</td></tr>
 <tr><td style="width: 25%;"><a href="copy_all.html">copy_all</a></td>
 <td>Source all package functions</td></tr>
 <tr><td style="width: 25%;"><a href="copy_attr.html">copy_attr</a></td>
-<td>Copy attributes from on object to another</td></tr>
+<td>Copy attributes from one object to another</td></tr>
 <tr><td style="width: 25%;"><a href="copy_from.html">copy_from</a></td>
 <td>Source for package functions</td></tr>
 <tr><td style="width: 25%;"><a href="cv.html">cv</a></td>
@@ -121,61 +123,87 @@
 <h2><a name="D">-- D --</a></h2>
 
 <table width="100%">
-<tr><td style="width: 25%;"><a href="data_frame.html">data_frame</a></td>
-<td>Exporting data_frame</td></tr>
 <tr><td style="width: 25%;"><a href="describe.html">describe</a></td>
-<td>Show dataset desription, if available, in html form in Rstudio viewer or default browser</td></tr>
-<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">dfprint</a></td>
-<td>Deprecated function(s) in the radiant.data package</td></tr>
+<td>Show dataset description</td></tr>
 <tr><td style="width: 25%;"><a href="diamonds.html">diamonds</a></td>
 <td>Diamond prices</td></tr>
 <tr><td style="width: 25%;"><a href="does_vary.html">does_vary</a></td>
 <td>Does a vector have non-zero variability?</td></tr>
 <tr><td style="width: 25%;"><a href="dtab.html">dtab</a></td>
 <td>Method to create datatables</td></tr>
+<tr><td style="width: 25%;"><a href="dtab.data.frame.html">dtab.data.frame</a></td>
+<td>Create an interactive table to view, search, sort, and filter data</td></tr>
 <tr><td style="width: 25%;"><a href="dtab.explore.html">dtab.explore</a></td>
-<td>Make a tabel of summary statistics in DT</td></tr>
+<td>Make an interactive table of summary statistics</td></tr>
 <tr><td style="width: 25%;"><a href="dtab.pivotr.html">dtab.pivotr</a></td>
-<td>Make a pivot tabel in DT</td></tr>
+<td>Make an interactive pivot table</td></tr>
 </table>
 
 <h2><a name="E">-- E --</a></h2>
 
 <table width="100%">
 <tr><td style="width: 25%;"><a href="empty_level.html">empty_level</a></td>
-<td>Convert categorical variables to factors and deal with empty/missing values (used in pivotr and explore)</td></tr>
+<td>Convert categorical variables to factors and deal with empty/missing values</td></tr>
 <tr><td style="width: 25%;"><a href="explore.html">explore</a></td>
-<td>Explore data</td></tr>
+<td>Explore and summarize data</td></tr>
 </table>
 
 <h2><a name="F">-- F --</a></h2>
 
 <table width="100%">
-<tr><td style="width: 25%;"><a href="factorizer.html">factorizer</a></td>
-<td>Convert character to factors as needed</td></tr>
-<tr><td style="width: 25%;"><a href="filterdata.html">filterdata</a></td>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">filterdata</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
+<tr><td style="width: 25%;"><a href="filter_data.html">filter_data</a></td>
 <td>Filter data with user-specified expression</td></tr>
 <tr><td style="width: 25%;"><a href="find_dropbox.html">find_dropbox</a></td>
-<td>Find a user's dropbox folder</td></tr>
+<td>Find Dropbox folder</td></tr>
+<tr><td style="width: 25%;"><a href="find_gdrive.html">find_gdrive</a></td>
+<td>Find Google Drive folder</td></tr>
+<tr><td style="width: 25%;"><a href="find_project.html">find_project</a></td>
+<td>Find the Rstudio project folder</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">fixMS</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
+<tr><td style="width: 25%;"><a href="fix_names.html">fix_names</a></td>
+<td>Ensure column names are valid</td></tr>
+<tr><td style="width: 25%;"><a href="fix_smart.html">fix_smart</a></td>
+<td>Replace smart quotes etc.</td></tr>
 <tr><td style="width: 25%;"><a href="flip.html">flip</a></td>
 <td>Flip the DT table to put Function, Variable, or Group by on top</td></tr>
-<tr><td style="width: 25%;"><a href="formatdf.html">formatdf</a></td>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">formatdf</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">formatnr</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
+<tr><td style="width: 25%;"><a href="format_df.html">format_df</a></td>
 <td>Format a data.frame with a specified number of decimal places</td></tr>
-<tr><td style="width: 25%;"><a href="formatnr.html">formatnr</a></td>
+<tr><td style="width: 25%;"><a href="format_nr.html">format_nr</a></td>
 <td>Format a number with a specified number of decimal places, thousand sep, and a symbol</td></tr>
 </table>
 
 <h2><a name="G">-- G --</a></h2>
 
 <table width="100%">
-<tr><td style="width: 25%;"><a href="getclass.html">getclass</a></td>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">getclass</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">getdata</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">getsummary</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
+<tr><td style="width: 25%;"><a href="get_class.html">get_class</a></td>
 <td>Get variable class</td></tr>
-<tr><td style="width: 25%;"><a href="getdata.html">getdata</a></td>
-<td>Get data for analysis functions</td></tr>
-<tr><td style="width: 25%;"><a href="getsummary.html">getsummary</a></td>
+<tr><td style="width: 25%;"><a href="get_data.html">get_data</a></td>
+<td>Select variables and filter data</td></tr>
+<tr><td style="width: 25%;"><a href="get_summary.html">get_summary</a></td>
 <td>Create data.frame summary</td></tr>
+<tr><td style="width: 25%;"><a href="ggplotly.html">ggplotly</a></td>
+<td>Work around to avoid (harmless) messages from ggplotly</td></tr>
 <tr><td style="width: 25%;"><a href="glance.html">glance</a></td>
 <td>Exporting glance from broom</td></tr>
+<tr><td style="width: 25%;"><a href="glue.html">glue</a></td>
+<td>Exporting glue from glue</td></tr>
+<tr><td style="width: 25%;"><a href="glue_collapse.html">glue_collapse</a></td>
+<td>Exporting collapse from glue as glue_collapse</td></tr>
+<tr><td style="width: 25%;"><a href="glue_data.html">glue_data</a></td>
+<td>Exporting glue_data from glue</td></tr>
 </table>
 
 <h2><a name="I">-- I --</a></h2>
@@ -187,10 +215,14 @@
 <td>Install webshot and phantomjs</td></tr>
 <tr><td style="width: 25%;"><a href="inverse.html">inverse</a></td>
 <td>Calculate inverse of a variable</td></tr>
+<tr><td style="width: 25%;"><a href="is_double.html">is_double</a></td>
+<td>Is input a double (and not a date type)?</td></tr>
 <tr><td style="width: 25%;"><a href="is_empty.html">is_empty</a></td>
 <td>Is a character variable defined</td></tr>
 <tr><td style="width: 25%;"><a href="is_not.html">is_not</a></td>
 <td>Convenience function for is.null or is.na</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">is_numeric</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
 <tr><td style="width: 25%;"><a href="is_string.html">is_string</a></td>
 <td>Is input a string?</td></tr>
 <tr><td style="width: 25%;"><a href="iterms.html">iterms</a></td>
@@ -200,52 +232,42 @@
 <h2><a name="K">-- K --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="knit_print.html">knit_print</a></td>
+<td>Exporting knit_print from knitr</td></tr>
 <tr><td style="width: 25%;"><a href="kurtosi.re.html">kurtosi</a></td>
-<td>Exporting the kurtosi function from the psych package</td></tr>
+<td>Exporting kurtosi from psych</td></tr>
 </table>
 
 <h2><a name="L">-- L --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="launch.html">launch</a></td>
+<td>Launch radiant apps</td></tr>
 <tr><td style="width: 25%;"><a href="level_list.html">level_list</a></td>
 <td>Generate list of levels and unique values</td></tr>
 <tr><td style="width: 25%;"><a href="ln.html">ln</a></td>
 <td>Natural log</td></tr>
-<tr><td style="width: 25%;"><a href="loadcsv.html">loadcsv</a></td>
-<td>Load a csv file with read.csv and read_csv</td></tr>
-<tr><td style="width: 25%;"><a href="loadcsv_url.html">loadcsv_url</a></td>
-<td>Load a csv file with from a url</td></tr>
-<tr><td style="width: 25%;"><a href="loadr.html">loadr</a></td>
-<td>Load an rda or rds file and add it to the radiant data list (r_data) if available</td></tr>
-<tr><td style="width: 25%;"><a href="loadrda_url.html">loadrda_url</a></td>
-<td>Load an rda file from a url</td></tr>
+<tr><td style="width: 25%;"><a href="load_clip.html">load_clip</a></td>
+<td>Load data through clipboard on Windows or macOS</td></tr>
 </table>
 
 <h2><a name="M">-- M --</a></h2>
 
 <table width="100%">
-<tr><td style="width: 25%;"><a href="make_funs.html">make_funs</a></td>
-<td>Make a list of functions-as-formulas to pass to dplyr</td></tr>
 <tr><td style="width: 25%;"><a href="make_train.html">make_train</a></td>
 <td>Generate a variable used to selected a training sample</td></tr>
-<tr><td style="width: 25%;"><a href="max_rm.html">max_rm</a></td>
-<td>Max with na.rm = TRUE</td></tr>
-<tr><td style="width: 25%;"><a href="mean_rm.html">mean_rm</a></td>
-<td>Mean with na.rm = TRUE</td></tr>
-<tr><td style="width: 25%;"><a href="median_rm.html">median_rm</a></td>
-<td>Median with na.rm = TRUE</td></tr>
-<tr><td style="width: 25%;"><a href="min_rm.html">min_rm</a></td>
-<td>Min with na.rm = TRUE</td></tr>
-<tr><td style="width: 25%;"><a href="mode_rm.html">mode_rm</a></td>
-<td>Mode with na.rm = TRUE</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">max_rm</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">mean_rm</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">median_rm</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">min_rm</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
 <tr><td style="width: 25%;"><a href="month.html">month</a></td>
 <td>Add ordered argument to lubridate::month</td></tr>
-<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">mutate_each</a></td>
-<td>Deprecated function(s) in the radiant.data package</td></tr>
 <tr><td style="width: 25%;"><a href="mutate_ext.html">mutate_ext</a></td>
-<td>Add tranformed variables to a data frame (NSE)</td></tr>
-<tr><td style="width: 25%;"><a href="mutate_if_tmp.html">mutate_if_tmp</a></td>
-<td>Temporary fix for mutate_if when the predicate is false for all columns</td></tr>
+<td>Add transformed variables to a data frame with the option to include a custom variable name extension</td></tr>
 </table>
 
 <h2><a name="N">-- N --</a></h2>
@@ -253,31 +275,39 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="normalize.html">normalize</a></td>
 <td>Normalize a variable x by a variable y</td></tr>
-<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">nrprint</a></td>
-<td>Deprecated function(s) in the radiant.data package</td></tr>
 <tr><td style="width: 25%;"><a href="n_missing.html">n_missing</a></td>
 <td>Number of missing values</td></tr>
+<tr><td style="width: 25%;"><a href="n_obs.html">n_obs</a></td>
+<td>Number of observations</td></tr>
 </table>
 
 <h2><a name="P">-- P --</a></h2>
 
 <table width="100%">
-<tr><td style="width: 25%;"><a href="p05.html">p05</a></td>
-<td>5th percentile</td></tr>
-<tr><td style="width: 25%;"><a href="p10.html">p10</a></td>
-<td>10th percentile</td></tr>
-<tr><td style="width: 25%;"><a href="p25.html">p25</a></td>
-<td>25th percentile</td></tr>
-<tr><td style="width: 25%;"><a href="p75.html">p75</a></td>
-<td>75th percentile</td></tr>
-<tr><td style="width: 25%;"><a href="p90.html">p90</a></td>
-<td>90th percentile</td></tr>
-<tr><td style="width: 25%;"><a href="p95.html">p95</a></td>
-<td>95th percentile</td></tr>
+<tr><td style="width: 25%;"><a href="percentiles.html">p01</a></td>
+<td>Calculate percentiles</td></tr>
+<tr><td style="width: 25%;"><a href="percentiles.html">p025</a></td>
+<td>Calculate percentiles</td></tr>
+<tr><td style="width: 25%;"><a href="percentiles.html">p05</a></td>
+<td>Calculate percentiles</td></tr>
+<tr><td style="width: 25%;"><a href="percentiles.html">p10</a></td>
+<td>Calculate percentiles</td></tr>
+<tr><td style="width: 25%;"><a href="percentiles.html">p25</a></td>
+<td>Calculate percentiles</td></tr>
+<tr><td style="width: 25%;"><a href="percentiles.html">p75</a></td>
+<td>Calculate percentiles</td></tr>
+<tr><td style="width: 25%;"><a href="percentiles.html">p90</a></td>
+<td>Calculate percentiles</td></tr>
+<tr><td style="width: 25%;"><a href="percentiles.html">p95</a></td>
+<td>Calculate percentiles</td></tr>
+<tr><td style="width: 25%;"><a href="percentiles.html">p975</a></td>
+<td>Calculate percentiles</td></tr>
+<tr><td style="width: 25%;"><a href="percentiles.html">p99</a></td>
+<td>Calculate percentiles</td></tr>
+<tr><td style="width: 25%;"><a href="parse_path.html">parse_path</a></td>
+<td>Parse file path into useful components</td></tr>
 <tr><td style="width: 25%;"><a href="pivotr.html">pivotr</a></td>
-<td>Create a pivot table using dplyr</td></tr>
-<tr><td style="width: 25%;"><a href="plot.character.html">plot.character</a></td>
-<td>Don't try to plot strings</td></tr>
+<td>Create a pivot table</td></tr>
 <tr><td style="width: 25%;"><a href="plot.pivotr.html">plot.pivotr</a></td>
 <td>Plot method for the pivotr function</td></tr>
 <tr><td style="width: 25%;"><a href="print.gtable.html">print.gtable</a></td>
@@ -295,18 +325,26 @@
 <td>radiant.data</td></tr>
 <tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">radiant.data-deprecated</a></td>
 <td>Deprecated function(s) in the radiant.data package</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data_viewer.html">radiant.data_viewer</a></td>
+<td>Launch the radiant.data app in the Rstudio viewer</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data_window.html">radiant.data_window</a></td>
+<td>Launch the radiant.data app in an Rstudio window</td></tr>
+<tr><td style="width: 25%;"><a href="read_files.html">read_files</a></td>
+<td>Generate code to read a file</td></tr>
 <tr><td style="width: 25%;"><a href="refactor.html">refactor</a></td>
 <td>Remove/reorder levels</td></tr>
 <tr><td style="width: 25%;"><a href="register.html">register</a></td>
-<td>Register a data.frame in the datasetlist in Radiant</td></tr>
+<td>Register a data.frame or list in Radiant</td></tr>
 <tr><td style="width: 25%;"><a href="render.html">render</a></td>
-<td>Method to render objects (i.e., htmlwidgets and rmarkdown files)</td></tr>
-<tr><td style="width: 25%;"><a href="render.character.html">render.character</a></td>
-<td>Method to render rmarkdown documents</td></tr>
+<td>Base method used to render htmlwidgets</td></tr>
 <tr><td style="width: 25%;"><a href="render.datatables.html">render.datatables</a></td>
-<td>Method to render DT tabels</td></tr>
-<tr><td style="width: 25%;"><a href="rounddf.html">rounddf</a></td>
-<td>Round double in a data.frame to a specified number of decimal places</td></tr>
+<td>Method to render DT tables</td></tr>
+<tr><td style="width: 25%;"><a href="render.plotly.html">render.plotly</a></td>
+<td>Method to render plotly plots</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">rounddf</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
+<tr><td style="width: 25%;"><a href="round_df.html">round_df</a></td>
+<td>Round doubles in a data.frame to a specified number of decimal places</td></tr>
 <tr><td style="width: 25%;"><a href="rownames_to_column.html">rownames_to_column</a></td>
 <td>Exporting rownames_to_column from tibble</td></tr>
 </table>
@@ -314,18 +352,20 @@
 <h2><a name="S">-- S --</a></h2>
 
 <table width="100%">
-<tr><td style="width: 25%;"><a href="saver.html">saver</a></td>
-<td>Save data.frame as an rda or rds file from Radiant</td></tr>
+<tr><td style="width: 25%;"><a href="save_clip.html">save_clip</a></td>
+<td>Save data to clipboard on Windows or macOS</td></tr>
 <tr><td style="width: 25%;"><a href="sdpop.html">sdpop</a></td>
 <td>Standard deviation for the population</td></tr>
 <tr><td style="width: 25%;"><a href="sdprop.html">sdprop</a></td>
 <td>Standard deviation for proportion</td></tr>
-<tr><td style="width: 25%;"><a href="sd_rm.html">sd_rm</a></td>
-<td>Standard deviation with na.rm = TRUE</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">sd_rm</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
 <tr><td style="width: 25%;"><a href="se.html">se</a></td>
 <td>Standard error</td></tr>
-<tr><td style="width: 25%;"><a href="Search.html">Search</a></td>
-<td>Search for a string in all columns of a data.frame</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">Search</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
+<tr><td style="width: 25%;"><a href="search_data.html">search_data</a></td>
+<td>Search for a pattern in all columns of a data.frame</td></tr>
 <tr><td style="width: 25%;"><a href="seprop.html">seprop</a></td>
 <td>Standard error for proportion</td></tr>
 <tr><td style="width: 25%;"><a href="set_attr.html">set_attr</a></td>
@@ -333,9 +373,9 @@
 <tr><td style="width: 25%;"><a href="show_duplicated.html">show_duplicated</a></td>
 <td>Show all rows with duplicated values (not just the first or last)</td></tr>
 <tr><td style="width: 25%;"><a href="sig_stars.html">sig_stars</a></td>
-<td>Add stars '***' to a data.frame (from broom's 'tidy' function) based on p.values</td></tr>
+<td>Add stars based on p.values</td></tr>
 <tr><td style="width: 25%;"><a href="skew.re.html">skew</a></td>
-<td>Exporting the skew function from the psych package</td></tr>
+<td>Exporting skew from psych</td></tr>
 <tr><td style="width: 25%;"><a href="square.html">square</a></td>
 <td>Calculate square of a variable</td></tr>
 <tr><td style="width: 25%;"><a href="sshh.html">sshh</a></td>
@@ -346,20 +386,18 @@
 <td>Standardize</td></tr>
 <tr><td style="width: 25%;"><a href="store.html">store</a></td>
 <td>Method to store variables in a dataset in Radiant</td></tr>
-<tr><td style="width: 25%;"><a href="store.character.html">store.character</a></td>
-<td>Method for error messages that a user tries to store</td></tr>
-<tr><td style="width: 25%;"><a href="store.data.frame.html">store.data.frame</a></td>
-<td>Store method for the Data &gt; View tab</td></tr>
 <tr><td style="width: 25%;"><a href="store.explore.html">store.explore</a></td>
-<td>Store method for the explore function</td></tr>
+<td>Deprecated: Store method for the explore function</td></tr>
 <tr><td style="width: 25%;"><a href="store.pivotr.html">store.pivotr</a></td>
-<td>Store method for the pivort function</td></tr>
+<td>Deprecated: Store method for the pivotr function</td></tr>
+<tr><td style="width: 25%;"><a href="subplot.html">subplot</a></td>
+<td>Work around to avoid (harmless) messages from subplot</td></tr>
 <tr><td style="width: 25%;"><a href="summary.explore.html">summary.explore</a></td>
 <td>Summary method for the explore function</td></tr>
 <tr><td style="width: 25%;"><a href="summary.pivotr.html">summary.pivotr</a></td>
 <td>Summary method for pivotr</td></tr>
-<tr><td style="width: 25%;"><a href="sum_rm.html">sum_rm</a></td>
-<td>Sum with na.rm = TRUE</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">sum_rm</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
 <tr><td style="width: 25%;"><a href="superheroes.html">superheroes</a></td>
 <td>Super heroes</td></tr>
 </table>
@@ -370,11 +408,15 @@
 <tr><td style="width: 25%;"><a href="table2data.html">table2data</a></td>
 <td>Create data.frame from a table</td></tr>
 <tr><td style="width: 25%;"><a href="tibble.html">tibble</a></td>
-<td>Exporting tibble</td></tr>
+<td>Exporting tibble from tibble</td></tr>
 <tr><td style="width: 25%;"><a href="tidy.html">tidy</a></td>
 <td>Exporting tidy from broom</td></tr>
 <tr><td style="width: 25%;"><a href="titanic.html">titanic</a></td>
 <td>Survival data for the Titanic</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">toFct</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
+<tr><td style="width: 25%;"><a href="to_fct.html">to_fct</a></td>
+<td>Convert characters to factors</td></tr>
 </table>
 
 <h2><a name="V">-- V --</a></h2>
@@ -384,12 +426,14 @@
 <td>Variance for the population</td></tr>
 <tr><td style="width: 25%;"><a href="varprop.html">varprop</a></td>
 <td>Variance for proportion</td></tr>
-<tr><td style="width: 25%;"><a href="var_rm.html">var_rm</a></td>
-<td>Variance with na.rm = TRUE</td></tr>
-<tr><td style="width: 25%;"><a href="viewdata.html">viewdata</a></td>
-<td>View data</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">var_rm</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
+<tr><td style="width: 25%;"><a href="radiant.data-deprecated.html">viewdata</a></td>
+<td>Deprecated function(s) in the radiant.data package</td></tr>
+<tr><td style="width: 25%;"><a href="view_data.html">view_data</a></td>
+<td>View data in a shiny-app</td></tr>
 <tr><td style="width: 25%;"><a href="visualize.html">visualize</a></td>
-<td>Visualize data using ggplot2 &lt;URL: http://docs.ggplot2.org/current/&gt;</td></tr>
+<td>Visualize data using ggplot2 &lt;URL: http://ggplot2.tidyverse.org&gt;</td></tr>
 </table>
 
 <h2><a name="W">-- W --</a></h2>
@@ -400,15 +444,15 @@
 <tr><td style="width: 25%;"><a href="weighted.sd.html">weighted.sd</a></td>
 <td>Weighted standard deviation</td></tr>
 <tr><td style="width: 25%;"><a href="which.pmax.html">which.pmax</a></td>
-<td>Returns the index of the (parallel) maxima of the input values</td></tr>
+<td>Index of the maximum per row</td></tr>
 <tr><td style="width: 25%;"><a href="which.pmin.html">which.pmin</a></td>
-<td>Returns the index of the (parallel) minima of the input values</td></tr>
+<td>Index of the minimum per row</td></tr>
 </table>
 
 <h2><a name="X">-- X --</a></h2>
 
 <table width="100%">
 <tr><td style="width: 25%;"><a href="xtile.html">xtile</a></td>
-<td>Create a quintile (or decile) index</td></tr>
+<td>Create quantiles</td></tr>
 </table>
 </body></html>

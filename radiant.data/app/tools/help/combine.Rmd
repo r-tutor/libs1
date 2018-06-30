@@ -11,19 +11,24 @@ The examples below are adapted from the [Cheatsheet for dplyr join functions](ht
 ```{r results = 'asis', echo = FALSE}
 tab_small <- "class='table table-condensed table-hover' style='width:30%;'"
 tab_big <- "class='table table-condensed table-hover' style='width:70%;'"
-suppressPackageStartupMessages(suppressWarnings(library(radiant.data)))
-knitr::kable(superheroes, align = 'l', format = 'html', caption = "Superheroes",
-             table.attr = tab_big)
+data(superheroes, package = "radiant.data")
+knitr::kable(
+  superheroes, align = 'l', format = 'html', 
+  caption = "Superheroes", table.attr = tab_big
+)
 ```
 
 ```{r results = 'asis', echo = FALSE}
-knitr::kable(publishers, align = 'l', format = 'html', caption = "Publishers",
-             table.attr = tab_small)
+data(publishers, package = "radiant.data")
+knitr::kable(
+  publishers, align = 'l', format = 'html', 
+  caption = "Publishers", table.attr = tab_small
+)
 ```
 
-In the screen-shot of the _Data > Combine_ tab below we see the two datasets. The tables share the variable _publisher_ which is automatically selected for the join. Different join options are available from the `Combine type` dropdown. You can also specify a name for the combined dataset in the `Data name` text input box.
+In the screen-shot of the _Data > Combine_ tab below we see the two datasets. The tables share the variable _publisher_ which is automatically selected for the join. Different join options are available from the `Combine type` dropdown. You can also specify a name for the combined dataset in the `Combined dataset` text input box.
 
-<p align="center"><img src="figures/join_superheroes_publishers.png"></p>
+<p align="center"><img src="figures/combine_superheroes_publishers.png"></p>
 
 <br>
 
@@ -34,7 +39,7 @@ If x = superheroes and y = publishers:
 > An inner join returns all rows from x with matching values in y, and all columns from both x and y. If there are multiple matches between x and y, all match combinations are returned.
 
 ```{r results = 'asis', echo = FALSE}
-inner_join(superheroes, publishers, by = "publisher") %>%
+dplyr::inner_join(superheroes, publishers, by = "publisher") %>%
   knitr::kable(., align = 'l', format = 'html', table.attr = tab_big)
 ```
 
@@ -59,7 +64,7 @@ inner_join(superheroes, publishers, by = "publisher")
 > A left join returns all rows from x, and all columns from x and y. If there are multiple matches between x and y, all match combinations are returned.
 
 ```{r results = 'asis', echo = FALSE}
-left_join(superheroes, publishers, by = "publisher") %>%
+dplyr::left_join(superheroes, publishers, by = "publisher") %>%
   knitr::kable(., align = 'l', format = 'html', table.attr = tab_big)
 ```
 
@@ -84,7 +89,7 @@ left_join(superheroes, publishers, by = "publisher")
 > A right join returns all rows from y, and all columns from y and x. If there are multiple matches between y and x, all match combinations are returned.
 
 ```{r results = 'asis', echo = FALSE}
-right_join(superheroes, publishers, by = "publisher") %>%
+dplyr::right_join(superheroes, publishers, by = "publisher") %>%
   knitr::kable(., align = 'l', format = 'html', table.attr = tab_big)
 ```
 
@@ -109,7 +114,7 @@ right_join(superheroes, publishers, by = "publisher")
 > A full join combines two datasets, keeping rows and columns that appear in either.
 
 ```{r results = 'asis', echo = FALSE}
-full_join(superheroes, publishers, by = "publisher") %>%
+dplyr::full_join(superheroes, publishers, by = "publisher") %>%
   knitr::kable(., align = 'l', format = 'html', table.attr = tab_big)
 ```
 
@@ -132,7 +137,7 @@ full_join(superheroes, publishers, by = "publisher")
 > A semi join keeps only columns from x. Whereas an inner join will return one row of x for each matching row of y, a semi join will never duplicate rows of x.
 
 ```{r results = 'asis', echo = FALSE}
-semi_join(superheroes, publishers, by = "publisher") %>%
+dplyr::semi_join(superheroes, publishers, by = "publisher") %>%
   knitr::kable(., align = 'l', format = 'html', table.attr = tab_big)
 ```
 
@@ -153,7 +158,7 @@ semi_join(superheroes, publishers, by = "publisher")
 > An anti join returns all rows from x without matching values in y, keeping only columns from x
 
 ```{r results = 'asis', echo = FALSE}
-anti_join(superheroes, publishers, by = "publisher") %>%
+dplyr::anti_join(superheroes, publishers, by = "publisher") %>%
   knitr::kable(., align = 'l', format = 'html', table.attr = tab_big)
 ```
 
@@ -167,14 +172,14 @@ We now get **only** _Hellboy_, the only superhero not in `publishers` and we do 
 
 Note that the order of the datasets selected may matter for a join. If we setup the _Data > Combine_ tab as below the results are as follows:
 
-<p align="center"><img src="figures/join_publishers_superheroes.png"></p>
+<p align="center"><img src="figures/combine_publishers_superheroes.png"></p>
 
 <br>
 
 ### Inner join (publishers, superheroes)
 
 ```{r results = 'asis', echo = FALSE}
-inner_join(publishers, superheroes, by = "publisher") %>%
+dplyr::inner_join(publishers, superheroes, by = "publisher") %>%
   knitr::kable(., align = 'l', format = 'html', table.attr = tab_big)
 ```
 
@@ -197,7 +202,7 @@ As you might expect, apart from row and variable order, a full join of `publishe
 ### Semi join (publishers, superheroes)
 
 ```{r results = 'asis', echo = FALSE}
-semi_join(publishers, superheroes, by = "publisher") %>%
+dplyr::semi_join(publishers, superheroes, by = "publisher") %>%
   knitr::kable(., align = 'l', format = 'html', table.attr = tab_small)
 ```
 
@@ -208,7 +213,7 @@ With semi join the effect of switching the dataset order is more clear. Even tho
 ### Anti join (publishers, superheroes)
 
 ```{r results = 'asis', echo = FALSE}
-anti_join(publishers, superheroes, by = "publisher") %>%
+dplyr::anti_join(publishers, superheroes, by = "publisher") %>%
   knitr::kable(., align = 'l', format = 'html', table.attr = tab_small)
 ```
 
@@ -220,7 +225,7 @@ Only publisher _Image_ is retained because both _Marvel_ and _DC_ are in `superh
 
 When two datasets have the same columns (or rows) there are additional ways in which we can combine them into a new dataset. We have already used the `superheroes` dataset and will now try to combine it with the `avengers` data. These two datasets have the same number of rows and columns and the columns have the same names.
 
-In the screen-shot of the _Data > Combine_ tab below we see the two datasets. There is no need to select variables to combine the datasets here. Any variables in `Select variables` are ignored in the commands below. Again, you can specify a name for the combined dataset in the `Data name` text input box.
+In the screen-shot of the _Data > Combine_ tab below we see the two datasets. There is no need to select variables to combine the datasets here. Any variables in `Select variables` are ignored in the commands below. Again, you can specify a name for the combined dataset in the `Combined dataset` text input box.
 
 <p align="center"><img src="figures/combine_avengers_superheroes.png"></p>
 
@@ -229,7 +234,8 @@ In the screen-shot of the _Data > Combine_ tab below we see the two datasets. Th
 ### Bind rows
 
 ```{r results = 'asis', echo = FALSE}
-bind_rows(avengers, superheroes) %>%
+data(avengers, package = "radiant.data")
+dplyr::bind_rows(avengers, superheroes) %>%
   knitr::kable(., align = 'l', format = 'html', table.attr = tab_big)
 ```
 
@@ -250,7 +256,7 @@ bind_rows(avengers, superheroes)
 ### Bind columns
 
 ```{r results = 'asis', echo = FALSE}
-bind_cols(avengers, superheroes) %>%
+dplyr::bind_cols(avengers, superheroes) %>%
   knitr::kable(., align = 'l', format = 'html', table.attr = tab_big)
 ```
 
@@ -297,9 +303,13 @@ The R(adiant) commands are the same as shown above, except you will need to repl
 
 <br>
 
-### R > Report
+### Report > Rmd
 
-Add code to <a href="https://radiant-rstats.github.io/docs/data/report.html" target="_blank">_R > Report_</a> to (re)create the combined dataset by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard.
+Add code to <a href="https://radiant-rstats.github.io/docs/data/report_rmd.html" target="_blank">_Report > Rmd_</a> to (re)create the combined dataset by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard.
 
 --------
 For additional discussion see the chapter on relational data in <a href="http://r4ds.had.co.nz/relational-data.html" target="_blank">R for data science</a>.
+
+### R-functions
+
+For an overview of related R-functions used by Radiant to combine datasets see <a href = " https://radiant-rstats.github.io/radiant.data/reference/index.html#section-data-combine" target="_blank">_Data > Combine_</a>

@@ -10,7 +10,7 @@ The level in the response variable that is considered a _success_. For example, 
 
 #### Predictor
 
-Select one or more variables that can be used to _predict_ the chosen level in the response variable. This could be a variable, an RFM index, or predicted values from a model (e.g., from a logistic regression estimated using _Model > Logistic regression (GLM)_ or a Neural Network estimated using _Model > Neural Network (ANN)_).
+Select one or more variables that can be used to _predict_ the chosen level in the response variable. This could be a variable, an RFM index, or predicted values from a model (e.g., from a logistic regression estimated using _Model > Logistic regression (GLM)_ or a Neural Network estimated using _Model > Neural Network_).
 
 #### # quantiles
 
@@ -26,11 +26,11 @@ If a `filter` is active (e.g., set in the _Data > View_ tab) generate results fo
 
 #### Plots
 
-Generate Lift, Gains, Profit, and/or ROME charts. The profit chart displays a profit index useful to compare performance across predictors/models
+Generate Lift, Gains, Profit, and/or ROME charts. 
 
-### R > Report
+### Report > Rmd
 
-Add code to <a href="https://radiant-rstats.github.io/docs/data/report.html" target="_blank">_R > Report_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
+Add code to <a href="https://radiant-rstats.github.io/docs/data/report.html" target="_blank">_Report > Rmd_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
 
 If we create a set of four charts in the _Plots_ tab we can add a title above the group of plots and impose a two-column layout using `gridExtra::grid.arrange` as follows:
 
@@ -62,6 +62,7 @@ total                    | Total number of cases (i.e., TP + FP + TN + FN)
 TPR (True Positive Rate) | Proportion of positive outcomes in the data that received a positive prediction (i.e., TP / (TP + FN)). Also known as _sensitivity_ or _recall_
 TNR (True Negative Rate) | Proportion of negative outcomes in the data that received a negative prediction (i.e., TN / (TN + FP)). Also known as _specificity_
 precision                | Proportion of positive predictions with a positive outcome in the data (i.e., TP / (TP + FP))
+F-score                  | The harmonic mean of _precision_ and TPR (_sensitivity_)
 accuracy                 | Proportion of all outcomes that was correctly predicted as either positive or negative (i.e., (TP + TN) / total)
 kappa                    | Corrects the accuracy measure for the probability of generating a correct prediction purely by chance
 profit                   | Total profitability achieved by targeting all customers with a predicted probability above the break-even response rate
@@ -70,11 +71,11 @@ ROME										 | Return on Marketing Expenditures (ROME) achieved by targeting a
 contact									 | Proportion of customers to contact, i.e., (TP + FP) / total
 AUC										   | Area Under the ROC Curve (AUC). ROC stands for Receiver Operating Characteristic.
 
-### R > Report (confusion)
+### Report > Rmd (confusion)
 
-Add code to <a href="https://radiant-rstats.github.io/docs/data/report.html" target="_blank">_R > Report_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
+Add code to <a href="https://radiant-rstats.github.io/docs/data/report.html" target="_blank">_Report > Rmd_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
 
-Only `kappa`, `index`, `ROME`, and `AUC` are plotted by default. It is possible to customize the plotted results through _R > Report_. To change the plot use, for example: 
+Only `kappa`, `index`, `ROME`, and `AUC` are plotted by default. It is possible to customize the plotted results through _Report > Rmd_. To change the plot use, for example: 
 
 ```r
 plot(result, vars = c("precision", "profit", "AUC"))
@@ -93,15 +94,19 @@ To download a table as a csv-files click the download button on the top-right of
 
 ## Example
 
-The Gains and Profit charts below show little evidence of overfitting and suggest that targeting approximately 65% of customers would maximize profits.
+The Lift and Gains charts below show little evidence of overfitting and suggest that targeting approximately 65% of customers would maximize profits.
 
-<p align="center"><img src="https://radiant-rstats.github.io/docs/model/figures_model/evalbin_profit_gain.png"></p>
+<p align="center"><img src="https://radiant-rstats.github.io/docs/model/figures_model/evalbin_lift_gains.png"></p>
 
 <!-- This insight is confirmed by looking at the confusion matrix. The True Positive Rate in the training and validation sample are 94.0% and 93.4% respectively.
 
 <p align="center"><img src="https://radiant-rstats.github.io/docs/model/figures_model/evalbin_confusion.png"></p>
 -->
 
-The prediction used in the screen shots above was derived from a logistic regression on the `dvd` data. The data is available through the _Data > Manage_ tab (i.e., choose `Examples` from the `Load data of type` drop-down and press `Load examples`). The model was estimated using _Model > Logistic regression (GLM)_. The predictions shown below were generated in the _Predict_ tab.
+The prediction used in the screen shots above was derived from a logistic regression on the `dvd` data. The data is available through the _Data > Manage_ tab (i.e., choose `Examples` from the `Load data of type` drop-down and press `Load`). The model was estimated using _Model > Logistic regression (GLM)_. The predictions shown below were generated in the _Predict_ tab.
 
 <p align="center"><img src="https://radiant-rstats.github.io/docs/model/figures_model/evalbin_logistic.png"></p>
+
+### R-functions
+
+For an overview of related R-functions used by Radiant to evaluate (binary) classification models see <a href = "https://radiant-rstats.github.io/radiant.model/reference/index.html#section-model-evaluate-classification" target="_blank">_Model > Evaluate classification_</a>

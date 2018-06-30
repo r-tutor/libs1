@@ -3,7 +3,7 @@ library(shinyRGL)
 
 #' Define UI for application that replicated the 'bivar' rgl example
 #' @author Jeff Allen \email{jeff@@trestletech.com}
-ui <- pageWithSidebar(
+shinyUI(pageWithSidebar(
   
   # Application title
   headerPanel("Shiny bivar WebGL!"),
@@ -14,12 +14,13 @@ ui <- pageWithSidebar(
                 "Number of points:", 
                 min = 25, 
                 max = 1000, 
-                value = 100)
-    #helpText(HTML("Created using <a href = 'http://github.com/trestletech/shinyRGL'>shinyRGL</a>. <p>Example based on 'bivar' example by Daniel Adler.</p>"))
+                value = 100),
+    HTML("<hr />"),
+    helpText(HTML("Created using <a href = \"http://github.com/trestletech/shinyRGL\">shinyRGL</a>. <p>Example based on 'bivar' example by Daniel Adler."))
   ),
   
   # Show the generated 3d bivar plot
   mainPanel(
     webGLOutput("bivar")
   )
-)
+))

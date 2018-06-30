@@ -2,18 +2,23 @@
 
 ### Transform command log
 
-All transformations applied in the _Data > Transform_ tab can be logged. If, for example, you apply a `log` transformation to numeric variables the following code is generated and put in the `Transform command log` window at the bottom of your screen when you click the `Store` button.
+All transformations applied in the _Data > Transform_ tab can be logged. If, for example, you apply a `Ln (natural log)` transformation to numeric variables the following code is generated and put in the `Transform command log` window at the bottom of your screen when you click the `Store` button.
 
 ```r
 ## transform variable
-r_data[["diamonds"]] <- mutate_ext(r_data[["diamonds"]], funs(log), price, carat, .ext = "_log")
+diamonds <- mutate_ext(
+  diamonds, 
+  .vars = vars(price, carat), 
+  .funs = funs(log), 
+  .ext = "_ln"
+)
 ```
 
 This is an important feature if you want to re-run a report with new, but similar, data. Even more important is that there is a record of the steps taken to transform the data and to generate results, i.e., your work is now reproducible.
 
-To add commands contained in the command log window to a report in <a href="https://radiant-rstats.github.io/docs/data/report.html" target="_blank">_R > Report_</a> click the <i title="report results" class="fa fa-edit"></i> icon.
+To add commands contained in the command log window to a report in <a href="https://radiant-rstats.github.io/docs/data/report_rmd.html" target="_blank">_Report > Rmd_</a> click the <i title="report results" class="fa fa-edit"></i> icon.
 
-### Filter
+### Filter data
 
 Even if a filter has been specified it will be ignored for (most) functions available in _Data > Transform_. To create a new dataset based on a filter navigate to the <a href="https://radiant-rstats.github.io/docs/data/view.html" target="_blank">_Data > View_</a> tab and click the `Store` button. Alternatively, to create a new dataset based on a filter, select `Split data > Holdout sample` from the `Transformation type` dropdown.
 
@@ -96,7 +101,7 @@ lo:20 = 'Low'; else = 'High'
 
 #### Reorder or remove levels
 
-If a (single) variable of type `factor` is selected in `Select variable(s)`, choose `Reorder/Remove levels` from the `Transformation type` drop-down to reorder and/or remove levels. Drag-and-drop levels to reorder them or click the $\times$ to remove them. Note that, by default, removing one or more levels will introduce missing values in the data. If you prefer to recode the removed levels into a new level, for example "other", simply type "other" in the `Replacement level name` input box and press `return`. If the resulting factor levels appear as intended, press `Store` to commit the changes. To temporarily exclude levels from the data use the `Filter` box (see the help file linked in the <a href="https://radiant-rstats.github.io/docs/data/view.html" target="_blank">_Data > View_</a> tab).
+If a (single) variable of type `factor` is selected in `Select variable(s)`, choose `Reorder/Remove levels` from the `Transformation type` drop-down to reorder and/or remove levels. Drag-and-drop levels to reorder them or click the $\times$ to remove them. Note that, by default, removing one or more levels will introduce missing values in the data. If you prefer to recode the removed levels into a new level, for example "other", simply type "other" in the `Replacement level name` input box and press `return`. If the resulting factor levels appear as intended, press `Store` to commit the changes. To temporarily exclude levels from the data use the `Filter data` box (see the help file linked in the <a href="https://radiant-rstats.github.io/docs/data/view.html" target="_blank">_Data > View_</a> tab).
 
 #### Rename
 
@@ -241,7 +246,7 @@ rec_iq = xtile(recency, 5)
 rec_iq = xtile(recency, 5, rev = TRUE)
 ```
 
-18. To remove text from entries in a character or factor variable use `sub` to remove only the first instance or `gsub` to remove all instances. For example, suppose a each row for a variable `bk_score` has the letters "ltv" before a number (e.g., "ltv150"). We could replace each occurrence of "ltv" by "" as follows:
+19. To remove text from entries in a character or factor variable use `sub` to remove only the first instance or `gsub` to remove all instances. For example, suppose a each row for a variable `bk_score` has the letters "ltv" before a number (e.g., "ltv150"). We could replace each occurrence of "ltv" by "" as follows:
 
 ```r
 bk_score = sub("ltv", "", bk_score)
@@ -259,7 +264,6 @@ Choose `Remove missing` from the `Transformation type` drop-down to eliminate ro
 #### Reorder or remove variables
 
 Choose `Reorder/Remove variables` from the `Transformation type` drop-down. Drag-and-drop variables to reorder them in the data. To remove a variable click the $\times$ symbol next to the label. Press `Store` to commit the changes.
-
 
 #### Remove duplicates
 
@@ -302,3 +306,7 @@ Combine multiple variables into one column. If you have the `diamonds` dataset l
 #### Spread column
 
 _Spread_ one column into multiple columns. The opposite of `gather`. For a detailed discussion about _tidy_ data see the <a href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html" target = "_blank">tidy-data</a> vignette.
+
+### R-functions
+
+For an overview of related R-functions used by Radiant to transform data see <a href = " https://radiant-rstats.github.io/radiant.data/reference/index.html#section-data-transform" target="_blank">_Data > Transform_</a>

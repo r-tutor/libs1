@@ -6,12 +6,12 @@ library(rgl)
 library(shinyRGL)
 library(MASS)
 
-# Define server logic required to generate and 3d scatterplot. Modified version
-# of the 'bivar' example written by Daniel Adler that ships with rgl.
-# @author Jeff Allen \email{jeff@@trestletech.com}
-# @author Daniel Adler
+#' Define server logic required to generate and 3d scatterplot. Modified version
+#' of the 'bivar' example written by Daniel Adler that ships with rgl.
+#' @author Jeff Allen \email{jeff@@trestletech.com}
+#' @author Daniel Adler
 # $Id: bivar.r 564 2007-02-22 09:56:01Z dmurdoch $
-server <- function(input, output) {
+shinyServer(function(input, output) {
   
   # Expression that generates a rgl scene with a number of points corresponding
   # to the value currently set in the slider.
@@ -50,4 +50,4 @@ server <- function(input, output) {
     surface3d(xgrid,ygrid,bi.z*zscale,color="#2222FF",front="lines") 
     
   })
-}
+})

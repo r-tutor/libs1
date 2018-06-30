@@ -4,15 +4,16 @@
 
 To estimate a logistic regression we need a binary response variable and one or more explanatory variables. We also need specify the level of the response variable we will count as as _success_ (i.e., the `Choose level:` dropdown). In the example data file `titanic`, success for the variable `survived` would be the level `Yes`.
 
-To access this dataset go to _Data > Manage_, select `examples` from the `Load data of type` dropdown, and press the `Load examples` button. Then select the `titanic` dataset.
+To access this dataset go to _Data > Manage_, select `examples` from the `Load data of type` dropdown, and press the `Load` button. Then select the `titanic` dataset.
 
-In the _Summary_ tab we can test if two or more variables together add significantly to the fit of a model by selecting variables in the `Variables to test` dropdown. This functionality can be very useful to test if the overall influence of a variable of type `factor` is significant.
+In the _Summary_ tab we can test if two or more variables together add significantly to the fit of a model by selecting variables in the `Variables to test` dropdown. This functionality can be very useful to test if the overall influence of a variable of type `factor` is statistically significant.
 
 Additional output that requires re-estimation:
 
 * Standardize: Odds-ratios can be hard to compare if the explanatory variables are measured on different scales. By standardizing the data before estimation we can see which variables move-the-needle most. Note that a one-unit change is now equated to 2 x the standard deviation of the variable.
 * Center: Replace all explanatory variables X by X - mean(X). This can be useful when trying to interpret interaction effects.
 * Stepwise: A data-mining approach to select the best fitting model
+* Robust standard errors: When `robust` is selected the coefficient estimates are the same as a normal logistic regression standard errors are adjusted. This adjustment is used by default when probability weights are specified in estimation. 
 
 Additional output that does not require re-estimation:
 
@@ -41,7 +42,7 @@ As an example we will use a dataset that describes the survival status of indivi
 - sex = Sex (female, male)
 - age = Age in years
 
-Select `survived` as the response variable and `Yes` in **Choose level**. Select `pclass`, `sex` and `age` as the explanatory variables. In the screenshot below we see that each of the coefficients is statistically significant (p.value < .05) and that the model has some predictive power (Chi-squared statistic < .05). Unfortunately the coefficients from a logit model are difficult to interpret. The `OR` column provides estimated odds-ratios. We see that the odds of survival were significantly lower for 2nd and 3rd class passengers compared to 1st class passenger. The odds of survival for males were also lower than for females. While the effect of age is statically significant, for each extra year in age the odds of survival are not as strongly affected (see also the standardized coefficient).
+Select `survived` as the response variable and `Yes` in **Choose level**. Select `pclass`, `sex` and `age` as the explanatory variables. In the screenshot below we see that each of the coefficients is statistically significant (p.value < .05) and that the model has some predictive power (Chi-squared statistic < .05). Unfortunately the coefficients from a logistic regression model are difficult to interpret. The `OR` column provides estimated odds-ratios. We see that the odds of survival were significantly lower for 2nd and 3rd class passengers compared to 1st class passenger. The odds of survival for males were also lower than for females. While the effect of age is statically significant, for each extra year in age the odds of survival are not as strongly affected (see also the standardized coefficient).
 
 For each of the explanatory variables the following null and alternate hypotheses can be formulated for the odds ratios:
 
@@ -61,7 +62,7 @@ In addition to the numerical output provided in the _Summary_ tab we can also ev
 
 <p align="center"><img src="https://radiant-rstats.github.io/docs/model/figures_model/logistic_plot.png"></p>
 
-Probabilities, are more convenient for interpretation than coefficients or odds from a logit model. To see how survival probabilities change across passenger classes select `Command` from the `Prediction input` dropdown in the _Predict_ tab, type `pclass = levels(pclass)` in the **Prediction command** box, and press return.
+Probabilities, are more convenient for interpretation than coefficients or odds from a logistic regression model. To see how survival probabilities change across passenger classes select `Command` from the `Prediction input` dropdown in the _Predict_ tab, type `pclass = levels(pclass)` in the **Prediction command** box, and press return.
 
 <p align="center"><img src="https://radiant-rstats.github.io/docs/model/figures_model/logistic_predict.png"></p>
 
@@ -109,9 +110,9 @@ To keep the example simple, we use only information on the value of the coupon c
 
 The regression output shows that coupon value is a statistically significant predictor of customer purchase. The coefficient from the logistic regression is 0.701 and the odds ratio is equal to 2.015 (i.e., $e^{0.701}$). Because the odds ratio is larger than 1, a higher coupon value is associated with higher odds of purchase. Also, because the p.value for the coefficient is smaller than 0.05 we conclude that (1) the coefficient is statistically significantly different from 0 and (2) the odds ratio is statistically significantly different from 1. An odds ratio of 1 is equivalent to a coefficient estimate of 0 in a linear regression and implies that the explanatory (or predictor) variable has no effect on the response variable. The estimated odds ratio of 2.015 suggests that the odds of purchase increase by 101.6% for each dollar increase in coupon value.
 
-### R > Report
+### Report > Rmd
 
-Add code to <a href="https://radiant-rstats.github.io/docs/data/report.html" target="_blank">_R > Report_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
+Add code to <a href="https://radiant-rstats.github.io/docs/data/report_rmd.html" target="_blank">_Report > Rmd_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
 
 If a plot was created it can be customized using `ggplot2` commands or with `gridExtra`. See example below and <a href="https://radiant-rstats.github.io/docs/data/visualize.html" target="_blank">_Data > Visualize_</a> for details.
 
@@ -119,3 +120,7 @@ If a plot was created it can be customized using `ggplot2` commands or with `gri
 plot(result, plots = "coef", custom = TRUE) +
   labs(title = "Coefficient plot")
 ```
+
+### R-functions
+
+For an overview of related R-functions used by Radiant to estimate a logistic regression model see <a href = "https://radiant-rstats.github.io/radiant.model/reference/index.html#section-model-logistic-regression" target="_blank">_Model > Logistic regression_</a>

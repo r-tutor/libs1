@@ -7,7 +7,7 @@ The data are from a sample of 580 newspaper readers that indicated (1) which new
 We will examine if there is a relationship between income level and choice of newspaper. In particular, we test the following null and alternative hypotheses:
 
 * H0: There is no relationship between income level and newspaper choice
-*	Ha: There is a relationship between income level and newspaper choice
+* Ha: There is a relationship between income level and newspaper choice
 
 If the null-hypothesis is rejected we can investigate which cell(s) contribute to the hypothesized association. In Radiant (Basics > Cross-tab) choose Income as the first factor and Newspaper as the second factor. First, compare the observed and expected frequencies. The expected frequencies are calculated using H0 (i.e., no association) as (Row total x Column Total) /  Overall Total.
 
@@ -35,12 +35,16 @@ In the plot we see that all cells contribute to the association between income a
 
 In other words, there seem to be fewer low income respondents that read WSJ and more high income respondents that read WSJ than would be expected if the null hypothesis of no-association were true. Furthermore, there are more low income respondents that read USA today and fewer high income respondents that read USA Today than would be expected if the null hypothesis of no-association were true.
 
-### R > Report
+### Report > Rmd
 
-Add code to <a href="https://radiant-rstats.github.io/docs/data/report.html" target="_blank">_R > Report_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
+Add code to <a href="https://radiant-rstats.github.io/docs/data/report.html" target="_blank">_Report > Rmd_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
 
 If a plot was created it can be customized using `ggplot2` commands (e.g., `plot(result, check = "observed", custom = TRUE) + labs(y = "Percentage")`). See <a href="https://radiant-rstats.github.io/docs/data/visualize.html" target="_blank">_Data > Visualize_</a> for details.
 
 ### Technical note
 
 When one or more expected values are small (e.g., 5 or less) the p.value for the Chi-squared test is calculated using simulation methods. If some cells have an expected count below 1 it may be necessary to _collapse_ rows and/or columns.
+
+### R-functions
+
+For an overview of related R-functions used by Radiant to evaluate associations between categorical variables see <a href = "https://radiant-rstats.github.io/radiant.basics/reference/index.html#section-basics-tables" target="_blank">_Basics > Tables</a>

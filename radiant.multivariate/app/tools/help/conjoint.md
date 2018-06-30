@@ -8,7 +8,7 @@ To estimate a model select respondents ratings (or rankings) as the `Profile eva
 
 ### Example: Carpet cleaner
 
-A respondent was presented with 18 product profiles for a carpet cleaning product described on five attributes in a conjoint study. To access the `carpet` dataset go to _Data > Manage_, select `Examples` from the `Load data of type` dropdown, and press the `Load examples` button. Then select the `carpet` dataset. 
+A respondent was presented with 18 product profiles for a carpet cleaning product described on five attributes in a conjoint study. To access the `carpet` dataset go to _Data > Manage_, select `Examples` from the `Load data of type` dropdown, and press the `Load` button. Then select the `carpet` dataset. 
 
 - design = Package Design (A, B, C)
 - brand = Brand Name (K2R, Glory, Bissell)
@@ -19,7 +19,7 @@ A respondent was presented with 18 product profiles for a carpet cleaning produc
 
 Design characteristics:
 
-<p align="center"><img src="https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/figures_multivariate/conjoint_carpet_design.png"></p>
+<p align="center"><img src="figures_multivariate/conjoint_carpet_design.png"></p>
 
 Based on the attributes, 108 possible profiles could be created (i.e., 3x3x3x2x2 = 108). The respondent was given a set of 18 and was asked to rank the profiles from most preferred (rank 1) to least preferred (rank 18).  The first five columns represent the five attributes and the last column is the respondent's ranking.
 
@@ -34,8 +34,8 @@ The VIF scores displayed below indicate that the attributes are perfectly orthog
 
 b. Estimate a conjoint model using the respondent's evaluations as the dependent variable and the attributes as the predictors. Show the complete list of part-worths and importance weights.
 
-<p align="center"><img src="https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/figures_multivariate/conjoint_summary.png"></p>
-<p align="center"><img src="https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/figures_multivariate/conjoint_plot.png"></p>
+<p align="center"><img src="figures_multivariate/conjoint_summary.png"></p>
+<p align="center"><img src="figures_multivariate/conjoint_plot.png"></p>
 
 c. Calculate the predicted utilities for the following options:
 
@@ -55,23 +55,23 @@ We can confirm this results in three steps: (1) Create a new dataset with all 36
 
 #### Step 1: Create dataset
 
-<p align="center"><img src="https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/figures_multivariate/conjoint_expand.png"></p>
+<p align="center"><img src="figures_multivariate/conjoint_expand.png"></p>
 
 #### Step 2: Predict utilities
 
-<p align="center"><img src="https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/figures_multivariate/conjoint_predict.png"></p>
+<p align="center"><img src="figures_multivariate/conjoint_predict.png"></p>
 
 #### Step 3: Sort predictions
 
-<p align="center"><img src="https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/https://radiant-rstats.github.io/docs/multivariate/figures_multivariate/conjoint_view.png"></p>
+<p align="center"><img src="figures_multivariate/conjoint_view.png"></p>
 
 ## Multiple respondents
 
 If profile evaluations are available for multiple respondents and a respondent id variable is included in the dataset we can estimate conjoint results at the individual level by selecting the respondent id from the `By` dropdown. We can then save the Partworths and/or Importance weights for all respondents to a new dataset in Radiant and use that for segmentation using _Multivariate > K-clustering_.
 
-### R > Report
+### Report > Rmd
 
-Add code to <a href="https://radiant-rstats.github.io/docs/data/report.html" target="_blank">_R > Report_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
+Add code to <a href="https://radiant-rstats.github.io/docs/data/report.html" target="_blank">_Report > Rmd_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
 
 If a plot was created it can be customized using `ggplot2` commands or with `gridExtra`. See example below and <a href="https://radiant-rstats.github.io/docs/data/visualize.html" target="_blank">_Data > Visualize_</a> for details.
 
@@ -79,3 +79,7 @@ If a plot was created it can be customized using `ggplot2` commands or with `gri
 plot(result, plots = c("pw","iw"), custom = TRUE) %>%
 	gridExtra::grid.arrange(grobs = ., top = "Conjoint Analysis", ncol = 2)
 ```
+
+### R-functions
+
+For an overview of related R-functions used by Radiant to estimate a conjoint model see <a href = "https://radiant-rstats.github.io/radiant.multivariate/reference/index.html#section-multivariate-conjoint" target="_blank">_Multivariate > Conjoint_</a>

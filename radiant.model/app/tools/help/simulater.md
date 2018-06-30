@@ -16,7 +16,7 @@ Define random variables with a discrete distribution using the `Discrete variabl
 
 ### Log Normal
 
-To include log normally distributed random variables in the analysis select `Log Normal` from the `Select types` dropdown and use `Log-normal variables`) inputs. See the section `Normal` below for additional information.
+To include log normally distributed random variables in the analysis select `Log Normal` from the `Select types` dropdown and use `Log-normal variables` inputs. See the section `Normal` below for additional information.
 
 ### Normal
 
@@ -82,7 +82,7 @@ To include a sequence of values select `Sequence` from the `Select types` dropdo
 
 To perform a calculation using the generated variables, create a formula in the `Simulation formulas` input box in the main panel (e.g., `profit = demand * (price - cost)`). Formulas are used to add (calculated) variables to the simulation or to update existing variables. You must specify the name of the new variable to the left of a `=` sign. Variable names can contain letters, numbers, and `_` but no other characters or spaces. You can enter multiple formulas. If, for example, you would also like to calculate the margin in each simulation press `return` after the first formula and type `margin = price - cost`.
 
-Many of the same functions used with `Create` in the _Data > Transform_ tab and in `Filters` in _Data > View_ can also be included in formulas. You can use `>` and `<` signs and combine them. For example `x > 3 & y == 2` would evaluate to `TRUE` when the variable `x` has values larger than 3 **AND** `y` has values equal to 2. Recall that in R, and most other programming languages, `=` is used to _assign_ a value and `==` to evaluate if the value of a variable is exactly equal to some other value. In contrast `!=` is used to determine if a variable is _unequal_ to some value. You can also use expressions that have an **OR** condition. For example, to determine when `Salary` is smaller than \$100,000 **OR** larger than \$20,000 use `Salary > 20000 | Salary < 100000`. `|` is the symbol for **OR** and `&` is the symbol for **AND** (see also the help file for _Data > View_).
+Many of the same functions used with `Create` in the _Data > Transform_ tab and in `Filter data` in _Data > View_ can also be included in formulas. You can use `>` and `<` signs and combine them. For example `x > 3 & y == 2` would evaluate to `TRUE` when the variable `x` has values larger than 3 **AND** `y` has values equal to 2. Recall that in R, and most other programming languages, `=` is used to _assign_ a value and `==` to evaluate if the value of a variable is exactly equal to some other value. In contrast `!=` is used to determine if a variable is _unequal_ to some value. You can also use expressions that have an **OR** condition. For example, to determine when `Salary` is smaller than \$100,000 **OR** larger than \$20,000 use `Salary > 20000 | Salary < 100000`. `|` is the symbol for **OR** and `&` is the symbol for **AND** (see also the help file for _Data > View_).
 
 A few additional examples of formulas are shown below:
 
@@ -243,13 +243,17 @@ For a simple example of how the simulate tool could be used to find the price th
 
 Note that the _Repeat_ tab also has the option to use a `Grid search` input to repeat a simulation by replacing one or more `Constants` specified in the `Simulation` tab in an iterative fashion. This input option is shown only when `Group by` is set to `Repeat`. Provide the minimum and maximum values as well as the step-size in the `Grid search` inputs. For example, enter a `Name` (`price`), the `Min` (4), `Max` (10), and `Step` (0.01) value. If multiple variables are specified in `Grid search` all possible value combinations will be created and evaluated in the simulation. Note that if `Grid search` has been selected the number of values generated will override the number of repetitions specified in `# reps`. Then press the <i title='Add variable' href='#' class='fa fa-plus-circle'></i> icon. Alternatively, enter (or remove) input directly in the text area (e.g., `price 4 10 0.01`).
 
-### R > Report
+### Report > Rmd
 
-Add code to <a href="https://radiant-rstats.github.io/docs/data/report.html" target="_blank">_R > Report_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
+Add code to <a href="https://radiant-rstats.github.io/docs/data/report_rmd.html" target="_blank">_Report > Rmd_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
 
 If a plot was created it can be customized using `ggplot2` commands or with `gridExtra`. See example below and <a href="https://radiant-rstats.github.io/docs/data/visualize.html" target="_blank">_Data > Visualize_</a> for details.
 
 ```r
 plot(result, custom = TRUE) %>%
-	gridExtra::grid.arrange(grobs = ., top = "Simulation plots", ncol = 2)
+  gridExtra::grid.arrange(grobs = ., top = "Simulation plots", ncol = 2)
 ```
+
+### R-functions
+
+For an overview of related R-functions used by Radiant to construct and evaluate (repeated) simulation models see <a href = "https://radiant-rstats.github.io/radiant.model/reference/index.html#section-model-simulate" target="_blank">_Model > Simulate_</a>

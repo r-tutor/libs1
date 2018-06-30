@@ -1,6 +1,6 @@
 > (Linear) Regression: The workhorse of empirical research in the social sciences
 
-All example files discussed below can be loaded from the Data > Manage page. Click the `examples` radio button and press `Load examples`.
+All example files discussed below can be loaded from the Data > Manage page. Click the `examples` radio button and press `Load`.
 
 ### Functionality
 
@@ -13,6 +13,7 @@ Additional output that requires re-estimation:
 * Standardize: Coefficients can be hard to compare if the explanatory variables are measured on different scales. By standardizing the data before estimation we can see which variables move-the-needle most. Note that a one-unit change is now equated to 2 x the standard deviation of the variable
 * Center: Replace all explanatory variables X by X - mean(X). This can be useful when trying to interpret interaction effects
 * Stepwise: A data-mining approach to select the best fitting model
+* Robust standard errors: When `robust` is selected the coefficient estimates are the same as OLS. However, standard errors are adjusted to account for (minor) heterogeneity and non-normality concerns. 
 
 Additional output that does not require re-estimation:
 
@@ -42,13 +43,13 @@ We have access to data from a company selling men's and women's apparel through 
 
 The catalog company is interested in redesigning their Customer Relationship Management (CRM) strategy. We will proceed in two steps:
 
-1. Estimate a regression model using last year's sales total. Response variable: sales total for each of the 200 households; Explanatory variables: household income (measured in thousands of dollars), size of household, and age of the household head. To access this dataset go to _Data > Manage_, select `examples` from the `Load data of type` dropdown, and press the `Load examples` button. Then select the `catalog` dataset.
+1. Estimate a regression model using last year's sales total. Response variable: sales total for each of the 200 households; Explanatory variables: household income (measured in thousands of dollars), size of household, and age of the household head. To access this dataset go to _Data > Manage_, select `examples` from the `Load data of type` dropdown, and press the `Load` button. Then select the `catalog` dataset.
 2. Interpret each of the estimated coefficients. Also provide a statistical evaluation of the model as a whole.
 3. Which explanatory variables are significant predictors of customer value (use a 95% confidence level)?
 
 **Answer:**
 
-Select the relevant variables mentioned above and press the `Estimate` button or press `CTRL-enter` (`CMD-enter` on mac). Output from _Model > Linear regression (OLS)_ is provided below:
+Select the relevant variables mentioned above and press the `Estimate model` button or press `CTRL-enter` (`CMD-enter` on mac). Output from _Model > Linear regression (OLS)_ is provided below:
 
 <p align="center"><img src="https://radiant-rstats.github.io/docs/model/figures_model/regress_catalog_summary.png"></p>
 
@@ -67,9 +68,9 @@ Note that in this example, "model 1" is a regression without explanatory variabl
 
 $$
 \begin{eqnarray}
-	F & = & \frac{(R^2_2 - R^2_1)/(k_2 - k_1)}{(1 - R^2_2)/(n - k_2 - 1)} \\\\
-	  & = & \frac{(0.331 - 0)/(3 - 0)}{(1 - 0.331)/(200 - 3 - 1)} \\\\
-	  & = & 32.325
+  F & = & \frac{(R^2_2 - R^2_1)/(k_2 - k_1)}{(1 - R^2_2)/(n - k_2 - 1)} \\\\
+    & = & \frac{(0.331 - 0)/(3 - 0)}{(1 - 0.331)/(200 - 3 - 1)} \\\\
+    & = & 32.325
 \end{eqnarray}
 $$
 
@@ -201,17 +202,17 @@ All coefficients in this regression are highly significant.
 
 <p align="center"><img src="https://radiant-rstats.github.io/docs/model/figures_model/regress_log_diamonds_summary.png"></p>
 
-### R > Report
+### Report > Rmd
 
-Add code to <a href="https://radiant-rstats.github.io/docs/data/report.html" target="_blank">_R > Report_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
+Add code to <a href="https://radiant-rstats.github.io/docs/data/report_rmd.html" target="_blank">_Report > Rmd_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
 
 If a plot was created it can be customized using `ggplot2` commands or with `gridExtra`. See example below and <a href="https://radiant-rstats.github.io/docs/data/visualize.html" target="_blank">_Data > Visualize_</a> for details.
 
 ```r
-result <- regress(dataset = "diamonds", rvar = "price", evar = c("carat", "clarity", "cut", "color"))
+result <- regress(diamonds, rvar = "price", evar = c("carat", "clarity", "cut", "color"))
 summary(result)
-plot(result, plots = "scatter", custom = TRUE) %>%
-	gridExtra::grid.arrange(grobs = ., top = "Scatter plots", ncol = 2)
+plot(result, plots = "scatter", custom = TRUE) %>% 
+  gridExtra::grid.arrange(grobs = ., top = "Scatter plots", ncol = 2)
 ```
 
 ### Technical notes
@@ -257,7 +258,7 @@ $$
 In words, the derivative of the natural logarithm of a variable is the reciprocal of that variable, times the derivative of that variable. From the discussion on the linear model above we know that
 
 $$
-	\frac{ \partial a + b P_t + c D_t}{ \partial P_t } = b
+  \frac{ \partial a + b P_t + c D_t}{ \partial P_t } = b
 $$
 
 Combining these two equations gives
@@ -314,3 +315,7 @@ $$
 $$
 
 So a 1% change in price leads to a $b$% change in sales.
+
+### R-functions
+
+For an overview of related R-functions used by Radiant to estimate a linear regression model see <a href = "https://radiant-rstats.github.io/radiant.model/reference/index.html#section-model-linear-regression-ols-" target="_blank">_Model > Linear regression (OLS)_</a>

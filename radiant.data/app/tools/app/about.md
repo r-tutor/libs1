@@ -25,8 +25,6 @@ Radiant is interactive. Results update immediately when inputs are changed (i.e.
 
 Radiant works on Windows, Mac, or Linux. It can run without an Internet connection and no data will leave your computer. You can also run the app as a web application on a server.
 
-> **Note:** For Windows users with data that contain multibyte characters please make sure your data are in ANSI format so R(adiant) can load characters correctly.
-
 #### Reproducible
 
 To conduct high-quality analysis, simply saving output is not enough. You need the ability to reproduce results for the same data and/or when new data become available. Moreover, others may want to review your analysis and results. Save and load the state of the application to continue your work at a later time or on another computer. Share state-files with others and create reproducible reports using [Rmarkdown](http://rmarkdown.rstudio.com/). See also the section on `Saving and loading state` below
@@ -43,33 +41,52 @@ Radiant focuses on business data and decisions. It offers tools, examples, and d
 
 ## How to install Radiant
 
-- Required: [R](https://cran.r-project.org/) version 3.3.0 or later
-- Required: A modern browser (e.g., [Chrome](https://www.google.com/intl/en/chrome/browser/desktop/) or Safari). Internet Explorer (version 11 or higher) should work as well
-- Required: [Rstudio](https://www.rstudio.com/products/rstudio/download/)
+- Required: [R](https://cran.r-project.org/) version 3.4.0 or later
+- Required: [Rstudio](https://www.rstudio.com/products/rstudio/download/) version 1.1.383 or later
 
-If you use Rstudio (version 0.99.893 or later) you can start and update Radiant through the `Addins` menu at the top of the screen. To install the latest version of Radiant for Windows or Mac, with complete documentation for off-line access, open R(studio) and copy-and-paste the command below:
+In Rstudio you can start and update Radiant through the `Addins` menu at the top of the screen. To install the latest version of Radiant for Windows or Mac, with complete documentation for off-line access, open R(studio) and copy-and-paste the command below:
 
 ```r
-install.packages("radiant", repos = "https://radiant-rstats.github.io/minicran/", type = "binary")
+install.packages("radiant", repos = "https://radiant-rstats.github.io/minicran/")
 ```
 
-Once all packages are installed select `Radiant` from the `Addins` menu in Rstudio or use the command below to launch the app:
+Once all packages are installed, select `Start radiant (browser)` from the `Addins` menu in Rstudio or use the command below to launch the app:
 
 ```r
 radiant::radiant()
 ```
 
-To update Radiant select `Update Radiant` from the `Addins` menu in Rstudio or use the command below:
+To launch Radiant in Rstudio's viewer pane select `Start radiant (viewer)` from the `Addins` menu in Rstudio or use the command below:
 
 ```r
-radiant::update_radiant()
+radiant::radiant_viewer()
 ```
 
+To launch Radiant in an Rstudio Window select `Start radiant (window)` from the `Addins` menu in Rstudio or use the command below:
+
+```r
+radiant::radiant_window()
+```
+
+To easily update Radiant and the required packages, install the `radiant.update` package using:
+
+```r
+install.packages("radiant.update", repos = "https://radiant-rstats.github.io/minicran/")
+```
+
+Then select `Update radiant` from the `Addins` menu in Rstudio or use the command below:
+
+```r
+radiant.update::radiant.update()
+```
+
+<!--
 Alternatively Radiant can be updated using the command:
 
 ```r
-source("https://raw.githubusercontent.com/radiant-rstats/minicran/gh-pages/build.R")
+source("https://raw.githubusercontent.com/radiant-rstats/minicran/gh-pages/update.R")
 ```
+-->
 
 See the [installing radiant](https://radiant-rstats.github.io/docs/install.html) page for details.
 
@@ -81,7 +98,17 @@ When Radiant starts you will see data on diamond prices. To close the applicatio
 
 Documentation and tutorials are available at <https://radiant-rstats.github.io/docs/> and in the Radiant web interface (the <i title='Help' class='fa fa-question'></i> icons on each page and the <i title='Help' class='fa fa-question-circle'></i> icon in the navigation bar).
 
+Individual Radiant packages also each have their own [pkgdown](https://github.com/r-lib/pkgdown) sites:
+
+* http://radiant-rstats.github.io/radiant
+* http://radiant-rstats.github.io/radiant.data
+* http://radiant-rstats.github.io/radiant.design
+* http://radiant-rstats.github.io/radiant.basics
+* http://radiant-rstats.github.io/radiant.model
+* http://radiant-rstats.github.io/radiant.multivariate
+
 Want some help getting started? Watch the tutorials on the [documentation site](https://radiant-rstats.github.io/docs/tutorials.html).
+
 
 ## Reporting issues
 
@@ -97,7 +124,7 @@ Do **not** upload sensitive data to this public server. The size of data upload 
 
 ## Running Radiant on shinyapps.io
 
-To run your own instance of Radiant on shinyapps.io clone the <a href="https://github.com/radiant-rstats/radiant" target="_blank">radiant</a> repo and [deploy](http://shiny.rstudio.com/articles/shinyapps.html).
+To run your own instance of Radiant on shinyapps.io first <a href = "https://radiant-rstats.github.io/docs/install.html" target = "_blank">install Radiant and its dependencies</a>. Then clone the <a href="https://github.com/radiant-rstats/radiant" target="_blank">radiant</a> repo and ensure you have the latest version of the Radiant packages installed by running `radiant/inst/app/for.shinyapps.io.R`. Finally, open `radiant/inst/app/ui.R` and [deploy](http://shiny.rstudio.com/articles/shinyapps.html) the application.
 
 ## Running Radiant on shiny-server
 
@@ -109,13 +136,20 @@ install.packages("radiant", repos = "https://radiant-rstats.github.io/minicran/"
 
 Then clone the <a href="https://github.com/radiant-rstats/radiant" target="_blank">radiant</a> repo and point shiny-server to the `inst/app/` directory. As a courtesy, please let me know if you intend to use Radiant on a server.
 
+When running Radiant on a server, by default, file uploads are limited to 10MB and R-code in _Report > Rmd_ and _Report > R_ will not be evaluated for security reasons. If you have `sudo` access to the server and have appropriate security in place you can change these settings by adding the following lines to `.Rprofile` for the `shiny` user on the server. 
+
+```bash
+options(radiant.maxRequestSize = -1)  ## no file size limit
+options(radiant.report = TRUE)
+```
+
 ## Saving and loading state
 
-To save your analyses save the state of the app to a file by clicking on the <i title='Save' class='fa fa-save'></i> icon in the navbar and then on `Save state` (see also the `Data > Manage` tab). You can open this state-file at a later time or on another computer to continue where you left off. You can also share the file with others that may want to replicate your analyses. As an example, load the state-file [`radiant-state.rda`](https://radiant-rstats.github.io/docs/examples/radiant-state.rda) through the _Data > Manage_ tab. Go to _Data > View_ and _Data > Visualize_ to see some of the settings. There is also a report in _R > Report_ that was created using the Radiant interface. The html file <a href="https://radiant-rstats.github.io/docs/examples/radiant-state.html" target="_blank">`radiant-state.html`</a> contains the output.
+To save your analyses save the state of the app to a file by clicking on the <i title='Save' class='fa fa-save'></i> icon in the navbar and then on `Save radiant state file` (see also the `Data > Manage` tab). You can open this state-file at a later time or on another computer to continue where you left off. You can also share the file with others that may want to replicate your analyses. As an example, load the state-file [`radiant-state.rda`](https://radiant-rstats.github.io/docs/examples/radiant-state.rda) through the _Data > Manage_ tab. Go to _Data > View_ and _Data > Visualize_ to see some of the settings. There is also a report in _Report > Rmd_ that was created using the Radiant interface. The html file <a href="https://radiant-rstats.github.io/docs/examples/radiant-state.html" target="_blank">`radiant-state.html`</a> contains the output.
 
 A related feature in Radiant is that state is maintained if you accidentally navigate to another page, close (and reopen) the browser, and/or hit refresh. Use `Refresh` in the <i title='Power off' class='fa fa-power-off'></i> menu in the navigation bar to return to a clean/new state.
 
-Loading and saving state also works with Rstudio. If you start Radiant from Rstudio and use <i title='Power off' class='fa fa-power-off'></i> > `Stop` to stop the app, lists called `r_data` and `r_state` will be put into Rstudio's global workspace. If you start radiant again using `radiant()` it will use these lists to restore state. This can be convenient if you want to make changes to a data file in Rstudio and load it back into Radiant. Also, if you load a state-file directly into Rstudio it will be used when you start Radiant to recreate a previous state.
+Loading and saving state also works with Rstudio. If you start Radiant from Rstudio and use <i title='Power off' class='fa fa-power-off'></i> > `Stop` to stop the app, lists called `r_data` and `r_state` will be put into Rstudio's global workspace. If you start radiant again using `radiant::radiant()` it will use these lists to restore state. This can be convenient if you want to make changes to a data file in Rstudio and load it back into Radiant. Also, if you load a state-file directly into Rstudio it will be used when you start Radiant to recreate a previous state.
 
 **Technical note**: Loading state works as follows in Radiant: When an input is initialized in a Shiny app you set a default value in the call to, for example, numericInput. In Radiant, when a state-file has been loaded and an input is initialized it looks to see if there is a value for an input of that name in a list called `r_state`. If there is, this value is used. The `r_state` list is created when saving state using `reactiveValuesToList(input)`. An example of a call to `numericInput` is given below where the `state_init` function from `radiant.R` is used to check if a value from `r_state` can be used.
 
@@ -137,10 +171,10 @@ Radiant would not be possible without [R](https://cran.r-project.org/) and [Shin
 ## License
 
 
-Radiant is licensed under the <a href="https://tldrlegal.com/license/gnu-affero-general-public-license-v3-(agpl-3.0)" target="\_blank">AGPLv3</a>. The documentation and videos on this site as well as the Radiant help files are licensed under the creative commons attribution, non-commercial, share-alike license <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC-NC-SA</a>.
+Radiant is licensed under the <a href="https://tldrlegal.com/license/gnu-affero-general-public-license-v3-(agpl-3.0)" target="\_blank">AGPLv3</a>. As a summary, the AGPLv3 license requires, attribution, including copyright and license information in copies of the software, stating changes if the code is modified, and disclosure of all source code. Details are in the COPYING file.
 
-As a summary, the AGPLv3 license requires, attribution, including copyright and license information in copies of the software, stating changes if the code is modified, and disclosure of all source code. Details are in the COPYING file.
+The documentation, images, and videos for the `radiant.data` package are licensed under the creative commons attribution and share-alike license <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC-BY-SA</a>. All other documentation and videos on this site, as well as the help files for `radiant.design`, `radiant.basics`, `radiant.model`, and `radiant.multivariate`, are licensed under the creative commons attribution, non-commercial, share-alike license <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC-NC-SA</a>.
 
-If you are interested in using Radiant please email me at radiant@rady.ucsd.edu
+If you are interested in using any of the radiant packages please email me at radiant@rady.ucsd.edu
 
-&copy; Vincent Nijs (2017) <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="https://radiant-rstats.github.io/docs/images/80x15.png" /></a>
+&copy; Vincent Nijs (2018) <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="https://radiant-rstats.github.io/docs/images/by-sa.png" /></a>

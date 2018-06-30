@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: UN M.49 Area Codes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for UN_M.49 {ISOcodes}"><tr><td>UN_M.49 {ISOcodes}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>UN M.49 Area Codes</h2>
+
+<h3>Description</h3>
+
+<p>Country and area code classifications (M49) from the United Nations
+Statistics Division.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+UN_M.49_Countries
+UN_M.49_Regions
+</pre>
+
+
+<h3>Details</h3>
+
+<p>UN M.49 is a standard for area codes used by the United Nations for
+statistical purposes.  Each area code is a 3-digit number which can
+refer to a wide variety of geographical, political, or economic
+regions, like a continent, a country, or a specific group of
+developing countries.
+</p>
+<p><code>UN_M.49_Countries</code> contains the codes for countries and areas as
+a character frame with variables <code>Code</code>, <code>Name</code> and
+<code>ISO_Alpha_3</code> giving the 3-letter UN M.49 code and name and the
+respective alpha-3 <a href="ISO_3166.html">ISO 3166</a> code.
+</p>
+<p><code>UN_M.49_Regions</code> contains the codes for the composition of macro
+geographical (continental) regions, geographical sub-regions, and
+selected economic and other groupings as a data frame with the
+character variables <code>Code</code>, <code>Name</code>, <code>Parent</code> and
+<code>Children</code> giving the 3-letter UN M.49 code, name, the code of
+the parent area and the codes of children areas separated by <span class="samp">,
+  </span>, respectively, and variable <code>Type</code>, a factor with levels
+<code>"Region"</code> or <code>"Grouping".</code>
+</p>
+
+
+<h3>Source</h3>
+
+<p><a href="http://unstats.un.org/unsd/methods/m49/m49.htm">http://unstats.un.org/unsd/methods/m49/m49.htm</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Name and codes of countries in Southern Europe:
+data("UN_M.49_Regions")
+data("UN_M.49_Countries")
+region &lt;- subset(UN_M.49_Regions, Name == "Southern Europe")
+codes &lt;- unlist(strsplit(region$Children, ", "))
+subset(UN_M.49_Countries, Code %in% codes)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>ISOcodes</em> version 2018.06.29 <a href="00Index.html">Index</a>]</div>
+</body></html>
