@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Summary function for 'S3' class '&quot;ssgraph&quot;'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for summary.ssgraph {ssgraph}"><tr><td>summary.ssgraph {ssgraph}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Summary function for <code>S3</code> class <code>"ssgraph"</code> </h2>
+
+<h3>Description</h3>
+
+<p>Provides a summary of the results for function <code><a href="ssgraph.html">ssgraph</a></code>.  
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'ssgraph'
+summary( object, round = 2, vis = TRUE, ... )
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p> An object of <code>S3</code> class <code>"ssgraph"</code>, from function <code><a href="ssgraph.html">ssgraph</a></code>. </p>
+</td></tr>
+<tr valign="top"><td><code>round</code></td>
+<td>
+<p> A value for rounding all probabilities to the specified number of decimal places. </p>
+</td></tr>
+<tr valign="top"><td><code>vis</code></td>
+<td>
+<p> Visualize the results. </p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>System reserved (no specific usage).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>best.graph</code></td>
+<td>
+<p>The adjacency matrix corresponding to the selected graph which has the highest posterior probability.</p>
+</td></tr>
+<tr valign="top"><td><code>p_links</code></td>
+<td>
+<p>An upper triangular matrix corresponding to the posterior probabilities of all possible links.</p>
+</td></tr>
+<tr valign="top"><td><code>K_hat</code></td>
+<td>
+<p>The estimated precision matrix.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p> Reza Mohammadi </p>
+
+
+<h3>References</h3>
+
+<p>Mohammadi, A. and E. Wit (2015). Bayesian Structure Learning in Sparse Gaussian Graphical Models, <em>Bayesian Analysis</em>, 10(1):109-138
+</p>
+<p>Mohammadi, A. and E. Wit (2015). <span class="pkg">BDgraph</span>: An <code>R</code> Package for Bayesian Structure Learning in Graphical Models, <em>arXiv preprint arXiv:1501.05108</em> 
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="ssgraph.html">ssgraph</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# Generating multivariate normal data from a 'random' graph
+dat &lt;- bdgraph.sim( n = 50, p = 6, size = 7, vis = TRUE )
+   
+out_ss &lt;- ssgraph( data = dat )
+   
+summary( out_ss )
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>ssgraph</em> version 1.4 <a href="00Index.html">Index</a>]</div>
+</body></html>
