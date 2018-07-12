@@ -1,6 +1,12 @@
 \documentclass[$layout$]{elsarticle} %review=doublespace preprint=single 5p=2 column
 %%% Begin My package additions %%%%%%%%%%%%%%%%%%%
 \usepackage[hyphens]{url}
+
+$if(journal)$
+  \journal{$journal$} % Sets Journal name
+$endif$
+
+
 \usepackage{lineno} % add
 $if(linenumbers)$
   \linenumbers % turns line numbering on
@@ -12,21 +18,6 @@ $endif$
 \biboptions{sort&compress} % For natbib
 \usepackage{graphicx}
 \usepackage{booktabs} % book-quality tables
-%% Redefines the elsarticle footer
-%\makeatletter
-%\def\ps@pprintTitle{%
-% \let\@oddhead\@empty
-% \let\@evenhead\@empty
-% \def\@oddfoot{\it \hfill\today}%
-% \let\@evenfoot\@oddfoot}
-%\makeatother
-
-% A modified page layout
-\textwidth 6.75in
-\oddsidemargin -0.15in
-\evensidemargin -0.15in
-\textheight 9in
-\topmargin -0.5in
 %%%%%%%%%%%%%%%% end my additions to header
 
 \usepackage[T1]{fontenc}
@@ -128,9 +119,7 @@ $if(strikeout)$
 % avoid problems with \sout in headers with hyperref:
 \pdfstringdefDisableCommands{\renewcommand{\sout}{}}
 $endif$
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-\setlength{\emergencystretch}{3em}  % prevent overfull lines
+
 $if(numbersections)$
 \setcounter{secnumdepth}{5}
 $else$
@@ -147,9 +136,6 @@ $if(lang)$
   \usepackage[$lang$]{babel}
 \fi
 $endif$
-$for(header-includes)$
-$header-includes$
-$endfor$
 % Pandoc toggle for numbering sections (defaults to be off)
 $if(numbersections)$
 $else$
@@ -160,8 +146,7 @@ $for(header-includes)$
 $header-includes$
 $endfor$
 
-
-\usepackage[nomarkers]{endfloat}
+$preamble$
 
 \begin{document}
 \begin{frontmatter}
@@ -179,7 +164,7 @@ $endfor$
   \begin{abstract}
   $abstract$
   \end{abstract}
-  $if(keywords)$ \begin{keyword} $for(keywords)$$keywords$ \sep $endfor$\end{keyword}$endif$
+  $if(keywords)$ \begin{keyword} $for(keywords)$$keywords$$sep$ $endfor$\end{keyword}$endif$
  \end{frontmatter}
 
 $body$
