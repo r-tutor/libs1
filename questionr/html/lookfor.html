@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Look for keywords variable names and descriptions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for lookfor {questionr}"><tr><td>lookfor {questionr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Look for keywords variable names and descriptions</h2>
+
+<h3>Description</h3>
+
+<p><code>lookfor</code> emulates the <code>lookfor</code> Stata command in R. It supports
+searching into the variable names of regular R data frames as well as into
+SPSS and Stata datasets loaded in R via the <span class="pkg">haven</span>, 
+in which case it will also search variable descriptions (labels).
+The command is meant to help users finding variables in large datasets.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+lookfor(data, ..., labels = TRUE, ignore.case = TRUE, details = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>a data frame</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>list of keywords, a character string (or several character strings), which can be formatted as a regular expression suitable for a <code>grep</code> pattern, or a vector of keywords; displays all variables if not specified</p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+<p>whether or not to search variable labels (descriptions); <code>TRUE</code> by default</p>
+</td></tr>
+<tr valign="top"><td><code>ignore.case</code></td>
+<td>
+<p>whether or not to make the keywords case sensitive; 
+<code>TRUE</code> by default (case is ignored during matching)</p>
+</td></tr>
+<tr valign="top"><td><code>details</code></td>
+<td>
+<p>add details about each variable (see examples)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function looks into the variable names for matches to the keywords. If the data frame 
+has been imported into R with <span class="pkg">haven</span> package, then variable labels are included in the search scope.
+If <span class="pkg">labelled</span> package is installed, variable labels of data.frame imported with <span class="pkg">foreign</span> or
+<span class="pkg">memisc</span> packages will also be taken into account.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a data frame featuring the variable position, name and description 
+(if it exists) in the original data frame
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>François Briatte &lt;f.briatte@gmail.com&gt;
+</p>
+
+
+<h3>Source</h3>
+
+<p>Based on the behaviour of the <code>lookfor</code> command in Stata.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code>query</code> in the <code>memisc</code> package
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+lookfor(iris)
+# Look for a single keyword.
+lookfor(iris, "petal")
+lookfor(iris, "s")
+# Look for with a regular expression
+lookfor(iris, "petal|species")
+lookfor(iris, "s$")
+# Look for with several keywords
+lookfor(iris, "pet", "sp")
+lookfor(iris, "pet", "sp", "width")
+# Load memisc package and example data.
+## Not run: require(memisc)
+nes1948.por &lt;- UnZip("anes/NES1948.ZIP","NES1948.POR", package="memisc")
+nes1948 &lt;- spss.portable.file(nes1948.por)
+# Look for a vector of keywords.
+lookfor(nes1948, c("Truman", "Dewey"))
+# Look for a regular expression.
+lookfor(nes1948, "truman|dewey")
+# Look for a phrase.
+lookfor(nes1948, "personal attribute")
+## End(Not run)
+# Labelled data
+data(fecondite)
+lookfor(femmes)
+lookfor(femmes, "date")
+# Display details
+lookfor(femmes, details = TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>questionr</em> version 0.6.3 <a href="00Index.html">Index</a>]</div>
+</body></html>
