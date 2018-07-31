@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Read In a Text Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for readPlain {tm}"><tr><td>readPlain {tm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read In a Text Document</h2>
+
+<h3>Description</h3>
+
+<p>Read in a text document without knowledge about its internal structure and
+possible available metadata.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+readPlain(elem, language, id)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>elem</code></td>
+<td>
+<p>a named list with the component <code>content</code> which must hold
+the document to be read in.</p>
+</td></tr>
+<tr valign="top"><td><code>language</code></td>
+<td>
+<p>a string giving the language.</p>
+</td></tr>
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>a character giving a unique identifier for the created text
+document.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A <code><a href="PlainTextDocument.html">PlainTextDocument</a></code> representing <code>elem$content</code>. The
+argument <code>id</code> is used as fallback if <code>elem$uri</code> is null.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="Reader.html">Reader</a></code> for basic information on the reader infrastructure
+employed by package <span class="pkg">tm</span>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+docs &lt;- c("This is a text.", "This another one.")
+vs &lt;- VectorSource(docs)
+elem &lt;- getElem(stepNext(vs))
+(result &lt;- readPlain(elem, "en", "id1"))
+meta(result)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tm</em> version 0.7-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

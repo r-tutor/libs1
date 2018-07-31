@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Volatile Corpora</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for VCorpus {tm}"><tr><td>VCorpus {tm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Volatile Corpora</h2>
+
+<h3>Description</h3>
+
+<p>Create volatile corpora.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+VCorpus(x, readerControl = list(reader = reader(x), language = "en"))
+as.VCorpus(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>For <code>VCorpus</code> a <code><a href="Source.html">Source</a></code> object, and for
+<code>as.VCorpus</code> an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> object.</p>
+</td></tr>
+<tr valign="top"><td><code>readerControl</code></td>
+<td>
+<p>a named list of control parameters for reading in content
+from <code>x</code>.
+</p>
+
+<dl>
+<dt><code>reader</code></dt><dd><p>a function capable of reading in and processing the
+format delivered by <code>x</code>.</p>
+</dd>
+<dt><code>language</code></dt><dd><p>a character giving the language (preferably as
+<acronym><span class="acronym">IETF</span></acronym> language tags, see <a href="../../NLP/html/language.html">language</a> in
+package <span class="pkg">NLP</span>).
+The default language is assumed to be English (<code>"en"</code>).</p>
+</dd>
+</dl>
+
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A <em>volatile corpus</em> is fully kept in memory and thus all changes only
+affect the corresponding <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> object.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object inheriting from <code>VCorpus</code> and <code>Corpus</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="Corpus.html">Corpus</a></code> for basic information on the corpus infrastructure
+employed by package <span class="pkg">tm</span>.
+</p>
+<p><code><a href="PCorpus.html">PCorpus</a></code> provides an implementation with permanent storage
+semantics.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+reut21578 &lt;- system.file("texts", "crude", package = "tm")
+VCorpus(DirSource(reut21578, mode = "binary"),
+        list(reader = readReut21578XMLasPlain))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tm</em> version 0.7-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

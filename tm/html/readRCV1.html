@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Read In a Reuters Corpus Volume 1 Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for readRCV1 {tm}"><tr><td>readRCV1 {tm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read In a Reuters Corpus Volume 1 Document</h2>
+
+<h3>Description</h3>
+
+<p>Read in a Reuters Corpus Volume 1 <acronym><span class="acronym">XML</span></acronym> document.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+readRCV1(elem, language, id)
+readRCV1asPlain(elem, language, id)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>elem</code></td>
+<td>
+<p>a named list with the component <code>content</code> which must hold
+the document to be read in.</p>
+</td></tr>
+<tr valign="top"><td><code>language</code></td>
+<td>
+<p>a string giving the language.</p>
+</td></tr>
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>Not used.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An <code><a href="XMLTextDocument.html">XMLTextDocument</a></code> for <code>readRCV1</code>, or a
+<code><a href="PlainTextDocument.html">PlainTextDocument</a></code> for <code>readRCV1asPlain</code>, representing the
+text and metadata extracted from <code>elem$content</code>.
+</p>
+
+
+<h3>References</h3>
+
+<p>Lewis, D. D.; Yang, Y.; Rose, T.; and Li, F (2004).
+RCV1: A New Benchmark Collection for Text Categorization Research.
+<em>Journal of Machine Learning Research</em>, <b>5</b>, 361&ndash;397.
+<a href="http://www.jmlr.org/papers/volume5/lewis04a/lewis04a.pdf">http://www.jmlr.org/papers/volume5/lewis04a/lewis04a.pdf</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="Reader.html">Reader</a></code> for basic information on the reader infrastructure
+employed by package <span class="pkg">tm</span>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+f &lt;- system.file("texts", "rcv1_2330.xml", package = "tm")
+f_bin &lt;- readBin(f, raw(), file.info(f)$size)
+rcv1 &lt;- readRCV1(elem = list(content = f_bin), language = "en", id = "id1")
+content(rcv1)
+meta(rcv1)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tm</em> version 0.7-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

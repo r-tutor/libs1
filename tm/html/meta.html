@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Metadata Management</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for meta {tm}"><tr><td>meta {tm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Metadata Management</h2>
+
+<h3>Description</h3>
+
+<p>Accessing and modifying metadata of text documents and corpora.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'PCorpus'
+meta(x, tag = NULL, type = c("indexed", "corpus", "local"), ...)
+## S3 replacement method for class 'PCorpus'
+meta(x, tag, type = c("indexed", "corpus", "local"), ...) &lt;- value
+## S3 method for class 'SimpleCorpus'
+meta(x, tag = NULL, type = c("indexed", "corpus"), ...)
+## S3 replacement method for class 'SimpleCorpus'
+meta(x, tag, type = c("indexed", "corpus"), ...) &lt;- value
+## S3 method for class 'VCorpus'
+meta(x, tag = NULL, type = c("indexed", "corpus", "local"), ...)
+## S3 replacement method for class 'VCorpus'
+meta(x, tag, type = c("indexed", "corpus", "local"), ...) &lt;- value
+## S3 method for class 'PlainTextDocument'
+meta(x, tag = NULL, ...)
+## S3 replacement method for class 'PlainTextDocument'
+meta(x, tag = NULL, ...) &lt;- value
+## S3 method for class 'XMLTextDocument'
+meta(x, tag = NULL, ...)
+## S3 replacement method for class 'XMLTextDocument'
+meta(x, tag = NULL, ...) &lt;- value
+DublinCore(x, tag = NULL)
+DublinCore(x, tag) &lt;- value
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>For <code>DublinCore</code> a <code><a href="TextDocument.html">TextDocument</a></code>, and for
+<code>meta</code> a <code><a href="TextDocument.html">TextDocument</a></code> or a <code><a href="Corpus.html">Corpus</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>tag</code></td>
+<td>
+<p>a character giving the name of a metadatum. No tag corresponds to
+all available metadata.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>a character specifying the kind of corpus metadata (see
+<b>Details</b>).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Not used.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>replacement value.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A corpus has two types of metadata. <em>Corpus metadata</em> (<code>"corpus"</code>)
+contains corpus specific metadata in form of tag-value pairs.
+<em>Document level metadata</em> (<code>"indexed"</code>) contains document specific
+metadata but is stored in the corpus as a data frame. Document level metadata
+is typically used for semantic reasons (e.g., classifications of documents
+form an own entity due to some high-level information like the range of
+possible values) or for performance reasons (single access instead of
+extracting metadata of each document). The latter can be seen as a from of
+indexing, hence the name <code>"indexed"</code>. <em>Document metadata</em>
+(<code>"local"</code>) are tag-value pairs directly stored locally at the individual
+documents.
+</p>
+<p><code>DublinCore</code> is a convenience wrapper to access and modify the metadata
+of a text document using the Simple Dublin Core schema (supporting the 15
+metadata elements from the Dublin Core Metadata Element Set
+<a href="http://dublincore.org/documents/dces/">http://dublincore.org/documents/dces/</a>).
+</p>
+
+
+<h3>References</h3>
+
+<p>Dublin Core Metadata Initiative.
+<a href="http://dublincore.org/">http://dublincore.org/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../NLP/html/meta.html">meta</a></code> for metadata in package <span class="pkg">NLP</span>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data("crude")
+meta(crude[[1]])
+DublinCore(crude[[1]])
+meta(crude[[1]], tag = "topics")
+meta(crude[[1]], tag = "comment") &lt;- "A short comment."
+meta(crude[[1]], tag = "topics") &lt;- NULL
+DublinCore(crude[[1]], tag = "creator") &lt;- "Ano Nymous"
+DublinCore(crude[[1]], tag = "format") &lt;- "XML"
+DublinCore(crude[[1]])
+meta(crude[[1]])
+meta(crude)
+meta(crude, type = "corpus")
+meta(crude, "labels") &lt;- 21:40
+meta(crude)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tm</em> version 0.7-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

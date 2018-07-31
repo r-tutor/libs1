@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Read In a MS Word Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for readDOC {tm}"><tr><td>readDOC {tm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read In a MS Word Document</h2>
+
+<h3>Description</h3>
+
+<p>Return a function which reads in a Microsoft Word document extracting
+its text.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+readDOC(engine = c("antiword", "executable"), AntiwordOptions = "")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>engine</code></td>
+<td>
+<p>a character string for the preferred <acronym><span class="acronym">DOC</span></acronym> extraction
+engine (see <b>Details</b>).</p>
+</td></tr>
+<tr valign="top"><td><code>AntiwordOptions</code></td>
+<td>
+<p>Options passed over to <code>antiword</code> executable.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Formally this function is a function generator, i.e., it returns a
+function (which reads in a text document) with a well-defined
+signature, but can access passed over arguments (e.g., options to
+<code>antiword</code>) via lexical scoping.
+</p>
+<p>Available <acronym><span class="acronym">DOC</span></acronym> extraction engines are as follows.
+</p>
+
+<dl>
+<dt><code>"antiword"</code></dt><dd><p>(default) Antiword utility as provided by the
+function <code><a href="../../antiword/html/antiword.html">antiword</a></code> in package <span class="pkg">antiword</span>.</p>
+</dd>
+<dt><code>"executable"</code></dt><dd><p>command line <code>antiword</code> executable which
+must be installed and accessible on your system. This can convert
+documents from Microsoft Word version 2, 6, 7, 97, 2000, 2002 and 2003 to
+plain text, and is available from <a href="http://www.winfield.demon.nl/">http://www.winfield.demon.nl/</a>. The
+character vector <code>AntiwordOptions</code> is passed over to the executable.</p>
+</dd>
+</dl>
+
+
+
+<h3>Value</h3>
+
+<p>A <code>function</code> with the following formals:
+</p>
+
+<dl>
+<dt><code>elem</code></dt><dd><p>a list with the named component <code>uri</code> which must
+hold a valid file name.</p>
+</dd>
+<dt><code>language</code></dt><dd><p>a string giving the language.</p>
+</dd>
+<dt><code>id</code></dt><dd><p>Not used.</p>
+</dd>
+</dl>
+
+<p>The function returns a <code><a href="PlainTextDocument.html">PlainTextDocument</a></code> representing the text
+and metadata extracted from <code>elem$uri</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="Reader.html">Reader</a></code> for basic information on the reader infrastructure
+employed by package <span class="pkg">tm</span>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>tm</em> version 0.7-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

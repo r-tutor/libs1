@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Text Documents</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for TextDocument {tm}"><tr><td>TextDocument {tm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Text Documents</h2>
+
+<h3>Description</h3>
+
+<p>Representing and computing on text documents.
+</p>
+
+
+<h3>Details</h3>
+
+<p><em>Text documents</em> are documents containing (natural language) text. The
+<span class="pkg">tm</span> package employs the infrastructure provided by package <span class="pkg">NLP</span> and
+represents text documents via the virtual S3 class <code>TextDocument</code>.
+Actual S3 text document classes then extend the virtual base class (such as
+<code><a href="PlainTextDocument.html">PlainTextDocument</a></code>).
+</p>
+<p>All extension classes must provide an <code><a href="../../base/html/character.html">as.character</a></code>
+method which extracts the natural language text in documents of the
+respective classes in a &ldquo;suitable&rdquo; (not necessarily structured)
+form, as well as <code><a href="../../git2r/html/content.html">content</a></code> and <code><a href="meta.html">meta</a></code> methods
+for accessing the (possibly raw) document content and metadata.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="PlainTextDocument.html">PlainTextDocument</a></code>, and
+<code><a href="XMLTextDocument.html">XMLTextDocument</a></code>
+for the text document classes provided by package <span class="pkg">tm</span>.
+</p>
+<p><code><a href="../../NLP/html/TextDocument.html">TextDocument</a></code> for text documents in package <span class="pkg">NLP</span>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>tm</em> version 0.7-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

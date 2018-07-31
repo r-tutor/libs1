@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Weight by Term Frequency - Inverse Document Frequency</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for weightTfIdf {tm}"><tr><td>weightTfIdf {tm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Weight by Term Frequency - Inverse Document Frequency</h2>
+
+<h3>Description</h3>
+
+<p>Weight a term-document matrix by term frequency - inverse document
+frequency.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+weightTfIdf(m, normalize = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>m</code></td>
+<td>
+<p>A <code><a href="matrix.html">TermDocumentMatrix</a></code> in term frequency format.</p>
+</td></tr>
+<tr valign="top"><td><code>normalize</code></td>
+<td>
+<p>A Boolean value indicating whether the term
+frequencies should be normalized.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Formally this function is of class <code>WeightingFunction</code> with the
+additional attributes <code>name</code> and <code>acronym</code>.
+</p>
+<p><em>Term frequency</em> <i>\mathit{tf}_{i,j}</i> counts the number of
+occurrences <i>n_{i,j}</i> of a term <i>t_i</i> in a document
+<i>d_j</i>. In the case of normalization, the term frequency
+<i>\mathit{tf}_{i,j}</i> is divided by <i>&sum;_k n_{k,j}</i>.
+</p>
+<p><em>Inverse document frequency</em> for a term <i>t_i</i> is defined as
+</p>
+<p style="text-align: center;"><i>\mathit{idf}_i = \log_2 \frac{|D|}{|\{d \mid t_i \in d\}|}</i></p>
+<p> where
+<i>|D|</i> denotes the total number of documents and where <i>|\{d
+  \mid t_i \in d\}|</i> is the number of documents where the term <i>t_i</i>
+appears.
+</p>
+<p><em>Term frequency - inverse document frequency</em> is now defined as
+<i>\mathit{tf}_{i,j} \cdot \mathit{idf}_i</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The weighted matrix.
+</p>
+
+
+<h3>References</h3>
+
+<p>Gerard Salton and Christopher Buckley (1988).
+Term-weighting approaches in automatic text retrieval.
+<em>Information Processing and Management</em>, <b>24</b>/5, 513&ndash;523.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>tm</em> version 0.7-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

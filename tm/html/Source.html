@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Sources</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Source {tm}"><tr><td>Source {tm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Sources</h2>
+
+<h3>Description</h3>
+
+<p>Creating and accessing sources.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+SimpleSource(encoding = "",
+             length = 0,
+             position = 0,
+             reader = readPlain,
+             ...,
+             class)
+getSources()
+## S3 method for class 'SimpleSource'
+close(con, ...)
+## S3 method for class 'SimpleSource'
+eoi(x)
+## S3 method for class 'DataframeSource'
+getMeta(x)
+## S3 method for class 'DataframeSource'
+getElem(x)
+## S3 method for class 'DirSource'
+getElem(x)
+## S3 method for class 'URISource'
+getElem(x)
+## S3 method for class 'VectorSource'
+getElem(x)
+## S3 method for class 'XMLSource'
+getElem(x)
+## S3 method for class 'SimpleSource'
+length(x)
+## S3 method for class 'SimpleSource'
+open(con, ...)
+## S3 method for class 'DataframeSource'
+pGetElem(x)
+## S3 method for class 'DirSource'
+pGetElem(x)
+## S3 method for class 'URISource'
+pGetElem(x)
+## S3 method for class 'VectorSource'
+pGetElem(x)
+## S3 method for class 'SimpleSource'
+reader(x)
+## S3 method for class 'SimpleSource'
+stepNext(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code>Source</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>con</code></td>
+<td>
+<p>A <code>Source</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>encoding</code></td>
+<td>
+<p>a character giving the encoding of the elements delivered by
+the source.</p>
+</td></tr>
+<tr valign="top"><td><code>length</code></td>
+<td>
+<p>a non-negative integer denoting the number of elements delivered
+by the source. If the length is unknown in advance set it to <code>0</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>position</code></td>
+<td>
+<p>a numeric indicating the current position in the source.</p>
+</td></tr>
+<tr valign="top"><td><code>reader</code></td>
+<td>
+<p>a reader function (generator).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>For <code>SimpleSource</code> tag-value pairs for storing additional
+information; not used otherwise.</p>
+</td></tr>
+<tr valign="top"><td><code>class</code></td>
+<td>
+<p>a character vector giving additional classes to be used for the
+created source.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><em>Sources</em> abstract input locations, like a directory, a connection, or
+simply an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> vector, in order to acquire content in a uniform way. In packages
+which employ the infrastructure provided by package <span class="pkg">tm</span>, such sources are
+represented via the virtual S3 class <code>Source</code>: such packages then provide
+S3 source classes extending the virtual base class (such as
+<code><a href="DirSource.html">DirSource</a></code> provided by package <span class="pkg">tm</span> itself).
+</p>
+<p>All extension classes must provide implementations for the functions
+<code>close</code>, <code>eoi</code>, <code>getElem</code>, <code>length</code>, <code>open</code>,
+<code>reader</code>, and <code>stepNext</code>. For parallel element access the
+(optional) function <code>pGetElem</code> must be provided as well. If
+document level metadata is available, the (optional) function <code>getMeta</code>
+must be implemented.
+</p>
+<p>The functions <code>open</code> and <code>close</code> open and close the source,
+respectively. <code>eoi</code> indicates end of input. <code>getElem</code> fetches the
+element at the current position, whereas <code>pGetElem</code> retrieves all
+elements in parallel at once. The function <code>length</code> gives the number of
+elements. <code>reader</code> returns a default reader for processing elements.
+<code>stepNext</code> increases the position in the source to acquire the next
+element.
+</p>
+<p>The function <code>SimpleSource</code> provides a simple reference implementation
+and can be used when creating custom sources.
+</p>
+
+
+<h3>Value</h3>
+
+<p>For <code>SimpleSource</code>, an object inheriting from <code>class</code>,
+<code>SimpleSource</code>, and <code>Source</code>.
+</p>
+<p>For <code>getSources</code>, a character vector with sources provided by package
+<span class="pkg">tm</span>.
+</p>
+<p><code>open</code> and <code>close</code> return the opened and closed source,
+respectively.
+</p>
+<p>For <code>eoi</code>, a logical indicating if the end of input of the source is
+reached.
+</p>
+<p>For <code>getElem</code> a named list with the components <code>content</code> holding the
+document and <code>uri</code> giving a uniform resource identifier (e.g., a file
+path or <acronym><span class="acronym">URL</span></acronym>; <code>NULL</code> if not applicable or unavailable). For
+<code>pGetElem</code> a list of such named lists.
+</p>
+<p>For <code>length</code>, an integer for the number of elements.
+</p>
+<p>For <code>reader</code>, a function for the default reader.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="DataframeSource.html">DataframeSource</a></code>, <code><a href="DirSource.html">DirSource</a></code>,
+<code><a href="URISource.html">URISource</a></code>, <code><a href="VectorSource.html">VectorSource</a></code>, and
+<code><a href="XMLSource.html">XMLSource</a></code>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>tm</em> version 0.7-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

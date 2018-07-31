@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Readers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Reader {tm}"><tr><td>Reader {tm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Readers</h2>
+
+<h3>Description</h3>
+
+<p>Creating readers.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+getReaders()
+</pre>
+
+
+<h3>Details</h3>
+
+<p><em>Readers</em> are functions for extracting textual content and metadata out
+of elements delivered by a <code><a href="Source.html">Source</a></code>, and for constructing a
+<code><a href="TextDocument.html">TextDocument</a></code>. A reader must accept following arguments in
+its signature:
+</p>
+
+<dl>
+<dt><code>elem</code></dt><dd><p>a named list with the components <code>content</code> and
+<code>uri</code> (as delivered by a <code><a href="Source.html">Source</a></code> via
+<code><a href="Source.html">getElem</a></code> or <code><a href="Source.html">pGetElem</a></code>).</p>
+</dd>
+<dt><code>language</code></dt><dd><p>a character string giving the language.</p>
+</dd>
+<dt><code>id</code></dt><dd><p>a character giving a unique identifier for the created text
+document.</p>
+</dd>
+</dl>
+
+<p>The element <code>elem</code> is typically provided by a source whereas the language
+and the identifier are normally provided by a corpus constructor (for the case
+that <code>elem$content</code> does not give information on these two essential
+items).
+</p>
+<p>In case a reader expects configuration arguments we can use a function
+generator. A function generator is indicated by inheriting from class
+<code>FunctionGenerator</code> and <code>function</code>. It allows us to process
+additional arguments, store them in an environment, return a reader function
+with the well-defined signature described above, and still be able to access
+the additional arguments via lexical scoping. All corpus constructors in
+package <span class="pkg">tm</span> check the reader function for being a function generator and
+if so apply it to yield the reader with the expected signature.
+</p>
+
+
+<h3>Value</h3>
+
+<p>For <code>getReaders()</code>, a character vector with readers provided by package
+<span class="pkg">tm</span>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="readDOC.html">readDOC</a></code>, <code><a href="readPDF.html">readPDF</a></code>, <code><a href="readPlain.html">readPlain</a></code>,
+<code><a href="readRCV1.html">readRCV1</a></code>, <code><a href="readRCV1.html">readRCV1asPlain</a></code>,
+<code><a href="readReut21578XML.html">readReut21578XML</a></code>, <code><a href="readReut21578XML.html">readReut21578XMLasPlain</a></code>,
+and <code><a href="readXML.html">readXML</a></code>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>tm</em> version 0.7-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

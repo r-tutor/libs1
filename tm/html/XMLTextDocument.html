@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: XML Text Documents</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for XMLTextDocument {tm}"><tr><td>XMLTextDocument {tm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>XML Text Documents</h2>
+
+<h3>Description</h3>
+
+<p>Create <acronym><span class="acronym">XML</span></acronym> text documents.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+XMLTextDocument(x = xml_missing(),
+                author = character(0),
+                datetimestamp = as.POSIXlt(Sys.time(), tz = "GMT"),
+                description = character(0),
+                heading = character(0),
+                id = character(0),
+                language = character(0),
+                origin = character(0),
+                ...,
+                meta = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code><a href="../../xml2/html/read_xml.html">XMLDocument</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>author</code></td>
+<td>
+<p>a character or an object of class <code><a href="../../utils/html/person.html">person</a></code> giving
+the author names.</p>
+</td></tr>
+<tr valign="top"><td><code>datetimestamp</code></td>
+<td>
+<p>an object of class <code><a href="../../base/html/DateTimeClasses.html">POSIXt</a></code> or a character
+string giving the creation date/time information.  If a character string,
+exactly one of the <acronym><span class="acronym">ISO</span></acronym> 8601 formats defined by
+<a href="http://www.w3.org/TR/NOTE-datetime">http://www.w3.org/TR/NOTE-datetime</a> should be used.
+See <code><a href="../../NLP/html/parse_ISO_8601_datetime.html">parse_ISO_8601_datetime</a></code> in package <span class="pkg">NLP</span>
+for processing such date/time information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>description</code></td>
+<td>
+<p>a character giving a description.</p>
+</td></tr>
+<tr valign="top"><td><code>heading</code></td>
+<td>
+<p>a character giving the title or a short heading.</p>
+</td></tr>
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>a character giving a unique identifier.</p>
+</td></tr>
+<tr valign="top"><td><code>language</code></td>
+<td>
+<p>a character giving the language (preferably as <acronym><span class="acronym">IETF</span></acronym>
+language tags, see <a href="../../NLP/html/language.html">language</a> in package <span class="pkg">NLP</span>).</p>
+</td></tr>
+<tr valign="top"><td><code>origin</code></td>
+<td>
+<p>a character giving information on the source and origin.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>user-defined document metadata tag-value pairs.</p>
+</td></tr>
+<tr valign="top"><td><code>meta</code></td>
+<td>
+<p>a named list or <code>NULL</code> (default) giving all metadata. If set
+all other metadata arguments are ignored.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object inheriting from <code>XMLTextDocument</code> and
+<code><a href="TextDocument.html">TextDocument</a></code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="TextDocument.html">TextDocument</a></code> for basic information on the text document
+infrastructure employed by package <span class="pkg">tm</span>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+xml &lt;- system.file("extdata", "order-doc.xml", package = "xml2")
+(xtd &lt;- XMLTextDocument(xml2::read_xml(xml),
+                        heading = "XML text document",
+                        id = xml,
+                        language = "en"))
+content(xtd)
+meta(xtd)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tm</em> version 0.7-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

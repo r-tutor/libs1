@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Inspect Objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for inspect {tm}"><tr><td>inspect {tm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Inspect Objects</h2>
+
+<h3>Description</h3>
+
+<p>Inspect, i.e., display detailed information on a corpus, a
+term-document matrix, or a text document.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'PCorpus'
+inspect(x)
+## S3 method for class 'VCorpus'
+inspect(x)
+## S3 method for class 'TermDocumentMatrix'
+inspect(x)
+## S3 method for class 'TextDocument'
+inspect(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Either a corpus, a term-document matrix, or a text document.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+data("crude")
+inspect(crude[1:3])
+inspect(crude[[1]])
+tdm &lt;- TermDocumentMatrix(crude)[1:10, 1:10]
+inspect(tdm)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tm</em> version 0.7-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

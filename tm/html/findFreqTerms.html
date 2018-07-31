@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Find Frequent Terms</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for findFreqTerms {tm}"><tr><td>findFreqTerms {tm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Find Frequent Terms</h2>
+
+<h3>Description</h3>
+
+<p>Find frequent terms in a document-term or term-document matrix.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+findFreqTerms(x, lowfreq = 0, highfreq = Inf)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code><a href="matrix.html">DocumentTermMatrix</a></code> or
+<code><a href="matrix.html">TermDocumentMatrix</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>lowfreq</code></td>
+<td>
+<p>A numeric for the lower frequency bound.</p>
+</td></tr>
+<tr valign="top"><td><code>highfreq</code></td>
+<td>
+<p>A numeric for the upper frequency bound.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This method works for all numeric weightings but is probably
+most meaningful for the standard term frequency (<code>tf</code>) weighting
+of <code>x</code>.</p>
+
+
+<h3>Value</h3>
+
+<p>A character vector of terms in <code>x</code> which occur more or equal often
+than <code>lowfreq</code> times and less or equal often than <code>highfreq</code>
+times.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data("crude")
+tdm &lt;- TermDocumentMatrix(crude)
+findFreqTerms(tdm, 2, 3)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tm</em> version 0.7-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

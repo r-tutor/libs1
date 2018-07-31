@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Complete Stems</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stemCompletion {tm}"><tr><td>stemCompletion {tm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Complete Stems</h2>
+
+<h3>Description</h3>
+
+<p>Heuristically complete stemmed words.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stemCompletion(x,
+               dictionary,
+               type = c("prevalent", "first", "longest",
+                        "none", "random", "shortest"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A character vector of stems to be completed.</p>
+</td></tr>
+<tr valign="top"><td><code>dictionary</code></td>
+<td>
+<p>A <code><a href="Corpus.html">Corpus</a></code> or character vector to be searched
+for possible completions.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>A <code>character</code> naming the heuristics to be used:
+</p>
+
+<dl>
+<dt><code>prevalent</code></dt><dd><p>Default. Takes the most frequent match as
+completion.</p>
+</dd>
+<dt><code>first</code></dt><dd><p>Takes the first found completion.</p>
+</dd>
+<dt><code>longest</code></dt><dd><p>Takes the longest completion in terms of
+characters.</p>
+</dd>
+<dt><code>none</code></dt><dd><p>Is the identity.</p>
+</dd>
+<dt><code>random</code></dt><dd><p>Takes some completion.</p>
+</dd>
+<dt><code>shortest</code></dt><dd><p>Takes the shortest completion in terms of
+characters.</p>
+</dd>
+</dl>
+
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector with completed words.
+</p>
+
+
+<h3>References</h3>
+
+<p>Ingo Feinerer (2010).
+Analysis and Algorithms for Stemming Inversion.
+<em>Information Retrieval Technology &mdash; 6th Asia Information Retrieval Societies Conference, AIRS 2010, Taipei, Taiwan, December 1&ndash;3, 2010. Proceedings</em>, volume 6458 of <em>Lecture Notes in Computer Science</em>, pages 290&ndash;299. Springer-Verlag, December 2010.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data("crude")
+stemCompletion(c("compan", "entit", "suppl"), crude)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tm</em> version 0.7-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

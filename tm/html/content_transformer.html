@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Content Transformers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for content_transformer {tm}"><tr><td>content_transformer {tm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Content Transformers</h2>
+
+<h3>Description</h3>
+
+<p>Create content transformers, i.e., functions which modify the content of an
+<span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+content_transformer(FUN)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>FUN</code></td>
+<td>
+<p>a function.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A function with two arguments:
+</p>
+
+<dl>
+<dt><code>x</code></dt><dd><p>an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> object with implemented content getter
+(<code><a href="../../NLP/html/content.html">content</a></code>) and setter (<code><a href="../../NLP/html/generics.html">content&lt;-</a></code>)
+functions.</p>
+</dd>
+<dt><code>...</code></dt><dd><p>arguments passed over to <code>FUN</code>.</p>
+</dd>
+</dl>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="tm_map.html">tm_map</a></code> for an interface to apply transformations to corpora.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data("crude")
+crude[[1]]
+(f &lt;- content_transformer(function(x, pattern) gsub(pattern, "", x)))
+tm_map(crude, f, "[[:digit:]]+")[[1]]
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tm</em> version 0.7-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

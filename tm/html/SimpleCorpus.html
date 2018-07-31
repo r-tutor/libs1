@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Simple Corpora</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for SimpleCorpus {tm}"><tr><td>SimpleCorpus {tm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Simple Corpora</h2>
+
+<h3>Description</h3>
+
+<p>Create simple corpora.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+SimpleCorpus(x, control = list(language = "en"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a <code><a href="DataframeSource.html">DataframeSource</a></code>, <code><a href="DirSource.html">DirSource</a></code> or
+<code><a href="VectorSource.html">VectorSource</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>control</code></td>
+<td>
+<p>a named list of control parameters.
+</p>
+
+<dl>
+<dt><code>language</code></dt><dd><p>a character giving the language (preferably as
+<acronym><span class="acronym">IETF</span></acronym> language tags, see <a href="../../NLP/html/language.html">language</a> in
+package <span class="pkg">NLP</span>).
+The default language is assumed to be English (<code>"en"</code>).</p>
+</dd>
+</dl>
+
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A <em>simple corpus</em> is fully kept in memory. Compared to a <code>VCorpus</code>,
+it is optimized for the most common usage scenario: importing plain texts from
+files in a directory or directly from a vector in <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span>, preprocessing and
+transforming the texts, and finally exporting them to a term-document matrix.
+It adheres to the <code><a href="Corpus.html">Corpus</a></code> <acronym><span class="acronym">API</span></acronym>. However, it takes
+internally various shortcuts to boost performance and minimize memory
+pressure; consequently it operates only under the following contraints:
+</p>
+
+<ul>
+<li><p>only <code>DataframeSource</code>, <code>DirSource</code> and <code>VectorSource</code>
+are supported,
+</p>
+</li>
+<li><p>no custom readers, i.e., each document is read in and stored as plain
+text (as a string, i.e., a character vector of length one),
+</p>
+</li>
+<li><p>transformations applied via <code><a href="tm_map.html">tm_map</a></code> must be able to
+process character vectors and return character vectors (of the same
+length),
+</p>
+</li>
+<li><p>no lazy transformations in <code><a href="tm_map.html">tm_map</a></code>,
+</p>
+</li>
+<li><p>no meta data for individual documents (i.e., no <code>"local"</code> in
+<code><a href="meta.html">meta</a></code>).
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>An object inheriting from <code>SimpleCorpus</code> and <code>Corpus</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="Corpus.html">Corpus</a></code> for basic information on the corpus infrastructure
+employed by package <span class="pkg">tm</span>.
+</p>
+<p><code><a href="VCorpus.html">VCorpus</a></code> provides an implementation with volatile storage
+semantics, and <code><a href="PCorpus.html">PCorpus</a></code> provides an implementation with
+permanent storage semantics.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+txt &lt;- system.file("texts", "txt", package = "tm")
+(ovid &lt;- SimpleCorpus(DirSource(txt, encoding = "UTF-8"),
+                      control = list(language = "lat")))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tm</em> version 0.7-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

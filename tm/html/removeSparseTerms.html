@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Remove Sparse Terms from a Term-Document Matrix</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for removeSparseTerms {tm}"><tr><td>removeSparseTerms {tm}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Remove Sparse Terms from a Term-Document Matrix</h2>
+
+<h3>Description</h3>
+
+<p>Remove sparse terms from a document-term or term-document matrix.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+removeSparseTerms(x, sparse)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code><a href="matrix.html">DocumentTermMatrix</a></code> or a
+<code><a href="matrix.html">TermDocumentMatrix</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>sparse</code></td>
+<td>
+<p>A numeric for the maximal allowed sparsity in the range from
+bigger zero to smaller one.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A term-document matrix where those terms from <code>x</code> are
+removed which have at least a <code>sparse</code> percentage of empty (i.e.,
+terms occurring 0 times in a document) elements. I.e., the resulting
+matrix contains only terms with a sparse factor of less than
+<code>sparse</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data("crude")
+tdm &lt;- TermDocumentMatrix(crude)
+removeSparseTerms(tdm, 0.2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tm</em> version 0.7-5 <a href="00Index.html">Index</a>]</div>
+</body></html>
