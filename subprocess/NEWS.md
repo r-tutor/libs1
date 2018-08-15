@@ -1,3 +1,11 @@
+# subprocess 0.8.3
+
+* fixes building under Solaris
+
+* replace `select()` with `poll()`
+
+* new API: `process_exists()`
+
 # subprocess 0.8.2
 
 * fixes in test cases for `testthat` 2.0
