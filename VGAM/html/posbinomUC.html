@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Positive-Binomial Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Posbinom {VGAM}"><tr><td>Posbinom {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Positive-Binomial Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function, quantile function and random generation
+for the positive-binomial distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dposbinom(x, size, prob, log = FALSE)
+pposbinom(q, size, prob)
+qposbinom(p, size, prob)
+rposbinom(n, size, prob)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>vector of probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of observations.
+Fed into <code><a href="../../stats/html/runif.html">runif</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>number of trials.
+It is the <i>N</i> symbol in the formula
+given in <code><a href="posbinomial.html">posbinomial</a></code> and
+should be positive.
+</p>
+</td></tr>
+<tr valign="top"><td><code>prob</code></td>
+<td>
+<p>probability of success on each trial.
+Should be in <i>(0,1)</i>.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>See
+<code><a href="../../stats/html/Binomial.html">dbinom</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The positive-binomial distribution is a binomial distribution but with
+the probability of a zero being zero. The other probabilities are scaled
+to add to unity.
+The mean therefore is
+</p>
+<p style="text-align: center;"><i>
+         mu / (1-(1-mu)^N)</i></p>
+
+<p>where <i>mu</i> is the argument <code>prob</code> above.
+As <i>mu</i> increases, the positive-binomial and binomial
+distributions become more similar.
+Unlike similar functions for the binomial distribution, a zero value
+of <code>prob</code> is not permitted here.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dposbinom</code> gives the density,
+<code>pposbinom</code> gives the distribution function,
+<code>qposbinom</code> gives the quantile function, and
+<code>rposbinom</code> generates random deviates.
+</p>
+
+
+<h3>Note</h3>
+
+<p>For <code>dposbinom()</code>, if arguments <code>size</code> or <code>prob</code>
+equal 0 then a <code>NaN</code> is returned.
+</p>
+
+
+
+
+
+<p>The family function <code><a href="posbinomial.html">posbinomial</a></code> estimates the
+parameters by maximum likelihood estimation.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee. </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="posbinomial.html">posbinomial</a></code>,
+<code><a href="posbernUC.html">dposbern</a></code>,
+<code><a href="zabinomial.html">zabinomial</a></code>,
+<code><a href="zibinomial.html">zibinomial</a></code>,
+<code><a href="../../stats/html/Binomial.html">rbinom</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+prob &lt;- 0.2; size &lt;- 10
+table(y &lt;- rposbinom(n = 1000, size, prob))
+mean(y)  # Sample mean
+size * prob / (1 - (1 - prob)^size)  # Population mean
+
+(ii &lt;- dposbinom(0:size, size, prob))
+cumsum(ii) - pposbinom(0:size, size, prob)  # Should be 0s
+table(rposbinom(100, size, prob))
+
+table(qposbinom(runif(1000), size, prob))
+round(dposbinom(1:10, size, prob) * 1000)  # Should be similar
+
+## Not run:  barplot(rbind(dposbinom(x = 0:size, size, prob),
+                           dbinom(x = 0:size, size, prob)),
+        beside = TRUE, col = c("blue", "green"),
+        main = paste("Positive-binomial(", size, ",",
+                      prob, ") (blue) vs",
+        " Binomial(", size, ",", prob, ") (green)", sep = ""),
+        names.arg = as.character(0:size), las = 1) 
+## End(Not run)
+
+# Simulated data example
+nn &lt;- 1000; sizeval1 &lt;- 10; sizeval2 &lt;- 20
+pdata &lt;- data.frame(x2 = seq(0, 1, length = nn))
+pdata &lt;- transform(pdata, prob1  = logit(-2 + 2 * x2, inverse = TRUE),
+                          prob2  = logit(-1 + 1 * x2, inverse = TRUE),
+                          sizev1 = rep(sizeval1, len = nn),
+                          sizev2 = rep(sizeval2, len = nn))
+pdata &lt;- transform(pdata, y1 = rposbinom(nn, size = sizev1, prob = prob1),
+                          y2 = rposbinom(nn, size = sizev2, prob = prob2))
+with(pdata, table(y1))
+with(pdata, table(y2))
+# Multiple responses
+fit2 &lt;- vglm(cbind(y1, y2) ~ x2, posbinomial(multiple.responses = TRUE),
+             trace  = TRUE, data = pdata, weight = cbind(sizev1, sizev2))
+coef(fit2, matrix = TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

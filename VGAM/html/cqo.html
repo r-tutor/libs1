@@ -1,0 +1,683 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Fitting Constrained Quadratic Ordination (CQO)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cqo {VGAM}"><tr><td>cqo {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Fitting Constrained Quadratic Ordination (CQO)</h2>
+
+<h3>Description</h3>
+
+<p>A <em>constrained quadratic ordination</em> (CQO; formerly called
+<em>canonical Gaussian ordination</em> or CGO) model is fitted using
+the <em>quadratic reduced-rank vector generalized linear model</em>
+(QRR-VGLM) framework.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cqo(formula, family = stop("argument 'family' needs to be assigned"),
+    data = list(), weights = NULL, subset = NULL,
+    na.action = na.fail, etastart = NULL, mustart = NULL,
+    coefstart = NULL, control = qrrvglm.control(...), offset = NULL,
+    method = "cqo.fit", model = FALSE, x.arg = TRUE, y.arg = TRUE,
+    contrasts = NULL, constraints = NULL, extra = NULL,
+    smart = TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>formula</code></td>
+<td>
+<p> a symbolic description of the model to be fit.
+The RHS of the formula is applied to each linear predictor. Different
+variables in each linear predictor can be chosen by specifying
+constraint matrices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>family</code></td>
+<td>
+
+<p>a function of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>)
+describing what statistical model is to be fitted. This is called a
+&ldquo;<span class="pkg">VGAM</span> family function&rdquo;.  See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>
+for general information about many types of arguments found in this
+type of function.
+Currently the following families are supported:
+<code><a href="poissonff.html">poissonff</a></code>,
+<code><a href="binomialff.html">binomialff</a></code>
+(<code><a href="logit.html">logit</a></code> and <code><a href="cloglog.html">cloglog</a></code> links available),
+<code><a href="negbinomial.html">negbinomial</a></code>,
+<code><a href="gamma2.html">gamma2</a></code>.
+Sometimes special arguments are required for <code>cqo()</code>, e.g.,
+<code>binomialff(multiple.responses = TRUE)</code>.
+</p>
+
+
+
+
+
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+
+<p>an optional data frame containing the variables in the model.
+By default the variables are taken from <code>environment(formula)</code>,
+typically the environment from which <code>cqo</code> is called.
+</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p> an optional vector or matrix of (prior) weights
+to be used in the fitting process.
+Currently, this argument should not be used.
+</p>
+</td></tr>
+<tr valign="top"><td><code>subset</code></td>
+<td>
+
+<p>an optional logical vector specifying a subset of
+observations to be used in the fitting process.
+</p>
+</td></tr>
+<tr valign="top"><td><code>na.action</code></td>
+<td>
+
+<p>a function which indicates what should happen when the data contain
+<code>NA</code>s.  The default is set by the <code>na.action</code> setting of
+<code><a href="../../base/html/options.html">options</a></code>, and is <code>na.fail</code> if that is unset.
+The &ldquo;factory-fresh&rdquo; default is <code>na.omit</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>etastart</code></td>
+<td>
+
+<p>starting values for the linear predictors.
+It is a <i>M</i>-column matrix.
+If <i>M = 1</i> then it may be a vector.
+Currently, this argument probably should not be used.
+</p>
+</td></tr>
+<tr valign="top"><td><code>mustart</code></td>
+<td>
+
+<p>starting values for the
+fitted values. It can be a vector or a matrix.
+Some family functions do not make use of this argument.
+Currently, this argument probably should not be used.
+</p>
+</td></tr>
+<tr valign="top"><td><code>coefstart</code></td>
+<td>
+
+<p>starting values for the
+coefficient vector.
+Currently, this argument probably should not be used.
+</p>
+</td></tr>
+<tr valign="top"><td><code>control</code></td>
+<td>
+
+<p>a list of parameters for controlling the fitting process.
+See <code><a href="qrrvglm.control.html">qrrvglm.control</a></code> for details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>offset</code></td>
+<td>
+
+<p>This argument must not be used.
+</p>
+
+
+
+
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+
+<p>the method to be used in fitting the model.
+The default (and presently only) method <code>cqo.fit</code>
+uses <em>iteratively reweighted least squares</em> (IRLS).
+</p>
+</td></tr>
+<tr valign="top"><td><code>model</code></td>
+<td>
+
+<p>a logical value indicating whether the <em>model frame</em>
+should be assigned in the <code>model</code> slot.
+</p>
+</td></tr>
+<tr valign="top"><td><code>x.arg, y.arg</code></td>
+<td>
+
+<p>logical values indicating whether
+the model matrix and response matrix used in the fitting
+process should be assigned in the <code>x</code> and <code>y</code> slots.
+Note the model matrix is the LM model matrix.
+</p>
+
+
+
+</td></tr>
+<tr valign="top"><td><code>contrasts</code></td>
+<td>
+
+<p>an optional list. See the <code>contrasts.arg</code>
+of <code>model.matrix.default</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>constraints</code></td>
+<td>
+
+<p>an optional list  of constraint matrices.
+The components of the list must be named with the term it corresponds
+to (and it must match in character format).
+Each constraint matrix must have <i>M</i> rows, and be of full-column
+rank. By default, constraint matrices are the <i>M</i> by <i>M</i>
+identity
+matrix unless arguments in the family function itself override these values.
+If <code>constraints</code> is used it must contain <em>all</em> the
+terms; an incomplete list is not accepted.
+Constraint matrices for <i>x_2</i> variables are taken as the
+identity matrix.
+</p>
+</td></tr>
+<tr valign="top"><td><code>extra</code></td>
+<td>
+
+<p>an optional list with any extra information that might be needed
+by the family function.
+</p>
+</td></tr>
+</table>
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>smart</code></td>
+<td>
+
+<p>logical value indicating whether smart prediction
+(<code><a href="smartpred.html">smartpred</a></code>) will be used.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>further arguments passed into <code><a href="qrrvglm.control.html">qrrvglm.control</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>QRR-VGLMs or <em>constrained quadratic ordination</em> (CQO) models
+are estimated here by maximum likelihood estimation. Optimal linear
+combinations of the environmental variables are computed, called
+<em>latent variables</em> (these appear as <code>latvar</code> for <i>R=1</i>
+else <code>latvar1</code>, <code>latvar2</code>, etc. in the output).  Here, <i>R</i>
+is the <em>rank</em> or the number of ordination axes.  Each species'
+response is then a regression of these latent variables using quadratic
+polynomials on a transformed scale (e.g., log for Poisson counts, logit
+for presence/absence responses).  The solution is obtained iteratively
+in order to maximize the log-likelihood function, or equivalently,
+minimize the deviance.
+</p>
+<p>The central formula (for Poisson and binomial species data) is
+given by
+</p>
+<p style="text-align: center;"><i>
+         eta = B_1^T x_1 + A nu +
+         sum_{m=1}^M (nu^T D_m nu) e_m</i></p>
+
+<p>where <i>x_1</i> is a vector (usually just a 1 for an intercept),
+<i>x_2</i> is a vector of environmental variables, <i>nu=C^T x_2</i> is a <i>R</i>-vector of latent variables, <i>e_m</i> is
+a vector of 0s but with a 1 in the <i>m</i>th position.
+The <i>eta</i> are a vector of linear/additive predictors,
+e.g., the <i>m</i>th element is <i>eta_m =
+  log(E[Y_m])</i> for the <i>m</i>th species.  The matrices <i>B_1</i>,
+<i>A</i>, <i>C</i> and <i>D_m</i> are estimated from the data, i.e.,
+contain the regression coefficients.  The tolerance matrices
+satisfy <i>T_s = -(0.5 D_s^(-1)</i>.
+Many important CQO details are directly related to arguments
+in <code><a href="qrrvglm.control.html">qrrvglm.control</a></code>, e.g., the argument <code>noRRR</code>
+specifies which variables comprise <i>x_1</i>.
+</p>
+<p>Theoretically, the four most popular <span class="pkg">VGAM</span> family functions
+to be used with <code>cqo</code> correspond to the Poisson, binomial,
+normal, and negative binomial distributions. The latter is a
+2-parameter model. All of these are implemented, as well as the
+2-parameter gamma. 
+</p>
+
+
+
+
+
+
+
+
+
+
+<p>For initial values, the function <code>.Init.Poisson.QO</code> should
+work reasonably well if the data is Poisson with species having equal
+tolerances.  It can be quite good on binary data too.  Otherwise the
+<code>Cinit</code> argument in <code><a href="qrrvglm.control.html">qrrvglm.control</a></code> can be used.
+</p>
+
+<p>It is possible to relax the quadratic form to an additive model.  The
+result is a data-driven approach rather than a model-driven approach,
+so that CQO is extended to <em>constrained additive ordination</em>
+(CAO) when <i>R=1</i>.  See <code><a href="cao.html">cao</a></code> for more details.
+</p>
+<p>In this documentation, <i>M</i> is the number of linear predictors,
+<i>S</i> is the number of responses (species). Then
+<i>M=S</i> for Poisson and binomial species data,
+and <i>M=2S</i> for negative binomial and gamma distributed species data.
+</p>
+<p>Incidentally,
+<em>Unconstrained quadratic ordination</em> (UQO)
+may be performed by, e.g., fitting a Goodman's RC association model;
+see <code><a href="grc.html">uqo</a></code> and the Yee and Hadi (2014) referenced there.
+For UQO, the response is the usual site-by-species matrix and
+there are no environmental variables;
+the site scores are free parameters.
+UQO can be performed under the assumption that all species
+have the same tolerance matrices.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"qrrvglm"</code>.
+</p>
+
+
+
+
+
+<h3>Warning </h3>
+
+<p>Local solutions are not uncommon when fitting CQO models.  To increase
+the chances of obtaining the global solution, increase the value
+of the argument <code>Bestof</code> in <code><a href="qrrvglm.control.html">qrrvglm.control</a></code>.
+For reproducibility of the results, it pays to set a different
+random number seed before calling <code>cqo</code> (the function
+<code><a href="../../base/html/Random.html">set.seed</a></code> does this).  The function <code>cqo</code>
+chooses initial values for <b>C</b> using <code>.Init.Poisson.QO()</code>
+if <code>Use.Init.Poisson.QO = TRUE</code>, else random numbers.
+</p>
+<p>Unless <code>I.tolerances = TRUE</code> or <code>eq.tolerances = FALSE</code>,
+CQO is computationally expensive with memory and time.
+It pays to keep the rank down to 1
+or 2.  If <code>eq.tolerances = TRUE</code> and <code>I.tolerances = FALSE</code> then
+the cost grows quickly with the number of species and sites (in terms of
+memory requirements and time).  The data needs to conform quite closely
+to the statistical model, and the environmental range of the data should
+be wide in order for the quadratics to fit the data well (bell-shaped
+response surfaces).  If not, RR-VGLMs will be more appropriate because
+the response is linear on the transformed scale (e.g., log or logit)
+and the ordination is called <em>constrained linear ordination</em> or CLO.
+</p>
+<p>Like many regression models, CQO is sensitive to outliers (in the
+environmental and species data), sparse data, high leverage points,
+multicollinearity etc.  For these reasons, it is necessary to examine
+the data carefully for these features and take corrective action
+(e.g., omitting certain species, sites, environmental variables from
+the analysis, transforming certain environmental variables, etc.).
+Any optimum lying outside the convex hull of the site scores should not
+be trusted.  Fitting a CAO is recommended first, then upon transformations
+etc., possibly a CQO can be fitted.
+</p>
+<p>For binary data, it is necessary to have &lsquo;enough&rsquo; data.  In general,
+the number of sites <i>n</i> ought to be much larger than the number of
+species <em>S</em>, e.g., at least 100 sites for two species. Compared
+to count (Poisson) data, numerical problems occur more frequently
+with presence/absence (binary) data.  For example, if <code>Rank = 1</code>
+and if the response data for each species is a string of all absences,
+then all presences, then all absences (when enumerated along the latent
+variable) then infinite parameter estimates will occur.  In general,
+setting <code>I.tolerances = TRUE</code> may help.
+</p>
+<p>This function was formerly called <code>cgo</code>. It has been renamed to
+reinforce a new nomenclature described in Yee (2006).
+</p>
+
+
+<h3>Note</h3>
+
+<p>The input requires care, preparation and
+thought&mdash;<em>a lot more</em> than other ordination methods.
+Here is a partial <b>checklist</b>.
+</p>
+
+<dl>
+<dt>(1)</dt><dd>
+<p>The number of species should be kept reasonably low, e.g., 12 max.
+Feeding in 100+ species wholesale is a recipe for failure.
+Choose a few species carefully.
+Using 10 well-chosen species is better than 100+ species thrown in
+willy-nilly.
+</p>
+</dd>
+<dt>(2)</dt><dd>
+<p>Each species should be screened individually first, e.g.,
+for presence/absence is the species totally absent or totally present
+at all sites?
+For presence/absence data <code>sort(colMeans(data))</code> can help
+avoid such species.
+</p>
+</dd>
+<dt>(3)</dt><dd>
+<p>The number of explanatory variables should be kept low,
+e.g., 7 max.
+</p>
+</dd>
+<dt>(4)</dt><dd>
+<p>Each explanatory variable should be screened individually first, e.g.,
+is it heavily skewed or are there outliers?
+They should be plotted and then transformed where needed.
+They should not be too highly correlated with each other.
+</p>
+</dd>
+<dt>(5)</dt><dd>
+<p>Each explanatory variable should be scaled, e.g.,
+to mean 0 and unit variance.
+This is especially needed for <code>I.tolerance = TRUE</code>.
+</p>
+</dd>
+<dt>(6)</dt><dd>
+<p>Keep the rank low.
+Only if the data is very good should a rank-2 model be attempted.
+Usually a rank-1 model is all that is practically possible even
+after a lot of work.
+The rank-1 model should always be attempted first.
+Then might be clever and try use this for initial values for
+a rank-2 model.
+</p>
+</dd>
+<dt>(7)</dt><dd>
+<p>If the number of sites is large then choose a random sample of them.
+For example, choose a maximum of 500 sites.
+This will reduce the memory and time expense of the computations.
+</p>
+</dd>
+<dt>(8)</dt><dd>
+<p>Try <code>I.tolerance = TRUE</code> or <code>eq.tolerance = FALSE</code>
+if the inputted data set is large,
+so as to reduce the computational expense.
+That's because the default, <code>I.tolerance = FALSE</code> and
+<code>eq.tolerance = TRUE</code>, is very memory hungry.
+</p>
+</dd>
+</dl>
+
+<p>By default, a rank-1 equal-tolerances QRR-VGLM model is fitted
+(see <code><a href="qrrvglm.control.html">qrrvglm.control</a></code> for the default control
+parameters).
+If <code>Rank &gt; 1</code> then the latent variables are always transformed
+so that they are uncorrelated.
+By default, the argument <code>trace</code> is <code>TRUE</code> meaning a running
+log is printed out while the computations are taking place.  This is
+because the algorithm is computationally expensive, therefore users
+might think that their computers have frozen if <code>trace = FALSE</code>!
+</p>
+<p>The argument <code>Bestof</code> in <code><a href="qrrvglm.control.html">qrrvglm.control</a></code> controls
+the number of models fitted (each uses different starting values) to
+the data. This argument is important because convergence may be to a
+<em>local</em> solution rather than the <em>global</em> solution. Using
+more starting values increases the chances of finding the global
+solution.  Always plot an ordination diagram (use the generic function
+<code><a href="lvplot.html">lvplot</a></code>) and see if it looks sensible.  Local solutions
+arise because the optimization problem is highly nonlinear, and this is
+particularly true for CAO.
+</p>
+
+
+
+
+
+
+
+
+<p>Many of the arguments applicable to <code>cqo</code> are common to
+<code><a href="vglm.html">vglm</a></code> and <code><a href="rrvglm.control.html">rrvglm.control</a></code>.
+The most important arguments are
+<code>Rank</code>,
+<code>noRRR</code>,
+<code>Bestof</code>,
+<code>I.tolerances</code>,
+<code>eq.tolerances</code>,
+<code>isd.latvar</code>, and
+<code>MUXfactor</code>.
+</p>
+<p>When fitting a 2-parameter model such as the negative binomial
+or gamma, it pays to have <code>eq.tolerances = TRUE</code> and
+<code>I.tolerances = FALSE</code>. This is because numerical problems can
+occur when fitting the model far away from the global solution when
+<code>I.tolerances = TRUE</code>. Setting the two arguments as described will
+slow down the computation considerably, however it is numerically
+more stable.
+</p>
+<p>In Example 1 below, an unequal-tolerances rank-1 QRR-VGLM is fitted to the
+hunting spiders dataset, and
+Example 2 is the equal-tolerances version. The latter is less likely to
+have convergence problems compared to the unequal-tolerances model.
+In Example 3 below, an equal-tolerances rank-2 QRR-VGLM is fitted to the
+hunting spiders dataset.
+The numerical difficulties encountered in fitting the rank-2 model
+suggests a rank-1 model is probably preferable.
+In Example 4 below, constrained binary quadratic ordination (in old
+nomenclature, constrained Gaussian logit ordination) is fitted to some
+simulated data coming from a species packing model.
+With multivariate binary responses, one must
+use <code>multiple.responses = TRUE</code> to
+indicate that the response (matrix) is multivariate. Otherwise, it is
+interpreted as a single binary response variable.
+In Example 5 below, the deviance residuals are plotted for each species.
+This is useful as a diagnostic plot.
+This is done by (re)regressing each species separately against the latent
+variable.
+</p>
+<p>Sometime in the future, this function might handle input of the form
+<code>cqo(x, y)</code>, where <code>x</code> and <code>y</code> are matrices containing
+the environmental and species data respectively.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Thomas W. Yee.
+Thanks to Alvin Sou for converting a lot of the
+original FORTRAN code into C.
+</p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. (2004)
+A new technique for maximum-likelihood
+canonical Gaussian ordination.
+<em>Ecological Monographs</em>,
+<b>74</b>, 685&ndash;701.
+</p>
+<p>ter Braak, C. J. F. and Prentice, I. C. (1988)
+A theory of gradient analysis.
+<em>Advances in Ecological Research</em>,
+<b>18</b>, 271&ndash;317.
+</p>
+
+
+
+
+<p>Yee, T. W. (2006)
+Constrained additive ordination.
+<em>Ecology</em>, <b>87</b>, 203&ndash;213.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="qrrvglm.control.html">qrrvglm.control</a></code>,
+<code><a href="Coef.qrrvglm.html">Coef.qrrvglm</a></code>,
+<code><a href="predictqrrvglm.html">predictqrrvglm</a></code>,
+<code><a href="calibrate.qrrvglm.html">calibrate.qrrvglm</a></code>,
+<code><a href="model.matrixqrrvglm.html">model.matrixqrrvglm</a></code>,
+<code><a href="vcovvlm.html">vcovqrrvglm</a></code>,
+<code><a href="rcqo.html">rcqo</a></code>,
+<code><a href="cao.html">cao</a></code>,
+<code><a href="grc.html">uqo</a></code>,
+<code><a href="rrvglm.html">rrvglm</a></code>,
+<code><a href="poissonff.html">poissonff</a></code>,
+<code><a href="binomialff.html">binomialff</a></code>,
+<code><a href="negbinomial.html">negbinomial</a></code>,
+<code><a href="gamma2.html">gamma2</a></code>,
+<code><a href="lvplot.qrrvglm.html">lvplot.qrrvglm</a></code>,
+<code><a href="persp.qrrvglm.html">perspqrrvglm</a></code>,
+<code><a href="trplot.qrrvglm.html">trplot.qrrvglm</a></code>,
+<code><a href="vglm.html">vglm</a></code>,
+<code><a href="../../base/html/Random.html">set.seed</a></code>,
+<code><a href="hspider.html">hspider</a></code>,
+<code><a href="../../VGAMdata/html/trapO.html">trapO</a></code>.
+</p>
+
+
+
+
+
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# Example 1; Fit an unequal tolerances model to the hunting spiders data
+hspider[,1:6] &lt;- scale(hspider[,1:6])  # Standardized environmental variables
+set.seed(1234)  # For reproducibility of the results
+p1ut &lt;- cqo(cbind(Alopacce, Alopcune, Alopfabr, Arctlute, Arctperi,
+                  Auloalbi, Pardlugu, Pardmont, Pardnigr, Pardpull,
+                  Trocterr, Zoraspin) ~
+            WaterCon + BareSand + FallTwig + CoveMoss + CoveHerb + ReflLux,
+            fam = poissonff, data = hspider, Crow1positive = FALSE,
+            eq.tol = FALSE)
+sort(deviance(p1ut, history = TRUE))  # A history of all the iterations
+if (deviance(p1ut) &gt; 1177) warning("suboptimal fit obtained")
+
+S &lt;- ncol(depvar(p1ut))  # Number of species
+clr &lt;- (1:(S+1))[-7]  # Omits yellow
+lvplot(p1ut, y = TRUE, lcol = clr, pch = 1:S, pcol = clr,
+       las = 1)  # Ordination diagram
+legend("topright", leg = colnames(depvar(p1ut)), col = clr,
+       pch = 1:S, merge = TRUE, bty = "n", lty = 1:S, lwd = 2)
+(cp &lt;- Coef(p1ut))
+
+(a &lt;- latvar(cp)[cp@latvar.order])  # Ordered site scores along the gradient
+# Names of the ordered sites along the gradient:
+rownames(latvar(cp))[cp@latvar.order]
+(aa &lt;- Opt(cp)[, cp@Optimum.order])  # Ordered optimums along the gradient
+aa &lt;- aa[!is.na(aa)]  # Delete the species that is not unimodal
+names(aa)  # Names of the ordered optimums along the gradient
+
+trplot(p1ut, which.species = 1:3, log = "xy", type = "b", lty = 1, lwd = 2,
+       col = c("blue","red","green"), label = TRUE) -&gt; ii  # Trajectory plot
+legend(0.00005, 0.3, paste(ii$species[, 1], ii$species[, 2], sep = " and "),
+       lwd = 2, lty = 1, col = c("blue", "red", "green"))
+abline(a = 0, b = 1, lty = "dashed")
+
+S &lt;- ncol(depvar(p1ut))  # Number of species
+clr &lt;- (1:(S+1))[-7]  # Omits yellow
+persp(p1ut, col = clr, label = TRUE, las = 1)  # Perspective plot
+
+
+# Example 2; Fit an equal tolerances model. Less numerically fraught.
+set.seed(1234)
+p1et &lt;- cqo(cbind(Alopacce, Alopcune, Alopfabr, Arctlute, Arctperi,
+                  Auloalbi, Pardlugu, Pardmont, Pardnigr, Pardpull,
+                  Trocterr, Zoraspin) ~
+            WaterCon + BareSand + FallTwig + CoveMoss + CoveHerb + ReflLux,
+            poissonff, data = hspider, Crow1positive = FALSE)
+sort(deviance(p1et, history = TRUE))  # A history of all the iterations
+if (deviance(p1et) &gt; 1586) warning("suboptimal fit obtained")
+S &lt;- ncol(depvar(p1et))  # Number of species
+clr &lt;- (1:(S+1))[-7]  # Omits yellow
+persp(p1et, col = clr, label = TRUE, las = 1)
+
+
+# Example 3: A rank-2 equal tolerances CQO model with Poisson data
+# This example is numerically fraught... need I.toler = TRUE too.
+set.seed(555)
+p2 &lt;- cqo(cbind(Alopacce, Alopcune, Alopfabr, Arctlute, Arctperi,
+                Auloalbi, Pardlugu, Pardmont, Pardnigr, Pardpull,
+                Trocterr, Zoraspin) ~
+          WaterCon + BareSand + FallTwig + CoveMoss + CoveHerb + ReflLux,
+          poissonff, data = hspider, Crow1positive = FALSE,
+          I.toler = TRUE, Rank = 2, Bestof = 3, isd.latvar = c(2.1, 0.9))
+sort(deviance(p2, history = TRUE))  # A history of all the iterations
+if (deviance(p2) &gt; 1127) warning("suboptimal fit obtained")
+lvplot(p2, ellips = FALSE, label = TRUE, xlim = c(-3,4),
+       C = TRUE, Ccol = "brown", sites = TRUE, scol = "grey",
+       pcol = "blue", pch = "+", chull = TRUE, ccol = "grey")
+
+
+# Example 4: species packing model with presence/absence data
+set.seed(2345)
+n &lt;- 200; p &lt;- 5; S &lt;- 5
+mydata &lt;- rcqo(n, p, S, fam = "binomial", hi.abundance = 4,
+               eq.tol = TRUE, es.opt = TRUE, eq.max = TRUE)
+myform &lt;- attr(mydata, "formula")
+set.seed(1234)
+b1et &lt;- cqo(myform, binomialff(multiple.responses = TRUE, link = "cloglog"),
+            data = mydata)
+sort(deviance(b1et, history = TRUE))  # A history of all the iterations
+lvplot(b1et, y = TRUE, lcol = 1:S, pch = 1:S, pcol = 1:S, las = 1)
+Coef(b1et)
+
+# Compare the fitted model with the 'truth'
+cbind(truth = attr(mydata, "concoefficients"), fitted = concoef(b1et))
+
+
+# Example 5: Plot the deviance residuals for diagnostic purposes
+set.seed(1234)
+p1et &lt;- cqo(cbind(Alopacce, Alopcune, Alopfabr, Arctlute, Arctperi,
+                  Auloalbi, Pardlugu, Pardmont, Pardnigr, Pardpull,
+                  Trocterr, Zoraspin) ~
+            WaterCon + BareSand + FallTwig + CoveMoss + CoveHerb + ReflLux,
+            poissonff, data = hspider, eq.tol = TRUE, trace = FALSE)
+sort(deviance(p1et, history = TRUE))  # A history of all the iterations
+if (deviance(p1et) &gt; 1586) warning("suboptimal fit obtained")
+S &lt;- ncol(depvar(p1et))
+par(mfrow = c(3, 4))
+for (ii in 1:S) {
+  tempdata &lt;- data.frame(latvar1 = c(latvar(p1et)),
+                         sppCounts = depvar(p1et)[, ii])
+  tempdata &lt;- transform(tempdata, myOffset = -0.5 * latvar1^2)
+
+# For species ii, refit the model to get the deviance residuals
+  fit1 &lt;- vglm(sppCounts ~ offset(myOffset) + latvar1, poissonff,
+               data = tempdata, trace = FALSE)
+
+# For checking: this should be 0
+# print("max(abs(c(Coef(p1et)@B1[1,ii],Coef(p1et)@A[ii,1])-coef(fit1)))")
+# print( max(abs(c(Coef(p1et)@B1[1,ii],Coef(p1et)@A[ii,1])-coef(fit1))) )
+
+# Plot the deviance residuals
+  devresid &lt;- resid(fit1, type = "deviance")
+  predvalues &lt;- predict(fit1) + fit1@offset
+  ooo &lt;- with(tempdata, order(latvar1))
+  plot(predvalues + devresid ~ latvar1, data = tempdata, col = "red",
+       xlab = "latvar1", ylab = "", main = colnames(depvar(p1et))[ii])
+  with(tempdata, lines(latvar1[ooo], predvalues[ooo], col = "blue"))
+}
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

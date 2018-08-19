@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Pareto(IV/III/II) Distribution Family Functions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for paretoIV {VGAM}"><tr><td>paretoIV {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Pareto(IV/III/II) Distribution Family Functions </h2>
+
+<h3>Description</h3>
+
+<p>Estimates three of the parameters of the Pareto(IV) distribution
+by maximum likelihood estimation. Some special cases of this
+distribution are also handled.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+paretoIV(location = 0, lscale = "loge", linequality = "loge", lshape = "loge",
+         iscale = 1, iinequality = 1, ishape = NULL, imethod = 1)
+paretoIII(location = 0, lscale = "loge", linequality = "loge",
+          iscale = NULL, iinequality = NULL)
+paretoII(location = 0, lscale = "loge", lshape = "loge",
+         iscale = NULL, ishape = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>location</code></td>
+<td>
+
+<p>Location parameter, called <i>a</i> below.
+It is assumed known.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lscale, linequality, lshape</code></td>
+<td>
+
+<p>Parameter link functions for the
+scale parameter (called <i>b</i> below),
+inequality parameter (called <i>g</i> below), and
+shape parameter (called <i>s</i> below).
+See <code><a href="Links.html">Links</a></code> for more choices.
+A log link is the default for all because all these parameters are
+positive.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iscale, iinequality, ishape</code></td>
+<td>
+
+<p>Initial values for the parameters.
+A <code>NULL</code> value means that it is obtained internally.
+If convergence failure occurs, use these arguments to input
+some alternative initial values.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod</code></td>
+<td>
+
+<p>Method of initialization for the shape parameter.
+Currently only values 1 and 2 are available.
+Try the other value if convergence failure occurs.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The Pareto(IV) distribution, which is used in actuarial science,
+economics, finance and telecommunications,
+has a cumulative distribution function that can be written
+</p>
+<p style="text-align: center;"><i>
+        F(y) = 1 - [1 + ((y-a)/b)^(1/g)]^(-s)</i></p>
+
+<p>for <i>y &gt; a</i>, <i>b&gt;0</i>, <i>g&gt;0</i> and <i>s&gt;0</i>.
+The <i>a</i> is called the <em>location</em> parameter,
+<i>b</i> the <em>scale</em> parameter,
+<i>g</i> the <em>inequality</em> parameter, and
+<i>s</i> the <em>shape</em> parameter.
+</p>
+<p>The location parameter is assumed known otherwise the
+Pareto(IV) distribution will not be a regular family.
+This assumption is not too restrictive in modelling
+because in typical applications this parameter is known,
+e.g., in insurance and reinsurance it is pre-defined by
+a contract and can be represented as a deductible or a
+retention level.
+</p>
+<p>The inequality parameter is so-called because of its
+interpretation in the economics context. If we choose a
+unit shape parameter value and a zero location parameter
+value then the inequality parameter is the Gini index of
+inequality, provided <i>g&lt;=1</i>.
+</p>
+<p>The fitted values are currently the median, e.g.,
+<code><a href="paretoIVUC.html">qparetoIV</a></code> is used for <code>paretoIV()</code>.
+</p>
+
+
+
+
+
+
+
+
+
+<p>There are a number of special cases of the Pareto(IV) distribution.
+These include the Pareto(I), Pareto(II), Pareto(III), and Burr family
+of distributions.
+Denoting <i>PIV(a,b,g,s)</i> as the Pareto(IV) distribution,
+the Burr distribution <i>Burr(b,g,s)</i> is <i>PIV(a=0,b,1/g,s)</i>,
+the Pareto(III) distribution <i>PIII(a,b,g)</i> is <i>PIV(a,b,g,s=1)</i>,
+the Pareto(II) distribution <i>PII(a,b,s)</i> is <i>PIV(a,b,g=1,s)</i>,
+and
+the Pareto(I) distribution <i>PI(b,s)</i> is <i>PIV(b,b,g=1,s)</i>.
+Thus the Burr distribution can be fitted using the
+<code><a href="loge.html">negloge</a></code> link
+function and using the default <code>location=0</code> argument.
+The Pareto(I) distribution can be fitted using <code><a href="paretoff.html">paretoff</a></code>
+but there is a slight change in notation: <i>s=k</i> and
+<i>b=alpha</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>The Pareto(IV) distribution is very general,
+for example, special cases include the Pareto(I), Pareto(II),
+Pareto(III), and Burr family of distributions.
+[Johnson et al. (1994) says on p.19 that fitting Type IV by ML is
+very difficult and rarely attempted].
+Consequently, reasonably good initial values are recommended,
+and convergence to a local solution may occur. For this
+reason setting <code>trace=TRUE</code> is a good idea for monitoring
+the convergence.  Large samples are ideally required to get
+reasonable results.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <code>extra</code> slot of the fitted object has a component called
+<code>"location"</code> which stores the location parameter value(s).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Johnson N. L., Kotz S., and Balakrishnan N. (1994)
+<em>Continuous Univariate Distributions, Volume 1</em>,
+2nd ed.
+New York: Wiley.
+</p>
+<p>Brazauskas, V. (2003)
+Information matrix for Pareto(IV), Burr, and related distributions.
+<em>Comm. Statist. Theory and Methods</em>
+<b>32</b>, 315&ndash;325.
+</p>
+<p>Arnold, B. C. (1983)
+<em>Pareto Distributions</em>.
+Fairland, Maryland: International Cooperative Publishing House.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="paretoIVUC.html">ParetoIV</a></code>,
+<code><a href="paretoff.html">paretoff</a></code>,
+<code><a href="gpd.html">gpd</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+pdata &lt;- data.frame(y = rparetoIV(2000, scale = exp(1),
+                                  ineq = exp(-0.3), shape = exp(1)))
+## Not run: par(mfrow = c(2, 1))
+with(pdata, hist(y)); with(pdata, hist(log(y))) 
+## End(Not run)
+fit &lt;- vglm(y ~ 1, paretoIV, data = pdata, trace = TRUE)
+head(fitted(fit))
+summary(pdata)
+coef(fit, matrix = TRUE)
+Coef(fit)
+summary(fit)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

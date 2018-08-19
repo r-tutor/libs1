@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Cardioid Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cardioid {VGAM}"><tr><td>cardioid {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Cardioid Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Estimates the two parameters of the
+cardioid distribution by maximum likelihood estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cardioid(lmu = extlogit(min = 0, max = 2*pi),
+         lrho = extlogit(min = -0.5, max = 0.5),
+         imu = NULL, irho = 0.3, nsimEIM = 100, zero = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lmu, lrho</code></td>
+<td>
+
+<p>Parameter link functions applied to the <i>mu</i>
+and <i>rho</i> parameters, respectively.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imu, irho</code></td>
+<td>
+
+<p>Initial values.
+A <code>NULL</code> means an initial value is chosen internally.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>nsimEIM, zero</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The two-parameter cardioid distribution
+has a density that can be written as
+</p>
+<p style="text-align: center;"><i>
+        f(y;mu,rho) = (1 + 2*rho*cos(y-mu)) / (2*pi)</i></p>
+
+<p>where <i>0 &lt; y &lt; 2*pi</i>,
+<i>0 &lt; mu &lt; 2*pi</i>, and
+<i>-0.5 &lt; rho &lt; 0.5</i> is the concentration parameter.
+The default link functions enforce the range constraints
+of the parameters.
+</p>
+<p>For positive <i>&rho;</i> the distribution is unimodal and symmetric about
+<i>mu</i>.
+The mean of <i>Y</i> (which make up the fitted values) is
+<i>
+        pi + (rho/pi) ((2*pi-mu)*sin(2*pi-mu) +
+       cos(2*pi-mu) - mu*sin(mu) - cos(mu))</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+<code><a href="rrvglm.html">rrvglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>Numerically, this distribution can be difficult to fit because of a
+log-likelihood having multiple maximums.
+The user is therefore encouraged to try different starting values,
+i.e., make use of <code>imu</code> and <code>irho</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Fisher scoring using simulation is used.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Jammalamadaka, S. R. and SenGupta, A. (2001)
+<em>Topics in Circular Statistics</em>,
+Singapore: World Scientific.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="cardUC.html">rcard</a></code>,
+<code><a href="logit.html">extlogit</a></code>,
+<code><a href="vonmises.html">vonmises</a></code>.
+</p>
+<p><span class="pkg">CircStats</span> and <span class="pkg">circular</span> currently have a lot more
+R functions for circular data than the <span class="pkg">VGAM</span> package.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+cdata &lt;- data.frame(y = rcard(n = 1000, mu = 4, rho = 0.45))
+fit &lt;- vglm(y ~ 1, cardioid, data = cdata, trace = TRUE)
+coef(fit, matrix=TRUE)
+Coef(fit)
+c(with(cdata, mean(y)), head(fitted(fit), 1))
+summary(fit)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

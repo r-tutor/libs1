@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Expectiles of the Exponential Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Expectiles-Exponential {VGAM}"><tr><td>Expectiles-Exponential {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Expectiles of the Exponential Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Density function, distribution function, and
+expectile function and random generation for the distribution
+associated with the expectiles of an exponential distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+deexp(x, rate = 1, log = FALSE)
+peexp(q, rate = 1, lower.tail = TRUE, log.p = FALSE)
+qeexp(p, rate = 1, Maxit.nr = 10, Tol.nr = 1.0e-6,
+      lower.tail = TRUE, log.p = FALSE)
+reexp(n, rate = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, p, q</code></td>
+<td>
+
+<p>See <code><a href="eunifUC.html">deunif</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>n, rate, log</code></td>
+<td>
+
+<p>See <code><a href="../../stats/html/Exponential.html">rexp</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lower.tail, log.p</code></td>
+<td>
+
+<p>Same meaning as in <code><a href="../../stats/html/Exponential.html">pexp</a></code>
+or <code><a href="../../stats/html/Exponential.html">qexp</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>Maxit.nr, Tol.nr</code></td>
+<td>
+
+<p>See <code><a href="eunifUC.html">deunif</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>General details are given in <code><a href="eunifUC.html">deunif</a></code>
+including
+a note regarding the terminology used.
+Here,
+<code>exp</code> corresponds to the distribution of interest, <i>F</i>, and
+<code>eexp</code> corresponds to <i>G</i>.
+The addition of &ldquo;<code>e</code>&rdquo; is for the &lsquo;other&rsquo;
+distribution associated with the parent distribution.
+Thus
+<code>deexp</code> is for <i>g</i>,
+<code>peexp</code> is for <i>G</i>,
+<code>qeexp</code> is for the inverse of <i>G</i>,
+<code>reexp</code> generates random variates from <i>g</i>.
+</p>
+<p>For <code>qeexp</code> the Newton-Raphson algorithm is used to solve for
+<i>y</i> satisfying <i>p = G(y)</i>.
+Numerical problems may occur when values of <code>p</code> are
+very close to 0 or 1.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>deexp(x)</code> gives the density function <i>g(x)</i>.
+<code>peexp(q)</code> gives the distribution function <i>G(q)</i>.
+<code>qeexp(p)</code> gives the expectile function:
+the value <i>y</i> such that <i>G(y)=p</i>.
+<code>reexp(n)</code> gives <i>n</i> random variates from <i>G</i>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee and Kai Huang </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="eunifUC.html">deunif</a></code>,
+<code><a href="enormUC.html">denorm</a></code>,
+<code><a href="../../stats/html/Exponential.html">dexp</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+my.p &lt;- 0.25; y &lt;- rexp(nn &lt;- 1000)
+(myexp &lt;- qeexp(my.p))
+sum(myexp - y[y &lt;= myexp]) / sum(abs(myexp - y))  # Should be my.p
+
+## Not run:  par(mfrow = c(2,1))
+yy &lt;- seq(-0, 4, len = nn)
+plot(yy, deexp(yy),  col = "blue", ylim = 0:1, xlab = "y", ylab = "g(y)",
+     type = "l", main = "g(y) for Exp(1); dotted green is f(y) = dexp(y)")
+lines(yy, dexp(yy), col = "darkgreen", lty = "dotted", lwd = 2)  # 'original'
+
+plot(yy, peexp(yy), type = "l", col = "blue", ylim = 0:1,
+     xlab = "y", ylab = "G(y)", main = "G(y) for Exp(1)")
+abline(v = 1, h = 0.5, col = "red", lty = "dashed")
+lines(yy, pexp(yy), col = "darkgreen", lty = "dotted", lwd = 2) 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

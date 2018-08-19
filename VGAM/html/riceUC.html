@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Rice Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Rice {VGAM}"><tr><td>Rice {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The Rice Distribution</h2>
+
+<h3>Description</h3>
+
+<p>Density,
+distribution function, quantile function
+and random generation for the
+Rician distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+drice(x, sigma, vee, log = FALSE)
+price(q, sigma, vee, lower.tail = TRUE, log.p = FALSE, ...)
+qrice(p, sigma, vee, lower.tail = TRUE, log.p = FALSE, ...)
+rrice(n, sigma, vee)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>vector of probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of observations.
+Same as in <code><a href="../../stats/html/runif.html">runif</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>vee, sigma</code></td>
+<td>
+
+<p>See <code><a href="riceff.html">riceff</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Other arguments such as
+<code>lower.tail</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lower.tail, log.p</code></td>
+<td>
+
+<p>Same meaning as in <code><a href="../../stats/html/Normal.html">pnorm</a></code>
+or <code><a href="../../stats/html/Normal.html">qnorm</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>Logical.
+If <code>log = TRUE</code> then the logarithm of the density is returned.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <code><a href="riceff.html">riceff</a></code>, the <span class="pkg">VGAM</span> family function
+for estimating the two parameters,
+for the formula of the probability density function and other details.
+</p>
+<p>Formulas for <code>price()</code> and <code>qrice()</code> are based on the
+Marcum-Q function.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>drice</code> gives the density,
+<code>price</code> gives the distribution function,
+<code>qrice</code> gives the quantile function, and
+<code>rrice</code> generates random deviates.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee and Kai Huang </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="riceff.html">riceff</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run:  x &lt;- seq(0.01, 7, len = 201)
+plot(x, drice(x, vee = 0, sigma = 1), type = "n", las = 1,, ylab = "",
+     main = "Density of Rice distribution for various values of v")
+sigma &lt;- 1; vee &lt;- c(0, 0.5, 1, 2, 4)
+for (ii in 1:length(vee))
+  lines(x, drice(x, vee = vee[ii], sigma), col = ii)
+legend(x = 5, y = 0.6, legend = as.character(vee),
+       col = 1:length(vee), lty = 1)
+
+x &lt;- seq(0, 4, by = 0.01); vee &lt;- 1; sigma &lt;- 1
+probs &lt;- seq(0.05, 0.95, by = 0.05)
+plot(x, drice(x, vee = vee, sigma = sigma), type = "l", col = "blue",
+     main = "Blue is density, orange is cumulative distribution function",
+     ylim = c(0, 1), sub = "Purple are 5, 10, ..., 95 percentiles",
+     las = 1, ylab = "", cex.main = 0.9)
+abline(h = 0:1, col = "black", lty = 2)
+Q &lt;- qrice(probs, sigma, vee = vee)
+lines(Q, drice(qrice(probs, sigma, vee = vee),
+               sigma, vee = vee), col = "purple", lty = 3, type = "h")
+lines(x, price(x, sigma, vee = vee), type = "l", col = "orange")
+lines(Q, drice(Q, sigma, vee = vee), col = "purple", lty = 3, type = "h")
+lines(Q, price(Q, sigma, vee = vee), col = "purple", lty = 3, type = "h")
+abline(h = probs, col = "purple", lty = 3)
+max(abs(price(Q, sigma, vee = vee) - probs))  # Should be 0
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

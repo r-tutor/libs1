@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Gumbel-II Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gumbelII {VGAM}"><tr><td>gumbelII {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Gumbel-II Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Maximum likelihood estimation of the 2-parameter Gumbel-II distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gumbelII(lscale = "loge", lshape = "loge", iscale = NULL, ishape = NULL,
+         probs.y = c(0.2, 0.5, 0.8), perc.out = NULL, imethod = 1,
+         zero = "shape", nowarning = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>nowarning</code></td>
+<td>
+<p> Logical. Suppress a warning? </p>
+</td></tr>
+<tr valign="top"><td><code>lshape, lscale</code></td>
+<td>
+
+<p>Parameter link functions applied to the
+(positive) shape parameter (called <i>s</i> below) and
+(positive) scale parameter (called <i>b</i> below).
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+<p>Parameter link functions applied to the
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>ishape, iscale</code></td>
+<td>
+
+<p>Optional initial values for the shape and scale parameters.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod</code></td>
+<td>
+
+<p>See <code><a href="weibullR.html">weibullR</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero, probs.y</code></td>
+<td>
+
+<p>Details at <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>perc.out</code></td>
+<td>
+
+<p>If the fitted values are to be quantiles then set this
+argument to be the percentiles of these, e.g., 50 for median.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The Gumbel-II density for a response <i>Y</i> is
+</p>
+<p style="text-align: center;"><i>
+        f(y;b,s) = s y^(s-1) * exp(-(y/b)^s) / [b^s]</i></p>
+
+<p>for <i>b &gt; 0</i>, <i>s &gt; 0</i>, <i>y &gt; 0</i>.
+The cumulative distribution function is
+</p>
+<p style="text-align: center;"><i>
+        F(y;b,s) = exp(-(y/b)^(-s)).</i></p>
+
+<p>The mean of <i>Y</i> is <i>b * gamma(1 - 1/s)</i>
+(returned as the fitted values)
+when <i>s&gt;1</i>,
+and the variance is <i>b^2 * Gamma(1-2/s)</i> when
+<i>s&gt;2</i>.
+This distribution looks similar to <code><a href="weibullR.html">weibullR</a></code>, and is
+due to Gumbel (1954).
+</p>
+<p>This <span class="pkg">VGAM</span> family function currently does not handle censored data.
+Fisher scoring is used to estimate the two parameters.
+Probably similar regularity conditions hold for this distribution
+compared to the Weibull distribution.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>See <code><a href="weibullR.html">weibullR</a></code>.
+This <span class="pkg">VGAM</span> family function handles multiple responses.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Gumbel, E. J. (1954).
+Statistical theory of extreme values and some practical applications.
+<em>Applied Mathematics Series</em>, volume 33,
+U.S. Department of Commerce, National Bureau of Standards, USA.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="gumbelIIUC.html">dgumbelII</a></code>,
+<code><a href="gumbel.html">gumbel</a></code>,
+<code><a href="gev.html">gev</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+gdata &lt;- data.frame(x2 = runif(nn &lt;- 1000))
+gdata &lt;- transform(gdata, heta1  = +1,
+                          heta2  = -1 + 0.1 * x2,
+                          ceta1 =  0,
+                          ceta2 =  1)
+gdata &lt;- transform(gdata, shape1 = exp(heta1),
+                          shape2 = exp(heta2),
+                          scale1 = exp(ceta1),
+                          scale2 = exp(ceta2))
+gdata &lt;- transform(gdata,
+                   y1 = rgumbelII(nn, scale = scale1, shape = shape1),
+                   y2 = rgumbelII(nn, scale = scale2, shape = shape2))
+
+fit &lt;- vglm(cbind(y1, y2) ~ x2,
+            gumbelII(zero = c(1, 2, 3)), data = gdata, trace = TRUE)
+coef(fit, matrix = TRUE)
+vcov(fit)
+summary(fit)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

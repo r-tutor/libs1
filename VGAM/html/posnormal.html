@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Positive Normal Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for posnormal {VGAM}"><tr><td>posnormal {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Positive Normal Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Fits a positive (univariate) normal distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+posnormal(lmean = "identitylink", lsd = "loge",
+          eq.mean = FALSE, eq.sd = FALSE,
+          gmean = exp((-5:5)/2), gsd = exp((-1:5)/2),
+          imean = NULL, isd = NULL, probs.y = 0.10, imethod = 1,
+          nsimEIM = NULL, zero = "sd")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lmean, lsd</code></td>
+<td>
+
+<p>Link functions for the mean and standard
+deviation parameters of the usual univariate normal distribution.
+They are <i>mu</i> and <i>sigma</i> respectively.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gmean, gsd, imethod</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+<code>gmean</code> and <code>gsd</code>
+currently operate on a multiplicative scale, on the sample mean
+and the sample standard deviation, respectively.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imean, isd</code></td>
+<td>
+
+<p>Optional initial values for <i>mu</i> and <i>sigma</i>.
+A <code>NULL</code> means a value is computed internally.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>eq.mean, eq.sd</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+The fact that these arguments are supported results in
+default constraint matrices being a <em>permutation</em> of the
+identity matrix (effectively <em>trivial</em> constraints).
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero, nsimEIM, probs.y</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Details</h3>
+
+<p>The positive normal distribution is the ordinary normal distribution
+but with the probability of zero or less being zero.
+The rest of the probability density function is scaled up. Hence
+the probability density function can be written
+</p>
+<p style="text-align: center;"><i>
+        f(y) = (1/(sqrt(2*pi)*sigma)) * exp( -0.5 * (y-mu)^2/  sigma^2) /
+               [1-Phi(-mu/ sigma)] </i></p>
+
+<p>where <i>Phi</i> is the cumulative distribution function of a
+standard normal (<code><a href="../../stats/html/Normal.html">pnorm</a></code>).
+Equivalently, this is
+</p>
+<p style="text-align: center;"><i>
+        f(y) = (1/sigma) * dnorm((y-mu)/sigma) / [1-pnorm(-mu/ sigma)].</i></p>
+
+<p>where <i>dnorm()</i> is the probability density function of a
+standard normal distribution (<code><a href="../../stats/html/Normal.html">dnorm</a></code>).
+</p>
+<p>The mean of <i>Y</i> is
+</p>
+<p style="text-align: center;"><i>
+        E(Y) = mu + sigma * dnorm((y-mu)/sigma) / [1-pnorm(-mu/ sigma)]. </i></p>
+
+<p>This family function handles multiple responses.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>It is recommended that <code>trace = TRUE</code> be used to monitor convergence;
+sometimes the estimated mean is <code>-Inf</code> and the
+estimated mean standard deviation is <code>Inf</code>, especially
+when the sample size is small.
+Under- or over-flow may occur if the data is ill-conditioned.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The response variable for this family function is the same as
+<code><a href="uninormal.html">uninormal</a></code> except positive values are required.
+Reasonably good initial values are needed.
+</p>
+<p>The distribution of the reciprocal of a positive normal random variable
+is known as an alpha distribution.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="uninormal.html">uninormal</a></code>,
+<code><a href="tobit.html">tobit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+pdata &lt;- data.frame(Mean = 1.0, SD = exp(1.0))
+pdata &lt;- transform(pdata, y = rposnorm(n &lt;- 1000, m = Mean, sd = SD))
+
+## Not run: with(pdata, hist(y, prob = TRUE, border = "blue",
+  main = paste("posnorm(m =", Mean[1], ", sd =", round(SD[1], 2),")"))) 
+## End(Not run)
+fit &lt;- vglm(y ~ 1, posnormal, data = pdata, trace = TRUE)
+coef(fit, matrix = TRUE)
+(Cfit &lt;- Coef(fit))
+mygrid &lt;- with(pdata, seq(min(y), max(y), len = 200))  # Add the fit to the histogram
+## Not run: lines(mygrid, dposnorm(mygrid, Cfit[1], Cfit[2]), col = "orange")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

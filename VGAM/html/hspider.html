@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Hunting Spider Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for hspider {VGAM}"><tr><td>hspider {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Hunting Spider Data </h2>
+
+<h3>Description</h3>
+
+<p>Abundance of hunting spiders in a Dutch dune area.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>data(hspider)</pre>
+
+
+<h3>Format</h3>
+
+<p>A data frame with 28 observations (sites) on the following 18 variables.
+</p>
+
+<dl>
+<dt>WaterCon</dt><dd><p>Log percentage of soil dry mass.</p>
+</dd>
+<dt>BareSand</dt><dd><p>Log percentage cover of bare sand.</p>
+</dd>
+<dt>FallTwig</dt><dd><p>Log percentage cover of fallen leaves and twigs.</p>
+</dd>
+<dt>CoveMoss</dt><dd><p>Log percentage cover of the moss layer.</p>
+</dd>
+<dt>CoveHerb</dt><dd><p>Log percentage cover of the herb layer.</p>
+</dd>
+<dt>ReflLux</dt><dd><p>Reflection of the soil surface with cloudless sky.</p>
+</dd>
+<dt>Alopacce</dt><dd><p>Abundance of <em>Alopecosa accentuata</em>.</p>
+</dd>
+<dt>Alopcune</dt><dd><p>Abundance of <em>Alopecosa cuneata</em>.</p>
+</dd>
+<dt>Alopfabr</dt><dd><p>Abundance of <em>Alopecosa fabrilis</em>.</p>
+</dd>
+<dt>Arctlute</dt><dd><p>Abundance of <em>Arctosa lutetiana</em>.</p>
+</dd>
+<dt>Arctperi</dt><dd><p>Abundance of <em>Arctosa perita</em>.</p>
+</dd>
+<dt>Auloalbi</dt><dd><p>Abundance of <em>Aulonia albimana</em>.</p>
+</dd>
+<dt>Pardlugu</dt><dd><p>Abundance of <em>Pardosa lugubris</em>.</p>
+</dd>
+<dt>Pardmont</dt><dd><p>Abundance of <em>Pardosa monticola</em>.</p>
+</dd>
+<dt>Pardnigr</dt><dd><p>Abundance of <em>Pardosa nigriceps</em>.</p>
+</dd>
+<dt>Pardpull</dt><dd><p>Abundance of <em>Pardosa pullata</em>.</p>
+</dd>
+<dt>Trocterr</dt><dd><p>Abundance of <em>Trochosa terricola</em>.</p>
+</dd>
+<dt>Zoraspin</dt><dd><p>Abundance of <em>Zora spinimana</em>.</p>
+</dd>
+</dl>
+
+
+
+<h3>Details</h3>
+
+<p>The data, which originally came from Van der Aart and Smeek-Enserink
+(1975) consists of abundances (numbers trapped over a 60 week period)
+and 6 environmental variables. There were 28 sites.
+</p>
+<p>This data set has been often used to illustrate ordination, e.g., using
+canonical correspondence analysis (CCA). In the example below, the
+data is used for constrained quadratic ordination (CQO; formerly called
+canonical Gaussian ordination or CGO), a numerically intensive method
+that has many superior qualities.
+See <code><a href="cqo.html">cqo</a></code> for details.
+</p>
+
+
+<h3>References</h3>
+
+<p>Van der Aart, P. J. M. and Smeek-Enserink, N. (1975)
+Correlations between distributions of hunting spiders
+(Lycosidae, Ctenidae) and environmental characteristics
+in a dune area.
+<em>Netherlands Journal of Zoology</em>,
+<b>25</b>, 1&ndash;45.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+summary(hspider)
+
+## Not run: 
+# Standardize the environmental variables:
+hspider[, 1:6] &lt;- scale(subset(hspider, select = WaterCon:ReflLux))
+
+# Fit a rank-1 binomial CAO
+hsbin &lt;- hspider  # Binary species data
+hsbin[, -(1:6)] &lt;- as.numeric(hsbin[, -(1:6)] &gt; 0)
+set.seed(123)
+ahsb1 &lt;- cao(cbind(Alopcune, Arctlute, Auloalbi, Zoraspin) ~
+             WaterCon + ReflLux,
+             family = binomialff(multiple.responses = TRUE),
+             df1.nl = 2.2, Bestof = 3, data = hsbin)
+par(mfrow = 2:1, las = 1)
+lvplot(ahsb1, type = "predictors", llwd = 2, ylab = "logit p", lcol = 1:9)
+persp(ahsb1, rug = TRUE, col = 1:10, lwd = 2)
+coef(ahsb1)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

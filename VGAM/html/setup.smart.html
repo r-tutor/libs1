@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Smart Prediction Setup</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for setup.smart {VGAM}"><tr><td>setup.smart {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Smart Prediction Setup </h2>
+
+<h3>Description</h3>
+
+<p>Sets up smart prediction in one of two modes:
+<code>"write"</code> and <code>"read"</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+setup.smart(mode.arg, smart.prediction = NULL, max.smart = 30)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>mode.arg</code></td>
+<td>
+
+<p><code>mode.arg</code> must be <code>"write"</code> or <code>"read"</code>.  If in
+<code>"read"</code> mode then <code>smart.prediction</code> must be assigned the
+data structure <code>.smart.prediction</code> that was created while
+fitting. This is stored in <code>object@smart.prediction</code> or
+<code>object$smart.prediction</code> where
+<code>object</code> is the name of the fitted object.
+</p>
+</td></tr>
+<tr valign="top"><td><code>smart.prediction</code></td>
+<td>
+
+<p>If in <code>"read"</code> mode then <code>smart.prediction</code> must be assigned
+the list of data dependent parameters, which is stored
+on the fitted object.
+Otherwise, <code>smart.prediction</code> is ignored. 
+</p>
+</td></tr>
+<tr valign="top"><td><code>max.smart</code></td>
+<td>
+
+<p><code>max.smart</code> is the initial length of the list
+<code>.smart.prediction</code>. It is not important because
+<code>.smart.prediction</code> is made larger if needed.
+</p>
+</td></tr></table>
+
+
+<h3>Details</h3>
+
+<p>This function is only required by programmers writing a modelling
+function such as <code><a href="../../stats/html/lm.html">lm</a></code>
+and <code><a href="../../stats/html/glm.html">glm</a></code>, or a prediction functions of such,
+e.g., <code><a href="../../stats/html/predict.lm.html">predict.lm</a></code>.
+The function
+<code>setup.smart</code> operates by mimicking the operations of a
+first-in first-out stack (better known as a <em>queue</em>).
+</p>
+
+
+<h3>Value</h3>
+
+<p>Nothing is returned.
+</p>
+
+
+<h3>Side Effects</h3>
+
+<p>In <code>"write"</code> mode
+<code>.smart.prediction</code> in
+<code>smartpredenv</code>
+is assigned an empty list with <code>max.smart</code> components.
+In <code>"read"</code> mode
+<code>.smart.prediction</code> in
+<code>smartpredenv</code>
+is assigned <code>smart.prediction</code>.
+Then
+<code>.smart.prediction.counter</code> in
+<code>smartpredenv</code>
+is assigned the value 0, and
+<code>.smart.prediction.mode</code> and <code>.max.smart</code> are written to
+<code>smartpredenv</code> too.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/lm.html">lm</a></code>,
+<code><a href="../../stats/html/predict.lm.html">predict.lm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+setup.smart("write")  # Put at the beginning of lm
+
+## End(Not run)
+
+## Not run: # Put at the beginning of predict.lm
+setup.smart("read", smart.prediction = object$smart.prediction)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

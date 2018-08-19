@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Poisson Points Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for PoissonPoints {VGAM}"><tr><td>PoissonPoints {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Poisson Points Distribution</h2>
+
+<h3>Description</h3>
+
+<p>Density
+for the
+PoissonPoints distribution.
+</p>
+
+
+
+
+<h3>Usage</h3>
+
+<pre>
+dpois.points(x, lambda, ostatistic, dimension = 2, log = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>lambda</code></td>
+<td>
+
+<p>the mean density of points.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ostatistic</code></td>
+<td>
+
+<p>positive values, usually integers.
+</p>
+</td></tr>
+<tr valign="top"><td><code>dimension</code></td>
+<td>
+
+<p>Either 2 and/or 3.
+</p>
+</td></tr>
+</table>
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>Logical; if TRUE, the logarithm is returned.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <code><a href="poisson.points.html">poisson.points</a></code>, the <span class="pkg">VGAM</span> family function
+for estimating the parameters,
+for the formula of the probability density function and other details.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dpois.points</code> gives the density. 
+</p>
+
+
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="poisson.points.html">poisson.points</a></code>,
+<code><a href="../../stats/html/Poisson.html">dpois</a></code>,
+<code><a href="maxwellUC.html">Maxwell</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run:  lambda &lt;- 1; xvec &lt;- seq(0, 2, length = 400)
+plot(xvec, dpois.points(xvec, lambda, ostat = 1, dimension = 2),
+     type = "l", las = 1, col = "blue",
+     sub = "First order statistic",
+     main = paste("PDF of PoissonPoints distribution with lambda = ",
+                  lambda, " and on the plane", sep = "")) 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

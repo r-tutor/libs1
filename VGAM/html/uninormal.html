@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Univariate Normal Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for uninormal {VGAM}"><tr><td>uninormal {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Univariate Normal Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Maximum likelihood estimation of the two parameters of a univariate
+normal distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+uninormal(lmean = "identitylink", lsd = "loge", lvar = "loge",
+          var.arg = FALSE, imethod = 1, isd = NULL, parallel = FALSE,
+          smallno = 1e-05, zero = if (var.arg) "var" else "sd")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lmean, lsd, lvar</code></td>
+<td>
+
+<p>Link functions applied to the mean and standard deviation/variance.
+See <code><a href="Links.html">Links</a></code> for more choices.
+Being positive quantities, a log link is the default for the
+standard deviation and variance (see <code>var.arg</code>).
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>var.arg</code></td>
+<td>
+
+<p>Logical.
+If <code>TRUE</code> then the second parameter is the variance and
+<code>lsd</code> and <code>esd</code> are ignored,
+else the standard deviation is used
+and <code>lvar</code> and <code>evar</code> are ignored.
+</p>
+</td></tr>
+<tr valign="top"><td><code>smallno</code></td>
+<td>
+
+<p>Numeric, positive but close to 0.
+Used specifically for quasi-variances; if the link for the
+mean is <code><a href="explink.html">explink</a></code> then any non-positive value
+of <code>eta</code> is replaced by this quantity (hopefully,
+temporarily and only during early iterations).
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod, parallel, isd, zero</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+If <code>lmean = loge</code> then try <code>imethod = 2</code>.
+If <code>parallel = TRUE</code> then the parallelism constraint
+is not applied to the intercept.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This fits a linear model (LM) as the first linear/additive predictor.
+So, by default, this is just the mean.
+By default,
+the log of the standard deviation is the second linear/additive predictor.
+The Fisher information matrix is diagonal.
+This <span class="pkg">VGAM</span> family function can handle multiple responses.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Yet to do: allow an argument such as <code>eq.sd</code> that enables
+the standard devations to be the same.
+Also, this function used to be called <code>normal1()</code> too,
+but it has been decommissioned.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Forbes, C., Evans, M., Hastings, N. and Peacock, B. (2011)
+<em>Statistical Distributions</em>,
+Hoboken, NJ, USA: John Wiley and Sons, Fourth edition.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="posnormal.html">posnormal</a></code>,
+<code><a href="mix2normal.html">mix2normal</a></code>,
+<code><a href="ordsup.html">ordsup</a></code>,
+<code><a href="normal.vcm.html">normal.vcm</a></code>,
+<code><a href="QvarUC.html">Qvar</a></code>,
+<code><a href="tobit.html">tobit</a></code>,
+<code><a href="cens.normal.html">cens.normal</a></code>,
+<code><a href="foldnormal.html">foldnormal</a></code>,
+<code><a href="skewnormal.html">skewnormal</a></code>,
+<code><a href="double.cens.normal.html">double.cens.normal</a></code>,
+<code><a href="SURff.html">SURff</a></code>,
+<code><a href="AR1.html">AR1</a></code>,
+<code><a href="huber.html">huber2</a></code>,
+<code><a href="studentt.html">studentt</a></code>,
+<code><a href="binormal.html">binormal</a></code>,
+<code><a href="trinormal.html">trinormal</a></code>,
+<code><a href="../../stats/html/Normal.html">dnorm</a></code>,
+<code><a href="simulate.vlm.html">simulate.vlm</a></code>,
+<code><a href="hdeff.html">hdeff.vglm</a></code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+udata &lt;- data.frame(x2 = rnorm(nn &lt;- 200))
+udata &lt;- transform(udata,
+                   y1  = rnorm(nn, m = 1 - 3*x2, sd = exp(1 + 0.2*x2)),
+                   y2a = rnorm(nn, m = 1 + 2*x2, sd = exp(1 + 2.0*x2)^0.5),
+                   y2b = rnorm(nn, m = 1 + 2*x2, sd = exp(1 + 2.0*x2)^0.5))
+fit1 &lt;- vglm(y1 ~ x2, uninormal(zero = NULL), data = udata, trace = TRUE)
+coef(fit1, matrix = TRUE)
+fit2 &lt;- vglm(cbind(y2a, y2b) ~ x2, data = udata, trace = TRUE,
+             uninormal(var = TRUE, parallel = TRUE ~ x2,
+                       zero = NULL))
+coef(fit2, matrix = TRUE)
+
+# Generate data from N(mu = theta = 10, sigma = theta) and estimate theta.
+theta &lt;- 10
+udata &lt;- data.frame(y3 = rnorm(100, m = theta, sd = theta))
+fit3a &lt;- vglm(y3 ~ 1, uninormal(lsd = "identitylink"), data = udata,
+             constraints = list("(Intercept)" = rbind(1, 1)))
+fit3b &lt;- vglm(y3 ~ 1, uninormal(lsd = "identitylink", parallel = TRUE ~ 1,
+                                zero = NULL), data = udata)
+coef(fit3a, matrix = TRUE)
+coef(fit3b, matrix = TRUE)  # Same as fit3a
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

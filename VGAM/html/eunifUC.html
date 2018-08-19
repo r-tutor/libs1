@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Expectiles of the Uniform Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Expectiles-Uniform {VGAM}"><tr><td>Expectiles-Uniform {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Expectiles of the Uniform Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Density function, distribution function, and
+expectile function and random generation for the distribution
+associated with the expectiles of a uniform distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+deunif(x, min = 0, max = 1, log = FALSE)
+peunif(q, min = 0, max = 1, lower.tail = TRUE, log.p = FALSE)
+qeunif(p, min = 0, max = 1, Maxit.nr = 10, Tol.nr = 1.0e-6,
+       lower.tail = TRUE, log.p = FALSE)
+reunif(n, min = 0, max = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+
+<p>Vector of expectiles.
+See the terminology note below.
+</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+
+<p>Vector of probabilities. 
+These should lie in <i>(0,1)</i>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>n, min, max, log</code></td>
+<td>
+
+<p>See <code><a href="../../stats/html/Uniform.html">runif</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lower.tail, log.p</code></td>
+<td>
+
+<p>Same meaning as in <code><a href="../../stats/html/Uniform.html">punif</a></code>
+or <code><a href="../../stats/html/Uniform.html">qunif</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>Maxit.nr</code></td>
+<td>
+
+<p>Numeric.
+Maximum number of Newton-Raphson iterations allowed.
+A warning is issued if convergence is not obtained for all <code>p</code>
+values.
+</p>
+</td></tr>
+<tr valign="top"><td><code>Tol.nr</code></td>
+<td>
+
+<p>Numeric.
+Small positive value specifying the tolerance or precision to which
+the expectiles are computed.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Jones (1994) elucidated on the property that the expectiles
+of a random variable <i>X</i> with distribution function <i>F(x)</i>
+correspond to the
+quantiles of a distribution <i>G(x)</i> where
+<i>G</i> is related by an explicit formula to <i>F</i>.
+In particular, let <i>y</i> be the <i>p</i>-expectile of <i>F</i>.
+Then <i>y</i> is the <i>p</i>-quantile of <i>G</i>
+where
+</p>
+<p style="text-align: center;"><i>
+      p = G(y) = (P(y) - y F(y)) / (2[P(y) - y F(y)] + y -  mu),</i></p>
+
+<p>and
+<i>mu</i> is the mean of <i>X</i>.
+The derivative of <i>G</i> is
+</p>
+<p style="text-align: center;"><i>
+      g(y) = ( mu F(y) - P(y)) / (2[P(y) - y F(y)] + y -  mu)^2 .</i></p>
+
+<p>Here, <i>P(y)</i> is the partial moment
+<i>int^{y} x f(x) dx</i>
+and
+<i>0 &lt; p &lt; 1</i>.
+The 0.5-expectile is the mean <i>mu</i> and
+the 0.5-quantile  is the median.
+</p>
+<p>A note about the terminology used here.
+Recall in the <em>S</em> language there are the <code>dpqr</code>-type functions
+associated with a distribution, e.g.,
+<code><a href="../../stats/html/Uniform.html">dunif</a></code>,
+<code><a href="../../stats/html/Uniform.html">punif</a></code>,
+<code><a href="../../stats/html/Uniform.html">qunif</a></code>,
+<code><a href="../../stats/html/Uniform.html">runif</a></code>,
+for the uniform distribution.
+Here,
+<code>unif</code> corresponds to <i>F</i> and
+<code>eunif</code> corresponds to <i>G</i>.
+The addition of &ldquo;<code>e</code>&rdquo; (for <em>expectile</em>) is for the &lsquo;other&rsquo;
+distribution associated with the parent distribution.
+Thus
+<code>deunif</code> is for <i>g</i>,
+<code>peunif</code> is for <i>G</i>,
+<code>qeunif</code> is for the inverse of <i>G</i>,
+<code>reunif</code> generates random variates from <i>g</i>.
+</p>
+<p>For <code>qeunif</code> the Newton-Raphson algorithm is used to solve for
+<i>y</i> satisfying <i>p = G(y)</i>.
+Numerical problems may occur when values of <code>p</code> are
+very close to 0 or 1.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>deunif(x)</code> gives the density function <i>g(x)</i>.
+<code>peunif(q)</code> gives the distribution function <i>G(q)</i>.
+<code>qeunif(p)</code> gives the expectile function:
+the expectile <i>y</i> such that <i>G(y) = p</i>.
+<code>reunif(n)</code> gives <i>n</i> random variates from <i>G</i>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee and Kai Huang </p>
+
+
+<h3>References</h3>
+
+<p>Jones, M. C. (1994)
+Expectiles and M-quantiles are quantiles.
+<em>Statistics and Probability Letters</em>,
+<b>20</b>, 149&ndash;153.
+</p>
+<p>Yee, T. W. (2012)
+Vector generalized linear and additive
+quantile and expectile regression.
+<em>In preparation</em>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="eexpUC.html">deexp</a></code>,
+<code><a href="enormUC.html">denorm</a></code>,
+<code><a href="../../stats/html/Uniform.html">dunif</a></code>,
+<code><a href="sc.t2UC.html">dsc.t2</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+my.p &lt;- 0.25; y &lt;- runif(nn &lt;- 1000)
+(myexp &lt;- qeunif(my.p))
+sum(myexp - y[y &lt;= myexp]) / sum(abs(myexp - y))  # Should be my.p
+# Equivalently:
+I1 &lt;- mean(y &lt;= myexp) * mean( myexp - y[y &lt;= myexp])
+I2 &lt;- mean(y &gt;  myexp) * mean(-myexp + y[y &gt;  myexp])
+I1 / (I1 + I2)  # Should be my.p
+# Or:
+I1 &lt;- sum( myexp - y[y &lt;= myexp])
+I2 &lt;- sum(-myexp + y[y &gt;  myexp])
+
+# Non-standard uniform
+mymin &lt;- 1; mymax &lt;- 8
+yy &lt;- runif(nn, mymin, mymax)
+(myexp &lt;- qeunif(my.p, mymin, mymax))
+sum(myexp - yy[yy &lt;= myexp]) / sum(abs(myexp - yy))  # Should be my.p
+peunif(mymin, mymin, mymax)     #  Should be 0
+peunif(mymax, mymin, mymax)     #  Should be 1
+peunif(mean(yy), mymin, mymax)  #  Should be 0.5
+abs(qeunif(0.5, mymin, mymax) - mean(yy))  #  Should be 0
+abs(qeunif(0.5, mymin, mymax) - (mymin+mymax)/2)  #  Should be 0
+abs(peunif(myexp, mymin, mymax) - my.p)  #  Should be 0
+integrate(f = deunif, lower = mymin - 3, upper = mymax + 3,
+          min = mymin, max = mymax)  # Should be 1
+
+## Not run: 
+par(mfrow = c(2,1))
+yy &lt;- seq(0.0, 1.0, len = nn)
+plot(yy, deunif(yy), type = "l", col = "blue", ylim = c(0, 2),
+     xlab = "y", ylab = "g(y)", main = "g(y) for Uniform(0,1)")
+lines(yy, dunif(yy), col = "darkgreen", lty = "dotted", lwd = 2)  # 'original'
+
+plot(yy, peunif(yy), type = "l", col = "blue", ylim = 0:1,
+     xlab = "y", ylab = "G(y)", main = "G(y) for Uniform(0,1)")
+abline(a = 0.0, b = 1.0, col = "darkgreen", lty = "dotted", lwd = 2)
+abline(v = 0.5, h = 0.5, col = "red", lty = "dashed") 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Poisson Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for poissonff {VGAM}"><tr><td>poissonff {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Poisson Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Family function for a generalized linear model fitted to
+Poisson responses.
+</p>
+
+
+
+
+<h3>Usage</h3>
+
+<pre>
+poissonff(link = "loge", imu = NULL,
+          imethod = 1, parallel = FALSE, zero = NULL, bred = FALSE,
+          earg.link = FALSE, type.fitted = c("mean", "quantiles"),
+                       percentiles = c(25, 50, 75))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>link</code></td>
+<td>
+
+<p>Link function applied to the mean or means.
+See <code><a href="Links.html">Links</a></code> for more choices
+and information.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>parallel</code></td>
+<td>
+
+<p>A logical or formula. Used only if the response is a matrix.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imu, imethod</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>Can be an integer-valued vector specifying which linear/additive
+predictors
+are modelled as intercepts only.  The values must be from the set
+{1,2,...,<i>M</i>}, where <i>M</i> is the number of columns of the
+matrix response.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>bred, earg.link</code></td>
+<td>
+
+<p>Details at <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+Setting <code>bred = TRUE</code> should work for
+multiple responses and all <span class="pkg">VGAM</span> link functions;
+it has been tested for
+<code><a href="loge.html">loge</a></code>,
+<code><a href="../../base/html/identity.html">identity</a></code> but further testing is required.
+</p>
+</td></tr>
+<tr valign="top"><td><code>type.fitted, percentiles</code></td>
+<td>
+
+<p>Details at <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><i>M</i> defined above is the number of linear/additive predictors.
+With overdispersed data try <code><a href="negbinomial.html">negbinomial</a></code>.
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as
+<code><a href="vglm.html">vglm</a></code>,
+<code><a href="vgam.html">vgam</a></code>,
+<code><a href="rrvglm.html">rrvglm</a></code>,
+<code><a href="cqo.html">cqo</a></code>,
+and <code><a href="cao.html">cao</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>With multiple responses, assigning a known dispersion parameter
+for <em>each</em> response is not handled well yet.  Currently, only
+a single known dispersion parameter is handled well.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function will handle a matrix response automatically.
+</p>
+
+
+
+
+<p>Regardless of whether the dispersion parameter is to be estimated or
+not, its value can be seen from the output from the <code>summary()</code>
+of the object.
+</p>
+
+
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>McCullagh, P. and Nelder, J. A. (1989)
+<em>Generalized Linear Models</em>, 2nd ed. London: Chapman &amp; Hall.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="Links.html">Links</a></code>,
+<code><a href="hdeff.html">hdeff.vglm</a></code>,
+<code><a href="negbinomial.html">negbinomial</a></code>,
+<code><a href="genpoisson.html">genpoisson</a></code>,
+<code><a href="zipoisson.html">zipoisson</a></code>,
+<code><a href="pospoisson.html">pospoisson</a></code>,
+<code><a href="oipospoisson.html">oipospoisson</a></code>,
+<code><a href="otpospoisson.html">otpospoisson</a></code>,
+<code><a href="skellam.html">skellam</a></code>,
+<code><a href="mix2poisson.html">mix2poisson</a></code>,
+<code><a href="cens.poisson.html">cens.poisson</a></code>,
+<code><a href="ordpoisson.html">ordpoisson</a></code>,
+<code><a href="amlpoisson.html">amlpoisson</a></code>,
+<code><a href="inv.binomial.html">inv.binomial</a></code>,
+<code><a href="simulate.vlm.html">simulate.vlm</a></code>,
+<code><a href="loge.html">loge</a></code>,
+<code><a href="polf.html">polf</a></code>,
+<code><a href="rrvglm.html">rrvglm</a></code>,
+<code><a href="cqo.html">cqo</a></code>,
+<code><a href="cao.html">cao</a></code>,
+<code><a href="binomialff.html">binomialff</a></code>,
+<code><a href="../../stats/html/poisson.html">poisson</a></code>,
+<code><a href="../../stats/html/Poisson.html">Poisson</a></code>,
+<code><a href="poisson.points.html">poisson.points</a></code>,
+<code><a href="ruge.html">ruge</a></code>,
+<code><a href="V1.html">V1</a></code>,
+<code><a href="residualsvglm.html">residualsvglm</a></code>.
+</p>
+
+
+
+
+<h3>Examples</h3>
+
+<pre>
+poissonff()
+
+set.seed(123)
+pdata &lt;- data.frame(x2 = rnorm(nn &lt;- 100))
+pdata &lt;- transform(pdata, y1 = rpois(nn, exp(1 + x2)),
+                          y2 = rpois(nn, exp(1 + x2)))
+(fit1 &lt;- vglm(cbind(y1, y2) ~ x2, poissonff, data = pdata))
+(fit2 &lt;- vglm(y1 ~ x2, poissonff(bred = TRUE), data = pdata))
+coef(fit1, matrix = TRUE)
+coef(fit2, matrix = TRUE)
+
+nn &lt;- 200
+cdata &lt;- data.frame(x2 = rnorm(nn), x3 = rnorm(nn), x4 = rnorm(nn))
+cdata &lt;- transform(cdata, lv1 = 0 + x3 - 2*x4)
+cdata &lt;- transform(cdata, lambda1 = exp(3 - 0.5 *  (lv1-0)^2),
+                          lambda2 = exp(2 - 0.5 *  (lv1-1)^2),
+                          lambda3 = exp(2 - 0.5 * ((lv1+4)/2)^2))
+cdata &lt;- transform(cdata, y1 = rpois(nn, lambda1),
+                          y2 = rpois(nn, lambda2),
+                          y3 = rpois(nn, lambda3))
+## Not run:  lvplot(p1, y = TRUE, lcol = 2:4, pch = 2:4, pcol = 2:4, rug = FALSE) 
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

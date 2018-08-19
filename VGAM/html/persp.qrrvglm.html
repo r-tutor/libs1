@@ -1,0 +1,304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Perspective plot for QRR-VGLMs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for perspqrrvglm {VGAM}"><tr><td>perspqrrvglm {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Perspective plot for QRR-VGLMs </h2>
+
+<h3>Description</h3>
+
+<p>Produces a perspective plot for a CQO model (QRR-VGLM).  It is only
+applicable for rank-1 or rank-2 models with argument <code>noRRR = ~ 1</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+perspqrrvglm(x, varI.latvar = FALSE, refResponse = NULL, show.plot = TRUE,
+             xlim = NULL, ylim = NULL, zlim = NULL,
+             gridlength = if (Rank == 1) 301 else c(51,51),
+             which.species = NULL,
+             xlab = if (Rank == 1) "Latent Variable" else "Latent Variable 1",
+             ylab = if (Rank == 1) "Expected Value" else "Latent Variable 2",
+             zlab = "Expected value", labelSpecies = FALSE,
+             stretch = 1.05, main = "", ticktype = "detailed",
+             col = if (Rank == 1) par()$col else "white",
+             llty = par()$lty, llwd = par()$lwd,
+             add1 = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+
+<p>Object of class <code>"qrrvglm"</code>, i.e., a
+constrained quadratic ordination (CQO) object.
+</p>
+</td></tr>
+<tr valign="top"><td><code>varI.latvar</code></td>
+<td>
+
+<p>Logical that is fed into <code><a href="Coef.qrrvglm.html">Coef.qrrvglm</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>refResponse</code></td>
+<td>
+
+<p>Integer or character that is fed into <code><a href="Coef.qrrvglm.html">Coef.qrrvglm</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>show.plot</code></td>
+<td>
+<p> Logical. Plot it? </p>
+</td></tr>
+<tr valign="top"><td><code>xlim, ylim</code></td>
+<td>
+
+<p>Limits of the x- and y-axis. Both are numeric of length 2.
+See <code><a href="../../graphics/html/par.html">par</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zlim</code></td>
+<td>
+
+<p>Limits of the z-axis. Numeric of length 2.
+Ignored if rank is 1.
+See <code><a href="../../graphics/html/par.html">par</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>gridlength</code></td>
+<td>
+
+<p>Numeric. The fitted values are evaluated on a grid, and this
+argument regulates the fineness of the grid.  If <code>Rank = 2</code>
+then the argument is recycled to length 2, and the two numbers
+are the number of grid points on the  x- and y-axes respectively.
+</p>
+</td></tr>
+<tr valign="top"><td><code>which.species</code></td>
+<td>
+
+<p>Numeric or character vector. Indicates which species are to be
+plotted. The default is to plot all of them.  If numeric, it should
+contain values in the set {1,2,...,<i>S</i>} where <i>S</i>
+is the number of species.
+</p>
+</td></tr>
+<tr valign="top"><td><code>xlab, ylab</code></td>
+<td>
+
+<p>Character caption for the x-axis and y-axis.  By default, a suitable caption is
+found.  See the <code>xlab</code> argument in <code><a href="../../graphics/html/plot.html">plot</a></code>
+or <code><a href="../../graphics/html/title.html">title</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zlab</code></td>
+<td>
+<p>Character caption for the z-axis.
+Used only if <code>Rank = 2</code>.
+By default, a suitable caption is found.
+See the <code>xlab</code> argument in <code><a href="../../graphics/html/plot.html">plot</a></code>
+or <code><a href="../../graphics/html/title.html">title</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>labelSpecies</code></td>
+<td>
+<p>Logical.
+Whether the species should be labelled with their names.
+Used for <code>Rank = 1</code> only.
+The position of the label is just above the species' maximum.
+</p>
+</td></tr>
+<tr valign="top"><td><code>stretch</code></td>
+<td>
+
+<p>Numeric. A value slightly more than 1, this argument
+adjusts the height of the y-axis. Used for <code>Rank = 1</code> only.
+</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+
+<p>Character, giving the title of the plot.
+See the <code>main</code> argument in <code><a href="../../graphics/html/plot.html">plot</a></code>
+or <code><a href="../../graphics/html/title.html">title</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ticktype</code></td>
+<td>
+<p> Tick type. Used only if <code>Rank = 2</code>.
+See <code><a href="../../graphics/html/persp.html">persp</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>col</code></td>
+<td>
+<p> Color.
+See <code><a href="../../graphics/html/persp.html">persp</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>llty</code></td>
+<td>
+<p> Line type.
+Rank-1 models only.
+See the <code>lty</code> argument of <code><a href="../../graphics/html/par.html">par</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>llwd</code></td>
+<td>
+<p> Line width.
+Rank-1 models only.
+See the <code>lwd</code> argument of <code><a href="../../graphics/html/par.html">par</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>add1</code></td>
+<td>
+<p> Logical. Add to an existing plot?
+Used only for rank-1 models.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Arguments passed into <code><a href="../../graphics/html/persp.html">persp</a></code>.  Useful
+arguments here include <code>theta</code> and <code>phi</code>, which control
+the position of the eye.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For a rank-1 model, a perspective plot is similar to
+<code><a href="lvplot.qrrvglm.html">lvplot.qrrvglm</a></code> but plots the curves along a fine grid
+and there is no rugplot to show the site scores.
+</p>
+<p>For a rank-2 model, a perspective plot has the first latent variable as
+the x-axis, the second latent variable as the y-axis, and the expected
+value (fitted value) as the z-axis.  The result of a CQO is that each
+species has a response surface with elliptical contours.  This function
+will, at each grid point, work out the maximum fitted value over all
+the species. The resulting response surface is plotted. Thus rare
+species will be obscured and abundant species will dominate the plot.
+To view rare species, use the <code>which.species</code> argument to select
+a subset of the species.
+</p>
+<p>A perspective  plot will be performed if <code>noRRR = ~ 1</code>, and
+<code>Rank = 1</code> or <code>2</code>.  Also, all the tolerance matrices of
+those species to be plotted must be positive-definite.
+</p>
+
+
+<h3>Value</h3>
+
+<p>For a rank-2 model, a list with the following components.
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>fitted</code></td>
+<td>
+
+<p>A <i>(G1*G2)</i> by <i>M</i> matrix
+of fitted values on the grid. Here, <i>G1</i> and <i>G2</i>
+are the two values of <code>gridlength</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>latvar1grid, latvar2grid</code></td>
+<td>
+
+<p>The grid points for the x-axis and y-axis.
+</p>
+</td></tr>
+<tr valign="top"><td><code>max.fitted</code></td>
+<td>
+
+<p>A <i>G1</i> by <i>G2</i> matrix of maximum
+of the fitted values over all species.
+These are the values that are plotted on the z-axis.
+</p>
+</td></tr>
+</table>
+<p>For a rank-1 model, the components <code>latvar2grid</code> and
+<code>max.fitted</code> are <code>NULL</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Yee (2004) does not refer to perspective plots.  Instead, contour plots
+via <code><a href="lvplot.qrrvglm.html">lvplot.qrrvglm</a></code> are used.
+</p>
+<p>For rank-1 models, a similar function to this one is
+<code><a href="lvplot.qrrvglm.html">lvplot.qrrvglm</a></code>.  It plots the fitted values at the actual
+site score values rather than on a fine grid here.  The result has
+the advantage that the user sees the curves as a direct result from a
+model fitted to data whereas here, it is easy to think that the smooth
+bell-shaped curves are the truth because the data is more of a distance
+away.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. (2004)
+A new technique for maximum-likelihood
+canonical Gaussian ordination.
+<em>Ecological Monographs</em>,
+<b>74</b>, 685&ndash;701.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../graphics/html/persp.html">persp</a></code>,
+<code><a href="cqo.html">cqo</a></code>,
+<code><a href="Coef.qrrvglm.html">Coef.qrrvglm</a></code>,
+<code><a href="lvplot.qrrvglm.html">lvplot.qrrvglm</a></code>,
+<code><a href="../../graphics/html/par.html">par</a></code>,
+<code><a href="../../graphics/html/title.html">title</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>## Not run: 
+hspider[, 1:6] &lt;- scale(hspider[, 1:6])  # Good idea when I.tolerances = TRUE
+set.seed(111)
+r1 &lt;- cqo(cbind(Alopacce, Alopcune, Alopfabr, Arctlute, Arctperi,
+                Auloalbi, Pardmont, Pardnigr, Pardpull, Trocterr) ~
+          WaterCon + BareSand + FallTwig + CoveMoss + CoveHerb + ReflLux,
+          poissonff, data = hspider, trace = FALSE, I.tolerances = TRUE)
+set.seed(111)  # r2 below is an ill-conditioned model
+r2 &lt;- cqo(cbind(Alopacce, Alopcune, Alopfabr, Arctlute, Arctperi,
+                Auloalbi, Pardmont, Pardnigr, Pardpull, Trocterr) ~
+          WaterCon + BareSand + FallTwig + CoveMoss + CoveHerb + ReflLux,
+          isd.lv = c(2.4, 1.0), Muxfactor = 3.0, trace = FALSE,
+          poissonff, data = hspider, Rank = 2, eq.tolerances = TRUE)
+
+sort(deviance(r1, history = TRUE))  # A history of all the fits
+sort(deviance(r2, history = TRUE))  # A history of all the fits
+if (deviance(r2) &gt; 857) stop("suboptimal fit obtained")
+
+persp(r1, xlim = c(-6, 5), col = 1:4, label = TRUE)
+
+# Involves all species
+persp(r2, xlim = c(-6, 5), ylim = c(-4, 5), theta = 10, phi = 20, zlim = c(0, 220))
+# Omit the two dominant species to see what is behind them
+persp(r2, xlim = c(-6, 5), ylim = c(-4, 5), theta = 10, phi = 20, zlim = c(0, 220),
+      which = (1:10)[-c(8, 10)])  # Use zlim to retain the original z-scale
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

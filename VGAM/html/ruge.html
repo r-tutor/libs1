@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Rutherford-Geiger Polonium Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ruge {VGAM}"><tr><td>ruge {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Rutherford-Geiger Polonium Data</h2>
+
+<h3>Description</h3>
+
+<p>Decay counts of polonium  recorded by Rutherford and Geiger (1910).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>data(ruge)</pre>
+
+
+<h3>Format</h3>
+
+<p>This data frame contains the following columns:
+</p>
+
+<dl>
+<dt>counts</dt><dd><p>a numeric vector, counts or frequencies</p>
+</dd>
+<dt>number</dt><dd><p>a numeric vector, the number of decays</p>
+</dd>
+</dl>
+
+
+
+<h3>Details</h3>
+
+<p>These are the radioactive decay counts of polonium recorded by
+Rutherford and Geiger (1910) representing the number of scintillations
+in 2608 1/8 minute intervals.  For example, there were 57 frequencies
+of zero counts.
+The counts can be thought of as being approximately Poisson distributed.
+</p>
+
+
+<h3>Source</h3>
+
+<p>Rutherford, E. and Geiger, H. (1910)
+The Probability Variations in the Distribution of alpha Particles,
+<em>Philosophical Magazine</em>,
+<b>20</b>, 698&ndash;704.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+lambdahat &lt;- with(ruge, weighted.mean(number, w = counts))
+(N &lt;- with(ruge, sum(counts)))
+with(ruge, cbind(number, counts,
+                 fitted = round(N * dpois(number, lam = lambdahat))))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

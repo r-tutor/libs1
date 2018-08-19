@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Exponential Poisson Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for exppoisson {VGAM}"><tr><td>exppoisson {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Exponential Poisson Distribution Family Function</h2>
+
+<h3>Description</h3>
+
+<p>Estimates the two parameters of the exponential Poisson distribution
+by maximum likelihood estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+exppoisson(lrate = "loge", lshape = "loge",
+           irate = 2, ishape = 1.1,  zero = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lshape, lrate</code></td>
+<td>
+
+<p>Link function for the two positive parameters.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ishape, irate</code></td>
+<td>
+
+<p>Numeric.
+Initial values for the <code>shape</code> and <code>rate</code> parameters.
+Currently this function is not intelligent enough to
+obtain better initial values.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The exponential Poisson distribution has density function
+</p>
+<p style="text-align: center;"><i>
+  f(y; a = shape, b = rate)  =
+  (a*b/(1 - e^(-a))) * e^{-a - b*y + a * e^(-b*y)}</i></p>
+
+<p>where <i>y &gt; 0</i>,
+and the parameters shape, <i>a</i>,
+and rate, <i>b</i>, are positive.
+The distribution implies a population facing discrete
+hazard rates which are multiples of a base hazard.
+This <span class="pkg">VGAM</span> family function requires the <code>hypergeo</code> package
+(to use their <code>genhypergeo</code> function).
+The median is returned as the fitted value.
+</p>
+
+
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>This <span class="pkg">VGAM</span> family function does not work properly!
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> J. G. Lauder, jamesglauder@gmail.com </p>
+
+
+<h3>References</h3>
+
+<p>Kus, C., (2007).
+A new lifetime distribution.
+<em>Computational Statistics and Data Analysis</em>,
+<b>51</b>, 4497&ndash;4509.
+</p>
+
+
+<h3>See Also</h3>
+
+ 
+<p><code><a href="exppoissonUC.html">dexppois</a></code>,
+<code><a href="exponential.html">exponential</a></code>,
+<code><a href="../../stats/html/family.html">poisson</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+shape &lt;- exp(1); rate &lt;- exp(2)
+rdata &lt;- data.frame(y = rexppois(n = 1000, rate = rate, shape = shape))
+library("hypergeo")  # Required!
+fit &lt;- vglm(y ~ 1, exppoisson, data = rdata, trace = FALSE, maxit = 1200)
+c(with(rdata, median(y)), head(fitted(fit), 1))
+coef(fit, matrix = TRUE)
+Coef(fit)
+summary(fit)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

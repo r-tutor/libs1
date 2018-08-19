@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Frechet Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for frechet {VGAM}"><tr><td>frechet {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Frechet Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Maximum likelihood estimation of the 2-parameter
+Frechet distribution.
+</p>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+frechet(location = 0, lscale = "loge", lshape = logoff(offset = -2),
+        iscale = NULL, ishape = NULL, nsimEIM = 250, zero = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>location</code></td>
+<td>
+
+<p>Numeric. Location parameter.
+It is called <i>a</i> below.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lscale, lshape</code></td>
+<td>
+
+<p>Link functions for the parameters;
+see <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iscale, ishape, zero, nsimEIM</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Details</h3>
+
+<p>The (3-parameter) Frechet distribution has a density function
+that can be written
+</p>
+<p style="text-align: center;"><i>
+        f(y) = ((s*b) / (y-a)^2) * exp[-(b/(y-a))^s] * [b/(y-a)]^(s-1)</i></p>
+
+<p>for <i>y &gt; a</i> and scale parameter <i>b &gt; 0</i>.
+The positive shape parameter is <i>s</i>.
+The cumulative distribution function is
+</p>
+<p style="text-align: center;"><i>
+        F(y) =  exp[-(b/(y-a))^s].</i></p>
+
+<p>The mean of <i>Y</i> is <i>a + b*gamma(1-1/s)</i>
+for <i>s &gt; 1</i> (these are returned as the fitted values).
+The variance of <i>Y</i> is
+<i>b^2 * [gamma(1 - 2/s) - gamma(1 - 1/s)^2]</i>
+for <i>s &gt; 2</i>.
+</p>
+<p>Family <code>frechet</code> has <i>a</i> known, and
+<i>log(b)</i> and
+<i>log(s - 2)</i> are the default linear/additive predictors.
+The working weights are estimated by simulated Fisher scoring.
+</p>
+
+
+
+
+
+
+
+
+
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning</h3>
+
+
+
+
+<p>Family function <code>frechet</code> may fail for low values of
+the shape parameter, e.g., near 2 or lower.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Castillo, E., Hadi, A. S., Balakrishnan, N. Sarabia, J. S. (2005)
+<em>Extreme Value and Related Models with Applications
+in Engineering and Science</em>,
+Hoboken, NJ, USA: Wiley-Interscience.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="frechetUC.html">rfrechet</a></code>,
+<code><a href="gev.html">gev</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+set.seed(123)
+fdata &lt;- data.frame(y1 = rfrechet(nn &lt;- 1000, shape = 2 + exp(1)))
+with(fdata, hist(y1))
+fit2 &lt;- vglm(y1 ~ 1, frechet, data = fdata, trace = TRUE)
+coef(fit2, matrix = TRUE)
+Coef(fit2)
+head(fitted(fit2))
+with(fdata, mean(y1))
+head(weights(fit2, type = "working"))
+vcov(fit2)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

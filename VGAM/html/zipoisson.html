@@ -1,0 +1,354 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Zero-Inflated Poisson Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for zipoisson {VGAM}"><tr><td>zipoisson {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Zero-Inflated Poisson Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Fits a zero-inflated or zero-deflated
+Poisson distribution by full maximum likelihood estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+zipoisson(lpstr0 = "logit", llambda = "loge", type.fitted =
+          c("mean", "lambda", "pobs0", "pstr0", "onempstr0"), ipstr0 =
+          NULL, ilambda = NULL, gpstr0 = NULL, imethod = 1,
+          ishrinkage = 0.95, probs.y = 0.35, parallel = FALSE, zero = NULL)
+zipoissonff(llambda = "loge", lonempstr0 = "logit", type.fitted =
+            c("mean", "lambda", "pobs0", "pstr0", "onempstr0"),
+            ilambda = NULL, ionempstr0 = NULL, gonempstr0 = NULL,
+            imethod = 1, ishrinkage = 0.95, probs.y = 0.35, zero =
+            "onempstr0")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lpstr0, llambda</code></td>
+<td>
+
+<p>Link function for the parameter <i>phi</i>
+and the usual <i>lambda</i> parameter.
+See <code><a href="Links.html">Links</a></code> for more choices;
+see <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+For the zero-<em>deflated</em> model see below.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ipstr0, ilambda</code></td>
+<td>
+
+<p>Optional initial values for <i>phi</i>, whose values must lie
+between 0 and 1.
+Optional initial values for <i>lambda</i>, whose values must
+be positive.
+The defaults are to compute an initial value internally for each.
+If a vector then recycling is used.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lonempstr0, ionempstr0</code></td>
+<td>
+
+<p>Corresponding arguments for the other parameterization.
+See details below.
+</p>
+</td></tr>
+<tr valign="top"><td><code>type.fitted</code></td>
+<td>
+
+<p>Character. The type of fitted value to be returned.
+The first choice (the expected value) is the default.
+The estimated probability of an observed 0 is an alternative, else
+the estimated probability of a  structural 0,
+or one minus the estimated probability of a  structural 0.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>
+and <code><a href="fittedvlm.html">fittedvlm</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod</code></td>
+<td>
+
+<p>An integer with value <code>1</code> or <code>2</code> which
+specifies the initialization method for <i>lambda</i>.
+If failure to converge occurs try another value
+and/or else specify a value for <code>ishrinkage</code>
+and/or else specify a value for <code>ipstr0</code>.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ishrinkage</code></td>
+<td>
+
+<p>How much shrinkage is used when initializing <i>lambda</i>.
+The value must be between 0 and 1 inclusive, and
+a value of 0 means the individual response values are used,
+and a value of 1 means the median or mean is used.
+This argument is used in conjunction with <code>imethod</code>.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>Specifies which linear/additive predictors are to be modelled as
+intercept-only.  If given, the value can be either 1 or 2, and the
+default is none of them. Setting <code>zero = 1</code> makes <i>phi</i>
+a single parameter.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>gpstr0, gonempstr0, probs.y</code></td>
+<td>
+
+<p>Details at <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>parallel</code></td>
+<td>
+
+<p>Details at <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>,
+but unlikely to be practically used actually.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These models are a mixture of a Poisson distribution and the value 0;
+it has value 0 with probability <i>phi</i> else is
+Poisson(<i>lambda</i>) distributed.
+Thus there are two sources for zero values, and <i>phi</i>
+is the probability of a <em>structural zero</em>.
+The model for <code>zipoisson()</code> can be written
+</p>
+<p style="text-align: center;"><i>
+        P(Y = 0) =  phi + (1-phi) * exp(-lambda),</i></p>
+
+<p>and for <i>y=1,2,&hellip;</i>,
+</p>
+<p style="text-align: center;"><i>
+        P(Y = y) =  (1-phi) * exp(-lambda) * lambda^y / y!.</i></p>
+
+<p>Here, the parameter <i>phi</i> satisfies
+<i>0 &lt; phi &lt; 1</i>.
+The mean of <i>Y</i> is <i>(1-phi)*lambda</i> and these
+are returned as the fitted values,
+by default.
+The variance of <i>Y</i> is <i>
+  (1-phi)*lambda*(1 + phi lambda)</i>.
+By default, the two linear/additive predictors
+of <code>zipoisson()</code>
+are <i>(logit(phi), log(lambda))^T</i>.
+</p>
+<p>The <span class="pkg">VGAM</span> family function <code>zipoissonff()</code> has a few
+changes compared to <code>zipoisson()</code>.
+These are:
+(i)   the order of the linear/additive predictors is switched so the
+Poisson mean comes first;
+(ii)  <code>onempstr0</code> is now 1 minus the probability of a structural 0,
+i.e., the probability of the parent (Poisson) component,
+i.e., <code>onempstr0</code> is <code>1-pstr0</code>;
+(iii) argument <code>zero</code> has a new default so that the <code>onempstr0</code>
+is intercept-only  by default.
+Now <code>zipoissonff()</code> is generally recommended over
+<code>zipoisson()</code> (and definitely recommended over <code><a href="yip88.html">yip88</a></code>).
+Both functions implement Fisher scoring and can handle
+multiple responses.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+<code><a href="rrvglm.html">rrvglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>Numerical problems can occur, e.g., when the probability of
+zero is actually less than, not more than, the nominal
+probability of zero.
+For example, in the Angers and Biswas (2003) data below,
+replacing 182 by 1 results in nonconvergence.
+Half-stepping is not uncommon.
+If failure to converge occurs, try using combinations of
+<code>imethod</code>,
+<code>ishrinkage</code>,
+<code>ipstr0</code>, and/or
+<code>zipoisson(zero = 1)</code> if there are explanatory variables.
+The default for <code>zipoissonff()</code> is to model the
+structural zero probability as an intercept-only.
+</p>
+
+
+<h3>Note</h3>
+
+
+
+
+
+
+<p>This family function can be used to estimate the 0-<em>deflated</em> model,
+hence <code>pstr0</code> is not to be interpreted as a probability.
+One should set, e.g., <code>lpstr0 = "identitylink"</code>.
+Likewise, the functions in <code><a href="zipoisUC.html">Zipois</a></code>
+can handle the zero-deflated Poisson distribution too.
+Although the iterations
+might fall outside the parameter space, the <code>validparams</code> slot
+should keep them inside.
+A (somewhat) similar alternative for
+zero-deflation is to try the zero-altered Poisson model
+(see <code><a href="zapoisson.html">zapoisson</a></code>).
+</p>
+
+
+
+
+
+
+
+<p>The use of this <span class="pkg">VGAM</span> family function with <code><a href="rrvglm.html">rrvglm</a></code>
+can result in a so-called COZIGAM or COZIGLM.
+That is, a reduced-rank zero-inflated Poisson model (RR-ZIP)
+is a constrained zero-inflated generalized linear model.
+See <span class="pkg">COZIGAM</span>.
+A RR-ZINB model can also be fitted easily;
+see <code><a href="zinegbinomial.html">zinegbinomial</a></code>.
+Jargon-wise, a COZIGLM might be better described as a
+COZIVGLM-ZIP.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Thas, O. and Rayner, J. C. W. (2005)
+Smooth tests for the zero-inflated Poisson distribution.
+<em>Biometrics</em>,
+<b>61</b>, 808&ndash;815.
+</p>
+<p>Data: Angers, J-F. and Biswas, A. (2003)
+A Bayesian analysis of zero-inflated generalized Poisson model.
+<em>Computational Statistics &amp; Data Analysis</em>,
+<b>42</b>, 37&ndash;46.
+</p>
+<p>Cameron, A. C. and Trivedi, P. K. (1998)
+<em>Regression Analysis of Count Data</em>.
+Cambridge University Press: Cambridge.
+</p>
+<p>Yee, T. W. (2014)
+Reduced-rank vector generalized linear models with two linear predictors.
+<em>Computational Statistics and Data Analysis</em>,
+<b>71</b>, 889&ndash;902.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="zapoisson.html">zapoisson</a></code>,
+<code><a href="zipoisUC.html">Zipois</a></code>,
+<code><a href="yip88.html">yip88</a></code>,
+<code><a href="rrvglm.html">rrvglm</a></code>,
+<code><a href="zipebcom.html">zipebcom</a></code>,
+<code><a href="../../stats/html/Poisson.html">rpois</a></code>,
+<code><a href="simulate.vlm.html">simulate.vlm</a></code>,
+<code><a href="hdeff.html">hdeff.vglm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Example 1: simulated ZIP data
+zdata &lt;- data.frame(x2 = runif(nn &lt;- 1000))
+zdata &lt;- transform(zdata, pstr01  = logit(-0.5 + 1*x2, inverse = TRUE),
+                          pstr02  = logit( 0.5 - 1*x2, inverse = TRUE),
+                          Ps01    = logit(-0.5       , inverse = TRUE),
+                          Ps02    = logit( 0.5       , inverse = TRUE),
+                          lambda1 =  loge(-0.5 + 2*x2, inverse = TRUE),
+                          lambda2 =  loge( 0.5 + 2*x2, inverse = TRUE))
+zdata &lt;- transform(zdata, y1 = rzipois(nn, lambda = lambda1, pstr0 = Ps01),
+                          y2 = rzipois(nn, lambda = lambda2, pstr0 = Ps02))
+
+with(zdata, table(y1))  # Eyeball the data
+with(zdata, table(y2))
+fit1 &lt;- vglm(y1 ~ x2, zipoisson(zero = 1), data = zdata, crit = "coef")
+fit2 &lt;- vglm(y2 ~ x2, zipoisson(zero = 1), data = zdata, crit = "coef")
+coef(fit1, matrix = TRUE)  # These should agree with the above values
+coef(fit2, matrix = TRUE)  # These should agree with the above values
+
+# Fit all two simultaneously, using a different parameterization:
+fit12 &lt;- vglm(cbind(y1, y2) ~ x2, zipoissonff, data = zdata, crit = "coef")
+coef(fit12, matrix = TRUE)  # These should agree with the above values
+
+# For the first observation compute the probability that y1 is
+# due to a structural zero.
+(fitted(fit1, type = "pstr0") / fitted(fit1, type = "pobs0"))[1]
+
+
+# Example 2: McKendrick (1926). Data from 223 Indian village households
+cholera &lt;- data.frame(ncases = 0:4,  # Number of cholera cases,
+                      wfreq  = c(168, 32, 16, 6, 1))  # Frequencies
+fit &lt;- vglm(ncases ~ 1, zipoisson, wei = wfreq, cholera, trace = TRUE)
+coef(fit, matrix = TRUE)
+with(cholera, cbind(actual = wfreq,
+                    fitted = round(dzipois(ncases, lambda = Coef(fit)[2],
+                                           pstr0 = Coef(fit)[1]) *
+                                   sum(wfreq), digits = 2)))
+
+# Example 3: data from Angers and Biswas (2003)
+abdata &lt;- data.frame(y = 0:7, w = c(182, 41, 12, 2, 2, 0, 0, 1))
+abdata &lt;- subset(abdata, w &gt; 0)
+fit &lt;- vglm(y ~ 1, zipoisson(lpstr0 = probit, ipstr0 = 0.8),
+            data = abdata, weight = w, trace = TRUE)
+fitted(fit, type = "pobs0")  # Estimate of P(Y = 0)
+coef(fit, matrix = TRUE)
+Coef(fit)  # Estimate of pstr0 and lambda
+fitted(fit)
+with(abdata, weighted.mean(y, w))  # Compare this with fitted(fit)
+summary(fit)
+
+# Example 4: zero-deflated model for intercept-only data
+zdata &lt;- transform(zdata, lambda3 = loge(0.0, inverse = TRUE))
+zdata &lt;- transform(zdata, deflat.limit = -1 / expm1(lambda3))  # Boundary
+# The 'pstr0' parameter is negative and in parameter space:
+zdata &lt;- transform(zdata, usepstr0 = deflat.limit / 2)  # Not too near the boundary
+zdata &lt;- transform(zdata, y3 = rzipois(nn, lambda3, pstr0 = usepstr0))
+head(zdata)
+with(zdata, table(y3))  # A lot of deflation
+fit3 &lt;- vglm(y3 ~ 1, zipoisson(zero = -1, lpstr0 = "identitylink"),
+             data = zdata, trace = TRUE, crit = "coef")
+coef(fit3, matrix = TRUE)
+# Check how accurate it was:
+zdata[1, "usepstr0"]  # Answer
+coef(fit3)[1]         # Estimate
+Coef(fit3)
+vcov(fit3)  # Is positive-definite
+
+# Example 5: This RR-ZIP is known as a COZIGAM or COZIVGLM-ZIP
+set.seed(123)
+rrzip &lt;- rrvglm(Alopacce ~ sm.bs(WaterCon, df = 3), zipoisson(zero = NULL),
+                data = hspider, trace = TRUE, Index.corner = 2)
+coef(rrzip, matrix = TRUE)
+Coef(rrzip)
+summary(rrzip)
+## Not run: plotvgam(rrzip, lcol = "blue")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

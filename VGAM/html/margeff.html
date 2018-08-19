@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Marginal Effects for Several Categorical Response Models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for margeff {VGAM}"><tr><td>margeff {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Marginal Effects for Several Categorical Response Models </h2>
+
+<h3>Description</h3>
+
+<p>Marginal effects for the multinomial logit model and
+cumulative logit/probit/... models and
+continuation ratio models and
+stopping ratio models and
+adjacent categories models:
+the derivative of the fitted probabilities with respect to
+each explanatory variable.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+margeff(object, subset = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>A <code><a href="vglm.html">vglm</a></code> object,
+with one of the following family functions:
+<code><a href="multinomial.html">multinomial</a></code>,
+<code><a href="cumulative.html">cumulative</a></code>,
+<code><a href="cratio.html">cratio</a></code>,
+<code><a href="sratio.html">sratio</a></code>
+or
+<code><a href="acat.html">acat</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>subset</code></td>
+<td>
+
+<p>Numerical or logical vector, denoting the required observation(s).
+Recycling is used if possible.
+The default means all observations.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>further arguments passed into the other methods functions.
+
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Computes the derivative of the fitted probabilities
+of the categorical response model
+with respect to each explanatory variable.
+Formerly one big function, this function now uses S4
+dispatch to break up the computations.
+</p>
+
+<p>The function <code>margeff()</code> is <em>not</em> generic. However, it
+calls the function <code>margeffS4VGAM()</code> which <em>is</em>.
+This is based on the class of the <code>VGAMff</code> argument, and
+it uses the S4 function <code><a href="../../methods/html/setMethod.html">setMethod</a></code> to
+correctly dispatch to the required methods function.
+The inheritance is given by the <code>vfamily</code> slot of the
+<span class="pkg">VGAM</span> family function.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A <i>p</i> by <i>M+1</i> by <i>n</i> array, where <i>p</i> is the number
+of explanatory variables and the (hopefully) nominal response has
+<i>M+1</i> levels, and there are <i>n</i> observations.
+</p>
+<p>In general, if
+<code>is.numeric(subset)</code>
+and
+<code>length(subset) == 1</code> then a
+<i>p</i> by <i>M+1</i> matrix is returned.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>Care is needed in interpretation, e.g., the change is not
+universally accurate for a unit change in each explanatory
+variable because eventually the &lsquo;new&rsquo; probabilities may become
+negative or greater than unity. Also, the &lsquo;new&rsquo; probabilities
+will not sum to one.
+</p>
+<p>This function is not applicable for models with
+data-dependent terms such as <code><a href="../../splines/html/bs.html">bs</a></code> and
+<code><a href="../../stats/html/poly.html">poly</a></code>.
+Also the function should not be applied to models with any terms that
+have generated more than one column of the LM model matrix,
+such as <code><a href="../../splines/html/bs.html">bs</a></code> and <code><a href="../../stats/html/poly.html">poly</a></code>.
+For such try using numerical methods such as finite-differences.
+The <code>formula</code> in <code>object</code> should comprise of simple terms
+of the form <code> ~ x2 + x3 + x4</code>, etc.
+</p>
+<p>Some numerical problems may occur if the fitted values are
+close to 0 or 1 for the
+<code><a href="cratio.html">cratio</a></code> and
+<code><a href="sratio.html">sratio</a></code> models.
+Models with offsets may result in an incorrect answer.
+</p>
+
+
+<h3>Note</h3>
+
+<p>For <code><a href="multinomial.html">multinomial</a></code>
+this function should handle any value of <code>refLevel</code> and also
+any constraint matrices.
+However, it does not currently handle
+the <code>xij</code> or <code>form2</code> arguments,
+nor <code><a href="vgam.html">vgam</a></code> objects.
+</p>
+
+
+
+
+
+
+<p>Some other limitations are imposed, e.g.,
+for <code><a href="acat.html">acat</a></code> models
+only a <code><a href="loge.html">loge</a></code> link is allowed.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee,
+with some help and motivation from Stasha Rmandic.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="multinomial.html">multinomial</a></code>,
+<code><a href="cumulative.html">cumulative</a></code>,
+<code><a href="propodds.html">propodds</a></code>,
+<code><a href="acat.html">acat</a></code>,
+<code><a href="cratio.html">cratio</a></code>,
+<code><a href="sratio.html">sratio</a></code>,
+<code><a href="vglm.html">vglm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Not a good example for multinomial() because the response is ordinal!!
+ii &lt;- 3; hh &lt;- 1/100
+pneumo &lt;- transform(pneumo, let = log(exposure.time))
+fit &lt;- vglm(cbind(normal, mild, severe) ~ let, multinomial, data = pneumo)
+fit &lt;- vglm(cbind(normal, mild, severe) ~ let,
+            cumulative(reverse = TRUE,  parallel = TRUE),
+            data = pneumo)
+fitted(fit)[ii, ]
+
+mynewdata &lt;- with(pneumo, data.frame(let = let[ii] + hh))
+(newp &lt;- predict(fit, newdata = mynewdata, type = "response"))
+
+# Compare the difference. Should be the same as hh --&gt; 0.
+round(digits = 3, (newp-fitted(fit)[ii, ])/hh)  # Finite-difference approxn
+round(digits = 3, margeff(fit, subset = ii)["let",])
+
+# Other examples
+round(digits = 3, margeff(fit))
+round(digits = 3, margeff(fit, subset = 2)["let",])
+round(digits = 3, margeff(fit, subset = c(FALSE, TRUE))["let",,])  # recycling
+round(digits = 3, margeff(fit, subset = c(2, 4, 6, 8))["let",,])
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

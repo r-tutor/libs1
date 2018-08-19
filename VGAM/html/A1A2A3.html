@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The A1A2A3 Blood Group System</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for A1A2A3 {VGAM}"><tr><td>A1A2A3 {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> The A1A2A3 Blood Group System </h2>
+
+<h3>Description</h3>
+
+<p>Estimates the three independent parameters of the
+the A1A2A3 blood group system.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+A1A2A3(link = "logit", inbreeding = FALSE, ip1 = NULL, ip2 = NULL, iF = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>link</code></td>
+<td>
+
+<p>Link function applied to <code>p1</code>, <code>p2</code> and <code>f</code>.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>inbreeding</code></td>
+<td>
+
+<p>Logical. Is there inbreeding?
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>ip1, ip2, iF</code></td>
+<td>
+
+<p>Optional initial value for <code>p1</code>, <code>p2</code> and <code>f</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The parameters <code>p1</code> and <code>p2</code> are probabilities, so that
+<code>p3=1-p1-p2</code> is the third probability.
+The parameter <code>f</code> is the third independent parameter if
+<code>inbreeding = TRUE</code>.
+If <code>inbreeding = FALSE</code> then <i>f = 0</i> and Hardy-Weinberg
+Equilibrium (HWE) is assumed.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The input can be a 6-column matrix of counts,
+with columns corresponding to
+<code>A1A1</code>,
+<code>A1A2</code>,
+<code>A1A3</code>,
+<code>A2A2</code>,
+<code>A2A3</code>,
+<code>A3A3</code> (in order).
+Alternatively, the input can be a 6-column matrix of
+proportions (so each row adds to 1) and the <code>weights</code>
+argument is used to specify the total number of counts for each row.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Lange, K. (2002)
+<em>Mathematical and Statistical Methods for Genetic Analysis</em>,
+2nd ed. New York: Springer-Verlag.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="AA.Aa.aa.html">AA.Aa.aa</a></code>,
+<code><a href="AB.Ab.aB.ab.html">AB.Ab.aB.ab</a></code>,
+<code><a href="ABO.html">ABO</a></code>,
+<code><a href="MNSs.html">MNSs</a></code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+ymat &lt;- cbind(108, 196, 429, 143, 513, 559)
+fit &lt;- vglm(ymat ~ 1, A1A2A3(link = probit), trace = TRUE, crit = "coef")
+fit &lt;- vglm(ymat ~ 1, A1A2A3(link = logit, ip1 = 0.3, ip2 = 0.3, iF = 0.02),
+            trace = TRUE, crit = "coef")
+Coef(fit)  # Estimated p1 and p2
+rbind(ymat, sum(ymat) * fitted(fit))
+sqrt(diag(vcov(fit)))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

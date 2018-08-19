@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: One-truncated Zeta Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for otzeta {VGAM}"><tr><td>otzeta {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> One-truncated Zeta Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Estimates the parameter of the 1-truncated zeta distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+otzeta(lshape = "loge", ishape = NULL, gshape = exp((-4:3)/4), zero = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lshape, ishape, gshape, zero</code></td>
+<td>
+
+<p>Same as <code><a href="zetaff.html">zetaff</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The 1-truncated zeta distribution is the ordinary zeta
+distribution but with the probability of one being 0.  Thus the
+other probabilities are scaled up (i.e., divided by <i>1-P[Y=1]</i>).
+The mean is returned by default as the fitted values.
+More details can be found at <code><a href="zetaff.html">zetaff</a></code>.
+Multiple responses are handled.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="otzetaUC.html">Otzeta</a></code>,
+<code><a href="zetaff.html">zetaff</a></code>,
+<code><a href="oizeta.html">oizeta</a></code>,
+<code><a href="diffzeta.html">diffzeta</a></code>,
+<code><a href="zeta.html">zeta</a></code>,
+<code><a href="zetaUC.html">dzeta</a></code>,
+<code><a href="hzeta.html">hzeta</a></code>,
+<code><a href="zipf.html">zipf</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+odata &lt;- data.frame(x2 = runif(nn &lt;- 1000))  # Artificial data
+odata &lt;- transform(odata, shape = loge(-0.25 + x2, inverse = TRUE))
+odata &lt;- transform(odata, y1 = rotzeta(nn, shape))
+with(odata, table(y1))
+ofit &lt;- vglm(y1 ~ x2, otzeta, data = odata, trace = TRUE, crit = "coef")
+coef(ofit, matrix = TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

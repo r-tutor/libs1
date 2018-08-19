@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Gumbel Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gumbelUC {VGAM}"><tr><td>gumbelUC {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> The Gumbel Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function, quantile function and random
+generation for the Gumbel distribution with
+location parameter <code>location</code> and
+scale parameter <code>scale</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dgumbel(x, location = 0, scale = 1, log = FALSE)
+pgumbel(q, location = 0, scale = 1, lower.tail = TRUE, log.p = FALSE)
+qgumbel(p, location = 0, scale = 1, lower.tail = TRUE, log.p = FALSE)
+rgumbel(n, location = 0, scale = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>vector of probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of observations.
+If <code>length(n) &gt; 1</code> then the length is taken to be the number required.
+</p>
+</td></tr>
+<tr valign="top"><td><code>location</code></td>
+<td>
+<p>the location parameter <i>mu</i>.
+This is not the mean
+of the Gumbel distribution (see <b>Details</b> below).
+</p>
+</td></tr>
+<tr valign="top"><td><code>scale</code></td>
+<td>
+<p>the scale parameter <i>sigma</i>.
+This is not the standard deviation
+of the Gumbel distribution (see <b>Details</b> below).
+</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>Logical.
+If <code>log = TRUE</code> then the logarithm of the density is returned.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lower.tail, log.p</code></td>
+<td>
+
+<p>Same meaning as in <code><a href="../../stats/html/Uniform.html">punif</a></code>
+or <code><a href="../../stats/html/Uniform.html">qunif</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The Gumbel distribution is a special case of the
+<em>generalized extreme value</em> (GEV) distribution where
+the shape parameter <i>xi</i> = 0.
+The latter has 3 parameters, so the Gumbel distribution has two.
+The Gumbel distribution function is
+</p>
+<p style="text-align: center;"><i>
+        G(y) =  exp( -exp[ - (y-mu)/sigma ] ) </i></p>
+
+<p>where <i>-Inf&lt;y&lt;Inf</i>,
+<i>-Inf&lt;mu&lt;Inf</i> and
+<i>sigma&gt;0</i>.
+Its mean is
+</p>
+<p style="text-align: center;"><i>
+         mu - sigma * gamma</i></p>
+
+<p>and its variance is
+</p>
+<p style="text-align: center;"><i>
+         sigma^2 * pi^2 / 6</i></p>
+
+<p>where <i>gamma</i> is Euler's constant (which can be
+obtained as <code>-digamma(1)</code>).
+</p>
+<p>See <code><a href="gumbel.html">gumbel</a></code>, the <span class="pkg">VGAM</span> family function
+for estimating the two parameters by maximum likelihood estimation,
+for formulae and other details.
+Apart from <code>n</code>, all the above arguments may be vectors and
+are recyled to the appropriate length if necessary.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dgumbel</code> gives the density,
+<code>pgumbel</code> gives the distribution function,
+<code>qgumbel</code> gives the quantile function, and
+<code>rgumbel</code> generates random deviates.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <span class="pkg">VGAM</span> family function <code><a href="gumbel.html">gumbel</a></code>
+can estimate the parameters of a Gumbel distribution using
+maximum likelihood estimation.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Coles, S. (2001)
+<em>An Introduction to Statistical Modeling of Extreme Values</em>.
+London: Springer-Verlag.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="gumbel.html">gumbel</a></code>,
+<code><a href="gumbel.html">gumbelff</a></code>,
+<code><a href="gev.html">gev</a></code>,
+<code><a href="gompertzUC.html">dgompertz</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+mu &lt;- 1; sigma &lt;- 2;
+y &lt;- rgumbel(n = 100, loc = mu, scale = sigma)
+c(mean(y), mu - sigma * digamma(1))  # Sample and population means
+c(var(y), sigma^2 * pi^2 / 6)  # Sample and population variances
+
+## Not run:  x &lt;- seq(-2.5, 3.5, by = 0.01)
+loc &lt;- 0; sigma &lt;- 1
+plot(x, dgumbel(x, loc, sigma), type = "l", col = "blue", ylim = c(0, 1),
+     main = "Blue is density, red is cumulative distribution function",
+     sub = "Purple are 5,10,...,95 percentiles", ylab = "", las = 1)
+abline(h = 0, col = "blue", lty = 2)
+lines(qgumbel(seq(0.05, 0.95, by = 0.05), loc, sigma),
+      dgumbel(qgumbel(seq(0.05, 0.95, by = 0.05), loc, sigma), loc, sigma),
+      col = "purple", lty = 3, type = "h")
+lines(x, pgumbel(x, loc, sigma), type = "l", col = "red")
+abline(h = 0, lty = 2) 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

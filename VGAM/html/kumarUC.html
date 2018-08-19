@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Kumaraswamy Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Kumar {VGAM}"><tr><td>Kumar {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The Kumaraswamy Distribution</h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function, quantile function and random
+generation for the Kumaraswamy distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dkumar(x, shape1, shape2, log = FALSE)
+pkumar(q, shape1, shape2, lower.tail = TRUE, log.p = FALSE)
+qkumar(p, shape1, shape2, lower.tail = TRUE, log.p = FALSE)
+rkumar(n, shape1, shape2)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>vector of probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of observations.
+If <code>length(n) &gt; 1</code> then the length is taken to be the number required.
+</p>
+</td></tr>
+<tr valign="top"><td><code>shape1, shape2</code></td>
+<td>
+<p> positive shape parameters. </p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>Logical.
+If <code>log = TRUE</code> then the logarithm of the density is returned.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lower.tail, log.p</code></td>
+<td>
+
+<p>Same meaning as in <code><a href="../../stats/html/Normal.html">pnorm</a></code>
+or <code><a href="../../stats/html/Normal.html">qnorm</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <code><a href="kumar.html">kumar</a></code>, the <span class="pkg">VGAM</span> family function
+for estimating the parameters,
+for the formula of the probability density function and other details.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dkumar</code> gives the density,
+<code>pkumar</code> gives the distribution function,
+<code>qkumar</code> gives the quantile function, and
+<code>rkumar</code> generates random deviates.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee and Kai Huang </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="kumar.html">kumar</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+shape1 &lt;- 2; shape2 &lt;- 2; nn &lt;- 201; # shape1 &lt;- shape2 &lt;- 0.5;
+x &lt;- seq(-0.05, 1.05, len = nn)
+plot(x, dkumar(x, shape1, shape2), type = "l", las = 1, ylim = c(0,1.5),
+     ylab = paste("fkumar(shape1 = ", shape1, ", shape2 = ", shape2, ")"),
+     col = "blue", cex.main = 0.8,
+     main = "Blue is density, orange is cumulative distribution function",
+     sub = "Purple lines are the 10,20,...,90 percentiles")
+lines(x, pkumar(x, shape1, shape2), col = "orange")
+probs &lt;- seq(0.1, 0.9, by = 0.1)
+Q &lt;- qkumar(probs, shape1, shape2)
+lines(Q, dkumar(Q, shape1, shape2), col = "purple", lty = 3, type = "h")
+lines(Q, pkumar(Q, shape1, shape2), col = "purple", lty = 3, type = "h")
+abline(h = probs, col = "purple", lty = 3)
+max(abs(pkumar(Q, shape1, shape2) - probs))  # Should be 0
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

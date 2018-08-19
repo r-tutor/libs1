@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Computes Model Coefficients and Quantities</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Coef {VGAM}"><tr><td>Coef {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Computes Model Coefficients and Quantities </h2>
+
+<h3>Description</h3>
+
+<p><code>Coef</code> is a generic function which computes model
+coefficients from objects returned by modelling functions.
+It is an auxiliary function to <code><a href="../../stats/html/coef.html">coef</a></code> that
+enables extra capabilities for some specific models.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+Coef(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>An object for which the computation of other types of model
+coefficients or quantities is meaningful.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Other arguments fed into the specific methods function of
+the model.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function can often be useful for <code><a href="vglm.html">vglm</a></code> objects
+with just an intercept term in the RHS of the formula, e.g.,
+<code>y ~ 1</code>. Then often this function will apply the inverse
+link functions to the parameters.  See the example below.
+</p>
+<p>For reduced-rank VGLMs, this function can return the <b>A</b>,
+<b>C</b> matrices, etc.
+</p>
+<p>For quadratic and additive ordination models, this function
+can return ecological meaningful quantities such as tolerances,
+optimums, maximums.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The value returned depends specifically on the methods function
+invoked.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>This function may not work for <em>all</em> <span class="pkg">VGAM</span> family
+functions. You should check your results on some artificial
+data before applying it to models fitted to real data.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. and Hastie, T. J. (2003)
+Reduced-rank vector generalized linear models.
+<em>Statistical Modelling</em>,
+<b>3</b>, 15&ndash;41.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/coef.html">coef</a></code>,
+<code><a href="Coef.vlm.html">Coef.vlm</a></code>,
+<code><a href="Coef.rrvglm.html">Coef.rrvglm</a></code>,
+<code><a href="Coef.qrrvglm.html">Coef.qrrvglm</a></code>,
+<code><a href="depvar.html">depvar</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+nn &lt;- 1000
+bdata &lt;- data.frame(y = rbeta(nn, shape1 = 1, shape2 = 3))  # Original scale
+fit &lt;- vglm(y ~ 1, betaR, data = bdata, trace = TRUE)  # Intercept-only model
+coef(fit, matrix = TRUE)  # Both on a log scale
+Coef(fit)  # On the original scale
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

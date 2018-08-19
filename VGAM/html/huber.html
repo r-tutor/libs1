@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Huber's Least Favourable Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for huber2 {VGAM}"><tr><td>huber2 {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Huber's Least Favourable Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>M-estimation of the two parameters of
+Huber's least favourable distribution.
+The one parameter case is also implemented.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+huber1(llocation = "identitylink", k = 0.862, imethod = 1)
+huber2(llocation = "identitylink", lscale = "loge",
+       k = 0.862, imethod = 1, zero = "scale")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>llocation, lscale</code></td>
+<td>
+
+<p>Link functions applied to the location and scale parameters.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>k</code></td>
+<td>
+
+<p>Tuning constant.
+See <code><a href="huberUC.html">rhuber</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod, zero</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+The default value of <code>zero</code> means the scale parameter is
+modelled as intercept-only.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Huber's least favourable distribution family function is popular for
+resistant/robust regression. The center of the distribution is normal
+and its tails are double exponential.
+</p>
+<p>By default, the mean is the first linear/additive predictor (returned
+as the fitted values; this is the location parameter), and
+the log of the scale parameter is the second linear/additive predictor.
+The Fisher information matrix is diagonal; Fisher scoring is implemented.
+</p>
+<p>The <span class="pkg">VGAM</span> family function <code>huber1()</code> estimates only the
+location parameter. It assumes a scale parameter of unit value.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Warning: actually, <code>huber2()</code> may be erroneous since the
+first derivative is not continuous when there are two parameters
+to estimate. <code>huber1()</code> is fine in this respect.
+</p>
+<p>The response should be univariate.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>T. W. Yee.
+Help was given by Arash Ardalan.
+</p>
+
+
+<h3>References</h3>
+
+<p>Huber, P. J. and Ronchetti, E. (2009)
+<em>Robust Statistics</em>, 2nd ed. New York: Wiley.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="huberUC.html">rhuber</a></code>,
+<code><a href="uninormal.html">uninormal</a></code>,
+<code><a href="laplace.html">laplace</a></code>,
+<code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+set.seed(1231); NN &lt;- 30; coef1 &lt;- 1; coef2 &lt;- 10
+hdata &lt;- data.frame(x2 = sort(runif(NN)))
+hdata &lt;- transform(hdata, y  = rhuber(NN, mu = coef1 + coef2 * x2))
+
+hdata$x2[1] &lt;- 0.0  # Add an outlier
+hdata$y[1] &lt;- 10
+
+fit.huber2 &lt;- vglm(y ~ x2, huber2(imethod = 3), data = hdata, trace = TRUE)
+fit.huber1 &lt;- vglm(y ~ x2, huber1(imethod = 3), data = hdata, trace = TRUE)
+
+coef(fit.huber2, matrix = TRUE)
+summary(fit.huber2)
+
+
+## Not run:  # Plot the results
+plot(y ~ x2, data = hdata, col = "blue", las = 1)
+lines(fitted(fit.huber2) ~ x2, data = hdata, col = "darkgreen", lwd = 2)
+
+fit.lm &lt;- lm(y ~ x2, hdata)  # Compare to a LM:
+lines(fitted(fit.lm) ~ x2, data = hdata, col = "lavender", lwd = 3)
+
+# Compare to truth:
+lines(coef1 + coef2 * x2 ~ x2, data = hdata, col = "orange", lwd = 2, lty = "dashed")
+
+legend("bottomright", legend = c("truth", "huber", "lm"),
+       col = c("orange", "darkgreen", "lavender"),
+       lty = c("dashed", "solid", "solid"), lwd = c(2, 2, 3)) 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

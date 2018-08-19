@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Lognormal Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for lognormal {VGAM}"><tr><td>lognormal {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Lognormal Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Maximum likelihood estimation of the (univariate)
+lognormal distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+lognormal(lmeanlog = "identitylink", lsdlog = "loge", zero = "sdlog")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lmeanlog, lsdlog</code></td>
+<td>
+
+<p>Parameter link functions applied to the mean and (positive)
+<i>sigma</i> (standard deviation) parameter.
+Both of these are on the log scale.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>Specifies which
+linear/additive predictor is modelled as intercept-only.
+For <code>lognormal()</code>,
+the values can be from the set {1,2} which correspond to
+<code>mu</code>, <code>sigma</code>, respectively.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+
+
+
+</td></tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Details</h3>
+
+<p>A random variable <i>Y</i> has a 2-parameter lognormal distribution
+if <i>log(Y)</i>
+is distributed <i>N(mu, sigma^2)</i>.
+The expected value of <i>Y</i>, which is
+</p>
+<p style="text-align: center;"><i>
+        E(Y) = exp(mu + 0.5 sigma^2)</i></p>
+
+<p>and not <i>mu</i>, make up the fitted values.
+The variance of <i>Y</i> is
+</p>
+<p style="text-align: center;"><i>
+        Var(Y) = [exp(sigma^2) -1] * exp(2 mu + sigma^2).</i></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Kleiber, C. and Kotz, S. (2003)
+<em>Statistical Size Distributions in Economics and
+Actuarial Sciences</em>,
+Hoboken, NJ, USA: Wiley-Interscience.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/Lognormal.html">Lognormal</a></code>,
+<code><a href="uninormal.html">uninormal</a></code>,
+<code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>,
+<code><a href="simulate.vlm.html">simulate.vlm</a></code>.
+</p>
+
+
+
+
+<h3>Examples</h3>
+
+<pre>
+ldata2 &lt;- data.frame(x2 = runif(nn &lt;- 1000))
+ldata2 &lt;- transform(ldata2, y1 = rlnorm(nn, mean = 1 + 2 * x2, sd = exp(-1)),
+                            y2 = rlnorm(nn, mean = 1, sd = exp(-1 + x2)))
+fit1 &lt;- vglm(y1 ~ x2, lognormal(zero = 2), data = ldata2, trace = TRUE)
+fit2 &lt;- vglm(y2 ~ x2, lognormal(zero = 1), data = ldata2, trace = TRUE)
+coef(fit1, matrix = TRUE)
+coef(fit2, matrix = TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

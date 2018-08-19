@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Log-gamma Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for lgamma1 {VGAM}"><tr><td>lgamma1 {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Log-gamma Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Estimation of the parameter of the standard and nonstandard log-gamma
+distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+lgamma1(lshape = "loge", ishape = NULL)
+lgamma3(llocation = "identitylink", lscale = "loge", lshape = "loge",
+        ilocation = NULL, iscale = NULL, ishape = 1,
+        zero = c("scale", "shape"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>llocation, lscale</code></td>
+<td>
+
+<p>Parameter link function applied to the
+location parameter <i>a</i>
+and the positive scale parameter <i>b</i>.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lshape</code></td>
+<td>
+
+<p>Parameter link function applied to
+the positive shape parameter <i>k</i>.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ishape</code></td>
+<td>
+
+<p>Initial value for <i>k</i>.
+If given, it must be positive.
+If failure to converge occurs, try some other value.
+The default means an initial value is determined internally.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ilocation, iscale</code></td>
+<td>
+<p> Initial value for <i>a</i> and <i>b</i>.
+The defaults mean an initial value is determined internally for each.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>An integer-valued vector specifying which
+linear/additive predictors are modelled as intercepts only.
+The values must be from the set {1,2,3}.
+The default value means none are modelled as intercept-only terms.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The probability density function of the standard log-gamma distribution
+is given by
+</p>
+<p style="text-align: center;"><i>
+        f(y;k) = exp[ky - exp(y)]/gamma(k),</i></p>
+
+<p>for parameter <i>k&gt;0</i> and all real <i>y</i>.
+The mean of <i>Y</i> is <code>digamma(k)</code> (returned as
+the fitted values) and its variance is <code>trigamma(k)</code>.
+</p>
+<p>For the non-standard log-gamma distribution, one replaces <i>y</i>
+by <i>(y-a)/b</i>, where <i>a</i> is the location parameter
+and <i>b</i> is the positive scale parameter.
+Then the density function is
+</p>
+<p style="text-align: center;"><i>
+          f(y) = exp[k(y-a)/b - exp((y-a)/b)]/(b*gamma(k)).</i></p>
+
+<p>The mean and variance of <i>Y</i> are <code>a + b*digamma(k)</code> (returned as
+the fitted values) and <code>b^2 * trigamma(k)</code>, respectively.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The standard log-gamma distribution can be viewed as a
+generalization of the standard type 1 extreme value density:
+when <i>k = 1</i> the distribution of <i>-Y</i> is the standard
+type 1 extreme value distribution.
+</p>
+<p>The standard log-gamma distribution is fitted with <code>lgamma1</code>
+and the non-standard (3-parameter) log-gamma distribution is fitted
+with <code>lgamma3</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Kotz, S. and Nadarajah, S. (2000)
+<em>Extreme Value Distributions: Theory and Applications</em>,
+pages 48&ndash;49,
+London: Imperial College Press.
+</p>
+<p>Johnson, N. L. and Kotz, S. and Balakrishnan, N. (1995)
+<em>Continuous Univariate Distributions</em>,
+2nd edition, Volume 2, p.89,
+New York: Wiley.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="lgammaUC.html">rlgamma</a></code>,
+<code><a href="gengamma.html">gengamma.stacy</a></code>,
+<code><a href="prentice74.html">prentice74</a></code>,
+<code><a href="gamma1.html">gamma1</a></code>,
+<code><a href="../../base/html/Special.html">lgamma</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ldata &lt;- data.frame(y = rlgamma(100, shape = exp(1)))
+fit &lt;- vglm(y ~ 1, lgamma1, data = ldata, trace = TRUE, crit = "coef")
+summary(fit)
+coef(fit, matrix = TRUE)
+Coef(fit)
+
+ldata &lt;- data.frame(x2 = runif(nn &lt;- 5000))  # Another example
+ldata &lt;- transform(ldata, loc = -1 + 2 * x2, Scale = exp(1))
+ldata &lt;- transform(ldata, y = rlgamma(nn, loc, scale = Scale, shape = exp(0)))
+fit2 &lt;- vglm(y ~ x2, lgamma3, data = ldata, trace = TRUE, crit = "c")
+coef(fit2, matrix = TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: log F Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dlogF {VGAM}"><tr><td>dlogF {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> log F Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Density
+for the log F distribution.
+</p>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+dlogF(x, shape1, shape2, log = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+
+<p>Vector of quantiles.
+</p>
+</td></tr>
+<tr valign="top"><td><code>shape1, shape2</code></td>
+<td>
+<p>Positive shape parameters.
+</p>
+</td></tr>
+</table>
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>if <code>TRUE</code> then the log density is returned,
+else the density.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The details are given in <code><a href="logF.html">logF</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dlogF</code> gives the density.
+</p>
+
+
+
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="hypersecant.html">hypersecant</a></code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run:  shape1 &lt;- 1.5; shape2 &lt;- 0.5; x &lt;- seq(-5, 8, length = 1001)
+plot(x, dlogF(x, shape1, shape2), type = "l",
+     las = 1, col = "blue", ylab = "pdf",
+     main = "log F density function")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

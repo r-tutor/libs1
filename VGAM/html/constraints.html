@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Constraint Matrices</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for constraints {VGAM}"><tr><td>constraints {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Constraint Matrices </h2>
+
+<h3>Description</h3>
+
+<p>Extractor function for the <em>constraint matrices</em> of objects
+in the <span class="pkg">VGAM</span> package.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+constraints(object, ...)
+constraints.vlm(object, type = c("lm", "term"), all = TRUE, which,
+                matrix.out = FALSE, colnames.arg = TRUE,
+                rownames.arg = TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>Some <span class="pkg">VGAM</span> object, for example, having
+class <code><a href="vglmff-class.html">vglmff-class</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+
+<p>Character. Whether LM- or term-type constraints are to be returned.
+The number of such matrices returned is equal to
+<code>nvar(object, type = "lm")</code> and
+the number of terms, respectively.
+</p>
+</td></tr>
+<tr valign="top"><td><code>all, which</code></td>
+<td>
+
+<p>If <code>all = FALSE</code> then <code>which</code> gives the integer index or a
+vector of logicals specifying the selection.
+</p>
+</td></tr>
+<tr valign="top"><td><code>matrix.out</code></td>
+<td>
+
+<p>Logical. If <code>TRUE</code> then the constraint matrices
+are <code><a href="../../base/html/cbind.html">cbind</a>()ed</code> together.
+The result is usually more compact because the default
+is a list of constraint matrices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>colnames.arg, rownames.arg</code></td>
+<td>
+
+<p>Logical. If <code>TRUE</code> then column and row names
+are assigned corresponding to the variables.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Other possible arguments such as <code>type</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Constraint matrices describe the relationship of
+coefficients/component functions of a particular explanatory
+variable between
+the linear/additive predictors in VGLM/VGAM
+models. For example, they may be all different (constraint
+matrix is the identity matrix) or all the same (constraint
+matrix has one column and has unit values).
+</p>
+<p>VGLMs and VGAMs have constraint matrices which are <em>known</em>.
+The class of RR-VGLMs have constraint matrices which are
+<em>unknown</em> and are to be estimated.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The extractor function
+<code>constraints()</code>
+returns a list comprising of
+constraint matrices&mdash;usually one for each column of the
+VLM model matrix, and in that order.
+The list is labelled with the variable names.
+Each constraint matrix has <i>M</i> rows, where
+<i>M</i> is the number of linear/additive predictors,
+and whose rank is equal to the number of columns.
+A model with no constraints at all has an order
+<i>M</i> identity matrix as each variable's
+constraint matrix.
+</p>
+<p>For <code><a href="vglm.html">vglm</a></code> and <code><a href="vgam.html">vgam</a></code> objects,
+feeding in <code>type = "term"</code> constraint matrices back
+into the same model should work and give an identical model.
+The default are the <code>"lm"</code>-type constraint matrices;
+this is a list with one constraint matrix per column of
+the LM matrix.
+See the <code>constraints</code> argument of <code><a href="vglm.html">vglm</a></code>,
+and the example below.
+</p>
+
+
+<h3>Note</h3>
+
+<p>In all <span class="pkg">VGAM</span> family functions <code>zero = NULL</code> means
+none of the linear/additive predictors are modelled as
+intercepts-only.
+Other arguments found in certain <span class="pkg">VGAM</span> family functions
+which affect constraint matrices include
+<code>parallel</code> and <code>exchangeable</code>.
+</p>
+<p>The <code>constraints</code> argument in <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code> allows constraint matrices to
+be inputted. If so, then <code>constraints(fit, type = "lm")</code> can
+be fed into the <code>constraints</code> argument of the same object
+to get the same model.
+</p>
+<p>The <code>xij</code> argument does not affect constraint matrices; rather,
+it allows each row of the constraint matrix to be multiplied by a
+specified vector.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. and Wild, C. J. (1996)
+Vector generalized additive models.
+<em>Journal of the Royal Statistical Society, Series B, Methodological</em>,
+<b>58</b>, 481&ndash;493.
+</p>
+<p>Yee, T. W. and Hastie, T. J. (2003)
+Reduced-rank vector generalized linear models.
+<em>Statistical Modelling</em>,
+<b>3</b>, 15&ndash;41.
+</p>
+
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="is.parallel.html">is.parallel</a></code>,
+<code><a href="is.zero.html">is.zero</a></code>.
+VGLMs are described in <code><a href="vglm-class.html">vglm-class</a></code>;
+RR-VGLMs are described in <code><a href="rrvglm-class.html">rrvglm-class</a></code>.
+</p>
+<p>Arguments such as <code>zero</code> and <code>parallel</code>
+found in many <span class="pkg">VGAM</span>
+family functions are a way of creating/modifying constraint
+matrices conveniently, e.g., see <code><a href="zero.html">zero</a></code>.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Fit the proportional odds model:
+pneumo &lt;- transform(pneumo, let = log(exposure.time))
+(fit1 &lt;- vglm(cbind(normal, mild, severe) ~ sm.bs(let, 3),
+              cumulative(parallel = TRUE, reverse = TRUE), data = pneumo))
+coef(fit1, matrix = TRUE)
+constraints(fit1)  # Parallel assumption results in this
+constraints(fit1, type = "term")  # Same as the default ("vlm"-type)
+is.parallel(fit1)
+
+# An equivalent model to fit1 (needs the type "term" constraints):
+clist.term &lt;- constraints(fit1, type = "term")  # "term"-type constraints
+(fit2 &lt;- vglm(cbind(normal, mild, severe) ~ sm.bs(let, 3), data = pneumo,
+              cumulative(reverse = TRUE), constraints = clist.term))
+abs(max(coef(fit1, matrix = TRUE) -
+        coef(fit2, matrix = TRUE)))  # Should be zero
+
+# Fit a rank-1 stereotype (RR-multinomial logit) model:
+fit &lt;- rrvglm(Country ~ Width + Height + HP, multinomial, data = car.all)
+constraints(fit)  # All except the first are the estimated A matrix
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

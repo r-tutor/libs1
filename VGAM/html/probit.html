@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Probit Link Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for probit {VGAM}"><tr><td>probit {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Probit Link Function </h2>
+
+<h3>Description</h3>
+
+<p>Computes the probit transformation, including its inverse and the
+first two derivatives.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+probit(theta, bvalue = NULL, inverse = FALSE, deriv = 0,
+       short = TRUE, tag = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>theta</code></td>
+<td>
+
+<p>Numeric or character.
+See below for further details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>bvalue</code></td>
+<td>
+
+<p>See <code><a href="Links.html">Links</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>inverse, deriv, short, tag</code></td>
+<td>
+
+<p>Details at <code><a href="Links.html">Links</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The probit link function is commonly used for parameters that
+lie in the unit interval.
+It is the inverse CDF of the standard normal distribution.
+Numerical values of <code>theta</code> close to 0 or 1 or out of range
+result in
+<code>Inf</code>, <code>-Inf</code>, <code>NA</code> or <code>NaN</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>For <code>deriv = 0</code>, the probit of <code>theta</code>, i.e.,
+<code>qnorm(theta)</code> when <code>inverse = FALSE</code>, and if <code>inverse =
+  TRUE</code> then <code>pnorm(theta)</code>.
+</p>
+<p>For <code>deriv = 1</code>, then the function returns
+<em>d</em> <code>eta</code> / <em>d</em> <code>theta</code> as a function of <code>theta</code>
+if <code>inverse = FALSE</code>,
+else if <code>inverse = TRUE</code> then it returns the reciprocal.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Numerical instability may occur when <code>theta</code> is close to 1 or 0.
+One way of overcoming this is to use <code>bvalue</code>.
+</p>
+<p>In terms of the threshold approach with cumulative probabilities for
+an ordinal response this link function corresponds to the univariate
+normal distribution (see <code><a href="uninormal.html">uninormal</a></code>).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>McCullagh, P. and Nelder, J. A. (1989)
+<em>Generalized Linear Models</em>, 2nd ed. London: Chapman &amp; Hall.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="Links.html">Links</a></code>,
+<code><a href="logit.html">logit</a></code>,
+<code><a href="cloglog.html">cloglog</a></code>,
+<code><a href="cauchit.html">cauchit</a></code>,
+<code><a href="../../stats/html/Normal.html">Normal</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+p &lt;- seq(0.01, 0.99, by = 0.01)
+probit(p)
+max(abs(probit(probit(p), inverse = TRUE) - p))  # Should be 0
+
+p &lt;- c(seq(-0.02, 0.02, by = 0.01), seq(0.97, 1.02, by = 0.01))
+probit(p)  # Has NAs
+probit(p, bvalue = .Machine$double.eps)  # Has no NAs
+
+## Not run: p &lt;- seq(0.01, 0.99, by = 0.01); par(lwd = (mylwd &lt;- 2))
+plot(p, logit(p), type = "l", col = "limegreen", ylab = "transformation",
+     las = 1, main = "Some probability link functions")
+lines(p,  probit(p), col = "purple")
+lines(p, cloglog(p), col = "chocolate")
+lines(p, cauchit(p), col = "tan")
+abline(v = 0.5, h = 0, lty = "dashed")
+legend(0.1, 4.0, c("logit", "probit", "cloglog", "cauchit"),
+       col = c("limegreen", "purple", "chocolate", "tan"), lwd = mylwd)
+par(lwd = 1) 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

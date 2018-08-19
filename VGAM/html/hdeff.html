@@ -1,0 +1,301 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Hauck-Donner Effects: A Detection Test for Wald Tests</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for hdeff {VGAM}"><tr><td>hdeff {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Hauck-Donner Effects: A Detection Test for Wald Tests </h2>
+
+<h3>Description</h3>
+
+<p>A detection test for the
+Hauck-Donner effect on each regression coefficient
+in a VGLM regression model.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+hdeff(object, ...)
+hdeff.vglm(object, derivative = NULL, se.arg = FALSE,
+           subset = NULL, hstep = 0.005, fd.only = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>A <code><a href="vglm.html">vglm</a></code> object.
+Although only a limited number of family functions have
+an analytical solution to
+the HDE detection test 
+(<code><a href="binomialff.html">binomialff</a></code>,
+<code><a href="borel.tanner.html">borel.tanner</a></code>,
+<code><a href="cumulative.html">cumulative</a></code>,
+<code><a href="erlang.html">erlang</a></code>,
+<code><a href="felix.html">felix</a></code>,
+<code><a href="lindley.html">lindley</a></code>,
+<code><a href="poissonff.html">poissonff</a></code>,
+<code><a href="topple.html">topple</a></code>,
+<code><a href="uninormal.html">uninormal</a></code>,
+<code><a href="zipoisson.html">zipoissonff</a></code>,
+and
+<code><a href="zipoisson.html">zipoisson</a></code>;
+hopefully some more will be implemented in the short future!)
+the finite-differences (FDs) method can be applied to almost all
+<span class="pkg">VGAM</span> family functions to get a numerical solution.
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>derivative</code></td>
+<td>
+
+<p>Numeric. Either 1 or 2.
+Currently only a few models having one linear predictor are handled
+analytically for <code>derivative = 2</code>, e.g.,
+<code><a href="binomialff.html">binomialff</a></code>,
+<code><a href="poissonff.html">poissonff</a></code>.
+However, the numerical method can return the first two
+derivatives for almost all models.
+</p>
+</td></tr>
+<tr valign="top"><td><code>se.arg</code></td>
+<td>
+
+<p>Logical. If <code>TRUE</code> then the derivatives of the standard errors
+are returned as well, because usually the derivatives of the
+Wald statistics are of central interest.
+Requires <code>derivative</code> to be assigned the value 1 or 2
+for this argument to operate.
+</p>
+</td></tr>
+<tr valign="top"><td><code>subset</code></td>
+<td>
+
+<p>Logical or vector of indices,
+to select the regression coefficients of interest.
+The default is to select all coefficients.
+Recycled if necessary if logical.
+If numeric then they should comprise
+elements from <code>1:length(coef(object))</code>.
+This argument can be useful for computing the derivatives
+of a Cox regression (<code><a href="../../survival/html/coxph.html">coxph</a></code>) fitted using
+artificially created Poisson data; then there are
+many coefficients that are effectively nuisance parameters.
+</p>
+</td></tr>
+<tr valign="top"><td><code>hstep</code></td>
+<td>
+
+<p>Positive numeric and recycled to length 2;
+it is the so-called <em>step size</em> when using
+finite-differences and is often called <i>h</i> in the calculus
+literature,
+e.g., <i>f'(x)</i> is approximately <i>(f(x+h) - f(x)) / h</i>.
+For the 2nd-order partial derivatives, there are two step sizes
+and hence this argument is recycled to length 2.
+The default is to have the same values.
+The 1st-order derivatives use the first value only.
+It is recommended that a few values of this argument be tried
+because values of the first and second derivatives can
+vary accordingly.
+If any values are too large then the derivatives may be inaccurate;
+and if too small then the derivatives may be unstable and
+subject to too much round-off/cancellation error
+(in fact it may create an error or a <code>NA</code>).
+</p>
+</td></tr>
+<tr valign="top"><td><code>fd.only</code></td>
+<td>
+
+<p>Logical;
+if <code>TRUE</code> then finite-differences are used to estimate
+the derivatives even if an analytical solution has been coded,
+By default, finite-differences will be used
+when an analytical solution has not been implemented.
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>currently unused but may be used in the future for
+further arguments passed into the other methods functions.
+
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Almost all of statistical inference based on the likelihood assumes
+that the parameter estimates are located in the interior of the
+parameter space.  The nonregular case of being located on the boundary
+is not considered very much and leads to very different results from the
+regular case.  Practically, an important question is: how close is close
+to the boundary?  One might answer this as: the parameter estimates are
+too close to the boundary when the Hauck-Donner effect (HDE) is present,
+whereby the Wald statistic becomes aberrant.
+</p>
+<p>Hauck and Donner (1977) first observed an aberration of the Wald test
+statistic not monotonically increasing as a function of increasing
+distance between the parameter estimate and the null value.  This
+&quot;disturbing&quot; and &quot;undesirable&quot; underappreciated effect has since been
+observed in other regression models by various authors.  This function
+computes the first, and possibly second, derivative of the Wald
+statistic for each regression coefficient.  A negative value of the
+first derivative is indicative of the HDE being present.
+</p>
+<p>In general, most models have derivatives that are computed
+numerically using finite-difference
+approximations. The reason is that it takes a lot of work
+to program in the analytical solution
+(this includes a few very common models, such as
+<code><a href="poissonff.html">poissonff</a></code> and
+<code><a href="binomialff.html">binomialff</a></code>,
+where the first two derivatives have been implemented).
+</p>
+
+
+
+<h3>Value</h3>
+
+<p>By default this function returns a labelled logical vector;
+a <code>TRUE</code> means the HDE is affirmative for that coefficient.
+Hence ideally all values are <code>FALSE</code>.
+Any <code>TRUE</code> values suggests that the MLE is
+too near the boundary of the parameter space,
+and that the p-value for that regression coefficient
+is biased upwards.
+When present
+a highly significant variable might be deemed nonsignificant,
+and thus the HDE can create havoc for variable selection.
+If the HDE is present then more accurate
+p-values can generally be obtained by conducting a
+likelihood ratio test
+(see <code><a href="lrt.stat.html">lrt.stat.vlm</a></code>)
+or Rao's score test
+(see <code><a href="score.stat.html">score.stat.vlm</a></code>);
+indeed the default of
+<code><a href="wald.stat.html">wald.stat.vlm</a></code>
+does not suffer from the HDE.
+</p>
+
+
+<p>Setting <code>deriv = 1</code> returns a numerical vector of first
+derivatives of the Wald statistics.
+Setting <code>deriv = 2</code> returns a 2-column matrix of first
+and second derivatives of the Wald statistics.
+Then
+setting <code>se.arg = TRUE</code> returns an additional 1 or 2 columns.
+</p>
+<p>Some 2nd derivatives are <code>NA</code> if
+only a partial analytic solution has been programmed in.
+</p>
+<p>For those <span class="pkg">VGAM</span> family functions whose HDE test has not yet
+been implemented explicitly (the vast majority of them),
+finite-difference approximations
+to the derivatives will be used&mdash;see the arguments
+<code>hstep</code> and <code>fd.only</code> for some control on them.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The function <code><a href="summaryvglm.html">summaryvglm</a></code> conducts the HDE
+detection test if possible and prints out a line at the bottom
+if the HDE is detected for some regression coefficients.
+By &ldquo;if possible&rdquo;, only a few family functions are exempt and they
+have an <code>infos</code> slot with component <code>hadof = FALSE</code>;
+such as
+<code><a href="normal.vcm.html">normal.vcm</a></code>,
+<code><a href="rec.normal.html">rec.normal</a></code> because it
+uses the BFGS-IRLS method for computing the working weights.
+For these few a <code>NULL</code> is returned by <code><a href="hdeff.html">hdeff</a></code>.
+</p>
+<p>If the second derivatives are of interest then
+it is recommended that <code>crit = "c"</code> be added to the
+fitting so that a slightly more accurate model results
+(usually one more IRLS iteration).
+This is because the FD approximation is very sensitive to
+values of the working weights, so they need to be computed
+accurately.
+Occasionally, if the coefficient is close to 0,
+then its Wald statistic's
+second derivative may be unusually large in magnitude
+(this could be due to something such as roundoff error). 
+</p>
+
+
+
+
+
+
+<p>This function is currently under development
+and may change a little in the short future.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee.  </p>
+
+
+<h3>References</h3>
+
+<p>Hauck, J. W. W. and A. Donner (1977)
+Wald's test as applied to hypotheses in logit analysis. 
+<em>Journal of the American Statistical Association</em>,
+<b>72</b>, 851&ndash;853.
+Corrigenda: JASA, <b>75</b>, 482.
+</p>
+
+
+
+
+
+
+
+<p>Yee, T. W. (2018)
+Detecting the Hauck-Donner effect in Wald tests
+(<em>in preparation</em>).
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="summaryvglm.html">summaryvglm</a></code>,
+<code><a href="vglm.html">vglm</a></code>,
+<code><a href="lrt.stat.html">lrt.stat</a></code>,
+<code><a href="score.stat.html">score.stat</a></code>,
+<code><a href="wald.stat.html">wald.stat</a></code>,
+<code><a href="confintvglm.html">confintvglm</a></code>,
+<code><a href="profilevglm.html">profilevglm</a></code>.
+</p>
+
+
+
+
+<h3>Examples</h3>
+
+<pre>
+pneumo &lt;- transform(pneumo, let = log(exposure.time))
+fit &lt;- vglm(cbind(normal, mild, severe) ~ let, data = pneumo,
+            trace = TRUE, crit = "c",  # Get some more accuracy
+            cumulative(reverse = TRUE,  parallel = TRUE))
+cumulative()@infos()$hadof  # Analytical solution implemented
+hdeff(fit)
+hdeff(fit, deriv = 1)  # Analytical solution
+hdeff(fit, deriv = 2)  # It is a partial analytical solution
+hdeff(fit, deriv = 2, se.arg = TRUE,
+      fd.only = TRUE)  # All derivatives solved numerically by FDs
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Analysis of Deviance for Vector Generalized Linear Model Fits</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for anova.vglm {VGAM}"><tr><td>anova.vglm {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Analysis of Deviance for Vector Generalized Linear Model Fits</h2>
+
+<h3>Description</h3>
+
+<p>Compute an analysis of deviance table for one or more
+vector generalized linear model fits.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'vglm'
+anova(object, ..., type = c("II", "I", "III", 2, 1, 3),
+     test = c("LRT", "none"), trydev = TRUE, silent = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object, ...</code></td>
+<td>
+<p>objects of class <code>vglm</code>, typically
+the result of a call to <code><a href="vglm.html">vglm</a></code>, or a list of
+<code>objects</code> for the <code>"vglmlist"</code> method.
+Each model must have an intercept term.
+If <code>"vglmlist"</code> is used then <code>type = 1</code> or
+<code>type = "I"</code> must be specified.
+</p>
+
+</td></tr>
+</table>
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>type</code></td>
+<td>
+
+<p>character or numeric;
+any one of the
+(effectively three) choices given.
+Note that <code><a href="../../stats/html/anova.glm.html">anova.glm</a></code>
+has <code>1</code> or <code>"I"</code>
+as its default;
+and that <code><a href="../../car/html/Anova.glm.html">Anova.glm</a></code>
+has <code>2</code> or <code>"II"</code> as its default
+(and allows for <code>type = "III"</code>), so
+one can think of this function as
+a combination of <code><a href="../../stats/html/anova.glm.html">anova.glm</a></code>
+and <code><a href="../../car/html/Anova.glm.html">Anova.glm</a></code>,
+but with the default of the latter.
+See Details below for more information.
+</p>
+
+
+
+
+
+
+</td></tr>
+<tr valign="top"><td><code>test</code></td>
+<td>
+<p>a character string,
+(partially) matching one of
+<code>"LRT"</code> and
+<code>"none"</code>.
+In the future it is hoped that <code>"Rao"</code> be also supported,
+to conduct score tests.
+The first value is the default.
+</p>
+
+
+
+</td></tr>
+<tr valign="top"><td><code>trydev</code></td>
+<td>
+
+<p>logical; if <code>TRUE</code> then the deviance is used if possible.
+Note that only a few <span class="pkg">VGAM</span> family functions have a
+deviance that is defined and implemented.
+Setting it <code>FALSE</code> means the log-likelihood will be used.
+</p>
+</td></tr>
+<tr valign="top"><td><code>silent</code></td>
+<td>
+
+<p>logical; if <code>TRUE</code> then any warnings will be suppressed.
+These may arise by IRLS iterations not converging during
+the fitting of submodels.
+Setting it <code>FALSE</code> means that any warnings are given.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>anova.vglm</code> is intended to be similar to
+<code><a href="../../stats/html/anova.glm.html">anova.glm</a></code>
+so specifying a single object and <code>type = 1</code> gives a
+<em>sequential</em> analysis of deviance table for that fit.
+By <em>analysis of deviance</em>, it is meant loosely
+that if the deviance of the model is not defined or implemented,
+then twice the difference between the log-likelihoods of two
+nested models remains asymptotically chi-squared distributed
+with degrees of freedom equal to the difference in the number
+of parameters of the two models.
+Of course, the usual regularity conditions are assumed to hold.
+For Type I,
+the analysis of deviance table has
+the reductions in the residual deviance
+as each term of the formula is added in turn are given in as
+the rows of a table, plus the residual deviances themselves.
+<em>Type I</em> or sequential tests
+(as in <code><a href="../../stats/html/anova.glm.html">anova.glm</a></code>).
+are computationally the easiest of the three methods.
+For this, the order of the terms is important, and the
+each term is added sequentially from first to last.
+</p>
+<p>The <code>Anova()</code> function in <span class="pkg">car</span> allows for testing
+<em>Type II</em> and <em>Type III</em> (SAS jargon) hypothesis tests,
+although the definitions used are <em>not</em> precisely that of SAS.
+As <span class="pkg">car</span> notes,
+<em>Type I</em> rarely test interesting hypotheses in unbalanced designs.
+Type III enter each term <em>last</em>, keeping all the other terms in the
+model.
+Type II tests,
+according to SAS,
+add the term after all other terms have been added
+to the model except terms that contain the effect being tested;
+an effect is contained in another effect if it can be derived by
+deleting variables from the latter effect.
+Type II tests are currently the default.
+</p>
+<p>As in <code><a href="../../stats/html/anova.glm.html">anova.glm</a></code>, but not as
+<code><a href="../../car/html/Anova.glm.html">Anova.glm</a></code>,
+if more than one object is specified, then
+the table has a row for the
+residual degrees of freedom and deviance for each model.
+For all but the first model, the change in degrees of freedom and
+deviance is also given. (This only makes statistical sense if the
+models are nested.)  It is conventional to list the models from
+smallest to largest, but this is up to the user.
+It is necessary to have <code>type = 1</code> with more than one objects
+are specified.
+</p>
+<p>See <code><a href="../../stats/html/anova.glm.html">anova.glm</a></code> for more details
+and warnings.
+The <span class="pkg">VGAM</span> package now implements full likelihood models
+only, therefore no dispersion parameters are estimated.
+</p>
+
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"anova"</code> inheriting from
+class <code>"data.frame"</code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>See <code><a href="../../stats/html/anova.glm.html">anova.glm</a></code>.
+Several <span class="pkg">VGAM</span> family functions implement distributions
+which do not satisfying the usual regularity conditions needed for
+the LRT to work. No checking or warning is given for these.
+</p>
+<p>As <span class="pkg">car</span> says, be careful of Type III tests
+because they violate marginality.
+Type II tests (the default) do not have this problem.
+</p>
+
+
+
+
+
+
+
+
+
+<h3>Note</h3>
+
+<p>The code was adapted
+directly from <code><a href="../../stats/html/anova.glm.html">anova.glm</a></code>
+and <code><a href="../../car/html/Anova.glm.html">Anova.glm</a></code>
+by T. W. Yee.
+Hence the Type II and Type III tests do <em>not</em>
+correspond precisely with the SAS definition.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/anova.glm.html">anova.glm</a></code>,
+<code><a href="../../stats/html/stat.anova.html">stat.anova</a></code>,
+<code>stats:::print.anova</code>,
+<code><a href="../../car/html/Anova.glm.html">Anova.glm</a></code> if <span class="pkg">car</span> is installed,
+<code><a href="vglm.html">vglm</a></code>,
+<code><a href="lrtest.html">lrtest</a></code>,
+<code><a href="lrt.stat.html">lrt.stat.vlm</a></code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+# Example 1: a proportional odds model fitted to pneumo.
+set.seed(1)
+pneumo &lt;- transform(pneumo, let = log(exposure.time), x3 = runif(8))
+fit1 &lt;- vglm(cbind(normal, mild, severe) ~ let     , propodds, pneumo)
+fit2 &lt;- vglm(cbind(normal, mild, severe) ~ let + x3, propodds, pneumo)
+fit3 &lt;- vglm(cbind(normal, mild, severe) ~ let + x3, cumulative, pneumo)
+anova(fit1, fit2, fit3, type = 1)  # Remember to specify 'type'!!
+anova(fit2)
+anova(fit2, type = "I")
+anova(fit2, type = "III")
+
+# Example 2: a proportional odds model fitted to backPain.
+data("backPain", package = "VGAM")
+backPain$x1 &lt;- factor(backPain$x1)
+backPain$x2 &lt;- factor(backPain$x2)
+backPain$x3 &lt;- factor(backPain$x3)
+summary(backPain)
+fitlogit &lt;- vglm(pain ~ x1 * x2 * x3, propodds, data = backPain)
+coef(fitlogit)
+anova(fitlogit)
+anova(fitlogit, type = "I")
+anova(fitlogit, type = "III")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

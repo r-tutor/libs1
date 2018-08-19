@@ -1,0 +1,353 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Control Function for vglm()</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for vglm.control {VGAM}"><tr><td>vglm.control {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Control Function for vglm() </h2>
+
+<h3>Description</h3>
+
+<p>Algorithmic constants and parameters for running <code>vglm</code> are set
+using this function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+vglm.control(checkwz = TRUE, Check.rank = TRUE, Check.cm.rank = TRUE,
+             criterion = names(.min.criterion.VGAM),
+             epsilon = 1e-07, half.stepsizing = TRUE,
+             maxit = 30, noWarning = FALSE,
+             stepsize = 1, save.weights = FALSE,
+             trace = FALSE, wzepsilon = .Machine$double.eps^0.75,
+             xij = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>checkwz</code></td>
+<td>
+
+<p>logical indicating whether the diagonal elements
+of the working weight matrices should be checked
+whether they are sufficiently positive, i.e., greater
+than <code>wzepsilon</code>. If not, any values less than
+<code>wzepsilon</code> are replaced with this value.
+</p>
+</td></tr>
+<tr valign="top"><td><code>Check.rank</code></td>
+<td>
+
+<p>logical indicating whether the rank of the VLM matrix
+should be checked. If this is not of full column rank then
+the results are not to be trusted.
+The default is to give an error message if the VLM
+matrix is not of full column rank.
+</p>
+</td></tr>
+<tr valign="top"><td><code>Check.cm.rank</code></td>
+<td>
+
+<p>logical indicating whether the rank of each constraint matrix
+should be checked. If this is not of full column rank then
+an error will occur. Under no circumstances should any
+constraint matrix have a rank less than the number of columns.
+</p>
+</td></tr>
+<tr valign="top"><td><code>criterion</code></td>
+<td>
+
+<p>character variable describing what criterion is to be
+used to test for convergence. The possibilities are
+listed in <code>.min.criterion.VGAM</code>, but most family
+functions only implement a few of these.
+</p>
+</td></tr>
+<tr valign="top"><td><code>epsilon</code></td>
+<td>
+
+<p>positive convergence tolerance epsilon. Roughly speaking,
+the Newton-Raphson/Fisher-scoring iterations are assumed
+to have converged when two successive <code>criterion</code>
+values are within <code>epsilon</code> of each other.
+</p>
+</td></tr>
+<tr valign="top"><td><code>half.stepsizing</code></td>
+<td>
+
+<p>logical indicating if half-stepsizing is allowed. For
+example, in maximizing a log-likelihood, if the next
+iteration has a log-likelihood that is less than
+the current value of the log-likelihood, then a half
+step will be taken.  If the log-likelihood is still
+less than at the current position, a quarter-step
+will be taken etc. Eventually a step will be taken
+so that an improvement is made to the convergence
+criterion.  <code>half.stepsizing</code> is ignored if
+<code>criterion == "coefficients"</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>maxit</code></td>
+<td>
+
+<p>maximum number of (usually Fisher-scoring) iterations
+allowed.  Sometimes Newton-Raphson is used.
+</p>
+</td></tr>
+<tr valign="top"><td><code>noWarning</code></td>
+<td>
+
+<p>logical indicating whether to suppress a warning if
+convergence is not obtained within <code>maxit</code> iterations.
+This is ignored if <code>maxit = 1</code> is set.
+</p>
+</td></tr>
+<tr valign="top"><td><code>stepsize</code></td>
+<td>
+
+<p>usual step size to be taken between each
+Newton-Raphson/Fisher-scoring iteration. It should be a
+value between 0 and 1, where a value of unity corresponds
+to an ordinary step.  A value of 0.5 means half-steps are
+taken.  Setting a value near zero will cause convergence
+to be generally slow but may help increase the chances
+of successful convergence for some family functions.
+</p>
+</td></tr>
+<tr valign="top"><td><code>save.weights</code></td>
+<td>
+
+<p>logical indicating whether the <code>weights</code> slot of a
+<code>"vglm"</code> object will be saved on the object. If not,
+it will be reconstructed when needed, e.g., <code>summary</code>.
+Some family functions have <code>save.weights = TRUE</code> and
+others have <code>save.weights = FALSE</code> in their control
+functions.
+</p>
+</td></tr>
+<tr valign="top"><td><code>trace</code></td>
+<td>
+
+<p>logical indicating if output should be produced for each
+iteration.  Setting <code>trace = TRUE</code> is recommended in
+general because <span class="pkg">VGAM</span> fits a very broad variety of
+models and distributions, and for some of them, convergence
+is intrinsically more difficult. Monitoring convergence
+can help check that the solution is reasonable or that
+a problem has occurred.  It may suggest better initial
+values are needed, the making of invalid assumptions,
+or that the model is inappropriate for the data, etc.
+</p>
+</td></tr>
+<tr valign="top"><td><code>wzepsilon</code></td>
+<td>
+
+<p>small positive number used to test whether the diagonals
+of the working weight matrices are sufficiently positive.
+</p>
+</td></tr>
+<tr valign="top"><td><code>xij</code></td>
+<td>
+
+<p>A formula or a list of formulas.
+Each formula has a RHS giving <i>M</i> terms making up a
+covariate-dependent term (whose name is the response).
+That is, it creates a variable
+that takes on different values for each linear/additive predictor,
+e.g., the ocular pressure of each eye.
+The <i>M</i> terms must be unique;
+use <code><a href="fill.html">fill1</a></code>, <code>fill2</code>, <code>fill3</code>, etc. if necessary.
+Each formula should have a response which is taken as the
+name of that variable, and the <i>M</i> terms are enumerated
+in sequential order.  Each of the <i>M</i> terms multiply
+each successive row of the constraint matrix.
+When <code>xij</code> is used, the use of <code>form2</code> is also required
+to give <em>every</em> term used by the model.
+</p>
+<p>The function <code><a href="Select.html">Select</a></code> can be used to
+select variables beginning with the same character string.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>other parameters that may be picked up from control
+functions that are specific to the <span class="pkg">VGAM</span> family function.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Most of the control parameters are used within
+<code>vglm.fit</code> and you will have to look at that to
+understand the full details.
+</p>
+<p>Setting <code>save.weights = FALSE</code> is useful for some
+models because the <code>weights</code> slot of the object
+is the largest and so less memory is used to store the
+object. However, for some <span class="pkg">VGAM</span> family function,
+it is necessary to set <code>save.weights = TRUE</code> because
+the <code>weights</code> slot cannot be reconstructed later.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with components matching the input names. A little error
+checking is done, but not much.
+The list is assigned to the <code>control</code> slot of
+<code>vglm</code> objects.
+</p>
+
+
+<h3>Warning</h3>
+
+<p>For some applications the default convergence criterion should
+be tightened.
+Setting something like <code>criterion = "coef", epsilon = 1e-09</code>
+is one way to achieve this, and also add
+<code>trace = TRUE</code> to monitor the convergence.
+Setting  <code>maxit</code> to some higher number is usually not
+needed, and needing to do so suggests something is wrong, e.g.,
+an ill-conditioned model, over-fitting or under-fitting.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Reiterating from above,
+setting <code>trace = TRUE</code> is recommended in general.
+</p>
+<p>In Example 2 below there are two covariates that have
+linear/additive predictor specific values.  These are
+handled using the <code>xij</code> argument.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee</p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. and Hastie, T. J. (2003)
+Reduced-rank vector generalized linear models.
+<em>Statistical Modelling</em>,
+<b>3</b>, 15&ndash;41.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="vglm.html">vglm</a></code>,
+<code><a href="fill.html">fill1</a></code>.
+The author's homepage has further documentation about
+the <code>xij</code> argument;
+see also <code><a href="Select.html">Select</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Example 1.
+pneumo &lt;- transform(pneumo, let = log(exposure.time))
+vglm(cbind(normal, mild, severe) ~ let, multinomial, data = pneumo,
+     crit = "coef", step = 0.5, trace = TRUE, epsil = 1e-8, maxit = 40)
+
+
+# Example 2. The use of the xij argument (simple case).
+ymat &lt;- rdiric(n &lt;- 1000, shape = rep(exp(2), len = 4))
+mydat &lt;- data.frame(x1 = runif(n), x2 = runif(n), x3 = runif(n),
+                    x4 = runif(n),
+                    z1 = runif(n), z2 = runif(n), z3 = runif(n),
+                    z4 = runif(n))
+mydat &lt;- transform(mydat, X = x1, Z = z1)
+mydat &lt;- round(mydat, digits = 2)
+fit2 &lt;- vglm(ymat ~ X + Z,
+             dirichlet(parallel = TRUE), data = mydat, trace = TRUE,
+             xij = list(Z ~ z1 + z2 + z3 + z4,
+                        X ~ x1 + x2 + x3 + x4),
+             form2 = ~  Z + z1 + z2 + z3 + z4 +
+                        X + x1 + x2 + x3 + x4)
+head(model.matrix(fit2, type =  "lm"))  # LM model matrix
+head(model.matrix(fit2, type = "vlm"))  # Big VLM model matrix
+coef(fit2)
+coef(fit2, matrix = TRUE)
+max(abs(predict(fit2)-predict(fit2, new = mydat)))  # Predicts correctly
+summary(fit2)
+## Not run: 
+# plotvgam(fit2, se = TRUE, xlab = "x1", which.term = 1)  # Bug!
+# plotvgam(fit2, se = TRUE, xlab = "z1", which.term = 2)  # Bug!
+plotvgam(fit2, xlab = "x1")  # Correct
+plotvgam(fit2, xlab = "z1")  # Correct
+
+## End(Not run)
+
+
+# Example 3. The use of the xij argument (complex case).
+set.seed(123)
+coalminers &lt;- transform(coalminers,
+                        Age = (age - 42) / 5,
+                        dum1 = round(runif(nrow(coalminers)), digits = 2),
+                        dum2 = round(runif(nrow(coalminers)), digits = 2),
+                        dum3 = round(runif(nrow(coalminers)), digits = 2),
+                        dumm = round(runif(nrow(coalminers)), digits = 2))
+BS &lt;- function(x, ..., df = 3)
+  sm.bs(c(x,...), df = df)[1:length(x),,drop = FALSE]
+NS &lt;- function(x, ..., df = 3)
+  sm.ns(c(x,...), df = df)[1:length(x),,drop = FALSE]
+
+# Equivalently...
+BS &lt;- function(x, ..., df = 3)
+  head(sm.bs(c(x,...), df = df), length(x), drop = FALSE)
+NS &lt;- function(x, ..., df = 3)
+  head(sm.ns(c(x,...), df = df), length(x), drop = FALSE)
+
+fit3 &lt;- vglm(cbind(nBnW,nBW,BnW,BW) ~ Age + NS(dum1, dum2),
+             fam = binom2.or(exchangeable = TRUE, zero = 3),
+             xij = list(NS(dum1, dum2) ~ NS(dum1, dum2) +
+                                         NS(dum2, dum1) +
+                                         fill(NS( dum1))),
+             form2 = ~  NS(dum1, dum2) + NS(dum2, dum1) + fill(NS(dum1)) +
+                        dum1 + dum2 + dum3 + Age + age + dumm,
+             data = coalminers, trace = TRUE)
+head(model.matrix(fit3, type = "lm"))   # LM model matrix
+head(model.matrix(fit3, type = "vlm"))  # Big VLM model matrix
+coef(fit3)
+coef(fit3, matrix = TRUE)
+## Not run: 
+plotvgam(fit3, se = TRUE, lcol = "red", scol = "blue", xlab = "dum1")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

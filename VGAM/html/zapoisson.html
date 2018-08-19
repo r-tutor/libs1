@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Zero-Altered Poisson Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for zapoisson {VGAM}"><tr><td>zapoisson {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Zero-Altered Poisson Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Fits a zero-altered Poisson distribution based on a conditional
+model involving a Bernoulli distribution
+and a positive-Poisson distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+zapoisson(lpobs0 = "logit", llambda = "loge", type.fitted =
+          c("mean", "lambda", "pobs0", "onempobs0"), imethod = 1,
+          ipobs0 = NULL, ilambda = NULL, ishrinkage = 0.95, probs.y = 0.35,
+          zero = NULL)
+zapoissonff(llambda = "loge", lonempobs0 = "logit", type.fitted =
+            c("mean", "lambda", "pobs0", "onempobs0"), imethod = 1,
+            ilambda = NULL, ionempobs0 = NULL, ishrinkage = 0.95,
+            probs.y = 0.35, zero = "onempobs0")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lpobs0</code></td>
+<td>
+
+<p>Link function for the parameter <i>pobs0</i>, called <code>pobs0</code> here.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>llambda</code></td>
+<td>
+
+<p>Link function for the usual <i>lambda</i> parameter.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>type.fitted</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>
+and <code><a href="fittedvlm.html">fittedvlm</a></code> for information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lonempobs0</code></td>
+<td>
+
+<p>Corresponding argument  for the other parameterization.
+See details below.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>imethod, ipobs0, ionempobs0, ilambda, ishrinkage</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>probs.y, zero</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+
+
+
+
+
+
+
+
+
+
+
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The response <i>Y</i> is zero with probability <i>pobs0</i>,
+else <i>Y</i> has a positive-Poisson(<i>lambda)</i>
+distribution with probability <i>1-pobs0</i>.  Thus <i>0 &lt; pobs0 &lt; 1</i>, which is modelled as a function of
+the covariates.  The zero-altered Poisson distribution differs
+from the zero-inflated Poisson distribution in that the former
+has zeros coming from one source, whereas the latter has zeros
+coming from the Poisson distribution too. Some people call the
+zero-altered Poisson a <em>hurdle</em> model.
+</p>
+<p>For one response/species, by default, the two linear/additive
+predictors for <code>zapoisson()</code>
+are <i>(logit(pobs0),
+  log(lambda))^T</i>.
+</p>
+<p>The <span class="pkg">VGAM</span> family function <code>zapoissonff()</code> has a few
+changes compared to <code>zapoisson()</code>.
+These are:
+(i)   the order of the linear/additive predictors is switched so the
+Poisson mean comes first;
+(ii)  argument <code>onempobs0</code> is now 1 minus the probability of an observed 0,
+i.e., the probability of the positive Poisson distribution,
+i.e., <code>onempobs0</code> is <code>1-pobs0</code>;
+(iii) argument <code>zero</code> has a new default so that the <code>onempobs0</code>
+is intercept-only by default.
+Now <code>zapoissonff()</code> is generally recommended over
+<code>zapoisson()</code>.
+Both functions implement Fisher scoring and can handle
+multiple responses.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+<p>The <code>fitted.values</code> slot of the fitted object,
+which should be extracted by the generic function <code>fitted</code>,
+returns the mean <i>mu</i> (default) which is given by
+</p>
+<p style="text-align: center;"><i>
+         mu = (1-pobs0) * lambda / [1 - exp(-lambda)].</i></p>
+
+<p>If <code>type.fitted = "pobs0"</code> then <i>pobs0</i> is returned.
+</p>
+
+
+<h3>Note</h3>
+
+<p>There are subtle differences between this family function and
+<code><a href="zipoisson.html">zipoisson</a></code> and <code><a href="yip88.html">yip88</a></code>.
+In particular, <code><a href="zipoisson.html">zipoisson</a></code> is a
+<em>mixture</em> model whereas <code>zapoisson()</code> and <code><a href="yip88.html">yip88</a></code>
+are <em>conditional</em> models.
+</p>
+<p>Note this family function allows <i>pobs0</i> to be modelled
+as functions of the covariates.
+
+
+
+</p>
+<p>This family function effectively combines <code><a href="pospoisson.html">pospoisson</a></code>
+and <code><a href="binomialff.html">binomialff</a></code> into one family function.
+This family function can handle multiple responses,
+e.g., more than one species.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Welsh, A. H., Cunningham, R. B., Donnelly, C. F. and
+Lindenmayer, D. B. (1996)
+Modelling the abundances of rare species: statistical models
+for counts with extra zeros.
+<em>Ecological Modelling</em>,
+<b>88</b>,
+297&ndash;308.
+</p>
+<p>Angers, J-F. and Biswas, A. (2003)
+A Bayesian analysis of zero-inflated generalized Poisson model.
+<em>Computational Statistics &amp; Data Analysis</em>,
+<b>42</b>, 37&ndash;46.
+</p>
+<p>Yee, T. W. (2014)
+Reduced-rank vector generalized linear models with two linear predictors.
+<em>Computational Statistics and Data Analysis</em>,
+<b>71</b>, 889&ndash;902.
+</p>
+
+
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="zapoisUC.html">rzapois</a></code>,
+<code><a href="zipoisson.html">zipoisson</a></code>,
+<code><a href="pospoisson.html">pospoisson</a></code>,
+<code><a href="posnegbinomial.html">posnegbinomial</a></code>,
+<code><a href="binomialff.html">binomialff</a></code>,
+<code><a href="pospoisUC.html">rpospois</a></code>,
+<code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>,
+<code><a href="simulate.vlm.html">simulate.vlm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+zdata &lt;- data.frame(x2 = runif(nn &lt;- 1000))
+zdata &lt;- transform(zdata, pobs0  = logit( -1 + 1*x2, inverse = TRUE),
+                          lambda = loge(-0.5 + 2*x2, inverse = TRUE))
+zdata &lt;- transform(zdata, y = rzapois(nn, lambda, pobs0 = pobs0))
+
+with(zdata, table(y))
+fit &lt;- vglm(y ~ x2, zapoisson, data = zdata, trace = TRUE)
+fit &lt;- vglm(y ~ x2, zapoisson, data = zdata, trace = TRUE, crit = "coef")
+head(fitted(fit))
+head(predict(fit))
+head(predict(fit, untransform = TRUE))
+coef(fit, matrix = TRUE)
+summary(fit)
+
+# Another example ------------------------------
+# Data from Angers and Biswas (2003)
+abdata &lt;- data.frame(y = 0:7, w = c(182, 41, 12, 2, 2, 0, 0, 1))
+abdata &lt;- subset(abdata, w &gt; 0)
+Abdata &lt;- data.frame(yy = with(abdata, rep(y, w)))
+fit3 &lt;- vglm(yy ~ 1, zapoisson, data = Abdata, trace = TRUE, crit = "coef")
+coef(fit3, matrix = TRUE)
+Coef(fit3)  # Estimate lambda (they get 0.6997 with SE 0.1520)
+head(fitted(fit3), 1)
+with(Abdata, mean(yy))  # Compare this with fitted(fit3)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

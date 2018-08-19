@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Latent Variables</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for latvar {VGAM}"><tr><td>latvar {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Latent Variables </h2>
+
+<h3>Description</h3>
+
+<p>Generic function for the <em>latent variables</em> of a model.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+latvar(object, ...)
+    lv(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>An object for which the extraction of latent
+variables is meaningful.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Other arguments fed into the specific
+methods function of the model. Sometimes they are fed
+into the methods function for <code><a href="Coef.html">Coef</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Latent variables occur in reduced-rank regression models,
+as well as in quadratic and additive ordination models.
+For the latter two,
+latent variable values are often called <em>site scores</em>
+by ecologists.
+Latent variables are linear combinations of the explanatory
+variables.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The value returned depends specifically on the methods
+function invoked.
+</p>
+
+
+<h3>Warning</h3>
+
+<p><code><a href="latvar.html">latvar</a></code> and <code><a href="latvar.html">lv</a></code> are identical,
+but the latter will be deprecated soon.
+</p>
+<p>Latent variables are not really applicable to
+<code><a href="vglm.html">vglm</a></code>/<code><a href="vgam.html">vgam</a></code> models.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. and Hastie, T. J. (2003)
+Reduced-rank vector generalized linear models.
+<em>Statistical Modelling</em>,
+<b>3</b>, 15&ndash;41.
+</p>
+<p>Yee, T. W. (2004)
+A new technique for maximum-likelihood
+canonical Gaussian ordination.
+<em>Ecological Monographs</em>,
+<b>74</b>, 685&ndash;701.
+</p>
+<p>Yee, T. W. (2006)
+Constrained additive ordination.
+<em>Ecology</em>, <b>87</b>, 203&ndash;213.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code>latvar.qrrvglm</code>,
+<code>latvar.rrvglm</code>,
+<code>latvar.cao</code>,
+<code><a href="lvplot.html">lvplot</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+hspider[, 1:6] &lt;- scale(hspider[, 1:6])  # Standardized environmental vars
+set.seed(123)
+p1 &lt;- cao(cbind(Pardlugu, Pardmont, Pardnigr, Pardpull, Zoraspin) ~
+          WaterCon + BareSand + FallTwig + CoveMoss + CoveHerb + ReflLux,
+          family = poissonff, data = hspider, Rank = 1, df1.nl =
+          c(Zoraspin = 2.5, 3), Bestof = 3, Crow1positive = TRUE)
+
+var(latvar(p1))  # Scaled to unit variance  # Scaled to unit variance
+c(latvar(p1))    # Estimated site scores
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

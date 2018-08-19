@@ -1,0 +1,356 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Generalized Extreme Value Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gev {VGAM}"><tr><td>gev {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Generalized Extreme Value Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Maximum likelihood estimation of the
+3-parameter generalized extreme value (GEV) distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gev(llocation = "identitylink", lscale = "loge",
+    lshape = logoff(offset = 0.5), percentiles = c(95, 99),
+    ilocation = NULL, iscale = NULL, ishape = NULL, imethod = 1,
+    gprobs.y = (1:9)/10, gscale.mux = exp((-5:5)/6),
+    gshape = (-5:5) / 11 + 0.01,
+    iprobs.y = NULL, tolshape0 = 0.001,
+    type.fitted = c("percentiles", "mean"),
+    zero = c("scale", "shape"))
+gevff(llocation = "identitylink", lscale = "loge",
+    lshape = logoff(offset = 0.5), percentiles = c(95, 99),
+    ilocation = NULL, iscale = NULL, ishape = NULL, imethod = 1,
+    gprobs.y = (1:9)/10, gscale.mux = exp((-5:5)/6),
+    gshape = (-5:5) / 11 + 0.01,
+    iprobs.y = NULL, tolshape0 = 0.001,
+    type.fitted = c("percentiles", "mean"), zero = c("scale", "shape"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>llocation, lscale, lshape</code></td>
+<td>
+
+<p>Parameter link functions for <i>mu</i>, <i>sigma</i> and
+<i>xi</i> respectively.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+<p>For the shape parameter,
+the default <code><a href="logoff.html">logoff</a></code> link has an offset
+called <i>A</i> below; and then the linear/additive predictor is
+<i>log(xi+A)</i> which means that
+<i>xi &gt; -A</i>.
+For technical reasons (see <b>Details</b>) it is a good idea
+for <i>A = 0.5</i>.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>percentiles</code></td>
+<td>
+
+<p>Numeric vector of percentiles used for the fitted values.
+Values should be between 0 and 100.
+This argument is ignored if <code>type.fitted = "mean"</code>.
+</p>
+
+
+
+
+</td></tr>
+<tr valign="top"><td><code>type.fitted</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+The default is to use the <code>percentiles</code> argument.
+If <code>"mean"</code> is chosen, then the mean
+<i>mu + sigma * (gamma(1-xi)-1)/xi</i>
+is returned as the fitted values,
+and these are only defined for <i>xi&lt;1</i>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ilocation, iscale, ishape</code></td>
+<td>
+
+<p>Numeric. Initial value for the location parameter, <i>sigma</i> and
+<i>xi</i>. A <code>NULL</code> means a value is computed internally.
+The argument <code>ishape</code> is more important than the other two.
+If a failure to converge occurs, or even to obtain initial values occurs,
+try assigning <code>ishape</code> some value
+(positive or negative; the sign can be very important).
+Also, in general, a larger value of <code>iscale</code> tends to be better than a
+smaller value.
+</p>
+
+</td></tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>imethod</code></td>
+<td>
+
+<p>Initialization method. Either the value 1 or 2.
+If both methods fail then try using <code>ishape</code>.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+
+
+
+</td></tr>
+<tr valign="top"><td><code>gshape</code></td>
+<td>
+
+<p>Numeric vector.
+The values are used for a grid search for an initial value
+for <i>xi</i>.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>gprobs.y, gscale.mux, iprobs.y</code></td>
+<td>
+
+<p>Numeric vectors, used for the initial values.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>tolshape0</code></td>
+<td>
+
+<p>Passed into <code><a href="gevUC.html">dgev</a></code> when computing the log-likelihood.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>A specifying which
+linear/additive predictors are modelled as intercepts only.
+The values can be from the set {1,2,3} corresponding
+respectively to <i>mu</i>, <i>sigma</i>, <i>xi</i>.
+If <code>zero = NULL</code> then all linear/additive predictors are modelled as
+a linear combination of the explanatory variables.
+For many data sets having <code>zero = 3</code> is a good idea.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The GEV distribution function can be written
+</p>
+<p style="text-align: center;"><i>
+        G(y) =  exp( -[ (y- mu)/  sigma  ]_{+}^{- 1/  xi}) </i></p>
+
+<p>where <i>sigma &gt; 0</i>,
+<i>-Inf &lt; mu &lt; Inf</i>,
+and <i>1 + xi*(y-mu)/sigma &gt; 0</i>.
+Here, <i>x_+ = max(x,0)</i>.
+The <i>mu</i>, <i>sigma</i>, <i>xi</i> are known as the
+<em>location</em>, <em>scale</em> and <em>shape</em> parameters respectively.
+The cases
+<i>xi&gt;0</i>,
+<i>xi&lt;0</i>,
+<i>xi = 0</i>
+correspond to the Frechet,
+reverse
+Weibull, and Gumbel types respectively.
+It can be noted that the Gumbel (or Type I) distribution accommodates
+many commonly-used distributions such as the normal, lognormal,
+logistic, gamma, exponential and Weibull.
+</p>
+<p>For the GEV distribution, the <i>k</i>th moment about the mean exists
+if <i>xi &lt; 1/k</i>.
+Provided they exist, the mean and variance are given by
+<i>mu + sigma { Gamma(1-xi)-1} / xi</i>
+and
+<i>sigma^2
+  { Gamma(1-2 xi) - Gamma^2 (1- xi) } / xi^2</i>
+respectively,
+where <i>Gamma</i> is the gamma function.
+</p>
+<p>Smith (1985) established that when <i>xi &gt; -0.5</i>,
+the maximum likelihood estimators are completely regular.
+To have some control over the estimated <i>xi</i> try
+using <code>lshape = logoff(offset = 0.5)</code>, say,
+or <code>lshape = extlogit(min = -0.5, max = 0.5)</code>, say.
+</p>
+
+
+
+
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>Currently, if an estimate of <i>xi</i> is too close to 0 then
+an error may occur for <code>gev()</code> with multivariate responses.
+In general, <code>gevff()</code> is more reliable than <code>gev()</code>.
+</p>
+<p>Fitting the GEV by maximum likelihood estimation can be numerically
+fraught. If <i>1 + xi*(y-mu)/sigma &lt;=
+  0</i> then some crude evasive action is taken but the estimation process
+can still fail. This is particularly the case if <code><a href="vgam.html">vgam</a></code>
+with <code><a href="s.html">s</a></code> is used; then smoothing is best done with
+<code><a href="vglm.html">vglm</a></code> with regression splines (<code><a href="../../splines/html/bs.html">bs</a></code>
+or <code><a href="../../splines/html/ns.html">ns</a></code>) because <code><a href="vglm.html">vglm</a></code> implements
+half-stepsizing whereas <code><a href="vgam.html">vgam</a></code> doesn't (half-stepsizing
+helps handle the problem of straying outside the parameter space.)
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <span class="pkg">VGAM</span> family function <code>gev</code> can handle a multivariate
+(matrix) response, cf. multiple responses.
+If so, each row of the matrix is sorted into
+descending order and <code>NA</code>s are put last.
+With a vector or one-column matrix response using
+<code>gevff</code> will give the same result but be faster and it handles
+the <i>xi = 0</i> case.
+The function <code>gev</code> implements Tawn (1988) while
+<code>gevff</code> implements Prescott and Walden (1980).
+</p>
+<p>Function <code>egev()</code> has been replaced by the
+new family function <code>gevff()</code>. It now
+conforms to the usual <span class="pkg">VGAM</span> philosophy of
+having <code>M1</code> linear predictors per (independent) response.
+This is the usual way multiple responses are handled.
+Hence <code>vglm(cbind(y1, y2)..., gevff, ...)</code> will have
+6 linear predictors and it is possible to constrain the
+linear predictors so that the answer is similar to <code>gev()</code>.
+Missing values in the response of <code>gevff()</code> will be deleted;
+this behaviour is the same as with almost every other
+<span class="pkg">VGAM</span> family function.
+</p>
+<p>The shape parameter <i>xi</i> is difficult to estimate
+accurately unless there is a lot of data.
+Convergence is slow when <i>xi</i> is near <i>-0.5</i>.
+Given many explanatory variables, it is often a good idea
+to make sure <code>zero = 3</code>.
+The range restrictions of the parameter <i>xi</i> are not
+enforced; thus it is possible for a violation to occur.
+</p>
+<p>Successful convergence often depends on having a reasonably good initial
+value for <i>xi</i>. If failure occurs try various values for the
+argument <code>ishape</code>, and if there are covariates,
+having <code>zero = 3</code> is advised.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. and Stephenson, A. G. (2007)
+Vector generalized linear and additive extreme value models.
+<em>Extremes</em>, <b>10</b>, 1&ndash;19.
+</p>
+<p>Tawn, J. A. (1988)
+An extreme-value theory model for dependent observations.
+<em>Journal of Hydrology</em>, <b>101</b>, 227&ndash;250.
+</p>
+<p>Prescott, P. and Walden, A. T. (1980)
+Maximum likelihood estimation of the parameters of the
+generalized extreme-value distribution.
+<em>Biometrika</em>, <b>67</b>, 723&ndash;724.
+</p>
+<p>Smith, R. L. (1985)
+Maximum likelihood estimation in a class of nonregular cases.
+<em>Biometrika</em>, <b>72</b>, 67&ndash;90.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="gevUC.html">rgev</a></code>,
+<code><a href="gumbel.html">gumbel</a></code>,
+<code><a href="gumbel.html">gumbelff</a></code>,
+<code><a href="guplot.html">guplot</a></code>,
+<code><a href="rlplot.gevff.html">rlplot.gevff</a></code>,
+<code><a href="gpd.html">gpd</a></code>,
+<code><a href="weibullR.html">weibullR</a></code>,
+<code><a href="frechet.html">frechet</a></code>,
+<code><a href="logit.html">extlogit</a></code>,
+<code><a href="oxtemp.html">oxtemp</a></code>,
+<code><a href="venice.html">venice</a></code>,
+<code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+
+
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# Multivariate example
+fit1 &lt;- vgam(cbind(r1, r2) ~ s(year, df = 3), gev(zero = 2:3),
+             data = venice, trace = TRUE)
+coef(fit1, matrix = TRUE)
+head(fitted(fit1))
+par(mfrow = c(1, 2), las = 1)
+plot(fit1, se = TRUE, lcol = "blue", scol = "forestgreen",
+     main = "Fitted mu(year) function (centered)", cex.main = 0.8)
+with(venice, matplot(year, depvar(fit1)[, 1:2], ylab = "Sea level (cm)",
+     col = 1:2, main = "Highest 2 annual sea levels", cex.main = 0.8))
+with(venice, lines(year, fitted(fit1)[,1], lty = "dashed", col = "blue"))
+legend("topleft", lty = "dashed", col = "blue", "Fitted 95 percentile")
+
+# Univariate example
+(fit &lt;- vglm(maxtemp ~ 1, gevff, data = oxtemp, trace = TRUE))
+head(fitted(fit))
+coef(fit, matrix = TRUE)
+Coef(fit)
+vcov(fit)
+vcov(fit, untransform = TRUE)
+sqrt(diag(vcov(fit)))  # Approximate standard errors
+rlplot(fit)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

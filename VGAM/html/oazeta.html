@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: One-Altered Zeta Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for oazeta {VGAM}"><tr><td>oazeta {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> One-Altered Zeta Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Fits a one-altered zeta distribution based on
+a conditional model involving a Bernoulli distribution and a
+1-truncated zeta distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+oazeta(lpobs1 = "logit", lshape = "loge",
+       type.fitted = c("mean", "shape", "pobs1", "onempobs1"),
+       gshape = exp((-4:3)/4), ishape = NULL, ipobs1 = NULL, zero = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lpobs1</code></td>
+<td>
+
+<p>Link function for the parameter <i>pobs1</i> or <i>phi</i>,
+called <code>pobs1</code> or <code>phi</code> here.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lshape</code></td>
+<td>
+
+<p>See <code><a href="zeta.html">zeta</a></code> for details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>type.fitted</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>
+and <code><a href="fittedvlm.html">fittedvlm</a></code> for information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>gshape, ishape, ipobs1, zero</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>
+for information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The response <i>Y</i> is one with probability <i>pobs1</i>,
+or <i>Y</i> has a 1-truncated zeta distribution with
+probability <i>1-pobs1</i>.  Thus <i>0 &lt; pobs1 &lt; 1</i>,
+which is modelled as a function of the covariates.  The one-altered
+zeta distribution differs from the one-inflated
+zeta distribution in that the former has ones coming from one
+source, whereas the latter has ones coming from the zeta
+distribution too. The one-inflated zeta distribution
+is implemented in the <span class="pkg">VGAM</span> package.  Some people
+call the one-altered zeta a <em>hurdle</em> model.
+</p>
+<p>The input can be a matrix (multiple responses).
+By default, the two linear/additive predictors
+of <code>oazeta</code>
+are <i>(logit(phi), log(shape))^T</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+<p>The <code>fitted.values</code> slot of the fitted object,
+which should be extracted by the generic function <code>fitted</code>, returns
+the mean <i>mu</i> (default) which is given by
+</p>
+<p style="text-align: center;"><i>
+         mu = phi + (1- phi) A</i></p>
+
+<p>where <i>A</i> is the mean of the one-truncated
+zeta distribution.
+If <code>type.fitted = "pobs1"</code> then <i>pobs1</i> is returned.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This family function effectively combines
+<code><a href="binomialff.html">binomialff</a></code> and
+<code><a href="otzeta.html">otzeta</a></code> into
+one family function.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="oazetaUC.html">Oazeta</a></code>,
+<code><a href="zetaff.html">zetaff</a></code>,
+<code><a href="oizeta.html">oizeta</a></code>,
+<code><a href="otzeta.html">otzeta</a></code>,
+<code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>,
+<code><a href="simulate.vlm.html">simulate.vlm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+odata &lt;- data.frame(x2 = runif(nn &lt;- 1000))
+odata &lt;- transform(odata, pobs1 = logit(-1 + 2*x2, inverse = TRUE),
+                          shape =  loge( 1 + 1*x2, inverse = TRUE))
+odata &lt;- transform(odata, y1 = roazeta(nn, shape = shape, pobs1 = pobs1),
+                          y2 = roazeta(nn, shape = shape, pobs1 = pobs1))
+with(odata, table(y1))
+
+ofit &lt;- vglm(cbind(y1, y2) ~ x2, oazeta, data = odata, trace = TRUE)
+coef(ofit, matrix = TRUE)
+head(fitted(ofit))
+head(predict(ofit))
+summary(ofit)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

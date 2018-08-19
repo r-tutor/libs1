@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Defining Smooths in VGAM Formulas</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for s {VGAM}"><tr><td>s {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Defining Smooths in VGAM Formulas </h2>
+
+<h3>Description</h3>
+
+<p><code>s</code> is used in the definition of (vector) smooth terms within
+<code>vgam</code> formulas.
+This corresponds to 1st-generation VGAMs that use backfitting
+for their estimation.
+The effective degrees of freedom is prespecified.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+s(x, df = 4, spar = 0, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+
+<p>covariate (abscissae) to be smoothed.
+Note that <code>x</code> must be a <em>single</em> variable
+and not a function of a variable.
+For example, <code>s(x)</code> is fine but <code>s(log(x))</code> will fail.
+In this case, let <code>logx &lt;- log(x)</code> (in the data frame),
+say, and then use <code>s(logx)</code>.
+At this stage bivariate smoothers (<code>x</code> would be a two-column matrix)
+are not implemented.
+</p>
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+
+<p>numerical vector of length <i>r</i>.
+Effective degrees of freedom: must lie between 1 (linear fit)
+and <i>n</i> (interpolation).
+Thus one could say that <code>df-1</code> is the
+<em>effective nonlinear degrees of freedom</em> (ENDF) of the smooth.
+Recycling of values will be used if <code>df</code> is not of length <i>r</i>.
+If <code>spar</code> is positive then this argument is ignored.
+Thus <code>s()</code> means that the effective degrees of freedom is prespecified.
+If it is known that the component function(s) are more wiggly
+than usual then try increasing the value of this argument.
+</p>
+</td></tr>
+<tr valign="top"><td><code>spar</code></td>
+<td>
+<p> numerical vector of length <i>r</i>.
+Positive smoothing parameters (after scaling) .
+Larger values mean more smoothing so that the solution approaches
+a linear fit for that component function.
+A zero value means that <code>df</code> is used.
+Recycling of values will be used if <code>spar</code> is not of length
+<i>r</i>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Ignored for now.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>In this help file <i>M</i> is the number of additive predictors
+and <i>r</i> is the number of component functions to be
+estimated (so that <i>r</i> is an element from the set
+{1,2,...,<i>M</i>}).
+Also, if <i>n</i> is the number of <em>distinct</em> abscissae, then
+<code>s</code> will fail if <i>n &lt; 7</i>.
+</p>
+<p><code>s</code>, which is symbolic and does not perform any smoothing itself,
+only handles a single covariate.
+Note that <code>s</code> works in <code><a href="vgam.html">vgam</a></code> only.
+It has no effect in <code><a href="vglm.html">vglm</a></code>
+(actually, it is similar to the identity function <code><a href="../../base/html/AsIs.html">I</a></code>
+so that <code>s(x2)</code> is the same as <code>x2</code> in the LM model matrix).
+It differs from the <code>s()</code> of the <span class="pkg">gam</span> package and
+the <code><a href="../../mgcv/html/s.html">s</a></code> of the <span class="pkg">mgcv</span> package;
+they should not be mixed together.
+Also, terms involving <code>s</code> should be simple additive terms, and not
+involving interactions and nesting etc.
+For example, <code>myfactor:s(x2)</code> is not a good idea.
+</p>
+
+
+
+
+<h3>Value</h3>
+
+<p>A vector with attributes that are (only) used by <code>vgam</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The vector cubic smoothing spline which <code>s()</code> represents is
+computationally demanding for large <i>M</i>.
+The cost is approximately <i>O(n M^3)</i> where <i>n</i> is the
+number of unique abscissae.
+</p>
+<p>Currently a bug relating to the use of <code>s()</code> is that
+only constraint matrices whose columns are orthogonal are handled
+correctly.  If any <code>s()</code> term has a constraint matrix that
+does not satisfy this condition then a warning is issued.
+See <code><a href="is.buggy.html">is.buggy</a></code> for more information.
+</p>
+<p>A more modern alternative to using
+<code>s</code> with <code><a href="vgam.html">vgam</a></code> is to use
+<code><a href="sm.os.html">sm.os</a></code> or
+<code><a href="sm.ps.html">sm.ps</a></code>.
+This does not require backfitting
+and allows automatic smoothing parameter selection.
+However, this alternative should only be used when the
+sample size is reasonably large (<i>&gt; 500</i>, say).
+These are called Generation-2 VGAMs.
+</p>
+<p>Another alternative to using
+<code>s</code> with <code><a href="vgam.html">vgam</a></code> is
+<code><a href="../../splines/html/bs.html">bs</a></code>
+and/or <code><a href="../../splines/html/ns.html">ns</a></code>
+with <code><a href="vglm.html">vglm</a></code>.
+The latter implements half-stepping, which is helpful if
+convergence is difficult.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. and Wild, C. J. (1996)
+Vector generalized additive models.
+<em>Journal of the Royal Statistical Society, Series B, Methodological</em>,
+<b>58</b>, 481&ndash;493.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="vgam.html">vgam</a></code>,
+<code><a href="is.buggy.html">is.buggy</a></code>,
+<code><a href="sm.os.html">sm.os</a></code>,
+<code><a href="sm.ps.html">sm.ps</a></code>,
+<code><a href="vsmooth.spline.html">vsmooth.spline</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Nonparametric logistic regression
+fit1 &lt;- vgam(agaaus ~ s(altitude, df = 2), binomialff, data = hunua)
+## Not run:  plot(fit1, se = TRUE) 
+
+# Bivariate logistic model with artificial data
+nn &lt;- 300
+bdata &lt;- data.frame(x1 = runif(nn), x2 = runif(nn))
+bdata &lt;- transform(bdata,
+    y1 = rbinom(nn, size = 1, prob = logit(sin(2 * x2), inverse = TRUE)),
+    y2 = rbinom(nn, size = 1, prob = logit(sin(2 * x2), inverse = TRUE)))
+fit2 &lt;- vgam(cbind(y1, y2) ~ x1 + s(x2, 3), trace = TRUE,
+             binom2.or(exchangeable = TRUE), data = bdata)
+coef(fit2, matrix = TRUE)  # Hard to interpret
+## Not run:  plot(fit2, se = TRUE, which.term = 2, scol = "blue") 
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Generalized Pareto Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gpdUC {VGAM}"><tr><td>gpdUC {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The Generalized Pareto Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function, quantile function and random
+generation for the generalized Pareto distribution (GPD) with
+location parameter <code>location</code>,
+scale parameter <code>scale</code> and
+shape parameter <code>shape</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dgpd(x, location = 0, scale = 1, shape = 0, log = FALSE,
+     tolshape0 = sqrt(.Machine$double.eps))
+pgpd(q, location = 0, scale = 1, shape = 0,
+     lower.tail = TRUE, log.p = FALSE)
+qgpd(p, location = 0, scale = 1, shape = 0,
+     lower.tail = TRUE, log.p = FALSE)
+rgpd(n, location = 0, scale = 1, shape = 0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>vector of probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of observations.
+If <code>length(n) &gt; 1</code> then the length is taken to be the number required.</p>
+</td></tr>
+<tr valign="top"><td><code>location</code></td>
+<td>
+<p>the location parameter <i>mu</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>scale</code></td>
+<td>
+<p>the (positive) scale parameter <i>sigma</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>shape</code></td>
+<td>
+<p>the shape parameter <i>xi</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>Logical.
+If <code>log = TRUE</code> then the logarithm of the density is returned.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lower.tail, log.p</code></td>
+<td>
+
+<p>Same meaning as in <code><a href="../../stats/html/Uniform.html">punif</a></code>
+or <code><a href="../../stats/html/Uniform.html">qunif</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>tolshape0</code></td>
+<td>
+
+<p>Positive numeric.
+Threshold/tolerance value for resting whether <i>xi</i> is zero.
+If the absolute value of the estimate of <i>xi</i> is less than
+this value then it will be assumed zero and an exponential distribution will
+be used.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Details</h3>
+
+<p>See <code><a href="gpd.html">gpd</a></code>, the <span class="pkg">VGAM</span> family function
+for estimating the two parameters by maximum likelihood estimation,
+for formulae and other details.
+Apart from <code>n</code>, all the above arguments may be vectors and
+are recyled to the appropriate length if necessary.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dgpd</code> gives the density,
+<code>pgpd</code> gives the distribution function,
+<code>qgpd</code> gives the quantile function, and
+<code>rgpd</code> generates random deviates.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The default values of all three parameters, especially
+<i>xi = 0</i>, means the default distribution is the exponential.
+</p>
+<p>Currently, these functions have different argument names compared
+with those in the <span class="pkg">evd</span> package.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee and Kai Huang </p>
+
+
+<h3>References</h3>
+
+<p>Coles, S. (2001)
+<em>An Introduction to Statistical Modeling of Extreme Values</em>.
+London: Springer-Verlag.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="gpd.html">gpd</a></code>,
+<code><a href="../../stats/html/Exponential.html">Exponential</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run:  loc &lt;- 2; sigma &lt;- 1; xi &lt;- -0.4
+x &lt;- seq(loc - 0.2, loc + 3, by = 0.01)
+plot(x, dgpd(x, loc, sigma, xi), type = "l", col = "blue", ylim = c(0, 1),
+     main = "Blue is density, red is cumulative distribution function",
+     sub = "Purple are 5,10,...,95 percentiles", ylab = "", las = 1)
+abline(h = 0, col = "blue", lty = 2)
+lines(qgpd(seq(0.05, 0.95, by = 0.05), loc, sigma, xi),
+      dgpd(qgpd(seq(0.05, 0.95, by = 0.05), loc, sigma, xi), loc, sigma, xi),
+      col = "purple", lty = 3, type = "h")
+lines(x, pgpd(x, loc, sigma, xi), type = "l", col = "red")
+abline(h = 0, lty = 2)
+
+pgpd(qgpd(seq(0.05, 0.95, by = 0.05), loc, sigma, xi), loc, sigma, xi)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

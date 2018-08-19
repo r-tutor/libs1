@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Truncated Weibull Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for truncweibull {VGAM}"><tr><td>truncweibull {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Truncated Weibull Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Maximum likelihood estimation of the 2-parameter Weibull distribution
+with lower truncation.
+No observations should be censored.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+truncweibull(lower.limit = 1e-5,
+             lAlpha = "loge", lBetaa = "loge",
+             iAlpha = NULL,   iBetaa = NULL,
+             nrfs = 1, probs.y = c(0.2, 0.5, 0.8),
+             imethod = 1, zero = "Betaa")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lower.limit</code></td>
+<td>
+
+<p>Positive lower truncation limits.
+Recycled to the same dimension as the response, going
+across rows first.
+The default, being close to 0, should mean effectively the same
+results as <code><a href="weibullR.html">weibullR</a></code> if there are no response
+values that are smaller.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lAlpha, lBetaa</code></td>
+<td>
+
+<p>Parameter link functions applied to the
+(positive) parameters <code>Alpha</code>
+(called <i>&alpha;</i> below) and
+(positive) <code>Betaa</code> (called <i>&beta;</i> below).
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iAlpha, iBetaa</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod, nrfs, zero, probs.y</code></td>
+<td>
+
+<p>Details at <code><a href="weibullR.html">weibullR</a></code>
+and <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>MLE of the two parameters of the Weibull distribution are
+computed, subject to lower truncation.
+That is, all response values are greater than <code>lower.limit</code>,
+element-wise.
+For a particular observation this is any known positive value.
+This function is currently based directly on
+Wingo (1989) and his parameterization is used (it differs
+from <code><a href="weibullR.html">weibullR</a></code>.)
+In particular,
+<i>&beta; = a</i> and <i>&alpha; = (1/b)^a</i>
+where <i>a</i> and <i>b</i> are as in <code><a href="weibullR.html">weibullR</a></code> and
+<code><a href="../../stats/html/Weibull.html">dweibull</a></code>.
+</p>
+
+<p>Upon fitting the <code>extra</code> slot has a component called
+<code>lower.limit</code> which is of the same dimension as the
+response.
+The fitted values are the mean, which are computed
+using <code><a href="pgamma.deriv.html">pgamma.deriv</a></code>
+and <code><a href="pgamma.deriv.unscaled.html">pgamma.deriv.unscaled</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning</h3>
+
+<p>This function may be converted to the same parameterization as
+<code><a href="weibullR.html">weibullR</a></code> at any time.
+Yet to do: one element of the EIM may be wrong (due to
+two interpretations of a formula; but it seems to work).
+Convergence is slower than usual and this may imply something
+is wrong; use argument <code>maxit</code>.
+In fact, it's probably because <code><a href="pgamma.deriv.unscaled.html">pgamma.deriv.unscaled</a></code> is
+inaccurate at <code>q = 1</code> and <code>q = 2</code>.
+Also,
+convergence should be monitored, especially if the truncation
+means that a large proportion of the data is lost compared to an
+ordinary Weibull distribution.
+</p>
+
+
+<h3>Note</h3>
+
+<p>More improvements need to be made, e.g.,
+initial values are currently based on no truncation.
+This <span class="pkg">VGAM</span> family function handles multiple responses.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Wingo, D. R. (1989)
+The left-truncated Weibull distribution: theory and computation.
+<em>Statistical Papers</em>,
+<b>30</b>(1), 39&ndash;48.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="weibullR.html">weibullR</a></code>,
+<code><a href="../../stats/html/Weibull.html">dweibull</a></code>,
+<code><a href="pgamma.deriv.html">pgamma.deriv</a></code>,
+<code><a href="pgamma.deriv.unscaled.html">pgamma.deriv.unscaled</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+nn &lt;- 5000; prop.lost &lt;- 0.40   # Proportion lost to truncation
+wdata &lt;- data.frame(x2 = runif(nn))  # Complete Weibull data
+wdata &lt;- transform(wdata,
+                   Betaa = exp(1))  # &gt; 2 is okay (satisfies regularity conds)
+wdata &lt;- transform(wdata, Alpha = exp(0.5 - 1 * x2))
+wdata &lt;- transform(wdata, Shape = Betaa,
+#                         aaa   = Betaa,
+#                         bbb   = 1 / Alpha^(1 / Betaa),
+                          Scale = 1 / Alpha^(1 / Betaa))
+wdata &lt;- transform(wdata, y2 = rweibull(nn, shape = Shape, scale = Scale))
+summary(wdata)
+
+lower.limit2 &lt;- with(wdata, quantile(y2, prob = prop.lost))  # Proportion lost
+wdata &lt;- subset(wdata, y2 &gt; lower.limit2)  # Smaller due to truncation
+
+fit1 &lt;- vglm(y2 ~ x2, maxit = 100, trace = TRUE,
+             truncweibull(lower.limit = lower.limit2), data = wdata)
+coef(fit1, matrix = TRUE)
+summary(fit1)
+vcov(fit1)
+head(fit1@extra$lower.limit)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

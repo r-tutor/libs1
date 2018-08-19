@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Folded Square Root Link Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for foldsqrt {VGAM}"><tr><td>foldsqrt {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Folded Square Root Link Function </h2>
+
+<h3>Description</h3>
+
+<p>Computes the folded square root transformation, including its inverse
+and the first two derivatives.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+foldsqrt(theta, min = 0, max = 1, mux = sqrt(2),
+         inverse = FALSE, deriv = 0, short = TRUE, tag = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>theta</code></td>
+<td>
+
+<p>Numeric or character.
+See below for further details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>min, max, mux</code></td>
+<td>
+
+<p>These are called <i>L</i>, <i>U</i> and <i>K</i> below.
+</p>
+</td></tr>
+<tr valign="top"><td><code>inverse, deriv, short, tag</code></td>
+<td>
+
+<p>Details at <code><a href="Links.html">Links</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The folded square root link function can be applied to
+parameters that lie between <i>L</i> and <i>U</i> inclusive.
+Numerical values of <code>theta</code>
+out of range result in <code>NA</code> or <code>NaN</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>For <code>foldsqrt</code> with <code>deriv = 0</code>:
+<i>K *
+         (sqrt(theta-L) - sqrt(U-theta))</i>
+or
+<code>mux * (sqrt(theta-min) - sqrt(max-theta))</code>
+when <code>inverse = FALSE</code>,
+and if <code>inverse = TRUE</code> then some more
+complicated function that returns a <code>NA</code> unless
+<code>theta</code> is between <code>-mux*sqrt(max-min)</code> and
+<code>mux*sqrt(max-min)</code>.
+</p>
+<p>For <code>deriv = 1</code>, then the function returns
+<em>d</em> <code>eta</code> / <em>d</em> <code>theta</code> as a function of <code>theta</code>
+if <code>inverse = FALSE</code>,
+else if <code>inverse = TRUE</code> then it returns the reciprocal.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The default has, if <code>theta</code> is 0 or 1, the link function
+value is <code>-sqrt(2)</code> and <code>+sqrt(2)</code> respectively.
+These are finite values, therefore one cannot use this link function for
+general modelling of probabilities because of numerical problem,
+e.g., with <code><a href="binomialff.html">binomialff</a></code>, <code><a href="cumulative.html">cumulative</a></code>. See
+the example below.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="Links.html">Links</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+p &lt;- seq(0.01, 0.99, by = 0.01)
+foldsqrt(p)
+max(abs(foldsqrt(foldsqrt(p), inverse = TRUE) - p))  # Should be 0
+
+p &lt;- c(seq(-0.02, 0.02, by = 0.01), seq(0.97, 1.02, by = 0.01))
+foldsqrt(p)  # Has NAs
+
+## Not run: 
+p &lt;- seq(0.01, 0.99, by = 0.01)
+par(mfrow = c(2, 2), lwd = (mylwd &lt;- 2))
+y &lt;- seq(-4, 4, length = 100)
+for (d in 0:1) {
+  matplot(p, cbind(logit(p, deriv = d), foldsqrt(p, deriv = d)),
+          type = "n", col = "purple", ylab = "transformation", las = 1,
+          main = if (d == 0) "Some probability link functions"
+          else "First derivative")
+  lines(p, logit(p, deriv = d), col = "limegreen")
+  lines(p, probit(p, deriv = d), col = "purple")
+  lines(p, cloglog(p, deriv = d), col = "chocolate")
+  lines(p, foldsqrt(p, deriv = d), col = "tan")
+  if (d == 0) {
+    abline(v = 0.5, h = 0, lty = "dashed")
+    legend(0, 4.5, c("logit", "probit", "cloglog", "foldsqrt"), lwd = 2,
+           col = c("limegreen","purple","chocolate", "tan"))
+  } else
+    abline(v = 0.5, lty = "dashed")
+}
+
+for (d in 0) {
+  matplot(y, cbind(logit(y, deriv = d, inverse = TRUE),
+                   foldsqrt(y, deriv = d, inverse = TRUE)),
+          type = "n", col = "purple", xlab = "transformation", ylab = "p",
+          lwd = 2, las = 1,
+          main = if (d == 0) "Some inverse probability link functions"
+          else "First derivative")
+  lines(y, logit(y, deriv = d, inverse = TRUE), col = "limegreen")
+  lines(y, probit(y, deriv = d, inverse = TRUE), col = "purple")
+  lines(y, cloglog(y, deriv = d, inverse = TRUE), col = "chocolate")
+  lines(y, foldsqrt(y, deriv = d, inverse = TRUE), col = "tan")
+  if (d == 0) {
+    abline(h = 0.5, v = 0, lty = "dashed")
+    legend(-4, 1, c("logit", "probit", "cloglog", "foldsqrt"), lwd = 2,
+           col = c("limegreen","purple","chocolate", "tan"))
+  }
+}
+par(lwd = 1)
+
+## End(Not run)
+
+# This is lucky to converge
+fit.h &lt;- vglm(agaaus ~ sm.bs(altitude), binomialff(link = foldsqrt(mux = 5)),
+              data = hunua, trace = TRUE)
+## Not run: 
+plotvgam(fit.h, se = TRUE, lcol = "orange", scol = "orange",
+         main = "Orange is Hunua, Blue is Waitakere") 
+## End(Not run)
+head(predict(fit.h, hunua, type = "response"))
+
+
+## Not run: 
+# The following fails.
+pneumo &lt;- transform(pneumo, let = log(exposure.time))
+fit &lt;- vglm(cbind(normal, mild, severe) ~ let,
+            cumulative(link = foldsqrt(mux = 10), par = TRUE, rev = TRUE),
+            data = pneumo, trace = TRUE, maxit = 200) 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

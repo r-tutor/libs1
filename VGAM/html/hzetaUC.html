@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Haight's Zeta Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Hzeta {VGAM}"><tr><td>Hzeta {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Haight's Zeta Distribution  </h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function, quantile function and random generation
+for Haight's zeta distribution with parameter <code>shape</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dhzeta(x, shape, log = FALSE)
+phzeta(q, shape, log.p = FALSE)
+qhzeta(p, shape)
+rhzeta(n, shape)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q, p, n</code></td>
+<td>
+
+<p>Same meaning as <code><a href="../../stats/html/runif.html">runif</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>shape</code></td>
+<td>
+
+<p>The positive shape parameter.
+Called <i>alpha</i> below.
+</p>
+</td></tr>
+<tr valign="top"><td><code>log,log.p</code></td>
+<td>
+
+<p>Same meaning as in <code><a href="../../stats/html/Normal.html">pnorm</a></code>
+or <code><a href="../../stats/html/Normal.html">qnorm</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The probability function is
+</p>
+<p style="text-align: center;"><i>
+         f(x) = (2x-1)^(-alpha) - (2x+1)^(-alpha),</i></p>
+
+<p>where <i>alpha&gt;0</i> and <i>x=1,2,...</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dhzeta</code> gives the density,
+<code>phzeta</code> gives the distribution function,
+<code>qhzeta</code> gives the quantile function, and
+<code>rhzeta</code> generates random deviates.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Given some response data, the <span class="pkg">VGAM</span> family function
+<code><a href="hzeta.html">hzeta</a></code> estimates the parameter <code>shape</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee and Kai Huang </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="hzeta.html">hzeta</a></code>,
+<code><a href="zeta.html">zeta</a></code>,
+<code><a href="zetaff.html">zetaff</a></code>,
+<code><a href="simulate.vlm.html">simulate.vlm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+dhzeta(1:20, 2.1)
+rhzeta(20, 2.1)
+
+round(1000 * dhzeta(1:8, 2))
+table(rhzeta(1000, 2))
+
+## Not run:  shape &lt;- 1.1; x &lt;- 1:10
+plot(x, dhzeta(x, shape = shape), type = "h", ylim = 0:1, lwd = 2,
+     sub = paste("shape =", shape), las = 1, col = "blue", ylab = "Probability",
+     main = "Haight's zeta: blue = density; orange = distribution function")
+lines(x+0.1, phzeta(x, shape = shape), col = "orange", lty = 3, lwd = 2,
+      type = "h")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Upper Record Values from a Univariate Normal Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rec.normal {VGAM}"><tr><td>rec.normal {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Upper Record Values from a Univariate Normal Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Maximum likelihood estimation of the two parameters of a
+univariate normal distribution when the observations are upper
+record values.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rec.normal(lmean = "identitylink", lsd = "loge",
+          imean = NULL, isd = NULL, imethod = 1, zero = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lmean, lsd</code></td>
+<td>
+
+<p>Link functions applied to the mean and sd parameters.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imean, isd</code></td>
+<td>
+
+<p>Numeric. Optional initial values for the mean and sd.
+The default value <code>NULL</code> means they are computed internally,
+with the help of <code>imethod</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod</code></td>
+<td>
+
+<p>Integer, either 1 or 2 or 3. Initial method, three algorithms are
+implemented. Choose the another value if convergence fails, or use
+<code>imean</code> and/or <code>isd</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>Can be an integer vector, containing the value 1 or 2. If so, the mean or
+standard deviation respectively are modelled as an intercept only.
+Usually, setting <code>zero = 2</code> will be used, if used at all.
+The default value <code>NULL</code> means both linear/additive predictors
+are modelled as functions of the explanatory variables.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The response must be a vector or one-column matrix with strictly
+increasing values.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This family function tries to solve a difficult problem, and the
+larger the data set the better.
+Convergence failure can commonly occur, and
+convergence may be very slow, so set <code>maxit = 200, trace = TRUE</code>, say.
+Inputting good initial values are advised.
+</p>
+<p>This family function uses the BFGS quasi-Newton update formula
+for the working weight matrices.  Consequently the estimated
+variance-covariance matrix may be inaccurate or simply wrong! The
+standard errors must be therefore treated with caution; these are
+computed in functions such as <code>vcov()</code> and <code>summary()</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Arnold, B. C. and Balakrishnan, N. and Nagaraja, H. N. (1998)
+<em>Records</em>,
+New York: John Wiley &amp; Sons.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="uninormal.html">uninormal</a></code>,
+<code><a href="double.cens.normal.html">double.cens.normal</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+nn &lt;- 10000; mymean &lt;- 100
+# First value is reference value or trivial record
+Rdata &lt;- data.frame(rawy = c(mymean, rnorm(nn, me = mymean, sd = exp(3))))
+# Keep only observations that are records:
+rdata &lt;- data.frame(y = unique(cummax(with(Rdata, rawy))))
+
+fit &lt;- vglm(y ~ 1, rec.normal, data = rdata, trace = TRUE, maxit = 200)
+coef(fit, matrix = TRUE)
+Coef(fit)
+summary(fit)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

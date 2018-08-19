@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The MNSs Blood Group System</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for MNSs {VGAM}"><tr><td>MNSs {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> The MNSs Blood Group System </h2>
+
+<h3>Description</h3>
+
+<p>Estimates the three independent parameters of the
+the MNSs blood group system.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+MNSs(link = "logit", imS = NULL, ims = NULL, inS = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>link</code></td>
+<td>
+
+<p>Link function applied to the three parameters.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imS, ims, inS</code></td>
+<td>
+
+<p>Optional initial value for <code>mS</code>, <code>ms</code>
+and <code>nS</code> respectively.
+A <code>NULL</code> means they are computed internally.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>There are three independent
+parameters: <code>m_S</code>, <code>m_s</code>, <code>n_S</code>, say, so that
+<code>n_s = 1 - m_S - m_s - n_S</code>.
+We let the eta vector (transposed) be
+<code>(g(m_S), g(m_s), g(n_S))</code> where <code>g</code> is the
+link function.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The input can be a 6-column matrix of counts, where the columns are
+MS, Ms, MNS, MNs, NS, Ns (in order).
+Alternatively, the input can be a 6-column matrix of
+proportions (so each row adds to 1) and the <code>weights</code>
+argument is used to specify the total number of counts for each row.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Elandt-Johnson, R. C. (1971)
+<em>Probability Models and Statistical Methods in Genetics</em>,
+New York: Wiley.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="AA.Aa.aa.html">AA.Aa.aa</a></code>,
+<code><a href="AB.Ab.aB.ab.html">AB.Ab.aB.ab</a></code>,
+<code><a href="ABO.html">ABO</a></code>,
+<code><a href="A1A2A3.html">A1A2A3</a></code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+# Order matters only:
+y &lt;- cbind(MS = 295, Ms = 107, MNS = 379, MNs = 322, NS = 102, Ns = 214)
+fit &lt;- vglm(y ~ 1, MNSs("logit", .25, .28, .08), trace = TRUE)
+fit &lt;- vglm(y ~ 1, MNSs(link = logit), trace = TRUE, crit = "coef")
+Coef(fit)
+rbind(y, sum(y)*fitted(fit))
+sqrt(diag(vcov(fit)))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

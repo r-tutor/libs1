@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Loglinear Model for Two Binary Responses</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for loglinb2 {VGAM}"><tr><td>loglinb2 {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Loglinear Model for Two Binary Responses </h2>
+
+<h3>Description</h3>
+
+<p>Fits a loglinear model to two binary responses.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+loglinb2(exchangeable = FALSE, zero = "u12")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>exchangeable</code></td>
+<td>
+<p> Logical.
+If <code>TRUE</code>, the two marginal probabilities are constrained to
+be equal. Should be set <code>TRUE</code> for ears, eyes, etc. data.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+<p> Which linear/additive predictors are modelled as
+intercept-only?
+A <code>NULL</code> means none of them.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The model is
+</p>
+<p style="text-align: center;"><i>
+    P(Y1=y1,Y2=y2) = exp(u0 + u1*y1 + u2*y2 + u12*y1*y2)</i></p>
+
+<p>where <i>y1</i> and <i>y2</i> are 0 or 1, and
+the parameters are <i>u1</i>, <i>u2</i>,
+<i>u12</i>.
+The normalizing parameter <i>u0</i> can be expressed as a function
+of the other parameters, viz.,
+</p>
+<p style="text-align: center;"><i>
+        u0 = -log[1 + exp(u1) + exp(u2) + exp(u1 + u2 + u12)].</i></p>
+
+<p>The linear/additive predictors are
+<i>(eta1,eta2,eta3) =
+       (u1,u2,u12)</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+<code><a href="rrvglm.html">rrvglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+<p>When fitted, the <code>fitted.values</code> slot of the object contains the
+four joint probabilities, labelled as
+<i>(Y1,Y2)</i> = (0,0), (0,1), (1,0), (1,1), respectively.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The response must be a two-column matrix of ones and zeros only.
+This is more restrictive than <code><a href="binom2.or.html">binom2.or</a></code>,
+which can handle more types of input formats.
+Note that each of the 4 combinations of the multivariate response
+need to appear in the data set.
+After estimation, the response attached to the object is also a
+two-column matrix; possibly in the future it might change into a
+four-column matrix.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. and Wild, C. J. (2001)
+Discussion to: &ldquo;Smoothing spline ANOVA for multivariate Bernoulli
+observations, with application to ophthalmology data (with discussion)&rdquo;
+by Gao, F., Wahba, G., Klein, R., Klein, B.
+<em>Journal of the American Statistical Association</em>,
+<b>96</b>, 127&ndash;160.
+</p>
+<p>McCullagh, P. and Nelder, J. A. (1989)
+<em>Generalized Linear Models</em>, 2nd ed. London: Chapman &amp; Hall.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="binom2.or.html">binom2.or</a></code>,
+<code><a href="binom2.rho.html">binom2.rho</a></code>,
+<code><a href="loglinb3.html">loglinb3</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+coalminers &lt;- transform(coalminers, Age = (age - 42) / 5)
+# Get the n x 4 matrix of counts
+fit0 &lt;- vglm(cbind(nBnW,nBW,BnW,BW) ~ Age, binom2.or, data = coalminers)
+counts &lt;- round(c(weights(fit0, type = "prior")) * depvar(fit0))
+# Create a n x 2 matrix response for loglinb2()
+# bwmat &lt;- matrix(c(0,0, 0,1, 1,0, 1,1), 4, 2, byrow = TRUE)
+bwmat &lt;- cbind(bln = c(0,0,1,1), wheeze = c(0,1,0,1))
+matof1 &lt;- matrix(1, nrow(counts), 1)
+newminers &lt;- data.frame(bln    = kronecker(matof1, bwmat[, 1]),
+                        wheeze = kronecker(matof1, bwmat[, 2]),
+                        wt     = c(t(counts)),
+                        Age    = with(coalminers, rep(age, rep(4, length(age)))))
+newminers &lt;- newminers[with(newminers, wt) &gt; 0,]
+
+fit &lt;- vglm(cbind(bln,wheeze) ~ Age, loglinb2(zero = NULL),
+            weight = wt, data = newminers)
+coef(fit, matrix = TRUE)  # Same! (at least for the log odds-ratio)
+summary(fit)
+
+# Try reconcile this with McCullagh and Nelder (1989), p.234
+(0.166-0.131) / 0.027458   # 1.275 is approximately 1.25
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

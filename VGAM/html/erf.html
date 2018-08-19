@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Error Function, and variants</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for erf {VGAM}"><tr><td>erf {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Error Function, and variants </h2>
+
+<h3>Description</h3>
+
+<p>Computes the error function, or its inverse,
+based on the normal distribution.
+Also computes the complement of the error function, or its inverse,
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+erf(x, inverse = FALSE)
+erfc(x, inverse = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p> Numeric. </p>
+</td></tr>
+<tr valign="top"><td><code>inverse</code></td>
+<td>
+<p> Logical. Of length 1. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><i>Erf(x)</i> is defined as
+</p>
+<p style="text-align: center;"><i>
+    Erf(x) = (2/sqrt(pi)) int_0^x exp(-t^2) dt</i></p>
+
+<p>so that it is closely related to <code><a href="../../stats/html/Normal.html">pnorm</a></code>.
+The inverse function is defined for <i>x</i> in <i>(-1,1)</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns the value of the function evaluated at <code>x</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Some authors omit the term <i>2/sqrt(pi)</i> from the
+definition of <i>Erf(x)</i>. Although defined for complex
+arguments, this function only works for real arguments.
+</p>
+<p>The <em>complementary error function</em> <i>erfc(x)</i> is defined
+as <i>1-erf(x)</i>, and is implemented by <code>erfc</code>.
+Its inverse function is defined for <i>x</i> in <i>(0,2)</i>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee</p>
+
+
+<h3>References</h3>
+
+<p>Abramowitz, M. and Stegun, I. A. (1972)
+<em>Handbook of Mathematical Functions with Formulas,
+Graphs, and Mathematical Tables</em>,
+New York: Dover Publications Inc.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/Normal.html">pnorm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+curve(erf,   -3, 3, col = "orange", ylab = "", las = 1)
+curve(pnorm, -3, 3, add = TRUE, col = "blue", lty = "dotted", lwd = 2)
+abline(v = 0, h = 0, lty = "dashed")
+legend("topleft", c("erf(x)", "pnorm(x)"), col = c("orange", "blue"),
+       lty = c("solid", "dotted"), lwd = 1:2) 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

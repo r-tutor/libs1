@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Control Function for vgam()</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for vgam.control {VGAM}"><tr><td>vgam.control {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Control Function for vgam() </h2>
+
+<h3>Description</h3>
+
+<p>Algorithmic constants and parameters for running <code><a href="vgam.html">vgam</a></code>
+are set using this function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+vgam.control(all.knots = FALSE, bf.epsilon = 1e-07, bf.maxit = 30,
+             checkwz=TRUE, Check.rank = TRUE, Check.cm.rank = TRUE,
+             criterion = names(.min.criterion.VGAM),
+             epsilon = 1e-07, maxit = 30, Maxit.outer = 10,
+             noWarning = FALSE,
+             na.action = na.fail,
+             nk = NULL, save.weights = FALSE, se.fit = TRUE,
+             trace = FALSE, wzepsilon = .Machine$double.eps^0.75,
+             xij = NULL, gamma.arg = 1, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>all.knots</code></td>
+<td>
+
+<p>logical indicating if all distinct points of
+the smoothing variables are to be used as knots.
+By default, <code>all.knots=TRUE</code> for
+<i>n &lt;= 40</i>, and
+for <i>n &gt; 40</i>,
+the number of knots is approximately
+<i>40 + (n-40)^0.25</i>.
+This increases very slowly with <i>n</i>
+so that the number of knots is approximately between 50 and 60
+for large <i>n</i>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>bf.epsilon</code></td>
+<td>
+
+<p>tolerance used by the modified vector
+backfitting algorithm for testing convergence.
+Must be a positive number.
+</p>
+</td></tr>
+<tr valign="top"><td><code>bf.maxit</code></td>
+<td>
+
+<p>maximum number of iterations allowed in
+the modified vector
+backfitting algorithm. Must be a positive integer.
+</p>
+</td></tr>
+<tr valign="top"><td><code>checkwz</code></td>
+<td>
+
+<p>logical indicating whether the diagonal elements of
+the working weight matrices should be checked whether they are
+sufficiently positive, i.e., greater than <code>wzepsilon</code>. If not,
+any values less than <code>wzepsilon</code> are replaced with this value.
+</p>
+</td></tr>
+<tr valign="top"><td><code>Check.rank, Check.cm.rank</code></td>
+<td>
+
+<p>See <code><a href="vglm.control.html">vglm.control</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>criterion</code></td>
+<td>
+
+<p>character variable describing what criterion is to
+be used to test for convergence.
+The possibilities are listed in <code>.min.criterion.VGAM</code>, but
+most family functions only implement a few of these.
+</p>
+</td></tr>
+<tr valign="top"><td><code>epsilon</code></td>
+<td>
+
+<p>positive convergence tolerance epsilon. Roughly
+speaking, the Newton-Raphson/Fisher-scoring/local-scoring iterations
+are assumed to have
+converged when two successive <code>criterion</code> values are within
+<code>epsilon</code> of each other.
+</p>
+</td></tr>
+<tr valign="top"><td><code>maxit</code></td>
+<td>
+
+<p>maximum number of
+Newton-Raphson/Fisher-scoring/local-scoring iterations allowed.
+</p>
+</td></tr>
+<tr valign="top"><td><code>Maxit.outer</code></td>
+<td>
+
+<p>maximum number of
+outer iterations allowed when there are
+<code><a href="sm.os.html">sm.os</a></code> or
+<code><a href="sm.ps.html">sm.ps</a></code> terms.
+See <code><a href="vgam.html">vgam</a></code> for a little information about
+the default <em>outer iteration</em>.
+Note that one can use <em>performance iteration</em>
+by setting <code>Maxit.outer = 1</code>; then the
+smoothing parameters will be automatically chosen at each
+IRLS iteration (some specific programming
+allows this).
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>na.action</code></td>
+<td>
+
+<p>how to handle missing values.
+Unlike the SPLUS <code>gam</code> function, <code><a href="vgam.html">vgam</a></code> cannot handle
+<code>NA</code>s when smoothing.
+</p>
+</td></tr>
+<tr valign="top"><td><code>nk</code></td>
+<td>
+
+<p>vector of length <i>d</i> containing positive integers.
+where <i>d</i> be the number of <code><a href="s.html">s</a></code> terms
+in the formula.
+Recycling is used if necessary.
+The <i>i</i>th value is the number of B-spline coefficients to be
+estimated for each component function of the <i>i</i>th
+<code>s()</code> term.
+<code>nk</code> differs from the number of knots by some constant.
+If specified, <code>nk</code> overrides the automatic knot selection procedure.
+</p>
+</td></tr>
+<tr valign="top"><td><code>save.weights</code></td>
+<td>
+
+<p>logical indicating whether the <code>weights</code> slot
+of a <code>"vglm"</code> object will be saved on the object.
+If not, it will be reconstructed when needed, e.g., <code>summary</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>se.fit</code></td>
+<td>
+
+<p>logical indicating whether approximate
+pointwise standard errors are to be saved on the object.
+If <code>TRUE</code>, then these can be plotted
+with <code>plot(..., se = TRUE)</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>trace</code></td>
+<td>
+
+<p>logical indicating if output should be produced for each iteration.
+</p>
+</td></tr>
+<tr valign="top"><td><code>wzepsilon</code></td>
+<td>
+
+<p>Small positive number used to test whether the diagonals
+of the working weight matrices are sufficiently positive.
+</p>
+</td></tr>
+</table>
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>noWarning</code></td>
+<td>
+
+<p>Same as <code><a href="vglm.control.html">vglm.control</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>xij</code></td>
+<td>
+
+<p>Same as <code><a href="vglm.control.html">vglm.control</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>gamma.arg</code></td>
+<td>
+
+<p>Numeric; same as <code>gamma</code> in <code><a href="../../mgcv/html/magic.html">magic</a></code>.
+Inflation factor for optimizing the UBRE/GCV criterion.
+If given, a suggested value is 1.4 to help avoid overfitting,
+based on the work of Gu and co-workers
+(values between 1.2 and 1.4 appeared reasonable, based on simulations).
+A warning may be given if the value is deemed out-of-range.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>other parameters that may be picked up from control
+functions that are specific to the <span class="pkg">VGAM</span> family function.
+
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Most of the control parameters are used within
+<code>vgam.fit</code> and you will have to look at that
+to understand the full details.  Many of the control
+parameters are used in a similar manner by <code>vglm.fit</code>
+(<code><a href="vglm.html">vglm</a></code>) because the algorithm (IRLS) is
+very similar.
+</p>
+<p>Setting <code>save.weights=FALSE</code> is useful for some
+models because the <code>weights</code> slot of the object is
+often the largest and so less memory is used to store the
+object. However, for some <span class="pkg">VGAM</span> family function,
+it is necessary to set <code>save.weights=TRUE</code> because
+the <code>weights</code> slot cannot be reconstructed later.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with components matching the input names. A little
+error checking is done, but not much.  The list is assigned
+to the <code>control</code> slot of <code><a href="vgam.html">vgam</a></code> objects.
+</p>
+
+
+<h3>Warning</h3>
+
+<p>See <code><a href="vglm.control.html">vglm.control</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p><code><a href="vgam.html">vgam</a></code> does not implement half-stepsizing,
+therefore parametric models should be fitted with
+<code><a href="vglm.html">vglm</a></code>. Also, <code><a href="vgam.html">vgam</a></code> is slower
+than  <code><a href="vglm.html">vglm</a></code> too.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee</p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. and Wild, C. J. (1996)
+Vector generalized additive models.
+<em>Journal of the Royal Statistical Society, Series B, Methodological</em>,
+<b>58</b>, 481&ndash;493.
+</p>
+
+
+
+
+
+
+
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="vgam.html">vgam</a></code>,
+<code><a href="vglm.control.html">vglm.control</a></code>,
+<code><a href="vsmooth.spline.html">vsmooth.spline</a></code>,
+<code><a href="vglm.html">vglm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+pneumo &lt;- transform(pneumo, let = log(exposure.time))
+vgam(cbind(normal, mild, severe) ~ s(let, df = 2), multinomial,
+     data = pneumo, trace = TRUE, eps = 1e-4, maxit = 10)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

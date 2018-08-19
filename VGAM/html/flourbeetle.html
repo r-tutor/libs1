@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Mortality of Flour Beetles from Carbon Disulphide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for flourbeetle {VGAM}"><tr><td>flourbeetle {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Mortality of Flour Beetles from Carbon Disulphide</h2>
+
+<h3>Description</h3>
+
+<p>The <code>flourbeetle</code> data frame has 8 rows and 4 columns.
+Two columns are explanatory, the other two are responses.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>data(flourbeetle)</pre>
+
+
+<h3>Format</h3>
+
+<p>This data frame contains the following columns:
+</p>
+
+<dl>
+<dt>logdose</dt><dd><p><code><a href="../../base/html/log10.html">log10</a></code> applied to <code>CS2mgL</code>. </p>
+</dd>
+<dt>CS2mgL</dt><dd><p>a numeric vector, the concentration of gaseous
+carbon disulphide in mg per litre. </p>
+</dd>
+<dt>exposed</dt><dd><p>a numeric vector, counts; the number of
+beetles exposed to the poison. </p>
+</dd>
+<dt>killed</dt><dd><p>a numeric vector, counts; the numbers killed. </p>
+</dd>
+</dl>
+
+
+
+<h3>Details</h3>
+
+<p>These data were originally given in Table IV of Bliss (1935) and
+are the combination of
+two series of toxicological experiments involving
+<em>Tribolium confusum</em>, also known as the flour beetle.
+Groups of such adult beetles were exposed for 5 hours of
+gaseous carbon disulphide at different concentrations,
+and their mortality measured.
+</p>
+
+
+<h3>Source</h3>
+
+<p>Bliss, C.I., 1935.
+The calculation of the dosage-mortality curve.
+<em>Annals of Applied Biology</em>, <b>22</b>, 134&ndash;167.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="binomialff.html">binomialff</a></code>,
+<code><a href="probit.html">probit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+fit1 &lt;- vglm(cbind(killed, exposed - killed) ~ logdose, binomialff(link = probit),
+             data = flourbeetle, trace = TRUE)
+summary(fit1)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

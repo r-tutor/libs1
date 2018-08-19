@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Slash Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Slash {VGAM}"><tr><td>Slash {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Slash Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Density function, distribution function, and
+random generation for the slash distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dslash(x, mu = 0, sigma = 1, log = FALSE, smallno = .Machine$double.eps*1000)
+pslash(q, mu = 0, sigma = 1, very.negative = -10000,
+       lower.tail = TRUE, log.p = FALSE)
+rslash(n, mu = 0, sigma = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+
+<p>Same as <code><a href="../../stats/html/runif.html">runif</a></code>.
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>mu, sigma</code></td>
+<td>
+<p>the mean and standard deviation of
+the univariate normal distribution.
+</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>Logical.
+If <code>TRUE</code> then the logarithm of the density is returned.
+</p>
+</td></tr>
+<tr valign="top"><td><code>very.negative</code></td>
+<td>
+
+<p>Numeric, of length 1.
+A large negative value.
+For <code>(q-mu)/sigma</code> values less than this,
+the value 0 is returned because
+<code><a href="../../stats/html/integrate.html">integrate</a></code> tends to fail.
+A warning is issued.
+Similarly, if <code>(q-mu)/sigma</code> is greater than
+<code>abs(very.negative)</code> then 1 is returned
+with a warning.
+</p>
+</td></tr>
+<tr valign="top"><td><code>smallno</code></td>
+<td>
+
+<p>See <code><a href="slash.html">slash</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lower.tail, log.p</code></td>
+<td>
+
+<p>Same meaning as in <code><a href="../../stats/html/Normal.html">pnorm</a></code>
+or <code><a href="../../stats/html/Normal.html">qnorm</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <code><a href="slash.html">slash</a></code>, the <span class="pkg">VGAM</span> family function
+for estimating the two parameters by maximum likelihood estimation,
+for the formula of the probability density function and other details.
+</p>
+<p>Function <code><a href="slashUC.html">pslash</a></code> uses a <code>for ()</code> loop and
+<code><a href="../../stats/html/integrate.html">integrate</a></code>, meaning it's very slow.
+It may also be inaccurate for extreme values of <code>q</code>,
+and returns with 1 or 0 values when too extreme compared
+to <code>very.negative</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dslash</code> gives the density, and
+<code>pslash</code> gives the distribution function,
+<code>rslash</code> generates random deviates.
+</p>
+
+
+<h3>Note</h3>
+
+<p><code>pslash</code> is very slow.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee and C. S. Chee</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="slash.html">slash</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+curve(dslash, col = "blue", ylab = "f(x)", -5, 5, ylim = c(0, 0.4), las = 1,
+     main = "Standard slash, normal and Cauchy densities", lwd = 2)
+curve(dnorm, col = "black", lty = 2, lwd = 2, add = TRUE)
+curve(dcauchy, col = "orange", lty = 3, lwd = 2, add = TRUE)
+legend("topleft", c("slash", "normal", "Cauchy"), lty = 1:3,
+       col = c("blue","black","orange"), lwd = 2)
+
+curve(pslash, col = "blue", -5, 5, ylim = 0:1)
+pslash(c(-Inf, -20000, 20000, Inf))  # Gives a warning
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

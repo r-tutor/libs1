@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Positive-Negative Binomial Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Posnegbin {VGAM}"><tr><td>Posnegbin {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Positive-Negative Binomial Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function, quantile function and random generation
+for the positive-negative binomial distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dposnegbin(x, size, prob = NULL, munb = NULL, log = FALSE)
+pposnegbin(q, size, prob = NULL, munb = NULL,
+           lower.tail = TRUE, log.p = FALSE)
+qposnegbin(p, size, prob = NULL, munb = NULL)
+rposnegbin(n, size, prob = NULL, munb = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>vector of probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of observations.
+Fed into <code><a href="../../stats/html/runif.html">runif</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>size, prob, munb, log</code></td>
+<td>
+
+<p>Same arguments as that of an ordinary negative binomial distribution
+(see <code><a href="../../stats/html/NegBinomial.html">dnbinom</a></code>).
+Some arguments have been renamed slightly.
+</p>
+
+
+<p>Short vectors are recycled.
+The  parameter <code>1/size</code> is known as a dispersion parameter;
+as <code>size</code> approaches infinity, the negative binomial distribution
+approaches a Poisson distribution.
+</p>
+<p>Note that <code>prob</code> must lie in <i>(0,1)</i>, otherwise a
+<code>NaN</code> is returned.
+</p>
+</td></tr>
+<tr valign="top"><td><code>log.p, lower.tail</code></td>
+<td>
+
+<p>Same arguments as that of an ordinary negative binomial distribution
+(see <code><a href="../../stats/html/NegBinomial.html">pnbinom</a></code>).
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The positive-negative binomial distribution is a negative binomial
+distribution but with the probability of a zero being zero.
+The other probabilities are scaled to add to unity.
+The mean therefore is
+</p>
+<p style="text-align: center;"><i>
+    munb / (1-p(0))</i></p>
+
+<p>where <i>munb</i> the mean of an ordinary negative binomial distribution.
+</p>
+
+
+
+
+
+
+
+
+<h3>Value</h3>
+
+<p><code>dposnegbin</code> gives the density,
+<code>pposnegbin</code> gives the distribution function,
+<code>qposnegbin</code> gives the quantile function, and
+<code>rposnegbin</code> generates <i>n</i> random deviates.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Welsh, A. H., Cunningham, R. B., Donnelly, C. F. and Lindenmayer,
+D. B. (1996)
+Modelling the abundances of rare species: statistical models
+for counts with extra zeros.
+<em>Ecological Modelling</em>,
+<b>88</b>,
+297&ndash;308.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="posnegbinomial.html">posnegbinomial</a></code>,
+<code><a href="zanegbinomial.html">zanegbinomial</a></code>,
+<code><a href="zinegbinomial.html">zinegbinomial</a></code>,
+<code><a href="../../stats/html/NegBinomial.html">rnbinom</a></code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+munb &lt;- 5; size &lt;- 4; n &lt;- 1000
+table(y &lt;- rposnegbin(n, munb = munb, size = size))
+mean(y)  # sample mean
+munb / (1 - (size / (size + munb))^size)  # population mean
+munb / pnbinom(0, mu = munb, size = size, lower.tail = FALSE)  # same as before
+
+x &lt;- (-1):17
+(ii &lt;- dposnegbin(x, munb = munb, size = size))
+max(abs(cumsum(ii) - pposnegbin(x, munb = munb, size = size)))  # Should be 0
+
+## Not run: 
+x &lt;- 0:10
+barplot(rbind(dposnegbin(x, munb = munb, size = size),
+                 dnbinom(x, mu   = munb, size = size)),
+        beside = TRUE, col = c("blue","green"),
+        main = paste("dposnegbin(munb = ", munb, ", size = ", size, ") (blue) vs",
+                     " dnbinom(mu = ", munb, ", size = ", size, ") (green)", sep = ""),
+        names.arg = as.character(x)) 
+## End(Not run)
+
+# Another test for pposnegbin()
+nn &lt;- 5000
+mytab &lt;- cumsum(table(rposnegbin(nn, munb = munb, size = size))) / nn
+myans &lt;- pposnegbin(sort(as.numeric(names(mytab))), munb = munb, size = size)
+max(abs(mytab - myans))  # Should be 0
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

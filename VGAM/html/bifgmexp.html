@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bivariate Farlie-Gumbel-Morgenstern Exponential Distribution...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bifgmexp {VGAM}"><tr><td>bifgmexp {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Bivariate Farlie-Gumbel-Morgenstern Exponential Distribution
+Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Estimate the association parameter of FGM bivariate
+exponential distribution by maximum likelihood estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bifgmexp(lapar = "rhobit", iapar = NULL, tola0 = 0.01, imethod = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lapar</code></td>
+<td>
+
+<p>Link function for the
+association parameter
+<i>alpha</i>, which lies between <i>-1</i> and <i>1</i>.
+See <code><a href="Links.html">Links</a></code> for more choices
+and other information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iapar</code></td>
+<td>
+
+<p>Numeric. Optional initial value for <i>alpha</i>.
+By default, an initial value is chosen internally.
+If a convergence failure occurs try assigning a different value.
+Assigning a value will override the argument <code>imethod</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>tola0</code></td>
+<td>
+
+<p>Positive numeric.
+If the estimate of <i>alpha</i> has an absolute
+value less than this then it is replaced by this value.
+This is an attempt to fix a numerical problem when the estimate
+is too close to zero.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod</code></td>
+<td>
+
+<p>An integer with value <code>1</code> or <code>2</code> which
+specifies the initialization method. If failure to converge occurs
+try the other value, or else specify a value for <code>ia</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The cumulative distribution function is
+</p>
+<p style="text-align: center;"><i>
+        P(Y1 &lt;= y1, Y2 &lt;= y2) =
+        exp(-y1-y2) * ( 1 + alpha * [1 - exp(-y1)] * [1 - exp(-y2)] ) + 1 -
+           exp(-y1) - exp(-y2) </i></p>
+
+<p>for <i>alpha</i> between <i>-1</i> and <i>1</i>.
+The support of the function is for <i>y1&gt;0</i> and
+<i>y2&gt;0</i>.
+The marginal distributions are an exponential distribution with
+unit mean.
+When <i>alpha=0</i> then the random variables are
+independent, and this causes some problems in the estimation
+process since the distribution no longer depends on the
+parameter.
+</p>
+<p>A variant of Newton-Raphson is used, which only seems to work for an
+intercept model.
+It is a very good idea to set <code>trace = TRUE</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The response must be a two-column matrix. Currently, the fitted
+value is a matrix with two columns and values equal to 1.
+This is because each marginal distribution corresponds to a
+exponential distribution with unit mean.
+</p>
+<p>This <span class="pkg">VGAM</span> family function should be used with caution.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Castillo, E., Hadi, A. S., Balakrishnan, N. Sarabia, J. S. (2005)
+<em>Extreme Value and Related Models with Applications in
+Engineering and Science</em>,
+Hoboken, NJ, USA: Wiley-Interscience.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="bifgmcop.html">bifgmcop</a></code>,
+<code><a href="bigumbelIexp.html">bigumbelIexp</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+N &lt;- 1000; mdata &lt;- data.frame(y1 = rexp(N), y2 = rexp(N))
+## Not run: plot(ymat)
+fit &lt;- vglm(cbind(y1, y2) ~ 1, bifgmexp, data = mdata, trace = TRUE)
+fit &lt;- vglm(cbind(y1, y2) ~ 1, bifgmexp, data = mdata, # This may fail
+            trace = TRUE, crit = "coef")
+coef(fit, matrix = TRUE)
+Coef(fit)
+head(fitted(fit))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

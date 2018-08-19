@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Prior and Working Weights of a VGLM fit</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for weightsvglm {VGAM}"><tr><td>weightsvglm {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Prior and Working Weights of a VGLM fit </h2>
+
+<h3>Description</h3>
+
+<p>Returns either the prior weights or working weights of a VGLM object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+weightsvglm(object, type = c("prior", "working"),
+            matrix.arg = TRUE, ignore.slot = FALSE,
+            deriv.arg = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>a model object from the <span class="pkg">VGAM</span> <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> package
+that inherits from a <em>vector generalized linear model</em> (VGLM),
+e.g., a model of class <code>"vglm"</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+
+<p>Character, which type of weight is to be returned?
+The default is the first one.
+</p>
+</td></tr>
+<tr valign="top"><td><code>matrix.arg</code></td>
+<td>
+
+<p>Logical, whether the answer is returned as a
+matrix. If not, it will be a vector.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ignore.slot</code></td>
+<td>
+
+<p>Logical. If <code>TRUE</code> then
+<code>object@weights</code> is ignored even if it has been assigned,
+and the long calculation for <code>object@weights</code>
+is repeated. This may give a slightly different answer because
+of the final IRLS step at convergence may or may not assign
+the latest value of quantities such as the mean and weights.
+</p>
+</td></tr>
+<tr valign="top"><td><code>deriv.arg</code></td>
+<td>
+
+<p>Logical. If <code>TRUE</code> then
+a list with components <code>deriv</code> and <code>weights</code>
+is returned. See below for more details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Currently ignored.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Prior weights are usually inputted with the <code>weights</code>
+argument in functions such as <code><a href="vglm.html">vglm</a></code> and
+<code><a href="vgam.html">vgam</a></code>.  It may refer to frequencies of the
+individual data or be weight matrices specified beforehand.
+</p>
+<p>Working weights are used by the IRLS algorithm. They correspond
+to the second derivatives of the log-likelihood function
+with respect to the linear predictors.  The working weights
+correspond to positive-definite weight matrices and are returned
+in <em>matrix-band</em> form, e.g., the first <i>M</i> columns
+correspond to the diagonals, etc.
+</p>
+
+<p>If one wants to perturb the linear predictors then the
+<code>fitted.values</code> slots should be assigned to the object
+before calling this function. The reason is that,
+for some family functions,
+the variable <code>mu</code> is used directly as one of the parameter
+estimates, without recomputing it from <code>eta</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>If <code>type = "working"</code> and <code>deriv = TRUE</code> then a
+list is returned with the two components described below.
+Otherwise the prior or working weights are returned depending
+on the value of <code>type</code>.
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>deriv</code></td>
+<td>
+
+<p>Typically the first derivative of the
+log-likelihood with respect to the linear predictors.
+For example, this is the variable <code>deriv.mu</code> in
+<code>vglm.fit()</code>, or equivalently, the matrix returned in the
+<code>"deriv"</code> slot of a <span class="pkg">VGAM</span> family function.
+</p>
+</td></tr>
+<tr valign="top"><td><code>weights </code></td>
+<td>
+
+<p>The working weights.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>This function is intended to be similar to
+<code>weights.glm</code> (see <code><a href="../../stats/html/glm.html">glm</a></code>).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/glm.html">glm</a></code>,
+<code><a href="vglmff-class.html">vglmff-class</a></code>,
+<code><a href="vglm.html">vglm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+pneumo &lt;- transform(pneumo, let = log(exposure.time))
+(fit &lt;- vglm(cbind(normal, mild, severe) ~ let,
+             cumulative(parallel = TRUE, reverse = TRUE), data = pneumo))
+depvar(fit)  # These are sample proportions
+weights(fit, type = "prior", matrix = FALSE)  # Number of observations
+
+# Look at the working residuals
+nn &lt;- nrow(model.matrix(fit, type = "lm"))
+M &lt;- ncol(predict(fit))
+
+wwt &lt;- weights(fit, type = "working", deriv = TRUE)  # In matrix-band format
+wz &lt;- m2a(wwt$weights, M = M)  # In array format
+wzinv &lt;- array(apply(wz, 3, solve), c(M, M, nn))
+wresid &lt;- matrix(NA, nn, M)  # Working residuals
+for (ii in 1:nn)
+  wresid[ii, ] &lt;- wzinv[, , ii, drop = TRUE] %*% wwt$deriv[ii, ]
+max(abs(c(resid(fit, type = "work")) - c(wresid)))  # Should be 0
+
+(zedd &lt;- predict(fit) + wresid)  # Adjusted dependent vector
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

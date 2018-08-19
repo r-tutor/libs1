@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Mark the Baseline of Row and Column on a Matrix data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Rcim {VGAM}"><tr><td>Rcim {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Mark the Baseline of Row and Column on a Matrix data
+</h2>
+
+<h3>Description</h3>
+
+<p>Rearrange the rows and columns of the input so
+that the first row and first column are baseline.
+This function is for rank-zero row-column interaction models
+(RCIMs; i.e., general main effects models).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  Rcim(mat, rbaseline = 1, cbaseline = 1)
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>mat</code></td>
+<td>
+
+<p>Matrix, of dimension <i>r</i> by <i>c</i>.
+It is best that it is labelled with row and column names.
+</p>
+</td></tr>
+<tr valign="top"><td><code>rbaseline, cbaseline</code></td>
+<td>
+
+<p>Numeric (row number of the matrix <code>mat</code>) or
+character (matching a row name of <code>mat</code>) that the user
+wants as the row baseline or reference level.
+Similarly <code>cbaseline</code> for the column.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This is a data preprocessing function for <code><a href="grc.html">rcim</a></code>.
+For rank-zero row-column interaction models this function
+establishes the baseline (or reference) levels of the matrix
+response with respect to the row and columns&mdash;these become
+the new first row and column.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Matrix of the same dimension as the input,
+with <code>rbaseline</code> and <code>cbaseline</code> specifying the
+first rows and columns.
+The default is no change in <code>mat</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function is similar to <code><a href="moffset.html">moffset</a></code>; see
+<code><a href="moffset.html">moffset</a></code> for information about the differences.
+If numeric, the arguments
+<code>rbaseline</code>
+and
+<code>cbaseline</code>
+differ from arguments
+<code>roffset</code>
+and
+<code>coffset</code>
+in <code><a href="moffset.html">moffset</a></code>
+by 1 (when elements of the matrix agree).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Alfian F. Hadi and T. W. Yee.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="moffset.html">moffset</a></code>,
+<code><a href="grc.html">rcim</a></code>,
+<code><a href="plotrcim0.html">plotrcim0</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+(alcoff.e &lt;- moffset(alcoff, roffset = "6", postfix = "*"))
+(aa &lt;- Rcim(alcoff,    rbaseline = "11", cbaseline = "Sun"))
+(bb &lt;- moffset(alcoff,             "11",             "Sun", postfix = "*"))
+aa - bb  # Note the difference!
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

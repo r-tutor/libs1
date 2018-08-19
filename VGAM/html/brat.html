@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bradley Terry Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for brat {VGAM}"><tr><td>brat {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Bradley Terry Model </h2>
+
+<h3>Description</h3>
+
+<p>Fits a Bradley Terry model (intercept-only model) by maximum
+likelihood estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+brat(refgp = "last", refvalue = 1, ialpha = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>refgp</code></td>
+<td>
+
+<p>Integer whose value must be from the set
+{1,...,<i>M+1</i>}, where there are <i>M+1</i>
+competitors. The default value indicates the last
+competitor is used&mdash;but don't input a character string,
+in general.
+</p>
+</td></tr>
+<tr valign="top"><td><code>refvalue</code></td>
+<td>
+
+<p>Numeric. A positive value for the reference group.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ialpha</code></td>
+<td>
+
+<p>Initial values for the <i>alpha</i>s.
+These are recycled to the appropriate length.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The Bradley Terry model involves <i>M+1</i> competitors
+who either win or lose against each other (no draws/ties
+allowed in this implementation&ndash;see <code><a href="bratt.html">bratt</a></code>
+if there are ties). The probability that Competitor
+<i>i</i> beats Competitor <i>j</i> is <i>alpha_i / (alpha_i + alpha_j)</i>,
+where all the <i>alpha</i>s are positive.
+Loosely, the <i>alpha</i>s can be thought of as
+the competitors' &lsquo;abilities&rsquo;. For identifiability, one
+of the <i>alpha_i</i> is set to a known value
+<code>refvalue</code>, e.g., 1. By default, this function
+chooses the last competitor to have this reference value.
+The data can be represented in the form of a <i>M+1</i>
+by <i>M+1</i> matrix of counts, where winners are the
+rows and losers are the columns. However, this is not
+the way the data should be inputted (see below).
+</p>
+<p>Excluding the reference value/group, this function
+chooses <i>log(alpha_j)</i> as the
+<i>M</i> linear predictors. The log link ensures that
+the <i>alpha</i>s are positive.
+</p>
+<p>The Bradley Terry model can be fitted by logistic
+regression, but this approach is not taken here.
+The Bradley Terry model can be fitted with covariates,
+e.g., a home advantage variable, but unfortunately, this
+lies outside the VGLM theoretical framework and therefore
+cannot be handled with this code.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>Presently, the residuals are wrong, and the prior weights
+are not handled correctly. Ideally, the total number of
+counts should be the prior weights, after the response has
+been converted to proportions. This would make it similar
+to family functions such as <code><a href="multinomial.html">multinomial</a></code>
+and <code><a href="binomialff.html">binomialff</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The function <code><a href="bratUC.html">Brat</a></code> is useful for coercing
+a <i>M+1</i> by <i>M+1</i> matrix of counts into a one-row
+matrix suitable for <code>brat</code>. Diagonal elements are
+skipped, and the usual S order of <code>c(a.matrix)</code>
+of elements is used. There should be no missing values
+apart from the diagonal elements of the square matrix.
+The matrix should have winners as the rows, and losers
+as the columns. In general, the response should be a
+1-row matrix with <i>M(M+1)</i> columns.
+</p>
+<p>Only an intercept model is recommended with <code>brat</code>.
+It doesn't make sense really to include covariates because
+of the limited VGLM framework.
+</p>
+<p>Notationally, note that the <span class="pkg">VGAM</span> family function
+<code><a href="brat.html">brat</a></code> has <i>M+1</i> contestants, while
+<code>bratt</code> has <i>M</i> contestants.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Agresti, A. (2013)
+<em>Categorical Data Analysis</em>,
+3rd ed. Hoboken, NJ, USA: Wiley.
+</p>
+<p>Stigler, S. (1994)
+Citation patterns in the journals of statistics and probability.
+<em>Statistical Science</em>,
+<b>9</b>, 94&ndash;108.
+</p>
+<p>The <span class="pkg">BradleyTerry2</span> package has more comprehensive capabilities
+than this function.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="bratt.html">bratt</a></code>,
+<code><a href="bratUC.html">Brat</a></code>,
+<code><a href="multinomial.html">multinomial</a></code>,
+<code><a href="binomialff.html">binomialff</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Citation statistics: being cited is a 'win'; citing is a 'loss'
+journal &lt;- c("Biometrika", "Comm.Statist", "JASA", "JRSS-B")
+mat &lt;- matrix(c( NA, 33, 320, 284,
+                730, NA, 813, 276,
+                498, 68,  NA, 325,
+                221, 17, 142,  NA), 4, 4)
+dimnames(mat) &lt;- list(winner = journal, loser = journal)
+fit &lt;- vglm(Brat(mat) ~ 1, brat(refgp = 1), trace = TRUE)
+fit &lt;- vglm(Brat(mat) ~ 1, brat(refgp = 1), trace = TRUE, crit = "coef")
+summary(fit)
+c(0, coef(fit))  # Log-abilities (in order of "journal")
+c(1, Coef(fit))  # Abilities (in order of "journal")
+fitted(fit)     # Probabilities of winning in awkward form
+(check &lt;- InverseBrat(fitted(fit)))  # Probabilities of winning
+check + t(check)  # Should be 1's in the off-diagonals
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

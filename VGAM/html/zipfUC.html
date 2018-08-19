@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Zipf Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Zipf {VGAM}"><tr><td>Zipf {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The Zipf Distribution</h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function, quantile function and random generation
+for the Zipf distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dzipf(x, N, shape, log = FALSE)
+pzipf(q, N, shape, log.p = FALSE)
+qzipf(p, N, shape)
+rzipf(n, N, shape)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q, p, n</code></td>
+<td>
+<p>Same as <code><a href="../../stats/html/Poisson.html">Poisson</a></code>. </p>
+</td></tr>
+<tr valign="top"><td><code>N, shape</code></td>
+<td>
+
+<p>the number of elements, and the exponent characterizing the
+distribution.
+See <code><a href="zipf.html">zipf</a></code> for more details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>log, log.p</code></td>
+<td>
+
+<p>Same meaning as in <code><a href="../../stats/html/Normal.html">Normal</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This is a finite version of the zeta distribution.
+See <code><a href="zetaff.html">zetaff</a></code> for more details.
+In general, these functions runs slower and slower as <code>N</code> increases.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dzipf</code> gives the density,
+<code>pzipf</code> gives the cumulative distribution function,
+<code>qzipf</code> gives the quantile function, and
+<code>rzipf</code> generates random deviates.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="zipf.html">zipf</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+N &lt;- 10; shape &lt;- 0.5; y &lt;- 1:N
+proby &lt;- dzipf(y, N = N, shape = shape)
+## Not run:  plot(proby ~ y, type = "h", col = "blue", ylab = "Probability",
+     ylim = c(0, 0.2), main = paste("Zipf(N = ",N,", shape = ",shape,")", sep = ""),
+     lwd = 2, las = 1) 
+## End(Not run)
+sum(proby)  # Should be 1
+max(abs(cumsum(proby) - pzipf(y, N = N, shape = shape)))  # Should be 0
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

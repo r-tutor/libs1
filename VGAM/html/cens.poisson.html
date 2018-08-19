@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Censored Poisson Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cens.poisson {VGAM}"><tr><td>cens.poisson {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Censored Poisson Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Family function for a censored
+Poisson response.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cens.poisson(link = "loge", imu = NULL,
+             biglambda = 10, smallno = 1e-10)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>link</code></td>
+<td>
+
+<p>Link function applied to the mean;
+see <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imu</code></td>
+<td>
+
+<p>Optional initial value;
+see <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>biglambda, smallno</code></td>
+<td>
+
+<p>Used to help robustify the code when <code>lambda</code> is very large
+and the <code><a href="../../stats/html/Poisson.html">ppois</a></code> value is so close to 0 that
+the first derivative is computed to be a <code>NA</code> or <code>NaN</code>.
+When this occurs  <code><a href="mills.ratio.html">mills.ratio</a></code> is called.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Often a table of Poisson counts has an entry <em>J+</em> meaning
+<i>&gt;= J</i>.
+This family function is similar to <code><a href="poissonff.html">poissonff</a></code> but handles
+such censored data. The input requires <code><a href="SurvS4.html">SurvS4</a></code>.
+Only a univariate response is allowed.
+The Newton-Raphson algorithm is used.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as
+<code><a href="vglm.html">vglm</a></code> and
+<code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>As the response is discrete,
+care is required with <code><a href="../../survival/html/Surv.html">Surv</a></code>, especially with
+<code>"interval"</code> censored data because of the
+<code>(start, end]</code> format.
+See the examples below.
+The examples have
+<code>y &lt; L</code> as left censored and
+<code>y &gt;= U</code> (formatted as <code>U+</code>) as right censored observations,
+therefore
+<code>L &lt;= y &lt;  U</code> is for uncensored and/or interval censored
+observations.
+Consequently the input must be tweaked to conform to the
+<code>(start, end]</code> format.
+</p>
+<p>A bit of attention has been directed to try robustify the code
+when <code>lambda</code> is very large, however this currently works
+for left and right censored data only, not interval
+censored data. Sometime the fix involves an approximation,
+hence it is a good idea to set <code>trace = TRUE</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The function <code><a href="poissonff.html">poissonff</a></code> should be used
+when there are no censored observations.
+Also, <code>NA</code>s are not permitted with <code><a href="SurvS4.html">SurvS4</a></code>,
+nor is <code>type = "counting"</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>See <span class="pkg">survival</span> for background.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="SurvS4.html">SurvS4</a></code>,
+<code><a href="poissonff.html">poissonff</a></code>,
+<code><a href="Links.html">Links</a></code>,
+<code><a href="mills.ratio.html">mills.ratio</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Example 1: right censored data
+set.seed(123); U &lt;- 20
+cdata &lt;- data.frame(y = rpois(N &lt;- 100, exp(3)))
+cdata &lt;- transform(cdata, cy = pmin(U, y),
+                          rcensored = (y &gt;= U))
+cdata &lt;- transform(cdata, status = ifelse(rcensored, 0, 1))
+with(cdata, table(cy))
+with(cdata, table(rcensored))
+with(cdata, table(print(SurvS4(cy, status))))  # Check; U+ means &gt;= U
+fit &lt;- vglm(SurvS4(cy, status) ~ 1, cens.poisson, data = cdata,
+            trace = TRUE)
+coef(fit, matrix = TRUE)
+table(print(depvar(fit)))  # Another check; U+ means &gt;= U
+
+
+# Example 2: left censored data
+L &lt;- 15
+cdata &lt;- transform(cdata,
+               cY = pmax(L, y),
+               lcensored = y &lt;  L)  # Note y &lt; L, not cY == L or y &lt;= L
+cdata &lt;- transform(cdata, status = ifelse(lcensored, 0, 1))
+with(cdata, table(cY))
+with(cdata, table(lcensored))
+with(cdata, table(print(SurvS4(cY, status, type = "left"))))  # Check
+fit &lt;- vglm(SurvS4(cY, status, type = "left") ~ 1, cens.poisson,
+            data = cdata, trace = TRUE)
+coef(fit, matrix = TRUE)
+
+
+# Example 3: interval censored data
+cdata &lt;- transform(cdata, Lvec = rep(L, len = N),
+                          Uvec = rep(U, len = N))
+cdata &lt;-
+  transform(cdata,
+        icensored = Lvec &lt;= y &amp; y &lt; Uvec)  # Not lcensored or rcensored
+with(cdata, table(icensored))
+cdata &lt;- transform(cdata, status = rep(3, N))  # 3 == interval censored
+cdata &lt;- transform(cdata,
+         status = ifelse(rcensored, 0, status))  # 0 means right censored
+cdata &lt;- transform(cdata,
+         status = ifelse(lcensored, 2, status))  # 2 means left  censored
+# Have to adjust Lvec and Uvec because of the (start, end] format:
+cdata$Lvec[with(cdata,icensored)] &lt;- cdata$Lvec[with(cdata,icensored)]-1
+cdata$Uvec[with(cdata,icensored)] &lt;- cdata$Uvec[with(cdata,icensored)]-1
+# Unchanged:
+cdata$Lvec[with(cdata, lcensored)] &lt;- cdata$Lvec[with(cdata, lcensored)]
+cdata$Lvec[with(cdata, rcensored)] &lt;- cdata$Uvec[with(cdata, rcensored)]
+with(cdata,  # Check
+ table(ii &lt;- print(SurvS4(Lvec, Uvec, status, type = "interval"))))
+
+fit &lt;- vglm(SurvS4(Lvec, Uvec, status, type = "interval") ~ 1,
+            cens.poisson, data = cdata, trace = TRUE)
+coef(fit, matrix = TRUE)
+table(print(depvar(fit)))  # Another check
+
+
+# Example 4: Add in some uncensored observations
+index &lt;- (1:N)[with(cdata, icensored)]
+index &lt;- head(index, 4)
+cdata$status[index] &lt;- 1  # actual or uncensored value
+cdata$Lvec[index] &lt;- cdata$y[index]
+with(cdata, table(ii &lt;- print(SurvS4(Lvec, Uvec, status,
+                                     type = "interval"))))  # Check
+
+fit &lt;- vglm(SurvS4(Lvec, Uvec, status, type = "interval") ~ 1,
+            cens.poisson, data = cdata, trace = TRUE, crit = "c")
+coef(fit, matrix = TRUE)
+table(print(depvar(fit)))  # Another check
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

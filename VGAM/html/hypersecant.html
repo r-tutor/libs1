@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Hyperbolic Secant Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for hypersecant {VGAM}"><tr><td>hypersecant {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Hyperbolic Secant Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Estimation of the parameter of the hyperbolic secant
+distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  hypersecant(link.theta = extlogit(min = -pi/2, max = pi/2), init.theta = NULL)
+hypersecant01(link.theta = extlogit(min = -pi/2, max = pi/2), init.theta = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>link.theta</code></td>
+<td>
+
+<p>Parameter link function applied to the parameter <i>theta</i>.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>init.theta</code></td>
+<td>
+
+<p>Optional initial value for <i>theta</i>.
+If failure to converge occurs, try some other value.
+The default means an initial value is determined internally.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The probability density function of the hyperbolic secant distribution
+is given by
+</p>
+<p style="text-align: center;"><i>
+        f(y; theta) = exp(theta*y + log(cos(theta))) / (2*cosh(pi*y/2)),</i></p>
+
+<p>for parameter <i>-pi/2 &lt; theta &lt; pi/2</i>
+and all real <i>y</i>.
+The mean of <i>Y</i> is <i>tan(theta)</i>
+(returned as the fitted values).
+Morris (1982) calls this model NEF-HS
+(Natural Exponential Family-Hyperbolic Secant).
+It is used to generate NEFs, giving rise to the class of NEF-GHS
+(G for Generalized).
+</p>
+<p>Another parameterization is used for <code>hypersecant01()</code>:
+let <i>Y = (logit U) / pi</i>.
+Then this uses
+</p>
+<p style="text-align: center;"><i>
+        f(u;theta) = (cos(theta)/pi) * u^(-0.5+theta/pi) * (1-u)^(-0.5-theta/pi),</i></p>
+
+<p>for parameter <i>-pi/2 &lt; theta &lt; pi/2</i>
+and <i>0 &lt; u &lt; 1</i>.
+Then the mean of <i>U</i> is <i>0.5 + theta/pi</i>
+(returned as the fitted values) and the variance is
+<i>(pi^2 - 4*theta^2) / (8*pi^2)</i>.
+</p>
+<p>For both parameterizations Newton-Raphson is same as Fisher scoring.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Jorgensen, B. (1997)
+<em>The Theory of Dispersion Models</em>.
+London: Chapman &amp; Hall.
+
+
+</p>
+<p>Morris, C. N. (1982)
+Natural exponential families with quadratic variance functions.
+<em>The Annals of Statistics</em>,
+<b>10</b>(1), 65&ndash;80.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="logit.html">extlogit</a></code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+hdata &lt;- data.frame(x2 = rnorm(nn &lt;- 200))
+hdata &lt;- transform(hdata, y = rnorm(nn))  # Not very good data!
+fit1 &lt;- vglm(y ~ x2, hypersecant, data = hdata, trace = TRUE, crit = "coef")
+coef(fit1, matrix = TRUE)
+fit1@misc$earg
+
+# Not recommended:
+fit2 &lt;- vglm(y ~ x2, hypersecant(link = "identitylink"), data = hdata, trace = TRUE)
+coef(fit2, matrix = TRUE)
+fit2@misc$earg
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

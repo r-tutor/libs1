@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Weibull Distribution Family Function, Parameterized by the...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for weibull.mean {VGAM}"><tr><td>weibull.mean {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Weibull Distribution Family Function, Parameterized by the Mean </h2>
+
+<h3>Description</h3>
+
+<p>Maximum likelihood estimation of the 2-parameter Weibull distribution.
+The mean is one of the  parameters.
+No observations should be censored.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+weibull.mean(lmean = "loge", lshape = "loge", imean = NULL,
+             ishape = NULL, probs.y = c(0.2, 0.5, 0.8),
+             imethod = 1, zero = "shape")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lmean, lshape</code></td>
+<td>
+
+<p>Parameter link functions applied to the
+(positive) mean parameter (called <i>mu</i> below) and
+(positive) shape parameter (called <i>a</i> below).
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imean, ishape</code></td>
+<td>
+
+<p>Optional initial values for the mean and shape parameters.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod, zero, probs.y</code></td>
+<td>
+
+<p>Details at <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <code><a href="weibullR.html">weibullR</a></code> for most of the details
+for this family function too.
+The mean of <i>Y</i> is <i>b * gamma(1+ 1/a)</i>
+(returned as the fitted values),
+and this is the first parameter (a <code><a href="loge.html">loge</a></code>
+link is the default because it is positive).
+The other parameter is the positive shape paramter <i>a</i>,
+also having a default <code><a href="loge.html">loge</a></code> link.
+</p>
+<p>This <span class="pkg">VGAM</span> family function currently does not handle
+censored data.
+Fisher scoring is used to estimate the two parameters.
+Although the expected information matrices used here are valid
+in all regions of the parameter space,
+the regularity conditions for maximum
+likelihood estimation are satisfied only if <i>a&gt;2</i>
+(according to Kleiber and Kotz (2003)).
+If this is violated then a warning message is issued.
+One can enforce <i>a&gt;2</i> by
+choosing <code>lshape = logoff(offset = -2)</code>.
+Common values of the shape parameter lie between 0.5 and 3.5.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>See <code><a href="weibullR.html">weibullR</a></code> for more details.
+This <span class="pkg">VGAM</span> family function handles multiple responses.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="weibullR.html">weibullR</a></code>,
+<code><a href="../../stats/html/Weibull.html">dweibull</a></code>,
+<code><a href="truncweibull.html">truncweibull</a></code>,
+<code><a href="gev.html">gev</a></code>,
+<code><a href="lognormal.html">lognormal</a></code>,
+<code><a href="expexpff.html">expexpff</a></code>,
+<code><a href="maxwell.html">maxwell</a></code>,
+<code><a href="rayleigh.html">rayleigh</a></code>,
+<code><a href="gumbelII.html">gumbelII</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+wdata &lt;- data.frame(x2 = runif(nn &lt;- 1000))  # Complete data
+wdata &lt;- transform(wdata, mu     = exp(-1 + 1 * x2),
+                          x3     = rnorm(nn),
+                          shape1 = exp(1),
+                          shape2 = exp(2))
+wdata &lt;- transform(wdata,
+  y1 = rweibull(nn, shape = shape1, scale = mu / gamma(1 + 1/shape1)),
+  y2 = rweibull(nn, shape = shape2, scale = mu / gamma(1 + 1/shape2)))
+fit &lt;- vglm(cbind(y1, y2) ~ x2 + x3, weibull.mean, data = wdata, trace = TRUE)
+coef(fit, matrix = TRUE)
+sqrt(diag(vcov(fit)))  # SEs
+summary(fit, presid = FALSE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

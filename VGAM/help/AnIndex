@@ -39,8 +39,9 @@ amlbinomial	amlbinomial
 amlexponential	amlexponential
 amlnormal	amlnormal
 amlpoisson	amlpoisson
+anova,vglm-method	undocumented-methods
 anova.vgam	notdocumentedyet
-anova.vglm	notdocumentedyet
+anova.vglm	anovavglm
 AR1	AR1
 AR1.gammas	notdocumentedyet
 AR1EIM	AR1EIM
@@ -48,12 +49,16 @@ arwz2wz	notdocumentedyet
 as.char.expression	notdocumentedyet
 as.character.SurvS4	SurvS4
 as.data.frame.SurvS4	SurvS4
+attr.assign.x.vglm	notdocumentedyet
 attrassign,lm-method	undocumented-methods
 auuc	auuc
 aux.posbernoulli.t	auxposbernoulli.t
 azprocedure	notdocumentedyet
 backPain	backPain
 beggs	beggs
+Bell	bellUC
+bell	bell
+bellff	bellff
 Benford	benfUC
 Benini	beniniUC
 benini1	benini
@@ -120,9 +125,10 @@ brat	brat
 bratt	bratt
 Build.terms.vlm	notdocumentedyet
 calibrate	calibrate
+calibrate,ANY-method	undocumented-methods
 calibrate,Coef.qrrvglm-method	calibrate-methods
-calibrate,qrrvglm-method	undocumented-methods
-calibrate,rrvgam-method	undocumented-methods
+calibrate,qrrvglm-method	calibrate-methods
+calibrate,rrvgam-method	calibrate-methods
 calibrate,rrvglm-method	calibrate-methods
 calibrate.qrrvglm	calibrate.qrrvglm
 calibrate.qrrvglm.control	calibrate.qrrvglm.control
@@ -131,6 +137,7 @@ calibrate.rrvglm.control	calibrate.rrvglm.control
 cao	cao
 cao.control	cao.control
 car.all	notdocumentedyet
+car.relatives	notdocumentedyet
 Card	cardUC
 cardioid	cardioid
 care.exp	notdocumentedyet
@@ -258,6 +265,7 @@ Dagum	dagumUC
 dagum	dagum
 dalap	alaplaceUC
 dAR1	AR1UC
+dbell	bellUC
 dbenf	benfUC
 dbenini	beniniUC
 dbetabinom	betabinomUC
@@ -416,6 +424,7 @@ dtikuv	tikuvUC
 dtobit	tobitUC
 dtopple	toppleUC
 dtriangle	triangleUC
+dtrinorm	trinormalUC
 dtruncpareto	truncparetoUC
 ducklings	ducklings
 dyules	yulesimonUC
@@ -509,6 +518,7 @@ fitted.values.vlm	fittedvlm
 fittedvlm	fittedvlm
 fittedvsmooth.spline	notdocumentedyet
 flourbeetle	flourbeetle
+fnumat2R	notdocumentedyet
 Foldnorm	foldnormUC
 foldnormal	foldnormal
 foldsqrt	foldsqrt
@@ -533,7 +543,6 @@ gammaff	notdocumentedyet
 gammahyperbola	gammahyperbola
 gammaR	gammaR
 garma	garma
-gaussianff	gaussianff
 GenbetaII	genbetaIIUC
 genbetaII	genbetaII
 genbetaII.Loglikfun4	notdocumentedyet
@@ -775,6 +784,7 @@ margeffS4VGAM,ANY,ANY,cratio-method	undocumented-methods
 margeffS4VGAM,ANY,ANY,cumulative-method	undocumented-methods
 margeffS4VGAM,ANY,ANY,multinomial-method	undocumented-methods
 margeffS4VGAM,ANY,ANY,sratio-method	undocumented-methods
+margeffS4VGAM,ANY,ANY,tobit-method	undocumented-methods
 margeffS4VGAM,ANY,ANY,VGAMcategorical-method	undocumented-methods
 margeffS4VGAM,ANY,ANY,VGAMordinal-method	undocumented-methods
 marital.nz	marital.nz
@@ -812,9 +822,9 @@ model.matrix,qrrvglm-method	undocumented-methods
 model.matrix,vgam-method	undocumented-methods
 model.matrix,vlm-method	undocumented-methods
 model.matrix,vsmooth.spline-method	undocumented-methods
-model.matrix.qrrvglm	notdocumentedyet
 model.matrix.vlm	notdocumentedyet
 model.matrixpvgam	notdocumentedyet
+model.matrixqrrvglm	model.matrixqrrvglm
 model.matrixvgam	notdocumentedyet
 model.matrixvlm	model.matrixvlm
 moffset	moffset
@@ -823,6 +833,7 @@ multilogit	multilogit
 multinomial	multinomial
 mux111	notdocumentedyet
 mux22	notdocumentedyet
+mux5	notdocumentedyet
 my1	notdocumentedyet
 my2	notdocumentedyet
 N.hat.posbernoulli	notdocumentedyet
@@ -910,6 +921,10 @@ Opt,rrvgam-method	undocumented-methods
 Opt.Coef.qrrvglm	notdocumentedyet
 Opt.qrrvglm	notdocumentedyet
 ordpoisson	ordpoisson
+ordsup	ordsup
+ordsup,ANY-method	undocumented-methods
+ordsup,vglm-method	undocumented-methods
+ordsup.vglm	ordsup
 Otlog	otlogUC
 otlog	otlog
 Otpospois	otpospoisUC
@@ -1249,9 +1264,7 @@ qtplot.vextremes	notdocumentedyet
 qtplot.vglm	notdocumentedyet
 qtriangle	triangleUC
 qtruncpareto	truncparetoUC
-quasibinomialff	quasibinomialff
 quasiff	notdocumentedyet
-quasipoissonff	quasipoissonff
 Qvar	QvarUC
 qvar	qvar
 qvplot	notdocumentedyet
@@ -1267,6 +1280,7 @@ qzinegbin	zinegbinUC
 qzipf	zipfUC
 qzipois	zipoisUC
 qzoabeta	zoabetaUC
+R2latvar	R2latvar
 ralap	alaplaceUC
 Rank	notdocumentedyet
 Rank,qrrvglm-method	undocumented-methods
@@ -1277,6 +1291,7 @@ Rank.rrvgam	notdocumentedyet
 Rank.rrvglm	notdocumentedyet
 Rayleigh	rayleighUC
 rayleigh	rayleigh
+rbell	bellUC
 rbenf	benfUC
 rbenini	beniniUC
 rbetabinom	betabinomUC
@@ -1312,18 +1327,17 @@ rec.normal.control	notdocumentedyet
 reciprocal	reciprocal
 reexp	eexpUC
 renorm	enormUC
-resid	notdocumentedyet
 resid,qrrvglm-method	undocumented-methods
 resid,vgam-method	undocumented-methods
 resid,vglm-method	undocumented-methods
 resid,vlm-method	undocumented-methods
 resid,vsmooth.spline-method	undocumented-methods
-residuals	notdocumentedyet
 residuals,qrrvglm-method	undocumented-methods
 residuals,vgam-method	undocumented-methods
 residuals,vglm-method	undocumented-methods
 residuals,vlm-method	undocumented-methods
 residuals,vsmooth.spline-method	undocumented-methods
+residualsvglm	residualsvglm
 responseName	notdocumentedyet
 responseName,ANY-method	undocumented-methods
 responseName,vlm-method	undocumented-methods
@@ -1418,6 +1432,7 @@ rtikuv	tikuvUC
 rtobit	tobitUC
 rtopple	toppleUC
 rtriangle	triangleUC
+rtrinorm	trinormalUC
 rtruncpareto	truncparetoUC
 ruge	ruge
 ryules	yulesimonUC
@@ -1601,6 +1616,8 @@ topple	topple
 toxop	toxop
 Triangle	triangleUC
 triangle	triangle
+Trinorm	trinormalUC
+trinormal	trinormal
 trivial.constraints	notdocumentedyet
 trplot	trplot
 trplot,qrrvglm-method	undocumented-methods
@@ -1644,6 +1661,7 @@ vcov.pvgam	notdocumentedyet
 vcov.pvgam-class	notdocumentedyet
 vcov.qrrvglm-class	notdocumentedyet
 vcov.vlm	notdocumentedyet
+vcovqrrvglm	vcovvlm
 vcovrrvglm	vcovvlm
 vcovvlm	vcovvlm
 venice	venice

@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Trajectory Plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for trplot {VGAM}"><tr><td>trplot {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Trajectory Plot </h2>
+
+<h3>Description</h3>
+
+<p>Generic function for a trajectory plot.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+trplot(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p> An object for which a trajectory plot is meaningful.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p> Other arguments fed into the specific
+methods function of the model. They usually are graphical
+parameters, and sometimes they are fed
+into the methods function for <code><a href="Coef.html">Coef</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Trajectory plots can be defined in different ways for different
+models.
+Many models have no such notion or definition.
+</p>
+<p>For quadratic and additive ordination models they plot the
+fitted values of two species against each other (more than
+two is theoretically possible, but not implemented in this software
+yet).
+</p>
+
+
+<h3>Value</h3>
+
+<p>The value returned depends specifically on the methods
+function invoked.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. (2012)
+On constrained and unconstrained
+quadratic ordination.
+<em>Manuscript in preparation</em>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="trplot.qrrvglm.html">trplot.qrrvglm</a></code>,
+<code><a href="persp.qrrvglm.html">perspqrrvglm</a></code>,
+<code><a href="lvplot.html">lvplot</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run:  set.seed(123)
+hspider[, 1:6] &lt;- scale(hspider[, 1:6])  # Standardized environmental vars
+p1cqo &lt;- cqo(cbind(Alopacce, Alopcune, Alopfabr, Arctlute, Arctperi,
+                  Auloalbi, Pardlugu, Pardmont, Pardnigr, Pardpull,
+                  Trocterr, Zoraspin) ~
+            WaterCon + BareSand + FallTwig + CoveMoss + CoveHerb + ReflLux,
+            poissonff, data = hspider, Crow1positive = FALSE)
+
+nos &lt;- ncol(depvar(p1cqo))
+clr &lt;- 1:nos  # OR (1:(nos+1))[-7]  to omit yellow
+
+trplot(p1cqo, which.species = 1:3, log = "xy",
+       col = c("blue", "orange", "green"), lwd = 2, label = TRUE) -&gt; ii
+legend(0.00005, 0.3, paste(ii$species[, 1], ii$species[, 2], sep = " and "),
+       lwd = 2, lty = 1, col = c("blue", "orange", "green"))
+abline(a = 0, b = 1, lty = "dashed", col = "grey") 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

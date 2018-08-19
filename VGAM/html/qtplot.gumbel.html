@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Quantile Plot for Gumbel Regression</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for qtplot.gumbel {VGAM}"><tr><td>qtplot.gumbel {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Quantile Plot for Gumbel Regression </h2>
+
+<h3>Description</h3>
+
+<p>Plots quantiles associated with a Gumbel model.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+qtplot.gumbel(object, show.plot = TRUE,
+    y.arg = TRUE, spline.fit = FALSE, label = TRUE,
+    R = object@misc$R, percentiles = object@misc$percentiles,
+    add.arg = FALSE, mpv = object@misc$mpv,
+    xlab = NULL, ylab = "", main = "",
+    pch = par()$pch, pcol.arg = par()$col,
+    llty.arg = par()$lty, lcol.arg = par()$col, llwd.arg = par()$lwd,
+    tcol.arg = par()$col, tadj = 1, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>A <span class="pkg">VGAM</span> extremes model of the
+Gumbel type, produced by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>, and with a family function that is either
+<code><a href="gumbel.html">gumbel</a></code> or <code><a href="gumbel.html">gumbelff</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>show.plot</code></td>
+<td>
+
+<p>Logical. Plot it? If <code>FALSE</code> no plot will be done.
+</p>
+</td></tr>
+<tr valign="top"><td><code>y.arg</code></td>
+<td>
+
+<p>Logical. Add the raw data on to the plot?
+</p>
+</td></tr>
+<tr valign="top"><td><code>spline.fit</code></td>
+<td>
+
+<p>Logical. Use a spline fit through the fitted
+percentiles? This can be useful if there are large gaps
+between some values along the covariate.
+</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p> Logical. Label the percentiles? </p>
+</td></tr>
+<tr valign="top"><td><code>R</code></td>
+<td>
+<p> See <code><a href="gumbel.html">gumbel</a></code>. </p>
+</td></tr>
+<tr valign="top"><td><code>percentiles</code></td>
+<td>
+<p> See <code><a href="gumbel.html">gumbel</a></code>. </p>
+</td></tr>
+<tr valign="top"><td><code>add.arg</code></td>
+<td>
+<p> Logical. Add the plot to an existing plot? </p>
+</td></tr>
+<tr valign="top"><td><code>mpv</code></td>
+<td>
+<p> See <code><a href="gumbel.html">gumbel</a></code>. </p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p> Caption for the x-axis. See <code><a href="../../graphics/html/par.html">par</a></code>. </p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p> Caption for the y-axis. See <code><a href="../../graphics/html/par.html">par</a></code>.  </p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p> Title of the plot. See <code><a href="../../graphics/html/title.html">title</a></code>. </p>
+</td></tr>
+<tr valign="top"><td><code>pch</code></td>
+<td>
+<p> Plotting character. See <code><a href="../../graphics/html/par.html">par</a></code>. </p>
+</td></tr>
+<tr valign="top"><td><code>pcol.arg</code></td>
+<td>
+<p> Color of the points.
+See the <code>col</code> argument of <code><a href="../../graphics/html/par.html">par</a></code>.  </p>
+</td></tr>
+<tr valign="top"><td><code>llty.arg</code></td>
+<td>
+<p> Line type. Line type.
+See the <code>lty</code> argument of <code><a href="../../graphics/html/par.html">par</a></code>. </p>
+</td></tr>
+<tr valign="top"><td><code>lcol.arg</code></td>
+<td>
+<p> Color of the lines.
+See the <code>col</code> argument of <code><a href="../../graphics/html/par.html">par</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>llwd.arg</code></td>
+<td>
+<p> Line width.
+See the <code>lwd</code> argument of <code><a href="../../graphics/html/par.html">par</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>tcol.arg</code></td>
+<td>
+<p> Color of the text
+(if <code>label</code> is <code>TRUE</code>).
+See the <code>col</code> argument of <code><a href="../../graphics/html/par.html">par</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>tadj</code></td>
+<td>
+<p> Text justification.
+See the <code>adj</code> argument of <code><a href="../../graphics/html/par.html">par</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Arguments passed into the <code>plot</code> function
+when setting up the entire plot. Useful arguments here include
+<code>sub</code> and <code>las</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>There should be a single covariate such as time.
+The quantiles specified by <code>percentiles</code> are plotted.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The object with a list called <code>qtplot</code> in the <code>post</code>
+slot of <code>object</code>.
+(If <code>show.plot = FALSE</code> then just the list is returned.)
+The list contains components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>fitted.values</code></td>
+<td>
+
+<p>The percentiles of the response,
+possibly including the MPV.
+</p>
+</td></tr>
+<tr valign="top"><td><code>percentiles</code></td>
+<td>
+
+<p>The percentiles (small vector of values between 0 and 100.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>Unlike <code><a href="gumbel.html">gumbel</a></code>, one cannot have
+<code>percentiles = NULL</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="gumbel.html">gumbel</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ymat &lt;- as.matrix(venice[, paste("r", 1:10, sep = "")])
+fit1 &lt;- vgam(ymat ~ s(year, df = 3), gumbel(R = 365, mpv = TRUE),
+             data = venice, trace = TRUE, na.action = na.pass)
+head(fitted(fit1))
+
+## Not run:  par(mfrow = c(1, 1), bty = "l", xpd = TRUE, las = 1)
+qtplot(fit1, mpv = TRUE, lcol = c(1, 2, 5), tcol = c(1, 2, 5),
+       lwd = 2, pcol = "blue", tadj = 0.4, ylab = "Sea level (cm)")
+
+qtplot(fit1, perc = 97, mpv = FALSE, lcol = 3, tcol = 3,
+       lwd = 2, tadj = 0.4, add = TRUE) -&gt; saved
+head(saved@post$qtplot$fitted)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Frechet Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Frechet {VGAM}"><tr><td>Frechet {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The Frechet Distribution</h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function, quantile function and random
+generation for the three parameter Frechet distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dfrechet(x, location = 0, scale = 1, shape, log = FALSE)
+pfrechet(q, location = 0, scale = 1, shape,
+         lower.tail = TRUE, log.p = FALSE)
+qfrechet(p, location = 0, scale = 1, shape,
+         lower.tail = TRUE, log.p = FALSE)
+rfrechet(n, location = 0, scale = 1, shape)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>vector of probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of observations.
+Passed into <code><a href="../../stats/html/Uniform.html">runif</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>location, scale, shape</code></td>
+<td>
+<p>the location parameter <i>a</i>,
+scale parameter <i>b</i>, and shape parameter <i>s</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>Logical.
+If <code>log = TRUE</code> then the logarithm of the density is returned.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lower.tail, log.p</code></td>
+<td>
+
+<p>Same meaning as in <code><a href="../../stats/html/Uniform.html">punif</a></code>
+or <code><a href="../../stats/html/Uniform.html">qunif</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <code><a href="frechet.html">frechet</a></code>, the <span class="pkg">VGAM</span>
+family function for estimating the 2 parameters (without location
+parameter) by maximum likelihood estimation, for the formula
+of the probability density function and range restrictions on
+the parameters.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dfrechet</code> gives the density,
+<code>pfrechet</code> gives the distribution function,
+<code>qfrechet</code> gives the quantile function, and
+<code>rfrechet</code> generates random deviates.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee and Kai Huang </p>
+
+
+<h3>References</h3>
+
+<p>Castillo, E., Hadi, A. S., Balakrishnan, N. Sarabia, J. S. (2005)
+<em>Extreme Value and Related Models with Applications in
+Engineering and Science</em>,
+Hoboken, NJ, USA: Wiley-Interscience.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="frechet.html">frechet</a></code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run:  shape &lt;- 5
+x &lt;- seq(-0.1, 3.5, length = 401)
+plot(x, dfrechet(x, shape = shape), type = "l", ylab = "", las = 1,
+     main = "Frechet density divided into 10 equal areas; orange = cdf")
+abline(h = 0, col = "blue", lty = 2)
+qq &lt;- qfrechet(seq(0.1, 0.9, by = 0.1), shape = shape)
+lines(qq, dfrechet(qq, shape = shape), col = "purple", lty = 3, type = "h")
+lines(x, pfrechet(q = x, shape = shape), col = "orange")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

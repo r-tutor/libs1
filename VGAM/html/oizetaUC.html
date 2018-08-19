@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: One-Inflated Zeta Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Oizeta {VGAM}"><tr><td>Oizeta {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> One-Inflated Zeta Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function, quantile function and random generation
+for the one-inflated
+zeta distribution with parameter <code>pstr1</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+doizeta(x, shape, pstr1 = 0, log = FALSE)
+poizeta(q, shape, pstr1 = 0)
+qoizeta(p, shape, pstr1 = 0)
+roizeta(n, shape, pstr1 = 0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q, p, n</code></td>
+<td>
+<p>Same as <code><a href="../../stats/html/Uniform.html">Uniform</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>shape</code></td>
+<td>
+<p> Vector of positive shape parameters. </p>
+</td></tr>
+<tr valign="top"><td><code>pstr1</code></td>
+<td>
+
+<p>Probability of a structural one
+(i.e., ignoring the zeta distribution),
+called <i>phi</i>.
+The default value of <i>phi = 0</i> corresponds
+to the response having an ordinary zeta distribution.
+</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+<p>Same as <code><a href="../../stats/html/Uniform.html">Uniform</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The probability function of <i>Y</i> is 1 with probability
+<i>phi</i>, and <i>Zeta(shape)</i> with
+probability <i>1-phi</i>. Thus
+</p>
+<p style="text-align: center;"><i>
+        P(Y=1) = phi + (1-phi) * P(W=1)</i></p>
+
+<p>where <i>W</i> is distributed as a
+<i>zeta(shape)</i> random variable.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>doizeta</code> gives the density,
+<code>poizeta</code> gives the distribution function,
+<code>qoizeta</code> gives the quantile function, and
+<code>roizeta</code> generates random deviates.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The argument <code>pstr1</code> is recycled to the required length, and
+usually has values which lie in the interval <i>[0,1]</i>.
+</p>
+<p>These functions actually allow for the <em>zero-deflated
+zeta</em> distribution. Here, <code>pstr1</code> is also permitted
+to lie in the interval <code>[-dzeta(1, shape) / (1 - dzeta(1, shape)), 0]</code>.
+The resulting probability of a unit count is <em>less than</em>
+the nominal zeta value, and the use of <code>pstr1</code> to
+stand for the probability of a structural 1 loses its
+meaning.
+
+
+
+When <code>pstr1</code> equals <code>-dzeta(1, shape) / (1 - dzeta(1, shape))</code>
+this corresponds to the 1-truncated zeta distribution.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="zetaUC.html">Zeta</a></code>,
+<code><a href="zetaff.html">zetaff</a></code>.
+<code><a href="otzetaUC.html">Otzeta</a></code>,
+
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+shape &lt;- 1.5; pstr1 &lt;- 0.3; x &lt;- (-1):7
+(ii &lt;- doizeta(x, shape, pstr1 = pstr1))
+max(abs(poizeta(1:200, shape) -
+        cumsum(1/(1:200)^(1+shape)) / zeta(shape+1)))  # Should be 0
+
+## Not run:  x &lt;- 0:10
+par(mfrow = c(2, 1))  # One-Inflated zeta
+barplot(rbind(doizeta(x, shape, pstr1 = pstr1), dzeta(x, shape)),
+        beside = TRUE, col = c("blue", "orange"),
+        main = paste("OIZeta(", shape, ", pstr1 = ", pstr1, ") (blue) vs",
+                     " Zeta(", shape, ") (orange)", sep = ""),
+        names.arg = as.character(x))
+
+deflat.limit &lt;- -dzeta(1, shape) / pzeta(1, shape, lower.tail = FALSE)
+newpstr1 &lt;- round(deflat.limit, 3) + 0.001  # Inside but near the boundary
+barplot(rbind(doizeta(x, shape, pstr1 = newpstr1),
+                dzeta(x, shape)),
+        beside = TRUE, col = c("blue","orange"),
+        main = paste("ODZeta(", shape, ", pstr1 = ", newpstr1, ") (blue) vs",
+                     " Zeta(", shape, ") (orange)", sep = ""),
+        names.arg = as.character(x)) 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

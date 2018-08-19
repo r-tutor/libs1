@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Summarizing Vector Generalized Additive Model Fits</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for summaryvgam {VGAM}"><tr><td>summaryvgam {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Summarizing Vector Generalized Additive Model Fits</h2>
+
+<h3>Description</h3>
+
+<p>These functions are all <code><a href="../../utils/html/methods.html">methods</a></code> for class <code>vgam</code> or
+<code>summary.vgam</code> objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+summaryvgam(object, dispersion = NULL, digits = options()$digits - 2,
+            presid = TRUE, nopredictors = FALSE)
+## S3 method for class 'summary.vgam'
+show(x, quote = TRUE, prefix = "",
+                            digits = options()$digits-2, nopredictors = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>an object of class <code>"vgam"</code>,
+which is the result of a
+call to <code><a href="vgam.html">vgam</a></code> with at least one <code><a href="s.html">s</a></code> term.
+</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an object of class <code>"summary.vgam"</code>,
+which is the result of a call to <code>summaryvgam()</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>dispersion, digits, presid</code></td>
+<td>
+
+<p>See <code><a href="summaryvglm.html">summaryvglm</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>quote, prefix, nopredictors</code></td>
+<td>
+
+<p>See <code><a href="summaryvglm.html">summaryvglm</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This methods function reports a summary more similar to
+<code>summary.gam()</code> from <span class="pkg">gam</span> than
+<code><a href="../../mgcv/html/summary.gam.html">summary.gam</a></code> from <span class="pkg">mgcv</span>.
+It applies to G1-VGAMs using <code><a href="s.html">s</a></code> and vector backfitting.
+In particular, an approximate score test for <em>linearity</em> is conducted
+for each <code><a href="s.html">s</a></code> term&mdash;see Section 4.3.4 of Yee (2015) for details.
+The p-values from this type of test tend to be biased upwards (too large).
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>summaryvgam</code> returns an object of class <code>"summary.vgam"</code>;
+see <code><a href="notdocumentedyet.html">summary.vgam-class</a></code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="vgam.html">vgam</a></code>,
+<code><a href="../../stats/html/summary.glm.html">summary.glm</a></code>,
+<code><a href="../../stats/html/summary.lm.html">summary.lm</a></code>,
+<code><a href="../../mgcv/html/summary.gam.html">summary.gam</a></code> from <span class="pkg">mgcv</span>,  
+<code><a href="summarypvgam.html">summarypvgam</a></code> for P-VGAMs.
+
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+hfit &lt;- vgam(agaaus ~ s(altitude, df = 2), binomialff, data = hunua)
+summary(hfit)
+summary(hfit)@anova  # Table for (approximate) testing of linearity
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Zeta Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for zetaff {VGAM}"><tr><td>zetaff {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Zeta Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Estimates the parameter of the zeta distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+zetaff(lshape = "loge", ishape = NULL, gshape = exp(-3:4)/4, zero = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lshape, ishape, zero</code></td>
+<td>
+
+<p>These arguments apply to the (positive) parameter <i>p</i>.
+See <code><a href="Links.html">Links</a></code> for more choices.
+Choosing <code><a href="loglog.html">loglog</a></code> constrains <i>p&gt;1</i>, but
+may fail if the maximum likelihood estimate is less than one.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>gshape</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>In this long tailed distribution
+the response must be a positive integer.
+The probability function for a response <i>Y</i> is
+</p>
+<p style="text-align: center;"><i>
+      P(Y=y) = 1/(y^(p+1) zeta(p+1)), p&gt;0, y=1,2,...</i></p>
+
+<p>where <i>zeta</i> is Riemann's zeta function.
+The parameter <i>p</i> is positive, therefore a log link
+is the default.
+The mean of <i>Y</i> is
+<i>mu = zeta(p)/zeta(p+1)</i>
+(provided <i>p&gt;1</i>) and these are the fitted values.
+The variance of <i>Y</i> is
+<i>zeta(p-1) / zeta(p+1) - mu^2</i>
+provided <i>p&gt;2</i>.
+</p>
+<p>It appears that good initial values are needed for successful
+convergence. If convergence is not obtained, try several values
+ranging from values near 0 to values about 10 or more.
+</p>
+<p>Multiple responses are handled.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <code><a href="zeta.html">zeta</a></code> function may be used to compute values
+of the zeta function.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>pp.527&ndash; of Chapter 11 of
+Johnson N. L., Kemp, A. W. and Kotz S. (2005)
+<em>Univariate Discrete Distributions</em>,
+3rd edition,
+Hoboken, New Jersey: Wiley.
+</p>
+<p>Knight, K. (2000)
+<em>Mathematical Statistics</em>.
+Boca Raton: Chapman &amp; Hall/CRC Press.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="zeta.html">zeta</a></code>,
+<code><a href="oazeta.html">oazeta</a></code>,
+<code><a href="oizeta.html">oizeta</a></code>,
+<code><a href="otzeta.html">otzeta</a></code>,
+<code><a href="diffzeta.html">diffzeta</a></code>,
+<code><a href="zetaUC.html">dzeta</a></code>,
+<code><a href="hzeta.html">hzeta</a></code>,
+<code><a href="zipf.html">zipf</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+zdata &lt;- data.frame(y = 1:5, w =  c(63, 14, 5, 1, 2))  # Knight, p.304
+fit &lt;- vglm(y ~ 1, zetaff, data = zdata, trace = TRUE, weight = w, crit = "c")
+(phat &lt;- Coef(fit))  # 1.682557
+with(zdata, cbind(round(dzeta(y, phat) * sum(w), 1), w))
+
+with(zdata, weighted.mean(y, w))
+fitted(fit, matrix = FALSE)
+predict(fit)
+
+# The following should be zero at the MLE:
+with(zdata, mean(log(rep(y, w))) + zeta(1+phat, deriv = 1) / zeta(1+phat))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Ordinal Poisson Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ordpoisson {VGAM}"><tr><td>ordpoisson {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Ordinal Poisson Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Fits a Poisson regression where the response is ordinal
+(the Poisson counts are grouped between known cutpoints).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ordpoisson(cutpoints, countdata = FALSE, NOS = NULL,
+           Levels = NULL, init.mu = NULL, parallel = FALSE,
+           zero = NULL, link = "loge")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>cutpoints</code></td>
+<td>
+
+<p>Numeric. The cutpoints, <i>K_l</i>.
+These must be non-negative integers.
+<code>Inf</code> values may be included.
+See below for further details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>countdata</code></td>
+<td>
+
+<p>Logical. Is the response (LHS of formula) in count-data format?
+If not then the response is a matrix or vector with values <code>1</code>,
+<code>2</code>, ..., <code>L</code>, say, where <code>L</code> is the number of
+levels. Such input can be generated with <code><a href="../../base/html/cut.html">cut</a></code>
+with argument <code>labels = FALSE</code>.  If <code>countdata = TRUE</code> then
+the response is expected to be in the same format as <code>depvar(fit)</code>
+where <code>fit</code> is a fitted model with <code>ordpoisson</code> as the
+<span class="pkg">VGAM</span> family function. That is, the response is matrix of counts
+with <code>L</code> columns (if <code>NOS = 1</code>).
+</p>
+</td></tr>
+<tr valign="top"><td><code>NOS</code></td>
+<td>
+
+<p>Integer. The number of species, or more generally, the number of
+response random variates.
+This argument must be specified when <code>countdata = TRUE</code>.
+Usually <code>NOS = 1</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>Levels</code></td>
+<td>
+
+<p>Integer vector, recycled to length <code>NOS</code> if necessary.
+The number of levels for each response random variate.
+This argument should agree with <code>cutpoints</code>.
+This argument must be specified when <code>countdata = TRUE</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>init.mu</code></td>
+<td>
+
+<p>Numeric. Initial values for the means of the Poisson regressions.
+Recycled to length <code>NOS</code> if necessary.
+Use this argument if the default initial values fail (the
+default is to compute an initial value internally).
+</p>
+</td></tr>
+<tr valign="top"><td><code>parallel, zero, link</code></td>
+<td>
+
+<p>See <code><a href="poissonff.html">poissonff</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This <span class="pkg">VGAM</span> family function uses maximum likelihood estimation
+(Fisher scoring)
+to fit a Poisson regression to each column of a matrix response.
+The data, however, is ordinal, and is obtained from known integer
+cutpoints.
+Here, <i>l=1,&hellip;,L</i> where <i>L</i> (<i>L &gt;= 2</i>)
+is the number of levels.
+In more detail, let
+<i>Y^*=l</i> if <i>K_{l-1} &lt; Y
+    &lt;= K_{l}</i> where the <i>K_l</i> are the cutpoints.
+We have <i>K_0=-Inf</i> and <i>K_L=Inf</i>.
+The response for this family function corresponds to <i>Y^*</i> but
+we are really interested in the Poisson regression of <i>Y</i>.
+</p>
+<p>If <code>NOS=1</code> then
+the argument <code>cutpoints</code> is a vector <i>(K_1,K_2,&hellip;,K_L)</i>
+where the last value (<code>Inf</code>) is optional. If <code>NOS&gt;1</code> then
+the vector should have <code>NOS-1</code> <code>Inf</code> values separating
+the cutpoints. For example, if there are <code>NOS=3</code> responses, then
+something like
+<code>ordpoisson(cut = c(0, 5, 10, Inf, 20, 30, Inf, 0, 10, 40, Inf))</code>
+is valid.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>The input requires care as little to no checking is done.
+If <code>fit</code> is the fitted object, have a look at <code>fit@extra</code> and
+<code>depvar(fit)</code> to check.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Sometimes there are no observations between two cutpoints. If so,
+the arguments <code>Levels</code> and <code>NOS</code> need to be specified too.
+See below for an example.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. (2012)
+<em>Ordinal ordination with normalizing link functions for count data</em>,
+(in preparation).
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="poissonff.html">poissonff</a></code>,
+<code><a href="polf.html">polf</a></code>,
+<code><a href="../../base/html/factor.html">ordered</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+set.seed(123)  # Example 1
+x2 &lt;- runif(n &lt;- 1000); x3 &lt;- runif(n)
+mymu &lt;- exp(3 - 1 * x2 + 2 * x3)
+y1 &lt;- rpois(n, lambda = mymu)
+cutpts &lt;- c(-Inf, 20, 30, Inf)
+fcutpts &lt;- cutpts[is.finite(cutpts)]  # finite cutpoints
+ystar &lt;- cut(y1, breaks = cutpts, labels = FALSE)
+## Not run: 
+plot(x2, x3, col = ystar, pch = as.character(ystar))
+
+## End(Not run)
+table(ystar) / sum(table(ystar))
+fit &lt;- vglm(ystar ~ x2 + x3, fam = ordpoisson(cutpoi = fcutpts))
+head(depvar(fit))  # This can be input if countdata = TRUE
+head(fitted(fit))
+head(predict(fit))
+coef(fit, matrix = TRUE)
+fit@extra
+
+# Example 2: multivariate and there are no obsns between some cutpoints
+cutpts2 &lt;- c(-Inf, 0, 9, 10, 20, 70, 200, 201, Inf)
+fcutpts2 &lt;- cutpts2[is.finite(cutpts2)]  # finite cutpoints
+y2 &lt;- rpois(n, lambda = mymu)   # Same model as y1
+ystar2 &lt;- cut(y2, breaks = cutpts2, labels = FALSE)
+table(ystar2) / sum(table(ystar2))
+fit &lt;- vglm(cbind(ystar,ystar2) ~ x2 + x3, fam =
+            ordpoisson(cutpoi = c(fcutpts,Inf,fcutpts2,Inf),
+                       Levels = c(length(fcutpts)+1,length(fcutpts2)+1),
+                       parallel = TRUE), trace = TRUE)
+coef(fit, matrix = TRUE)
+fit@extra
+constraints(fit)
+summary(depvar(fit))  # Some columns have all zeros
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

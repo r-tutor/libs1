@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Identity Link Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for identitylink {VGAM}"><tr><td>identitylink {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Identity Link Function </h2>
+
+<h3>Description</h3>
+
+<p>Computes the identity transformation, including its inverse and the
+first two derivatives.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+identitylink(theta, inverse = FALSE, deriv = 0, short = TRUE, tag = FALSE)
+ negidentity(theta, inverse = FALSE, deriv = 0, short = TRUE, tag = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>theta</code></td>
+<td>
+
+<p>Numeric or character.
+See below for further details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>inverse, deriv, short, tag</code></td>
+<td>
+
+<p>Details at <code><a href="Links.html">Links</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The identity link function <i>g(theta)=theta</i>
+should be available to every parameter
+estimated by the <span class="pkg">VGAM</span> library. However, it usually results in
+numerical problems because the estimates lie outside the permitted
+range. Consequently, the result may contain
+<code>Inf</code>, <code>-Inf</code>, <code>NA</code> or <code>NaN</code>.
+</p>
+<p>The function <code>negidentity</code> is the negative-identity link function and
+corresponds to <i>g(theta)=-theta</i>.
+This is useful for some models, e.g., in the literature supporting the
+<code><a href="gev.html">gevff</a></code> function it seems that half of the authors use
+<i>xi=-k</i> for the shape parameter and the other half use <i>k</i>
+instead of <i>xi</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>For <code>identitylink()</code>:
+for <code>deriv = 0</code>, the identity of <code>theta</code>, i.e.,
+<code>theta</code> when <code>inverse = FALSE</code>,
+and if <code>inverse = TRUE</code> then <code>theta</code>.
+For <code>deriv = 1</code>, then the function returns
+<em>d</em> <code>eta</code> / <em>d</em> <code>theta</code> as a function of <code>theta</code>
+if <code>inverse = FALSE</code>,
+else if <code>inverse = TRUE</code> then it returns the reciprocal.
+</p>
+<p>For <code>negidentity()</code>: the results are similar to <code>identitylink()</code>
+except for a sign change in most cases.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>McCullagh, P. and Nelder, J. A. (1989)
+<em>Generalized Linear Models</em>, 2nd ed. London: Chapman &amp; Hall.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="Links.html">Links</a></code>,
+<code><a href="loge.html">loge</a></code>,
+<code><a href="logit.html">logit</a></code>,
+<code><a href="probit.html">probit</a></code>,
+<code><a href="powerlink.html">powerlink</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+identitylink((-5):5)
+identitylink((-5):5, deriv = 1)
+identitylink((-5):5, deriv = 2)
+negidentity((-5):5)
+negidentity((-5):5, deriv = 1)
+negidentity((-5):5, deriv = 2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

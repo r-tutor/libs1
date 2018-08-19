@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Topp-Leone Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for topple {VGAM}"><tr><td>topple {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Topp-Leone Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Estimating the parameter of the Topp-Leone distribution by
+maximum likelihood estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+topple(lshape = "logit", zero = NULL, gshape = ppoints(8))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lshape, zero, gshape</code></td>
+<td>
+
+<p>More information is at <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The Topple distribution
+has a probability density function that can be written
+</p>
+<p style="text-align: center;"><i>
+        f(y;s) = 2 * s * (1 - y) * (y * (2-y))^(s-1)</i></p>
+
+<p>for <i>0&lt;y&lt;1</i> and shape parameter <i>0&lt;s&lt;1</i>.
+The mean of <i>Y</i> is
+<i>1 - 4^s [Gamma(1+s)]^2 / Gamma(2 + 2s)</i>
+(returned as the fitted values).
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Fisher-scoring and Newton-Raphson are the same here.
+A related distribution is the triangle distribution.
+This <span class="pkg">VGAM</span> family function handles multiple responses.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Topp, C. W. and F. C. Leone (1955)
+A family of J-shaped frequency functions.
+<em>Journal of the American Statistical Association</em>,
+<b>50</b>, 209&ndash;219.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="toppleUC.html">Topple</a></code>,
+<code><a href="triangleUC.html">Triangle</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+tdata &lt;- data.frame(y = rtopple(1000, shape = logit(1, inverse = TRUE)))
+tfit &lt;- vglm(y ~ 1, topple, data = tdata, trace = TRUE, crit = "coef")
+coef(tfit, matrix = TRUE)
+Coef(tfit)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

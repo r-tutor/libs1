@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Quasi-variances Preprocessing Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Qvar {VGAM}"><tr><td>Qvar {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Quasi-variances Preprocessing Function
+
+</h2>
+
+<h3>Description</h3>
+
+<p>Takes a <code><a href="vglm.html">vglm</a></code> fit or a variance-covariance matrix,
+and preprocesses it for <code><a href="grc.html">rcim</a></code> and
+<code><a href="uninormal.html">uninormal</a></code> so that quasi-variances can be computed.
+</p>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+Qvar(object, factorname = NULL, which.linpred = 1,
+     coef.indices = NULL, labels = NULL,
+     dispersion = NULL, reference.name = "(reference)", estimates = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>A <code>"<a href="vglmff-class.html">vglm</a>"</code> object or a variance-covariance
+matrix, e.g., <code>vcov(vglm.object)</code>.
+The former is preferred since it contains all the information needed.
+If a matrix then <code>factorname</code> and/or <code>coef.indices</code>
+should be specified to identify the factor.
+</p>
+</td></tr>
+<tr valign="top"><td><code>which.linpred</code></td>
+<td>
+
+<p>A single integer from the set <code>1:M</code>.
+Specifies which linear predictor to use.
+Let the value of <code>which.linpred</code> be called <i>j</i>.
+Then the factor should appear in that linear predictor, hence
+the <i>j</i>th row of the constraint matrix corresponding
+to the factor should have at least one nonzero value.
+Currently the <i>j</i>th row must have exactly one nonzero value
+because programming it for more than one nonzero value is difficult.
+</p>
+</td></tr>
+<tr valign="top"><td><code>factorname</code></td>
+<td>
+
+<p>Character.
+If the <code><a href="vglm.html">vglm</a></code> object contains more than one
+factor as explanatory variable then this argument should
+be the name of the factor of interest.
+If <code>object</code> is a variance-covariance matrix then
+this argument should also be specified.
+</p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+
+<p>Character.
+Optional, for labelling the variance-covariance matrix.
+</p>
+</td></tr>
+<tr valign="top"><td><code>dispersion</code></td>
+<td>
+
+<p>Numeric.
+Optional, passed into <code>vcov()</code> with the same argument name.
+</p>
+</td></tr>
+<tr valign="top"><td><code>reference.name</code></td>
+<td>
+
+<p>Character.
+Label for for the reference level.
+</p>
+</td></tr>
+<tr valign="top"><td><code>coef.indices</code></td>
+<td>
+
+<p>Optional numeric vector of length at least 3 specifying
+the indices of the factor from the variance-covariance
+matrix.
+</p>
+</td></tr>
+<tr valign="top"><td><code>estimates</code></td>
+<td>
+
+<p>an optional vector of estimated coefficients
+(redundant if <code>object</code> is a model).
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Suppose a factor with <i>L</i> levels is an explanatory variable in a
+regression model. By default, R treats the first level as baseline so
+that its coefficient is set to zero. It estimates the other <i>L-1</i>
+coefficients, and with its associated standard errors, this is the
+conventional output. From the complete variance-covariance matrix one
+can compute <i>L</i> quasi-variances based on all pairwise difference
+of the coefficients. They are based on an approximation, and can be
+treated as uncorrelated. In minimizing the relative (not absolute)
+errors it is not hard to see that the estimation involves a RCIM
+(<code><a href="grc.html">rcim</a></code>) with an exponential link function
+(<code><a href="explink.html">explink</a></code>).
+</p>
+<p>If <code>object</code> is a model, then at least one of <code>factorname</code> or
+<code>coef.indices</code> must be non-<code>NULL</code>. The value of
+<code>coef.indices</code>, if non-<code>NULL</code>, determines which rows and
+columns of the model's variance-covariance matrix to use. If
+<code>coef.indices</code> contains a zero, an extra row and column are
+included at the indicated position, to represent the zero variances
+and covariances associated with a reference level. If
+<code>coef.indices</code> is <code>NULL</code>, then <code>factorname</code> should be
+the name of a factor effect in the model, and is used in order to
+extract the necessary variance-covariance estimates.
+</p>
+<p>Quasi-variances were first implemented in R with <span class="pkg">qvcalc</span>.
+This implementation draws heavily from that.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A <i>L</i> by <i>L</i> matrix whose <i>i</i>-<i>j</i> element
+is the logarithm of the variance of the <i>i</i>th coefficient
+minus the <i>j</i>th coefficient, for all values of <i>i</i>
+and <i>j</i>. The diagonal elements are abitrary and are set
+to zero.
+</p>
+<p>The matrix has an attribute that corresponds to the prior
+weight matrix; it is accessed by <code><a href="uninormal.html">uninormal</a></code>
+and replaces the usual <code>weights</code> argument.
+of <code><a href="vglm.html">vglm</a></code>. This weight matrix has ones on
+the off-diagonals and some small positive number on
+the diagonals.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>Negative quasi-variances may occur (one of them and
+only one), though they are rare in practice. If
+so then numerical problems may occur. See
+<code>qvcalc()</code> for more information.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This is an adaptation of <code>qvcalc()</code> in <span class="pkg">qvcalc</span>.
+It should work for all <code><a href="vglm.html">vglm</a></code>
+models with one linear predictor, i.e., <i>M = 1</i>.
+For <i>M &gt; 1</i> the factor should appear only in one of the
+linear predictors.
+</p>
+<p>It is important to set <code>maxit</code> to be larger than usual for
+<code><a href="grc.html">rcim</a></code> since convergence is slow. Upon successful
+convergence the <i>i</i>th row effect and the <i>i</i>th column effect
+should be equal. A simple computation involving the fitted and
+predicted values allows the quasi-variances to be extracted (see
+example below).
+</p>
+<p>A function to plot <em>comparison intervals</em> has not been
+written here.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>T. W. Yee, based heavily on <code>qvcalc()</code> in <span class="pkg">qvcalc</span>
+written by David Firth.
+</p>
+
+
+<h3>References</h3>
+
+<p>Firth, D. (2003)
+Overcoming the reference category problem in the
+presentation of statistical models.
+<em>Sociological Methodology</em> <b>33</b>, 1&ndash;18.
+</p>
+<p>Firth, D. and de Menezes, R. X. (2004)
+Quasi-variances.
+<em>Biometrika</em> <b>91</b>, 65&ndash;80.
+</p>
+<p>Yee, T. W. and Hadi, A. F. (2014)
+Row-column interaction models, with an R implementation.
+<em>Computational Statistics</em>,
+<b>29</b>, 1427&ndash;1445.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="grc.html">rcim</a></code>,
+<code><a href="vglm.html">vglm</a></code>,
+<code><a href="qvar.html">qvar</a></code>,
+<code><a href="uninormal.html">uninormal</a></code>,
+<code><a href="explink.html">explink</a></code>,
+<code>qvcalc()</code> in <span class="pkg">qvcalc</span>,
+<code><a href="../../MASS/html/ships.html">ships</a></code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+# Example 1
+data("ships", package = "MASS")
+
+Shipmodel &lt;- vglm(incidents ~ type + year + period,
+                  poissonff, offset = log(service),
+#                 trace = TRUE, model = TRUE,
+                  data = ships, subset = (service &gt; 0))
+
+# Easiest form of input
+fit1 &lt;- rcim(Qvar(Shipmodel, "type"), uninormal("explink"), maxit = 99)
+qvar(fit1)              # Easy method to get the quasi-variances
+qvar(fit1, se = TRUE)   # Easy method to get the quasi-standard errors
+
+(quasiVar &lt;- exp(diag(fitted(fit1))) / 2)                 # Version 1
+(quasiVar &lt;- diag(predict(fit1)[, c(TRUE, FALSE)]) / 2)   # Version 2
+(quasiSE  &lt;- sqrt(quasiVar))
+
+# Another form of input
+fit2 &lt;- rcim(Qvar(Shipmodel, coef.ind = c(0, 2:5), reference.name = "typeA"),
+             uninormal("explink"), maxit = 99)
+## Not run:  qvplot(fit2, col = "green", lwd = 3, scol = "blue", slwd = 2, las = 1) 
+
+# The variance-covariance matrix is another form of input (not recommended)
+fit3 &lt;- rcim(Qvar(cbind(0, rbind(0, vcov(Shipmodel)[2:5, 2:5])),
+                  labels = c("typeA", "typeB", "typeC", "typeD", "typeE"),
+                  estimates = c(typeA = 0, coef(Shipmodel)[2:5])),
+             uninormal("explink"), maxit = 99)
+(QuasiVar &lt;- exp(diag(fitted(fit3))) / 2)                 # Version 1
+(QuasiVar &lt;- diag(predict(fit3)[, c(TRUE, FALSE)]) / 2)   # Version 2
+(QuasiSE  &lt;- sqrt(quasiVar))
+## Not run:  qvplot(fit3) 
+
+
+# Example 2: a model with M &gt; 1 linear predictors
+## Not run:  require("VGAMdata")
+xs.nz.f &lt;- subset(xs.nz, sex == "F")
+xs.nz.f &lt;- subset(xs.nz.f, !is.na(babies)  &amp; !is.na(age) &amp; !is.na(ethnicity))
+xs.nz.f &lt;- subset(xs.nz.f, ethnicity != "Other")
+
+clist &lt;- list("sm.bs(age, df = 4)" = rbind(1, 0),
+              "sm.bs(age, df = 3)" = rbind(0, 1),
+              "ethnicity"          = diag(2),
+              "(Intercept)"        = diag(2))
+fit1 &lt;- vglm(babies ~ sm.bs(age, df = 4) + sm.bs(age, df = 3) + ethnicity,
+            zipoissonff(zero = NULL), xs.nz.f,
+            constraints = clist, trace = TRUE)
+Fit1 &lt;- rcim(Qvar(fit1, "ethnicity", which.linpred = 1),
+             uninormal("explink", imethod = 1), maxit = 99, trace = TRUE)
+Fit2 &lt;- rcim(Qvar(fit1, "ethnicity", which.linpred = 2),
+             uninormal("explink", imethod = 1), maxit = 99, trace = TRUE)
+
+## End(Not run)
+## Not run:  par(mfrow = c(1, 2))
+qvplot(Fit1, scol = "blue", pch = 16, main = expression(eta[1]),
+       slwd = 1.5, las = 1, length.arrows = 0.07)
+qvplot(Fit2, scol = "blue", pch = 16, main = expression(eta[2]),
+       slwd = 1.5, las = 1, length.arrows = 0.07)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Vector Generalized Linear and Additive Models and Associated...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for VGAM-package {VGAM}"><tr><td>VGAM-package {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Vector Generalized Linear and Additive Models
+and Associated Models
+</h2>
+
+<h3>Description</h3>
+
+<p><span class="pkg">VGAM</span> provides functions for fitting vector generalized
+linear and additive models (VGLMs and VGAMs), and associated
+models (Reduced-rank VGLMs, Quadratic RR-VGLMs, Reduced-rank
+VGAMs). This package fits many models and distributions by
+maximum likelihood estimation (MLE) or penalized MLE.  Also fits
+constrained ordination models in ecology such as constrained
+quadratic ordination (CQO).
+</p>
+
+
+<h3>Details</h3>
+
+<p>This package centers on the
+<em>iteratively reweighted least squares</em> (IRLS)
+algorithm.
+Other key words include
+Fisher scoring,
+additive models,
+reduced-rank regression,
+penalized likelihood,
+and constrained ordination.
+The central modelling functions are
+<code><a href="vglm.html">vglm</a></code>,
+<code><a href="vgam.html">vgam</a></code>,
+<code><a href="rrvglm.html">rrvglm</a></code>,
+<code><a href="grc.html">rcim</a></code>,
+<code><a href="cqo.html">cqo</a></code>,
+<code><a href="cao.html">cao</a></code>.
+Function
+<code><a href="vglm.html">vglm</a></code>
+operates very similarly to
+<code><a href="../../stats/html/glm.html">glm</a></code> but is much more general,
+and many methods functions
+such as <code><a href="coefvlm.html">coef</a></code> and
+<code><a href="predictvglm.html">predict</a></code>
+are available.
+The package uses S4 (see <code><a href="../../methods/html/methods-package.html">methods-package</a></code>).
+A companion package called <span class="pkg">VGAMdata</span> contains some larger
+data sets which were shifted from <span class="pkg">VGAM</span>.
+</p>
+<p>Compared to other similar packages, such as
+<span class="pkg">gamlss</span> and
+<span class="pkg">mgcv</span>,
+<span class="pkg">VGAM</span> has more models implemented (150+ of them) and they
+are not restricted to
+a location-scale-shape framework or
+(largely) the 1-parameter exponential family.
+There is a general statistical framework behind it all,
+that once grasped, makes regression modelling quite unified.
+Some features of the package are:
+(i) most family functions handle multiple responses;
+(ii) reduced-rank regression is available by operating
+on latent variables (optimal linear combinations of the
+explanatory variables);
+(iii) basic
+automatic smoothing parameter selection is implemented for VGAMs,
+although it has to be refined;
+(iv) <em>smart</em> prediction allows correct prediction of nested
+terms in the formula provided smart functions are used.
+</p>
+<p>The GLM and GAM classes are special cases of VGLMs and VGAMs.
+The VGLM/VGAM framework is intended to be very general
+so that it encompasses as many distributions and models as
+possible. VGLMs are limited only by the assumption that the
+regression coefficients enter through a set of linear predictors.
+The VGLM class is very large and encompasses a wide range of
+multivariate response types and models, e.g., it includes
+univariate and multivariate distributions,
+categorical data analysis,
+extreme values,
+correlated binary data,
+quantile and expectile regression,
+time series
+problems.
+Potentially, it can handle
+generalized estimating equations,
+survival analysis,
+bioassay data and
+nonlinear least-squares
+problems.
+</p>
+<p>Crudely, VGAMs are to VGLMs what GAMs are to GLMs.
+Two types of VGAMs are implemented:
+1st-generation VGAMs with <code><a href="s.html">s</a></code> use vector backfitting,
+while
+2nd-generation VGAMs with <code><a href="sm.os.html">sm.os</a></code> and
+<code><a href="sm.ps.html">sm.ps</a></code> use O-splines and P-splines,
+do not use the backfitting algorithm,
+and have automatic smoothing parameter selection.
+The former is older and is based on Yee and Wild (1996).
+The latter is more modern
+(Yee, Somchit and Wild, 2018)
+but it requires a reasonably large number of observations
+to work well.
+</p>
+<p>This package is the first to check for the <em>Hauck-Donner effect</em>
+(HDE) in regression models; see <code><a href="hdeff.html">hdeff</a></code>.  This is an
+aberration of the Wald statistics when the parameter estimates are too
+close to the boundary of the parameter space.  When present the p-value
+of a regression coefficient is biased upwards so that a highly
+significant variable might be deemed nonsignificant.  Thus the HDE can
+create havoc for variable selection!
+</p>
+<p>Somewhat related to the previous paragraph, hypothesis testing
+using the likelihood ratio test,
+Rao's score test (Lagrange multiplier test) and
+(modified) Wald's test are all available; see <code><a href="summaryvglm.html">summaryvglm</a></code>.
+For all regression coefficients of a model, taken one at a time,
+all three methods require further IRLS iterations to obtain
+new values of the other regression coefficients after one
+of the coefficients has had its value set (usually to 0).
+Hence the computation load is overall significant.
+</p>
+
+
+
+
+
+<p>For a complete list of this package, use <code>library(help = "VGAM")</code>.
+New <span class="pkg">VGAM</span> family functions are continually being written and
+added to the package.
+
+</p>
+
+
+
+
+
+
+
+
+<h3>Warning</h3>
+
+<p>This package is undergoing continual development and improvement,
+therefore users should treat everything as subject to change.
+This includes the
+family function names,
+argument names,
+many of the internals,
+the use of link functions,
+and slot names.
+For example, all link functions may be renamed so that they
+end in <code>"link"</code>,
+e.g., <code>loglink()</code> instead of <code>loge()</code>.
+Some future pain can be avoided by using good programming
+techniques, e.g., using extractor/accessor functions such as
+<code>coef()</code>, <code>weights()</code>, <code>vcov()</code>,
+<code>predict()</code>.
+Nevertheless, please expect changes in all aspects of the package.
+See the <code>NEWS</code> file for a list of changes from version to
+version.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Thomas W. Yee, <a href="mailto:t.yee@auckland.ac.nz">t.yee@auckland.ac.nz</a>.
+</p>
+<p>Maintainer: Thomas Yee <a href="mailto:t.yee@auckland.ac.nz">t.yee@auckland.ac.nz</a>.
+</p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. (2015)
+Vector Generalized Linear and Additive Models:
+With an Implementation in R.
+New York, USA: <em>Springer</em>.
+</p>
+<p>Yee, T. W. and Hastie, T. J. (2003)
+Reduced-rank vector generalized linear models.
+<em>Statistical Modelling</em>,
+<b>3</b>, 15&ndash;41.
+</p>
+<p>Yee, T. W. and Stephenson, A. G. (2007)
+Vector generalized linear and additive extreme value models.
+<em>Extremes</em>, <b>10</b>, 1&ndash;19.
+</p>
+<p>Yee, T. W. and Wild, C. J. (1996)
+Vector generalized additive models.
+<em>Journal of the Royal Statistical Society, Series B, Methodological</em>,
+<b>58</b>, 481&ndash;493.
+</p>
+<p>Yee, T. W. (2004)
+A new technique for maximum-likelihood
+canonical Gaussian ordination.
+<em>Ecological Monographs</em>,
+<b>74</b>, 685&ndash;701.
+</p>
+<p>Yee, T. W. (2006)
+Constrained additive ordination.
+<em>Ecology</em>, <b>87</b>, 203&ndash;213.
+</p>
+<p>Yee, T. W. (2008)
+The <code>VGAM</code> Package.
+<em>R News</em>, <b>8</b>, 28&ndash;39.
+</p>
+<p>Yee, T. W. (2010)
+The <span class="pkg">VGAM</span> package for categorical data analysis.
+<em>Journal of Statistical Software</em>,
+<b>32</b>, 1&ndash;34.
+<a href="http://www.jstatsoft.org/v32/i10/">http://www.jstatsoft.org/v32/i10/</a>.
+</p>
+<p>Yee, T. W. (2014)
+Reduced-rank vector generalized linear models with two linear predictors.
+<em>Computational Statistics and Data Analysis</em>,
+<b>71</b>, 889&ndash;902.
+</p>
+<p>Yee, T. W. (2018)
+Detecting the Hauck-Donner effect in Wald tests
+(<em>in preparation</em>).
+</p>
+<p>Yee, T. W. and Somchit, C. and Wild, C. J. (2018)
+Penalized vector generalized additive models.
+Manuscript in preparation.
+</p>
+<p>My website for the <span class="pkg">VGAM</span> package and book is at
+<a href="https://www.stat.auckland.ac.nz/~yee">https://www.stat.auckland.ac.nz/~yee</a>.
+There are some resources there,
+especially as relating to my book and new features
+added to <span class="pkg">VGAM</span>.
+</p>
+
+
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="vglm.html">vglm</a></code>,
+<code><a href="vgam.html">vgam</a></code>,
+<code><a href="rrvglm.html">rrvglm</a></code>,
+<code><a href="grc.html">rcim</a></code>,
+<code><a href="cqo.html">cqo</a></code>,
+<code><a href="CommonVGAMffArguments.html">TypicalVGAMfamilyFunction</a></code>,
+<code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>,
+<code><a href="Links.html">Links</a></code>,
+<code><a href="hdeff.html">hdeff</a></code>,
+<a href="https://CRAN.R-project.org/package=VGAM">https://CRAN.R-project.org/package=VGAM</a>.
+</p>
+
+
+
+
+<h3>Examples</h3>
+
+<pre>
+# Example 1; proportional odds model
+pneumo &lt;- transform(pneumo, let = log(exposure.time))
+(fit1 &lt;- vglm(cbind(normal, mild, severe) ~ let, propodds, data = pneumo))
+depvar(fit1)  # Better than using fit1@y; dependent variable (response)
+weights(fit1, type = "prior")  # Number of observations
+coef(fit1, matrix = TRUE)      # p.179, in McCullagh and Nelder (1989)
+constraints(fit1)              # Constraint matrices
+summary(fit1)  # HDE could affect these results
+summary(fit1, lrt0 = TRUE, score0 = TRUE, wald0 = TRUE)  # No HDE
+hdeff(fit1)  # Check for any Hauck-Donner effect
+
+# Example 2; zero-inflated Poisson model
+zdata &lt;- data.frame(x2 = runif(nn &lt;- 2000))
+zdata &lt;- transform(zdata, pstr0  = logit(-0.5 + 1*x2, inverse = TRUE),
+                          lambda = loge(  0.5 + 2*x2, inverse = TRUE))
+zdata &lt;- transform(zdata, y = rzipois(nn, lambda, pstr0 = pstr0))
+with(zdata, table(y))
+fit2 &lt;- vglm(y ~ x2, zipoisson, data = zdata, trace = TRUE)
+coef(fit2, matrix = TRUE)  # These should agree with the above values
+
+
+# Example 3; fit a two species GAM simultaneously
+fit3 &lt;- vgam(cbind(agaaus, kniexc) ~ s(altitude, df = c(2, 3)),
+             binomialff(multiple.responses = TRUE), data = hunua)
+coef(fit3, matrix = TRUE)   # Not really interpretable
+## Not run:  plot(fit3, se = TRUE, overlay = TRUE, lcol = 3:4, scol = 3:4)
+
+ooo &lt;- with(hunua, order(altitude))
+with(hunua,  matplot(altitude[ooo], fitted(fit3)[ooo, ], type = "l",
+     lwd = 2, col = 3:4,
+     xlab = "Altitude (m)", ylab = "Probability of presence", las = 1,
+     main = "Two plant species' response curves", ylim = c(0, 0.8)))
+with(hunua, rug(altitude)) 
+## End(Not run)
+
+
+# Example 4; LMS quantile regression
+fit4 &lt;- vgam(BMI ~ s(age, df = c(4, 2)), lms.bcn(zero = 1),
+             data = bmi.nz, trace = TRUE)
+head(predict(fit4))
+head(fitted(fit4))
+head(bmi.nz)  # Person 1 is near the lower quartile among people his age
+head(cdf(fit4))
+
+## Not run:  par(mfrow = c(1,1), bty = "l", mar = c(5,4,4,3)+0.1, xpd=TRUE)
+qtplot(fit4, percentiles = c(5,50,90,99), main = "Quantiles", las = 1,
+       xlim = c(15, 90), ylab = "BMI", lwd=2, lcol=4)  # Quantile plot
+
+ygrid &lt;- seq(15, 43, len = 100)  # BMI ranges
+par(mfrow = c(1, 1), lwd = 2)  # Density plot
+aa &lt;- deplot(fit4, x0 = 20, y = ygrid, xlab = "BMI", col = "black",
+    main = "Density functions at Age=20 (black), 42 (red) and 55 (blue)")
+aa
+aa &lt;- deplot(fit4, x0 = 42, y = ygrid, add = TRUE, llty = 2, col = "red")
+aa &lt;- deplot(fit4, x0 = 55, y = ygrid, add = TRUE, llty = 4, col = "blue",
+            Attach = TRUE)
+aa@post$deplot  # Contains density function values
+
+## End(Not run)
+
+
+# Example 5; GEV distribution for extremes
+(fit5 &lt;- vglm(maxtemp ~ 1, gevff, data = oxtemp, trace = TRUE))
+head(fitted(fit5))
+coef(fit5, matrix = TRUE)
+Coef(fit5)
+vcov(fit5)
+vcov(fit5, untransform = TRUE)
+sqrt(diag(vcov(fit5)))  # Approximate standard errors
+## Not run:  rlplot(fit5) 
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

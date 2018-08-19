@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Venice Maximum Sea Levels Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for venice {VGAM}"><tr><td>venice {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Venice Maximum Sea Levels Data</h2>
+
+<h3>Description</h3>
+
+<p>Some sea levels data sets recorded at Venice, Italy.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+data(venice)
+data(venice90)
+</pre>
+
+
+<h3>Format</h3>
+
+<p><code>venice</code> is a data frame with 51 observations on the following 11
+variables.
+It concerns the maximum heights of sea levels between
+1931 and 1981.
+</p>
+
+<dl>
+<dt>year</dt><dd><p>a numeric vector. </p>
+</dd>
+<dt>r1,r2,r3,r4,r5,r6,r7,r8,r9,r10</dt><dd><p>numeric vectors;
+<code>r1</code> is the highest recorded value,
+<code>r2</code> is the second highest recorded value, etc.
+</p>
+</dd>
+</dl>
+
+<p><code>venice90</code> is a data frame with 455 observations on the following
+7 variables.
+</p>
+
+<dl>
+<dt>year, month, day, hour </dt><dd><p>numeric vectors;
+actual time of the recording. </p>
+</dd>
+<dt>sealevel</dt><dd><p>numeric; sea level. </p>
+</dd>
+<dt>ohour</dt><dd><p>numeric;
+number of hours since the midnight of 31 Dec 1939 and 1 Jan 1940.
+</p>
+</dd>
+<dt>Year</dt><dd><p>numeric vector;
+approximate year as a real number.
+The formula is <code>start.year + ohour / (365.26 * 24)</code>
+where <code>start.year</code> is 1940.
+One can treat <code>Year</code> as continuous whereas
+<code>year</code> can be treated as both continuous and discrete.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Details</h3>
+
+<p>Sea levels are in cm.
+For <code>venice90</code>, the value 0 corresponds to a fixed
+reference point (e.g.,  the mean sea level in 1897 at an old
+palace of Venice). Clearly since the relative (perceived)
+mean sea level has been increasing in trend over time (more
+than an overall 0.4 m increase by 2010), therefore the value 0 is
+(now) a very low and unusual measurement.
+</p>
+<p>For <code>venice</code>, in 1935 only the top six values were recorded.
+</p>
+<p>For <code>venice90</code>, this is a subset of a data set provided by
+Paolo Pirazzoli consisting of hourly sea levels from 1940 to 2009.
+Values greater than 90 cm were extracted, and then declustered
+(each cluster provides no more than one value, and
+each value is at least 24 hours apart).
+Thus the values are more likely to be independent.
+Of the original <code>(2009-1940+1)*365.26*24</code> values
+about 7 percent of these comprise <code>venice90</code>.
+</p>
+<p>Yet to do: check for consistency between the data sets.
+Some external data sets elsewhere have some extremes recorded
+at times not exactly on the hour.
+</p>
+
+
+<h3>Source</h3>
+
+<p>Pirazzoli, P. (1982)
+Maree estreme a Venezia (periodo 1872&ndash;1981).
+<em>Acqua Aria</em>, <b>10</b>, 1023&ndash;1039.
+</p>
+<p>Thanks to Paolo Pirazzoli and Alberto Tomasin for the <code>venice90</code>
+data.
+</p>
+
+
+<h3>References</h3>
+
+<p>Smith, R. L. (1986)
+Extreme value theory based on the <em>r</em> largest annual events.
+<em>Journal of Hydrology</em>,
+<b>86</b>, 27&ndash;43.
+</p>
+<p>Battistin, D. and Canestrelli, P. (2006).
+<em>La serie storica delle maree a Venezia, 1872&ndash;2004</em> (in Italian),
+Comune di Venezia.
+Istituzione Centro Previsione e Segnalazioni Maree.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="guplot.html">guplot</a></code>,
+<code><a href="gev.html">gev</a></code>,
+<code><a href="gpd.html">gpd</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+matplot(venice[["year"]], venice[, -1], xlab = "Year",
+        ylab = "Sea level (cm)", type = "l")
+
+ymat &lt;- as.matrix(venice[, paste("r", 1:10, sep = "")])
+fit1 &lt;- vgam(ymat ~ s(year, df = 3), gumbel(R = 365, mpv = TRUE),
+             data = venice, trace = TRUE, na.action = na.pass)
+head(fitted(fit1))
+
+par(mfrow = c(2, 1), xpd = TRUE)
+plot(fit1, se = TRUE, lcol = "blue", llwd = 2, slty = "dashed")
+
+par(mfrow = c(1,1), bty = "l", xpd = TRUE, las = 1)
+qtplot(fit1, mpv = TRUE, lcol = c(1, 2, 5), tcol = c(1, 2, 5),
+       llwd = 2, pcol = "blue", tadj = 0.1)
+
+plot(sealevel ~ Year, data = venice90, type = "h", col = "blue")
+summary(venice90)
+dim(venice90)
+round(100 * nrow(venice90) / ((2009 - 1940 + 1) * 365.26 * 24), digits = 3)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

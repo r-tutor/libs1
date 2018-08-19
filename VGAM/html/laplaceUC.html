@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Laplace Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for laplaceUC {VGAM}"><tr><td>laplaceUC {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> The Laplace Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function, quantile function and random generation
+for the Laplace distribution with location parameter <code>location</code>
+and scale parameter <code>scale</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dlaplace(x, location = 0, scale = 1, log = FALSE)
+plaplace(q, location = 0, scale = 1, lower.tail = TRUE, log.p = FALSE)
+qlaplace(p, location = 0, scale = 1, lower.tail = TRUE, log.p = FALSE)
+rlaplace(n, location = 0, scale = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>vector of probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of observations.
+Same as in <code><a href="../../stats/html/runif.html">runif</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>location</code></td>
+<td>
+
+<p>the location parameter <i>a</i>, which is the mean.
+</p>
+</td></tr>
+<tr valign="top"><td><code>scale</code></td>
+<td>
+
+<p>the scale parameter <i>b</i>.
+Must consist of positive values.
+</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>Logical.
+If <code>log = TRUE</code> then the logarithm of the density is returned.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lower.tail, log.p</code></td>
+<td>
+
+<p>Same meaning as in <code><a href="../../stats/html/Normal.html">pnorm</a></code>
+or <code><a href="../../stats/html/Normal.html">qnorm</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The Laplace distribution is often known as the double-exponential
+distribution and, for modelling, has heavier tail
+than the normal distribution.
+The Laplace density function is
+</p>
+<p style="text-align: center;"><i>
+        f(y) =  (1/(2b)) exp( -|y-a|/b ) </i></p>
+
+<p>where <i>-Inf&lt;y&lt;Inf</i>,
+<i>-Inf&lt;a&lt;Inf</i> and
+<i>b&gt;0</i>.
+The mean is <i>a</i> and the variance is <i>2b^2</i>.
+</p>
+<p>See <code><a href="laplace.html">laplace</a></code>, the <span class="pkg">VGAM</span> family function
+for estimating the two parameters by maximum likelihood estimation,
+for formulae and details.
+Apart from <code>n</code>, all the above arguments may be vectors and
+are recyled to the appropriate length if necessary.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dlaplace</code> gives the density,
+<code>plaplace</code> gives the distribution function,
+<code>qlaplace</code> gives the quantile function, and
+<code>rlaplace</code> generates random deviates.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee and Kai Huang</p>
+
+
+<h3>References</h3>
+
+<p>Forbes, C., Evans, M., Hastings, N. and Peacock, B. (2011)
+<em>Statistical Distributions</em>,
+Hoboken, NJ, USA: John Wiley and Sons, Fourth edition.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="laplace.html">laplace</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+loc &lt;- 1; b &lt;- 2
+y &lt;- rlaplace(n = 100, loc = loc, scale = b)
+mean(y)  # sample mean
+loc      # population mean
+var(y)   # sample variance
+2 * b^2  # population variance
+
+## Not run:  loc &lt;- 0; b &lt;- 1.5; x &lt;- seq(-5, 5, by = 0.01)
+plot(x, dlaplace(x, loc, b), type = "l", col = "blue", ylim = c(0,1),
+     main = "Blue is density, orange is cumulative distribution function",
+     sub = "Purple are 5,10,...,95 percentiles", las = 1, ylab = "")
+abline(h = 0, col = "blue", lty = 2)
+lines(qlaplace(seq(0.05,0.95,by = 0.05), loc, b),
+      dlaplace(qlaplace(seq(0.05, 0.95, by = 0.05), loc, b), loc, b),
+      col = "purple", lty = 3, type = "h")
+lines(x, plaplace(x, loc, b), type = "l", col = "orange")
+abline(h = 0, lty = 2) 
+## End(Not run)
+
+plaplace(qlaplace(seq(0.05, 0.95, by = 0.05), loc, b), loc, b)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

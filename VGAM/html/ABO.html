@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The ABO Blood Group System</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ABO {VGAM}"><tr><td>ABO {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> The ABO Blood Group System </h2>
+
+<h3>Description</h3>
+
+<p>Estimates the two independent parameters of the
+the ABO blood group system.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ABO(link.pA = "logit", link.pB = "logit", ipA = NULL, ipB = NULL,
+    ipO = NULL, zero = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>link.pA, link.pB</code></td>
+<td>
+
+<p>Link functions applied to <code>pA</code> and <code>pB</code>.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ipA, ipB, ipO</code></td>
+<td>
+
+<p>Optional initial value for <code>pA</code> and <code>pB</code> and <code>pO</code>.
+A <code>NULL</code> value means values are computed internally.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>Details at <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The parameters <code>pA</code> and <code>pB</code> are probabilities, so that
+<code>pO=1-pA-pB</code> is the third probability.
+The probabilities <code>pA</code> and <code>pB</code> correspond to A and B respectively,
+so that <code>pO</code> is the probability for O.
+It is easier to make use of initial values for <code>pO</code> than for <code>pB</code>.
+In documentation elsewhere I sometimes use
+<code>pA=p</code>,
+<code>pB=q</code>,
+<code>pO=r</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The input can be a 4-column matrix of counts, where the columns
+are A, B, AB, O (in order).
+Alternatively, the input can be a 4-column matrix of
+proportions (so each row adds to 1) and the <code>weights</code>
+argument is used to specify the total number of counts for each row.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Lange, K. (2002)
+<em>Mathematical and Statistical Methods for Genetic Analysis</em>,
+2nd ed. New York: Springer-Verlag.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="AA.Aa.aa.html">AA.Aa.aa</a></code>,
+<code><a href="AB.Ab.aB.ab.html">AB.Ab.aB.ab</a></code>,
+<code><a href="A1A2A3.html">A1A2A3</a></code>,
+<code><a href="MNSs.html">MNSs</a></code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+ymat &lt;- cbind(A = 725, B = 258, AB = 72, O = 1073)  # Order matters, not the name
+fit &lt;- vglm(ymat ~ 1, ABO(link.pA = "identitylink",
+                          link.pB = "identitylink"), trace = TRUE,
+            crit = "coef")
+coef(fit, matrix = TRUE)
+Coef(fit)  # Estimated pA and pB
+rbind(ymat, sum(ymat) * fitted(fit))
+sqrt(diag(vcov(fit)))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

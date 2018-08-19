@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: McCullagh (1989) Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for mccullagh89 {VGAM}"><tr><td>mccullagh89 {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>McCullagh (1989) Distribution Family Function</h2>
+
+<h3>Description</h3>
+
+<p>Estimates the two parameters of the McCullagh (1989)
+distribution by maximum likelihood estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mccullagh89(ltheta = "rhobit", lnu = logoff(offset = 0.5),
+            itheta = NULL, inu = NULL, zero = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>ltheta, lnu</code></td>
+<td>
+
+<p>Link functions
+for the <i>theta</i> and <i>nu</i> parameters.
+See <code><a href="Links.html">Links</a></code> for general information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>itheta, inu</code></td>
+<td>
+
+<p>Numeric.
+Optional initial values for <i>theta</i> and <i>nu</i>.
+The default is to internally compute them.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The McCullagh (1989) distribution has density function
+</p>
+<p style="text-align: center;"><i>
+f(y;theta,nu) =
+(1-y^2)^(nu-0.5) / [ (1 - 2*theta*y+theta^2)^nu * Beta(nu+0.5, 0.5)]</i></p>
+
+<p>where <i>-1 &lt; y &lt; 1</i> and <i>-1 &lt; theta &lt; 1</i>.
+This distribution is equation (1) in that paper.
+The parameter <i>nu</i> satisfies <i>nu &gt; -1/2</i>,
+therefore the default is to use an log-offset link
+with offset equal to 0.5, i.e.,
+<i>eta_2=log(nu+0.5)</i>.
+The mean is of <i>Y</i> is <i>nu*theta/(1+nu)</i>,
+and these are returned as the fitted values.
+</p>
+<p>This distribution is related to the Leipnik distribution (see Johnson
+et al. (1995)), is related to ultraspherical functions, and under
+certain conditions, arises as exit distributions for Brownian motion.
+Fisher scoring is implemented here and it uses a diagonal matrix so
+the parameters are globally orthogonal in the Fisher information sense.
+McCullagh (1989) also states that, to some extent, <i>theta</i>
+and <i>nu</i> have the properties of a location parameter and a
+precision parameter, respectively.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+<code><a href="rrvglm.html">rrvglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Convergence may be slow or fail unless the initial values are reasonably
+close. If a failure occurs, try assigning the argument <code>inu</code> and/or
+<code>itheta</code>.  Figure 1 of McCullagh (1989) gives a broad range of
+densities for different values of <i>theta</i> and <i>nu</i>,
+and this could be consulted for obtaining reasonable initial values if
+all else fails.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>McCullagh, P. (1989)
+Some statistical properties of a family of continuous univariate distributions.
+<em>Journal of the American Statistical Association</em>,
+<b>84</b>, 125&ndash;129.
+</p>
+<p>Johnson, N. L. and Kotz, S. and Balakrishnan, N. (1995)
+<em>Continuous Univariate Distributions</em>,
+2nd edition,
+Volume 2,
+New York: Wiley.
+(pages 612&ndash;617).
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="leipnik.html">leipnik</a></code>,
+<code><a href="rhobit.html">rhobit</a></code>,
+<code><a href="logoff.html">logoff</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+mdata &lt;- data.frame(y = rnorm(n = 1000, sd = 0.2))  # Limit as theta = 0, nu = Inf
+fit &lt;- vglm(y ~ 1, mccullagh89, data = mdata, trace = TRUE)
+head(fitted(fit))
+with(mdata, mean(y))
+summary(fit)
+coef(fit, matrix = TRUE)
+Coef(fit)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

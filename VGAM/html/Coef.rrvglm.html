@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Returns Important Matrices etc. of a RR-VGLM Object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Coef.rrvglm {VGAM}"><tr><td>Coef.rrvglm {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Returns Important Matrices etc. of a RR-VGLM Object </h2>
+
+<h3>Description</h3>
+
+<p>This methods function returns important matrices etc. of a
+RR-VGLM object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+Coef.rrvglm(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p> An object of class <code>"rrvglm"</code>. </p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p> Currently unused. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <b>A</b>, <b>B1</b>, <b>C</b> matrices are returned,
+along with other slots.
+See <code><a href="rrvglm.html">rrvglm</a></code> for details about RR-VGLMs.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"Coef.rrvglm"</code>
+(see <code><a href="Coef.rrvglm-class.html">Coef.rrvglm-class</a></code>).
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function is an alternative to <code>coef.rrvglm</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. and Hastie, T. J. (2003)
+Reduced-rank vector generalized linear models.
+<em>Statistical Modelling</em>,
+<b>3</b>, 15&ndash;41.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="Coef.rrvglm-class.html">Coef.rrvglm-class</a></code>,
+<code>print.Coef.rrvglm</code>,
+<code><a href="rrvglm.html">rrvglm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Rank-1 stereotype model of Anderson (1984)
+pneumo &lt;- transform(pneumo, let = log(exposure.time), x3 = runif(nrow(pneumo)))
+fit &lt;- rrvglm(cbind(normal, mild, severe) ~ let + x3, multinomial, data = pneumo)
+coef(fit, matrix = TRUE)
+Coef(fit)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

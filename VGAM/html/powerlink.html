@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Power Link Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for powerlink {VGAM}"><tr><td>powerlink {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Power Link Function </h2>
+
+<h3>Description</h3>
+
+<p>Computes the power transformation, including its inverse and the
+first two derivatives.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+powerlink(theta, power = 1, inverse = FALSE, deriv = 0,
+          short = TRUE, tag = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>theta</code></td>
+<td>
+
+<p>Numeric or character.
+See below for further details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>power</code></td>
+<td>
+
+<p>This denotes the power or exponent.
+</p>
+</td></tr>
+<tr valign="top"><td><code>inverse, deriv, short, tag</code></td>
+<td>
+
+<p>Details at <code><a href="Links.html">Links</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The power link function raises a parameter by a certain value of
+<code>power</code>.
+Care is needed because it is very easy to get numerical
+problems, e.g., if <code>power=0.5</code> and <code>theta</code> is
+negative.
+</p>
+
+
+<h3>Value</h3>
+
+<p>For <code>powerlink</code> with <code>deriv = 0</code>, then <code>theta</code> raised
+to the power of <code>power</code>.
+And if <code>inverse = TRUE</code> then
+<code>theta</code> raised to the power of <code>1/power</code>.
+</p>
+<p>For <code>deriv = 1</code>, then the function returns
+<em>d</em> <code>theta</code> / <em>d</em> <code>eta</code> as a function of <code>theta</code>
+if <code>inverse = FALSE</code>,
+else if <code>inverse = TRUE</code> then it returns the reciprocal.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Numerical problems may occur for certain combinations of
+<code>theta</code> and <code>power</code>.
+Consequently this link function should be used with caution.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="Links.html">Links</a></code>,
+<code><a href="loge.html">loge</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+powerlink("a", power = 2, short = FALSE, tag = TRUE)
+powerlink(x &lt;- 1:5)
+powerlink(x, power = 2)
+max(abs(powerlink(powerlink(x, power = 2),
+                  power = 2, inverse = TRUE) - x))  # Should be 0
+powerlink(x &lt;- (-5):5, power = 0.5)  # Has NAs
+
+# 1/2 = 0.5
+pdata &lt;- data.frame(y = rbeta(n = 1000, shape1 = 2^2, shape2 = 3^2))
+fit &lt;- vglm(y ~ 1, betaR(lshape1 = powerlink(power = 0.5), i1 = 3,
+                         lshape2 = powerlink(power = 0.5), i2 = 7), data = pdata)
+t(coef(fit, matrix = TRUE))
+Coef(fit)  # Useful for intercept-only models
+vcov(fit, untransform = TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

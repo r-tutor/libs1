@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Exponential Regression by Asymmetric Maximum Likelihood...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for amlexponential {VGAM}"><tr><td>amlexponential {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Exponential Regression by Asymmetric Maximum Likelihood Estimation </h2>
+
+<h3>Description</h3>
+
+<p>Exponential expectile regression estimated by maximizing an asymmetric
+likelihood function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+amlexponential(w.aml = 1, parallel = FALSE, imethod = 1, digw = 4,
+               link = "loge")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>w.aml</code></td>
+<td>
+
+<p>Numeric, a vector of positive constants controlling the expectiles.
+The larger the value the larger the fitted expectile value
+(the proportion of points below the &ldquo;w-regression plane&rdquo;).
+The default value of unity results in the ordinary maximum likelihood
+(MLE) solution.
+</p>
+</td></tr>
+<tr valign="top"><td><code>parallel</code></td>
+<td>
+
+<p>If <code>w.aml</code> has more than one value then
+this argument allows the quantile curves to differ by the same amount
+as a function of the covariates.
+Setting this to be <code>TRUE</code> should force the quantile curves to
+not cross (although they may not cross anyway).
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod</code></td>
+<td>
+
+<p>Integer, either 1 or 2 or 3. Initialization method.
+Choose another value if convergence fails.
+</p>
+</td></tr>
+<tr valign="top"><td><code>digw </code></td>
+<td>
+
+<p>Passed into <code><a href="../../base/html/Round.html">Round</a></code> as the <code>digits</code> argument
+for the <code>w.aml</code> values;
+used cosmetically for labelling.
+</p>
+</td></tr>
+<tr valign="top"><td><code>link</code></td>
+<td>
+
+<p>See <code><a href="exponential.html">exponential</a></code> and the warning below.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The general methodology behind this <span class="pkg">VGAM</span> family function
+is given in Efron (1992) and full details can be obtained there.
+
+This model is essentially an exponential regression model
+(see <code><a href="exponential.html">exponential</a></code>) but the usual deviance is replaced by an
+asymmetric squared error loss function; it is multiplied by
+<i>w.aml</i> for positive residuals.
+The solution is the set of regression coefficients that minimize the
+sum of these deviance-type values over the data set, weighted by
+the <code>weights</code> argument (so that it can contain frequencies).
+Newton-Raphson estimation is used here.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>Note that the <code>link</code> argument of <code><a href="exponential.html">exponential</a></code> and
+<code><a href="amlexponential.html">amlexponential</a></code> are currently different: one is the
+rate parameter and the other is the mean (expectile) parameter.
+</p>
+<p>If <code>w.aml</code> has more than one value then the value returned by
+<code>deviance</code> is the sum of all the (weighted) deviances taken over
+all the <code>w.aml</code> values.
+See Equation (1.6) of Efron (1992).
+</p>
+
+
+<h3>Note</h3>
+
+<p>On fitting, the <code>extra</code> slot has list components <code>"w.aml"</code> and
+<code>"percentile"</code>. The latter is the percent of observations below
+the &ldquo;w-regression plane&rdquo;, which is the fitted values.
+Also, the individual deviance values corresponding to each element of
+the argument <code>w.aml</code> is stored in the <code>extra</code> slot.
+</p>
+<p>For <code>amlexponential</code> objects, methods functions for the generic functions
+<code>qtplot</code> and <code>cdf</code> have not been written yet.
+</p>
+<p>See <code><a href="amlpoisson.html">amlpoisson</a></code> about comments on the jargon, e.g.,
+<em>expectiles</em> etc.
+</p>
+<p>In this documentation the word <em>quantile</em> can often be
+interchangeably replaced by <em>expectile</em>
+(things are informal here).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Efron, B. (1992)
+Poisson overdispersion estimates based on the method of
+asymmetric maximum likelihood.
+<em>Journal of the American Statistical Association</em>,
+<b>87</b>, 98&ndash;107.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="exponential.html">exponential</a></code>,
+<code><a href="amlbinomial.html">amlbinomial</a></code>,
+<code><a href="amlpoisson.html">amlpoisson</a></code>,
+<code><a href="amlnormal.html">amlnormal</a></code>,
+<code><a href="alaplace3.html">alaplace1</a></code>,
+<code><a href="lms.bcg.html">lms.bcg</a></code>,
+<code><a href="eexpUC.html">deexp</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+nn &lt;- 2000
+mydat &lt;- data.frame(x = seq(0, 1, length = nn))
+mydat &lt;- transform(mydat, mu = loge(-0 + 1.5*x + 0.2*x^2, inverse = TRUE))
+mydat &lt;- transform(mydat, mu = loge(0 - sin(8*x), inverse = TRUE))
+mydat &lt;- transform(mydat,  y = rexp(nn, rate = 1/mu))
+(fit  &lt;- vgam(y ~ s(x,df = 5), amlexponential(w = c(0.001, 0.1, 0.5, 5, 60)),
+              mydat, trace = TRUE))
+fit@extra
+
+## Not run:  # These plots are against the sqrt scale (to increase clarity)
+par(mfrow = c(1,2))
+# Quantile plot
+with(mydat, plot(x, sqrt(y), col = "blue", las = 1, main =
+     paste(paste(round(fit@extra$percentile, digits = 1), collapse = ", "),
+           "percentile-expectile curves")))
+with(mydat, matlines(x, sqrt(fitted(fit)), lwd = 2, col = "blue", lty = 1))
+
+# Compare the fitted expectiles with the quantiles
+with(mydat, plot(x, sqrt(y), col = "blue", las = 1, main =
+     paste(paste(round(fit@extra$percentile, digits = 1), collapse = ", "),
+           "percentile curves are orange")))
+with(mydat, matlines(x, sqrt(fitted(fit)), lwd = 2, col = "blue", lty = 1))
+
+for (ii in fit@extra$percentile)
+  with(mydat, matlines(x, sqrt(qexp(p = ii/100, rate = 1/mu)), col = "orange")) 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

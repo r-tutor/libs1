@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Tolerances</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Tol {VGAM}"><tr><td>Tol {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Tolerances </h2>
+
+<h3>Description</h3>
+
+<p>Generic function for the <em>tolerances</em> of a model.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+Tol(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p> An object for which the computation or
+extraction of a tolerance or tolerances is meaningful.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p> Other arguments fed into the specific
+methods function of the model. Sometimes they are fed
+into the methods function for <code><a href="Coef.html">Coef</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Different models can define an optimum in different ways.
+Many models have no such notion or definition.
+</p>
+<p>Tolerances occur in quadratic ordination, i.e., CQO and UQO.
+They have ecological meaning because a high tolerance
+for a species means the species can survive over a large
+environmental range (stenoecous species), whereas a
+small tolerance means the species' niche is small
+(eurycous species).
+Mathematically, the tolerance is like the variance of
+a normal distribution.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The value returned depends specifically on the methods
+function invoked.
+For a <code><a href="cqo.html">cqo</a></code> binomial or Poisson fit, this
+function returns a
+<i>R \times R \times S</i> array, where <i>R</i> is the rank
+and <i>S</i> is the number of species.
+Each tolerance matrix ought to be positive-definite, and
+for a rank-1 fit, taking the square root of each tolerance
+matrix results in each species' tolerance (like a standard
+deviation).
+</p>
+
+
+<h3>Warning </h3>
+
+<p>There is a direct inverse relationship between the scaling of
+the latent variables (site scores) and the tolerances.
+One normalization is for the latent variables to have unit
+variance.
+Another normalization is for all the tolerances to be unit.
+These two normalization cannot simultaneously hold in general.
+For rank-<em>R&gt;1</em> models it becomes more complicated because
+the latent variables are also uncorrelated. An important
+argument when fitting quadratic ordination models is whether
+<code>eq.tolerances</code> is <code>TRUE</code> or <code>FALSE</code>.
+See Yee (2004) for details.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Tolerances are undefined for &lsquo;linear&rsquo; and additive
+ordination models.
+They are well-defined for quadratic ordination models.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. (2004)
+A new technique for maximum-likelihood
+canonical Gaussian ordination.
+<em>Ecological Monographs</em>,
+<b>74</b>, 685&ndash;701.
+</p>
+<p>Yee, T. W. (2006)
+Constrained additive ordination.
+<em>Ecology</em>, <b>87</b>, 203&ndash;213.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code>Tol.qrrvglm</code>.
+<code><a href="Max.html">Max</a></code>,
+<code><a href="Opt.html">Opt</a></code>,
+<code><a href="cqo.html">cqo</a></code>,
+<code><a href="grc.html">rcim</a></code> for UQO.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+set.seed(111)  # This leads to the global solution
+hspider[,1:6] &lt;- scale(hspider[, 1:6])  # Standardized environmental vars
+p1 &lt;- cqo(cbind(Alopacce, Alopcune, Alopfabr, Arctlute, Arctperi,
+                Auloalbi, Pardlugu, Pardmont, Pardnigr, Pardpull,
+                Trocterr, Zoraspin) ~
+          WaterCon + BareSand + FallTwig + CoveMoss + CoveHerb + ReflLux,
+          poissonff, data = hspider, Crow1positive = FALSE)
+
+Tol(p1)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

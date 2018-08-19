@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Mean Excess Plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for meplot {VGAM}"><tr><td>meplot {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Mean Excess Plot </h2>
+
+<h3>Description</h3>
+
+<p>Mean excess plot (also known as a mean residual life plot),
+a diagnostic plot for the generalized  Pareto distribution (GPD).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+meplot(object, ...)
+meplot.default(y, main = "Mean Excess Plot",
+    xlab = "Threshold", ylab = "Mean Excess", lty = c(2, 1:2),
+    conf = 0.95, col = c("blue", "black", "blue"), type = "l", ...)
+meplot.vlm(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p> A numerical vector. <code>NA</code>s etc. are not allowed.</p>
+</td></tr>
+<tr valign="top"><td><code>main, xlab, ylab</code></td>
+<td>
+<p>Character.
+Overall title for the plot,
+and titles for the x- and y-axes.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lty</code></td>
+<td>
+<p>Line type.
+The second value is for the mean
+excess value, the first and third values are for the envelope
+surrounding the confidence interval.
+</p>
+</td></tr>
+<tr valign="top"><td><code>conf</code></td>
+<td>
+<p>Confidence level.
+The default results in approximate 95 percent confidence
+intervals for each mean excess value.
+</p>
+</td></tr>
+<tr valign="top"><td><code>col</code></td>
+<td>
+<p>Colour of the three lines.
+</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>Type of plot.
+The default means lines are
+joined between the mean excesses and also the upper and lower
+limits of the confidence intervals.
+</p>
+</td></tr>
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>An object that inherits class <code>"vlm"</code>,
+usually of class <code><a href="vglm-class.html">vglm-class</a></code> or
+<code><a href="vgam-class.html">vgam-class</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p> Graphical argument passed into
+<code><a href="../../graphics/html/plot.html">plot</a></code>.
+See <code><a href="../../graphics/html/par.html">par</a></code>
+for an exhaustive list.
+The arguments <code>xlim</code> and <code>ylim</code> are particularly useful.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <i>Y</i> has a GPD with scale parameter
+<i>sigma</i> and shape parameter <i>xi&lt;1</i>,
+and if <i>y&gt;0</i>, then
+</p>
+<p style="text-align: center;"><i>
+        E(Y-u|Y&gt;u) = \frac{&sigma;+ xi*u}{1- xi}.</i></p>
+
+<p>It is a linear function in <i>u</i>, the threshold.
+Note that <i>Y-u</i> is called the <em>excess</em> and
+values of <i>Y</i> greater than <i>u</i> are called <em>exceedances</em>.
+The empirical versions used by these functions is to use
+sample means to estimate the left hand side of the equation.
+Values of <i>u</i> in the plot are the values of <i>y</i> itself.
+If the plot is roughly a straight line then the GPD is a good
+fit; this plot can be used to select an appropriate threshold
+value. See <code><a href="gpd.html">gpd</a></code> for more details.
+If the plot is flat then the data may be exponential,
+and if it is curved then it may be Weibull or gamma.
+There is often a lot of variance/fluctuation at the RHS of the
+plot due to fewer observations.
+</p>
+<p>The function <code>meplot</code> is generic, and
+<code>meplot.default</code> and <code>meplot.vlm</code> are some
+methods functions for mean excess plots.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list is returned invisibly with the following components.
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>threshold </code></td>
+<td>
+<p>The x axis values.
+</p>
+</td></tr>
+<tr valign="top"><td><code>meanExcess </code></td>
+<td>
+<p>The y axis values.
+Each value is a sample mean minus a value <i>u</i>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>plusminus </code></td>
+<td>
+<p>The amount which is added or subtracted
+from the mean excess to give the confidence interval.
+The last value is a <code>NA</code> because it is based on one observation.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>The function is designed for speed and not accuracy, therefore
+huge data sets with extremely large values may cause failure
+(the function <code><a href="../../base/html/cumsum.html">cumsum</a></code> is used.)  Ties may
+not be well handled.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Davison, A. C. and Smith, R. L. (1990)
+Models for exceedances over high thresholds (with discussion).
+<em>Journal of the Royal Statistical Society, Series B, Methodological</em>,
+<b>52</b>, 393&ndash;442.
+</p>
+<p>Coles, S. (2001)
+<em>An Introduction to Statistical Modeling of Extreme Values</em>.
+London: Springer-Verlag.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="gpd.html">gpd</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: meplot(with(venice90, sealevel), las = 1) -&gt; ii
+names(ii)
+abline(h = ii$meanExcess[1], col = "orange", lty = "dashed")
+
+par(mfrow = c(2, 2))
+for (ii in 1:4)
+  meplot(rgpd(1000), col = c("orange", "blue", "orange"))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

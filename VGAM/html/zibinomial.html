@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Zero-Inflated Binomial Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for zibinomial {VGAM}"><tr><td>zibinomial {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Zero-Inflated Binomial Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Fits a zero-inflated binomial distribution by maximum likelihood
+estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+zibinomial(lpstr0 = "logit", lprob = "logit",
+           type.fitted = c("mean", "prob", "pobs0", "pstr0", "onempstr0"),
+           ipstr0 = NULL, zero = NULL, multiple.responses = FALSE,
+           imethod = 1)
+zibinomialff(lprob = "logit", lonempstr0 = "logit",
+             type.fitted = c("mean", "prob", "pobs0", "pstr0", "onempstr0"),
+             ionempstr0 = NULL, zero = "onempstr0",
+             multiple.responses = FALSE, imethod = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lpstr0, lprob</code></td>
+<td>
+
+<p>Link functions for the parameter <i>phi</i>
+and the usual binomial probability <i>prob</i> parameter.
+See <code><a href="Links.html">Links</a></code> for more choices.
+For the zero-<em>deflated</em> model see below.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>type.fitted</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> and <code><a href="fittedvlm.html">fittedvlm</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ipstr0</code></td>
+<td>
+
+<p>Optional initial values for <i>phi</i>, whose values must lie
+between 0 and 1. The default is to compute an initial value internally.
+If a vector then recyling is used.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lonempstr0, ionempstr0</code></td>
+<td>
+
+<p>Corresponding arguments for the other parameterization.
+See details below.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>multiple.responses</code></td>
+<td>
+
+<p>Logical. Currently it must be <code>FALSE</code> to mean the
+function does not handle multiple responses. This
+is to remain compatible with the same argument in
+<code><a href="binomialff.html">binomialff</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero, imethod</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+Argument <code>zero</code> changed its default value for version 0.9-2.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions are based on
+</p>
+<p style="text-align: center;"><i>
+        P(Y=0) =   phi + (1- phi) * (1-prob)^N,</i></p>
+
+<p>for <i>y=0</i>, and
+</p>
+<p style="text-align: center;"><i>
+        P(Y=y) = (1-phi) * choose(N,Ny) * prob^(N*y) * (1-prob)^(N*(1-y)).</i></p>
+
+<p>for <i>y=1/N,2/N,&hellip;,1</i>. That is, the response is a sample
+proportion out of <i>N</i> trials, and the argument <code>size</code> in
+<code><a href="zibinomUC.html">rzibinom</a></code> is <i>N</i> here.
+The parameter <i>phi</i> is the probability of a structural zero,
+and it satisfies <i>0 &lt; phi &lt; 1</i>.
+The mean of <i>Y</i> is <i>E(Y) = (1-phi) * prob</i>
+and these are returned as the fitted values
+by default.
+By default, the two linear/additive predictors
+for <code>zibinomial()</code>
+are <i>(logit(phi), logit(prob))^T</i>.
+</p>
+<p>The <span class="pkg">VGAM</span> family function <code>zibinomialff()</code> has a few
+changes compared to <code>zibinomial()</code>.
+These are:
+(i)   the order of the linear/additive predictors is switched so the
+binomial probability comes first;
+(ii)  argument <code>onempstr0</code> is now 1 minus
+the probability of a structural zero, i.e.,
+the probability of the parent (binomial) component,
+i.e., <code>onempstr0</code> is <code>1-pstr0</code>;
+(iii) argument <code>zero</code> has a new default so that the <code>onempstr0</code>
+is intercept-only by default.
+Now <code>zibinomialff()</code> is generally recommended over
+<code>zibinomial()</code>.
+Both functions implement Fisher scoring.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>Numerical problems can occur.
+Half-stepping is not uncommon.
+If failure to converge occurs, make use of the argument <code>ipstr0</code>
+or <code>ionempstr0</code>,
+or <code>imethod</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The response variable must have one of the formats described by
+<code><a href="binomialff.html">binomialff</a></code>, e.g., a factor or two column matrix or a
+vector of sample proportions with the <code>weights</code> argument
+specifying the values of <i>N</i>.
+</p>
+<p>To work well, one needs large values of <i>N</i>
+and <i>prob&gt;0</i>, i.e.,
+the larger <i>N</i> and <i>prob</i> are, the better.
+If <i>N = 1</i> then the model is unidentifiable since
+the number of parameters is excessive.
+</p>
+<p>Setting <code>stepsize = 0.5</code>, say, may aid convergence.
+</p>
+
+
+
+
+
+
+
+<p>Estimated probabilities of a structural zero and an
+observed zero are returned, as in <code><a href="zipoisson.html">zipoisson</a></code>.
+</p>
+<p>The zero-<em>deflated</em> binomial distribution might
+be fitted by setting <code>lpstr0 = identitylink</code>, albeit,
+not entirely reliably. See <code><a href="zipoisson.html">zipoisson</a></code>
+for information that can be applied here. Else
+try the zero-altered binomial distribution (see
+<code><a href="zabinomial.html">zabinomial</a></code>).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Welsh, A. H., Lindenmayer, D. B. and Donnelly, C. F. (2013)
+Fitting and interpreting occupancy models.
+<em>PLOS One</em>,
+<b>8</b>,
+1&ndash;21.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="zibinomUC.html">rzibinom</a></code>,
+<code><a href="binomialff.html">binomialff</a></code>,
+<code><a href="posbinomial.html">posbinomial</a></code>,
+<code><a href="../../stats/html/Binomial.html">rbinom</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+size &lt;- 10  # Number of trials; N in the notation above
+nn &lt;- 200
+zdata &lt;- data.frame(pstr0 = logit( 0, inverse = TRUE),  # 0.50
+                    mubin = logit(-1, inverse = TRUE),  # Mean of usual binomial
+                    sv    = rep(size, length = nn))
+zdata &lt;- transform(zdata,
+                   y = rzibinom(nn, size = sv, prob = mubin, pstr0 = pstr0))
+with(zdata, table(y))
+fit &lt;- vglm(cbind(y, sv - y) ~ 1, zibinomialff, data = zdata, trace = TRUE)
+fit &lt;- vglm(cbind(y, sv - y) ~ 1, zibinomialff, data = zdata, trace = TRUE,
+            stepsize = 0.5)
+
+coef(fit, matrix = TRUE)
+Coef(fit)  # Useful for intercept-only models
+head(fitted(fit, type = "pobs0"))  # Estimate of P(Y = 0)
+head(fitted(fit))
+with(zdata, mean(y))  # Compare this with fitted(fit)
+summary(fit)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

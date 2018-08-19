@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Summarizing Penalized Vector Generalized Additive Model Fits</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for summarypvgam {VGAM}"><tr><td>summarypvgam {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Summarizing Penalized Vector Generalized Additive Model Fits</h2>
+
+<h3>Description</h3>
+
+<p>These functions are all <code><a href="../../utils/html/methods.html">methods</a></code> for class <code>"pvgam"</code> or
+<code>summary.pvgam</code> objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+summarypvgam(object, dispersion = NULL, digits = options()$digits - 2,
+            presid = TRUE)
+## S3 method for class 'summary.pvgam'
+show(x, quote = TRUE, prefix = "", digits = options()$digits -
+    2, signif.stars = getOption("show.signif.stars"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>an object of class <code>"pvgam"</code>,
+which is the result of a
+call to <code><a href="vgam.html">vgam</a></code> with at least one
+<code><a href="sm.os.html">sm.os</a></code> or
+<code><a href="sm.ps.html">sm.ps</a></code> term.
+</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an object of class <code>"summary.pvgam"</code>,
+which is the result of a call to <code>summarypvgam()</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>dispersion, digits, presid</code></td>
+<td>
+
+<p>See <code><a href="summaryvglm.html">summaryvglm</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>quote, prefix, signif.stars</code></td>
+<td>
+
+<p>See <code><a href="summaryvglm.html">summaryvglm</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This methods function reports a summary more similar to
+<code><a href="../../mgcv/html/summary.gam.html">summary.gam</a></code> from <span class="pkg">mgcv</span> than
+<code>summary.gam()</code> from <span class="pkg">gam</span>.
+It applies to G2-VGAMs using
+<code><a href="sm.os.html">sm.os</a></code> and O-splines, else
+<code><a href="sm.ps.html">sm.ps</a></code> and P-splines.
+In particular, the hypothesis test for whether each
+<code><a href="sm.os.html">sm.os</a></code> or
+<code><a href="sm.ps.html">sm.ps</a></code>
+term can be deleted follows quite closely to
+<code><a href="../../mgcv/html/summary.gam.html">summary.gam</a></code>.
+The p-values from this type of test tend to be biased downwards (too
+small)
+and corresponds to <code>p.type = 5</code>.
+It is hoped in the short future that improved p-values be implemented,
+somewhat like the default of
+<code><a href="../../mgcv/html/summary.gam.html">summary.gam</a></code>.
+This methods function was adapted from
+<code><a href="../../mgcv/html/summary.gam.html">summary.gam</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>summarypvgam</code> returns an object of class <code>"summary.pvgam"</code>;
+see <code><a href="notdocumentedyet.html">summary.pvgam-class</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>See <code><a href="sm.os.html">sm.os</a></code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="vgam.html">vgam</a></code>,
+<code><a href="summaryvgam.html">summaryvgam</a></code>,
+<code><a href="notdocumentedyet.html">summary.pvgam-class</a></code>,
+<code><a href="sm.os.html">sm.os</a></code>,
+<code><a href="sm.ps.html">sm.ps</a></code>,
+<code><a href="../../stats/html/summary.glm.html">summary.glm</a></code>,
+<code><a href="../../stats/html/summary.lm.html">summary.lm</a></code>,
+<code><a href="../../mgcv/html/summary.gam.html">summary.gam</a></code> from <span class="pkg">mgcv</span>, 
+<code><a href="summaryvgam.html">summaryvgam</a></code> for G1-VGAMs.
+
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+hfit2 &lt;- vgam(agaaus ~ sm.os(altitude), binomialff, data = hunua)
+coef(hfit2, matrix = TRUE)
+summary(hfit2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Zero-Altered Binomial Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for zabinomial {VGAM}"><tr><td>zabinomial {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Zero-Altered Binomial Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Fits a zero-altered binomial distribution based on
+a conditional model involving a Bernoulli distribution and a
+positive-binomial distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+zabinomial(lpobs0 = "logit", lprob = "logit",
+           type.fitted = c("mean", "prob", "pobs0"),
+           ipobs0 = NULL, iprob = NULL, imethod = 1, zero = NULL)
+zabinomialff(lprob = "logit", lonempobs0 = "logit",
+             type.fitted = c("mean", "prob", "pobs0", "onempobs0"),
+             iprob = NULL, ionempobs0 = NULL, imethod = 1, zero = "onempobs0")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lprob</code></td>
+<td>
+
+<p>Parameter link function applied to the probability parameter
+of the binomial distribution.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lpobs0</code></td>
+<td>
+
+<p>Link function for the parameter <i>pobs0</i>, called <code>pobs0</code> here.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>type.fitted</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>
+and <code><a href="fittedvlm.html">fittedvlm</a></code> for information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iprob, ipobs0</code></td>
+<td>
+
+<p>See
+<code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lonempobs0, ionempobs0</code></td>
+<td>
+
+<p>Corresponding argument  for the other parameterization.
+See details below.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod, zero</code></td>
+<td>
+
+<p>See
+<code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The response <i>Y</i> is zero with probability <i>pobs0</i>,
+else <i>Y</i> has a positive-binomial distribution with
+probability <i>1-pobs0</i>.  Thus <i>0 &lt; pobs0 &lt; 1</i>,
+which may be modelled as a function of the covariates.
+The zero-altered binomial distribution differs from the
+zero-inflated binomial distribution in that the former
+has zeros coming from one source, whereas the latter
+has zeros coming from the binomial distribution too. The
+zero-inflated binomial distribution is implemented in
+<code><a href="zibinomial.html">zibinomial</a></code>.
+Some people call the zero-altered binomial a <em>hurdle</em> model.
+</p>
+<p>The input is currently a vector or one-column matrix.
+By default, the two linear/additive
+predictors for <code>zabinomial()</code>
+are <i>(logit(pobs0), log(prob))^T</i>.
+</p>
+<p>The <span class="pkg">VGAM</span> family function <code>zabinomialff()</code> has a few
+changes compared to <code>zabinomial()</code>.
+These are:
+(i)   the order of the linear/additive predictors is switched so the
+binomial probability comes first;
+(ii)  argument <code>onempobs0</code> is now 1 minus the probability of an observed 0,
+i.e., the probability of the positive binomial distribution,
+i.e., <code>onempobs0</code> is <code>1-pobs0</code>;
+(iii)  argument <code>zero</code> has a new default so that the <code>onempobs0</code>
+is intercept-only by default.
+Now <code>zabinomialff()</code> is generally recommended over
+<code>zabinomial()</code>.
+Both functions implement Fisher scoring and neither can handle
+multiple responses.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+<p>The <code>fitted.values</code> slot of the fitted object,
+which should be extracted by the generic function <code>fitted</code>, returns
+the mean <i>mu</i> (default) which is given by
+</p>
+<p style="text-align: center;"><i>
+         mu = (1-pobs0) * mub / [1 - (1 - mub)^N]</i></p>
+
+<p>where <i>mub</i> is the usual binomial mean.
+If <code>type.fitted = "pobs0"</code> then <i>pobs0</i> is returned.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The response should be a two-column matrix of counts,
+with first column giving the number of successes.
+</p>
+<p>Note this family function allows <i>pobs0</i> to be modelled as
+functions of the covariates by having <code>zero = NULL</code>.
+It is a conditional model, not a mixture model.
+</p>
+<p>These family functions effectively combine
+<code><a href="posbinomial.html">posbinomial</a></code> and <code><a href="binomialff.html">binomialff</a></code> into
+one family function.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="zabinomUC.html">dzabinom</a></code>,
+<code><a href="zibinomial.html">zibinomial</a></code>,
+<code><a href="posbinomial.html">posbinomial</a></code>,
+<code><a href="binomialff.html">binomialff</a></code>,
+<code><a href="../../stats/html/Binomial.html">dbinom</a></code>,
+<code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+zdata &lt;- data.frame(x2 = runif(nn &lt;- 1000))
+zdata &lt;- transform(zdata, size  = 10,
+                          prob  = logit(-2 + 3*x2, inverse = TRUE),
+                          pobs0 = logit(-1 + 2*x2, inverse = TRUE))
+zdata &lt;- transform(zdata,
+                   y1 = rzabinom(nn, size = size, prob = prob, pobs0 = pobs0))
+with(zdata, table(y1))
+
+zfit &lt;- vglm(cbind(y1, size - y1) ~ x2, zabinomial(zero = NULL),
+             data = zdata, trace = TRUE)
+coef(zfit, matrix = TRUE)
+head(fitted(zfit))
+head(predict(zfit))
+summary(zfit)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

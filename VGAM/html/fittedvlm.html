@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Fitted Values of a VLM object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for fittedvlm {VGAM}"><tr><td>fittedvlm {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Fitted Values of a VLM object</h2>
+
+<h3>Description</h3>
+
+<p>Extractor function for the fitted values of a model object that
+inherits from a <em>vector linear model</em> (VLM), e.g., a model of
+class <code>"vglm"</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+fittedvlm(object, drop = FALSE, type.fitted = NULL,
+          percentiles = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>a model object that inherits from a VLM.
+</p>
+</td></tr>
+<tr valign="top"><td><code>drop</code></td>
+<td>
+
+<p>Logical.
+If <code>FALSE</code> then the answer is a matrix.
+If <code>TRUE</code> then the answer is a vector.
+</p>
+</td></tr>
+</table>
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>type.fitted</code></td>
+<td>
+
+<p>Character.
+Some <span class="pkg">VGAM</span> family functions have a <code>type.fitted</code> argument.
+If so then a different type of fitted value can be returned.
+It is recomputed from the model after convergence.
+Note: this is an experimental feature and not all
+<span class="pkg">VGAM</span> family functions have this implemented yet.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>percentiles</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Currently unused.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The &ldquo;fitted values&rdquo; usually corresponds to the mean response,
+however, because the <span class="pkg">VGAM</span> package fits so many models,
+this sometimes refers to quantities such as quantiles.
+The mean may even not exist, e.g., for a Cauchy distribution.
+</p>
+<p>Note that the fitted value is output from the <code>@linkinv</code> slot
+of the <span class="pkg">VGAM</span> family function,
+where the <code>eta</code> argument is the <i>n x M</i> matrix
+of linear predictors.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The fitted values evaluated at the final IRLS iteration.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function is one of several extractor functions for
+the <span class="pkg">VGAM</span> package. Others include <code>coef</code>,
+<code>deviance</code>, <code>weights</code> and <code>constraints</code> etc.
+This function is equivalent to the methods function for the
+generic function <code>fitted.values</code>.
+</p>
+<p>If <code>fit</code> is a VLM or VGLM then <code>fitted(fit)</code> and
+<code>predict(fit, type = "response")</code> should be equivalent
+(see <code><a href="predictvglm.html">predictvglm</a></code>).
+The latter has the advantage in that it handles a <code>newdata</code>
+argument so that the fitted values can be computed for a
+different data set.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Chambers, J. M. and T. J. Hastie (eds) (1992)
+<em>Statistical Models in S</em>.
+Wadsworth &amp; Brooks/Cole.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/fitted.html">fitted</a></code>,
+<code><a href="predictvglm.html">predictvglm</a></code>,
+<code><a href="vglmff-class.html">vglmff-class</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Categorical regression example 1
+pneumo &lt;- transform(pneumo, let = log(exposure.time))
+(fit1 &lt;- vglm(cbind(normal, mild, severe) ~ let, propodds, data = pneumo))
+fitted(fit1)
+
+# LMS quantile regression example 2
+fit2 &lt;- vgam(BMI ~ s(age, df = c(4, 2)),
+             lms.bcn(zero = 1), data = bmi.nz, trace = TRUE)
+head(predict(fit2, type = "response"))  # Equal to the the following two:
+head(fitted(fit2))
+predict(fit2, type = "response", newdata = head(bmi.nz))
+
+# Zero-inflated example 3
+zdata &lt;- data.frame(x2 = runif(nn &lt;- 1000))
+zdata &lt;- transform(zdata, pstr0.3  = logit(-0.5       , inverse = TRUE),
+                          lambda.3 =  loge(-0.5 + 2*x2, inverse = TRUE))
+zdata &lt;- transform(zdata, y1 = rzipois(nn, lambda = lambda.3, pstr0 = pstr0.3))
+fit3 &lt;- vglm(y1 ~ x2, zipoisson(zero = NULL), data = zdata, trace = TRUE)
+head(fitted(fit3, type.fitted = "mean" ))      # E(Y), which is the default
+head(fitted(fit3, type.fitted = "pobs0"))      # P(Y = 0)
+head(fitted(fit3, type.fitted = "pstr0"))      #     Prob of a structural 0
+head(fitted(fit3, type.fitted = "onempstr0"))  # 1 - prob of a structural 0
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

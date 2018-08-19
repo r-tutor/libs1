@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Exponential Integral and Variants</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for expint {VGAM}"><tr><td>expint {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+The Exponential Integral and Variants
+</h2>
+
+<h3>Description</h3>
+
+<p>Computes the exponential integral <i>Ei(x)</i> for real values,
+as well as <i>exp(-x) * Ei(x)</i> and
+<i>E_1(x)</i> and their derivatives (up to the 3rd derivative).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+expint(x, deriv = 0)
+expexpint(x, deriv = 0)
+expint.E1(x, deriv = 0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+
+<p>Numeric. Ideally a vector of positive reals.
+</p>
+</td></tr>
+<tr valign="top"><td><code>deriv</code></td>
+<td>
+<p>Integer. Either 0, 1, 2 or 3.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The exponential integral <i>Ei(x)</i> function is the integral of
+<i>exp(t) / t</i>
+from 0 to <i>x</i>, for positive real <i>x</i>.
+The function <i>E_1(x)</i> is the integral of
+<i>exp(-t) / t</i>
+from <i>x</i> to infinity, for positive real <i>x</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Function <code>expint(x, deriv = n)</code> returns the
+<i>n</i>th derivative of <i>Ei(x)</i> (up to the 3rd),
+function <code>expexpint(x, deriv = n)</code> returns the
+<i>n</i>th derivative of
+<i>exp(-x) * Ei(x)</i> (up to the 3rd),
+function <code>expint.E1(x, deriv = n)</code> returns the <i>n</i>th
+derivative of <i>E_1(x)</i> (up to the 3rd).
+</p>
+
+
+<h3>Warning </h3>
+
+<p>These functions have not been tested thoroughly.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>T. W. Yee has simply written a small wrapper function to call the
+NETLIB FORTRAN code.
+Xiangjie Xue modified the functions to calculate derivatives.
+Higher derivatives can actually be calculated&mdash;please let me
+know if you need it.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.netlib.org/specfun/ei">http://www.netlib.org/specfun/ei</a>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/log.html">log</a></code>,
+<code><a href="../../base/html/log.html">exp</a></code>.
+There is also a package called <span class="pkg">expint</span>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre> ## Not run: 
+par(mfrow = c(2, 2))
+curve(expint, 0.01, 2, xlim = c(0, 2), ylim = c(-3, 5),
+      las = 1, col = "orange")
+abline(v = (-3):5, h = (-4):5, lwd = 2, lty = "dotted", col = "gray")
+abline(h = 0, v = 0, lty = "dashed", col = "blue")
+
+curve(expexpint, 0.01, 2, xlim = c(0, 2), ylim = c(-3, 2),
+      las = 1, col = "orange")
+abline(v = (-3):2, h = (-4):5, lwd = 2, lty = "dotted", col = "gray")
+abline(h = 0, v = 0, lty = "dashed", col = "blue")
+
+curve(expint.E1, 0.01, 2, xlim = c(0, 2), ylim = c(0, 5),
+      las = 1, col = "orange")
+abline(v = (-3):2, h = (-4):5, lwd = 2, lty = "dotted", col = "gray")
+abline(h = 0, v = 0, lty = "dashed", col = "blue")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

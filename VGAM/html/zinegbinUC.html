@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Zero-Inflated Negative Binomial Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Zinegbin {VGAM}"><tr><td>Zinegbin {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Zero-Inflated Negative Binomial Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function, quantile function and random generation
+for the zero-inflated negative binomial distribution with
+parameter <code>pstr0</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dzinegbin(x, size, prob = NULL, munb = NULL, pstr0 = 0, log = FALSE)
+pzinegbin(q, size, prob = NULL, munb = NULL, pstr0 = 0)
+qzinegbin(p, size, prob = NULL, munb = NULL, pstr0 = 0)
+rzinegbin(n, size, prob = NULL, munb = NULL, pstr0 = 0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>vector of probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p> Same as in <code><a href="../../stats/html/runif.html">runif</a></code>.  </p>
+</td></tr>
+<tr valign="top"><td><code>size, prob, munb, log</code></td>
+<td>
+
+<p>Arguments matching <code><a href="../../stats/html/NegBinomial.html">dnbinom</a></code>.
+The argument <code>munb</code> corresponds to <code>mu</code> in
+<code><a href="../../stats/html/NegBinomial.html">dnbinom</a></code> and has been renamed
+to emphasize the fact that it is the mean of the negative binomial
+<em>component</em>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>pstr0</code></td>
+<td>
+
+<p>Probability of structural zero
+(i.e., ignoring the negative binomial distribution),
+called <i>phi</i>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The probability function of <i>Y</i> is 0 with probability
+<i>phi</i>, and a negative binomial distribution with
+probability <i>1-phi</i>. Thus
+</p>
+<p style="text-align: center;"><i>
+        P(Y=0) = phi + (1-phi) * P(W=0)</i></p>
+
+<p>where <i>W</i> is distributed as a negative binomial distribution
+(see <code><a href="../../stats/html/NegBinomial.html">rnbinom</a></code>.)
+See <code><a href="negbinomial.html">negbinomial</a></code>, a <span class="pkg">VGAM</span> family
+function, for the formula of the probability density
+function and other details of the negative binomial
+distribution.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dzinegbin</code> gives the density,
+<code>pzinegbin</code> gives the distribution function,
+<code>qzinegbin</code> gives the quantile function, and
+<code>rzinegbin</code> generates random deviates.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The argument <code>pstr0</code> is recycled to the required
+length, and must have values which lie in the interval
+<i>[0,1]</i>.
+</p>
+<p>These functions actually allow for <em>zero-deflation</em>.
+That is, the resulting probability of a zero count
+is <em>less than</em> the nominal value of the parent
+distribution.
+See <code><a href="zipoisUC.html">Zipois</a></code> for more information.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="zinegbinomial.html">zinegbinomial</a></code>,
+<code><a href="../../stats/html/NegBinomial.html">rnbinom</a></code>,
+<code><a href="zipoisUC.html">rzipois</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+munb &lt;- 3; pstr0 &lt;- 0.2; size &lt;- k &lt;- 10; x &lt;- 0:10
+(ii &lt;- dzinegbin(x, pstr0 = pstr0, mu = munb, size = k))
+max(abs(cumsum(ii) - pzinegbin(x, pstr0 = pstr0, mu = munb, size = k)))  # 0
+table(rzinegbin(100, pstr0 = pstr0, mu = munb, size = k))
+
+table(qzinegbin(runif(1000), pstr0 = pstr0, mu = munb, size = k))
+round(dzinegbin(x, pstr0 = pstr0, mu = munb, size = k) * 1000)  # Should be similar
+
+## Not run: barplot(rbind(dzinegbin(x, pstr0 = pstr0, mu = munb, size = k),
+                dnbinom(x, mu = munb, size = k)), las = 1,
+        beside = TRUE, col = c("blue", "green"), ylab = "Probability",
+        main = paste("ZINB(mu = ", munb, ", k = ", k, ", pstr0 = ", pstr0,
+                   ") (blue) vs NB(mu = ", munb,
+                   ", size = ", k, ") (green)", sep = ""),
+        names.arg = as.character(x)) 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

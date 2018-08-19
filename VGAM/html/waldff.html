@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Wald Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for waldff {VGAM}"><tr><td>waldff {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Wald Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Estimates the parameter of the standard Wald distribution
+by maximum likelihood estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+waldff(llambda = "loge", ilambda = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>llambda,ilambda</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The standard Wald distribution is a special case of the
+inverse Gaussian distribution with <i>mu=1</i>.
+It has a density that can be written as
+</p>
+<p style="text-align: center;"><i>
+       f(y;mu,lambda) = sqrt(lambda/(2*pi*y^3)) *
+       exp(-lambda*(y-1)^2/(2*y))
+ </i></p>
+
+<p>where <i>y&gt;0</i> and <i>lambda&gt;0</i>.
+The mean of <i>Y</i> is <i>1</i>
+(returned as the fitted values) and its variance is
+<i>1/lambda</i>.
+By default, <i>eta=log(lambda)</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <span class="pkg">VGAM</span> family function <code><a href="inv.gaussianff.html">inv.gaussianff</a></code>
+estimates the location parameter <i>mu</i> too.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Johnson, N. L. and Kotz, S. and Balakrishnan, N. (1994)
+<em>Continuous Univariate Distributions</em>,
+2nd edition,
+Volume 1,
+New York: Wiley.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="inv.gaussianff.html">inv.gaussianff</a></code>,
+<code><a href="Inv.gaussian.html">rinv.gaussian</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+wdata &lt;- data.frame(y = rinv.gaussian(n = 1000, mu =  1, lambda = exp(1)))
+wfit &lt;- vglm(y ~ 1, waldff(ilambda = 0.2), data = wdata, trace = TRUE)
+coef(wfit, matrix = TRUE)
+Coef(wfit)
+summary(wfit)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

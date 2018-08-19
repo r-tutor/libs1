@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Machinists Accidents</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for machinists {VGAM}"><tr><td>machinists {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Machinists Accidents </h2>
+
+<h3>Description</h3>
+
+<p>A small count data set
+involving 414 machinists from a three months study,
+of accidents around the end of WWI.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+data(machinists)
+</pre>
+
+
+<h3>Format</h3>
+
+<p>A data frame with the following variables.
+</p>
+
+<dl>
+<dt>accidents</dt><dd>
+<p>The number of accidents
+</p>
+</dd>
+<dt>ofreq</dt><dd>
+<p>Observed frequency, i.e., the number of machinists
+with that many accidents
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Details</h3>
+
+<p>The data was collected over a period of three months.
+There were 414 machinists in total.
+Also, there were data collected over six months, but it
+is not given here.
+</p>
+
+
+<h3>Source</h3>
+
+<p>Incidence of Industrial Accidents.
+Report No. 4 (Industrial Fatigue Research Board),
+Stationery Office, London, 1919.
+</p>
+
+
+<h3>References</h3>
+
+<p>Greenwood, M. and Yule, G. U. (1920).
+An Inquiry into the Nature of Frequency Distributions
+Representative of Multiple Happenings with Particular
+Reference to the Occurrence of Multiple Attacks of Disease
+or of Repeated Accidents.
+<em>Journal of the Royal Statistical Society</em>,
+<b>83</b>, 255&ndash;279.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="negbinomial.html">negbinomial</a></code>,
+<code><a href="poissonff.html">poissonff</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+machinists
+mean(with(machinists, rep(accidents, times = ofreq)))
+ var(with(machinists, rep(accidents, times = ofreq)))
+## Not run:  barplot(with(machinists, ofreq),
+          names.arg = as.character(with(machinists, accidents)),
+          main = "Machinists accidents",
+          col = "lightblue", las = 1,
+          ylab = "Frequency", xlab = "accidents") 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

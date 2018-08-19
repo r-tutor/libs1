@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Two-parameter Beta Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for betaff {VGAM}"><tr><td>betaff {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> The Two-parameter Beta Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Estimation of the mean and precision parameters of the beta distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+betaff(A = 0, B = 1, lmu = "logit", lphi = "loge",
+       imu = NULL, iphi = NULL,
+       gprobs.y = ppoints(8), gphi  = exp(-3:5)/4, zero = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>A, B</code></td>
+<td>
+
+<p>Lower and upper limits of the distribution.
+The defaults correspond to the <em>standard beta distribution</em>
+where the response lies between 0 and 1.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lmu, lphi</code></td>
+<td>
+
+<p>Link function for the mean and precision parameters.
+The values <i>A</i> and <i>B</i> are extracted from the
+<code>min</code> and <code>max</code> arguments of <code><a href="logit.html">extlogit</a></code>.
+Consequently, only <code><a href="logit.html">extlogit</a></code> is allowed.
+</p>
+
+
+</td></tr>
+<tr valign="top"><td><code>imu, iphi</code></td>
+<td>
+
+<p>Optional initial value for the mean and precision parameters
+respectively. A <code>NULL</code> value means a value is obtained in the
+<code>initialize</code> slot.
+</p>
+</td></tr>
+<tr valign="top"><td><code>gprobs.y, gphi, zero</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The two-parameter beta distribution can be written
+<i>f(y) =</i>
+</p>
+<p style="text-align: center;"><i>
+          (y-A)^(mu1*phi-1) * (B-y)^((1-mu1)*phi-1) / [beta(mu1*phi,(1-mu1)*phi) *
+                 (B-A)^(phi-1)]</i></p>
+
+<p>for <i>A &lt; y &lt; B</i>, and <i>beta(.,.)</i> is the beta function
+(see <code><a href="../../base/html/Special.html">beta</a></code>).
+The parameter <i>mu1</i> satisfies
+<i>mu1 = (mu - A) / (B-A)</i>
+where <i>mu</i> is the mean of <i>Y</i>.
+That is, <i>mu1</i> is the mean of of a standard beta distribution:
+<i>E(Y) = A + (B-A)*mu1</i>,
+and these are the fitted values of the object.
+Also, <i>phi</i> is positive and <i>A &lt; mu &lt; B</i>.
+Here, the limits <i>A</i> and <i>B</i> are <em>known</em>.
+</p>
+<p>Another parameterization of the beta distribution involving the raw
+shape parameters is implemented in <code><a href="betaR.html">betaR</a></code>.
+</p>
+<p>For general <i>A</i> and <i>B</i>, the variance of <i>Y</i> is
+<i>(B-A)^2 *
+       mu1 * (1-mu1) / (1+phi)</i>.
+Then <i>phi</i> can be interpreted as a <em>precision</em> parameter
+in the sense that, for fixed <i>mu</i>, the larger the value of
+<i>phi</i>, the smaller the variance of <i>Y</i>.
+Also, <i>mu1=shape1/(shape1+shape2)</i> and
+<i>phi = shape1+shape2</i>.
+Fisher scoring is implemented.
+</p>
+
+
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The response must have values in the interval (<i>A</i>, <i>B</i>).
+The user currently needs to manually choose <code>lmu</code> to match
+the input of arguments <code>A</code> and <code>B</code>, e.g.,
+with <code><a href="logit.html">extlogit</a></code>; see the example below.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Ferrari, S. L. P. and Francisco C.-N. (2004)
+Beta regression for modelling rates and proportions.
+<em>Journal of Applied Statistics</em>,
+<b>31</b>, 799&ndash;815.
+</p>
+
+
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="betaR.html">betaR</a></code>,
+
+<code><a href="../../stats/html/Beta.html">Beta</a></code>,
+<code><a href="zoabetaUC.html">dzoabeta</a></code>,
+<code><a href="genbetaII.html">genbetaII</a></code>,
+<code><a href="betaII.html">betaII</a></code>,
+<code><a href="betabinomialff.html">betabinomialff</a></code>,
+<code><a href="betageometric.html">betageometric</a></code>,
+<code><a href="betaprime.html">betaprime</a></code>,
+<code><a href="betageomUC.html">rbetageom</a></code>,
+<code><a href="betanormUC.html">rbetanorm</a></code>,
+<code><a href="kumar.html">kumar</a></code>,
+<code><a href="logit.html">extlogit</a></code>,
+<code><a href="simulate.vlm.html">simulate.vlm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+bdata &lt;- data.frame(y = rbeta(nn &lt;- 1000, shape1 = exp(0), shape2 = exp(1)))
+fit1 &lt;- vglm(y ~ 1, betaff, data = bdata, trace = TRUE)
+coef(fit1, matrix = TRUE)
+Coef(fit1)  # Useful for intercept-only models
+
+# General A and B, and with a covariate
+bdata &lt;- transform(bdata, x2 = runif(nn))
+bdata &lt;- transform(bdata, mu   = logit(0.5 - x2, inverse = TRUE),
+                          prec =   exp(3.0 + x2))  # prec == phi
+bdata &lt;- transform(bdata, shape2 = prec * (1 - mu),
+                         shape1 = mu * prec)
+bdata &lt;- transform(bdata,
+                   y = rbeta(nn, shape1 = shape1, shape2 = shape2))
+bdata &lt;- transform(bdata, Y = 5 + 8 * y)  # From 5 to 13, not 0 to 1
+fit &lt;- vglm(Y ~ x2, data = bdata, trace = TRUE,
+            betaff(A = 5, B = 13, lmu = extlogit(min = 5, max = 13)))
+coef(fit, matrix = TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Dirichlet distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rdiric {VGAM}"><tr><td>rdiric {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> The Dirichlet distribution </h2>
+
+<h3>Description</h3>
+
+<p>Generates Dirichlet random variates.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rdiric(n, shape, dimension = NULL, is.matrix.shape = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p> number of observations.
+Note it has two meanings, see <code>is.matrix.shape</code> below.
+</p>
+</td></tr>
+<tr valign="top"><td><code>shape</code></td>
+<td>
+
+<p>the shape parameters. These must be positive.
+If <code>dimension</code> is specifed, values
+are recycled if necessary to length <code>dimension</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>dimension</code></td>
+<td>
+
+<p>the dimension of the distribution.
+If <code>dimension</code> is not numeric then it is taken to be
+<code>length(shape)</code>
+(or <code>ncol(shape)</code> if <code>is.matrix.shape == TRUE</code>).
+</p>
+</td></tr>
+<tr valign="top"><td><code>is.matrix.shape</code></td>
+<td>
+
+<p>Logical.
+If <code>TRUE</code> then <code>shape</code> must be a matrix, and then
+<code>n</code> is no longer the number of rows of the answer but the
+answer has <code>n * nrow(shape)</code> rows.
+If <code>FALSE</code> (the default) then <code>shape</code> is a vector and each
+of the <code>n</code> rows of the answer have <code>shape</code> as
+its shape parameters.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is based on a relationship between the gamma and
+Dirichlet distribution. Random gamma variates are generated, and
+then Dirichlet random variates are formed from these.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A <code>n</code> by <code>dimension</code> matrix of Dirichlet random variates.
+Each element is positive, and each row will sum to unity.
+If <code>shape</code> has names then these will become the column names
+of the answer.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Lange, K. (2002)
+<em>Mathematical and Statistical Methods for Genetic Analysis</em>,
+2nd ed.
+New York: Springer-Verlag.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="dirichlet.html">dirichlet</a></code> is a <span class="pkg">VGAM</span> family function for
+fitting a Dirichlet distribution to data.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ddata &lt;- data.frame(rdiric(n = 1000, shape = c(y1 = 3, y2 = 1, y3 = 4)))
+fit &lt;- vglm(cbind(y1, y2, y3) ~ 1, dirichlet, data = ddata, trace = TRUE)
+Coef(fit)
+coef(fit, matrix = TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

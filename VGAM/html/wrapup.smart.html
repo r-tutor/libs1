@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Cleans Up After Smart Prediction</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for wrapup.smart {VGAM}"><tr><td>wrapup.smart {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Cleans Up After Smart Prediction </h2>
+
+<h3>Description</h3>
+
+<p><code>wrapup.smart</code> deletes any variables used by smart prediction.
+Needed by both the modelling function and the prediction function. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+wrapup.smart()
+</pre>
+
+
+<h3>Details</h3>
+
+<p>The variables to be deleted are <code>.smart.prediction</code>,
+<code>.smart.prediction.counter</code>, and <code>.smart.prediction.mode</code>.
+The function <code>wrapup.smart</code> is useful in <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> because
+these variables are held in <code>smartpredenv</code>.
+</p>
+
+
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="setup.smart.html">setup.smart</a></code>. 
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: # Place this inside modelling functions such as lm, glm, vglm.
+wrapup.smart()  # Put at the end of lm
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

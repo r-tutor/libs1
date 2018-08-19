@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Determine What Mode the Smart Prediction is In</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for smart.mode.is {VGAM}"><tr><td>smart.mode.is {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Determine What Mode the Smart Prediction is In </h2>
+
+<h3>Description</h3>
+
+<p>Determine which of three modes the smart prediction is currently in.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+smart.mode.is(mode.arg = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>mode.arg</code></td>
+<td>
+
+<p>a character string, either <code>"read"</code>, <code>"write"</code>
+or <code>"neutral"</code>.
+</p>
+</td></tr></table>
+
+
+<h3>Details</h3>
+
+<p>Smart functions such as
+<code><a href="../../splines/html/bs.html">bs</a></code> and
+<code><a href="../../stats/html/poly.html">poly</a></code> need to know what mode
+smart prediction is in. If it is in <code>"write"</code> mode
+then the parameters are saved to <code>.smart.prediction</code>
+using <code><a href="put.smart.html">put.smart</a></code>. If in <code>"read"</code> mode
+then the parameters are read in using <code><a href="get.smart.html">get.smart</a></code>.
+If in <code>"neutral"</code> mode then the smart function behaves like an
+ordinary function.
+</p>
+
+
+<h3>Value</h3>
+
+<p>If <code>mode.arg</code> is given, then either <code>TRUE</code> or <code>FALSE</code>
+is returned.
+If <code>mode.arg</code> is not given, then the mode (<code>"neutral"</code>,
+<code>"read"</code> or <code>"write"</code>)
+is returned.  Usually, the mode is <code>"neutral"</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="put.smart.html">put.smart</a></code>,
+<code><a href="../../splines/html/bs.html">bs</a></code>,
+<code><a href="../../stats/html/poly.html">poly</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+print(sm.min1)
+smart.mode.is()  # Returns "neutral"
+smart.mode.is(smart.mode.is())  # Returns TRUE
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

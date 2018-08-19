@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Poisson-points-on-a-plane/volume Distances Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for poisson.points {VGAM}"><tr><td>poisson.points {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Poisson-points-on-a-plane/volume Distances Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Estimating the density parameter of the distances from a fixed point
+to the u-th nearest point, in a plane or volume.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+poisson.points(ostatistic, dimension = 2, link = "loge",
+               idensity = NULL, imethod = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>ostatistic</code></td>
+<td>
+
+<p>Order statistic.
+A single positive value, usually an integer.
+For example, the value 5 means the response are the distances
+of the fifth nearest value to that point (usually over many
+planes or volumes).
+Non-integers are allowed because the value 1.5 coincides
+with <code><a href="maxwell.html">maxwell</a></code> when <code>dimension = 2</code>.
+Note: if <code>ostatistic = 1</code> and <code>dimension = 2</code> then
+this <span class="pkg">VGAM</span> family function coincides with <code><a href="rayleigh.html">rayleigh</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>dimension</code></td>
+<td>
+
+<p>The value 2 or 3; 2 meaning a plane and 3 meaning a volume.
+</p>
+</td></tr>
+<tr valign="top"><td><code>link</code></td>
+<td>
+
+<p>Parameter link function applied to the (positive) density parameter,
+called <i>lambda</i> below.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>idensity</code></td>
+<td>
+
+<p>Optional initial value for the parameter.
+A <code>NULL</code> value means a value is obtained internally.
+Use this argument if convergence failure occurs.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod</code></td>
+<td>
+
+<p>An integer with value <code>1</code> or <code>2</code> which
+specifies the initialization method for <i>lambda</i>.
+If failure to converge occurs try another value
+and/or else specify a value for <code>idensity</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Suppose the number of points in any region of area <i>A</i> of the
+plane is a Poisson random variable with mean <i>lambda*A</i>
+(i.e., <i>lambda</i> is the <em>density</em> of the points).
+Given a fixed point <i>P</i>, define <i>D_1</i>, <i>D_2</i>,... to be
+the distance to the nearest point to <i>P</i>, second nearest to <i>P</i>,
+etc.  This <span class="pkg">VGAM</span> family function estimates <i>lambda</i>
+since the probability density function for <i>D_u</i> is easily derived,
+<i>u=1,2,...</i>.  Here, <i>u</i> corresponds to the
+argument <code>ostatistic</code>.
+</p>
+<p>Similarly, suppose the number of points in any volume <i>V</i> is a
+Poisson random variable with mean
+<i>lambda*V</i> where, once again, <i>lambda</i>
+is the <em>density</em> of the points.
+This <span class="pkg">VGAM</span> family function estimates <i>lambda</i> by
+specifying the argument <code>ostatistic</code> and using
+<code>dimension = 3</code>.
+</p>
+<p>The mean of <i>D_u</i> is returned as the fitted values.
+Newton-Raphson is the same as Fisher-scoring.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+<code><a href="rrvglm.html">rrvglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning</h3>
+
+<p>Convergence may be slow if the initial values are far from the
+solution. This often corresponds to the situation when the response
+values are all close to zero, i.e., there is a high density of points.
+</p>
+<p>Formulae such as the means have not been fully checked.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="poissonff.html">poissonff</a></code>,
+<code><a href="maxwell.html">maxwell</a></code>,
+<code><a href="rayleigh.html">rayleigh</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+pdata &lt;- data.frame(y = rgamma(10, shape = exp(-1)))  # Not proper data!
+ostat &lt;- 2
+fit &lt;- vglm(y ~ 1, poisson.points(ostat, 2), data = pdata,
+            trace = TRUE, crit = "coef")
+fit &lt;- vglm(y ~ 1, poisson.points(ostat, 3), data = pdata,
+            trace = TRUE, crit = "coef")  # Slow convergence?
+fit &lt;- vglm(y ~ 1, poisson.points(ostat, 3, idensi = 1), data = pdata,
+            trace = TRUE, crit = "coef")
+head(fitted(fit))
+with(pdata, mean(y))
+coef(fit, matrix = TRUE)
+Coef(fit)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

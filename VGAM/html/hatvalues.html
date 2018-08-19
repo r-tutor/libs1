@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Hat Values and Regression Deletion Diagnostics</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for hatvalues {VGAM}"><tr><td>hatvalues {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Hat Values and Regression Deletion Diagnostics</h2>
+
+<h3>Description</h3>
+
+<p>When complete, a
+suite of functions that can be used to compute some of the
+regression (leave-one-out deletion) diagnostics,
+for the VGLM class.
+</p>
+
+
+
+
+
+
+<h3>Usage</h3>
+
+<pre>
+hatvalues(model, ...)
+hatvaluesvlm(model, type = c("diagonal", "matrix", "centralBlocks"), ...)
+hatplot(model, ...)
+hatplot.vlm(model, multiplier = c(2, 3), lty = "dashed",
+            xlab = "Observation", ylab = "Hat values", ylim = NULL, ...)
+dfbetavlm(model, maxit.new = 1,
+          trace.new = FALSE,
+          smallno = 1.0e-8, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>model</code></td>
+<td>
+<p>an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> object, typically returned by <code><a href="vglm.html">vglm</a></code>.
+
+</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>Character.
+The default is the first choice, which is
+a <i>nM x nM</i> matrix.
+If <code>type = "matrix"</code> then the <em>entire</em> hat matrix is
+returned.
+If <code>type = "centralBlocks"</code> then <i>n</i> central
+<i>M x M</i> block matrices, in matrix-band format.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>multiplier</code></td>
+<td>
+<p>Numeric, the multiplier.
+The usual rule-of-thumb is that values greater than two or three
+times the average leverage (at least for the linear model) should
+be checked.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lty, xlab, ylab, ylim</code></td>
+<td>
+<p>Graphical parameters, see
+<code><a href="../../graphics/html/par.html">par</a></code> etc.
+The default of <code>ylim</code> is <code>c(0, max(hatvalues(model)))</code>
+which means that if the horizontal dashed lines cannot be seen
+then there are no particularly influential observations.
+</p>
+</td></tr>
+<tr valign="top"><td><code>maxit.new, trace.new, smallno</code></td>
+<td>
+
+<p>Having <code>maxit.new = 1</code> will give a one IRLS step approximation
+from the ordinary solution (and no warnings!).
+Else having <code>maxit.new = 10</code>, say, should usually mean
+convergence will occur for all observations when they are
+removed one-at-a-time.
+Else having <code>maxit.new = 2</code>, say, should usually mean
+some lack of convergence will occur when observations are
+removed one-at-a-time.
+Setting <code>trace.new = TRUE</code> will produce some running output
+at each IRLS iteration and for each individual row of the model matrix.
+The argument <code>smallno</code> multiplies each value of the
+original prior weight (often unity); setting it identically
+to zero will result in an error, but setting a very small value
+effectively removes that observation.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments,
+for example, graphical parameters for <code>hatplot.vlm()</code>.
+
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The invocation <code>hatvalues(vglmObject)</code> should return a
+<i>n x M</i> matrix of the diagonal elements of the
+hat (projection) matrix of a <code><a href="vglm.html">vglm</a></code> object.
+To do this,
+the QR decomposition of the object is retrieved or
+reconstructed, and then straightforward calculations
+are performed.
+</p>
+<p>The invocation <code>hatplot(vglmObject)</code> should plot
+the diagonal of the hat matrix for each of the <i>M</i>
+linear/additive predictors.
+By default, two horizontal dashed lines are added;
+hat values higher than these ought to be checked.
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Note</h3>
+
+<p>It is hoped, soon, that the full suite of functions described at
+<code><a href="../../stats/html/influence.measures.html">influence.measures</a></code> will be written for VGLMs.
+This will enable general regression deletion diagnostics to be
+available for the entire VGLM class.
+</p>
+
+
+
+
+<h3>Author(s)</h3>
+
+<p>T. W. Yee.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="vglm.html">vglm</a></code>,
+<code><a href="cumulative.html">cumulative</a></code>,
+<code><a href="../../stats/html/influence.measures.html">influence.measures</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Proportional odds model, p.179, in McCullagh and Nelder (1989)
+pneumo &lt;- transform(pneumo, let = log(exposure.time))
+fit &lt;- vglm(cbind(normal, mild, severe) ~ let, cumulative, data = pneumo)
+hatvalues(fit)  # n x M matrix, with positive values
+all.equal(sum(hatvalues(fit)), fit@rank)  # Should be TRUE
+## Not run:  par(mfrow = c(1, 2))
+hatplot(fit, ylim = c(0, 1), las = 1, col = "blue") 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

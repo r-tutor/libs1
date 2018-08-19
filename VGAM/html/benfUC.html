@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Benford's Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Benford {VGAM}"><tr><td>Benford {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Benford's Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function,
+quantile function,
+and random generation
+for Benford's distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dbenf(x, ndigits = 1, log = FALSE)
+pbenf(q, ndigits = 1, lower.tail = TRUE, log.p = FALSE)
+qbenf(p, ndigits = 1, lower.tail = TRUE, log.p = FALSE)
+rbenf(n, ndigits = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+
+<p>Vector of quantiles.
+See <code>ndigits</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>vector of probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of observations. A single positive integer.
+Else if <code>length(n) &gt; 1</code> then the length is
+taken to be the number required.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ndigits</code></td>
+<td>
+
+<p>Number of leading digits, either 1 or 2.
+If 1 then the support of the distribution is {1,...,9}, else
+{10,...,99}.
+</p>
+</td></tr>
+<tr valign="top"><td><code>log, log.p</code></td>
+<td>
+
+<p>Logical.
+If <code>log.p = TRUE</code> then all probabilities <code>p</code> are
+given as <code>log(p)</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lower.tail</code></td>
+<td>
+
+<p>Same meaning as in <code><a href="../../stats/html/Normal.html">pnorm</a></code>
+or <code><a href="../../stats/html/Normal.html">qnorm</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Benford's Law (aka <em>the significant-digit law</em>) is the
+empirical observation that in many naturally occuring tables of
+numerical data, the leading significant (nonzero) digit
+is not uniformly distributed in <i>1:9</i>.
+Instead, the leading significant digit (<i>=D</i>, say)
+obeys the law
+</p>
+<p style="text-align: center;"><i>
+        P(D=d) =  log10(1 + 1/d)</i></p>
+
+<p>for <i>d=1,&hellip;,9</i>.
+This means
+the probability the first significant digit is 1 is
+approximately <i>0.301</i>, etc.
+</p>
+<p>Benford's Law was apparently first discovered in 1881
+by astronomer/mathematician
+S. Newcombe. It started by the observation
+that the pages of a book of logarithms were dirtiest at the
+beginning and progressively cleaner throughout.
+In 1938, a General Electric physicist called F. Benford
+rediscovered the law on this same observation. Over
+several years he collected data from different sources
+as different as atomic weights, baseball statistics,
+numerical data from <em>Reader's Digest</em>,
+and drainage areas of rivers.
+</p>
+<p>Applications of Benford's Law has been as diverse as
+to the area of
+fraud detection in accounting  and the design computers.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dbenf</code> gives the density,
+<code>pbenf</code> gives the distribution function, and
+<code>qbenf</code> gives the quantile function, and
+<code>rbenf</code> generates random deviates.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee and Kai Huang </p>
+
+
+<h3>References</h3>
+
+<p>Benford, F. (1938)
+The Law of Anomalous Numbers.
+<em>Proceedings of the American Philosophical Society</em>,
+<b>78</b>, 551&ndash;572.
+</p>
+<p>Newcomb, S. (1881)
+Note on the Frequency of Use of the Different Digits in Natural Numbers.
+<em>American Journal of Mathematics</em>,
+<b>4</b>, 39&ndash;40.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+dbenf(x &lt;- c(0:10, NA, NaN, -Inf, Inf))
+pbenf(x)
+
+## Not run: 
+xx &lt;- 1:9
+barplot(dbenf(xx), col = "lightblue", las = 1, xlab = "Leading digit",
+        ylab = "Probability", names.arg = as.character(xx),
+        main = paste("Benford's distribution",  sep = ""))
+
+hist(rbenf(n = 1000), border = "blue", prob = TRUE,
+     main = "1000 random variates from Benford's distribution",
+     xlab = "Leading digit", sub="Red is the true probability",
+     breaks = 0:9 + 0.5, ylim = c(0, 0.35), xlim = c(0, 10.0))
+lines(xx, dbenf(xx), col = "red", type = "h")
+points(xx, dbenf(xx), col = "red")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

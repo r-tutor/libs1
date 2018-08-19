@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Poisson-Ordinal Link Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for polf {VGAM}"><tr><td>polf {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Poisson-Ordinal Link Function </h2>
+
+<h3>Description</h3>
+
+<p>Computes the Poisson-ordinal transformation, including its inverse
+and the first two derivatives.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+polf(theta, cutpoint = NULL,
+     inverse = FALSE, deriv = 0, short = TRUE, tag = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>theta</code></td>
+<td>
+
+<p>Numeric or character.
+See below for further details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>cutpoint</code></td>
+<td>
+
+<p>The cutpoints should be non-negative integers.
+If <code>polf()</code> is used as the link function in
+<code><a href="cumulative.html">cumulative</a></code> then one should choose
+<code>reverse = TRUE, parallel = TRUE</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>inverse, deriv, short, tag</code></td>
+<td>
+
+<p>Details at <code><a href="Links.html">Links</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The Poisson-ordinal link function (POLF) can be applied to a
+parameter lying in the unit interval.
+Its purpose is to link cumulative probabilities associated with
+an ordinal response coming from an underlying Poisson distribution.
+If the cutpoint is zero then a complementary log-log link is used.
+</p>
+<p>See <code><a href="Links.html">Links</a></code> for general information about <span class="pkg">VGAM</span>
+link functions.
+</p>
+
+
+<h3>Value</h3>
+
+<p>See Yee (2012) for details.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>Prediction may not work on <code><a href="vglm.html">vglm</a></code> or
+<code><a href="vgam.html">vgam</a></code> etc. objects if this link function is used.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Numerical values of <code>theta</code> too close to 0 or 1 or out of range
+result in large positive or negative values, or maybe 0 depending on
+the arguments.
+Although measures have been taken to handle cases where
+<code>theta</code> is too close to 1 or 0,
+numerical instabilities may still arise.
+</p>
+<p>In terms of the threshold approach with cumulative probabilities for
+an ordinal response this link function corresponds to the
+Poisson distribution (see <code><a href="poissonff.html">poissonff</a></code>) that has been
+recorded as an ordinal response using known cutpoints.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. (2012)
+<em>Ordinal ordination with normalizing link functions for count data</em>,
+(in preparation).
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="Links.html">Links</a></code>,
+<code><a href="ordpoisson.html">ordpoisson</a></code>,
+<code><a href="poissonff.html">poissonff</a></code>,
+<code><a href="nbolf.html">nbolf</a></code>,
+<code><a href="golf.html">golf</a></code>,
+<code><a href="cumulative.html">cumulative</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+polf("p", cutpoint = 2, short = FALSE)
+polf("p", cutpoint = 2, tag = TRUE)
+
+p &lt;- seq(0.01, 0.99, by = 0.01)
+y &lt;- polf(p, cutpoint = 2)
+y. &lt;- polf(p, cutpoint = 2, deriv = 1)
+max(abs(polf(y, cutpoint = 2, inv = TRUE) - p))  # Should be 0
+
+#\ dontrun{ par(mfrow = c(2, 1), las = 1)
+#plot(p, y, type = "l", col = "blue", main = "polf()")
+#abline(h = 0, v = 0.5, col = "orange", lty = "dashed")
+#
+#plot(p, y., type = "l", col = "blue",
+#     main = "(Reciprocal of) first POLF derivative")
+#}
+
+
+# Rutherford and Geiger data
+ruge &lt;- data.frame(yy = rep(0:14,
+      times = c(57,203,383,525,532,408,273,139,45,27,10,4,0,1,1)))
+with(ruge, length(yy))  # 2608 1/8-minute intervals
+cutpoint &lt;- 5
+ruge &lt;- transform(ruge, yy01 = ifelse(yy &lt;= cutpoint, 0, 1))
+fit &lt;- vglm(yy01 ~ 1, binomialff(link = polf(cutpoint = cutpoint)), ruge)
+coef(fit, matrix = TRUE)
+exp(coef(fit))
+
+
+# Another example
+pdata &lt;- data.frame(x2 = sort(runif(nn &lt;- 1000)))
+pdata &lt;- transform(pdata, x3 = runif(nn))
+pdata &lt;- transform(pdata, mymu = exp( 3 + 1 * x2 - 2 * x3))
+pdata &lt;- transform(pdata, y1 = rpois(nn, lambda = mymu))
+cutpoints &lt;- c(-Inf, 10, 20, Inf)
+pdata &lt;- transform(pdata, cuty = Cut(y1, breaks = cutpoints))
+#\ dontrun{ with(pdata, plot(x2, x3, col = cuty, pch = as.character(cuty))) }
+with(pdata, table(cuty) / sum(table(cuty)))
+fit &lt;- vglm(cuty ~ x2 + x3, data = pdata, trace = TRUE,
+            cumulative(reverse = TRUE,
+                       parallel = TRUE,
+                       link = polf(cutpoint = cutpoints[2:3]),
+                       multiple.responses = TRUE))
+head(depvar(fit))
+head(fitted(fit))
+head(predict(fit))
+coef(fit)
+coef(fit, matrix = TRUE)
+constraints(fit)
+fit@misc$earg
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

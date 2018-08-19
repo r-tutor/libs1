@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Zipf Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for zipf {VGAM}"><tr><td>zipf {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Zipf Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Estimates the parameter of the Zipf distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+zipf(N = NULL, lshape = "loge", ishape = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>N</code></td>
+<td>
+
+<p>Number of elements, an integer satisfying <code>1 &lt; N &lt; Inf</code>.
+The default is to use the maximum value of the response.
+If given, <code>N</code> must be no less that the largest response value.
+If <code>N = Inf</code> and <i>s&gt;1</i> then this is the zeta
+distribution (use <code><a href="zetaff.html">zetaff</a></code> instead).
+</p>
+</td></tr>
+<tr valign="top"><td><code>lshape</code></td>
+<td>
+
+<p>Parameter link function applied to the (positive) shape parameter <i>s</i>.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ishape</code></td>
+<td>
+
+<p>Optional initial value for the parameter <i>s</i>.
+The default is to choose an initial value internally.
+If converge failure occurs use this argument to input a value.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The probability function for a response <i>Y</i> is
+</p>
+<p style="text-align: center;"><i>
+        P(Y=y) = (y^(-s)) / sum((1:N)^(-s)), s&gt;0, y=1,2,...,N,</i></p>
+
+<p>where <i>s</i> is the exponent characterizing the distribution.
+The mean of <i>Y</i>, which are returned as the fitted values,
+is <i>H(N,s-1) / H(N,s)</i>
+where <i>H(n,m)=sum((1:n)^(-m))</i>
+is the <i>n</i>th generalized harmonic number.
+</p>
+<p>Zipf's law is an experimental law which is often applied
+to the study of the frequency of words in a corpus of
+natural language utterances. It states that the frequency
+of any word is inversely proportional to its rank in the
+frequency table. For example, <code>"the"</code> and <code>"of"</code>
+are first two most common words, and Zipf's law states
+that <code>"the"</code> is twice as common as <code>"of"</code>.
+Many other natural phenomena conform to Zipf's law.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as
+<code><a href="vglm.html">vglm</a></code> and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Upon convergence, the <code>N</code> is stored as <code>@misc$N</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>pp.526&ndash; of Chapter 11 of
+Johnson N. L., Kemp, A. W. and Kotz S. (2005)
+<em>Univariate Discrete Distributions</em>,
+3rd edition,
+Hoboken, New Jersey, USA: Wiley.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="zipfUC.html">dzipf</a></code>,
+<code><a href="zetaff.html">zetaff</a></code>,
+<code><a href="simulate.vlm.html">simulate.vlm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+zdata &lt;- data.frame(y = 1:5, ofreq = c(63, 14, 5, 1, 2))
+zfit &lt;- vglm(y ~ 1, zipf, data = zdata, trace = TRUE, weight = ofreq)
+zfit &lt;- vglm(y ~ 1, zipf(lshape = "identitylink", ishape = 3.4), data = zdata,
+            trace = TRUE, weight = ofreq, crit = "coef")
+zfit@misc$N
+(shape.hat &lt;- Coef(zfit))
+with(zdata, weighted.mean(y, ofreq))
+fitted(zfit, matrix = FALSE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

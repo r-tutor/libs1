@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The AA-Aa-aa Blood Group System</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for AA.Aa.aa {VGAM}"><tr><td>AA.Aa.aa {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> The AA-Aa-aa Blood Group System </h2>
+
+<h3>Description</h3>
+
+<p>Estimates the parameter of the
+AA-Aa-aa blood group system,
+with or without Hardy Weinberg equilibrium.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+AA.Aa.aa(linkp = "logit", linkf = "logit", inbreeding = FALSE,
+         ipA = NULL, ifp = NULL, zero = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>linkp, linkf</code></td>
+<td>
+
+<p>Link functions applied to <code>pA</code> and <code>f</code>.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ipA, ifp</code></td>
+<td>
+
+<p>Optional initial values for <code>pA</code> and <code>f</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>inbreeding</code></td>
+<td>
+
+<p>Logical. Is there inbreeding?
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This one or two parameter model involves a probability called <code>pA</code>.
+The probability of getting a count in the first column of the
+input (an AA) is <code>pA*pA</code>.
+When <code>inbreeding = TRUE</code>, an additional parameter <code>f</code> is used.
+If <code>inbreeding = FALSE</code> then <i>f = 0</i> and Hardy-Weinberg
+Equilibrium (HWE) is assumed.
+The EIM is used if <code>inbreeding = FALSE</code>.
+</p>
+
+
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>Setting <code>inbreeding = FALSE</code> makes estimation difficult
+with non-intercept-only models.
+Currently, this code seems to work with intercept-only models.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The input can be a 3-column matrix of counts, where the columns
+are AA, Ab and aa
+(in order).
+Alternatively, the input can be a 3-column matrix of
+proportions (so each row adds to 1) and the <code>weights</code>
+argument is used to specify the total number of counts for each row.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Weir, B. S. (1996)
+<em>Genetic Data Analysis II: Methods for Discrete Population
+Genetic Data</em>,
+Sunderland, MA: Sinauer Associates, Inc.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="AB.Ab.aB.ab.html">AB.Ab.aB.ab</a></code>,
+<code><a href="ABO.html">ABO</a></code>,
+<code><a href="A1A2A3.html">A1A2A3</a></code>,
+<code><a href="MNSs.html">MNSs</a></code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+y &lt;- cbind(53, 95, 38)
+fit1 &lt;- vglm(y ~ 1, AA.Aa.aa, trace = TRUE)
+fit2 &lt;- vglm(y ~ 1, AA.Aa.aa(inbreeding = TRUE), trace = TRUE)
+rbind(y, sum(y) * fitted(fit1))
+Coef(fit1)  # Estimated pA
+Coef(fit2)  # Estimated pA and f
+summary(fit1)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

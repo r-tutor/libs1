@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bivariate Gamma: McKay's Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bigamma.mckay {VGAM}"><tr><td>bigamma.mckay {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Bivariate Gamma: McKay's Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Estimate the three parameters of McKay's bivariate gamma distribution
+by maximum likelihood estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bigamma.mckay(lscale = "loge", lshape1 = "loge", lshape2 = "loge",
+              iscale = NULL, ishape1 = NULL, ishape2 = NULL,
+              imethod = 1, zero = "shape")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lscale, lshape1, lshape2</code></td>
+<td>
+
+<p>Link functions applied to the (positive)
+parameters <i>a</i>, <i>p</i> and <i>q</i> respectively.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iscale, ishape1, ishape2</code></td>
+<td>
+
+<p>Optional initial values for <i>a</i>, <i>p</i> and <i>q</i> respectively.
+The default is to compute them internally.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod, zero</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>One of the earliest forms of the bivariate gamma distribution has
+a joint probability density function given by
+</p>
+<p style="text-align: center;"><i>
+    f(y1,y2;a,p,q) = (1/a)^(p+q) y1^(p-1) (y2-y1)^(q-1)
+    exp(-y2/a) / [gamma(p) gamma(q)]    </i></p>
+
+<p>for <i>a &gt; 0</i>, <i>p &gt; 0</i>, <i>q &gt; 0</i> and
+<i>0&lt;y1&lt;y2</i>
+(Mckay, 1934).
+Here, <i>gamma</i> is the gamma
+function, as in <code><a href="../../base/html/Special.html">gamma</a></code>.
+By default, the linear/additive predictors are
+<i>eta1=log(a)</i>,
+<i>eta2=log(p)</i>,
+<i>eta3=log(q)</i>.
+</p>
+<p>The marginal distributions are gamma, with shape parameters <i>p</i> and
+<i>p+q</i> respectively, but they have a common scale parameter <i>a</i>.
+Pearson's product-moment correlation coefficient of
+<i>y1</i> and <i>y2</i> is
+<i>sqrt(p/(p+q))</i>.
+This distribution is also known as the bivariate Pearson type III
+distribution.
+Also, <i>Y2 - y1</i>, conditional on <i>Y1=y1</i>,
+has a gamma distribution with shape parameter <i>q</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The response must be a two column matrix where the first column is
+<i>y1</i> and the second <i>y2</i>.
+It is necessary that each element of the vectors <i>y1</i>
+and
+<i>y2-y1</i> be positive.
+Currently, the fitted value is a matrix with two columns;
+the first column has values <i>ap</i> for the marginal mean of
+<i>y1</i>,
+while the second column
+has values <i>a(p+q)</i> for the marginal mean of
+<i>y2</i> (all evaluated at the final iteration).
+</p>
+
+
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>McKay, A. T. (1934)
+Sampling from batches.
+<em>Journal of the Royal Statistical Society&mdash;Supplement</em>,
+<b>1</b>, 207&ndash;216.
+</p>
+<p>Kotz, S. and Balakrishnan, N. and Johnson, N. L. (2000)
+<em>Continuous Multivariate Distributions Volume 1: Models and Applications</em>,
+2nd edition,
+New York: Wiley.
+</p>
+<p>Balakrishnan, N. and Lai, C.-D. (2009)
+<em>Continuous Bivariate Distributions</em>,
+2nd edition.
+New York: Springer.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="gamma2.html">gamma2</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+shape1 &lt;- exp(1); shape2 &lt;- exp(2); scalepar &lt;- exp(3)
+mdata &lt;- data.frame(y1 = rgamma(nn &lt;- 1000, shape = shape1, scale = scalepar))
+mdata &lt;- transform(mdata, zedd = rgamma(nn, shape = shape2, scale = scalepar))
+mdata &lt;- transform(mdata, y2 = y1 + zedd)  # Z is defined as Y2-y1|Y1=y1
+fit &lt;- vglm(cbind(y1, y2) ~ 1, bigamma.mckay, data = mdata, trace = TRUE)
+coef(fit, matrix = TRUE)
+Coef(fit)
+vcov(fit)
+
+colMeans(depvar(fit))  # Check moments
+head(fitted(fit), 1)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Laplace Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for alaplaceUC {VGAM}"><tr><td>alaplaceUC {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> The Laplace Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function, quantile function and random generation
+for the 3-parameter asymmetric Laplace distribution with location
+parameter <code>location</code>, scale parameter <code>scale</code>,
+and asymmetry parameter <code>kappa</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dalap(x, location = 0, scale = 1, tau = 0.5, kappa = sqrt(tau/(1-tau)),
+      log = FALSE)
+palap(q, location = 0, scale = 1, tau = 0.5, kappa = sqrt(tau/(1-tau)),
+      lower.tail = TRUE, log.p = FALSE)
+qalap(p, location = 0, scale = 1, tau = 0.5, kappa = sqrt(tau/(1-tau)),
+      lower.tail = TRUE, log.p = FALSE)
+ralap(n, location = 0, scale = 1, tau = 0.5, kappa = sqrt(tau/(1-tau)))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>vector of probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+
+<p>number of observations.
+If <code>length(n) &gt; 1</code> then the length is taken to be the number required.
+</p>
+</td></tr>
+<tr valign="top"><td><code>location</code></td>
+<td>
+
+<p>the location parameter <i>xi</i>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>scale</code></td>
+<td>
+
+<p>the scale parameter <i>sigma</i>.
+Must consist of positive values.
+</p>
+</td></tr>
+<tr valign="top"><td><code>tau</code></td>
+<td>
+
+<p>the quantile parameter <i>tau</i>.
+Must consist of values in <i>(0,1)</i>.
+This argument is used to specify <code>kappa</code> and is ignored
+if <code>kappa</code> is assigned.
+</p>
+</td></tr>
+<tr valign="top"><td><code>kappa</code></td>
+<td>
+
+<p>the asymmetry parameter <i>kappa</i>.
+Must consist of positive values.
+</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>if <code>TRUE</code>, probabilities <code>p</code> are given as <code>log(p)</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lower.tail, log.p</code></td>
+<td>
+
+<p>Same meaning as in <code><a href="../../stats/html/Normal.html">pnorm</a></code>
+or <code><a href="../../stats/html/Normal.html">qnorm</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>There are many variants of asymmetric Laplace distributions (ALDs) and
+this one is known as <em>the</em> ALD by Kotz et al. (2001).
+See <code><a href="alaplace3.html">alaplace3</a></code>, the <span class="pkg">VGAM</span> family function
+for estimating the three parameters by maximum likelihood estimation,
+for formulae and details.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dalap</code> gives the density,
+<code>palap</code> gives the distribution function,
+<code>qalap</code> gives the quantile function, and
+<code>ralap</code> generates random deviates.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee and Kai Huang </p>
+
+
+<h3>References</h3>
+
+<p>Kotz, S., Kozubowski, T. J. and Podgorski, K. (2001)
+<em>The Laplace distribution and generalizations:
+a revisit with applications to communications,
+economics, engineering, and finance</em>,
+Boston: Birkhauser.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="alaplace3.html">alaplace3</a></code>.
+
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- seq(-5, 5, by = 0.01)
+loc &lt;- 0; sigma &lt;- 1.5; kappa &lt;- 2
+## Not run:  plot(x, dalap(x, loc, sigma, kappa = kappa), type = "l", col = "blue",
+     main = "Blue is density, orange is cumulative distribution function",
+     ylim = c(0, 1), sub = "Purple are 5, 10, ..., 95 percentiles",
+     las = 1, ylab = "", cex.main = 0.5)
+abline(h = 0, col = "blue", lty = 2)
+lines(qalap(seq(0.05, 0.95, by = 0.05), loc, sigma, kappa = kappa),
+      dalap(qalap(seq(0.05, 0.95, by = 0.05), loc, sigma, kappa = kappa),
+            loc, sigma, kappa = kappa), col = "purple", lty = 3, type = "h")
+lines(x, palap(x, loc, sigma, kappa = kappa), type = "l", col = "orange")
+abline(h = 0, lty = 2) 
+## End(Not run)
+
+pp &lt;- seq(0.05, 0.95, by = 0.05)  # Test two functions
+max(abs(palap(qalap(pp, loc, sigma, kappa = kappa),
+              loc, sigma, kappa = kappa) - pp))  # Should be 0
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

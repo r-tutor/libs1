@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Censored Gumbel Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cens.gumbel {VGAM}"><tr><td>cens.gumbel {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Censored Gumbel Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Maximum likelihood estimation of the 2-parameter Gumbel distribution
+when there are censored observations.
+A matrix response is not allowed.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cens.gumbel(llocation = "identitylink", lscale = "loge", iscale = NULL,
+            mean = TRUE, percentiles = NULL, zero = "scale")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>llocation, lscale</code></td>
+<td>
+
+<p>Character.
+Parameter link functions for the location and
+(positive) <i>scale</i> parameters.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iscale</code></td>
+<td>
+
+<p>Numeric and positive.
+Initial value for <i>scale</i>. Recycled to the appropriate length.
+In general, a larger value is better than a smaller value.
+The default is to choose the value internally.
+</p>
+</td></tr>
+<tr valign="top"><td><code>mean</code></td>
+<td>
+
+<p>Logical. Return the mean? If <code>TRUE</code> then the mean is returned,
+otherwise percentiles given by the <code>percentiles</code> argument.
+</p>
+</td></tr>
+<tr valign="top"><td><code>percentiles</code></td>
+<td>
+
+<p>Numeric with values between 0 and 100.
+If <code>mean=FALSE</code> then the fitted values are percentiles which must
+be specified by this argument.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>An integer-valued vector specifying which linear/additive predictors
+are modelled as intercepts only.  The value (possibly values) must be
+from the set {1,2} corresponding respectively to <i>location</i> and
+<i>scale</i>.  If <code>zero=NULL</code> then all linear/additive predictors
+are modelled as a linear combination of the explanatory variables.
+The default is to fit the shape parameter as an intercept only.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This <span class="pkg">VGAM</span> family function is like <code><a href="gumbel.html">gumbel</a></code>
+but handles observations
+that are left-censored (so that the true value would be less than
+the observed value) else right-censored (so that the true value would be
+greater than the observed value). To indicate which type of censoring,
+input <code>extra = list(leftcensored = vec1, rightcensored = vec2)</code>
+where <code>vec1</code> and <code>vec2</code> are logical vectors the same length
+as the response.
+If the two components of this list are missing then the logical
+values are taken to be <code>FALSE</code>.  The fitted object has these two
+components stored in the <code>extra</code> slot.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning</h3>
+
+<p>Numerical problems may occur if the amount of censoring is excessive.
+</p>
+
+
+<h3>Note</h3>
+
+<p>See <code><a href="gumbel.html">gumbel</a></code> for details about the Gumbel distribution.
+The initial values are based on assuming all uncensored observations,
+therefore could be improved upon.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Coles, S. (2001)
+<em>An Introduction to Statistical Modeling of Extreme Values</em>.
+London: Springer-Verlag.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="gumbel.html">gumbel</a></code>,
+<code><a href="gumbel.html">gumbelff</a></code>,
+<code><a href="gumbelUC.html">rgumbel</a></code>,
+<code><a href="guplot.html">guplot</a></code>,
+<code><a href="gev.html">gev</a></code>,
+<code><a href="venice.html">venice</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Example 1
+ystar &lt;- venice[["r1"]]  # Use the first order statistic as the response
+nn &lt;- length(ystar)
+L &lt;- runif(nn, 100, 104)  # Lower censoring points
+U &lt;- runif(nn, 130, 135)  # Upper censoring points
+y &lt;- pmax(L, ystar)  # Left  censored
+y &lt;- pmin(U, y)      # Right censored
+extra &lt;- list(leftcensored = ystar &lt; L, rightcensored = ystar &gt; U)
+fit &lt;- vglm(y ~ scale(year), data = venice, trace = TRUE, extra = extra,
+            fam = cens.gumbel(mean = FALSE, perc = c(5, 25, 50, 75, 95)))
+coef(fit, matrix = TRUE)
+head(fitted(fit))
+fit@extra
+
+# Example 2: simulated data
+nn &lt;- 1000
+ystar &lt;- rgumbel(nn, loc = 1, scale = exp(0.5))  # The uncensored data
+L &lt;- runif(nn, -1, 1)  # Lower censoring points
+U &lt;- runif(nn,  2, 5)  # Upper censoring points
+y &lt;- pmax(L, ystar)  # Left  censored
+y &lt;- pmin(U, y)      # Right censored
+## Not run: par(mfrow = c(1, 2)); hist(ystar); hist(y);
+extra &lt;- list(leftcensored = ystar &lt; L, rightcensored = ystar &gt; U)
+fit &lt;- vglm(y ~ 1, trace = TRUE, extra = extra, fam = cens.gumbel)
+coef(fit, matrix = TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

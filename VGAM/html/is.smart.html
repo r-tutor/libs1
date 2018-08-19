@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Test For a Smart Object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for is.smart {VGAM}"><tr><td>is.smart {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Test For a Smart Object
+</h2>
+
+<h3>Description</h3>
+
+<p>Tests an object to see if it is smart.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  is.smart(object)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>a function or a fitted model.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>object</code> is a function then this function looks to see whether
+<code>object</code> has the logical attribute <code>"smart"</code>. If so then
+this is returned, else <code>FALSE</code>.
+</p>
+<p>If <code>object</code> is a fitted model then this function looks to see whether
+<code>object@smart.prediction</code> or
+<code>object\$smart.prediction</code> exists.
+If it does and it is not equal to <code>list(smart.arg=FALSE)</code> then
+a <code>TRUE</code> is returned, else <code>FALSE</code>.
+The reason for this is because, e.g., <code>lm(...,smart=FALSE)</code> 
+and <code>vglm(...,smart=FALSE)</code>, will return such a specific list.
+</p>
+<p>Writers of smart functions manually have to assign this attribute to
+their smart function after it has been written.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns <code>TRUE</code> or <code>FALSE</code>, according to whether the <code>object</code>
+is smart or not.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+is.smart(sm.min1)  # TRUE
+is.smart(sm.poly)  # TRUE
+library(splines)
+is.smart(sm.bs)  # TRUE
+is.smart(sm.ns)  # TRUE
+is.smart(tan)  # FALSE
+## Not run: 
+udata &lt;- data.frame(x2 = rnorm(9))
+fit1 &lt;- vglm(rnorm(9) ~ x2, uninormal, data = udata)
+is.smart(fit1)  # TRUE
+fit2 &lt;- vglm(rnorm(9) ~ x2, uninormal, data = udata, smart = FALSE)
+is.smart(fit2)  # FALSE
+fit2@smart.prediction
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

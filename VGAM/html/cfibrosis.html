@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Cystic Fibrosis Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cfibrosis {VGAM}"><tr><td>cfibrosis {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Cystic Fibrosis Data
+
+</h2>
+
+<h3>Description</h3>
+
+<p>This data frame concerns families data
+and cystic fibrosis.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+data(cfibrosis)
+</pre>
+
+
+<h3>Format</h3>
+
+<p>A data frame with 24 rows on the following 4 variables.
+</p>
+
+<dl>
+<dt>siblings, affected, ascertained, families</dt><dd>
+<p>Over ascertained families, the <i>k</i>th ascertained family
+has <i>s_k</i> siblings of whom <i>r_k</i>
+are affected and <i>a_k</i> are ascertained.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Details</h3>
+
+<p>The data set allows a classical segregation analysis
+to be peformed. In particular,
+to test Mendelian segregation ratios in nuclear family data.
+The likelihood has similarities with <code><a href="seq2binomial.html">seq2binomial</a></code>.
+</p>
+
+
+
+<h3>Source</h3>
+
+<p>The data is originally from Crow (1965) and
+appears as Table 2.3 of Lange (2002).
+</p>
+<p>Crow, J. F. (1965)
+Problems of ascertainment in the analysis of family data.
+Epidemiology and Genetics of Chronic Disease.
+Public Health Service Publication 1163,
+Neel J. V., Shaw M. W., Schull W. J., editors,
+Department of Health, Education, and Welfare, Washington, DC,
+USA.
+</p>
+<p>Lange, K. (2002)
+Mathematical and Statistical Methods for Genetic Analysis.
+Second Edition.
+Springer-Verlag: New York, USA.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+cfibrosis
+summary(cfibrosis)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Double Exponential Binomial Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for double.expbinomial {VGAM}"><tr><td>double.expbinomial {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Double Exponential Binomial Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Fits a double exponential binomial distribution by
+maximum likelihood estimation.
+The two parameters here are the mean and dispersion parameter.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+double.expbinomial(lmean = "logit", ldispersion = "logit",
+                   idispersion = 0.25, zero = "dispersion")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lmean, ldispersion</code></td>
+<td>
+
+<p>Link functions applied to the two parameters, called
+<i>mu</i> and <i>theta</i> respectively below.
+See <code><a href="Links.html">Links</a></code> for more choices.
+The defaults cause the parameters to be restricted to <i>(0,1)</i>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>idispersion</code></td>
+<td>
+
+<p>Initial value for the dispersion parameter.
+If given, it must be in range, and is recyled to the necessary length.
+Use this argument if convergence failure occurs.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>A vector specifying which
+linear/additive predictor is to be modelled as intercept-only.
+If assigned, the single value can be either <code>1</code> or <code>2</code>.
+The default is to have a single dispersion parameter value.
+To model both parameters as functions of the covariates assign
+<code>zero = NULL</code>.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more details.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This distribution provides a way for handling overdispersion in
+a binary response.
+The double exponential binomial distribution belongs the family of
+double exponential distributions proposed by Efron (1986).
+Below, equation numbers refer to that original article.
+Briefly, the idea is that an ordinary one-parameter exponential family
+allows the addition of a second parameter <i>theta</i>
+which varies the dispersion
+of the family without changing the mean.
+The extended family behaves like the original family with
+sample size changed from <i>n</i> to <i>n*theta</i>.
+The extended family is an exponential family in <i>mu</i> when
+<i>n</i> and <i>theta</i> are fixed, and
+an exponential family in <i>theta</i> when
+<i>n</i> and <i>mu</i> are fixed.
+Having <i>0 &lt; theta &lt; 1</i> corresponds to overdispersion
+with respect to the binomial distribution.
+See Efron (1986) for full details.
+</p>
+<p>This <span class="pkg">VGAM</span> family function implements an <em>approximation</em>
+(2.10) to the exact density (2.4). It replaces the normalizing
+constant by unity since the true value nearly equals 1.
+The default model fitted is <i>eta1 =logit(mu)</i>
+and <i>eta2 = logit(theta)</i>.
+This restricts both parameters to lie between 0 and 1, although
+the dispersion parameter can be modelled over a larger parameter space by
+assigning the arguments <code>ldispersion</code> and <code>edispersion</code>.
+</p>
+<p>Approximately, the mean (of <i>Y</i>) is <i>mu</i>.
+The <em>effective sample size</em> is the dispersion parameter multiplied
+by the original sample size,
+i.e., <i>n*theta</i>.
+This family function uses Fisher scoring, and the two estimates are
+asymptotically independent because the expected information matrix
+is diagonal.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>Numerical difficulties can occur; if so, try using <code>idispersion</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function processes the input in the same way
+as <code><a href="binomialff.html">binomialff</a></code>, however multiple responses are
+not allowed (<code>binomialff(multiple.responses = FALSE)</code>).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Efron, B. (1986)
+Double exponential families and their use in generalized linear regression.
+<em>Journal of the American Statistical Association</em>,
+<b>81</b>, 709&ndash;721.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="binomialff.html">binomialff</a></code>,
+<code><a href="toxop.html">toxop</a></code>,
+<code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# This example mimics the example in Efron (1986).
+# The results here differ slightly.
+
+# Scale the variables
+toxop &lt;- transform(toxop,
+                   phat = positive / ssize,
+                   srainfall = scale(rainfall),  # (6.1)
+                   sN = scale(ssize))            # (6.2)
+
+# A fit similar (should be identical) to Section 6 of Efron (1986).
+# But does not use poly(), and M = 1.25 here, as in (5.3)
+cmlist &lt;- list("(Intercept)"    = diag(2),
+               "I(srainfall)"   = rbind(1, 0),
+               "I(srainfall^2)" = rbind(1, 0),
+               "I(srainfall^3)" = rbind(1, 0),
+               "I(sN)" = rbind(0, 1),
+               "I(sN^2)" = rbind(0, 1))
+fit &lt;- vglm(cbind(phat, 1 - phat) * ssize ~
+            I(srainfall) + I(srainfall^2) + I(srainfall^3) +
+            I(sN) + I(sN^2),
+            double.expbinomial(ldisp = extlogit(min = 0, max = 1.25),
+                         idisp = 0.2, zero = NULL),
+            toxop, trace = TRUE, constraints = cmlist)
+
+# Now look at the results
+coef(fit, matrix = TRUE)
+head(fitted(fit))
+summary(fit)
+vcov(fit)
+sqrt(diag(vcov(fit)))  # Standard errors
+
+# Effective sample size (not quite the last column of Table 1)
+head(predict(fit))
+Dispersion &lt;- extlogit(predict(fit)[,2], min = 0, max = 1.25, inverse = TRUE)
+c(round(weights(fit, type = "prior") * Dispersion, digits = 1))
+
+
+# Ordinary logistic regression (gives same results as (6.5))
+ofit &lt;- vglm(cbind(phat, 1 - phat) * ssize ~
+             I(srainfall) + I(srainfall^2) + I(srainfall^3),
+             binomialff, toxop, trace = TRUE)
+
+
+# Same as fit but it uses poly(), and can be plotted (cf. Figure 1)
+cmlist2 &lt;- list("(Intercept)"                 = diag(2),
+                "poly(srainfall, degree = 3)" = rbind(1, 0),
+                "poly(sN, degree = 2)"        = rbind(0, 1))
+fit2 &lt;- vglm(cbind(phat, 1 - phat) * ssize ~
+             poly(srainfall, degree = 3) + poly(sN, degree = 2),
+             double.expbinomial(ldisp = extlogit(min = 0, max = 1.25),
+                          idisp = 0.2, zero = NULL),
+             toxop, trace = TRUE, constraints = cmlist2)
+## Not run:  par(mfrow = c(1, 2))
+plot(as(fit2, "vgam"), se = TRUE, lcol = "blue", scol = "orange")  # Cf. Figure 1
+
+# Cf. Figure 1(a)
+par(mfrow = c(1,2))
+ooo &lt;- with(toxop, sort.list(rainfall))
+with(toxop, plot(rainfall[ooo], fitted(fit2)[ooo], type = "l",
+                 col = "blue", las = 1, ylim = c(0.3, 0.65)))
+with(toxop, points(rainfall[ooo], fitted(ofit)[ooo], col = "orange",
+                   type = "b", pch = 19))
+
+# Cf. Figure 1(b)
+ooo &lt;- with(toxop, sort.list(ssize))
+with(toxop, plot(ssize[ooo], Dispersion[ooo], type = "l", col = "blue",
+                 las = 1, xlim = c(0, 100))) 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

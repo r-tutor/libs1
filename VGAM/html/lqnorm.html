@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Minimizing the L-q norm Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for lqnorm {VGAM}"><tr><td>lqnorm {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Minimizing the L-q norm Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Minimizes the L-q norm of residuals in a linear model.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+lqnorm(qpower = 2, link = "identitylink",
+       imethod = 1, imu = NULL, ishrinkage = 0.95)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>qpower</code></td>
+<td>
+
+<p>A single numeric, must be greater than one, called <i>q</i> below.
+The absolute value of residuals are raised to the power of this argument,
+and then summed.
+This quantity is minimized with respect to the regression coefficients.
+</p>
+</td></tr>
+<tr valign="top"><td><code>link</code></td>
+<td>
+
+<p>Link function applied to the &lsquo;mean&rsquo; <i>mu</i>.
+See <code><a href="Links.html">Links</a></code> for more details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod</code></td>
+<td>
+
+<p>Must be 1, 2 or 3.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+Ignored if <code>imu</code> is specified.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imu</code></td>
+<td>
+
+<p>Numeric, optional initial values used for the fitted values.
+The default is to use <code>imethod = 1</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ishrinkage</code></td>
+<td>
+
+<p>How much shrinkage is used when initializing the fitted values.
+The value must be between 0 and 1 inclusive, and
+a value of 0 means the individual response values are used,
+and a value of 1 means the median or mean is used.
+This argument is used in conjunction with <code>imethod = 3</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function minimizes the objective function
+</p>
+<p style="text-align: center;"><i>
+          sum_{i=1}^n    w_i (|y_i -  mu_i|)^q  </i></p>
+
+<p>where <i>q</i> is the argument <code>qpower</code>,
+<i>eta_i = g(mu_i)</i> where <i>g</i> is
+the link function, and
+<i>eta_i</i> is the vector of linear/additive predictors.
+The prior weights <i>w_i</i> can be inputted using the <code>weights</code>
+argument of <code>vlm</code>/<code><a href="vglm.html">vglm</a></code>/<code><a href="vgam.html">vgam</a></code> etc.;
+it should be just a vector here since
+this function handles only a single vector or one-column response.
+</p>
+<p>Numerical problem will occur when <i>q</i> is too close to one.
+Probably reasonable values range from 1.5 and up, say.
+The value <i>q=2</i> corresponds to ordinary least squares while
+<i>q=1</i> corresponds to the MLE of a double exponential (Laplace)
+distibution. The procedure becomes more sensitive to outliers the
+larger the value of <i>q</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>Convergence failure is common, therefore the user is advised to be
+cautious and monitor convergence!
+</p>
+
+
+<h3>Note</h3>
+
+<p>This <span class="pkg">VGAM</span> family function is an initial attempt to
+provide a more robust alternative for regression and/or offer
+a little more flexibility than least squares.
+The <code>@misc</code> slot of the fitted object contains a list component
+called <code>objectiveFunction</code> which is the value of the
+objective function at the final iteration.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. and Wild, C. J. (1996)
+Vector generalized additive models.
+<em>Journal of the Royal Statistical Society, Series B, Methodological</em>,
+<b>58</b>, 481&ndash;493.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="uninormal.html">uninormal</a></code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+set.seed(123)
+ldata &lt;- data.frame(x = sort(runif(nn &lt;- 10 )))
+realfun &lt;- function(x) 4 + 5*x
+ldata &lt;- transform(ldata, y = realfun(x) + rnorm(nn, sd = exp(-1)))
+# Make the first observation an outlier
+ldata &lt;- transform(ldata, y = c(4*y[1], y[-1]), x = c(-1, x[-1]))
+fit &lt;- vglm(y ~ x, lqnorm(qpower = 1.2), data = ldata)
+coef(fit, matrix = TRUE)
+head(fitted(fit))
+fit@misc$qpower
+fit@misc$objectiveFunction
+
+## Not run: 
+# Graphical check
+with(ldata, plot(x, y, main = paste("LS = red, lqnorm = blue (qpower = ",
+             fit@misc$qpower, "), truth = black", sep = ""), col = "blue"))
+lmfit &lt;- lm(y ~ x, data = ldata)
+with(ldata, lines(x,  fitted(fit), col = "blue"))
+with(ldata, lines(x, lmfit$fitted, col = "red"))
+with(ldata, lines(x,  realfun(x),  col = "black")) 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

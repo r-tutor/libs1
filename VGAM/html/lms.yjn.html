@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: LMS Quantile Regression with a Yeo-Johnson Transformation to...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for lms.yjn {VGAM}"><tr><td>lms.yjn {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> LMS Quantile Regression with a Yeo-Johnson Transformation to Normality </h2>
+
+<h3>Description</h3>
+
+<p>LMS quantile regression with the Yeo-Johnson transformation
+to normality.
+This family function is experimental and the LMS-BCN family function
+is recommended instead.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+lms.yjn(percentiles = c(25, 50, 75), zero = c("lambda", "sigma"),
+        llambda = "identitylink", lsigma = "loge",
+        idf.mu = 4, idf.sigma = 2,
+        ilambda = 1, isigma = NULL, rule = c(10, 5),
+        yoffset = NULL, diagW = FALSE, iters.diagW = 6)
+lms.yjn2(percentiles = c(25, 50, 75), zero = c("lambda", "sigma"),
+         llambda = "identitylink", lmu = "identitylink", lsigma = "loge",
+         idf.mu = 4, idf.sigma = 2, ilambda = 1.0,
+         isigma = NULL, yoffset = NULL, nsimEIM = 250)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>percentiles</code></td>
+<td>
+
+<p>A numerical vector containing values between 0 and 100,
+which are the quantiles. They will be returned as &lsquo;fitted values&rsquo;.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>See <code><a href="lms.bcn.html">lms.bcn</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>llambda, lmu, lsigma</code></td>
+<td>
+
+<p>See <code><a href="lms.bcn.html">lms.bcn</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>idf.mu, idf.sigma</code></td>
+<td>
+
+<p>See <code><a href="lms.bcn.html">lms.bcn</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ilambda, isigma</code></td>
+<td>
+
+<p>See <code><a href="lms.bcn.html">lms.bcn</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>rule</code></td>
+<td>
+
+<p>Number of abscissae used in the Gaussian integration
+scheme to work out elements of the weight matrices.
+The values given are the possible choices, with the first value
+being the default.
+The larger the value, the more accurate the approximation is likely
+to be but involving more computational expense.
+</p>
+</td></tr>
+<tr valign="top"><td><code>yoffset</code></td>
+<td>
+
+<p>A value to be added to the response y, for the purpose
+of centering the response before fitting the model to the data.
+The default value, <code>NULL</code>, means <code>-median(y)</code> is used, so that
+the response actually used has median zero. The <code>yoffset</code> is
+saved on the object and used during prediction.
+</p>
+</td></tr>
+<tr valign="top"><td><code>diagW</code></td>
+<td>
+
+<p>Logical.
+This argument is offered because the expected information matrix may not
+be positive-definite. Using the diagonal elements of this matrix results
+in a higher chance of it being positive-definite, however convergence will
+be very slow.
+If <code>TRUE</code>, then the first <code>iters.diagW</code> iterations will
+use the diagonal of the expected information matrix.
+The default is <code>FALSE</code>, meaning faster convergence.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iters.diagW</code></td>
+<td>
+
+<p>Integer. Number of iterations in which the
+diagonal elements of the expected information matrix are used.
+Only used if <code>diagW = TRUE</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>nsimEIM</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Given a value of the covariate, this function applies a Yeo-Johnson
+transformation to the response to best obtain normality. The parameters
+chosen to do this are estimated by maximum likelihood or penalized
+maximum likelihood.
+The function <code>lms.yjn2()</code> estimates the expected information
+matrices using simulation (and is consequently slower) while
+<code>lms.yjn()</code> uses numerical integration.
+Try the other if one function fails.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>The computations are not simple, therefore convergence may fail.
+In that case, try different starting values.
+</p>
+<p>The generic function <code>predict</code>, when applied to a
+<code>lms.yjn</code> fit, does not add back the <code>yoffset</code> value.
+</p>
+<p>As described above,
+this family function is experimental and the LMS-BCN family function
+is recommended instead.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The response may contain both positive and negative values.
+In contrast, the LMS-Box-Cox-normal and LMS-Box-Cox-gamma
+methods only handle a positive response because the
+Box-Cox transformation cannot handle negative values.
+</p>
+<p>Some other notes can be found at <code><a href="lms.bcn.html">lms.bcn</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yeo, I.-K. and Johnson, R. A. (2000)
+A new family of power transformations to improve normality or symmetry.
+<em>Biometrika</em>,
+<b>87</b>, 954&ndash;959.
+</p>
+<p>Yee, T. W. (2004)
+Quantile regression via vector generalized additive models.
+<em>Statistics in Medicine</em>, <b>23</b>, 2295&ndash;2315.
+</p>
+<p>Yee, T. W. (2002)
+An Implementation for Regression Quantile Estimation.
+Pages 3&ndash;14.
+In: Haerdle, W. and Ronz, B.,
+<em>Proceedings in Computational Statistics COMPSTAT 2002</em>.
+Heidelberg: Physica-Verlag.
+</p>
+
+
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="lms.bcn.html">lms.bcn</a></code>,
+<code><a href="lms.bcg.html">lms.bcg</a></code>,
+<code><a href="qtplot.lmscreg.html">qtplot.lmscreg</a></code>,
+<code><a href="deplot.lmscreg.html">deplot.lmscreg</a></code>,
+<code><a href="cdf.lmscreg.html">cdf.lmscreg</a></code>,
+<code><a href="bmi.nz.html">bmi.nz</a></code>,
+<code><a href="amlnormal.html">amlnormal</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+fit &lt;- vgam(BMI ~ s(age, df = 4), lms.yjn, bmi.nz, trace = TRUE)
+head(predict(fit))
+head(fitted(fit))
+head(bmi.nz)
+# Person 1 is near the lower quartile of BMI amongst people his age
+head(cdf(fit))
+
+## Not run: 
+# Quantile plot
+par(bty = "l", mar = c(5, 4, 4, 3) + 0.1, xpd = TRUE)
+qtplot(fit, percentiles = c(5, 50, 90, 99), main = "Quantiles",
+       xlim = c(15, 90), las = 1, ylab = "BMI", lwd = 2, lcol = 4)
+
+# Density plot
+ygrid &lt;- seq(15, 43, len = 100)  # BMI ranges
+par(mfrow = c(1, 1), lwd = 2)
+(aa &lt;- deplot(fit, x0 = 20, y = ygrid, xlab = "BMI", col = "black",
+    main = "Density functions at Age = 20 (black), 42 (red) and 55 (blue)"))
+aa &lt;- deplot(fit, x0 = 42, y = ygrid, add = TRUE, llty = 2, col = "red")
+aa &lt;- deplot(fit, x0 = 55, y = ygrid, add = TRUE, llty = 4, col = "blue",
+             Attach = TRUE)
+with(aa@post, deplot)  # Contains density function values; == a@post$deplot
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

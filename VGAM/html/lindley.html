@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: 1-parameter Gamma Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for lindley {VGAM}"><tr><td>lindley {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> 1-parameter Gamma Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Estimates the (1-parameter) Lindley distribution
+by maximum likelihood estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+lindley(link = "loge", itheta = NULL, zero = NULL)
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>link</code></td>
+<td>
+
+<p>Link function applied to the (positive) parameter.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+</table>
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>itheta, zero</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The density function is given by
+</p>
+<p style="text-align: center;"><i>
+        f(y; theta) = theta^2 * (1 + y) * exp(-theta * y) / (1 + theta)</i></p>
+
+<p>for <i>theta &gt; 0</i> and <i>y &gt; 0</i>.
+The mean of <i>Y</i> (returned as the fitted values)
+is <i>mu = (theta + 2) / (theta * (theta + 1))</i>.
+The variance
+is <i>(theta^2 + 4 * theta + 2) / (theta * (theta + 1))^2</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This <span class="pkg">VGAM</span> family function can handle multiple
+responses (inputted as a matrix).
+Fisher scoring is implemented.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Lindley, D. V. (1958)
+Fiducial distributions and Bayes' theorem.
+<em>Journal of the Royal Statistical Society, Series B, Methodological</em>,
+<b>20</b>, 102&ndash;107.
+</p>
+<p>Ghitany, M. E. and Atieh, B. and Nadarajah, S. (2008)
+Lindley distribution and its application.
+<em>Math. Comput. Simul.</em>,
+<b>78</b>, 493&ndash;506.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="lindUC.html">dlind</a></code>,
+<code><a href="gammaR.html">gammaR</a></code>,
+<code><a href="simulate.vlm.html">simulate.vlm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ldata &lt;- data.frame(y = rlind(n = 1000, theta = exp(3)))
+fit &lt;- vglm(y ~ 1, lindley, data = ldata, trace = TRUE, crit = "coef")
+coef(fit, matrix = TRUE)
+Coef(fit)
+summary(fit)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

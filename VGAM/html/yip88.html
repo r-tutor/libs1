@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Zero-Inflated Poisson Distribution (Yip (1988) algorithm)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for yip88 {VGAM}"><tr><td>yip88 {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Zero-Inflated Poisson Distribution (Yip (1988) algorithm) </h2>
+
+<h3>Description</h3>
+
+<p>Fits a zero-inflated Poisson distribution based on Yip (1988).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+yip88(link = "loge", n.arg = NULL, imethod = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>link</code></td>
+<td>
+
+<p>Link function for the usual <i>lambda</i> parameter.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>n.arg</code></td>
+<td>
+
+<p>The total number of observations in the data set. Needed when the
+response variable has all the zeros deleted from it, so that the
+number of zeros can be determined.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod</code></td>
+<td>
+
+<p>Details at <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The method implemented here, Yip (1988), maximizes a <em>conditional</em>
+likelihood. Consequently, the methodology used here deletes the
+zeros from the data set, and is thus related to the positive Poisson
+distribution (where <i>P(Y=0) = 0</i>).
+</p>
+<p>The probability function of <i>Y</i> is 0 with probability
+<i>phi</i>, and
+Poisson(<i>lambda</i>) with probability <i>1-phi</i>.
+Thus
+</p>
+<p style="text-align: center;"><i>
+        P(Y=0) = phi + (1-phi) * P(W=0)</i></p>
+
+<p>where <i>W</i> is Poisson(<i>lambda</i>).
+The mean, <i>(1-phi) * lambda</i>, can be obtained
+by the extractor function <code>fitted</code> applied to the object.
+</p>
+<p>This family function treats <i>phi</i> as a scalar.  If you want
+to model both <i>phi</i> and <i>lambda</i> as a function
+of covariates, try <code><a href="zipoisson.html">zipoisson</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+<code><a href="rrvglm.html">rrvglm</a></code> and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>Under- or over-flow may occur if the data is ill-conditioned.
+Yip (1988) only considered <i>phi</i> being a scalar and not
+modelled as a function of covariates.  To get around this limitation,
+try <code><a href="zipoisson.html">zipoisson</a></code>.
+</p>
+<p>Inference obtained from <code>summary.vglm</code> and <code>summary.vgam</code>
+may or may not be correct.  In particular, the p-values, standard
+errors and degrees of freedom may need adjustment. Use simulation on
+artificial data to check that these are reasonable.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The data may be inputted in two ways.  The first is when the response is
+a vector of positive values, with the argument <code>n</code> in <code>yip88</code>
+specifying the total number of observations.  The second is simply
+include all the data in the response.  In this case, the zeros are
+trimmed off during the computation, and the <code>x</code> and <code>y</code>
+slots of the object, if assigned, will reflect this.
+</p>
+<p>The estimate of <i>phi</i> is placed in the <code>misc</code> slot as
+<code>@misc$pstr0</code>. However, this estimate is computed only for intercept
+models, i.e., the formula is of the form <code>y ~ 1</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yip, P. (1988)
+Inference about the mean of a Poisson distribution in the
+presence of a nuisance parameter.
+<em>The Australian Journal of Statistics</em>,
+<b>30</b>,
+299&ndash;306.
+</p>
+<p>Angers, J-F. and Biswas, A. (2003)
+A Bayesian analysis of zero-inflated generalized Poisson
+model.
+<em>Computational Statistics &amp; Data Analysis</em>,
+<b>42</b>, 37&ndash;46.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="zipoisson.html">zipoisson</a></code>,
+<code><a href="zipoisUC.html">Zipois</a></code>,
+<code><a href="zapoisson.html">zapoisson</a></code>,
+<code><a href="pospoisson.html">pospoisson</a></code>,
+<code><a href="poissonff.html">poissonff</a></code>,
+<code><a href="zipoisUC.html">dzipois</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+phi &lt;- 0.35; lambda &lt;- 2  # Generate some artificial data
+y &lt;- rzipois(n &lt;- 1000, lambda, phi)
+table(y)
+
+# Two equivalent ways of fitting the same model
+fit1 &lt;- vglm(y ~ 1, yip88(n = length(y)), subset = y &gt; 0)
+fit2 &lt;- vglm(y ~ 1, yip88, trace = TRUE, crit = "coef")
+(true.mean &lt;- (1-phi) * lambda)
+mean(y)
+head(fitted(fit1))
+fit1@misc$pstr0  # The estimate of phi
+
+# Compare the ZIP with the positive Poisson distribution
+pp &lt;- vglm(y ~ 1, pospoisson, subset = y &gt; 0, crit = "c")
+coef(pp)
+Coef(pp)
+coef(fit1) - coef(pp)            # Same
+head(fitted(fit1) - fitted(pp))  # Different
+
+# Another example (Angers and Biswas, 2003) ---------------------
+abdata &lt;- data.frame(y = 0:7, w = c(182, 41, 12, 2, 2, 0, 0, 1))
+abdata &lt;- subset(abdata, w &gt; 0)
+
+yy &lt;- with(abdata, rep(y, w))
+fit3 &lt;- vglm(yy ~ 1, yip88(n = length(yy)), subset = yy &gt; 0)
+fit3@misc$pstr0  # Estimate of phi (they get 0.5154 with SE 0.0707)
+coef(fit3, matrix = TRUE)
+Coef(fit3)  # Estimate of lambda (they get 0.6997 with SE 0.1520)
+head(fitted(fit3))
+mean(yy)  # Compare this with fitted(fit3)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

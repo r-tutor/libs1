@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: One-Inflated Positive Binomial Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for oiposbinomial {VGAM}"><tr><td>oiposbinomial {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> One-Inflated Positive Binomial Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Fits a one-inflated positive binomial distribution by maximum likelihood
+estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+oiposbinomial(lpstr1 = "logit", lprob = "logit",
+              type.fitted = c("mean", "prob", "pobs1", "pstr1", "onempstr1"),
+              iprob = NULL, gpstr1 = ppoints(9), gprob  = ppoints(9),
+              multiple.responses = FALSE, zero = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lpstr1, lprob</code></td>
+<td>
+
+<p>Link functions for the parameter <i>phi</i>
+and the positive binomial probability <i>prob</i> parameter.
+See <code><a href="Links.html">Links</a></code> for more choices.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> also.
+For the one-<em>deflated</em> model see below.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>type.fitted</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> and <code><a href="fittedvlm.html">fittedvlm</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iprob, gpstr1, gprob</code></td>
+<td>
+
+<p>For initial values;
+see <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>multiple.responses</code></td>
+<td>
+
+<p>Logical.
+See <code><a href="binomialff.html">binomialff</a></code>
+and <code><a href="posbinomial.html">posbinomial</a></code>.
+</p>
+
+
+
+
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions are based on
+</p>
+<p style="text-align: center;"><i>
+        P(Y=y) =   phi + (1- phi) * N * prob * (1-prob)^N / (1-(1-prob)^N),</i></p>
+
+<p>for <i>y=1/N</i>, and
+</p>
+<p style="text-align: center;"><i>
+        P(Y=y) = (1-phi) * choose(N,Ny) * prob^(N*y) * (1-prob)^(N*(1-y)) / (1-(1-prob)^N).</i></p>
+
+<p>for <i>y=2/N,&hellip;,1</i>. That is, the response is a sample
+proportion out of <i>N</i> trials, and the argument <code>size</code> in
+<code><a href="oiposbinomUC.html">roiposbinom</a></code> is <i>N</i> here.
+Ideally <i>N &gt; 2</i> is needed.
+The parameter <i>phi</i> is the probability of a structural one,
+and it satisfies <i>0 &lt; phi &lt; 1</i> (usually).
+The mean of <i>Y</i> is
+<i>E(Y) = phi + (1-phi) * prob / (1-(1-prob)^N)</i>
+and these are returned as the default fitted values.
+By default, the two linear/additive predictors
+for <code>oiposbinomial()</code>
+are <i>(logit(phi), logit(prob))^T</i>.
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The response variable should have one of the formats described by
+<code><a href="binomialff.html">binomialff</a></code>, e.g., a factor or two column matrix or a
+vector of sample proportions with the <code>weights</code> argument
+specifying the values of <i>N</i>.
+</p>
+<p>To work well, one ideally needs large values of <i>N</i>
+and <i>prob</i> much greater than 0, i.e.,
+the larger <i>N</i> and <i>prob</i> are, the better.
+If <i>N = 1</i> then the model is unidentifiable since
+the number of parameters is excessive.
+</p>
+
+<p>Estimated probabilities of a structural one and an
+observed one are returned, as in <code><a href="zipoisson.html">zipoisson</a></code>.
+</p>
+<p>The one-<em>deflated</em> positive binomial distribution might
+be fitted by setting <code>lpstr1 = "identitylink"</code>, albeit,
+not entirely reliably. See <code><a href="zipoisson.html">zipoisson</a></code>
+for information that can be applied here.
+
+
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="oiposbinomUC.html">roiposbinom</a></code>,
+<code><a href="posbinomial.html">posbinomial</a></code>,
+<code><a href="binomialff.html">binomialff</a></code>,
+<code><a href="../../stats/html/Binomial.html">rbinom</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+size &lt;- 10  # Number of trials; N in the notation above
+nn &lt;- 200
+odata &lt;- data.frame(pstr1  = logit( 0, inverse = TRUE),  # 0.50
+                    mubin1 = logit(-1, inverse = TRUE),  # Mean of usual binomial
+                    svec   = rep(size, length = nn),
+                    x2     = runif(nn))
+odata &lt;- transform(odata,
+                   mubin2 = logit(-1 + x2, inverse = TRUE))
+odata &lt;- transform(odata,
+                   y1 = roiposbinom(nn, svec, pr = mubin1, pstr1 = pstr1),
+                   y2 = roiposbinom(nn, svec, pr = mubin2, pstr1 = pstr1))
+with(odata, table(y1))
+fit1 &lt;- vglm(y1 / svec ~  1, oiposbinomial, data = odata,
+             weights = svec, trace = TRUE, crit = "coef")
+fit2 &lt;- vglm(y2 / svec ~ x2, oiposbinomial, data = odata,
+             weights = svec, trace = TRUE)
+
+coef(fit1, matrix = TRUE)
+Coef(fit1)  # Useful for intercept-only models
+head(fitted(fit1, type = "pobs1"))  # Estimate of P(Y = 1)
+head(fitted(fit1))
+with(odata, mean(y1))  # Compare this with fitted(fit1)
+summary(fit1)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

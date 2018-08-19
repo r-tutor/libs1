@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Riemann's Zeta Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for zeta {VGAM}"><tr><td>zeta {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Riemann's Zeta Function </h2>
+
+<h3>Description</h3>
+
+<p>Computes Riemann's zeta function and its first two derivatives.
+Also can computes Hurwitz's zeta function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+zeta(x, deriv = 0, shift = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+
+<p>A complex-valued vector/matrix whose real values must be
+<i>&gt;= 1</i>. Otherwise, if <code>x</code> may be real.
+If <code>deriv</code> is 1 or 2 then <code>x</code> must be real and positive.
+</p>
+</td></tr>
+<tr valign="top"><td><code>deriv</code></td>
+<td>
+
+<p>An integer equalling 0 or 1 or 2, which is the order of the derivative.
+The default means it is computed ordinarily.
+</p>
+</td></tr>
+<tr valign="top"><td><code>shift</code></td>
+<td>
+
+<p>Positive and numeric, called <i>A</i> below.
+Allows for the Hurwitz zeta to be returned.
+The default corresponds to the Riemann formula.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The (Riemann) formula for real <i>s</i> is
+</p>
+<p style="text-align: center;"><i>
+         sum_{n=1}^Inf      1 / n^s.</i></p>
+
+<p>While the usual definition involves an infinite series that
+converges when the real part of the argument is <i>&gt; 1</i>,
+more efficient methods have been devised to compute the
+value. In particular, this function uses Euler-Maclaurin
+summation. Theoretically, the zeta function can be computed
+over the whole complex plane because of analytic continuation.
+</p>
+<p>The (Riemann) formula used here for analytic continuation is
+</p>
+<p style="text-align: center;"><i>
+        zeta(s)  = 2^s * pi^(s-1) * sin(pi*s/2) * gamma(1-s) *  zeta(1-s).</i></p>
+
+<p>This is actually one of several formulas, but this one was discovered
+by Riemann himself and is called the <em>functional equation</em>.
+</p>
+<p>The Hurwitz zeta function for real <i>0 &lt; s</i> is
+</p>
+<p style="text-align: center;"><i>
+         sum_{n=0}^Inf      1 / (A + n)^s.</i></p>
+
+<p>where <i>0 &lt; A</i> is known here as the <code>shift</code>.
+Since <i>A=1</i> by default, this function will therefore return
+Riemann's zeta function by default.
+Currently derivatives are unavailable.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The default is a vector/matrix of computed values of Riemann's zeta
+function.
+If <code>shift</code> contains values not equal to 1, then this is
+Hurwitz's zeta function.
+</p>
+
+
+
+<h3>Warning</h3>
+
+<p>This function has not been fully tested, especially the derivatives.
+In particular, analytic continuation does not work here for
+complex <code>x</code> with <code>Re(x)&lt;1</code> because currently the
+<code><a href="../../base/html/Special.html">gamma</a></code> function does not handle complex
+arguments.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Estimation of the parameter of the zeta distribution can
+be achieved with <code><a href="zetaff.html">zetaff</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee, with the help of Garry J. Tee. </p>
+
+
+<h3>References</h3>
+
+<p>Riemann, B. (1859)
+Ueber die Anzahl der Primzahlen unter einer gegebenen Grosse.
+<em>Monatsberichte der Berliner Akademie, November 1859</em>.
+</p>
+<p>Edwards, H. M. (1974)
+<em>Riemann's Zeta Function</em>.
+Academic Press: New York.
+</p>
+<p>Markman, B. (1965)
+The Riemann zeta function.
+<em>BIT</em>,
+<b>5</b>,
+138&ndash;141.
+</p>
+<p>Abramowitz, M. and Stegun, I. A. (1972)
+<em>Handbook of Mathematical Functions with Formulas, Graphs, and
+Mathematical Tables</em>,
+New York: Dover Publications Inc.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="zetaff.html">zetaff</a></code>,
+<code><a href="oazeta.html">oazeta</a></code>,
+<code><a href="oizeta.html">oizeta</a></code>,
+<code><a href="otzeta.html">otzeta</a></code>,
+<code><a href="lerch.html">lerch</a></code>,
+<code><a href="../../base/html/Special.html">gamma</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+zeta(2:10)
+
+## Not run: 
+curve(zeta, -13, 0.8, xlim = c(-12, 10), ylim = c(-1, 4), col = "orange",
+      las = 1, main = expression({zeta}(x)))
+curve(zeta, 1.2,  12, add = TRUE, col = "orange")
+abline(v = 0, h = c(0, 1), lty = "dashed", col = "gray")
+
+curve(zeta, -14, -0.4, col = "orange", main = expression({zeta}(x)))
+abline(v = 0, h = 0, lty = "dashed", col = "gray")  # Close up plot
+
+x &lt;- seq(0.04, 0.8, len = 100)  # Plot of the first derivative
+plot(x, zeta(x, deriv = 1), type = "l", las = 1, col = "blue",
+     xlim = c(0.04, 3), ylim = c(-6, 0), main = "zeta'(x)")
+x &lt;- seq(1.2, 3, len = 100)
+lines(x, zeta(x, deriv = 1), col = "blue")
+abline(v = 0, h = 0, lty = "dashed", col = "gray") 
+## End(Not run)
+
+zeta(2) - pi^2 / 6     # Should be 0
+zeta(4) - pi^4 / 90    # Should be 0
+zeta(6) - pi^6 / 945   # Should be 0
+zeta(8) - pi^8 / 9450  # Should be 0
+# zeta(0, deriv = 1) + 0.5 * log(2*pi)  # Should be 0
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

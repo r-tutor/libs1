@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Folded-Normal Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Foldnorm {VGAM}"><tr><td>Foldnorm {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The Folded-Normal Distribution</h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function, quantile function and random
+generation for the (generalized) folded-normal distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dfoldnorm(x, mean = 0, sd = 1, a1 = 1, a2 = 1, log = FALSE)
+pfoldnorm(q, mean = 0, sd = 1, a1 = 1, a2 = 1,
+          lower.tail = TRUE, log.p = FALSE)
+qfoldnorm(p, mean = 0, sd = 1, a1 = 1, a2 = 1,
+          lower.tail = TRUE, log.p = FALSE, ...)
+rfoldnorm(n, mean = 0, sd = 1, a1 = 1, a2 = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>vector of probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of observations.
+Same as <code><a href="../../stats/html/Normal.html">rnorm</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>mean, sd</code></td>
+<td>
+<p> see <code><a href="../../stats/html/Normal.html">rnorm</a></code>. </p>
+</td></tr>
+<tr valign="top"><td><code>a1, a2</code></td>
+<td>
+<p> see <code><a href="foldnormal.html">foldnormal</a></code>. </p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>Logical.
+If <code>TRUE</code> then the log density is returned.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lower.tail, log.p</code></td>
+<td>
+
+<p>Same meaning as in <code><a href="../../stats/html/Normal.html">pnorm</a></code>
+or <code><a href="../../stats/html/Normal.html">qnorm</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Arguments that can be passed into <code><a href="../../stats/html/uniroot.html">uniroot</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <code><a href="foldnormal.html">foldnormal</a></code>, the <span class="pkg">VGAM</span> family function
+for estimating the parameters,
+for the formula of the probability density function and other details.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dfoldnorm</code> gives the density,
+<code>pfoldnorm</code> gives the distribution function,
+<code>qfoldnorm</code> gives the quantile function, and
+<code>rfoldnorm</code> generates random deviates.
+</p>
+
+
+<h3>Note</h3>
+
+<p><code>qfoldnorm()</code> runs very slowly because it calls
+<code><a href="../../stats/html/uniroot.html">uniroot</a></code> for each value of the argument <code>p</code>.
+The solution is consequently not exact; the <code>...</code> can be used
+to obtain a more accurate solution if necessary.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee and Kai Huang </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="foldnormal.html">foldnormal</a></code>,
+<code><a href="../../stats/html/uniroot.html">uniroot</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+m &lt;- 1.5; SD &lt;- exp(0)
+x &lt;- seq(-1, 4, len = 501)
+plot(x, dfoldnorm(x, m = m, sd = SD), type = "l", ylim = 0:1, las = 1,
+     ylab = paste("foldnorm(m = ", m, ", sd = ", round(SD, digits = 3), ")"),
+     main = "Blue is density, orange is cumulative distribution function",
+     sub = "Purple lines are the 10,20,...,90 percentiles", col = "blue")
+abline(h = 0, col = "gray50")
+lines(x, pfoldnorm(x, m = m, sd = SD), col = "orange")
+probs &lt;- seq(0.1, 0.9, by = 0.1)
+Q &lt;- qfoldnorm(probs, m = m, sd = SD)
+lines(Q, dfoldnorm(Q, m = m, sd = SD), col = "purple", lty = 3, type = "h")
+lines(Q, pfoldnorm(Q, m = m, sd = SD), col = "purple", lty = 3, type = "h")
+abline(h = probs, col = "purple", lty = 3)
+max(abs(pfoldnorm(Q, m = m, sd = SD) - probs))  # Should be 0
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

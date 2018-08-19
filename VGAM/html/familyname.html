@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Family Function Name</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for familyname {VGAM}"><tr><td>familyname {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Family Function Name </h2>
+
+<h3>Description</h3>
+
+<p>Extractor function for the name of the family function of an object
+in the <span class="pkg">VGAM</span> package.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+familyname(object, ...)
+familyname.vlm(object, all = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>Some <span class="pkg">VGAM</span> object, for example, having
+class <code><a href="vglmff-class.html">vglmff-class</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>all</code></td>
+<td>
+
+<p>If <code>all = TRUE</code> then all of the <code>vfamily</code> slot is returned;
+this contains subclasses the object might have.
+The default is the return the first value only.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Other possible arguments for the future.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Currently <span class="pkg">VGAM</span> implements over 150 family functions.
+This function returns the name of the function assigned
+to the <code>family</code> argument, for modelling
+functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+Sometimes a slightly different answer is returned, e.g.,
+<code><a href="propodds.html">propodds</a></code> really calls <code><a href="cumulative.html">cumulative</a></code>
+with some arguments set, hence the output returned by
+this function is <code>"cumulative"</code> (note that one day
+this might change, however).
+</p>
+
+
+<h3>Value</h3>
+
+<p>A character string or vector.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Arguments used in the invocation are not included.
+Possibly this is something to be done in the future.
+</p>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="vglmff-class.html">vglmff-class</a></code>,
+<code><a href="vglm-class.html">vglm-class</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+pneumo &lt;- transform(pneumo, let = log(exposure.time))
+fit1 &lt;- vglm(cbind(normal, mild, severe) ~ let,
+              cumulative(parallel = TRUE, reverse = TRUE), data = pneumo)
+familyname(fit1)
+familyname(fit1, all = TRUE)
+familyname(propodds())  # "cumulative"
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

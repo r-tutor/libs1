@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: One-Inflated Zipf Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Oizipf {VGAM}"><tr><td>Oizipf {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> One-Inflated Zipf Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function, quantile function and random generation
+for the one-inflated
+Zipf distribution with parameter <code>pstr1</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+doizipf(x, N, shape, pstr1 = 0, log = FALSE)
+poizipf(q, N, shape, pstr1 = 0)
+qoizipf(p, N, shape, pstr1 = 0)
+roizipf(n, N, shape, pstr1 = 0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q, p, n</code></td>
+<td>
+<p>Same as <code><a href="../../stats/html/Uniform.html">Uniform</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>N, shape</code></td>
+<td>
+<p> See <code><a href="zipfUC.html">Zipf</a></code>. </p>
+</td></tr>
+<tr valign="top"><td><code>pstr1</code></td>
+<td>
+
+<p>Probability of a structural one
+(i.e., ignoring the Zipf distribution),
+called <i>phi</i>.
+The default value of <i>phi = 0</i> corresponds
+to the response having an ordinary Zipf distribution.
+</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+<p>Same as <code><a href="../../stats/html/Uniform.html">Uniform</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The probability function of <i>Y</i> is 1 with probability
+<i>phi</i>, and <i>Zipf(N, s)</i> with
+probability <i>1-phi</i>. Thus
+</p>
+<p style="text-align: center;"><i>
+        P(Y=1) = phi + (1-phi) * P(W=1)</i></p>
+
+<p>where <i>W</i> is distributed as a
+<i>Zipf(N, s)</i> random variable.
+The <span class="pkg">VGAM</span> family function <code><a href="oizeta.html">oizeta</a></code> estimates
+the two parameters of this model by Fisher scoring.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>doizipf</code> gives the density,
+<code>poizipf</code> gives the distribution function,
+<code>qoizipf</code> gives the quantile function, and
+<code>roizipf</code> generates random deviates.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The argument <code>pstr1</code> is recycled to the required length, and
+usually has values which lie in the interval <i>[0,1]</i>.
+</p>
+<p>These functions actually allow for the <em>zero-deflated
+Zipf</em> distribution. Here, <code>pstr1</code> is also permitted
+to lie in the interval <code>[-dzipf(1, N, s) / (1 - dzipf(1, N, s)), 0]</code>.
+The resulting probability of a unit count is <em>less than</em>
+the nominal zipf value, and the use of <code>pstr1</code> to
+stand for the probability of a structural 1 loses its
+meaning.
+
+
+
+When <code>pstr1</code> equals <code>-dzipf(1, N, s) / (1 - dzipf(1, N, s))</code>
+this corresponds to the 1-truncated zipf distribution.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="oizeta.html">oizeta</a></code>.
+<code><a href="zipfUC.html">Zipf</a></code>,
+<code><a href="zipf.html">zipf</a></code>,
+<code><a href="oizetaUC.html">Oizeta</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+N &lt;- 10; shape &lt;- 1.5; pstr1 &lt;- 0.3; x &lt;- (-1):N
+(ii &lt;- doizipf(x, N, shape, pstr1 = pstr1))
+
+## Not run:  x &lt;- 0:10
+par(mfrow = c(2, 1))  # One-Inflated zipf
+barplot(rbind(doizipf(x, N, shape, pstr1 = pstr1), dzipf(x, N, shape)),
+        beside = TRUE, col = c("blue", "orange"),
+        main = paste("OIZipf(", N, ", ", shape, ", pstr1 = ", pstr1, ") (blue) vs",
+                     " Zipf(", N, ", ", shape, ") (orange)", sep = ""),
+        names.arg = as.character(x))
+
+deflat.limit &lt;- -dzipf(1, N, shape) / (1 - dzipf(1, N, shape))
+newpstr1 &lt;- round(deflat.limit, 3) + 0.001  # Inside but near the boundary
+barplot(rbind(doizipf(x, N, shape, pstr1 = newpstr1),
+                dzipf(x, N, shape)),
+        beside = TRUE, col = c("blue", "orange"),
+        main = paste("ODZipf(", N, ", ", shape, ", pstr1 = ", newpstr1, ") (blue) vs",
+                     " Zipf(", N, ", ", shape, ") (orange)", sep = ""),
+        names.arg = as.character(x)) 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

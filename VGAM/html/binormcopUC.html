@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Gaussian Copula (Bivariate) Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Binormcop {VGAM}"><tr><td>Binormcop {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Gaussian Copula (Bivariate) Distribution</h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function,
+and random generation
+for the (one parameter) bivariate
+Gaussian copula distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dbinormcop(x1, x2, rho = 0, log = FALSE)
+pbinormcop(q1, q2, rho = 0)
+rbinormcop(n, rho = 0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x1, x2, q1, q2</code></td>
+<td>
+<p>vector of quantiles.
+The <code>x1</code> and <code>x2</code> should be in the interval <i>(0,1)</i>.
+Ditto for <code>q1</code> and <code>q2</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of observations.
+Same as <code><a href="../../stats/html/rnorm.html">rnorm</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>rho</code></td>
+<td>
+<p>the correlation parameter.
+Should be in the interval <i>(-1,1)</i>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>Logical.
+If <code>TRUE</code> then the logarithm is returned.
+
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <code><a href="binormalcop.html">binormalcop</a></code>, the <span class="pkg">VGAM</span>
+family functions for estimating the
+parameter by maximum likelihood estimation,
+for the formula of the
+cumulative distribution function and other details.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dbinormcop</code> gives the density,
+<code>pbinormcop</code> gives the distribution function, and
+<code>rbinormcop</code> generates random deviates (a two-column matrix).
+</p>
+
+
+<h3>Note</h3>
+
+<p>Yettodo: allow <code>x1</code> and/or <code>x2</code> to have values 1,
+and to allow any values for <code>x1</code> and/or <code>x2</code> to be
+outside the unit square.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="binormalcop.html">binormalcop</a></code>,
+<code><a href="binormal.html">binormal</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run:  edge &lt;- 0.01  # A small positive value
+N &lt;- 101; x &lt;- seq(edge, 1.0 - edge, len = N); Rho &lt;- 0.7
+ox &lt;- expand.grid(x, x)
+zedd &lt;- dbinormcop(ox[, 1], ox[, 2], rho = Rho, log = TRUE)
+contour(x, x, matrix(zedd, N, N), col = "blue", labcex = 1.5)
+zedd &lt;- pbinormcop(ox[, 1], ox[, 2], rho = Rho)
+contour(x, x, matrix(zedd, N, N), col = "blue", labcex = 1.5)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

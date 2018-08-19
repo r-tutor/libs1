@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Mixture of Two Exponential Distributions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for mix2exp {VGAM}"><tr><td>mix2exp {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Mixture of Two Exponential Distributions </h2>
+
+<h3>Description</h3>
+
+<p>Estimates the three parameters of a mixture of two exponential
+distributions by maximum likelihood estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mix2exp(lphi = "logit", llambda = "loge", iphi = 0.5, il1 = NULL,
+        il2 = NULL, qmu = c(0.8, 0.2), nsimEIM = 100, zero = "phi")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lphi, llambda</code></td>
+<td>
+
+<p>Link functions for the parameters <i>phi</i>
+and <i>lambda</i>. The latter is the rate parameter
+and note that the mean of an ordinary exponential distribution is
+<i>1 / &lambda;</i>.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iphi, il1, il2</code></td>
+<td>
+
+<p>Initial value for <i>phi</i>, and
+optional initial value for <i>lambda1</i> and
+<i>lambda2</i>.
+The last two have values that must be positive.
+The default is to compute initial values internally using
+the argument <code>qmu</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>qmu</code></td>
+<td>
+
+<p>Vector with two values giving the probabilities relating to the sample
+quantiles for obtaining initial values for <i>lambda1</i>
+and <i>lambda2</i>.
+The two values are fed in as the <code>probs</code> argument into
+<code><a href="../../stats/html/quantile.html">quantile</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>nsimEIM, zero</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The probability density function can be loosely written as
+</p>
+<p style="text-align: center;"><i>
+        f(y) = phi * Exponential(lambda1) +
+              (1-phi) * Exponential(lambda2)</i></p>
+
+<p>where <i>phi</i> is the probability an observation belongs
+to the first group, and <i>y&gt;0</i>.
+The parameter <i>phi</i> satisfies <i>0 &lt; phi &lt; 1</i>.
+The mean of <i>Y</i> is
+<i>phi/lambda1 + (1-phi)/lambda2</i>
+and this is returned as the fitted values.
+By default, the three linear/additive predictors are
+<i>(logit(phi),
+  log(lambda1), log(lambda2))^T</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>This <span class="pkg">VGAM</span> family function requires care for a successful
+application.
+In particular, good initial values are required because
+of the presence of local solutions. Therefore running
+this function with several different combinations of
+arguments such as <code>iphi</code>, <code>il1</code>, <code>il2</code>,
+<code>qmu</code> is highly recommended. Graphical methods such
+as <code><a href="../../graphics/html/hist.html">hist</a></code> can be used as an aid.
+</p>
+<p>This <span class="pkg">VGAM</span> family function is experimental and
+should be used with care.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Fitting this model successfully to data can be
+difficult due to local solutions, uniqueness problems
+and ill-conditioned data. It pays to fit the model
+several times with different initial values and check
+that the best fit looks reasonable. Plotting the
+results is recommended. This function works better as
+<i>lambda1</i> and <i>lambda2</i>
+become more different. The default control argument
+<code>trace = TRUE</code> is to encourage monitoring convergence.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/Exponential.html">rexp</a></code>,
+<code><a href="exponential.html">exponential</a></code>,
+<code><a href="mix2poisson.html">mix2poisson</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run:  lambda1 &lt;- exp(1); lambda2 &lt;- exp(3)
+(phi &lt;- logit(-1, inverse = TRUE))
+mdata &lt;- data.frame(y1 = rexp(nn &lt;- 1000, lambda1))
+mdata &lt;- transform(mdata, y2 = rexp(nn, lambda2))
+mdata &lt;- transform(mdata, Y  = ifelse(runif(nn) &lt; phi, y1, y2))
+fit &lt;- vglm(Y ~ 1, mix2exp, data = mdata, trace = TRUE)
+coef(fit, matrix = TRUE)
+
+# Compare the results with the truth
+round(rbind('Estimated' = Coef(fit),
+            'Truth' = c(phi, lambda1, lambda2)), digits = 2)
+
+with(mdata, hist(Y, prob = TRUE, main = "Orange = estimate, blue = truth"))
+abline(v = 1 / Coef(fit)[c(2, 3)],  lty = 2, col = "orange", lwd = 2)
+abline(v = 1 / c(lambda1, lambda2), lty = 2, col = "blue", lwd = 2)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

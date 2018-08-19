@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Logarithmic Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for logff {VGAM}"><tr><td>logff {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Logarithmic Distribution  </h2>
+
+<h3>Description</h3>
+
+<p>Estimating the (single) parameter of the logarithmic distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+logff(lshape = "logit", gshape = ppoints(8), zero = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lshape</code></td>
+<td>
+
+<p>Parameter link function for the parameter <i>c</i>,
+which lies between 0 and 1.
+See <code><a href="Links.html">Links</a></code> for more choices and information.
+Soon <code>logfflink()</code> will hopefully be available for event-rate data.
+</p>
+</td></tr>
+<tr valign="top"><td><code>gshape, zero</code></td>
+<td>
+
+<p>Details at <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The logarithmic distribution is
+a generalized power series distribution that is
+based specifically on the logarithmic series
+(scaled to a probability function).
+Its probability function is
+<i>f(y) = a * c^y / y</i>, for
+<i>y=1,2,3,...</i>,
+where <i>0 &lt; c &lt; 1</i> (called <code>shape</code>),
+and <i>a = -1 / log(1-c)</i>.
+The mean is <i>a*c/(1-c)</i> (returned as the fitted values)
+and variance is <i>a*c*(1-a*c)/(1-c)^2</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The function <code><a href="../../base/html/Log.html">log</a></code> computes the natural logarithm.
+In the <span class="pkg">VGAM</span> library, a link function with option
+<code><a href="loge.html">loge</a></code> corresponds to this.
+</p>
+<p>Multiple responses are permitted.
+</p>
+<p>The logarithmic distribution is sometimes confused with the log-series
+distribution. The latter was used by Fisher et al. for species abundance
+data and has two parameters.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Chapter 7 of
+Johnson N. L., Kemp, A. W. and Kotz S. (2005)
+<em>Univariate Discrete Distributions</em>,
+3rd edition,
+Hoboken, New Jersey: Wiley.
+</p>
+<p>Forbes, C., Evans, M., Hastings, N. and Peacock, B. (2011)
+<em>Statistical Distributions</em>,
+Hoboken, NJ, USA: John Wiley and Sons, Fourth edition.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="logUC.html">rlog</a></code>,
+<code><a href="oalog.html">oalog</a></code>,
+<code><a href="oilog.html">oilog</a></code>,
+<code><a href="otlog.html">otlog</a></code>,
+<code><a href="../../base/html/Log.html">log</a></code>,
+<code><a href="loge.html">loge</a></code>,
+<code><a href="logoff.html">logoff</a></code>,
+<code><a href="explogff.html">explogff</a></code>,
+<code><a href="simulate.vlm.html">simulate.vlm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ldata &lt;- data.frame(y = rlog(n = 1000, shape = logit(0.2, inverse = TRUE)))
+fit &lt;- vglm(y ~ 1, logff, data = ldata, trace = TRUE, crit = "c")
+coef(fit, matrix = TRUE)
+Coef(fit)
+## Not run: with(ldata,
+    hist(y, prob = TRUE, breaks = seq(0.5, max(y) + 0.5, by = 1),
+         border = "blue"))
+x &lt;- seq(1, with(ldata, max(y)), by = 1)
+with(ldata, lines(x, dlog(x, Coef(fit)[1]), col = "orange", type = "h", lwd = 2)) 
+## End(Not run)
+
+
+# Example: Corbet (1943) butterfly Malaya data
+corbet &lt;- data.frame(nindiv = 1:24,
+                     ofreq = c(118, 74, 44, 24, 29, 22, 20, 19, 20, 15, 12,
+                               14, 6, 12, 6, 9, 9, 6, 10, 10, 11, 5, 3, 3))
+fit &lt;- vglm(nindiv ~ 1, logff, data = corbet, weights = ofreq)
+coef(fit, matrix = TRUE)
+shapehat &lt;- Coef(fit)["shape"]
+pdf2 &lt;- dlog(x = with(corbet, nindiv), shape = shapehat)
+print(with(corbet, cbind(nindiv, ofreq, fitted = pdf2 * sum(ofreq))), digits = 1)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

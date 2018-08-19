@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Control Function for CQO/CAO Calibration</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for calibrate.qrrvglm.control {VGAM}"><tr><td>calibrate.qrrvglm.control {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Control Function for CQO/CAO Calibration </h2>
+
+<h3>Description</h3>
+
+<p>Algorithmic constants and parameters for running
+<code><a href="calibrate.qrrvglm.html">calibrate.qrrvglm</a></code> are set using this function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+calibrate.qrrvglm.control(object, trace = FALSE, method.optim = "BFGS",
+    gridSize = ifelse(Rank == 1, 21, 9), varI.latvar = FALSE, ...)
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>The fitted CQO/CAO model. The user should ignore this argument.
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>trace</code></td>
+<td>
+
+<p>Logical indicating if output should be produced for each iteration.
+It is a good idea to set this argument to be <code>TRUE</code> since the
+computations are expensive.
+</p>
+</td></tr>
+<tr valign="top"><td><code>method.optim</code></td>
+<td>
+
+<p>Character. Fed into the <code>method</code> argument of
+<code><a href="../../stats/html/optim.html">optim</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>gridSize</code></td>
+<td>
+
+<p>Numeric, recycled to length <code>Rank</code>.  Controls the resolution
+of the grid used for initial values.  For each latent variable,
+an equally spaced grid of length <code>gridSize</code> is cast from the
+smallest site score to the largest site score. Then the likelihood
+function is evaluated on the grid, and the best fit is chosen as the
+initial value. Thus increasing the value of <code>gridSize</code> increases
+the chance of obtaining the global solution, however, the computing
+time increases proportionately.
+</p>
+</td></tr>
+<tr valign="top"><td><code>varI.latvar</code></td>
+<td>
+
+<p>Logical. For CQO objects only, this argument is fed into
+<code><a href="Coef.qrrvglm.html">Coef.qrrvglm</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Avoids an error message for extraneous arguments.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Most CQO/CAO users will only need to make use of <code>trace</code>
+and <code>gridSize</code>. These arguments should be used inside their
+call to <code><a href="calibrate.qrrvglm.html">calibrate.qrrvglm</a></code>, not this function
+directly.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list which with the following components.
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>trace</code></td>
+<td>
+<p>Numeric (even though the input can be logical). </p>
+</td></tr>
+<tr valign="top"><td><code>gridSize</code></td>
+<td>
+<p>Positive integer. </p>
+</td></tr>
+<tr valign="top"><td><code>varI.latvar</code></td>
+<td>
+<p>Logical.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>Despite the name of this function, CAO models are handled
+as well.
+</p>
+
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. (2018)
+On constrained and unconstrained quadratic ordination.
+<em>Manuscript in preparation</em>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="calibrate.qrrvglm.html">calibrate.qrrvglm</a></code>,
+<code><a href="Coef.qrrvglm.html">Coef.qrrvglm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run:  hspider[, 1:6] &lt;- scale(hspider[, 1:6])  # Needed for I.tol=TRUE
+set.seed(123)
+p1 &lt;- cqo(cbind(Alopacce, Alopcune, Pardlugu, Pardnigr,
+                Pardpull, Trocterr, Zoraspin) ~
+          WaterCon + BareSand + FallTwig + CoveMoss + CoveHerb + ReflLux,
+          family = poissonff, data = hspider, I.tol = TRUE)
+sort(deviance(p1, history = TRUE))  # A history of all the iterations
+siteNos &lt;- 3:4  # Calibrate these sites
+cp1 &lt;- calibrate(p1, trace = TRUE,
+                 new = data.frame(depvar(p1)[siteNos, ]))
+
+## End(Not run)
+## Not run: 
+# Graphically compare the actual site scores with their calibrated values
+persp(p1, main = "Site scores: solid=actual, dashed=calibrated",
+      label = TRUE, col = "blue", las = 1)
+abline(v = latvar(p1)[siteNos], col = seq(siteNos))  # Actual site scores
+abline(v = cp1, lty = 2, col = seq(siteNos))  # Calibrated values
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Chest Pain in NZ Adults Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for chest.nz {VGAM}"><tr><td>chest.nz {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Chest Pain in NZ Adults Data</h2>
+
+<h3>Description</h3>
+
+<p>Presence/absence of chest pain in 10186 New Zealand adults.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>data(chest.nz)</pre>
+
+
+<h3>Format</h3>
+
+<p>A data frame with 73 rows and the following 5 variables.
+</p>
+
+<dl>
+<dt>age</dt><dd><p>a numeric vector; age (years).</p>
+</dd>
+<dt>nolnor</dt><dd><p>a numeric vector of counts; no pain on LHS or RHS.</p>
+</dd>
+<dt>nolr</dt><dd><p>a numeric vector of counts; no pain on LHS but pain on RHS.</p>
+</dd>
+<dt>lnor</dt><dd><p>a numeric vector of counts; no pain on RHS but pain on LHS.</p>
+</dd>
+<dt>lr</dt><dd><p>a numeric vector of counts; pain on LHS and RHS of chest.</p>
+</dd>
+</dl>
+
+
+
+<h3>Details</h3>
+
+<p>Each adult was asked their age and whether they experienced any
+pain or discomfort in their chest over the last six months.
+If yes, they indicated whether it
+was on their LHS and/or RHS of their chest.
+</p>
+
+
+<h3>Source</h3>
+
+<p>MacMahon, S., Norton, R., Jackson, R., Mackie, M. J.,
+Cheng, A., Vander Hoorn, S., Milne, A., McCulloch, A. (1995)
+Fletcher Challenge-University of Auckland Heart &amp;
+Health Study: design and baseline findings.
+<em>New Zealand Medical Journal</em>,
+<b>108</b>, 499&ndash;502.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+fit &lt;- vgam(cbind(nolnor, nolr, lnor, lr) ~ s(age, c(4, 3)),
+            binom2.or(exchan = TRUE, zero = NULL), data = chest.nz)
+coef(fit, matrix = TRUE)
+
+## End(Not run)
+## Not run:  plot(fit, which.cf = 2, se = TRUE) 
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

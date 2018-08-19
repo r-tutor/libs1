@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A Short-tailed Symmetric Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Tikuv {VGAM}"><tr><td>Tikuv {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A Short-tailed Symmetric Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Density, cumulative distribution function, quantile function and
+random generation for
+the short-tailed symmetric distribution of Tiku and Vaughan (1999).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dtikuv(x, d, mean = 0, sigma = 1, log = FALSE)
+ptikuv(q, d, mean = 0, sigma = 1, lower.tail = TRUE, log.p = FALSE)
+qtikuv(p, d, mean = 0, sigma = 1, lower.tail = TRUE, log.p = FALSE, ...)
+rtikuv(n, d, mean = 0, sigma = 1, Smallno = 1.0e-6)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>vector of probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of observations.
+Same as in <code><a href="../../stats/html/runif.html">runif</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>d, mean, sigma </code></td>
+<td>
+
+<p>arguments for the parameters of the distribution.
+See <code><a href="tikuv.html">tikuv</a></code> for more details.
+For <code>rtikuv</code>, arguments <code>mean</code> and <code>sigma</code> must be of
+length 1.
+</p>
+</td></tr>
+<tr valign="top"><td><code>Smallno</code></td>
+<td>
+
+<p>Numeric, a small value used by the rejection method for determining
+the lower and upper limits of the distribution.
+That is, <code>ptikuv(L) &lt; Smallno</code> and <code>ptikuv(U) &gt; 1-Smallno</code>
+where <code>L</code> and <code>U</code> are the lower and upper limits respectively.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Arguments that can be passed into <code><a href="../../stats/html/uniroot.html">uniroot</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>Logical.
+If <code>log = TRUE</code> then the logarithm of the density is returned.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lower.tail, log.p</code></td>
+<td>
+
+<p>Same meaning as in <code><a href="../../stats/html/Normal.html">pnorm</a></code>
+or <code><a href="../../stats/html/Normal.html">qnorm</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <code><a href="tikuv.html">tikuv</a></code> for more details.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dtikuv</code> gives the density,
+<code>ptikuv</code> gives the cumulative distribution function,
+<code>qtikuv</code> gives the quantile function, and
+<code>rtikuv</code> generates random deviates.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee and Kai Huang </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="tikuv.html">tikuv</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run:  par(mfrow = c(2, 1))
+x &lt;- seq(-5, 5, len = 401)
+plot(x, dnorm(x), type = "l", col = "black", ylab = "", las = 1,
+     main = "Black is standard normal, others are dtikuv(x, d)")
+lines(x, dtikuv(x, d = -10), col = "orange")
+lines(x, dtikuv(x, d = -1 ), col = "blue")
+lines(x, dtikuv(x, d =  1 ), col = "green")
+legend("topleft", col = c("orange","blue","green"), lty = rep(1, len = 3),
+       legend = paste("d =", c(-10, -1, 1)))
+
+plot(x, pnorm(x), type = "l", col = "black", ylab = "", las = 1,
+     main = "Black is standard normal, others are ptikuv(x, d)")
+lines(x, ptikuv(x, d = -10), col = "orange")
+lines(x, ptikuv(x, d = -1 ), col = "blue")
+lines(x, ptikuv(x, d =  1 ), col = "green")
+legend("topleft", col = c("orange","blue","green"), lty = rep(1, len = 3),
+       legend = paste("d =", c(-10, -1, 1))) 
+## End(Not run)
+
+probs &lt;- seq(0.1, 0.9, by = 0.1)
+ptikuv(qtikuv(p = probs, d =  1), d = 1) - probs  # Should be all 0
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

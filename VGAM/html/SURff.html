@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Seemingly Unrelated Regressions Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for SURff {VGAM}"><tr><td>SURff {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Seemingly Unrelated Regressions Family Function
+
+</h2>
+
+<h3>Description</h3>
+
+<p>Fits a system of seemingly unrelated regressions.
+
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+SURff(mle.normal = FALSE,
+      divisor = c("n", "n-max(pj,pk)", "sqrt((n-pj)*(n-pk))"),
+      parallel = FALSE, Varcov = NULL, matrix.arg = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>mle.normal</code></td>
+<td>
+
+<p>Logical.
+If <code>TRUE</code> then the MLE, assuming multivariate normal errors,
+is computed;
+the effect is just to add a <code>loglikelihood</code> slot to the
+returned object.
+Then it results in the <em>maximum likelihood estimator</em>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>divisor</code></td>
+<td>
+
+<p>Character, partial matching allowed and the first choice is the default.
+The divisor for the estimate of the covariances.
+If <code>"n"</code> then the estimate will be biased.
+If the others then the estimate will be unbiased for some elements.
+If <code>mle.normal = TRUE</code> and this argument is not <code>"n"</code> then
+a warning or an error will result.
+</p>
+</td></tr>
+<tr valign="top"><td><code>parallel</code></td>
+<td>
+
+<p>See
+<code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+If <code>parallel = TRUE</code> then the constraint applies to
+the intercept too.
+</p>
+</td></tr>
+<tr valign="top"><td><code>Varcov</code></td>
+<td>
+
+<p>Numeric.
+This may be assigned a variance-covariance of the errors.
+If <code>matrix.arg</code> then this is a <i>M x M</i> matrix.
+If <code>!matrix.arg</code> then this is a <i>M x M</i> matrix in
+matrix-band format (a vector with at least <i>M</i> and
+at most <code>M*(M+1)/2</code> elements).
+</p>
+</td></tr>
+<tr valign="top"><td><code>matrix.arg</code></td>
+<td>
+
+<p>Logical.
+Of single length.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Proposed by Zellner (1962), the basic
+seemingly unrelated regressions (SUR)
+model is a set of LMs (<i>M &gt; 1</i> of them) tied together
+at the error term level.
+Each LM's model matrix may potentially have its own set
+of predictor variables.
+</p>
+<p>Zellner's efficient (ZEF) estimator (also known as
+<em>Zellner's two-stage Aitken estimator</em>)
+can be obtained by setting
+<code>maxit = 1</code>
+(and possibly <code>divisor = "sqrt"</code> or
+<code>divisor = "n-max"</code>).
+</p>
+<p>The default value of <code>maxit</code> (in <code><a href="vglm.control.html">vglm.control</a></code>)
+probably means <em>iterative GLS</em> (IGLS) estimator is computed because
+IRLS will probably iterate to convergence.
+IGLS means, at each iteration, the residuals are used to estimate
+the error variance-covariance matrix, and then the matrix is used
+in the GLS.
+The IGLS estimator is also known
+as <em>Zellner's iterative Aitken estimator</em>, or IZEF.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as
+<code><a href="vglm.html">vglm</a></code> and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>The default convergence criterion may be a little loose.
+Try setting <code>epsilon = 1e-11</code>, especially
+with <code>mle.normal =  TRUE</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The fitted object has slot <code>@extra$ncols.X.lm</code> which is
+a <i>M</i> vector with the number of parameters for each LM.
+Also, <code>@misc$values.divisor</code> is the <i>M</i>-vector of
+<code>divisor</code> values.
+</p>
+<p>Constraint matrices are needed in order to specify which response
+variables that each term on the RHS of the formula is a
+regressor for.
+See the <code>constraints</code> argument of <code><a href="vglm.html">vglm</a></code>
+for more information.
+</p>
+
+
+
+<h3>Author(s)</h3>
+
+<p>T. W. Yee.
+</p>
+
+
+<h3>References</h3>
+
+<p>Zellner, A. (1962)
+An Efficient Method of Estimating Seemingly Unrelated
+Regressions and Tests for Aggregation Bias.
+<em>J. Amer. Statist. Assoc.</em>,
+<b>57</b>(298), 348&ndash;368.
+</p>
+<p>Kmenta, J. and Gilbert, R. F. (1968)
+Small Sample Properties of Alternative Estimators
+of Seemingly Unrelated Regressions.
+<em>J. Amer. Statist. Assoc.</em>,
+<b>63</b>(324), 1180&ndash;1200.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="uninormal.html">uninormal</a></code>,
+<code><a href="gew.html">gew</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Obtain some of the results of p.1199 of Kmenta and Gilbert (1968)
+clist &lt;- list("(Intercept)" = diag(2),
+              "capital.g"   = rbind(1, 0),
+              "value.g"     = rbind(1, 0),
+              "capital.w"   = rbind(0, 1),
+              "value.w"     = rbind(0, 1))
+zef1 &lt;- vglm(cbind(invest.g, invest.w) ~
+             capital.g + value.g + capital.w + value.w,
+             SURff(divisor = "sqrt"), maxit = 1,
+             data = gew, trace = TRUE, constraints = clist)
+
+round(coef(zef1, matrix = TRUE), digits = 4)  # ZEF
+zef1@extra$ncols.X.lm
+zef1@misc$divisor
+zef1@misc$values.divisor
+round(sqrt(diag(vcov(zef1))),    digits = 4)  # SEs
+nobs(zef1, type = "lm")
+df.residual(zef1, type = "lm")
+
+
+mle1 &lt;- vglm(cbind(invest.g, invest.w) ~
+             capital.g + value.g + capital.w + value.w,
+             SURff(mle.normal = TRUE),
+             epsilon = 1e-11,
+             data = gew, trace = TRUE, constraints = clist)
+round(coef(mle1, matrix = TRUE), digits = 4)  # MLE
+round(sqrt(diag(vcov(mle1))),    digits = 4)  # SEs
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

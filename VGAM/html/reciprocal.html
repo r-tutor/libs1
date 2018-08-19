@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Reciprocal Link Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for reciprocal {VGAM}"><tr><td>reciprocal {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Reciprocal Link Function </h2>
+
+<h3>Description</h3>
+
+<p>Computes the reciprocal transformation, including its inverse and the
+first two derivatives.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+   reciprocal(theta, bvalue = NULL, inverse = FALSE, deriv = 0,
+              short = TRUE, tag = FALSE)
+negreciprocal(theta, bvalue = NULL, inverse = FALSE, deriv = 0,
+              short = TRUE, tag = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>theta</code></td>
+<td>
+
+<p>Numeric or character.
+See below for further details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>bvalue</code></td>
+<td>
+
+<p>See <code><a href="Links.html">Links</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>inverse, deriv, short, tag</code></td>
+<td>
+
+<p>Details at <code><a href="Links.html">Links</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>reciprocal</code> link function is a special case of the power link
+function.  Numerical values of <code>theta</code> close to 0 result in
+<code>Inf</code>, <code>-Inf</code>, <code>NA</code> or <code>NaN</code>.
+</p>
+<p>The <code>negreciprocal</code> link function computes the negative reciprocal,
+i.e., <i>-1/theta</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>For <code>reciprocal</code>:
+for <code>deriv = 0</code>, the reciprocal of <code>theta</code>, i.e.,
+<code>1/theta</code> when <code>inverse = FALSE</code>,
+and if <code>inverse = TRUE</code> then
+<code>1/theta</code>.
+For <code>deriv = 1</code>, then the function returns
+<em>d</em> <code>theta</code> / <em>d</em> <code>eta</code> as a function of <code>theta</code>
+if <code>inverse = FALSE</code>,
+else if <code>inverse = TRUE</code> then it returns the reciprocal.
+</p>
+
+
+<h3>Note</h3>
+
+<p> Numerical instability may occur when <code>theta</code> is
+close to 0.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>McCullagh, P. and Nelder, J. A. (1989)
+<em>Generalized Linear Models</em>, 2nd ed. London: Chapman &amp; Hall.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/identity.html">identity</a></code>,
+<code><a href="powerlink.html">powerlink</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+   reciprocal(1:5)
+   reciprocal(1:5, inverse = TRUE, deriv = 2)
+negreciprocal(1:5)
+negreciprocal(1:5, inverse = TRUE, deriv = 2)
+
+x &lt;- (-3):3
+reciprocal(x)  # Has Inf
+reciprocal(x, bvalue = .Machine$double.eps)  # Has no Inf
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

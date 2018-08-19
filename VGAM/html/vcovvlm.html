@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Calculate Variance-Covariance Matrix for a Fitted VLM or...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for vcovvlm {VGAM}"><tr><td>vcovvlm {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Calculate Variance-Covariance Matrix for a Fitted
+VLM or RR-VGLM
+or QRR-VGLM
+Object
+</h2>
+
+<h3>Description</h3>
+
+<p>Returns the variance-covariance matrix of the
+parameters of
+a fitted <code><a href="vlm-class.html">vlm-class</a></code> object or
+a fitted <code><a href="rrvglm-class.html">rrvglm-class</a></code> object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+vcov(object, ...)
+vcovvlm(object, dispersion = NULL, untransform = FALSE)
+vcovqrrvglm(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p> A fitted model object,
+having class <code><a href="vlm-class.html">vlm-class</a></code> or
+<code><a href="rrvglm-class.html">rrvglm-class</a></code> or
+<code><a href="qrrvglm-class.html">qrrvglm-class</a></code> or
+a superclass of such.
+The former includes a <code><a href="vglm.html">vglm</a></code> object.
+</p>
+</td></tr>
+<tr valign="top"><td><code>dispersion</code></td>
+<td>
+
+<p>Numerical. A value may be specified, else it
+is estimated for quasi-GLMs (e.g., method of moments).
+For almost all other types of VGLMs it is usually unity.
+The value is multiplied by the raw variance-covariance matrix.
+</p>
+</td></tr>
+<tr valign="top"><td><code>untransform</code></td>
+<td>
+
+<p>logical. For intercept-only models with trivial constraints;
+if set <code>TRUE</code> then the parameter link function is inverted
+to give the answer for the untransformed/raw parameter.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Same as <code><a href="../../stats/html/vcov.html">vcov</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This methods function is based on the QR decomposition
+of the (large) VLM model matrix and working weight matrices.
+Currently
+<code><a href="vcovvlm.html">vcovvlm</a></code>
+operates on the fundamental
+<code><a href="vlm-class.html">vlm-class</a></code> objects because pretty well
+all modelling functions in <span class="pkg">VGAM</span> inherit from this.
+Currently
+<code><a href="vcovvlm.html">vcovrrvglm</a></code>
+is not entirely reliable because the elements of the
+<b>A</b>&ndash;<b>C</b> part of the matrix sometimes cannot be
+computed very accurately, so that the entire matrix is
+not positive-definite.
+</p>
+<p>For <code>"qrrvglm"</code> objects,
+<code><a href="vcovvlm.html">vcovqrrvglm</a></code>
+is currently working with <code>Rank = 1</code> objects or
+when <code>I.tolerances = TRUE</code>.
+Then the answer is conditional given <b>C</b>.
+The code is based on <code><a href="model.matrixqrrvglm.html">model.matrixqrrvglm</a></code>
+so that the <code>dimnames</code> are the same.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Same as <code><a href="../../stats/html/vcov.html">vcov</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>For some models inflated standard errors can occur, such as
+parameter estimates near the boundary of the parameter space.
+Detection for this is available for some models using
+<code><a href="hdeff.html">hdeff.vglm</a></code>, which tests for an
+Hauck-Donner effect (HDE) for each regression coefficient.
+If the HDE is present, using
+<code><a href="lrt.stat.html">lrt.stat.vlm</a></code> should return more accurate p-values.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="confintvglm.html">confintvglm</a></code>,
+<code><a href="summaryvglm.html">summaryvglm</a></code>,
+<code><a href="../../stats/html/vcov.html">vcov</a></code>,
+<code><a href="hdeff.html">hdeff.vglm</a></code>,
+<code><a href="lrt.stat.html">lrt.stat.vlm</a></code>,
+<code><a href="model.matrixqrrvglm.html">model.matrixqrrvglm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ndata &lt;- data.frame(x2 = runif(nn &lt;- 300))
+ndata &lt;- transform(ndata, y1 = rnbinom(nn, mu = exp(3+x2), size = exp(1)),
+                          y2 = rnbinom(nn, mu = exp(2-x2), size = exp(0)))
+fit1 &lt;- vglm(cbind(y1, y2) ~ x2, negbinomial, data = ndata, trace = TRUE)
+fit2 &lt;- rrvglm(y1 ~ x2, negbinomial(zero = NULL), data = ndata)
+coef(fit1, matrix = TRUE)
+vcov(fit1)
+vcov(fit2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

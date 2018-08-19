@@ -1,0 +1,316 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Computation of the Exact EIM of an Order-1 Autoregressive...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for AR1EIM {VGAM}"><tr><td>AR1EIM {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Computation of the Exact EIM of an Order-1 Autoregressive Process
+</h2>
+
+<h3>Description</h3>
+
+<p>Computation of the exact Expected Information Matrix of
+the Autoregressive process of order-<i>1</i> (AR(<i>1</i>))
+with Gaussian white noise and stationary
+random components.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+AR1EIM(x = NULL, var.arg = NULL, p.drift = NULL,
+       WNsd = NULL, ARcoeff1 = NULL, eps.porat = 1e-2)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+
+<p>A vector of quantiles. The gaussian time series for which the EIMs
+are computed.
+</p>
+<p>If multiple time series are being analyzed, then <code>x</code> must be
+a matrix where each column allocates a response.
+That is, the number of columns (denoted as <i>NOS</i>) must match
+the number of responses.
+</p>
+</td></tr>
+<tr valign="top"><td><code>var.arg</code></td>
+<td>
+
+<p>Logical. Same as with <code><a href="AR1.html">AR1</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>p.drift</code></td>
+<td>
+
+<p>A numeric vector with the <em>scaled mean(s)</em> (commonly referred as
+<em>drift</em>) of the AR process(es) in turn.
+Its length matches the number of responses.
+</p>
+</td></tr>
+<tr valign="top"><td><code>WNsd, ARcoeff1</code></td>
+<td>
+
+<p>Matrices.
+The standard deviation of the white noise, and the
+correlation (coefficient) of the AR(<i>1</i>) model,
+for <b>each</b> observation.
+</p>
+<p>That is, the dimension for each matrix is <i>N x NOS</i>,
+where <i>N</i> is the number of observations and <i>NOS</i> is the
+number of responses. Else, these arguments are recycled.
+</p>
+</td></tr>
+<tr valign="top"><td><code>eps.porat</code></td>
+<td>
+
+<p>A very small positive number to test whether the standar deviation
+(<code>WNsd</code>) is close enough to its value estimated in this function.
+</p>
+<p>See below for further details.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function implements the algorithm of Porat and Friedlander
+(1986) to <em>recursively</em> compute the exact expected
+information matrix (EIM) of Gaussian time series with stationary
+random components.
+</p>
+<p>By default, when the VGLM/VGAM family function
+<code><a href="AR1.html">AR1</a></code> is used to fit an AR(<i>1</i>) model
+via <code><a href="vglm.html">vglm</a></code>, Fisher scoring is executed using
+the <b>approximate</b> EIM for the AR process. However, this model
+can also be fitted using the <b>exact</b> EIMs computed by
+<code>AR1EIM</code>.
+</p>
+<p>Given <i>N</i> consecutive data points,
+<i> {y[0], y[1], &hellip;,
+  y[N - 1]} </i> with probability density <i>f(y)</i>,
+the Porat and Friedlander algorithm
+calculates the EIMs
+<i>J(n-1)[&theta;]</i>,
+for all <i>1 &le; n &le; N</i>. This is done based on the
+Levinson-Durbin algorithm for computing the orthogonal polynomials of
+a Toeplitz matrix.
+In particular, for the AR(<i>1</i>) model, the vector of parameters
+to be estimated under the VGAM/VGLM approach is
+</p>
+<p style="text-align: center;"><i>
+           &eta; = ( mu^*, loge(sigma^2), rhobit(rho)),
+  </i></p>
+
+<p>where <i>sigma^2</i> is the variance of the white noise
+and <i>mu^*</i> is the drift parameter
+(See <code><a href="AR1.html">AR1</a></code> for further details on this).
+</p>
+
+
+
+
+
+
+
+
+
+<p>Consequently, for each observation <i>n = 1, &hellip;, N</i>, the EIM,
+<i>Jn[&theta;]</i>, has dimension
+<i>3 x 3</i>, where the diagonal elements are:
+
+
+
+
+
+</p>
+<p style="text-align: center;"><i>
+        J[n, 1, 1] = E[ -&delta;^2 log f(y) / &delta; (mu^*)^2 ], </i></p>
+
+<p style="text-align: center;"><i>
+        J[n, 2, 2] = E[ - &delta;^2 log f(y) / &delta; (&sigma;^2)^2 ],</i></p>
+
+<p>and
+</p>
+<p style="text-align: center;"><i>
+        J[n, 3, 3] = E[ -&delta;^2 log f(y) / &delta; (rho)^2]. </i></p>
+
+<p>As for the off-diagonal elements, one has the usual entries, i.e.,
+</p>
+<p style="text-align: center;"><i>
+        J[n, 1, 2] = J[n, 2, 1] =
+            E[ -&delta;^2 log f(y) / &delta; &sigma;^2 &delta; rho ],</i></p>
+
+<p>etc.
+</p>
+<p>If <code>var.arg = FALSE</code>, then <i>&sigma;</i> instead of <i>&sigma;^2</i>
+is estimated. Therefore, <i>J[n, 2, 2]</i>,
+<i>J[n, 1, 2]</i>, etc., are correspondingly replaced.
+</p>
+<p>Once these expected values are internally computed, they are returned
+in an array of dimension <i>N x 1 x 6</i>,
+of the form
+</p>
+<p style="text-align: center;"><i>
+          J[, 1, ] = [ J[ , 1, 1], J[ , 2, 2], J[ , 3, 3],
+                       J[ , 1, 2], J[ , 2, 3], J[ , 1, 3] ].
+    </i></p>
+
+<p><code>AR1EIM</code> handles multiple time series, say <i>NOS</i>.
+If this happens, then it accordingly returns an array of
+dimension <i>N x NOS x 6</i>. Here,
+<i>J[, k, ]</i>, for <i>k = 1, &hellip;, NOS</i>, is a matrix
+of dimension <i>N x 6</i>, which
+stores the EIMs for the <i>k</i>th response, as
+above, i.e.,
+</p>
+<p style="text-align: center;"><i>
+          J[, k, ] = [ J[ , 1, 1], J[ , 2, 2], J[ , 3, 3], &hellip; ],
+    </i></p>
+
+<p>the <em>bandwith</em> form, as per required by
+<code><a href="AR1.html">AR1</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An array of dimension <i>N x NOS x 6</i>,
+as above.
+</p>
+<p>This array stores the EIMs calculated from the joint density as
+a function of
+</p>
+<p style="text-align: center;"><i>
+       &theta; = (mu^*, sigma^2, rho).
+  </i></p>
+
+<p>Nevertheless, note that, under the VGAM/VGLM approach, the EIMs
+must be correspondingly calculated in terms of the linear
+predictors, <i>&eta;</i>.
+</p>
+
+
+<h3>Asymptotic behaviour of the algorithm</h3>
+
+<p>For large enough <i>n</i>, the EIMs,
+<i>Jn(&theta;)</i>,
+become approximately linear in <i>n</i>. That is, for some
+<i>n0</i>,
+</p>
+<p style="text-align: center;"><i>
+         Jn(&theta;) -&gt; Jn0(&theta;) + (n - n0) * Jbar(&theta;),   (*)
+         </i></p>
+
+<p>where <i> Jbar(&theta;)</i> is
+a constant matrix.
+</p>
+<p>This relationsihip is internally considered if a proper value
+of <i>n0</i> is determined. Different ways can be adopted to
+find <i>n0</i>. In <code>AR1EIM</code>, this is done by checking
+the difference between the internally estimated variances and the
+entered ones at <code>WNsd</code>.
+If this difference is less than
+<code>eps.porat</code> at some iteration, say at iteration <i>n0</i>,
+then <code>AR1EIM</code> takes
+<i>Jbar(&theta;)</i>
+as the last computed increment of
+<i>Jn(&theta;)</i>, and extraplotates
+<i>Jk(&theta;)</i>, for all
+<i>k &ge; n0</i> using <i>(*)</i>.
+Else, the algorithm will complete the iterations for
+<i>1 &le; n &le; N</i>.
+</p>
+<p>Finally, note that the rate of convergence reasonably decreases if
+the asymptotic relationship <i>(*)</i> is used to compute
+<i>Jk(&theta;)</i>,
+<i>k &ge; n0</i>. Normally, the number
+of operations involved on this algorithm is proportional to
+<i>N^2</i>.
+</p>
+<p>See Porat and Friedlander (1986) for full details on the asymptotic
+behaviour of the algorithm.
+</p>
+
+
+<h3>Warning</h3>
+
+<p>Arguments <code>WNsd</code>, and <code>ARcoeff1</code> are matrices of dimension
+<i>N x NOS</i>. Else, these arguments are accordingly
+recycled.
+</p>
+
+
+<h3>Note</h3>
+
+<p>For simplicity, one can assume that the time series analyzed has
+a 0-mean. Consequently, where the family function
+<code><a href="AR1.html">AR1</a></code> calls <code>AR1EIM</code> to compute
+the EIMs, the argument <code>p.drift</code> is internally set
+to zero-vector, whereas <code>x</code> is <em>centered</em> by
+subtracting its mean value.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>V. Miranda and T. W. Yee.
+</p>
+
+
+<h3>References</h3>
+
+<p>Porat, B. and Friedlander, B. (1986)
+Computation of the Exact Information Matrix of Gaussian Time Series
+with Stationary Random Components.
+<em>IEEE Transactions on Acoustics, Speech, and Signal Processing</em>,
+<b>54(1)</b>, 118&ndash;130.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="AR1.html">AR1</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  set.seed(1)
+  nn &lt;- 500
+  ARcoeff1 &lt;- c(0.3, 0.25)        # Will be recycled.
+  WNsd     &lt;- c(exp(1), exp(1.5)) # Will be recycled.
+  p.drift  &lt;- c(0, 0)             # Zero-mean gaussian time series.
+
+  ### Generate two (zero-mean) AR(1) processes ###
+  ts1 &lt;- p.drift[1]/(1 - ARcoeff1[1]) +
+                   arima.sim(model = list(ar = ARcoeff1[1]), n = nn,
+                   sd = WNsd[1])
+  ts2 &lt;- p.drift[2]/(1 - ARcoeff1[2]) +
+                   arima.sim(model = list(ar = ARcoeff1[2]), n = nn,
+                   sd = WNsd[2])
+
+  ARdata &lt;- matrix(cbind(ts1, ts2), ncol = 2)
+
+
+  ### Compute the exact EIMs: TWO responses. ###
+  ExactEIM &lt;- AR1EIM(x = ARdata, var.arg = FALSE, p.drift = p.drift,
+                           WNsd = WNsd, ARcoeff1 = ARcoeff1)
+
+  ### For response 1:
+  head(ExactEIM[, 1 ,])      # NOTICE THAT THIS IS A (nn x 6) MATRIX!
+
+  ### For response 2:
+  head(ExactEIM[, 2 ,])      # NOTICE THAT THIS IS A (nn x 6) MATRIX!
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

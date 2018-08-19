@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Paralogistic Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for paralogistic {VGAM}"><tr><td>paralogistic {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Paralogistic Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Maximum likelihood estimation of the 2-parameter
+paralogistic distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+paralogistic(lscale = "loge", lshape1.a = "loge", iscale = NULL,
+    ishape1.a = NULL, imethod = 1, lss = TRUE, gscale = exp(-5:5),
+    gshape1.a = seq(0.75, 4, by = 0.25), probs.y = c(0.25, 0.5, 0.75),
+    zero = "shape")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lss</code></td>
+<td>
+<p> See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for important information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lshape1.a, lscale</code></td>
+<td>
+
+<p>Parameter link functions applied to the
+(positive) parameters <i>a</i> and <code>scale</code>.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iscale, ishape1.a, imethod, zero</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+For <code>imethod = 2</code> a good initial value for
+<code>ishape1.a</code> is needed to obtain good estimates for
+the other parameter.
+</p>
+</td></tr>
+<tr valign="top"><td><code>gscale, gshape1.a</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>probs.y</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The 2-parameter paralogistic distribution is the 4-parameter
+generalized beta II distribution with shape parameter <i>p=1</i> and
+<i>a=q</i>.
+It is the 3-parameter Singh-Maddala distribution with <i>a=q</i>.
+More details can be found in Kleiber and Kotz (2003).
+</p>
+<p>The 2-parameter paralogistic has density
+</p>
+<p style="text-align: center;"><i>
+        f(y) = a^2 y^(a-1) / [b^a (1 + (y/b)^a)^(1+a)]</i></p>
+
+<p>for <i>a &gt; 0</i>, <i>b &gt; 0</i>, <i>y &gt;= 0</i>.
+Here, <i>b</i> is the scale parameter <code>scale</code>,
+and <i>a</i> is the shape parameter.
+The mean is
+</p>
+<p style="text-align: center;"><i>
+        E(Y) = b  gamma(1 + 1/a)  gamma(a - 1/a) /  gamma(a)</i></p>
+
+<p>provided <i>a &gt; 1</i>; these are returned as the fitted values.
+This family function handles multiple responses.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>See the notes in <code><a href="genbetaII.html">genbetaII</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Kleiber, C. and Kotz, S. (2003)
+<em>Statistical Size Distributions in Economics and Actuarial Sciences</em>,
+Hoboken, NJ, USA: Wiley-Interscience.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="paralogisticUC.html">Paralogistic</a></code>,
+<code><a href="sinmad.html">sinmad</a></code>,
+<code><a href="genbetaII.html">genbetaII</a></code>,
+<code><a href="betaII.html">betaII</a></code>,
+<code><a href="dagum.html">dagum</a></code>,
+<code><a href="fisk.html">fisk</a></code>,
+<code><a href="inv.lomax.html">inv.lomax</a></code>,
+<code><a href="lomax.html">lomax</a></code>,
+<code><a href="inv.paralogistic.html">inv.paralogistic</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+pdata &lt;- data.frame(y = rparalogistic(n = 3000, exp(1), scale = exp(1)))
+fit &lt;- vglm(y ~ 1, paralogistic(lss = FALSE), data = pdata, trace = TRUE)
+fit &lt;- vglm(y ~ 1, paralogistic(ishape1.a = 2.3, iscale = 5),
+            data = pdata, trace = TRUE)
+coef(fit, matrix = TRUE)
+Coef(fit)
+summary(fit)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

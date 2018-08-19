@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Generalized Poisson Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dgenpois {VGAM}"><tr><td>dgenpois {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The Generalized Poisson Distribution</h2>
+
+<h3>Description</h3>
+
+<p>Density for the Generalized Poisson Distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dgenpois(x, lambda = 0, theta, log = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x,</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>lambda, theta</code></td>
+<td>
+
+<p>See <code><a href="genpoisson.html">genpoisson</a></code>.
+The default value of <code>lambda</code> corresponds to an
+ordinary Poisson distribution.
+</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>Logical.
+If <code>TRUE</code> then the logarithm of the density is returned.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Most of the background to this function is given
+in <code><a href="genpoisson.html">genpoisson</a></code>.
+Some warnings relevant to this distribution are given there,
+especially relating to the complicated range of the
+parameter <code>lambda</code> about or near <i>-1</i>.
+</p>
+<p>Note that numerical round off errors etc. can occur; see
+below for an example.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dgenpois</code> gives the density.
+The value <code>NaN</code> is returned for elements not satisfying
+the parameter restrictions, e.g., if <i>lambda &gt; 1</i>.
+</p>
+
+
+
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="genpoisson.html">genpoisson</a></code>,
+<code><a href="../../stats/html/Poisson.html">dpois</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+sum(dgenpois(0:1000, lambda = -0.5, theta = 2))  # Not perfect...
+## Not run: 
+lambda &lt;- -0.2; theta &lt;- 2; y &lt;- 0:10
+proby &lt;- dgenpois(y, lambda = lambda, theta = theta, log = FALSE)
+plot(y, proby, type = "h", col = "blue", lwd = 2, ylab = "P[Y=y]",
+     main = paste("Y ~ Generalized Poisson(lambda=", lambda,
+                  ", theta=", theta, ")", sep = ""), las = 1,
+     sub = "Orange is the Poisson probability function")
+sum(proby)
+lines(y + 0.1, dpois(y, theta), type = "h", lwd = 2, col = "orange")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

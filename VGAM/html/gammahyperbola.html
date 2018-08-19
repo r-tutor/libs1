@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Gamma Hyperbola Bivariate Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gammahyperbola {VGAM}"><tr><td>gammahyperbola {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Gamma Hyperbola Bivariate Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Estimate the parameter of a gamma hyperbola bivariate distribution
+by maximum likelihood estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gammahyperbola(ltheta = "loge", itheta = NULL, expected = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>ltheta</code></td>
+<td>
+
+<p>Link function applied to the (positive) parameter <i>theta</i>.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>itheta</code></td>
+<td>
+
+<p>Initial value for the parameter.
+The default is to estimate it internally.
+</p>
+</td></tr>
+<tr valign="top"><td><code>expected</code></td>
+<td>
+
+<p>Logical. <code>FALSE</code> means the Newton-Raphson (using
+the observed information matrix) algorithm, otherwise the expected
+information matrix is used (Fisher scoring algorithm).
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The joint probability density function is given by
+</p>
+<p style="text-align: center;"><i>
+        f(y1,y2) = exp( -exp(-theta) * y1 / theta - theta * y2) </i></p>
+
+<p>for <i>theta &gt; 0</i>, <i>y1 &gt; 0</i>, <i>y2 &gt; 1</i>.
+The random variables <i>Y1</i>  and <i>Y2</i> are independent.
+The marginal distribution of <i>Y1</i> is an exponential distribution
+with rate parameter <i>exp(-theta)/theta</i>.
+The marginal distribution of <i>Y2</i> is an exponential distribution
+that has been shifted to the right by 1 and with
+rate parameter <i>theta</i>.
+The fitted values are stored in a two-column matrix with the marginal
+means, which are <i>theta * exp(theta)</i> and
+<i>1 + 1/theta</i>.
+</p>
+<p>The default algorithm is Newton-Raphson because Fisher scoring tends to
+be much slower for this distribution.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The response must be a two-column matrix.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Reid, N. (2003)
+Asymptotics and the theory of inference.
+<em>Annals of Statistics</em>,
+<b>31</b>, 1695&ndash;1731.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="exponential.html">exponential</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+gdata &lt;- data.frame(x2 = runif(nn &lt;- 1000))
+gdata &lt;- transform(gdata, theta = exp(-2 + x2))
+gdata &lt;- transform(gdata, y1 = rexp(nn, rate = exp(-theta)/theta),
+                          y2 = rexp(nn, rate = theta) + 1)
+fit &lt;- vglm(cbind(y1, y2) ~ x2, gammahyperbola(expected = TRUE), data = gdata)
+coef(fit, matrix = TRUE)
+Coef(fit)
+head(fitted(fit))
+summary(fit)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

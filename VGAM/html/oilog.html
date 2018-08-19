@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: One-inflated Logarithmic Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for oilog {VGAM}"><tr><td>oilog {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> One-inflated Logarithmic Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Fits a 1-inflated logarithmic distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+oilog(lpstr1 = "logit", lshape = "logit",
+      type.fitted = c("mean", "shape", "pobs1", "pstr1", "onempstr1"),
+      ishape = NULL, gpstr1 = ppoints(8), gshape = ppoints(8), zero = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lpstr1, lshape</code></td>
+<td>
+
+<p>Link functions.
+For <code>lpstr1</code>: the same idea as <code><a href="zipoisson.html">zipoisson</a></code>
+except it applies to a structural 1.
+</p>
+</td></tr>
+<tr valign="top"><td><code>gpstr1, gshape, ishape</code></td>
+<td>
+
+<p>For initial values.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>type.fitted, zero</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The 1-inflated logarithmic distribution is a mixture
+distribution of the
+logarithmic
+distribution with some probability of obtaining a (structural) 1.
+Thus there are two sources for obtaining the value 1.
+This distribution is written here
+in a way that retains a similar notation to the
+one-inflated positive-Poisson, i.e., the
+probability <i>P[Y=1]</i> involves another parameter <i>phi</i>.
+See <code><a href="oipospoisson.html">oipospoisson</a></code>.
+</p>
+<p>This family function can handle multiple responses.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+<code><a href="rrvglm.html">rrvglm</a></code> and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="oilogUC.html">Oilog</a></code>,
+<code><a href="logff.html">logff</a></code>,
+<code><a href="oizetaUC.html">Oizeta</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run:  odata &lt;- data.frame(x2 = runif(nn &lt;- 1000))  # Artificial data
+odata &lt;- transform(odata, pstr1 = logit(-1 + x2, inverse = TRUE), shape = 0.5)
+odata &lt;- transform(odata, y1 = roilog(nn, shape, pstr1 = pstr1))
+with(odata, table(y1))
+fit1 &lt;- vglm(y1 ~ x2, oilog(zero = "shape"), data = odata, trace = TRUE)
+coef(fit1, matrix = TRUE)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

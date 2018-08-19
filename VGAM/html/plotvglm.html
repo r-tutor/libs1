@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plots for VGLMs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plotvglm {VGAM}"><tr><td>plotvglm {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Plots for VGLMs </h2>
+
+<h3>Description</h3>
+
+<p>Currently this function plots the Pearson residuals versus
+the linear predictors (<i>M</i> plots) and
+plots the Pearson residuals versus
+the hat values (<i>M</i> plots).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+plotvglm(x, which = "(All)", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+
+<p>An object of class <code>"vglm"</code> (see <code><a href="vglm-class.html">vglm-class</a></code>)
+or inherits from that class.
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>which</code></td>
+<td>
+
+<p>If a subset of the plots is required, specify a subset of the
+numbers <code>1:(2*M)</code>.
+The default is to plot them all.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Arguments fed into the primitive <code><a href="../../graphics/html/plot.html">plot</a></code>
+functions.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is under development.
+Currently it plots the Pearson residuals
+against the predicted
+values (on the transformed scale) and the hat values.
+There are <i>2M</i> plots in total, therefore
+users should call <code><a href="../../graphics/html/par.html">par</a></code>
+to assign, e.g., the <code>mfrow</code> argument.
+Note: Section 3.7 of Yee (2015) describes the
+Pearson residuals and hat values for VGLMs.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns the object invisibly.
+</p>
+
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="plotvgam.html">plotvgam</a></code>,
+<code><a href="plotvgam.control.html">plotvgam.control</a></code>,
+<code><a href="vglm.html">vglm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+ndata &lt;- data.frame(x2 = runif(nn &lt;- 200))
+ndata &lt;- transform(ndata, y1 = rnbinom(nn, mu = exp(3+x2), size = exp(1)))
+fit1 &lt;- vglm(y1 ~ x2, negbinomial, data = ndata, trace = TRUE)
+coef(fit1, matrix = TRUE)
+par(mfrow = c(2, 2))
+plot(fit1)
+
+# Manually produce the four plots
+plot(fit1, which = 1, col = "blue", las = 1, main = "main1")
+abline(h = 0, lty = "dashed", col = "gray50")
+plot(fit1, which = 2, col = "blue", las = 1, main = "main2")
+abline(h = 0, lty = "dashed", col = "gray50")
+plot(fit1, which = 3, col = "blue", las = 1, main = "main3")
+plot(fit1, which = 4, col = "blue", las = 1, main = "main4")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

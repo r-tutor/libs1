@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Adds a List to the End of the List &quot;.smart.prediction&quot;</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for put.smart {VGAM}"><tr><td>put.smart {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Adds a List to the End of the List &ldquo;.smart.prediction&rdquo; </h2>
+
+<h3>Description</h3>
+
+<p>Adds a list to the end of the list <code>.smart.prediction</code>
+in
+<code>smartpredenv</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+put.smart(smart)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>smart</code></td>
+<td>
+
+<p>a list containing parameters needed later for smart prediction.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>put.smart</code> is used in <code>"write"</code> mode within a smart function.
+It saves parameters at the time of model fitting, which are 
+later used for prediction.
+The function <code>put.smart</code> is the opposite of
+<code><a href="get.smart.html">get.smart</a></code>, and both deal with the same contents.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Nothing is returned.
+</p>
+
+
+<h3>Side Effects</h3>
+
+<p>The variable <code>.smart.prediction.counter</code> in
+<code>smartpredenv</code>
+is incremented beforehand,
+and <code>.smart.prediction[[.smart.prediction.counter]]</code> is
+assigned the list <code>smart</code>. 
+If the list <code>.smart.prediction</code> in
+<code>smartpredenv</code>
+is not long enough
+to hold <code>smart</code>, then it is made larger, and the variable
+<code>.max.smart</code> in
+<code>smartpredenv</code>
+is adjusted accordingly.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="get.smart.html">get.smart</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+print(sm.min1)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

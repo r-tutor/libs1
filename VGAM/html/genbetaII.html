@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Generalized Beta Distribution of the Second Kind</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for genbetaII {VGAM}"><tr><td>genbetaII {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Generalized Beta Distribution of the Second Kind </h2>
+
+<h3>Description</h3>
+
+<p>Maximum likelihood estimation of the 4-parameter
+generalized beta II distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+genbetaII(lscale = "loge", lshape1.a = "loge", lshape2.p = "loge",
+          lshape3.q = "loge", iscale = NULL, ishape1.a = NULL,
+          ishape2.p = NULL, ishape3.q = NULL, lss = TRUE,
+          gscale = exp(-5:5), gshape1.a = exp(-5:5),
+          gshape2.p = exp(-5:5), gshape3.q = exp(-5:5),
+          zero = "shape")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lss</code></td>
+<td>
+<p> See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for important information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lshape1.a, lscale, lshape2.p, lshape3.q</code></td>
+<td>
+
+<p>Parameter link functions applied to the
+shape parameter <code>a</code>,
+scale parameter <code>scale</code>,
+shape parameter <code>p</code>, and
+shape parameter <code>q</code>.
+All four parameters are positive.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iscale, ishape1.a, ishape2.p, ishape3.q</code></td>
+<td>
+
+<p>Optional initial values for the parameters.
+A <code>NULL</code> means a value is computed internally using
+the arguments <code>gscale</code>, <code>gshape1.a</code>, etc.
+</p>
+</td></tr>
+<tr valign="top"><td><code>gscale, gshape1.a, gshape2.p, gshape3.q</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+Replaced by <code>iscale</code>, <code>ishape1.a</code> etc. if given.
+</p>
+</td></tr>
+</table>
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>The default is to set all the shape parameters to be
+intercept-only.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+
+
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This distribution is most useful for unifying a substantial
+number of size distributions. For example, the Singh-Maddala,
+Dagum, Fisk (log-logistic), Lomax (Pareto type II),
+inverse Lomax, beta distribution of the second kind
+distributions are all special cases.
+Full details can be found in Kleiber and Kotz (2003), and
+Brazauskas (2002).
+The argument names given here are used by other families that
+are special cases of this family.
+Fisher scoring is used here and for the special cases too.
+</p>
+<p>The 4-parameter generalized beta II distribution has density
+</p>
+<p style="text-align: center;"><i>
+        f(y) = a y^(ap-1) / [b^(ap) B(p,q) (1 + (y/b)^a)^(p+q)]</i></p>
+
+<p>for <i>a &gt; 0</i>, <i>b &gt; 0</i>, <i>p &gt; 0</i>, <i>q &gt; 0</i>, <i>y &gt;= 0</i>.
+Here <i>B</i> is the beta function, and
+<i>b</i> is the scale parameter <code>scale</code>,
+while the others are shape parameters.
+The mean is
+</p>
+<p style="text-align: center;"><i>
+        E(Y) = b  gamma(p + 1/a)  gamma(q - 1/a) / ( gamma(p)  gamma(q))</i></p>
+
+<p>provided <i>-ap &lt; 1 &lt; aq</i>; these are returned as the fitted values.
+</p>
+
+
+
+<p>This family function handles multiple responses.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning</h3>
+
+<p>This distribution is very flexible and it is not generally
+recommended to use this family function when the sample size is
+small&mdash;numerical problems easily occur with small samples.
+Probably several hundred observations at least are needed in order
+to estimate the parameters with any level of confidence.
+Neither is the inclusion of covariates recommended at all&mdash;not
+unless there are several thousand observations.
+The mean is finite only when <i>-ap &lt; 1 &lt; aq</i>, and this can be
+easily violated by the parameter estimates for small sample sizes.
+Try fitting some of the special cases of this distribution
+(e.g., <code><a href="sinmad.html">sinmad</a></code>, <code><a href="fisk.html">fisk</a></code>, etc.) first, and
+then possibly use those models for initial values for this
+distribution.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The default is to use a grid search with respect to all
+four parameters; this is quite costly and is time consuming.
+If the self-starting initial values fail, try experimenting
+with the initial value arguments.
+Also, the constraint <i>-ap &lt; 1 &lt; aq</i>
+may be violated as the iterations progress so it pays
+to monitor convergence, e.g., set <code>trace = TRUE</code>.
+Successful convergence depends on having very good initial
+values. This is rather difficult for this distribution so that
+a grid search is conducted by default.
+One suggestion for increasing the estimation reliability
+is to set <code>stepsize = 0.5</code> and <code>maxit = 100</code>;
+see <code><a href="vglm.control.html">vglm.control</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee, with help from Victor Miranda. </p>
+
+
+<h3>References</h3>
+
+<p>Kleiber, C. and Kotz, S. (2003)
+<em>Statistical Size Distributions in Economics and
+Actuarial Sciences</em>,
+Hoboken, NJ, USA: Wiley-Interscience.
+</p>
+<p>Brazauskas, V. (2002)
+Fisher information matrix for the Feller-Pareto distribution.
+<em>Statistics &amp; Probability Letters</em>,
+<b>59</b>, 159&ndash;167.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="genbetaIIUC.html">dgenbetaII</a></code>,
+<code><a href="betaff.html">betaff</a></code>,
+<code><a href="betaII.html">betaII</a></code>,
+<code><a href="dagum.html">dagum</a></code>,
+<code><a href="sinmad.html">sinmad</a></code>,
+<code><a href="fisk.html">fisk</a></code>,
+<code><a href="lomax.html">lomax</a></code>,
+<code><a href="inv.lomax.html">inv.lomax</a></code>,
+<code><a href="paralogistic.html">paralogistic</a></code>,
+<code><a href="inv.paralogistic.html">inv.paralogistic</a></code>,
+<code><a href="lino.html">lino</a></code>,
+<code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>,
+<code><a href="vglm.control.html">vglm.control</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+gdata &lt;- data.frame(y = rsinmad(3000, shape1 = exp(1), scale = exp(2),
+                                shape3 = exp(1)))  # A special case!
+fit &lt;- vglm(y ~ 1, genbetaII(lss = FALSE), data = gdata, trace = TRUE)
+fit &lt;- vglm(y ~ 1, data = gdata, trace = TRUE,
+            genbetaII(ishape1.a = 3, iscale = 7, ishape3.q = 2.3))
+coef(fit, matrix = TRUE)
+Coef(fit)
+summary(fit)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

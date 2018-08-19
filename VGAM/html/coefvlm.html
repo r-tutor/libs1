@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Extract Model Coefficients</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for coefvlm {VGAM}"><tr><td>coefvlm {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Extract Model Coefficients </h2>
+
+<h3>Description</h3>
+
+<p>Extracts the estimated
+coefficients from VLM objects such as VGLMs.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+coefvlm(object, matrix.out = FALSE, label = TRUE, colon = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p> An object for which the extraction of
+coefficients is meaningful.
+This will usually be a <code><a href="vglm.html">vglm</a></code> object.
+</p>
+</td></tr>
+<tr valign="top"><td><code>matrix.out</code></td>
+<td>
+
+<p>Logical. If <code>TRUE</code> then a matrix is returned.
+The explanatory variables are the rows.
+The linear/additive predictors are the columns.
+The constraint matrices are used to compute this matrix.
+</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+
+<p>Logical. If <code>FALSE</code> then the <code>names</code>
+of the vector of coefficients are set to <code>NULL</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>colon</code></td>
+<td>
+
+<p>Logical. Explanatory variables which appear in more than one
+linear/additive predictor are labelled with a colon,
+e.g., <code>age:1</code>, <code>age:2</code>.
+However, if it only appears in one linear/additive predictor
+then the <code>:1</code> is omitted by default.
+Then setting <code>colon = TRUE</code> will add the <code>:1</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function works in a similar way to
+applying <code>coef()</code> to a <code><a href="../../stats/html/lm.html">lm</a></code>
+or <code><a href="../../stats/html/glm.html">glm</a></code> object.
+However, for VGLMs, there are more options available.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A vector usually.
+A matrix if <code>matrix.out = TRUE</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. and Hastie, T. J. (2003)
+Reduced-rank vector generalized linear models.
+<em>Statistical Modelling</em>,
+<b>3</b>, 15&ndash;41.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="vglm.html">vglm</a></code>,
+<code><a href="coefvgam.html">coefvgam</a></code>,
+<code><a href="../../stats/html/coef.html">coef</a></code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+zdata &lt;- data.frame(x2 = runif(nn &lt;- 200))
+zdata &lt;- transform(zdata, pstr0  = logit(-0.5 + 1*x2, inverse = TRUE),
+                          lambda = loge(  0.5 + 2*x2, inverse = TRUE))
+zdata &lt;- transform(zdata, y2 = rzipois(nn, lambda, pstr0 = pstr0))
+
+fit2 &lt;- vglm(y2 ~ x2, zipoisson(zero = 1), data = zdata, trace = TRUE)
+coef(fit2, matrix = TRUE)  # Always a good idea
+coef(fit2)
+coef(fit2, colon = TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

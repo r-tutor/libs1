@@ -1,0 +1,352 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Calibration for CQO and CAO models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for calibrate.qrrvglm {VGAM}"><tr><td>calibrate.qrrvglm {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Calibration for CQO and CAO models </h2>
+
+<h3>Description</h3>
+
+<p>Performs maximum likelihood calibration
+for constrained
+quadratic and additive ordination models (CQO and CAO
+models are better known as QRR-VGLMs and RR-VGAMs respectively).
+</p>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+calibrate.qrrvglm(object, newdata = NULL,
+    type = c("latvar", "predictors", "response", "vcov", "everything"),
+    lr.confint = FALSE, cf.confint = FALSE,
+    level = 0.95, initial.vals = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p> The fitted CQO/CAO model.
+</p>
+</td></tr>
+<tr valign="top"><td><code>newdata</code></td>
+<td>
+<p> A data frame with new response data,
+such as new species data.
+The default is to use the original data used to fit the model;
+however, the calibration may take a long time to compute
+because the computations are expensive.
+</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p> What type of result to be returned.
+The first are the calibrated latent variables or site scores.
+This is always computed.
+The <code>"predictors"</code> are the linear/quadratic or additive
+predictors evaluated at the calibrated latent variables or site
+scores.
+The <code>"response"</code> are the fitted values (usually means)
+evaluated at the
+calibrated latent variables or site scores.
+The <code>"vcov"</code> are the Wald-type estimated variance-covariance
+matrices of the
+calibrated latent variables or site scores.
+The <code>"everything"</code> is for all of them, i.e., all <code>type</code>s.
+Note that for CAO models,
+the <code>"vcov"</code> type is unavailable.
+</p>
+</td></tr>
+</table>
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lr.confint, level</code></td>
+<td>
+
+<p>Compute <em>approximate</em>
+likelihood ratio based confidence intervals?
+If <code>TRUE</code> then <code>level</code> is the confidence level required
+and one should have <code>type = "latvar"</code>
+or <code>type = "everything"</code>;
+and currently only rank-1 models are supported.
+This option works for CLO and CQO models and not for CAO models.
+The function <code><a href="../../stats/html/uniroot.html">uniroot</a></code> is called to solve for
+the root of a nonlinear equation to obtain each confidence limit,
+and this is not entirely reliable.
+It is assumed that the likelihood function is unimodal
+about its MLE
+because only one root is returned if there is more than one.
+One root is found on each side of the MLE.
+Technically, the default is to find the value of the latent
+variable whose difference in deviance (or twice the difference
+in log-likelihoods) from the optimal model
+is equal to <code>qchisq(level, df = 1)</code>.
+The intervals are not true profile likelihood intervals
+because it is not possible to estimate the regression coefficients
+of the QRR-VGLM/RR-VGLM based on one response vector.
+See <code><a href="../../stats/html/confint.html">confint</a></code> to get the flavour of these two
+arguments in general.
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>cf.confint</code></td>
+<td>
+
+<p>Compute <em>approximate</em>
+characteristic function based confidence intervals?
+If <code>TRUE</code> then <code>level</code> is the confidence level required
+and one should have <code>type = "latvar"</code>
+or <code>type = "everything"</code>;
+and currently only rank-1 models are supported.
+This option works for
+<code><a href="binomialff.html">binomialff</a></code> and <code><a href="poissonff.html">poissonff</a></code>
+CLO and CQO models
+and not for CAO models.
+The function <code><a href="../../stats/html/uniroot.html">uniroot</a></code> is called to solve for
+the root of a nonlinear equation to obtain each confidence limit,
+and this is not entirely reliable.
+It is assumed that the likelihood function is unimodal because
+only one root is returned if there is more than one.
+Technically, the CDF of a normalized score statistic is
+obtained by Gauss&ndash;Hermite numerical integration of a
+complex-valued integrand,
+and this is based on the inversion formula described in
+Abate and Witt (1992).
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>initial.vals</code></td>
+<td>
+<p> Initial values for the search.
+For rank-1 models, this should be a vector having length
+equal to <code>nrow(newdata)</code>, and for rank-2 models
+this should be a two-column matrix with the number of rows equalling
+the number of rows in <code>newdata</code>.
+The default is a grid defined by arguments in
+<code><a href="calibrate.qrrvglm.control.html">calibrate.qrrvglm.control</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Arguments that are fed into
+<code><a href="calibrate.qrrvglm.control.html">calibrate.qrrvglm.control</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Given a fitted regression CQO/CAO model,
+maximum likelihood calibration is theoretically easy and elegant.
+However, the method assumes that all the responses are
+independent, which is often not true in practice.
+More details and references are given in Yee (2018) and
+ch.6 of Yee (2015).
+</p>
+<p>The function <code><a href="../../stats/html/optim.html">optim</a></code> is used to search for
+the maximum likelihood solution. Good initial values are
+needed, and arguments in <code><a href="calibrate.qrrvglm.control.html">calibrate.qrrvglm.control</a></code>
+allows the user some control over the choice of these.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Several methods are implemented to obtain
+confidence intervals/regions for the calibration estimates.
+One method is when <code>lr.confint = TRUE</code>,
+then a 4-column matrix is returned
+with the confidence limits being the final 2 columns
+(if <code>type = "everything"</code> then the matrix is
+returned in the <code>lr.confint</code> list component).
+Another similar method is when <code>cf.confint = TRUE</code>.
+There may be some redundancy in whatever is returned.
+Other methods are returned by using <code>type</code> 
+and they are described as follows.
+</p>
+
+<p>The argument <code>type</code> determines what is returned.
+If <code>type = "everything"</code> then all the <code>type</code> values
+are returned in a list, with the following components.
+Each component has length <code>nrow(newdata)</code>.
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>latvar</code></td>
+<td>
+<p>Calibrated latent variables or site scores
+(the default).
+This may have the attribute <code>"objectiveFunction"</code>
+which is usually the log-likelihood or the deviance.
+</p>
+</td></tr>
+<tr valign="top"><td><code>predictors </code></td>
+<td>
+<p>linear/quadratic or additive predictors.
+For example, for Poisson families, this will be on a log scale,
+and for binomial families, this will be on a logit scale.
+</p>
+</td></tr>
+<tr valign="top"><td><code>response</code></td>
+<td>
+<p>Fitted values of the response, evaluated at the
+calibrated latent variables.
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>vcov</code></td>
+<td>
+<p>Wald-type estimated variance-covariance matrices of the
+calibrated latent variables or site scores.  Actually,
+these are stored in a 3-D array whose dimension is
+<code>c(Rank(object), Rank(object), nrow(newdata))</code>.
+This type has only been implemented for
+<code><a href="binomialff.html">binomialff</a></code> and <code><a href="poissonff.html">poissonff</a></code> models
+with canonical links and <code>noRRR = ~ 1</code> and,
+for CQOs, <code>I.tolerances = TRUE</code> or <code>eq.tolerances = TRUE</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Warning </h3>
+
+<p>This function is computationally expensive.
+Setting <code>trace = TRUE</code> to get a running log can be a good idea.
+This function has been tested but not extensively.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Despite the name of this function, CAO models are handled as well
+to a certain extent.
+Some combinations of parameters are not handled, e.g.,
+<code>lr.confint = TRUE</code> only works for rank-1,
+<code>type = "vcov"</code> only works for
+<code><a href="binomialff.html">binomialff</a></code> and <code><a href="poissonff.html">poissonff</a></code>
+models with canonical links and <code>noRRR = ~ 1</code>,
+and higher-order rank models need
+<code>eq.tolerances = TRUE</code> or <code>I.tolerances = TRUE</code>
+as well.
+For rank-1 objects, <code>lr.confint = TRUE</code> is recommended
+above <code>type = "vcov"</code> in terms of accuracy and overall generality.
+For class <code>"qrrvglm"</code> objects it is necessary that
+all response' tolerance matrices are positive-definite
+which correspond to bell-shaped response curves/surfaces.
+</p>
+<p>For <code><a href="binomialff.html">binomialff</a></code> and <code><a href="poissonff.html">poissonff</a></code> models
+the <code>deviance</code> slot is used for the optimization rather than
+the <code>loglikelihood</code> slot, therefore one can calibrate using
+real-valued responses. (If the <code>loglikelihood</code> slot were used
+then functions such as <code><a href="../../stats/html/dpois.html">dpois</a></code> would be used
+with <code>log = TRUE</code> and then would be restricted to feed in
+integer-valued response values.)
+</p>
+
+
+
+<h3>Author(s)</h3>
+
+<p>T. W. Yee.
+Recent work on the standard errors by
+David Zucker and
+Sam Oman at HUJI
+is gratefully acknowledged&mdash;these are returned in the
+<code>vcov</code> component and provided inspiration for <code>lr.confint</code>
+and <code>cf.confint</code>.
+A joint publication is being prepared on this subject.
+</p>
+
+
+<h3>References</h3>
+
+<p>Abate, J. and Whitt, W. (1992).
+The Fourier-series method for inverting transforms
+of probability distributions.
+<em>Queueing Systems</em>,
+<b>10</b>, 5&ndash;88.
+</p>
+
+
+
+
+<p>ter Braak, C. J. F. (1995).
+Calibration. In:
+<em>Data Analysis in Community and Landscape Ecology</em>
+by Jongman, R. H. G., ter Braak, C. J. F. and
+van Tongeren, O. F. R. (Eds.)
+Cambridge University Press,
+Cambridge.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="calibrate.qrrvglm.control.html">calibrate.qrrvglm.control</a></code>,
+<code><a href="calibrate.rrvglm.html">calibrate.rrvglm</a></code>,
+<code><a href="calibrate.html">calibrate</a></code>,
+<code><a href="cqo.html">cqo</a></code>,
+<code><a href="cao.html">cao</a></code>,
+<code><a href="../../stats/html/optim.html">optim</a></code>,
+<code><a href="../../stats/html/uniroot.html">uniroot</a></code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+hspider[, 1:6] &lt;- scale(hspider[, 1:6])  # Stdze environmental variables
+set.seed(123)
+siteNos &lt;- c(1, 5)  # Calibrate these sites
+pet1 &lt;- cqo(cbind(Pardlugu, Pardmont, Pardnigr, Pardpull, Zoraspin) ~
+        WaterCon + BareSand + FallTwig + CoveMoss + CoveHerb + ReflLux,
+        trace = FALSE,
+        data = hspider[-siteNos, ],  # Sites not in fitted model
+        family = poissonff, I.toler = TRUE, Crow1positive = TRUE)
+y0 &lt;- hspider[siteNos, colnames(depvar(pet1))]  # Species counts
+(cpet1 &lt;- calibrate(pet1, trace = TRUE, newdata = data.frame(y0)))
+(clrpet1 &lt;- calibrate(pet1, lr.confint = TRUE, newdata = data.frame(y0)))
+(ccfpet1 &lt;- calibrate(pet1, cf.confint = TRUE, newdata = data.frame(y0)))
+(cp1wald &lt;- calibrate(pet1, newdata = y0, type = "everything"))
+
+## End(Not run)
+
+## Not run: 
+# Graphically compare the actual site scores with their calibrated
+# values. 95 percent likelihood-based confidence intervals in green.
+persp(pet1, main = "Site scores: solid=actual, dashed=calibrated",
+      label = TRUE, col = "gray50", las = 1)
+# Actual site scores:
+xvars &lt;- rownames(concoef(pet1))  # Variables comprising the latvar
+est.latvar &lt;- as.matrix(hspider[siteNos, xvars]) %*% concoef(pet1)
+abline(v = est.latvar, col = seq(siteNos))
+abline(v = cpet1, lty = 2, col = seq(siteNos))  # Calibrated values
+arrows(clrpet1[,  3], c(60, 60), clrpet1[,  4], c(60, 60),  # Add CIs
+       length = 0.08, col = "orange", angle = 90, code = 3, lwd = 2)
+arrows(ccfpet1[,  3], c(70, 70), ccfpet1[,  4], c(70, 70),  # Add CIs
+       length = 0.08, col = "limegreen", angle = 90, code = 3, lwd = 2)
+arrows(cp1wald$latvar - 1.96 * sqrt(cp1wald$vcov), c(65, 65),
+       cp1wald$latvar + 1.96 * sqrt(cp1wald$vcov), c(65, 65),  # Wald CIs
+       length = 0.08, col = "blue", angle = 90, code = 3, lwd = 2)
+legend("topright", lwd = 2,
+       leg = c("CF interval", "Wald  interval", "LR interval"),
+       col = c("limegreen", "blue", "orange"), lty = 1)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

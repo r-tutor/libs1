@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Yellow-bellied Prinia</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for prinia {VGAM}"><tr><td>prinia {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Yellow-bellied Prinia
+
+</h2>
+
+<h3>Description</h3>
+
+<p>A data frame with yellow-bellied Prinia.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+data(prinia)
+</pre>
+
+
+<h3>Format</h3>
+
+<p>A data frame with 151 observations on the following 23 variables.
+</p>
+
+<dl>
+<dt>length</dt><dd><p>a numeric vector,
+the scaled wing length (zero mean and unit variance).
+</p>
+</dd>
+<dt>fat</dt><dd><p>a numeric vector, fat index;
+originally 1 (no fat) to 4 (very fat) but
+converted to 0 (no fat) versus 1 otherwise.
+</p>
+</dd>
+<dt>cap</dt><dd><p>a numeric vector,
+number of times the bird was captured or recaptured.
+</p>
+</dd>
+<dt>noncap</dt><dd><p>a numeric vector,
+number of times the bird was not captured.
+</p>
+</dd>
+<dt>y01, y02, y03, y04, y05, y06</dt><dd>
+<p>a numeric vector of 0s and 1s; for noncapture and capture resp.
+</p>
+</dd>
+<dt>y07, y08, y09, y10, y11, y12</dt><dd>
+<p>same as above.
+</p>
+</dd>
+<dt>y13, y14, y15, y16, y17, y18, y19</dt><dd>
+<p>same as above.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Details</h3>
+
+<p>The yellow-bellied Prinia <em>Prinia flaviventris</em>
+is a common bird species located in Southeast Asia. A
+capture&ndash;recapture experiment was conducted at the Mai Po
+Nature Reserve in Hong Kong during 1991, where captured
+individuals had their wing lengths measured and fat index
+recorded. A total of 19 weekly capture occasions were
+considered, where 151 distinct birds were captured.
+</p>
+<p>More generally, the prinias are a genus of small
+insectivorous birds, and are sometimes referred to as
+<em>wren-warblers</em>.  They are a little-known group of the
+tropical and subtropical Old World, the roughly 30 species
+being divided fairly equally between Africa and Asia.
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Source</h3>
+
+<p>Thanks to Paul Yip for permission to make this data available.
+</p>
+
+
+
+
+<p>Hwang, W.-H. and Huggins, R. M. (2007)
+Application of semiparametric regression models in the
+analysis of capture&ndash;recapture experiments.
+<em>Australian and New Zealand Journal of Statistics</em> <b>49</b>, 191&ndash;202.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+head(prinia)
+summary(prinia)
+rowSums(prinia[, c("cap", "noncap")])  # 19s
+
+#  Fit a positive-binomial distribution (M.h) to the data:
+fit1 &lt;- vglm(cbind(cap, noncap) ~ length + fat, posbinomial, data = prinia)
+
+#  Fit another positive-binomial distribution (M.h) to the data:
+#  The response input is suitable for posbernoulli.*-type functions.
+fit2 &lt;- vglm(cbind(y01, y02, y03, y04, y05, y06, y07, y08, y09, y10,
+                   y11, y12, y13, y14, y15, y16, y17, y18, y19) ~
+             length + fat, posbernoulli.b(drop.b = FALSE ~ 0), data = prinia)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

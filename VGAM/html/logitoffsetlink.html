@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Logit-with-an-Offset Link Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for logitoffsetlink {VGAM}"><tr><td>logitoffsetlink {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Logit-with-an-Offset Link Function </h2>
+
+<h3>Description</h3>
+
+<p>Computes the logitoffsetlink transformation, including its inverse and the
+first two derivatives.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+logitoffsetlink(theta, offset = 0, inverse = FALSE, deriv = 0,
+      short = TRUE, tag = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>theta</code></td>
+<td>
+
+<p>Numeric or character.
+See below for further details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>offset</code></td>
+<td>
+
+<p>The offset value(s), which must be non-negative.
+It is called <i>K</i> below.
+</p>
+</td></tr>
+<tr valign="top"><td><code>inverse, deriv, short, tag</code></td>
+<td>
+
+<p>Details at <code><a href="Links.html">Links</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This  link function allows for some asymmetry compared to the
+ordinary <code><a href="logit.html">logit</a></code> link.
+The formula is
+</p>
+<p style="text-align: center;"><i>
+        log(theta/(1-theta) - K)</i></p>
+
+<p>and the default value for the offset <i>K</i> is corresponds to the
+ordinary <code><a href="logit.html">logit</a></code> link.
+When <code>inverse = TRUE</code> will mean that the value will
+lie in the interval <i>(K / (1+K), 1)</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>For <code>logitoffsetlink</code> with <code>deriv = 0</code>, the
+logitoffsetlink of <code>theta</code>, i.e.,
+<code>log(theta/(1-theta) - K)</code> when <code>inverse = FALSE</code>,
+and if <code>inverse = TRUE</code> then
+<code>(K + exp(theta))/(1 + exp(theta) + K)</code>.
+</p>
+<p>For <code>deriv = 1</code>, then the function returns
+<em>d</em> <code>eta</code> / <em>d</em> <code>theta</code> as a function of <code>theta</code>
+if <code>inverse = FALSE</code>,
+else if <code>inverse = TRUE</code> then it returns the reciprocal.
+</p>
+<p>Here, all logarithms are natural logarithms, i.e., to base <em>e</em>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function is numerical less stability than
+<code><a href="logit.html">logit</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Komori, O. and Eguchi, S. et al., 2016.
+An asymmetric logistic model for ecological data.
+<em>Methods in Ecology and Evolution</em>,
+<b>7</b>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="Links.html">Links</a></code>,
+<code><a href="logit.html">logit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+p &lt;- seq(0.05, 0.99, by = 0.01); myoff &lt;- 0.05
+logitoffsetlink(p, myoff)
+max(abs(logitoffsetlink(logitoffsetlink(p, myoff),
+                        myoff, inverse = TRUE) - p))  # Should be 0
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

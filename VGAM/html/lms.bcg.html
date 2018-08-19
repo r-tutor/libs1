@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: LMS Quantile Regression with a Box-Cox transformation to a...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for lms.bcg {VGAM}"><tr><td>lms.bcg {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> LMS Quantile Regression with a Box-Cox transformation to a Gamma Distribution </h2>
+
+<h3>Description</h3>
+
+<p>LMS quantile regression with the Box-Cox transformation
+to the gamma distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+lms.bcg(percentiles = c(25, 50, 75), zero = c("lambda", "sigma"),
+        llambda = "identitylink", lmu = "identitylink", lsigma = "loge",
+        idf.mu = 4, idf.sigma = 2, ilambda = 1, isigma = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>percentiles</code></td>
+<td>
+
+<p>A numerical vector containing values between 0 and 100,
+which are the quantiles. They will be returned as &lsquo;fitted values&rsquo;.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>See <code><a href="lms.bcn.html">lms.bcn</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>llambda, lmu, lsigma</code></td>
+<td>
+
+<p>See <code><a href="lms.bcn.html">lms.bcn</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>idf.mu, idf.sigma</code></td>
+<td>
+
+<p>See <code><a href="lms.bcn.html">lms.bcn</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ilambda, isigma</code></td>
+<td>
+
+<p>See <code><a href="lms.bcn.html">lms.bcn</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Given a value of the covariate, this function applies a Box-Cox
+transformation to the response to best obtain a gamma distribution.
+The parameters
+chosen to do this are estimated by maximum likelihood or penalized
+maximum likelihood.
+Similar details can be found at <code><a href="lms.bcn.html">lms.bcn</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+<code><a href="rrvglm.html">rrvglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>This <span class="pkg">VGAM</span> family function comes with the same
+warnings as <code><a href="lms.bcn.html">lms.bcn</a></code>.
+Also, the expected value of the second derivative with
+respect to lambda may be incorrect (my calculations do
+not agree with the Lopatatzidis and Green manuscript.)
+</p>
+
+
+<h3>Note</h3>
+
+<p>Similar notes can be found at <code><a href="lms.bcn.html">lms.bcn</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Lopatatzidis A. and Green, P. J. (unpublished manuscript)
+Semiparametric quantile regression using the gamma distribution.
+</p>
+<p>Yee, T. W. (2004)
+Quantile regression via vector generalized additive models.
+<em>Statistics in Medicine</em>, <b>23</b>, 2295&ndash;2315.
+</p>
+
+
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="lms.bcn.html">lms.bcn</a></code>,
+<code><a href="lms.yjn.html">lms.yjn</a></code>,
+<code><a href="qtplot.lmscreg.html">qtplot.lmscreg</a></code>,
+<code><a href="deplot.lmscreg.html">deplot.lmscreg</a></code>,
+<code><a href="cdf.lmscreg.html">cdf.lmscreg</a></code>,
+<code><a href="bmi.nz.html">bmi.nz</a></code>,
+<code><a href="amlexponential.html">amlexponential</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# This converges, but deplot(fit) and qtplot(fit) do not work
+fit0 &lt;- vglm(BMI ~ sm.bs(age, df = 4), lms.bcg, data = bmi.nz, trace = TRUE)
+coef(fit0, matrix = TRUE)
+## Not run: 
+par(mfrow = c(1, 1))
+plotvgam(fit0, se = TRUE)  # Plot mu function (only)
+
+## End(Not run)
+
+# Use a trick: fit0 is used for initial values for fit1.
+fit1 &lt;- vgam(BMI ~ s(age, df = c(4, 2)), etastart = predict(fit0),
+             lms.bcg(zero = 1), bmi.nz, trace = TRUE)
+
+# Difficult to get a model that converges.
+# Here, we prematurely stop iterations because it fails near the solution.
+fit2 &lt;- vgam(BMI ~ s(age, df = c(4, 2)), maxit = 4,
+             lms.bcg(zero = 1, ilam = 3), bmi.nz, trace = TRUE)
+summary(fit1)
+head(predict(fit1))
+head(fitted(fit1))
+head(bmi.nz)
+# Person 1 is near the lower quartile of BMI amongst people his age
+head(cdf(fit1))
+
+## Not run: 
+# Quantile plot
+par(bty = "l", mar=c(5, 4, 4, 3) + 0.1, xpd = TRUE)
+qtplot(fit1, percentiles=c(5, 50, 90, 99), main = "Quantiles",
+       xlim = c(15, 90), las = 1, ylab = "BMI", lwd = 2, lcol = 4)
+
+# Density plot
+ygrid &lt;- seq(15, 43, len = 100)  # BMI ranges
+par(mfrow = c(1, 1), lwd = 2)
+(aa &lt;- deplot(fit1, x0 = 20, y = ygrid, xlab = "BMI", col = "black",
+  main = "Density functions at Age = 20 (black), 42 (red) and 55 (blue)"))
+aa &lt;- deplot(fit1, x0=42, y=ygrid, add=TRUE, llty=2, col="red")
+aa &lt;- deplot(fit1, x0=55, y=ygrid, add=TRUE, llty=4, col="blue", Attach=TRUE)
+aa@post$deplot  # Contains density function values
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

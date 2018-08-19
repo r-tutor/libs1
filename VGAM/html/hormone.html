@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Hormone Assay Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for hormone {VGAM}"><tr><td>hormone {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Hormone Assay Data
+</h2>
+
+<h3>Description</h3>
+
+<p>A hormone assay data set from Carroll and Ruppert (1988).
+</p>
+
+
+
+<h3>Usage</h3>
+
+<pre>data(hormone)</pre>
+
+
+<h3>Format</h3>
+
+<p>A data frame with 85 observations on the following 2 variables.
+</p>
+
+<dl>
+<dt><code>X</code></dt><dd><p>a numeric vector, suitable as the x-axis in
+a scatter plot.
+The reference method.
+</p>
+</dd>
+<dt><code>Y</code></dt><dd><p>a numeric vector, suitable as the y-axis in
+a scatter plot.
+The test method.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Details</h3>
+
+
+<p>The data is given in Table 2.4 of
+Carroll and Ruppert (1988), and was downloaded
+from <a href="http://www.stat.tamu.edu/~carroll">http://www.stat.tamu.edu/~carroll</a>.
+The book describes the data as follows.
+The data are the results of two assay methods for hormone
+data; the scale of the data as presented is not
+particularly meaningful, and the original source
+of the data refused permission to divulge further
+information. As in a similar example of
+Leurgans (1980), the old or reference method is
+being used to predict the new or test method.
+The overall goal is to see whether we can reproduce
+the test-method measurements with the reference-method
+measurements.
+Thus calibration might be of interest for the data.
+</p>
+
+
+<h3>References</h3>
+
+<p>Carroll, R. J. and Ruppert, D. (1988)
+<em>Transformation and Weighting in Regression</em>.
+New York, USA: Chapman &amp; Hall.
+</p>
+<p>Leurgans, S. (1980)
+Evaluating laboratory measurement techniques.
+<em>Biostatistics Casebook</em>.
+Eds.: Miller, R. G. Jr., and Efron, B. and
+Brown, B. W. Jr., and Moses, L.
+New York, USA: Wiley.
+</p>
+<p>Yee, T. W. (2014)
+Reduced-rank vector generalized linear models with two linear predictors.
+<em>Computational Statistics and Data Analysis</em>,
+<b>71</b>, 889&ndash;902.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="uninormal.html">uninormal</a></code>,
+<code><a href="rrvglm.html">rrvglm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+data(hormone)
+summary(hormone)
+
+modelI &lt;-rrvglm(Y ~ 1 + X, data = hormone, trace = TRUE,
+                uninormal(zero = NULL, lsd = "identitylink", imethod = 2))
+
+# Alternative way to fit modelI
+modelI.other &lt;- vglm(Y ~ 1 + X, data = hormone, trace = TRUE,
+                     uninormal(zero = NULL, lsd = "identitylink"))
+
+# Inferior to modelI
+modelII &lt;- vglm(Y ~ 1 + X, data = hormone, trace = TRUE,
+                family = uninormal(zero = NULL))
+
+logLik(modelI)
+logLik(modelII)  # Less than logLik(modelI)
+
+
+# Reproduce the top 3 equations on p.65 of Carroll and Ruppert (1988).
+# They are called Equations (1)--(3) here.
+
+# Equation (1)
+hormone &lt;- transform(hormone, rX = 1 / X)
+clist &lt;- list("(Intercept)" = diag(2), X = diag(2), rX = rbind(0, 1))
+fit1 &lt;- vglm(Y ~ 1 + X + rX, family = uninormal(zero = NULL),
+             constraints = clist, data = hormone, trace = TRUE)
+coef(fit1, matrix = TRUE)
+summary(fit1)  # Actually, the intercepts do not seem significant
+plot(Y ~ X, hormone, col = "blue")
+lines(fitted(fit1) ~ X, hormone, col = "orange")
+
+# Equation (2)
+fit2 &lt;- rrvglm(Y ~ 1 + X, uninormal(zero = NULL), hormone, trace = TRUE)
+coef(fit2, matrix = TRUE)
+plot(Y ~ X, hormone, col = "blue")
+lines(fitted(fit2) ~ X, hormone, col = "red")
+# Add +- 2 SEs
+lines(fitted(fit2) + 2 * exp(predict(fit2)[, "loge(sd)"]) ~ X,
+      hormone, col = "orange")
+lines(fitted(fit2) - 2 * exp(predict(fit2)[, "loge(sd)"]) ~ X,
+      hormone, col = "orange")
+
+# Equation (3)
+# Does not fit well because the loge link for the mean is not good.
+fit3 &lt;- rrvglm(Y ~ 1 + X, maxit = 300, data = hormone, trace = TRUE,
+               uninormal(lmean = "loge", zero = NULL))
+coef(fit3, matrix = TRUE)
+plot(Y ~ X, hormone, col = "blue")  # Does not look okay.
+lines(exp(predict(fit3)[, 1]) ~ X, hormone, col = "red")
+# Add +- 2 SEs
+lines(fitted(fit3) + 2 * exp(predict(fit3)[, "loge(sd)"]) ~ X,
+      hormone, col = "orange")
+lines(fitted(fit3) - 2 * exp(predict(fit3)[, "loge(sd)"]) ~ X,
+      hormone, col = "orange")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

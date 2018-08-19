@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Yeo-Johnson Transformation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for yeo.johnson {VGAM}"><tr><td>yeo.johnson {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Yeo-Johnson Transformation</h2>
+
+<h3>Description</h3>
+
+<p>Computes the Yeo-Johnson transformation, which is a
+normalizing transformation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+yeo.johnson(y, lambda, derivative = 0,
+            epsilon = sqrt(.Machine$double.eps), inverse = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>Numeric, a vector or matrix. </p>
+</td></tr>
+<tr valign="top"><td><code>lambda</code></td>
+<td>
+<p>Numeric. It is recycled to the same length as
+<code>y</code> if necessary. </p>
+</td></tr>
+<tr valign="top"><td><code>derivative</code></td>
+<td>
+<p>Non-negative integer. The default is
+the ordinary function evaluation, otherwise the derivative
+with respect to <code>lambda</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>epsilon</code></td>
+<td>
+<p> Numeric and positive value. The tolerance given
+to values of <code>lambda</code> when comparing it to 0 or 2. </p>
+</td></tr>
+<tr valign="top"><td><code>inverse</code></td>
+<td>
+<p> Logical.
+Return the inverse transformation?
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The Yeo-Johnson transformation can be thought of as an extension
+of the Box-Cox transformation. It handles both positive and
+negative values, whereas the Box-Cox transformation only handles
+positive values. Both can be used to transform the data so
+as to improve normality. They can be used to perform LMS
+quantile regression.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The Yeo-Johnson transformation or its inverse, or its
+derivatives with respect to <code>lambda</code>, of <code>y</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>If <code>inverse = TRUE</code> then the
+argument <code>derivative = 0</code> is required.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yeo, I.-K. and Johnson, R. A. (2000)
+A new family of power transformations to improve normality or symmetry.
+<em>Biometrika</em>,
+<b>87</b>, 954&ndash;959.
+</p>
+<p>Yee, T. W. (2004)
+Quantile regression via vector generalized additive models.
+<em>Statistics in Medicine</em>, <b>23</b>, 2295&ndash;2315.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="lms.yjn.html">lms.yjn</a></code>,
+<code><a href="../../MASS/html/boxcox.html">boxcox</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+y &lt;- seq(-4, 4, len = (nn &lt;- 200))
+ltry &lt;- c(0, 0.5, 1, 1.5, 2)  # Try these values of lambda
+lltry &lt;- length(ltry)
+psi &lt;- matrix(as.numeric(NA), nn, lltry)
+for (ii in 1:lltry)
+  psi[, ii] &lt;- yeo.johnson(y, lambda = ltry[ii])
+
+## Not run: 
+matplot(y, psi, type = "l", ylim = c(-4, 4), lwd = 2, lty = 1:lltry,
+        ylab = "Yeo-Johnson transformation", col = 1:lltry, las = 1,
+        main = "Yeo-Johnson transformation with some values of lambda")
+abline(v = 0, h = 0)
+legend(x = 1, y = -0.5, lty = 1:lltry, legend = as.character(ltry),
+       lwd = 2, col = 1:lltry) 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

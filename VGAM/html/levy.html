@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Levy Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for levy {VGAM}"><tr><td>levy {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Levy Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Estimates the scale parameter of the Levy distribution
+by maximum likelihood estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+levy(location = 0, lscale = "loge", iscale = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>location</code></td>
+<td>
+
+<p>Location parameter. Must have a known value.
+Called <i>a</i> below.
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>lscale</code></td>
+<td>
+
+<p>Parameter link function for the (positive) scale parameter <i>b</i>.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iscale</code></td>
+<td>
+
+<p>Initial value for the <i>b</i> parameter.
+By default, an initial value is chosen internally.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The Levy distribution is one of three stable distributions
+whose density function has a tractable form.
+The formula for the density is
+</p>
+<p style="text-align: center;"><i>
+  f(y;b) = sqrt(b / (2 pi))
+       exp( -b / (2(y - a))) / (y - a)^{3/2} </i></p>
+
+<p>where <i>a&lt;y&lt;Inf</i> and <i>b&gt;0</i>.
+Note that if <i>a</i> is very close to <code>min(y)</code>
+(where <code>y</code> is the response), then numerical problem will occur.
+The mean does not exist.
+The median is returned as the fitted values.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Nolan, J. P. (2005)
+<em>Stable Distributions: Models for Heavy Tailed Data</em>.
+</p>
+
+
+
+<h3>See Also</h3>
+
+<p>The Nolan article was at
+<code>http://academic2.american.edu/~jpnolan/stable/chap1.pdf</code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+nn &lt;- 1000; loc1 &lt;- 0; loc2 &lt;- 10
+myscale &lt;- 1  # log link ==&gt; 0 is the answer
+ldata &lt;- data.frame(y1 = loc1 + myscale/rnorm(nn)^2,  # Levy(myscale, a)
+                    y2 = rlevy(nn, loc = loc2, scale = exp(+2)))
+
+# Cf. Table 1.1 of Nolan for Levy(1,0)
+with(ldata, sum(y1 &gt; 1) / length(y1))  # Should be 0.6827
+with(ldata, sum(y1 &gt; 2) / length(y1))  # Should be 0.5205
+
+fit1 &lt;- vglm(y1 ~ 1, levy(location = loc1), data = ldata, trace = TRUE)
+coef(fit1, matrix = TRUE)
+Coef(fit1)
+summary(fit1)
+head(weights(fit1, type = "work"))
+
+fit2 &lt;- vglm(y2 ~ 1, levy(location = loc2), data = ldata, trace = TRUE)
+coef(fit2, matrix = TRUE)
+Coef(fit2)
+c(median = with(ldata, median(y2)), fitted.median = head(fitted(fit2), 1))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

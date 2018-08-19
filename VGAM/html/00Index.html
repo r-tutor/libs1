@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;VGAM&rsquo; version 1.0-5</h2>
+</div><h2>Documentation for package &lsquo;VGAM&rsquo; version 1.0-6</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 <li><a href="../doc/index.html">User guides, package vignettes and other documentation.</a></li>
@@ -97,6 +97,8 @@
 <td>Asymmetric Least Squares Quantile Regression</td></tr>
 <tr><td style="width: 25%;"><a href="amlpoisson.html">amlpoisson</a></td>
 <td>Poisson Regression by Asymmetric Maximum Likelihood Estimation</td></tr>
+<tr><td style="width: 25%;"><a href="anovavglm.html">anova.vglm</a></td>
+<td>Analysis of Deviance for Vector Generalized Linear Model Fits</td></tr>
 <tr><td style="width: 25%;"><a href="AR1.html">AR1</a></td>
 <td>Autoregressive Process with Order-1 Family Function</td></tr>
 <tr><td style="width: 25%;"><a href="AR1EIM.html">AR1EIM</a></td>
@@ -118,6 +120,12 @@
 <td>Data on Back Pain Prognosis, from Anderson (1984)</td></tr>
 <tr><td style="width: 25%;"><a href="beggs.html">beggs</a></td>
 <td>Bacon and Eggs Data</td></tr>
+<tr><td style="width: 25%;"><a href="bellUC.html">Bell</a></td>
+<td>The Bell Distribution</td></tr>
+<tr><td style="width: 25%;"><a href="bell.html">bell</a></td>
+<td>The Bell Series of Integers</td></tr>
+<tr><td style="width: 25%;"><a href="bellff.html">bellff</a></td>
+<td>Bell Distribution Family Function</td></tr>
 <tr><td style="width: 25%;"><a href="benfUC.html">Benford</a></td>
 <td>Benford's Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="beniniUC.html">Benini</a></td>
@@ -346,6 +354,8 @@
 <td>The Laplace Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="AR1UC.html">dAR1</a></td>
 <td>The AR-1 Autoregressive Process</td></tr>
+<tr><td style="width: 25%;"><a href="bellUC.html">dbell</a></td>
+<td>The Bell Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="benfUC.html">dbenf</a></td>
 <td>Benford's Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="beniniUC.html">dbenini</a></td>
@@ -568,6 +578,8 @@
 <td>The Topp-Leone Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="triangleUC.html">dtriangle</a></td>
 <td>The Triangle Distribution</td></tr>
+<tr><td style="width: 25%;"><a href="trinormalUC.html">dtrinorm</a></td>
+<td>Trivariate Normal Distribution Density and Random Variates</td></tr>
 <tr><td style="width: 25%;"><a href="truncparetoUC.html">dtruncpareto</a></td>
 <td>The Truncated Pareto Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="ducklings.html">ducklings</a></td>
@@ -727,8 +739,6 @@
 <td>2-parameter Gamma Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="garma.html">garma</a></td>
 <td>GARMA (Generalized Autoregressive Moving-Average) Models</td></tr>
-<tr><td style="width: 25%;"><a href="gaussianff.html">gaussianff</a></td>
-<td>Gaussian (Normal) Family Function</td></tr>
 <tr><td style="width: 25%;"><a href="genbetaIIUC.html">GenbetaII</a></td>
 <td>The Generalized Beta II Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="genbetaII.html">genbetaII</a></td>
@@ -1050,6 +1060,8 @@
 <td>The MNSs Blood Group System</td></tr>
 <tr><td style="width: 25%;"><a href="model.framevlm.html">model.framevlm</a></td>
 <td>Construct the Model Frame of a VLM Object</td></tr>
+<tr><td style="width: 25%;"><a href="model.matrixqrrvglm.html">model.matrixqrrvglm</a></td>
+<td>Construct the Model Matrix of a QRR-VGLM Object</td></tr>
 <tr><td style="width: 25%;"><a href="model.matrixvlm.html">model.matrixvlm</a></td>
 <td>Construct the Design Matrix of a VLM Object</td></tr>
 <tr><td style="width: 25%;"><a href="moffset.html">moffset</a></td>
@@ -1144,6 +1156,10 @@
 <td>Optimums</td></tr>
 <tr><td style="width: 25%;"><a href="ordpoisson.html">ordpoisson</a></td>
 <td>Ordinal Poisson Family Function</td></tr>
+<tr><td style="width: 25%;"><a href="ordsup.html">ordsup</a></td>
+<td>Ordinal Superiority Measures</td></tr>
+<tr><td style="width: 25%;"><a href="ordsup.html">ordsup.vglm</a></td>
+<td>Ordinal Superiority Measures</td></tr>
 <tr><td style="width: 25%;"><a href="otlogUC.html">Otlog</a></td>
 <td>One-truncated Logarithmic Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="otlog.html">otlog</a></td>
@@ -1630,10 +1646,6 @@
 <td>The Triangle Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="truncparetoUC.html">qtruncpareto</a></td>
 <td>The Truncated Pareto Distribution</td></tr>
-<tr><td style="width: 25%;"><a href="quasibinomialff.html">quasibinomialff</a></td>
-<td>Quasi-Binomial Family Function</td></tr>
-<tr><td style="width: 25%;"><a href="quasipoissonff.html">quasipoissonff</a></td>
-<td>Quasi-Poisson Family Function</td></tr>
 <tr><td style="width: 25%;"><a href="QvarUC.html">Qvar</a></td>
 <td>Quasi-variances Preprocessing Function</td></tr>
 <tr><td style="width: 25%;"><a href="qvar.html">qvar</a></td>
@@ -1667,12 +1679,16 @@
 <h2><a name="R">-- R --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="R2latvar.html">R2latvar</a></td>
+<td>R-squared for Latent Variable Models</td></tr>
 <tr><td style="width: 25%;"><a href="alaplaceUC.html">ralap</a></td>
 <td>The Laplace Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="rayleighUC.html">Rayleigh</a></td>
 <td>The Rayleigh Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="rayleigh.html">rayleigh</a></td>
 <td>Rayleigh Distribution Family Function</td></tr>
+<tr><td style="width: 25%;"><a href="bellUC.html">rbell</a></td>
+<td>The Bell Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="benfUC.html">rbenf</a></td>
 <td>Benford's Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="beniniUC.html">rbenini</a></td>
@@ -1733,6 +1749,8 @@
 <td>Expectiles of the Exponential Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="enormUC.html">renorm</a></td>
 <td>Expectiles of the Normal Distribution</td></tr>
+<tr><td style="width: 25%;"><a href="residualsvglm.html">residualsvglm</a></td>
+<td>Residuals for a VGLM fit</td></tr>
 <tr><td style="width: 25%;"><a href="eunifUC.html">reunif</a></td>
 <td>Expectiles of the Uniform Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="expgeometricUC.html">rexpgeom</a></td>
@@ -1891,6 +1909,8 @@
 <td>The Topp-Leone Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="triangleUC.html">rtriangle</a></td>
 <td>The Triangle Distribution</td></tr>
+<tr><td style="width: 25%;"><a href="trinormalUC.html">rtrinorm</a></td>
+<td>Trivariate Normal Distribution Density and Random Variates</td></tr>
 <tr><td style="width: 25%;"><a href="truncparetoUC.html">rtruncpareto</a></td>
 <td>The Truncated Pareto Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="ruge.html">ruge</a></td>
@@ -2049,6 +2069,10 @@
 <td>The Triangle Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="triangle.html">triangle</a></td>
 <td>Triangle Distribution Family Function</td></tr>
+<tr><td style="width: 25%;"><a href="trinormalUC.html">Trinorm</a></td>
+<td>Trivariate Normal Distribution Density and Random Variates</td></tr>
+<tr><td style="width: 25%;"><a href="trinormal.html">trinormal</a></td>
+<td>Trivariate Normal Distribution Family Function</td></tr>
 <tr><td style="width: 25%;"><a href="trplot.html">trplot</a></td>
 <td>Trajectory Plot</td></tr>
 <tr><td style="width: 25%;"><a href="trplot.qrrvglm.html">trplot.qrrvglm</a></td>
@@ -2086,11 +2110,13 @@
 <tr><td style="width: 25%;"><a href="V1.html">V1</a></td>
 <td>V1 Flying-Bombs Hits in London</td></tr>
 <tr><td style="width: 25%;"><a href="vcovvlm.html">vcov</a></td>
-<td>Calculate Variance-Covariance Matrix for a Fitted VLM or RR-VGLM Object</td></tr>
+<td>Calculate Variance-Covariance Matrix for a Fitted VLM or RR-VGLM or QRR-VGLM Object</td></tr>
+<tr><td style="width: 25%;"><a href="vcovvlm.html">vcovqrrvglm</a></td>
+<td>Calculate Variance-Covariance Matrix for a Fitted VLM or RR-VGLM or QRR-VGLM Object</td></tr>
 <tr><td style="width: 25%;"><a href="vcovvlm.html">vcovrrvglm</a></td>
-<td>Calculate Variance-Covariance Matrix for a Fitted VLM or RR-VGLM Object</td></tr>
+<td>Calculate Variance-Covariance Matrix for a Fitted VLM or RR-VGLM or QRR-VGLM Object</td></tr>
 <tr><td style="width: 25%;"><a href="vcovvlm.html">vcovvlm</a></td>
-<td>Calculate Variance-Covariance Matrix for a Fitted VLM or RR-VGLM Object</td></tr>
+<td>Calculate Variance-Covariance Matrix for a Fitted VLM or RR-VGLM or QRR-VGLM Object</td></tr>
 <tr><td style="width: 25%;"><a href="venice.html">venice</a></td>
 <td>Venice Maximum Sea Levels Data</td></tr>
 <tr><td style="width: 25%;"><a href="venice.html">venice90</a></td>

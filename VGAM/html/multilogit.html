@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Multi-logit Link Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for multilogit {VGAM}"><tr><td>multilogit {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Multi-logit Link Function </h2>
+
+<h3>Description</h3>
+
+<p>Computes the multilogit transformation, including its inverse and the
+first two derivatives.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+multilogit(theta, refLevel = "(Last)", M = NULL, whitespace = FALSE,
+           bvalue = NULL, inverse = FALSE, deriv = 0, all.derivs = FALSE,
+           short = TRUE, tag = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>theta</code></td>
+<td>
+
+<p>Numeric or character.
+See below for further details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>refLevel, M, whitespace</code></td>
+<td>
+
+<p>See <code><a href="multinomial.html">multinomial</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>bvalue</code></td>
+<td>
+
+<p>See <code><a href="Links.html">Links</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>all.derivs</code></td>
+<td>
+
+<p>Logical.
+This is currently experimental only.
+</p>
+
+
+
+
+
+
+</td></tr>
+<tr valign="top"><td><code>inverse, deriv, short, tag</code></td>
+<td>
+
+<p>Details at <code><a href="Links.html">Links</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>multilogit()</code> link function is a generalization of the
+<code><a href="logit.html">logit</a></code> link to <i>M</i> levels/classes.
+It forms the basis of the <code><a href="multinomial.html">multinomial</a></code> logit model.
+It is sometimes called the <em>multi-logit</em> link
+or the <em>multinomial logit</em> link.
+When its inverse function is computed it returns values which
+are positive and add to unity.
+</p>
+
+
+<h3>Value</h3>
+
+<p>For <code>multilogit</code> with <code>deriv = 0</code>, the multilogit of <code>theta</code>,
+i.e.,
+<code>log(theta[, j]/theta[, M+1])</code> when <code>inverse = FALSE</code>,
+and if <code>inverse = TRUE</code> then
+<code>exp(theta[, j])/(1+rowSums(exp(theta)))</code>.
+</p>
+<p>For <code>deriv = 1</code>, then the function returns
+<em>d</em> <code>eta</code> / <em>d</em> <code>theta</code> as a function of <code>theta</code>
+if <code>inverse = FALSE</code>,
+else if <code>inverse = TRUE</code> then it returns the reciprocal.
+</p>
+<p>Here, all logarithms are natural logarithms, i.e., to base <em>e</em>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Numerical instability may occur when <code>theta</code> is
+close to 1 or 0 (for <code>multilogit</code>).
+One way of overcoming this is to use, e.g., <code>bvalue</code>.
+Currently <code>care.exp()</code> is used to avoid <code>NA</code>s being
+returned if the probability is too close to 1.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>McCullagh, P. and Nelder, J. A. (1989)
+<em>Generalized Linear Models</em>, 2nd ed. London: Chapman &amp; Hall.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="Links.html">Links</a></code>,
+<code><a href="multinomial.html">multinomial</a></code>,
+<code><a href="logit.html">logit</a></code>,
+<code><a href="normal.vcm.html">normal.vcm</a></code>,
+<code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+pneumo &lt;- transform(pneumo, let = log(exposure.time))
+fit &lt;- vglm(cbind(normal, mild, severe) ~ let,
+            multinomial, trace = TRUE, data = pneumo)  # For illustration only!
+fitted(fit)
+predict(fit)
+
+multilogit(fitted(fit))
+multilogit(fitted(fit)) - predict(fit)  # Should be all 0s
+
+multilogit(predict(fit), inverse = TRUE)  # rowSums() add to unity
+multilogit(predict(fit), inverse = TRUE, refLevel = 1)  # For illustration only
+multilogit(predict(fit), inverse = TRUE) - fitted(fit)  # Should be all 0s
+
+multilogit(fitted(fit), deriv = 1)
+multilogit(fitted(fit), deriv = 2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Exponential Logarithmic Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for explogff {VGAM}"><tr><td>explogff {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Exponential Logarithmic Distribution Family Function</h2>
+
+<h3>Description</h3>
+
+<p>Estimates the two parameters of the exponential logarithmic distribution
+by maximum likelihood estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+explogff(lscale = "loge", lshape = "logit",
+         iscale = NULL,   ishape = NULL,
+         tol12 = 1e-05, zero = 1, nsimEIM = 400)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lscale, lshape</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>tol12</code></td>
+<td>
+
+<p>Numeric.
+Tolerance for testing whether a parameter has value 1 or 2.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iscale, ishape, zero, nsimEIM</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The exponential logarithmic distribution has density function
+</p>
+<p style="text-align: center;"><i>
+   (1/(-log(p))) * (((1/c) * (1 - s) * e^(-y/c)) / (1 - (1 - s) * e^(-y/c)))</i></p>
+
+<p>where <i>y &gt; 0</i>, scale parameter <i>c &gt; 0</i>, and
+shape parameter <i>0 &lt; s &lt; 1</i>.
+The mean, <i>((-polylog(2, 1 - p) *
+   c) / log(s)</i> is <em>not</em> returned as the fitted values.
+Note the median is <i>c * log(1 + sqrt(s))</i>
+and it is <em>currently</em> returned as the fitted values.
+Simulated Fisher scoring is implemented.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>We define <code>scale</code> as the reciprocal of the rate parameter
+used by Tahmasabi and Sadegh (2008).
+</p>
+<p>Yet to do: find a <code>polylog()</code> function.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> J. G. Lauder and T. W .Yee </p>
+
+
+<h3>References</h3>
+
+<p>Tahmasabi, R., Sadegh, R. (2008).
+A two-parameter lifetime distribution with decreasing failure rate.
+<em>Computational Statistics and Data Analysis</em>,
+<b>52</b>, 3889&ndash;3901.
+</p>
+
+
+<h3>See Also</h3>
+
+ 
+<p><code><a href="explogUC.html">dexplog</a></code>,
+<code><a href="exponential.html">exponential</a></code>,
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run:  Scale &lt;- exp(2); shape &lt;- logit(-1, inverse = TRUE)
+edata &lt;- data.frame(y = rexplog(n = 2000, scale = Scale, shape = shape))
+fit &lt;- vglm(y ~ 1, explogff, data = edata, trace = TRUE)
+c(with(edata, median(y)), head(fitted(fit), 1))
+coef(fit, matrix = TRUE)
+Coef(fit)
+summary(fit)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

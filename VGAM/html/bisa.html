@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Birnbaum-Saunders Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bisa {VGAM}"><tr><td>bisa {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Birnbaum-Saunders Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Estimates the shape and scale parameters of the
+Birnbaum-Saunders distribution by maximum likelihood estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bisa(lscale = "loge", lshape = "loge", iscale = 1,
+     ishape = NULL, imethod = 1, zero = "shape", nowarning = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>nowarning</code></td>
+<td>
+<p> Logical. Suppress a warning?
+Ignored for <span class="pkg">VGAM</span> 0.9-7 and higher.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lscale, lshape</code></td>
+<td>
+
+<p>Parameter link functions applied to the shape and scale parameters
+(<i>a</i> and <i>b</i> below).
+See <code><a href="Links.html">Links</a></code> for more choices.
+A log link is the default for both because they are positive.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iscale, ishape</code></td>
+<td>
+
+<p>Initial values for <i>a</i> and <i>b</i>.
+A <code>NULL</code> means an initial value is chosen internally using
+<code>imethod</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod</code></td>
+<td>
+
+<p>An integer with value <code>1</code> or <code>2</code> or <code>3</code> which
+specifies the initialization method. If failure to converge occurs
+try the other value, or else specify a value for
+<code>ishape</code> and/or <code>iscale</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>Specifies which linear/additive predictor is modelled as intercept-only.
+If used, choose one value from the set {1,2}.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more details.
+</p>
+
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The (two-parameter) Birnbaum-Saunders distribution
+has a cumulative distribution function that can be written as
+</p>
+<p style="text-align: center;"><i>
+        F(y;a,k) = pnorm[xi(y/b)/a] </i></p>
+
+<p>where <i>pnorm()</i> is the
+cumulative distribution function of a standard normal
+(see <code><a href="../../stats/html/Normal.html">pnorm</a></code>),
+<i>xi(t) = t^(0.5) - t^(-0.5)</i>,
+<i>y &gt; 0</i>,
+<i>a&gt;0</i> is the shape parameter,
+<i>b&gt;0</i> is the scale parameter.
+The mean of <i>Y</i> (which is the fitted value) is
+<i>b*(1 + a*a/2)</i>.
+and the variance is
+<i>a^2 b^2 (1 + (5/4)*a^2)</i>.
+By default, <i>eta1 = log(a)</i> and
+<i>eta2 = log(b)</i> for this family function.
+</p>
+<p>Note that <i>a</i> and <i>b</i> are orthogonal,
+i.e., the Fisher information matrix is diagonal.
+This family function implements Fisher scoring, and
+it is unnecessary to compute any integrals numerically.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Lemonte, A. J. and Cribari-Neto, F. and Vasconcellos, K. L. P. (2007)
+Improved statistical inference for the two-parameter
+Birnbaum-Saunders distribution.
+<em>Computational Statistics \&amp; Data Analysis</em>, <b>51</b>, 4656&ndash;4681.
+</p>
+<p>Birnbaum, Z. W. and Saunders, S. C. (1969)
+A new family of life distributions.
+<em>Journal of Applied Probability</em>, <b>6</b>, 319&ndash;327.
+</p>
+<p>Birnbaum, Z. W. and Saunders, S. C. (1969)
+Estimation for a family of life distributions with applications to fatigue.
+<em>Journal of Applied Probability</em>, <b>6</b>, 328&ndash;347.
+</p>
+<p>Engelhardt, M. and Bain, L. J. and Wright, F. T. (1981)
+Inferences on the parameters of the Birnbaum-Saunders fatigue
+life distribution based on maximum likelihood estimation.
+<em>Technometrics</em>, <b>23</b>, 251&ndash;256.
+</p>
+<p>Johnson, N. L. and Kotz, S. and Balakrishnan, N. (1995)
+<em>Continuous Univariate Distributions</em>,
+2nd edition,
+Volume 2,
+New York: Wiley.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="bisaUC.html">pbisa</a></code>,
+<code><a href="inv.gaussianff.html">inv.gaussianff</a></code>,
+<code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+bdata1 &lt;- data.frame(x2 = runif(nn &lt;- 1000))
+bdata1 &lt;- transform(bdata1, shape = exp(-0.5 + x2), scale = exp(1.5))
+bdata1 &lt;- transform(bdata1, y = rbisa(nn, scale, shape))
+fit1 &lt;- vglm(y ~ x2, bisa(zero = 1), data = bdata1, trace = TRUE)
+coef(fit1, matrix = TRUE)
+
+## Not run: 
+bdata2 &lt;- data.frame(shape = exp(-0.5), scale = exp(0.5))
+bdata2 &lt;- transform(bdata2, y = rbisa(nn, scale, shape))
+fit &lt;- vglm(y ~ 1, bisa, data = bdata2, trace = TRUE)
+with(bdata2, hist(y, prob = TRUE, ylim = c(0, 0.5), col = "lightblue"))
+coef(fit, matrix = TRUE)
+with(bdata2, mean(y))
+head(fitted(fit))
+x &lt;- with(bdata2, seq(0, max(y), len = 200))
+lines(dbisa(x, Coef(fit)[1], Coef(fit)[2]) ~ x, data = bdata2,
+      col = "orange", lwd = 2) 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

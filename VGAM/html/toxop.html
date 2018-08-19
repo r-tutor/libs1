@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Toxoplasmosis Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for toxop {VGAM}"><tr><td>toxop {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Toxoplasmosis Data </h2>
+
+<h3>Description</h3>
+
+<p>Toxoplasmosis data in 34 cities in El Salvador.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>data(toxop)</pre>
+
+
+<h3>Format</h3>
+
+<p>A data frame with 34 observations on the following 4 variables.
+</p>
+
+<dl>
+<dt><code>rainfall</code></dt><dd>
+<p>a numeric vector; the amount of rainfall
+in each city.
+</p>
+</dd>
+<dt><code>ssize</code></dt><dd><p>a numeric vector; sample size.</p>
+</dd>
+<dt><code>cityNo</code></dt><dd><p>a numeric vector; the city number.</p>
+</dd>
+<dt><code>positive</code></dt><dd><p>a numeric vector; the number of subjects
+testing positive for the disease. </p>
+</dd>
+</dl>
+
+
+
+<h3>Details</h3>
+
+<p>See the references for details.
+</p>
+
+
+<h3>Source</h3>
+
+<p>See the references for details.
+</p>
+
+
+<h3>References</h3>
+
+<p>Efron, B. (1978)
+Regression and ANOVA With zero-one data: measures of
+residual variation.
+<em>Journal of the American Statistical Association</em>,
+<b>73</b>, 113&ndash;121.
+</p>
+<p>Efron, B. (1986)
+Double exponential families and their use in generalized linear regression.
+<em>Journal of the American Statistical Association</em>,
+<b>81</b>, 709&ndash;721.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="double.expbinomial.html">double.expbinomial</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run:  with(toxop, plot(rainfall, positive / ssize, col = "blue"))
+plot(toxop, col = "blue") 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

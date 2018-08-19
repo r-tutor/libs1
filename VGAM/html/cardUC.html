@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Cardioid Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Card {VGAM}"><tr><td>Card {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Cardioid Distribution </h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function, quantile function and random generation
+for the cardioid distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dcard(x, mu, rho, log = FALSE)
+pcard(q, mu, rho, lower.tail = TRUE, log.p = FALSE)
+qcard(p, mu, rho, tolerance = 1e-07, maxits = 500,
+      lower.tail = TRUE, log.p = FALSE)
+rcard(n, mu, rho, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>vector of probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of observations.
+Same as in <code><a href="../../stats/html/runif.html">runif</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>mu, rho</code></td>
+<td>
+
+<p>See <code><a href="cardioid.html">cardioid</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>tolerance, maxits, ...</code></td>
+<td>
+
+<p>The first two are control parameters for the algorithm
+used to solve for the roots of a nonlinear system of equations;
+<code>tolerance</code> controls for the accuracy and
+<code>maxits</code> is the maximum number of iterations.
+<code>rcard</code> calls <code>qcard</code> so the <code>...</code> can be used
+to vary the two arguments.
+</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>Logical.
+If <code>log = TRUE</code> then the logarithm of the density is returned.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lower.tail, log.p</code></td>
+<td>
+
+<p>Same meaning as in <code><a href="../../stats/html/Normal.html">pnorm</a></code>
+or <code><a href="../../stats/html/Normal.html">qnorm</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <code><a href="cardioid.html">cardioid</a></code>, the <span class="pkg">VGAM</span> family function
+for estimating the two parameters by maximum likelihood estimation,
+for the formula of the probability density function and other details.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dcard</code> gives the density,
+<code>pcard</code> gives the distribution function,
+<code>qcard</code> gives the quantile function, and
+<code>rcard</code> generates random deviates.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Convergence problems might occur with <code>rcard</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee and Kai Huang </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="cardioid.html">cardioid</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+mu &lt;- 4; rho &lt;- 0.4; x &lt;- seq(0, 2*pi, len = 501)
+plot(x, dcard(x, mu, rho), type = "l", las = 1, ylim = c(0, 1), col = "blue",
+     ylab = paste("[dp]card(mu=", mu, ", rho=", rho, ")"),
+     main = "Blue is density, orange is cumulative distribution function",
+     sub = "Purple lines are the 10,20,...,90 percentiles")
+lines(x, pcard(x, mu, rho), col = "orange")
+
+probs &lt;- seq(0.1, 0.9, by = 0.1)
+Q &lt;- qcard(probs, mu, rho)
+lines(Q, dcard(Q, mu, rho), col = "purple", lty = 3, type = "h")
+lines(Q, pcard(Q, mu, rho), col = "purple", lty = 3, type = "h")
+abline(h = c(0,probs, 1), v = c(0, 2*pi), col = "purple", lty = 3)
+max(abs(pcard(Q, mu, rho) - probs))  # Should be 0
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

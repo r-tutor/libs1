@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Reciprocal Inverse Gaussian distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rigff {VGAM}"><tr><td>rigff {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Reciprocal Inverse Gaussian distribution </h2>
+
+<h3>Description</h3>
+
+<p>Estimation of the parameters of a
+reciprocal inverse Gaussian distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rigff(lmu = "identitylink", llambda = "loge", imu = NULL, ilambda = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lmu, llambda</code></td>
+<td>
+
+<p>Link functions  for <code>mu</code> and <code>lambda</code>.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imu, ilambda</code></td>
+<td>
+
+<p>Initial values for <code>mu</code> and <code>lambda</code>.
+A <code>NULL</code> means a value is computed internally.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See Jorgensen (1997) for details.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This distribution is potentially useful for dispersion modelling.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Jorgensen, B. (1997)
+<em>The Theory of Dispersion Models</em>.
+London: Chapman &amp; Hall
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="simplex.html">simplex</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+rdata &lt;- data.frame(y = rchisq(n = 100, df = 14))  # Not 'proper' data!!
+fit &lt;- vglm(y ~ 1, rigff, data = rdata, trace = TRUE)
+fit &lt;- vglm(y ~ 1, rigff, data = rdata, trace = TRUE, eps = 1e-9, crit = "coef")
+summary(fit)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Positive-Normal Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Posnorm {VGAM}"><tr><td>Posnorm {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The Positive-Normal Distribution</h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function, quantile function and random
+generation for the univariate positive-normal distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dposnorm(x, mean = 0, sd = 1, log = FALSE)
+pposnorm(q, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)
+qposnorm(p, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)
+rposnorm(n, mean = 0, sd = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>vector of probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of observations.
+If <code>length(n) &gt; 1</code> then the length is taken to be the number required.
+</p>
+</td></tr>
+<tr valign="top"><td><code>mean, sd, log, lower.tail, log.p</code></td>
+<td>
+
+<p>see <code><a href="../../stats/html/Normal.html">rnorm</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <code><a href="posnormal.html">posnormal</a></code>, the <span class="pkg">VGAM</span> family function
+for estimating the parameters,
+for the formula of the probability density function and other details.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dposnorm</code> gives the density,
+<code>pposnorm</code> gives the distribution function,
+<code>qposnorm</code> gives the quantile function, and
+<code>rposnorm</code> generates random deviates.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="posnormal.html">posnormal</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run:  m &lt;-  0.8; x &lt;- seq(-1, 4, len = 501)
+plot(x, dposnorm(x, m = m), type = "l", las = 1, ylim = 0:1,
+     ylab = paste("posnorm(m = ", m, ", sd = 1)"), col = "blue",
+     main = "Blue is density, orange is cumulative distribution function",
+     sub = "Purple lines are the 10,20,...,90 percentiles")
+abline(h = 0, col = "grey")
+lines(x, pposnorm(x, m = m), col = "orange", type = "l")
+probs &lt;- seq(0.1, 0.9, by = 0.1)
+Q &lt;- qposnorm(probs, m = m)
+lines(Q, dposnorm(Q, m = m), col = "purple", lty = 3, type = "h")
+lines(Q, pposnorm(Q, m = m), col = "purple", lty = 3, type = "h")
+abline(h = probs, col = "purple", lty = 3)
+max(abs(pposnorm(Q, m = m) - probs))  # Should be 0
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

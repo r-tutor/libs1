@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: V1 Flying-Bombs Hits in London</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for V1 {VGAM}"><tr><td>V1 {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> V1 Flying-Bombs Hits in London </h2>
+
+<h3>Description</h3>
+
+<p>A small count data set.
+During WWII V1 flying-bombs were fired from sites in France
+(Pas-de-Calais) and Dutch coasts towards London.
+The number of hits per square grid around London were recorded.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+data(V1)
+</pre>
+
+
+<h3>Format</h3>
+
+<p>A data frame with the following variables.
+</p>
+
+<dl>
+<dt>hits</dt><dd>
+<p>Values between 0 and 4, and 7.
+Actually, the 7 is really imputed from the paper
+(it was recorded as &quot;5 and over&quot;).
+</p>
+</dd>
+<dt>ofreq</dt><dd>
+<p>Observed frequency, i.e., the number of grids
+with that many hits.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Details</h3>
+
+<p>The data concerns 576 square grids each of 0.25 square kms
+about south London.
+The area was selected comprising 144 square kms over which
+the basic probability function of the distribution was very
+nearly constant.
+V1s, which were one type of flying-bomb,
+were a &ldquo;Vergeltungswaffen&rdquo; or vengeance weapon fired
+during the summer of 1944 at London.
+The V1s were informally called Buzz Bombs or Doodlebugs,
+and they were pulse-jet-powered with a warhead of 850 kg of explosives.
+Over 9500 were launched at London, and many were shot down by
+artillery and the RAF.
+Over the period considered the total number of bombs within the area
+was 537.
+</p>
+<p>It was asserted that the bombs tended to be grouped in clusters.
+However, a basic Poisson analysis shows this is not the case.
+Their guidance system being rather primitive, the data
+is consistent with a Poisson distribution (random).
+</p>
+
+
+<h3>Source</h3>
+
+<p>Clarke, R. D. (1946).
+An application of the Poisson distribution.
+<em>Journal of the Institute of Actuaries</em>,
+<b>72</b>(3), 481.
+</p>
+
+
+<h3>References</h3>
+
+<p>Feller, W. (1970).
+<em>An Introduction to Probability Theory and Its Applications</em>,
+Vol. 1, Third Edition.
+John Wiley and Sons: New York, USA.
+</p>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="poissonff.html">poissonff</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+V1
+mean(with(V1, rep(hits, times = ofreq)))
+ var(with(V1, rep(hits, times = ofreq)))
+ sum(with(V1, rep(hits, times = ofreq)))
+## Not run:  barplot(with(V1, ofreq),
+          names.arg = as.character(with(V1, hits)),
+          main = "London V1 buzz bomb hits",
+          col = "lightblue", las = 1,
+          ylab = "Frequency", xlab = "Hits") 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

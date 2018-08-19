@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Inputting Data to fit a Bradley Terry Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Brat {VGAM}"><tr><td>Brat {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Inputting Data to fit a Bradley Terry Model </h2>
+
+<h3>Description</h3>
+
+<p>Takes in a square matrix of counts and outputs
+them in a form that is accessible to the <code><a href="brat.html">brat</a></code>
+and <code><a href="bratt.html">bratt</a></code> family functions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+Brat(mat, ties = 0 * mat, string = c("&gt;", "=="), whitespace = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>mat</code></td>
+<td>
+
+<p>Matrix of counts, which is considered <i>M</i> by <i>M</i> in
+dimension when there are ties, and <i>M+1</i> by <i>M+1</i>
+when there are no ties.  The rows are winners and the
+columns are losers, e.g., the 2-1 element is now many
+times Competitor 2 has beaten Competitor 1.  The matrices
+are best labelled with the competitors' names.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ties</code></td>
+<td>
+
+<p>Matrix of counts.
+This should be the same dimension as <code>mat</code>. By
+default, there are no ties.  The matrix must be symmetric,
+and the diagonal should contain <code>NA</code>s.
+</p>
+</td></tr>
+<tr valign="top"><td><code>string</code></td>
+<td>
+
+<p>Character.
+The matrices are labelled with the first value of the
+descriptor, e.g., <code>"NZ &gt; Oz"</code> &lsquo;means&rsquo; NZ beats
+Australia in rugby.  Suggested alternatives include
+<code>" beats "</code> or <code>" wins against "</code>.  The second value
+is used to handle ties.
+</p>
+</td></tr>
+<tr valign="top"><td><code>whitespace</code></td>
+<td>
+
+<p>Logical. If <code>TRUE</code> then a white space is added before
+and after <code>string</code>; it generally enhances readability.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for some similar-type
+information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>In the <span class="pkg">VGAM</span> package it is necessary for each
+matrix to be represented as a single row of data by
+<code><a href="brat.html">brat</a></code> and <code><a href="bratt.html">bratt</a></code>.  Hence the
+non-diagonal elements of the <i>M+1</i> by <i>M+1</i>
+matrix are concatenated into <i>M(M+1)</i> values (no
+ties), while if there are ties, the non-diagonal elements
+of the <i>M</i> by <i>M</i> matrix are concatenated into
+<i>M(M-1)</i> values.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A matrix with 1 row and either <i>M(M+1)</i> or <i>M(M-1)</i>
+columns.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This is a data preprocessing function for
+<code><a href="brat.html">brat</a></code> and <code><a href="bratt.html">bratt</a></code>.
+</p>
+<p>Yet to do: merge <code>InverseBrat</code> into <code>brat</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Agresti, A. (2013)
+<em>Categorical Data Analysis</em>,
+3rd ed. Hoboken, NJ, USA: Wiley.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="brat.html">brat</a></code>,
+<code><a href="bratt.html">bratt</a></code>,
+<code>InverseBrat</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+journal &lt;- c("Biometrika", "Comm Statist", "JASA", "JRSS-B")
+mat &lt;- matrix(c( NA, 33, 320, 284,   730, NA, 813, 276,
+                498, 68,  NA, 325,   221, 17, 142, NA), 4, 4)
+dimnames(mat) &lt;- list(winner = journal, loser = journal)
+Brat(mat)  # Less readable
+Brat(mat, whitespace = TRUE)  # More readable
+vglm(Brat(mat, whitespace = TRUE) ~ 1, brat, trace = TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

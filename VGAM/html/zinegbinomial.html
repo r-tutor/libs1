@@ -1,0 +1,302 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Zero-Inflated Negative Binomial Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for zinegbinomial {VGAM}"><tr><td>zinegbinomial {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Zero-Inflated Negative Binomial Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Fits a zero-inflated negative binomial distribution by
+full maximum likelihood estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+zinegbinomial(zero = "size",
+              type.fitted = c("mean", "munb", "pobs0", "pstr0",
+              "onempstr0"),
+              mds.min = 1e-3, nsimEIM = 500, cutoff.prob = 0.999,
+              eps.trig = 1e-7, max.support = 4000, max.chunk.MB = 30,
+              lpstr0 = "logit", lmunb = "loge", lsize = "loge",
+              imethod = 1, ipstr0 = NULL, imunb =  NULL,
+              iprobs.y = NULL, isize = NULL,
+              gprobs.y = (0:9)/10,
+              gsize.mux = exp(c(-30, -20, -15, -10, -6:3)))
+zinegbinomialff(lmunb = "loge", lsize = "loge", lonempstr0 = "logit",
+                type.fitted = c("mean", "munb", "pobs0", "pstr0",
+                "onempstr0"), imunb = NULL, isize = NULL, ionempstr0 =
+                NULL, zero = c("size", "onempstr0"), imethod = 1,
+                iprobs.y = NULL, cutoff.prob = 0.999,
+                eps.trig = 1e-7,  max.support = 4000, max.chunk.MB = 30,
+                gprobs.y = (0:9)/10, gsize.mux = exp((-12:6)/2),
+                mds.min = 1e-3, nsimEIM = 500)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lpstr0, lmunb, lsize</code></td>
+<td>
+
+<p>Link functions for the parameters <i>pstr0</i>,
+the mean and <i>k</i>; see <code><a href="negbinomial.html">negbinomial</a></code> for details,
+and <code><a href="Links.html">Links</a></code> for more choices.
+For the zero-<em>deflated</em> model see below.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>type.fitted</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>
+and <code><a href="fittedvlm.html">fittedvlm</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ipstr0, isize, imunb</code></td>
+<td>
+
+<p>Optional initial values for <i>pstr0</i>
+and <i>k</i>
+and <i>munb</i>.
+The default is to compute an initial value internally for both.
+If a vector then recycling is used.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lonempstr0, ionempstr0</code></td>
+<td>
+
+<p>Corresponding arguments for the other parameterization.
+See details below.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod</code></td>
+<td>
+
+<p>An integer with value <code>1</code> or <code>2</code> or <code>3</code> which
+specifies the initialization method for the mean parameter.
+If failure to converge occurs try another value.
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+
+<p>Specifies which linear/additive predictors are to be modelled
+as intercept-only.  They can be such that their absolute values are
+either 1 or 2 or 3.
+The default is the <i>pstr0</i> and <i>k</i> parameters
+(both for each response).
+See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>nsimEIM</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iprobs.y, cutoff.prob, max.support, max.chunk.MB </code></td>
+<td>
+
+<p>See <code><a href="negbinomial.html">negbinomial</a></code>
+and/or <code><a href="posnegbinomial.html">posnegbinomial</a></code> for details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>mds.min, eps.trig</code></td>
+<td>
+
+<p>See <code><a href="negbinomial.html">negbinomial</a></code> for details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>gprobs.y, gsize.mux</code></td>
+<td>
+
+<p>These arguments relate to grid searching in the initialization process.
+See <code><a href="negbinomial.html">negbinomial</a></code>
+and/or <code><a href="posnegbinomial.html">posnegbinomial</a></code> for details.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions are based on
+</p>
+<p style="text-align: center;"><i>
+        P(Y=0) =   phi + (1- phi) * (k/(k+munb))^k,</i></p>
+
+<p>and for <i>y=1,2,&hellip;</i>,
+</p>
+<p style="text-align: center;"><i>
+        P(Y=y) =  (1- phi) * dnbinom(y, munb, k).</i></p>
+
+<p>The parameter <i>phi</i> satisfies <i>0 &lt; phi &lt; 1</i>.
+The mean of <i>Y</i> is <i>(1-phi)*munb</i>
+(returned as the fitted values).
+By default, the three linear/additive predictors
+for <code>zinegbinomial()</code>
+are <i>(logit(phi),
+  log(munb), log(k))^T</i>.
+See <code><a href="negbinomial.html">negbinomial</a></code>, another <span class="pkg">VGAM</span> family function,
+for the formula of the probability density function and other details
+of the negative binomial distribution.
+</p>
+<p>Independent multiple responses are handled.
+If so then arguments <code>ipstr0</code> and <code>isize</code> may be vectors
+with length equal to the number of responses.
+</p>
+<p>The <span class="pkg">VGAM</span> family function <code>zinegbinomialff()</code> has a few
+changes compared to <code>zinegbinomial()</code>.
+These are:
+(i)   the order of the linear/additive predictors is switched so the
+NB mean comes first;
+(ii)  <code>onempstr0</code> is now 1 minus the probability of a structural 0,
+i.e., the probability of the parent (NB) component,
+i.e., <code>onempstr0</code> is <code>1-pstr0</code>;
+(iii) argument <code>zero</code> has a new default so that the <code>onempstr0</code>
+is intercept-only by default.
+Now <code>zinegbinomialff()</code> is generally recommended over
+<code>zinegbinomial()</code>.
+Both functions implement Fisher scoring and can handle
+multiple responses.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>This model can be difficult to fit to data,
+and this family function is fragile.
+The model is especially difficult to fit reliably when
+the estimated <i>k</i> parameter is very large (so the model
+approaches a zero-inflated Poisson distribution) or
+much less than 1
+(and gets more difficult as it approaches 0).
+Numerical problems can also occur, e.g., when the probability of
+a zero is actually less than, and not more than, the nominal
+probability of zero.
+Similarly, numerical problems can occur if there is little
+or no 0-inflation, or when the sample size is small.
+Half-stepping is not uncommon.
+Successful convergence is sensitive to the initial values, therefore
+if failure to converge occurs, try using combinations of arguments
+<code>stepsize</code> (in <code><a href="vglm.control.html">vglm.control</a></code>),
+<code>imethod</code>,
+<code>imunb</code>,
+<code>ipstr0</code>,
+<code>isize</code>, and/or
+<code>zero</code> if there are explanatory variables.
+Else try fitting an ordinary <code><a href="negbinomial.html">negbinomial</a></code> model
+or a <code><a href="zipoisson.html">zipoisson</a></code> model.
+</p>
+
+
+
+<p>This <span class="pkg">VGAM</span> family function can be computationally expensive
+and can run slowly;
+setting <code>trace = TRUE</code> is useful for monitoring convergence.
+</p>
+
+
+
+
+
+
+<h3>Note</h3>
+
+
+
+
+
+
+<p>Estimated probabilities of a structural zero and an
+observed zero can be returned, as in <code><a href="zipoisson.html">zipoisson</a></code>;
+see <code><a href="fittedvlm.html">fittedvlm</a></code> for more information.
+</p>
+<p>If <i>k</i> is large then the use of <span class="pkg">VGAM</span> family function
+<code><a href="zipoisson.html">zipoisson</a></code> is probably preferable.
+This follows because the Poisson is the limiting distribution of a
+negative binomial as <i>k</i> tends to infinity.
+</p>
+<p>The zero-<em>deflated</em> negative binomial distribution
+might be fitted by setting <code>lpstr0 = identitylink</code>,
+albeit, not entirely reliably. See <code><a href="zipoisson.html">zipoisson</a></code>
+for information that can be applied here. Else try
+the zero-altered negative binomial distribution (see
+<code><a href="zanegbinomial.html">zanegbinomial</a></code>).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="zinegbinUC.html">Zinegbin</a></code>,
+<code><a href="negbinomial.html">negbinomial</a></code>,
+<code><a href="../../stats/html/Poisson.html">rpois</a></code>,
+<code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# Example 1
+ndata &lt;- data.frame(x2 = runif(nn &lt;- 1000))
+ndata &lt;- transform(ndata, pstr0 = logit(-0.5 + 1 * x2, inverse = TRUE),
+                          munb  =   exp( 3   + 1 * x2),
+                          size  =   exp( 0   + 2 * x2))
+ndata &lt;- transform(ndata,
+                   y1 = rzinegbin(nn, mu = munb, size = size, pstr0 = pstr0))
+with(ndata, table(y1)["0"] / sum(table(y1)))
+nfit &lt;- vglm(y1 ~ x2, zinegbinomial(zero = NULL), data = ndata)
+coef(nfit, matrix = TRUE)
+summary(nfit)
+head(cbind(fitted(nfit), with(ndata, (1 - pstr0) * munb)))
+round(vcov(nfit), 3)
+
+
+# Example 2: RR-ZINB could also be called a COZIVGLM-ZINB-2
+ndata &lt;- data.frame(x2 = runif(nn &lt;- 2000))
+ndata &lt;- transform(ndata, x3 = runif(nn))
+ndata &lt;- transform(ndata, eta1 =          3   + 1   * x2 + 2 * x3)
+ndata &lt;- transform(ndata, pstr0  = logit(-1.5 + 0.5 * eta1, inverse = TRUE),
+                          munb = exp(eta1),
+                          size = exp(4))
+ndata &lt;- transform(ndata,
+                   y1 = rzinegbin(nn, pstr0 = pstr0, mu = munb, size = size))
+with(ndata, table(y1)["0"] / sum(table(y1)))
+rrzinb &lt;- rrvglm(y1 ~ x2 + x3, zinegbinomial(zero = NULL), data = ndata,
+                 Index.corner = 2, str0 = 3, trace = TRUE)
+coef(rrzinb, matrix = TRUE)
+Coef(rrzinb)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

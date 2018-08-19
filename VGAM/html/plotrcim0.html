@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Main Effects Plot for a Row-Column Interaction Model (RCIM)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plotrcim0 {VGAM}"><tr><td>plotrcim0 {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Main Effects Plot for a Row-Column Interaction Model (RCIM)
+</h2>
+
+<h3>Description</h3>
+
+<p>Produces a main effects plot for Row-Column Interaction
+Models (RCIMs).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  plotrcim0(object, centered = TRUE, which.plots = c(1, 2),
+            hline0 = TRUE, hlty = "dashed", hcol = par()$col, hlwd = par()$lwd,
+            rfirst = 1, cfirst = 1,
+            rtype = "h", ctype = "h",
+            rcex.lab = 1, rcex.axis = 1, rtick = FALSE,
+            ccex.lab = 1, ccex.axis = 1, ctick = FALSE,
+            rmain = "Row effects", rsub = "",
+            rxlab = "", rylab = "Row effects",
+            cmain = "Column effects", csub = "",
+            cxlab= "", cylab = "Column effects",
+            rcol = par()$col, ccol = par()$col,
+            no.warning = FALSE, ...)
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>An <code><a href="grc.html">rcim</a></code> object.
+This should be of rank-0, i.e., main effects only and no
+interactions.
+</p>
+</td></tr>
+<tr valign="top"><td><code>which.plots</code></td>
+<td>
+
+<p>Numeric, describing which plots are to be plotted.
+The row effects plot is 1 and the column effects plot is 2.
+Set the value <code>0</code>, say, for no plots at all.
+</p>
+</td></tr>
+<tr valign="top"><td><code>centered</code></td>
+<td>
+
+<p>Logical.
+If <code>TRUE</code> then the row and column effects are centered
+(but not scaled) by <code><a href="../../base/html/scale.html">scale</a></code>.
+If <code>FALSE</code> then the raw effects are used (of which
+the first are zero by definition).
+</p>
+</td></tr>
+<tr valign="top"><td><code>hline0, hlty, hcol, hlwd</code></td>
+<td>
+
+<p><code>hline0</code> is logical. If <code>TRUE</code> then a horizontal line is
+plotted at 0 and the other arguments describe this line.
+Probably having <code>hline0 = TRUE</code> only makes sense when
+<code>centered = TRUE</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>rfirst, cfirst</code></td>
+<td>
+
+<p><code>rfirst</code> is the level of row that is placed first in the
+row effects plot, etc.
+</p>
+</td></tr>
+<tr valign="top"><td><code>rmain, cmain</code></td>
+<td>
+
+<p>Character.
+<code>rmain</code> is the main label in the row effects plot, etc.
+</p>
+</td></tr>
+<tr valign="top"><td><code>rtype, ctype, rsub, csub</code></td>
+<td>
+
+<p>See the <code>type</code> and <code>sub</code> arguments of
+<code><a href="../../graphics/html/plot.html">plot</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>rxlab, rylab, cxlab, cylab</code></td>
+<td>
+
+<p>Character.
+For the row effects plot,
+<code>rxlab</code> is <code>xlab</code> and
+<code>rylab</code> is <code>ylab</code>;
+see <code><a href="../../graphics/html/par.html">par</a></code>.
+Ditto for <code>cxlab</code> and <code>cylab</code> for the column effects plot.
+</p>
+</td></tr>
+<tr valign="top"><td><code>rcex.lab, ccex.lab</code></td>
+<td>
+
+<p>Numeric.
+<code>rcex.lab</code> is <code>cex</code> for the row effects plot label,
+etc.
+</p>
+</td></tr>
+<tr valign="top"><td><code>rcex.axis, ccex.axis</code></td>
+<td>
+
+<p>Numeric.
+<code>rcex.axis</code> is the <code>cex</code> argument for the row effects axis label,
+etc.
+</p>
+</td></tr>
+<tr valign="top"><td><code>rtick, ctick</code></td>
+<td>
+
+<p>Logical.
+If <code>rtick = TRUE</code> then add ticks to the row effects plot, etc.
+</p>
+</td></tr>
+<tr valign="top"><td><code>rcol, ccol</code></td>
+<td>
+
+<p><code>rcol</code> give a colour for the row effects plot,
+etc.
+</p>
+</td></tr>
+<tr valign="top"><td><code>no.warning</code></td>
+<td>
+
+<p>Logical. If <code>TRUE</code> then no warning is issued if the
+model is not rank-0.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Arguments fed into both <code><a href="../../graphics/html/plot.html">plot</a></code> calls.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function plots the row and column effects of a rank-0 RCIM.
+As the result is a main effects plot of a regression analysis, its
+interpretation when <code>centered = FALSE</code> is relative
+to the baseline (reference level) of a row and column, and
+should also be considered in light of the link function used.
+Many arguments that start with <code>"r"</code> refer to the row
+effects plot, and <code>"c"</code> for the column
+effects plot.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The original object with the <code>post</code> slot
+assigned additional information from the plot.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function should be only used to plot the object of rank-0 RCIM.
+If the rank is positive then it will issue a warning.
+</p>
+<p>Using an argument <code>ylim</code> will mean the row and column
+effects are plotted on a common scale;
+see <code><a href="../../graphics/html/plot.window.html">plot.window</a></code>.
+</p>
+
+
+
+
+<h3>Author(s)</h3>
+
+<p>T. W. Yee,
+A. F. Hadi.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="moffset.html">moffset</a></code>
+<code><a href="Rcim.html">Rcim</a></code>,
+<code><a href="grc.html">rcim</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+alcoff.e &lt;- moffset(alcoff, "6", "Mon", postfix = "*")  # Effective day
+fit0 &lt;- rcim(alcoff.e, family = poissonff)
+## Not run: par(oma = c(0, 0, 4, 0), mfrow = 1:2)  # For all plots below too
+ii &lt;- plot(fit0, rcol = "blue", ccol = "orange",
+           lwd = 4, ylim = c(-2, 2),  # A common ylim
+           cylab = "Effective daily effects", rylab = "Hourly effects",
+           rxlab = "Hour", cxlab = "Effective day")
+ii@post  # Endowed with additional information
+
+## End(Not run)
+
+# Negative binomial example
+## Not run: 
+fit1 &lt;- rcim(alcoff.e, negbinomial, trace = TRUE)
+plot(fit1, ylim = c(-2, 2)) 
+## End(Not run)
+
+# Univariate normal example
+fit2 &lt;- rcim(alcoff.e, uninormal, trace = TRUE)
+## Not run:  plot(fit2, ylim = c(-200, 400)) 
+
+# Median-polish example
+## Not run: 
+fit3 &lt;- rcim(alcoff.e, alaplace1(tau = 0.5), maxit = 1000, trace = FALSE)
+plot(fit3, ylim = c(-200, 250)) 
+## End(Not run)
+
+# Zero-inflated Poisson example on "crashp" (no 0s in alcoff)
+## Not run: 
+cbind(rowSums(crashp))  # Easy to see the data
+cbind(colSums(crashp))  # Easy to see the data
+fit4 &lt;- rcim(Rcim(crashp, rbaseline = "5", cbaseline = "Sun"),
+             zipoissonff, trace = TRUE)
+plot(fit4, ylim = c(-3, 3)) 
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

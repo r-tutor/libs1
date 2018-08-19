@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Dagum Distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Dagum {VGAM}"><tr><td>Dagum {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The Dagum Distribution</h2>
+
+<h3>Description</h3>
+
+<p>Density, distribution function, quantile function and random
+generation for the Dagum distribution with shape parameters <code>a</code>
+and <code>p</code>, and scale parameter <code>scale</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ddagum(x, scale = 1, shape1.a, shape2.p, log = FALSE)
+pdagum(q, scale = 1, shape1.a, shape2.p, lower.tail = TRUE, log.p = FALSE)
+qdagum(p, scale = 1, shape1.a, shape2.p, lower.tail = TRUE, log.p = FALSE)
+rdagum(n, scale = 1, shape1.a, shape2.p)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, q</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>vector of probabilities.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of observations. If <code>length(n) &gt; 1</code>, the length
+is taken to be the number required.</p>
+</td></tr>
+<tr valign="top"><td><code>shape1.a, shape2.p</code></td>
+<td>
+<p>shape parameters.</p>
+</td></tr>
+<tr valign="top"><td><code>scale</code></td>
+<td>
+<p>scale parameter.</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>Logical.
+If <code>log = TRUE</code> then the logarithm of the density is returned.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lower.tail, log.p</code></td>
+<td>
+
+<p>Same meaning as in <code><a href="../../stats/html/Normal.html">pnorm</a></code>
+or <code><a href="../../stats/html/Normal.html">qnorm</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <code><a href="dagum.html">dagum</a></code>, which is the <span class="pkg">VGAM</span> family function
+for estimating the parameters by maximum likelihood estimation.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>ddagum</code> gives the density,
+<code>pdagum</code> gives the distribution function,
+<code>qdagum</code> gives the quantile function, and
+<code>rdagum</code> generates random deviates.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The Dagum distribution is a special case of the 4-parameter
+generalized beta II distribution.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee and Kai Huang </p>
+
+
+<h3>References</h3>
+
+<p>Kleiber, C. and Kotz, S. (2003)
+<em>Statistical Size Distributions in Economics and
+Actuarial Sciences</em>,
+Hoboken, NJ, USA: Wiley-Interscience.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="dagum.html">dagum</a></code>,
+<code><a href="genbetaII.html">genbetaII</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+probs &lt;- seq(0.1, 0.9, by = 0.1)
+shape1.a &lt;- 1; shape2.p &lt;- 2
+# Should be 0:
+max(abs(pdagum(qdagum(p = probs, shape1.a = shape1.a, shape2.p =  shape2.p),
+                                 shape1.a = shape1.a, shape2.p = shape2.p) - probs))
+
+## Not run:  par(mfrow = c(1, 2))
+x &lt;- seq(-0.01, 5, len = 401)
+plot(x, dexp(x), type = "l", col = "black", ylab = "", las = 1, ylim = c(0, 1),
+     main = "Black is standard exponential, others are ddagum(x, ...)")
+lines(x, ddagum(x, shape1.a = shape1.a, shape2.p = 1), col = "orange")
+lines(x, ddagum(x, shape1.a = shape1.a, shape2.p = 2), col = "blue")
+lines(x, ddagum(x, shape1.a = shape1.a, shape2.p = 5), col = "green")
+legend("topright", col = c("orange","blue","green"), lty = rep(1, len = 3),
+       legend = paste("shape1.a =", shape1.a, ", shape2.p =", c(1, 2, 5)))
+
+plot(x, pexp(x), type = "l", col = "black", ylab = "", las = 1,
+     main = "Black is standard exponential, others are pdagum(x, ...)")
+lines(x, pdagum(x, shape1.a = shape1.a, shape2.p = 1), col = "orange")
+lines(x, pdagum(x, shape1.a = shape1.a, shape2.p = 2), col = "blue")
+lines(x, pdagum(x, shape1.a = shape1.a, shape2.p = 5), col = "green")
+legend("bottomright", col = c("orange","blue","green"), lty = rep(1, len = 3),
+       legend = paste("shape1.a =", shape1.a, ", shape2.p =", c(1, 2, 5)))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Latent Variable Plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for lvplot {VGAM}"><tr><td>lvplot {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Latent Variable Plot </h2>
+
+<h3>Description</h3>
+
+<p>Generic function for a <em>latent variable plot</em>
+(also known as an <em>ordination diagram</em> by ecologists).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+lvplot(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p> An object for a latent
+variable plot is meaningful.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p> Other arguments fed into the specific
+methods function of the model. They usually are graphical
+parameters, and sometimes they are fed
+into the methods function for <code><a href="Coef.html">Coef</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Latent variables occur in reduced-rank regression models,
+as well as in
+quadratic and additive ordination. For the latter,
+latent variables are often called the <em>site scores</em>.
+Latent variable plots were coined by Yee (2004), and have
+the latent variable as at least one of its axes.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The value returned depends specifically on the methods
+function invoked.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Latent variables are not really applicable to
+<code><a href="vglm.html">vglm</a></code>/<code><a href="vgam.html">vgam</a></code> models.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. (2004)
+A new technique for maximum-likelihood
+canonical Gaussian ordination.
+<em>Ecological Monographs</em>,
+<b>74</b>, 685&ndash;701.
+</p>
+<p>Yee, T. W. (2006)
+Constrained additive ordination.
+<em>Ecology</em>, <b>87</b>, 203&ndash;213.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="lvplot.qrrvglm.html">lvplot.qrrvglm</a></code>,
+<code>lvplot.cao</code>,
+<code><a href="latvar.html">latvar</a></code>,
+<code><a href="trplot.html">trplot</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+hspider[,1:6] &lt;- scale(hspider[,1:6])  # Standardized environmental vars
+set.seed(123)
+p1 &lt;- cao(cbind(Pardlugu, Pardmont, Pardnigr, Pardpull, Zoraspin) ~
+          WaterCon + BareSand + FallTwig +
+          CoveMoss + CoveHerb + ReflLux,
+          family = poissonff, data = hspider, Bestof = 3,
+          df1.nl = c(Zoraspin = 2.5, 3), Crow1positive = TRUE)
+index &lt;- 1:ncol(depvar(p1))
+lvplot(p1, lcol = index, pcol = index, y = TRUE, las = 1)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

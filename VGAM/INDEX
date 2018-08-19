@@ -8,6 +8,7 @@ AR1                     Autoregressive Process with Order-1 Family
 AR1EIM                  Computation of the Exact EIM of an Order-1
                         Autoregressive Process
 BICvlm                  Bayesian Information Criterion
+Bell                    The Bell Distribution
 Benford                 Benford's Distribution
 Benini                  The Benini Distribution
 Betabinom               The Beta-Binomial Distribution
@@ -93,6 +94,7 @@ Posnegbin               Positive-Negative Binomial Distribution
 Posnorm                 The Positive-Normal Distribution
 Pospois                 Positive-Poisson Distribution
 Qvar                    Quasi-variances Preprocessing Function
+R2latvar                R-squared for Latent Variable Models
 Rayleigh                The Rayleigh Distribution
 Rcim                    Mark the Baseline of Row and Column on a Matrix
                         data
@@ -111,6 +113,8 @@ Tobit                   The Tobit Distribution
 Tol                     Tolerances
 Topple                  The Topp-Leone Distribution
 Triangle                The Triangle Distribution
+Trinorm                 Trivariate Normal Distribution Density and
+                        Random Variates
 Truncpareto             The Truncated Pareto Distribution
 UtilitiesVGAM           Utility Functions for the VGAM Package
 V1                      V1 Flying-Bombs Hits in London
@@ -139,12 +143,16 @@ amlexponential          Exponential Regression by Asymmetric Maximum
 amlnormal               Asymmetric Least Squares Quantile Regression
 amlpoisson              Poisson Regression by Asymmetric Maximum
                         Likelihood Estimation
+anova.vglm              Analysis of Deviance for Vector Generalized
+                        Linear Model Fits
 auuc                    Auckland University Undergraduate Counts Data
 aux.posbernoulli.t      Auxiliary Function for the Positive Bernoulli
                         Family Function with Time Effects
 backPain                Data on Back Pain Prognosis, from Anderson
                         (1984)
 beggs                   Bacon and Eggs Data
+bell                    The Bell Series of Integers
+bellff                  Bell Distribution Family Function
 benini1                 Benini Distribution Family Function
 betaII                  Beta Distribution of the Second Kind
 betaR                   The Two-parameter Beta Distribution Family
@@ -288,7 +296,6 @@ gammaR                  2-parameter Gamma Distribution
 gammahyperbola          Gamma Hyperbola Bivariate Distribution
 garma                   GARMA (Generalized Autoregressive
                         Moving-Average) Models
-gaussianff              Gaussian (Normal) Family Function
 genbetaII               Generalized Beta Distribution of the Second
                         Kind
 gengamma.stacy          Generalized Gamma distribution family function
@@ -404,6 +411,7 @@ mix2exp                 Mixture of Two Exponential Distributions
 mix2normal              Mixture of Two Univariate Normal Distributions
 mix2poisson             Mixture of Two Poisson Distributions
 model.framevlm          Construct the Model Frame of a VLM Object
+model.matrixqrrvglm     Construct the Model Matrix of a QRR-VGLM Object
 model.matrixvlm         Construct the Design Matrix of a VLM Object
 moffset                 Matrix Offset
 multilogit              Multi-logit Link Function
@@ -431,6 +439,7 @@ oizipf                  One-inflated Zipf Distribution Family Function
 olym08                  2008 and 2012 Summer Olympic Final Medal Count
                         Data
 ordpoisson              Ordinal Poisson Family Function
+ordsup                  Ordinal Superiority Measures
 otlog                   One-truncated Logarithmic Distribution
 otpospoisson            One-truncated Poisson Distribution
 otzeta                  One-truncated Zeta Distribution Family Function
@@ -484,8 +493,6 @@ put.smart               Adds a List to the End of the List
 qrrvglm.control         Control Function for QRR-VGLMs (CQO)
 qtplot.gumbel           Quantile Plot for Gumbel Regression
 qtplot.lmscreg          Quantile Plot for LMS Quantile Regression
-quasibinomialff         Quasi-Binomial Family Function
-quasipoissonff          Quasi-Poisson Family Function
 qvar                    Quasi-variances Extraction Function
 rayleigh                Rayleigh Distribution Family Function
 rcqo                    Constrained Quadratic Ordination
@@ -495,6 +502,7 @@ rec.exp1                Upper Record Values from a 1-parameter
 rec.normal              Upper Record Values from a Univariate Normal
                         Distribution
 reciprocal              Reciprocal Link Function
+residualsvglm           Residuals for a VGLM fit
 rhobit                  Rhobit Link Function
 riceff                  Rice Distribution Family Function
 rigff                   Reciprocal Inverse Gaussian distribution
@@ -544,6 +552,7 @@ tobit                   Tobit Model
 topple                  Topp-Leone Distribution Family Function
 toxop                   Toxoplasmosis Data
 triangle                Triangle Distribution Family Function
+trinormal               Trivariate Normal Distribution Family Function
 trplot                  Trajectory Plot
 trplot.qrrvglm          Trajectory plot for QRR-VGLMs
 truncweibull            Truncated Weibull Distribution Family Function
@@ -551,7 +560,7 @@ ucberk                  University California Berkeley Graduate
                         Admissions
 uninormal               Univariate Normal Distribution
 vcovvlm                 Calculate Variance-Covariance Matrix for a
-                        Fitted VLM or RR-VGLM Object
+                        Fitted VLM or RR-VGLM or QRR-VGLM Object
 venice                  Venice Maximum Sea Levels Data
 vgam                    Fitting Vector Generalized Additive Models
 vgam-class              Class "vgam"

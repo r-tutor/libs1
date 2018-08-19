@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Trivariate Normal Distribution Density and Random Variates</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Trinorm {VGAM}"><tr><td>Trinorm {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Trivariate Normal Distribution Density and Random Variates</h2>
+
+<h3>Description</h3>
+
+<p>Density
+and
+random generation
+for the trivariate normal distribution distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dtrinorm(x1, x2, x3, mean1 = 0, mean2 = 0, mean3 = 0,
+         var1 = 1, var2 = 1, var3 = 1,
+         cov12 = 0, cov23 = 0, cov13 = 0, log = FALSE)
+rtrinorm(n,          mean1 = 0, mean2 = 0, mean3 = 0,
+         var1 = 1, var2 = 1, var3 = 1,
+         cov12 = 0, cov23 = 0, cov13 = 0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x1, x2, x3</code></td>
+<td>
+<p>vector of quantiles.</p>
+</td></tr>
+<tr valign="top"><td><code>mean1, mean2, mean3</code></td>
+<td>
+
+<p>vectors of means.
+</p>
+</td></tr>
+<tr valign="top"><td><code>var1, var2, var3</code></td>
+<td>
+
+<p>vectors of variances.
+</p>
+</td></tr>
+<tr valign="top"><td><code>cov12, cov23, cov13</code></td>
+<td>
+
+<p>vectors of covariances.
+</p>
+</td></tr>
+</table>
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of observations.
+Same as <code><a href="../../stats/html/rnorm.html">rnorm</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p>Logical.
+If <code>log = TRUE</code> then the logarithm of the density is returned.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+<h3>Details</h3>
+
+<p>The default arguments correspond to the standard trivariate normal
+distribution with correlation parameters equal to 0,
+which corresponds to three independent standard normal distributions.
+Let <code>sd1</code> (say) be <code>sqrt(var1)</code> and
+written <i>sigma_1</i>, etc.
+Then the general formula for each correlation coefficient is
+of the form
+<i>rho12 = cov12 /
+    (sigma_1 * sigma_2)</i>,
+and similarly for the two others.
+Thus if the <code>var</code> arguments are left alone then
+the <code>cov</code> can be inputted with <i>rho</i>s.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dtrinorm</code> gives the density,
+<code>rtrinorm</code> generates random deviates (<i>n</i> by 3 matrix).
+</p>
+
+
+
+<h3>Warning</h3>
+
+<p><code>dtrinorm()</code>'s arguments might change in the future!
+It's safest to use the full argument names
+to future-proof possible changes!
+</p>
+
+
+<h3>Note</h3>
+
+<p>For <code>rtrinorm()</code>,
+if the <i>i</i>th variance-covariance matrix is not
+positive-definite then the <i>i</i>th row is all <code>NA</code>s.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/pnorm.html">pnorm</a></code>,
+<code><a href="trinormal.html">trinormal</a></code>,
+<code><a href="uninormal.html">uninormal</a></code>,
+<code><a href="binormal.html">binormal</a></code>,
+<code><a href="binormalUC.html">rbinorm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: nn &lt;- 1000
+tdata &lt;- data.frame(x2 = sort(runif(nn)))
+tdata &lt;- transform(tdata, mean1 = 1 + 2 * x2,
+                   mean2 = 3 + 1 * x2, mean3 = 4,
+                   var1 = exp( 1), var2 = exp( 1), var3 = exp( 1),
+                   rho12 = rhobit( 1, inverse = TRUE),
+                   rho23 = rhobit( 1, inverse = TRUE),
+                   rho13 = rhobit(-1, inverse = TRUE))
+ymat &lt;- with(tdata, rtrinorm(nn, mean1, mean2, mean3,
+                             var1, var2, var3,
+                             sqrt(var1)*sqrt(var1)*rho12,
+                             sqrt(var2)*sqrt(var3)*rho23,
+                             sqrt(var1)*sqrt(var3)*rho13))
+pairs(ymat, col = "blue")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

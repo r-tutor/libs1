@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Inverse Gaussian Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for inv.gaussianff {VGAM}"><tr><td>inv.gaussianff {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Inverse Gaussian Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Estimates the two parameters of the inverse Gaussian distribution
+by maximum likelihood estimation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+inv.gaussianff(lmu = "loge", llambda = "loge",
+               imethod = 1, ilambda = NULL,
+               parallel = FALSE, ishrinkage = 0.99, zero = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lmu, llambda</code></td>
+<td>
+
+<p>Parameter link functions for the <i>mu</i> and
+<i>lambda</i> parameters.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ilambda, parallel</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+If <code>parallel = TRUE</code> then the constraint is not applied to the
+intercept.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod, ishrinkage, zero</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The standard (&ldquo;canonical&rdquo;) form of the
+inverse Gaussian distribution has a density
+that can be written as
+</p>
+<p style="text-align: center;"><i>
+       f(y;mu,lambda) = sqrt(lambda/(2*pi*y^3)) *
+       exp(-lambda*(y-mu)^2/(2*mu^2*y))
+  </i></p>
+
+<p>where <i>y&gt;0</i>,
+<i>mu&gt;0</i>, and
+<i>lambda&gt;0</i>.
+The mean of <i>Y</i> is <i>mu</i> and its variance is
+<i>mu^3/lambda</i>.
+By default, <i>eta1=log(mu)</i> and
+<i>eta2=log(lambda)</i>.
+The mean is returned as the fitted values.
+This <span class="pkg">VGAM</span> family function can handle multiple
+responses (inputted as a matrix).
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+<code><a href="rrvglm.html">rrvglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The inverse Gaussian distribution can be fitted (to a certain extent)
+using the usual GLM framework involving a scale parameter. This family
+function is different from that approach in that it estimates both
+parameters by full maximum likelihood estimation.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Johnson, N. L. and Kotz, S. and Balakrishnan, N. (1994)
+<em>Continuous Univariate Distributions</em>,
+2nd edition, Volume 1, New York: Wiley.
+</p>
+<p>Forbes, C., Evans, M., Hastings, N. and Peacock, B. (2011)
+<em>Statistical Distributions</em>,
+Hoboken, NJ, USA: John Wiley and Sons, Fourth edition.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="Inv.gaussian.html">Inv.gaussian</a></code>,
+<code><a href="waldff.html">waldff</a></code>,
+<code><a href="bisa.html">bisa</a></code>.
+</p>
+<p>The <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> package <span class="pkg">SuppDists</span> has several functions for evaluating
+the density, distribution function, quantile function and generating
+random numbers from the inverse Gaussian distribution.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+idata &lt;- data.frame(x2 = runif(nn &lt;- 1000))
+idata &lt;- transform(idata, mymu   = exp(2 + 1 * x2),
+                          Lambda = exp(2 + 1 * x2))
+idata &lt;- transform(idata, y = rinv.gaussian(nn, mu = mymu, lambda = Lambda))
+fit1 &lt;-   vglm(y ~ x2, inv.gaussianff, data = idata, trace = TRUE)
+rrig &lt;- rrvglm(y ~ x2, inv.gaussianff, data = idata, trace = TRUE)
+coef(fit1, matrix = TRUE)
+coef(rrig, matrix = TRUE)
+Coef(rrig)
+summary(fit1)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

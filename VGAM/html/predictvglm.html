@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Predict Method for a VGLM fit</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for predictvglm {VGAM}"><tr><td>predictvglm {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Predict Method for a VGLM fit</h2>
+
+<h3>Description</h3>
+
+<p>Predicted values based on a vector generalized linear model (VGLM)
+object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+predictvglm(object, newdata = NULL,
+            type = c("link", "response", "terms"),
+            se.fit = FALSE, deriv = 0, dispersion = NULL,
+            untransform = FALSE,
+            type.fitted = NULL, percentiles = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>Object of class inheriting from <code>"vlm"</code>,
+e.g., <code><a href="vglm.html">vglm</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>newdata</code></td>
+<td>
+
+<p>An optional data frame in which to look for variables with which
+to predict. If omitted, the fitted linear predictors are used.
+</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+
+<p>The value of this argument can be abbreviated.
+The type of prediction required. The default is the first one,
+meaning on the scale of the linear predictors.
+This should be a <i>n x M</i> matrix.
+</p>
+<p>The alternative <code>"response"</code> is on the scale of the
+response variable, and depending on the family function,
+this may or may not be the mean.
+Often this is the fitted value, e.g.,
+<code>fitted(vglmObject)</code>
+(see <code><a href="fittedvlm.html">fittedvlm</a></code>).
+Note that the response is output from the <code>@linkinv</code> slot,
+where the <code>eta</code> argument is the <i>n x M</i> matrix
+of linear predictors.
+</p>
+<p>The <code>"terms"</code> option returns a matrix giving the
+fitted values of each term in the model formula on the
+linear predictor scale.
+The terms have been centered.
+</p>
+</td></tr>
+<tr valign="top"><td><code>se.fit</code></td>
+<td>
+
+<p>logical: return standard errors?
+</p>
+</td></tr>
+<tr valign="top"><td><code>deriv</code></td>
+<td>
+
+<p>Non-negative integer. Currently this must be zero.
+Later, this may be implemented for general values.
+</p>
+</td></tr>
+<tr valign="top"><td><code>dispersion</code></td>
+<td>
+
+<p>Dispersion parameter.
+This may be inputted at this stage, but the default is to use
+the dispersion parameter of the fitted model.
+</p>
+</td></tr>
+</table>
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>type.fitted</code></td>
+<td>
+
+<p>Some <span class="pkg">VGAM</span> family functions have an argument by
+the same name. If so,  then one can obtain fitted values
+by setting <code>type = "response"</code> and
+choosing a value of <code>type.fitted</code> from what's
+available.
+If <code>type.fitted = "quantiles"</code> is available then
+the <code>percentiles</code> argument can be used to specify
+what quantile values are requested.
+</p>
+</td></tr>
+<tr valign="top"><td><code>percentiles</code></td>
+<td>
+
+<p>Used only if <code>type.fitted = "quantiles"</code> is
+available and is selected.
+</p>
+</td></tr>
+<tr valign="top"><td><code>untransform</code></td>
+<td>
+
+<p>Logical. Reverses any parameter link function.
+This argument only works if
+<code>type = "link", se.fit = FALSE, deriv = 0</code>.
+Setting <code>untransform = TRUE</code> does not work for
+all <span class="pkg">VGAM</span> family functions; only ones where there
+is a one-to-one correspondence between a simple link function
+and a simple parameter might work.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Arguments passed into <code>predictvlm</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Obtains predictions and optionally estimates
+standard errors of those predictions from a fitted
+<code><a href="vglm.html">vglm</a></code> object.
+</p>
+<p>This code implements <em>smart prediction</em> (see
+<code><a href="smartpred.html">smartpred</a></code>).
+</p>
+
+
+<h3>Value</h3>
+
+<p>If <code>se.fit = FALSE</code>, a vector or matrix of predictions.
+If <code>se.fit = TRUE</code>, a list with components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>fitted.values</code></td>
+<td>
+<p>Predictions</p>
+</td></tr>
+<tr valign="top"><td><code>se.fit</code></td>
+<td>
+<p>Estimated standard errors</p>
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>Degrees of freedom</p>
+</td></tr>
+<tr valign="top"><td><code>sigma</code></td>
+<td>
+<p>The square root of the dispersion parameter</p>
+</td></tr>
+</table>
+
+
+<h3>Warning </h3>
+
+<p>This function may change in the future.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Setting <code>se.fit = TRUE</code> and <code>type = "response"</code>
+will generate an error.
+</p>
+<p>The arguments <code>type.fitted</code>  and <code>percentiles</code>
+are provided in this function to give more convenience than
+modifying the <code>extra</code> slot directly.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. and Hastie, T. J. (2003)
+Reduced-rank vector generalized linear models.
+<em>Statistical Modelling</em>,
+<b>3</b>, 15&ndash;41.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/predict.html">predict</a></code>,
+<code><a href="vglm.html">vglm</a></code>,
+<code>predictvlm</code>,
+<code><a href="smartpred.html">smartpred</a></code>,
+<code><a href="calibrate.html">calibrate</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Illustrates smart prediction
+pneumo &lt;- transform(pneumo, let = log(exposure.time))
+fit &lt;- vglm(cbind(normal, mild, severe) ~ poly(c(scale(let)), 2),
+            propodds, data = pneumo, trace = TRUE, x.arg = FALSE)
+class(fit)
+
+(q0 &lt;- head(predict(fit)))
+(q1 &lt;- predict(fit, newdata = head(pneumo)))
+(q2 &lt;- predict(fit, newdata = head(pneumo)))
+all.equal(q0, q1)  # Should be TRUE
+all.equal(q1, q2)  # Should be TRUE
+
+head(predict(fit))
+head(predict(fit, untransform = TRUE))
+
+p0 &lt;- head(predict(fit, type = "response"))
+p1 &lt;- head(predict(fit, type = "response", newdata = pneumo))
+p2 &lt;- head(predict(fit, type = "response", newdata = pneumo))
+p3 &lt;- head(fitted(fit))
+all.equal(p0, p1)  # Should be TRUE
+all.equal(p1, p2)  # Should be TRUE
+all.equal(p2, p3)  # Should be TRUE
+
+predict(fit, type = "terms", se = TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

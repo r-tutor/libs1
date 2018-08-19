@@ -1,0 +1,280 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Positive Negative Binomial Distribution Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for posnegbinomial {VGAM}"><tr><td>posnegbinomial {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Positive Negative Binomial Distribution Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Maximum likelihood estimation of the two parameters of a positive
+negative binomial distribution.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+posnegbinomial(zero = "size", type.fitted = c("mean", "munb", "prob0"),
+               mds.min = 0.001, nsimEIM = 500, cutoff.prob = 0.999,
+               eps.trig = 1e-07, max.support = 4000, max.chunk.MB = 30,
+               lmunb = "loge", lsize = "loge", imethod = 1,
+               imunb = NULL, iprobs.y = NULL,
+               gprobs.y = ppoints(8), isize = NULL,
+               gsize.mux = exp(c(-30, -20, -15, -10, -6:3)))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lmunb</code></td>
+<td>
+
+<p>Link function applied to the <code>munb</code> parameter, which is the mean
+<i>munb</i> of an ordinary negative binomial distribution.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lsize</code></td>
+<td>
+
+<p>Parameter link function applied to the dispersion parameter,
+called <code>k</code>.
+See <code><a href="Links.html">Links</a></code> for more choices.
+</p>
+</td></tr>
+<tr valign="top"><td><code>isize</code></td>
+<td>
+
+<p>Optional initial value for <code>k</code>, an index parameter.
+The value <code>1/k</code> is known as a dispersion parameter.
+If failure to converge occurs try different values (and/or use
+<code>imethod</code>).
+If necessary this vector is recycled to length equal to the number
+of responses.
+A value <code>NULL</code> means an initial value for each response is
+computed internally using a range of values.
+</p>
+</td></tr>
+<tr valign="top"><td><code>nsimEIM, zero, eps.trig</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>mds.min, iprobs.y, cutoff.prob</code></td>
+<td>
+
+<p>Similar to <code><a href="negbinomial.html">negbinomial</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imunb, max.support</code></td>
+<td>
+
+<p>Similar to <code><a href="negbinomial.html">negbinomial</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>max.chunk.MB, gsize.mux</code></td>
+<td>
+
+<p>Similar to <code><a href="negbinomial.html">negbinomial</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>imethod, gprobs.y</code></td>
+<td>
+
+<p>See <code><a href="negbinomial.html">negbinomial</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>type.fitted</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for details.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The positive negative binomial distribution is an ordinary negative
+binomial distribution but with the probability of a zero response
+being zero. The other probabilities are scaled to sum to unity.
+</p>
+<p>This family function is based on <code><a href="negbinomial.html">negbinomial</a></code> and most
+details can be found there. To avoid confusion, the parameter
+<code>munb</code> here corresponds to the mean of an ordinary negative
+binomial distribution <code><a href="negbinomial.html">negbinomial</a></code>. The mean of
+<code>posnegbinomial</code> is
+</p>
+<p style="text-align: center;"><i>
+            munb / (1-p(0))</i></p>
+
+<p>where <i>p(0) = (k/(k + munb))^k</i> is the
+probability an ordinary negative binomial distribution has a zero value.
+</p>
+<p>The parameters <code>munb</code> and <code>k</code> are not independent in the
+positive negative binomial distribution, whereas they are in the
+ordinary negative binomial distribution.
+</p>
+<p>This function handles <em>multiple</em> responses, so that a matrix
+can be used as the response. The number of columns is the number
+of species, say, and setting <code>zero = -2</code> means that <em>all</em>
+species have a <code>k</code> equalling a (different) intercept only.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>,
+<code><a href="rrvglm.html">rrvglm</a></code> and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Warning</h3>
+
+<p>This family function is fragile;
+at least two cases will lead to numerical problems.
+Firstly,
+the positive-Poisson model corresponds to <code>k</code> equalling infinity.
+If the data is positive-Poisson or close to positive-Poisson,
+then the estimated <code>k</code> will diverge to <code>Inf</code> or some
+very large value.
+Secondly, if the data is clustered about the value 1 because
+the <code>munb</code> parameter is close to 0
+then numerical problems will also occur.
+Users should set <code>trace = TRUE</code> to monitor convergence.
+In the situation when both cases hold, the result returned
+(which will be untrustworthy) will depend on the initial values.
+</p>
+<p>The negative binomial distribution (NBD) is a strictly unimodal distribution.
+Any data set that does not exhibit a mode (in the middle) makes the
+estimation problem difficult.
+The positive NBD inherits this feature.
+Set <code>trace = TRUE</code> to monitor convergence.
+</p>
+<p>See the example below of a data set where <code>posbinomial()</code>
+fails; the so-called solution is <em>extremely</em> poor.
+This is partly due to a lack of a
+unimodal shape because the number of counts decreases only.
+This long tail makes it very difficult to estimate the mean
+parameter with any certainty. The result too is that the
+<code>size</code> parameter is numerically fraught.
+</p>
+
+
+<p>This <span class="pkg">VGAM</span> family function inherits the same warnings as
+<code><a href="negbinomial.html">negbinomial</a></code>.
+And if <code>k</code> is much less than 1 then the estimation may
+be slow.
+</p>
+
+
+<h3>Note</h3>
+
+<p>If the estimated <i>k</i> is very large then fitting a
+<code><a href="pospoisson.html">pospoisson</a></code> model is a good idea.
+</p>
+<p>If both <code>munb</code> and <i>k</i> are large then it may be
+necessary to decrease <code>eps.trig</code> and increase
+<code>max.support</code> so that the EIMs are positive-definite,
+e.g.,
+<code>eps.trig = 1e-8</code> and <code>max.support = Inf</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Barry, S. C. and Welsh, A. H. (2002)
+Generalized additive modelling and zero inflated count data.
+<em>Ecological Modelling</em>,
+<b>157</b>,
+179&ndash;188.
+</p>
+<p>Williamson, E. and Bretherton, M. H. (1964)
+Tables of the logarithmic series distribution.
+<em>Annals of Mathematical Statistics</em>,
+<b>35</b>,
+284&ndash;297.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="posnegbinUC.html">rposnegbin</a></code>,
+<code><a href="pospoisson.html">pospoisson</a></code>,
+<code><a href="negbinomial.html">negbinomial</a></code>,
+<code><a href="zanegbinomial.html">zanegbinomial</a></code>,
+<code><a href="../../stats/html/NegBinomial.html">rnbinom</a></code>,
+<code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code>,
+<code><a href="corbet.html">corbet</a></code>,
+<code><a href="logff.html">logff</a></code>,
+<code><a href="simulate.vlm.html">simulate.vlm</a></code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+pdata &lt;- data.frame(x2 = runif(nn &lt;- 1000))
+pdata &lt;- transform(pdata, y1 = rposnegbin(nn, munb = exp(0+2*x2), size = exp(1)),
+                          y2 = rposnegbin(nn, munb = exp(1+2*x2), size = exp(3)))
+fit &lt;- vglm(cbind(y1, y2) ~ x2, posnegbinomial, data = pdata, trace = TRUE)
+coef(fit, matrix = TRUE)
+dim(depvar(fit))  # Using dim(fit@y) is not recommended
+
+
+# Another artificial data example
+pdata2 &lt;- data.frame(munb = exp(2), size = exp(3)); nn &lt;- 1000
+pdata2 &lt;- transform(pdata2, y3 = rposnegbin(nn, munb = munb, size = size))
+with(pdata2, table(y3))
+fit &lt;- vglm(y3 ~ 1, posnegbinomial, data = pdata2, trace = TRUE)
+coef(fit, matrix = TRUE)
+with(pdata2, mean(y3))  # Sample mean
+head(with(pdata2, munb/(1-(size/(size+munb))^size)), 1)  # Population mean
+head(fitted(fit), 3)
+head(predict(fit), 3)
+
+
+# Example: Corbet (1943) butterfly Malaya data
+fit &lt;- vglm(ofreq ~ 1, posnegbinomial, weights = species, data = corbet)
+coef(fit, matrix = TRUE)
+Coef(fit)
+(khat &lt;- Coef(fit)["size"])
+pdf2 &lt;- dposnegbin(x = with(corbet, ofreq), mu = fitted(fit), size = khat)
+print(with(corbet, cbind(ofreq, species, fitted = pdf2*sum(species))), dig = 1)
+## Not run: 
+with(corbet,
+matplot(ofreq, cbind(species, fitted = pdf2*sum(species)), las = 1,
+        xlab = "Observed frequency (of individual butterflies)",
+        type = "b", ylab = "Number of species", col = c("blue", "orange"),
+        main = "blue 1s = observe; orange 2s = fitted"))
+
+## End(Not run)
+
+## Not run: 
+# This data (courtesy of Maxim Gerashchenko) causes posbinomial() to fail
+pnbd.fail &lt;- data.frame(
+ y1 = c(1:16, 18:21, 23:28, 33:38, 42, 44, 49:51, 55, 56, 58,
+ 59, 61:63, 66, 73, 76, 94, 107, 112, 124, 190, 191, 244),
+ ofreq = c(130, 80, 38, 23, 22, 11, 21, 14, 6, 7, 9, 9, 9, 4, 4, 5, 1,
+           4, 6, 1, 3, 2, 4, 3, 4, 5, 3, 1, 2, 1, 1, 4, 1, 2, 2, 1, 3,
+           1, 1, 2, 2, 2, 1, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1))
+fit.fail &lt;- vglm(y1 ~ 1, weights = ofreq, posnegbinomial,
+               trace = TRUE, data = pnbd.fail)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

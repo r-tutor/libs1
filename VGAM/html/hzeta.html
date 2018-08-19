@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Haight's Zeta Family Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for hzeta {VGAM}"><tr><td>hzeta {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Haight's Zeta Family Function </h2>
+
+<h3>Description</h3>
+
+<p>Estimating the parameter of Haight's zeta distribution
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+hzeta(lshape = "loglog", ishape = NULL, nsimEIM = 100)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lshape</code></td>
+<td>
+
+<p>Parameter link function for the parameter,
+called <i>alpha</i> below.
+See <code><a href="Links.html">Links</a></code> for more choices.
+Here, a log-log link keeps the parameter greater than one, meaning
+the mean is finite.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ishape,nsimEIM</code></td>
+<td>
+
+<p>See <code><a href="CommonVGAMffArguments.html">CommonVGAMffArguments</a></code> for more information.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The probability function is
+</p>
+<p style="text-align: center;"><i>
+          f(y) = (2y-1)^(-alpha) - (2y+1)^(-alpha),</i></p>
+
+<p>where the parameter <i>alpha&gt;0</i>
+and <i>y=1,2,...</i>.
+The function <code><a href="hzetaUC.html">dhzeta</a></code> computes this probability function.
+The mean of <i>Y</i>, which is returned as fitted values, is
+<i>(1-2^(-alpha))*zeta(alpha)</i>
+provided <i>alpha &gt; 1</i>, where <i>zeta</i> is
+Riemann's zeta function.
+The mean is a decreasing function of <i>alpha</i>.
+The mean is infinite if <i>alpha &lt;= 1</i>, and
+the variance is infinite if <i>alpha &lt;= 2</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"vglmff"</code> (see <code><a href="vglmff-class.html">vglmff-class</a></code>).
+The object is used by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> T. W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Pages 533&ndash;4 of
+Johnson N. L., Kemp, A. W. and Kotz S. (2005)
+<em>Univariate Discrete Distributions</em>,
+3rd edition,
+Hoboken, New Jersey: Wiley.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="hzetaUC.html">Hzeta</a></code>,
+<code><a href="zeta.html">zeta</a></code>,
+<code><a href="zetaff.html">zetaff</a></code>,
+<code><a href="loglog.html">loglog</a></code>,
+<code><a href="simulate.vlm.html">simulate.vlm</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+shape &lt;- exp(exp(-0.1))  # The parameter
+hdata &lt;- data.frame(y = rhzeta(n = 1000, shape))
+fit &lt;- vglm(y ~ 1, hzeta, data = hdata, trace = TRUE, crit = "coef")
+coef(fit, matrix = TRUE)
+Coef(fit)  # Useful for intercept-only models; should be same as shape
+c(with(hdata, mean(y)), head(fitted(fit), 1))
+summary(fit)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

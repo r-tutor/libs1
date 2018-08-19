@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Hunua Ranges Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for hunua {VGAM}"><tr><td>hunua {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Hunua Ranges Data</h2>
+
+<h3>Description</h3>
+
+<p>The <code>hunua</code> data frame has 392 rows and 18 columns.
+Altitude is explanatory, and there are binary responses
+(presence/absence = 1/0 respectively) for 17 plant species.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>data(hunua)</pre>
+
+
+<h3>Format</h3>
+
+<p>This data frame contains the following columns:
+</p>
+
+<dl>
+<dt>agaaus</dt><dd><p>Agathis australis, or Kauri</p>
+</dd>
+<dt>beitaw</dt><dd><p>Beilschmiedia tawa, or Tawa</p>
+</dd>
+<dt>corlae</dt><dd><p>Corynocarpus laevigatus</p>
+</dd>
+<dt>cyadea</dt><dd><p>Cyathea dealbata</p>
+</dd>
+<dt>cyamed</dt><dd><p>Cyathea medullaris</p>
+</dd>
+<dt>daccup</dt><dd><p>Dacrydium cupressinum</p>
+</dd>
+<dt>dacdac</dt><dd><p>Dacrycarpus dacrydioides</p>
+</dd>
+<dt>eladen</dt><dd><p>Elaecarpus dentatus</p>
+</dd>
+<dt>hedarb</dt><dd><p>Hedycarya arborea</p>
+</dd>
+<dt>hohpop</dt><dd><p>Species name unknown</p>
+</dd>
+<dt>kniexc</dt><dd><p>Knightia excelsa, or Rewarewa</p>
+</dd>
+<dt>kuneri</dt><dd><p>Kunzea ericoides</p>
+</dd>
+<dt>lepsco</dt><dd><p>Leptospermum scoparium</p>
+</dd>
+<dt>metrob</dt><dd><p>Metrosideros robusta</p>
+</dd>
+<dt>neslan</dt><dd><p>Nestegis lanceolata</p>
+</dd>
+<dt>rhosap</dt><dd><p>Rhopalostylis sapida</p>
+</dd>
+<dt>vitluc</dt><dd><p>Vitex lucens, or Puriri</p>
+</dd>
+<dt>altitude</dt><dd><p>meters above sea level</p>
+</dd>
+</dl>
+
+
+
+<h3>Details</h3>
+
+<p>These were collected from the Hunua Ranges, a small forest in southern
+Auckland, New Zealand. At 392 sites in the forest, the presence/absence
+of 17 plant species was recorded, as well as the altitude.
+Each site was of area size 200<i>m^2</i>.
+</p>
+
+
+<h3>Source</h3>
+
+<p>Dr Neil Mitchell, University of Auckland.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="waitakere.html">waitakere</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Fit a GAM using vgam() and compare it with the Waitakere Ranges one
+fit.h &lt;- vgam(agaaus ~ s(altitude, df = 2), binomialff, data = hunua)
+## Not run: 
+plot(fit.h, se = TRUE, lcol = "orange", scol = "orange",
+     llwd = 2, slwd = 2, main = "Orange is Hunua, Blue is Waitakere") 
+## End(Not run)
+head(predict(fit.h, hunua, type = "response"))
+
+fit.w &lt;- vgam(agaaus ~ s(altitude, df = 2), binomialff, data = waitakere)
+## Not run: 
+plot(fit.w, se = TRUE, lcol = "blue", scol = "blue", add = TRUE) 
+## End(Not run)
+head(predict(fit.w, hunua, type = "response"))   # Same as above?
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

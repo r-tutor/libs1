@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Takeuchi's Information Criterion</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for TIC {VGAM}"><tr><td>TIC {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Takeuchi's Information Criterion </h2>
+
+<h3>Description</h3>
+
+<p>Calculates the Takeuchi information criterion
+for a fitted model object
+for which a log-likelihood value has been obtained.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+    TIC(object, ...)
+    TICvlm(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>A <span class="pkg">VGAM</span> object having
+class <code><a href="vglm-class.html">vglm-class</a></code>.
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Other possible arguments fed into
+<code>logLik</code> in order to compute the log-likelihood.
+</p>
+</td></tr>
+</table>
+
+
+
+
+
+
+
+
+
+<h3>Details</h3>
+
+<p>The following formula is used for VGLMs:
+<i>-2*log-likelihood
+    + 2 * trace(V K)</i>,
+where <i>V</i> is the inverse of the EIM from the fitted model,
+and <i>K</i> is the outer product of the score vectors.
+Both <i>V</i> and <i>K</i> are order-<i>p.VLM</i> matrices.
+One has <i>V</i> equal to <code>vcov(object)</code>,
+and <i>K</i> is computed by taking the outer product of
+the output from the <code>deriv</code> slot multiplied by the
+large VLM matrix and then taking their sum.
+Hence for the huge majority of models,
+the penalty is computed at the MLE and is empirical in nature.
+Theoretically, if the fitted model is the true model then
+AIC equals TIC.
+</p>
+<p>When there are prior weights the score vectors are divided
+by the square root of these,
+because <i> (a_i U_i / &radic;{a_i})^2 = a_i U_i^2</i>.
+</p>
+
+<p>This code relies on the log-likelihood being defined, and computed,
+for the object.
+When comparing fitted objects, the smaller the TIC, the better the fit.
+The log-likelihood and hence the TIC is only defined up to an additive
+constant.
+</p>
+<p>Currently
+any estimated scale parameter (in GLM parlance) is ignored by
+treating its value as unity.
+Also,
+currently
+this function is written only for <code><a href="vglm.html">vglm</a></code> objects and
+not <code><a href="vgam.html">vgam</a></code> or <code><a href="rrvglm.html">rrvglm</a></code>, etc., objects.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns a numeric TIC value.
+</p>
+
+
+<h3>Warning </h3>
+
+<p>This code has not been double-checked.
+The general applicability of <code>TIC</code> for the VGLM/VGAM classes
+has not been developed fully.
+In particular, <code>TIC</code> should not be run on some <span class="pkg">VGAM</span> family
+functions because of violation of certain regularity conditions, etc.
+</p>
+<p>Some authors note that quite large sample sizes are needed
+for this IC to work reasonably well.
+</p>
+
+
+
+
+<h3>Note</h3>
+
+<p>TIC has not been defined for RR-VGLMs, QRR-VGLMs, etc., yet.
+</p>
+<p>See <code><a href="AICvlm.html">AICvlm</a></code> about models
+such as <code><a href="posbernoulli.tb.html">posbernoulli.tb</a></code>
+that require <code>posbinomial(omit.constant = TRUE)</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>T. W. Yee. </p>
+
+
+<h3>References</h3>
+
+<p>Takeuchi, K. (1976)
+Distribution of informational statistics and a criterion of model
+fitting.  (In Japanese).
+<em>Suri-Kagaku</em> (Mathematic Sciences),
+<b>153</b>, 12&ndash;18.
+</p>
+
+
+
+<p>Burnham, K. P. and Anderson, D. R. (2002)
+<em>Model Selection and Multi-Model Inference: A Practical
+Information-Theoretic Approach</em>,
+2nd ed. New York, USA: Springer.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>VGLMs are described in <code><a href="vglm-class.html">vglm-class</a></code>;
+<code><a href="../../stats/html/AIC.html">AIC</a></code>,
+<code><a href="AICvlm.html">AICvlm</a></code>.
+<code><a href="BICvlm.html">BICvlm</a></code>.
+</p>
+
+
+
+
+<h3>Examples</h3>
+
+<pre>
+pneumo &lt;- transform(pneumo, let = log(exposure.time))
+(fit1 &lt;- vglm(cbind(normal, mild, severe) ~ let,
+              cumulative(parallel = TRUE, reverse = TRUE), data = pneumo))
+coef(fit1, matrix = TRUE)
+TIC(fit1)
+(fit2 &lt;- vglm(cbind(normal, mild, severe) ~ let,
+              cumulative(parallel = FALSE, reverse = TRUE), data = pneumo))
+coef(fit2, matrix = TRUE)
+TIC(fit2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

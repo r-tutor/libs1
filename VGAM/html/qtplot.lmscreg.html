@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Quantile Plot for LMS Quantile Regression</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for qtplot.lmscreg {VGAM}"><tr><td>qtplot.lmscreg {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Quantile Plot for LMS Quantile Regression </h2>
+
+<h3>Description</h3>
+
+<p>Plots quantiles associated with a LMS quantile regression.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+qtplot.lmscreg(object, newdata = NULL,
+               percentiles = object@misc$percentiles,
+               show.plot = TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p> A <span class="pkg">VGAM</span> quantile regression model, i.e.,
+an object produced by modelling functions such as <code><a href="vglm.html">vglm</a></code>
+and <code><a href="vgam.html">vgam</a></code> with a family function beginning with
+<code>"lms."</code>, e.g., <code><a href="lms.yjn.html">lms.yjn</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>newdata</code></td>
+<td>
+<p> Optional data frame for computing the quantiles.
+If missing, the original data is used.
+</p>
+</td></tr>
+<tr valign="top"><td><code>percentiles</code></td>
+<td>
+<p> Numerical vector with values between 0 and 100
+that specify the percentiles (quantiles).
+The default are the percentiles used when the model was fitted.
+</p>
+</td></tr>
+<tr valign="top"><td><code>show.plot</code></td>
+<td>
+<p> Logical. Plot it? If <code>FALSE</code> no plot will
+be done. </p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p> Graphical parameter that are passed into
+<code><a href="plotqtplot.lmscreg.html">plotqtplot.lmscreg</a></code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The &lsquo;primary&rsquo; variable is defined as the main covariate upon which
+the regression or smoothing is performed. For example, in medical
+studies, it is often the age.
+In <span class="pkg">VGAM</span>, it is possible to handle more than one covariate, however,
+the primary variable must be the first term after the intercept.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with the following components.
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>fitted.values </code></td>
+<td>
+<p>A vector of fitted percentile values. </p>
+</td></tr>
+<tr valign="top"><td><code>percentiles </code></td>
+<td>
+<p>The percentiles used. </p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p><code><a href="plotqtplot.lmscreg.html">plotqtplot.lmscreg</a></code> does the actual plotting.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Thomas W. Yee </p>
+
+
+<h3>References</h3>
+
+<p>Yee, T. W. (2004)
+Quantile regression via vector generalized additive models.
+<em>Statistics in Medicine</em>, <b>23</b>, 2295&ndash;2315.
+</p>
+
+
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="plotqtplot.lmscreg.html">plotqtplot.lmscreg</a></code>,
+<code><a href="deplot.lmscreg.html">deplot.lmscreg</a></code>,
+<code><a href="lms.bcn.html">lms.bcn</a></code>,
+<code><a href="lms.bcg.html">lms.bcg</a></code>,
+<code><a href="lms.yjn.html">lms.yjn</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>## Not run: 
+fit &lt;- vgam(BMI ~ s(age, df = c(4, 2)), lms.bcn(zero=1), data = bmi.nz)
+qtplot(fit)
+qtplot(fit, perc = c(25, 50, 75, 95), lcol = "blue", tcol = "blue", llwd = 2)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

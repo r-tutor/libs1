@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Select Variables for a Formula Response or the RHS of a...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Select {VGAM}"><tr><td>Select {VGAM}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Select Variables for a Formula Response or the RHS of a Formula
+
+</h2>
+
+<h3>Description</h3>
+
+<p>Select variables from a data frame whose names
+begin with a certain character string.
+</p>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+Select(data = list(), prefix = "y",
+       lhs = NULL, rhs = NULL, rhs2 = NULL, rhs3 = NULL,
+       as.character = FALSE, as.formula.arg = FALSE, tilde = TRUE,
+       exclude = NULL, sort.arg = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+
+<p>A data frame or a matrix.
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>prefix</code></td>
+<td>
+
+<p>A vector of character strings, or a logical.
+If a character then
+the variables chosen from <code>data</code> begin with the
+value of <code>prefix</code>.
+If a logical then
+only <code>TRUE</code> is accepted and all the variables
+in <code>data</code> are chosen.
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>lhs</code></td>
+<td>
+
+<p>A character string.
+The response of a formula.
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>rhs</code></td>
+<td>
+
+<p>A character string.
+Included as part of the RHS a formula.
+Set <code>rhs = "0"</code> to suppress the intercept.
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>rhs2, rhs3</code></td>
+<td>
+
+<p>Same as <code>rhs</code> but appended to its RHS,
+i.e., <code>paste0(rhs, " + ", rhs2, " + ", rhs3)</code>.
+If used, <code>rhs</code> should be used first,
+and then possibly <code>rhs2</code>
+and then possibly <code>rhs3</code>.
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>as.character</code></td>
+<td>
+
+<p>Logical.
+Return the answer as a character string?
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>as.formula.arg</code></td>
+<td>
+
+<p>Logical.
+Is the answer a formula?
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>tilde</code></td>
+<td>
+
+<p>Logical.
+If <code>as.character</code> and <code>as.formula.arg</code>
+are both <code>TRUE</code>
+then include the tilde in the formula?
+</p>
+</td></tr>
+<tr valign="top"><td><code>exclude</code></td>
+<td>
+
+<p>Vector of character strings.
+Exclude these variables explicitly.
+</p>
+
+</td></tr>
+<tr valign="top"><td><code>sort.arg</code></td>
+<td>
+
+<p>Logical.
+Sort the variables?
+</p>
+
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This is meant as a utility function to avoid manually:
+(i) making a <code><a href="../../base/html/cbind.html">cbind</a></code> call to construct
+a big matrix response,
+and
+(ii) constructing a formula involving a lot of terms.
+The savings can be made because the variables of interest
+begin with some prefix, e.g., with the character <code>"y"</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>If <code>as.character = FALSE</code> and
+<code>as.formula.arg = FALSE</code> then a matrix such
+as <code>cbind(y1, y2, y3)</code>.
+If <code>as.character = TRUE</code> and
+<code>as.formula.arg = FALSE</code> then a character string such
+as <code>"cbind(y1, y2, y3)"</code>.
+</p>
+<p>If <code>as.character = FALSE</code> and
+<code>as.formula.arg = TRUE</code> then a <code><a href="../../stats/html/formula.html">formula</a></code> such
+as <code>lhs ~ y1 + y2 + y3</code>.
+If <code>as.character = TRUE</code> and
+<code>as.formula.arg = TRUE</code> then a character string such
+as <code>"lhs ~ y1 + y2 + y3"</code>.
+See the examples below.
+By default, if no variables beginning the the value of <code>prefix</code>
+is found then a <code>NULL</code> is returned.
+Setting <code>prefix = " "</code> is a way of selecting no variables.
+</p>
+
+
+
+
+
+
+
+<h3>Note</h3>
+
+<p>This function is a bit experimental at this stage and
+may change in the short future.
+Some of its utility may be better achieved using
+<code><a href="../../base/html/subset.html">subset</a></code> and its <code>select</code> argument,
+e.g., <code>subset(pdata, TRUE, select = y01:y10)</code>.
+</p>
+<p>For some models such as <code><a href="posbernoulli.t.html">posbernoulli.t</a></code> the
+order of the variables in the <code>xij</code> argument is
+crucial, therefore care must be taken with the
+argument <code>sort.arg</code>.
+In some instances, it may be good to rename variables
+<code>y1</code> to <code>y01</code>,
+<code>y2</code> to <code>y02</code>, etc.
+when there are variables such as
+<code>y14</code>.
+</p>
+<p>Currently <code>subsetcol()</code> and <code>Select()</code> are identical.
+One of these functions might be withdrawn in the future.
+</p>
+
+
+
+<h3>Author(s)</h3>
+
+<p>T. W. Yee.
+</p>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="vglm.html">vglm</a></code>,
+<code><a href="../../base/html/cbind.html">cbind</a></code>,
+<code><a href="../../base/html/subset.html">subset</a></code>,
+<code><a href="../../stats/html/formula.html">formula</a></code>,
+<code><a href="fill.html">fill</a></code>.
+</p>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+Pneumo &lt;- pneumo
+colnames(Pneumo) &lt;- c("y1", "y2", "y3", "x2")  # The "y" variables are response
+Pneumo$x1 &lt;- 1; Pneumo$x3 &lt;- 3; Pneumo$x &lt;- 0; Pneumo$x4 &lt;- 4  # Add these
+
+Select(data = Pneumo)  # Same as with(Pneumo, cbind(y1, y2, y3))
+Select(Pneumo, "x")
+Select(Pneumo, "x", sort = FALSE, as.char = TRUE)
+Select(Pneumo, "x", exclude = "x1")
+Select(Pneumo, "x", exclude = "x1", as.char = TRUE)
+Select(Pneumo, c("x", "y"))
+Select(Pneumo, "z")  # Now returns a NULL
+Select(Pneumo, " ")  # Now returns a NULL
+Select(Pneumo, prefix = TRUE, as.formula = TRUE)
+Select(Pneumo, "x", exclude = c("x3", "x1"), as.formula = TRUE,
+       lhs = "cbind(y1, y2, y3)", rhs = "0")
+Select(Pneumo, "x", exclude = "x1", as.formula = TRUE, as.char = TRUE,
+       lhs = "cbind(y1, y2, y3)", rhs = "0")
+
+# Now a 'real' example:
+Huggins89table1 &lt;- transform(Huggins89table1, x3.tij = t01)
+tab1 &lt;- subset(Huggins89table1,
+               rowSums(Select(Huggins89table1, "y")) &gt; 0)
+# Same as
+# subset(Huggins89table1, y1 + y2 + y3 + y4 + y5 + y6 + y7 + y8 + y9 + y10 &gt; 0)
+
+# Long way to do it:
+fit.th &lt;-
+   vglm(cbind(y01, y02, y03, y04, y05, y06, y07, y08, y09, y10) ~ x2 + x3.tij,
+        xij = list(x3.tij ~ t01 + t02 + t03 + t04 + t05 + t06 + t07 + t08 +
+                            t09 + t10 - 1),
+        posbernoulli.t(parallel.t = TRUE ~ x2 + x3.tij),
+        data = tab1, trace = TRUE,
+        form2 = ~ x2 + x3.tij + t01 + t02 + t03 + t04 + t05 + t06 + t07 + t08 +
+                                t09 + t10)
+# Short way to do it:
+Fit.th &lt;- vglm(Select(tab1, "y") ~ x2 + x3.tij,
+               xij = list(Select(tab1, "t", as.formula = TRUE,
+                                 sort = FALSE, lhs = "x3.tij", rhs = "0")),
+               posbernoulli.t(parallel.t = TRUE ~ x2 + x3.tij),
+               data = tab1, trace = TRUE,
+               form2 = Select(tab1, prefix = TRUE, as.formula = TRUE))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>VGAM</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>
