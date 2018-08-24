@@ -12,7 +12,7 @@
 
 <meta name="author" content="Stefan Siegert, Jonah Gabry, and Ben Goodrich" />
 
-<meta name="date" content="2018-04-17" />
+<meta name="date" content="2018-08-20" />
 
 <title>Step by step guide for creating a package that depends on RStan</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Step by step guide for creating a package that depends on RStan</h1>
 <h4 class="author"><em>Stefan Siegert, Jonah Gabry, and Ben Goodrich</em></h4>
-<h4 class="date"><em>2018-04-17</em></h4>
+<h4 class="date"><em>2018-08-20</em></h4>
 
 
 <div id="TOC">
@@ -95,10 +95,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>To start off, we use <code>rstan_package_skeleton</code> to initialise a bare-bones package directory. The name of our demo package will be <strong>rstanlm</strong>; it will fit a simple linear regression model using Stan.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;rstantools&quot;</span>)
 <span class="kw">rstan_package_skeleton</span>(<span class="dt">path =</span> <span class="st">'rstanlm'</span>)</code></pre></div>
-<pre><code>This is rstantools version 1.5.0</code></pre>
+<pre><code>This is rstantools version 1.5.1</code></pre>
 <pre><code>Creating package skeleton for package: rstanlm</code></pre>
 <pre><code>Running usethis::create_package ...</code></pre>
-<pre><code>Changing active project to rstanlm
+<pre><code>✔ Setting active project to '/private/var/folders/h6/14xy_35x4wd2tz542dn0qhtc0000gn/T/RtmpScUbme/rstanlm'
 ✔ Creating 'R/'
 ✔ Creating 'man/'
 ✔ Writing 'DESCRIPTION'
@@ -118,7 +118,7 @@ Writing rstanlm-package.Rd</code></pre>
 <pre><code>Writing Read-and-delete-me file with additional instructions ...</code></pre>
 <pre><code>
 Finished skeleton for package: rstanlm</code></pre>
-<pre><code>Further steps are described in '/private/var/folders/h6/14xy_35x4wd2tz542dn0qhtc0000gn/T/RtmpErV3LR/rstanlm/Read-and-delete-me'.</code></pre>
+<pre><code>Further steps are described in '/private/var/folders/h6/14xy_35x4wd2tz542dn0qhtc0000gn/T/RtmpScUbme/rstanlm/Read-and-delete-me'.</code></pre>
 <p>If we had existing <code>.stan</code> files to include with the package we could use the optional <code>stan_files</code> argument to <code>rstan_package_skeleton</code> to include them. Another option, which we’ll use below, is to add the Stan files once the basic structure of the package is in place.</p>
 <p>We can now set the new working directory to the new package directory and view the contents. (Note: if using RStudio then by default the newly created project for the package will be opened in a new session and you will not need the call to <code>setwd()</code>.)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">setwd</span>(<span class="st">&quot;rstanlm&quot;</span>)
@@ -129,19 +129,32 @@ Finished skeleton for package: rstanlm</code></pre>
 [10] &quot;man&quot;                &quot;src&quot;                &quot;tools&quot;             </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">file.show</span>(<span class="st">&quot;DESCRIPTION&quot;</span>)</code></pre></div>
 <pre><code>Package: rstanlm
-Version: 0.0.0.9000
 Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = &quot;First&quot;,
+           family = &quot;Last&quot;,
+           role = c(&quot;aut&quot;, &quot;cre&quot;),
+           email = &quot;first.last@example.com&quot;)
 Description: What the package does (one paragraph).
-Authors@R: person(&quot;First&quot;, &quot;Last&quot;, , &quot;first.last@example.com&quot;, c(&quot;aut&quot;, &quot;cre&quot;))
 License: GPL (&gt;=3)
+Depends: 
+    R (&gt;= 3.4.0),
+    Rcpp (&gt;= 0.12.18),
+    methods
+Imports: 
+    rstan (&gt;= 2.17.3),
+    rstantools (&gt;= 1.5.0)
+LinkingTo: 
+    BH (&gt;= 1.66.0-1),
+    Rcpp (&gt;= 0.12.18),
+    RcppEigen (&gt;= 0.3.3.4.0),
+    StanHeaders (&gt;= 2.17.2),
+    rstan (&gt;= 2.17.3)
 Encoding: UTF-8
 LazyData: true
-ByteCompile: true
-Depends: R (&gt;= 3.4.0), Rcpp (&gt;= 0.12.16), methods
-Imports: rstan (&gt;= 2.17.3), rstantools (&gt;= 1.4.0)
-LinkingTo: StanHeaders (&gt;= 2.17.2), rstan (&gt;= 2.17.3), BH (&gt;= 1.66.0-1), Rcpp (&gt;= 0.12.16), RcppEigen (&gt;= 0.3.3.4.0)
-SystemRequirements: GNU make
 NeedsCompilation: yes
+SystemRequirements: GNU make
 RoxygenNote: 6.0.1</code></pre>
 <p>Some of the sections in the <code>DESCRIPTION</code> file need to be edited by hand (<code>Title</code>, <code>Author</code>, <code>Maintainer</code>, and <code>Description</code>), but <code>rstan_package_skeleton()</code> has added the necessary packages and versions to <code>Depends</code>, <code>Imports</code>, and <code>LinkingTo</code>. It also added the <code>SystemRequirements</code> and <code>NeedsCompilation</code> fields.</p>
 </div>
@@ -236,8 +249,8 @@ Writing rstanlm-package.Rd</code></pre>
 <pre><code>Re-compiling rstanlm</code></pre>
 <pre><code>'/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
-  '/private/var/folders/h6/14xy_35x4wd2tz542dn0qhtc0000gn/T/RtmpErV3LR/rstanlm'  \
-  --library='/var/folders/h6/14xy_35x4wd2tz542dn0qhtc0000gn/T//RtmpErV3LR/devtools_install_14101574c20fe'  \
+  '/private/var/folders/h6/14xy_35x4wd2tz542dn0qhtc0000gn/T/RtmpScUbme/rstanlm'  \
+  --library='/var/folders/h6/14xy_35x4wd2tz542dn0qhtc0000gn/T//RtmpScUbme/devtools_install_70877090a2b1'  \
   --no-R --no-data --no-help --no-demo --no-inst --no-docs --no-exec  \
   --no-multiarch --no-test-load --preclean </code></pre>
 <pre><code></code></pre>
@@ -248,8 +261,8 @@ Writing rstanlm-package.Rd</code></pre>
 <pre><code>
 SAMPLING FOR MODEL 'lm' NOW (CHAIN 1).
 
-Gradient evaluation took 1.9e-05 seconds
-1000 transitions using 10 leapfrog steps per transition would take 0.19 seconds.
+Gradient evaluation took 1.3e-05 seconds
+1000 transitions using 10 leapfrog steps per transition would take 0.13 seconds.
 Adjust your expectations accordingly!
 
 
@@ -266,15 +279,15 @@ Iteration: 400 / 500 [ 80%]  (Sampling)
 Iteration: 450 / 500 [ 90%]  (Sampling)
 Iteration: 500 / 500 [100%]  (Sampling)
 
- Elapsed Time: 0.007065 seconds (Warm-up)
-               0.005993 seconds (Sampling)
-               0.013058 seconds (Total)
+ Elapsed Time: 0.007888 seconds (Warm-up)
+               0.006629 seconds (Sampling)
+               0.014517 seconds (Total)
 
 
 SAMPLING FOR MODEL 'lm' NOW (CHAIN 2).
 
-Gradient evaluation took 5e-06 seconds
-1000 transitions using 10 leapfrog steps per transition would take 0.05 seconds.
+Gradient evaluation took 4e-06 seconds
+1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
 Adjust your expectations accordingly!
 
 
@@ -291,9 +304,9 @@ Iteration: 400 / 500 [ 80%]  (Sampling)
 Iteration: 450 / 500 [ 90%]  (Sampling)
 Iteration: 500 / 500 [100%]  (Sampling)
 
- Elapsed Time: 0.006718 seconds (Warm-up)
-               0.00596 seconds (Sampling)
-               0.012678 seconds (Total)
+ Elapsed Time: 0.00673 seconds (Warm-up)
+               0.005018 seconds (Sampling)
+               0.011748 seconds (Total)
 
 
 SAMPLING FOR MODEL 'lm' NOW (CHAIN 3).
@@ -316,15 +329,15 @@ Iteration: 400 / 500 [ 80%]  (Sampling)
 Iteration: 450 / 500 [ 90%]  (Sampling)
 Iteration: 500 / 500 [100%]  (Sampling)
 
- Elapsed Time: 0.006959 seconds (Warm-up)
-               0.004916 seconds (Sampling)
-               0.011875 seconds (Total)
+ Elapsed Time: 0.006052 seconds (Warm-up)
+               0.004474 seconds (Sampling)
+               0.010526 seconds (Total)
 
 
 SAMPLING FOR MODEL 'lm' NOW (CHAIN 4).
 
-Gradient evaluation took 4e-06 seconds
-1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
+Gradient evaluation took 7e-06 seconds
+1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
 Adjust your expectations accordingly!
 
 
@@ -341,21 +354,21 @@ Iteration: 400 / 500 [ 80%]  (Sampling)
 Iteration: 450 / 500 [ 90%]  (Sampling)
 Iteration: 500 / 500 [100%]  (Sampling)
 
- Elapsed Time: 0.005141 seconds (Warm-up)
-               0.004513 seconds (Sampling)
-               0.009654 seconds (Total)</code></pre>
+ Elapsed Time: 0.007713 seconds (Warm-up)
+               0.005446 seconds (Sampling)
+               0.013159 seconds (Total)</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(fit)</code></pre></div>
 <pre><code>Inference for Stan model: lm.
 4 chains, each with iter=500; warmup=250; thin=1; 
 post-warmup draws per chain=250, total post-warmup draws=1000.
 
            mean se_mean   sd  2.5%   25%   50%   75% 97.5% n_eff Rhat
-intercept  0.11    0.01 0.25 -0.40 -0.07  0.11  0.27  0.59   756 1.00
-beta       0.42    0.01 0.31 -0.19  0.23  0.43  0.62  1.04   507 1.01
-sigma      0.81    0.01 0.26  0.48  0.63  0.75  0.93  1.45   464 1.00
-lp__      -2.23    0.08 1.41 -5.94 -2.90 -1.85 -1.22 -0.63   302 1.01
+intercept  0.57    0.02 0.43 -0.26  0.33  0.56  0.80  1.50   378 1.01
+beta       0.18    0.03 0.67 -1.19 -0.23  0.19  0.60  1.60   469 1.00
+sigma      1.04    0.01 0.31  0.63  0.83  0.98  1.18  1.85   470 1.00
+lp__      -4.64    0.07 1.39 -8.32 -5.33 -4.25 -3.60 -3.04   352 1.00
 
-Samples were drawn using NUTS(diag_e) at Tue Apr 17 02:30:49 2018.
+Samples were drawn using NUTS(diag_e) at Mon Aug 20 19:21:53 2018.
 For each parameter, n_eff is a crude measure of effective sample size,
 and Rhat is the potential scale reduction factor on split chains (at 
 convergence, Rhat=1).</code></pre>

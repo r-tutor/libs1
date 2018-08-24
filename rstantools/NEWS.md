@@ -1,3 +1,13 @@
+# rstantools 1.5.1
+
+(Github issue/PR numbers in parentheses)
+
+* Fix issue related to changes in the **usethis** package by removing the
+`fields` argument to `rstan_package_skeleton()` and setting it internally
+instead.
+* New generic `nsamples()` (#35)
+
+
 # rstantools 1.5.0
 
 (Github issue/PR numbers in parentheses)
