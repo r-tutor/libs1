@@ -14,15 +14,22 @@ cutBySD                 Returns center values of x, the mean,
                         mean-std.dev, mean+std.dev
 cutByTable              Select most frequently occurring values from
                         numeric or categorical variables.
+cutFancy                Create an ordinal variable by grouping numeric
+                        data input.
+descriptiveTable        Summary stats table-maker for regression users
 dir.create.unique       Create a uniquely named directory. Appends
                         number & optionally date to directory name.
 focalVals               Create a focal value vector.
-formatNumericSummaries
-                        Numeric output data.frame from summarize is
-                        reformatted as one column per variable with
-                        summary statistics in the rows
+formatSummarizedFactors
+                        Prints out the contents of an object created by
+                        summarizeFactors in the style of base::summary
+formatSummarizedNumerics
+                        Reformat numeric summarize output as one column
+                        per variable, similar to R summary
 genCorrelatedData       Generates a data frame for regression analysis
 genCorrelatedData2      Generates a data frame for regression analysis.
+genCorrelatedData3      Generate correlated data for simulations (third
+                        edition)
 genX                    Generate correlated data (predictors) for one
                         unit
 getAuxRsq               retrieves estimates of the coefficient of
@@ -35,6 +42,8 @@ getPartialCor           Calculates partial correlation coefficients
                         regression model
 getVIF                  Converts the R-square to the variance inflation
                         factor
+gmc                     Group Mean Center: Generate group summaries and
+                        individual deviations within groups
 kurtosis                Calculate excess kurtosis
 lazyCor                 Create correlation matrices.
 lazyCov                 Create covariance matrix from correlation and
@@ -85,12 +94,12 @@ predictCI               Calculate a predicted value matrix (fit, lwr,
 predictOMatic           Create predicted values after choosing values
                         of predictors.  Can demonstrate marginal
                         effects of the predictor variables.
-print.factorSummaries   Prints out the contents of an object created by
-                        summarizeFactors in the style of base::summary
 print.pctable           Display pctable objects
 print.summarize         print method for output from summarize
 print.summary.pctable   print method for summary.pctable objects
+rbindFill               Stack together data frames
 religioncrime           Religious beliefs and crime rates
+removeNULL              Remove NULL values variables from a list
 residualCenter          Calculates a "residual-centered" interaction
                         regression.
 rockchalk-package       rockchalk: regression functions
@@ -113,3 +122,5 @@ vech2Corr               Convert the vech (column of strictly lower
                         trianglar values from a matrix) into a
                         correlation matrix.
 vech2mat                Convert a half-vector (vech) into a matrix.
+waldt                   T-test for the difference in 2 regression
+                        parameters

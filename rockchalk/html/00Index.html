@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;rockchalk&rsquo; version 1.8.111</h2>
+</div><h2>Documentation for package &lsquo;rockchalk&rsquo; version 1.8.117</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 <li><a href="../doc/index.html">User guides, package vignettes and other documentation.</a></li>
@@ -44,16 +44,24 @@
 <td>Returns center values of x, the mean, mean-std.dev, mean+std.dev</td></tr>
 <tr><td style="width: 25%;"><a href="cutByTable.html">cutByTable</a></td>
 <td>Select most frequently occurring values from numeric or categorical variables.</td></tr>
+<tr><td style="width: 25%;"><a href="cutFancy.html">cutFancy</a></td>
+<td>Create an ordinal variable by grouping numeric data input.</td></tr>
+<tr><td style="width: 25%;"><a href="descriptiveTable.html">descriptiveTable</a></td>
+<td>Summary stats table-maker for regression users</td></tr>
 <tr><td style="width: 25%;"><a href="dir.create.unique.html">dir.create.unique</a></td>
 <td>Create a uniquely named directory. Appends number &amp; optionally date to directory name.</td></tr>
 <tr><td style="width: 25%;"><a href="focalVals.html">focalVals</a></td>
 <td>Create a focal value vector.</td></tr>
-<tr><td style="width: 25%;"><a href="formatNumericSummaries.html">formatNumericSummaries</a></td>
-<td>Numeric output data.frame from summarize is reformatted as one column per variable with summary statistics in the rows</td></tr>
+<tr><td style="width: 25%;"><a href="formatSummarizedFactors.html">formatSummarizedFactors</a></td>
+<td>Prints out the contents of an object created by summarizeFactors in the style of base::summary</td></tr>
+<tr><td style="width: 25%;"><a href="formatSummarizedNumerics.html">formatSummarizedNumerics</a></td>
+<td>Reformat numeric summarize output as one column per variable, similar to R summary</td></tr>
 <tr><td style="width: 25%;"><a href="genCorrelatedData.html">genCorrelatedData</a></td>
 <td>Generates a data frame for regression analysis</td></tr>
 <tr><td style="width: 25%;"><a href="genCorrelatedData2.html">genCorrelatedData2</a></td>
 <td>Generates a data frame for regression analysis.</td></tr>
+<tr><td style="width: 25%;"><a href="genCorrelatedData3.html">genCorrelatedData3</a></td>
+<td>Generate correlated data for simulations (third edition)</td></tr>
 <tr><td style="width: 25%;"><a href="genX.html">genX</a></td>
 <td>Generate correlated data (predictors) for one unit</td></tr>
 <tr><td style="width: 25%;"><a href="getAuxRsq.html">getAuxRsq</a></td>
@@ -72,6 +80,8 @@
 <td>Calculates partial correlation coefficients after retrieving data matrix froma fitted regression model</td></tr>
 <tr><td style="width: 25%;"><a href="getVIF.html">getVIF</a></td>
 <td>Converts the R-square to the variance inflation factor</td></tr>
+<tr><td style="width: 25%;"><a href="gmc.html">gmc</a></td>
+<td>Group Mean Center: Generate group summaries and individual deviations within groups</td></tr>
 <tr><td style="width: 25%;"><a href="kurtosis.html">kurtosis</a></td>
 <td>Calculate excess kurtosis</td></tr>
 <tr><td style="width: 25%;"><a href="lazyCor.html">lazyCor</a></td>
@@ -148,16 +158,18 @@
 <td>Calculate a predicted value matrix (fit, lwr, upr) for a regression, either lm or glm, on either link or response scale.</td></tr>
 <tr><td style="width: 25%;"><a href="predictOMatic.html">predictOMatic</a></td>
 <td>Create predicted values after choosing values of predictors.  Can demonstrate marginal effects of the predictor variables.</td></tr>
-<tr><td style="width: 25%;"><a href="print.factorSummaries.html">print.factorSummaries</a></td>
-<td>Prints out the contents of an object created by summarizeFactors in the style of base::summary</td></tr>
 <tr><td style="width: 25%;"><a href="print.pctable.html">print.pctable</a></td>
 <td>Display pctable objects</td></tr>
 <tr><td style="width: 25%;"><a href="print.summarize.html">print.summarize</a></td>
 <td>print method for output from summarize</td></tr>
 <tr><td style="width: 25%;"><a href="print.summary.pctable.html">print.summary.pctable</a></td>
 <td>print method for summary.pctable objects</td></tr>
+<tr><td style="width: 25%;"><a href="rbindFill.html">rbindFill</a></td>
+<td>Stack together data frames</td></tr>
 <tr><td style="width: 25%;"><a href="religioncrime.html">religioncrime</a></td>
 <td>Religious beliefs and crime rates</td></tr>
+<tr><td style="width: 25%;"><a href="removeNULL.html">removeNULL</a></td>
+<td>Remove NULL values variables from a list</td></tr>
 <tr><td style="width: 25%;"><a href="residualCenter.html">residualCenter</a></td>
 <td>Calculates a "residual-centered" interaction regression.</td></tr>
 <tr><td style="width: 25%;"><a href="residualCenter.html">residualCenter.default</a></td>
@@ -186,5 +198,7 @@
 <td>Convert the vech (column of strictly lower trianglar values from a matrix) into a correlation matrix.</td></tr>
 <tr><td style="width: 25%;"><a href="vech2mat.html">vech2mat</a></td>
 <td>Convert a half-vector (vech) into a matrix.</td></tr>
+<tr><td style="width: 25%;"><a href="waldt.html">waldt</a></td>
+<td>T-test for the difference in 2 regression parameters</td></tr>
 </table>
 </body></html>
