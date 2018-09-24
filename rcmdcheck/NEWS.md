@@ -1,4 +1,44 @@
 
+# 1.3.0
+
+* New `rcmdcheck_process` class to run `R CMD check` in the background.
+
+* `rcmdcheck()` now supports timeouts (default is 10 minutes).
+
+* Checks now capture and print installation and test failures.
+
+* Checks now record and print the duration of the check.
+
+* Checks now record and print session information from the check
+  session (#22).
+
+* `rcmdcheck()` new keep files until the returned check object is
+  deleted, if check was run in a temporary directory (the default) (#23).
+
+* New `xopen()` to show the check file in a file browser window (#61).
+
+* Checks now save `install.out` and also `DESCRIPTION` in the result,
+  and save the standard error and the exit status as well.
+
+* `rcmdcheck()` printing is now better: the message from the check that is
+  actually _being performed_ is shown on the screen.
+
+* `rcmdcheck()` now shows a spinner while running check.
+
+* `rcmdcheck()` results now have a `summary()` method for check comparisons.
+
+* `rcmdcheck()` results now have a new  `check_details()` method, to query
+  the check results programmatically. (No need to use `$errors`,
+  `$warnings`, etc. directly.)
+
+* Checks now find package root automatically (#18).
+
+* `rcmdcheck()` now has an `error_on` argument to throw an error on an
+  `R CMD check` failure (#51).
+
+* `rcmdcheck()` result printing is now better, the colors are
+  consistent (#54).
+
 # 1.2.1
 
 * Compare two check results with `compare_checks` or compare check
@@ -17,7 +57,7 @@
 
 * Report errors during the build, typically vignette errors.
 
-* Use the `callr` package (https://github.com/MangoTheCat/callr)
+* Use the `callr` package (https://github.com/r-lib/callr)
   for running `R CMD` commands.
 
 # 1.1.0

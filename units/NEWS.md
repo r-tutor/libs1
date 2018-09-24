@@ -1,4 +1,16 @@
+# version 0.6-1
+
+* vectors with mixed units are now supported; #145
+
+* `NA` values for units now trigger a proper error message; #163
+
 # version 0.6-0
+
+* print units as [unit] more consistently, e.g. for single unit and in data.frames; #132
+
+* improve printing of unitless units; provide option to print something else than 1; #150
+
+* fix printing unitless in labels when `negative_power` is `TRUE`; #133
 
 * `install_symbolic_unit` now adds a dimensionless unit, integrated in the units system, meaning that prefixes on it work as well; #71
 
