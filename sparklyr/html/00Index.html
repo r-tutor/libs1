@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;sparklyr&rsquo; version 0.8.4</h2>
+</div><h2>Documentation for package &lsquo;sparklyr&rsquo; version 0.9.1</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 </ul>
@@ -41,10 +41,32 @@
 <h2><a name="A">-- A --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="ml_unsupervised_tidiers.html">augment.ml_model_bisecting_kmeans</a></td>
+<td>Tidying methods for Spark ML unsupervised models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">augment.ml_model_decision_tree_classification</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">augment.ml_model_decision_tree_regression</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_unsupervised_tidiers.html">augment.ml_model_gaussian_mixture</a></td>
+<td>Tidying methods for Spark ML unsupervised models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">augment.ml_model_gbt_classification</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">augment.ml_model_gbt_regression</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
 <tr><td style="width: 25%;"><a href="ml_glm_tidiers.html">augment.ml_model_generalized_linear_regression</a></td>
 <td>Tidying methods for Spark ML linear models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_unsupervised_tidiers.html">augment.ml_model_kmeans</a></td>
+<td>Tidying methods for Spark ML unsupervised models</td></tr>
 <tr><td style="width: 25%;"><a href="ml_glm_tidiers.html">augment.ml_model_linear_regression</a></td>
 <td>Tidying methods for Spark ML linear models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_logistic_regression_tidiers.html">augment.ml_model_logistic_regression</a></td>
+<td>Tidying methods for Spark ML Logistic Regression</td></tr>
+<tr><td style="width: 25%;"><a href="ml_naive_bayes_tidiers.html">augment.ml_model_naive_bayes</a></td>
+<td>Tidying methods for Spark ML Naive Bayes</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">augment.ml_model_random_forest_classification</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">augment.ml_model_random_forest_regression</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
 </table>
 
 <h2><a name="C">-- C --</a></h2>
@@ -90,13 +112,13 @@
 <tr><td style="width: 25%;"><a href="ft_binarizer.html">ft_binarizer</a></td>
 <td>Feature Transformation - Binarizer (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_lsh.html">ft_bucketed_random_projection_lsh</a></td>
-<td>Feature Tranformation - LSH (Estimator)</td></tr>
+<td>Feature Transformation - LSH (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_bucketizer.html">ft_bucketizer</a></td>
 <td>Feature Transformation - Bucketizer (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_chisq_selector.html">ft_chisq_selector</a></td>
-<td>Feature Tranformation - ChiSqSelector (Estimator)</td></tr>
+<td>Feature Transformation - ChiSqSelector (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_count_vectorizer.html">ft_count_vectorizer</a></td>
-<td>Feature Tranformation - CountVectorizer (Estimator)</td></tr>
+<td>Feature Transformation - CountVectorizer (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_dct.html">ft_dct</a></td>
 <td>Feature Transformation - Discrete Cosine Transform (DCT) (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_dct.html">ft_discrete_cosine_transform</a></td>
@@ -110,7 +132,7 @@
 <tr><td style="width: 25%;"><a href="ft_hashing_tf.html">ft_hashing_tf</a></td>
 <td>Feature Transformation - HashingTF (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_idf.html">ft_idf</a></td>
-<td>Feature Tranformation - IDF (Estimator)</td></tr>
+<td>Feature Transformation - IDF (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_imputer.html">ft_imputer</a></td>
 <td>Feature Transformation - Imputer (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_index_to_string.html">ft_index_to_string</a></td>
@@ -118,60 +140,82 @@
 <tr><td style="width: 25%;"><a href="ft_interaction.html">ft_interaction</a></td>
 <td>Feature Transformation - Interaction (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_lsh.html">ft_lsh</a></td>
-<td>Feature Tranformation - LSH (Estimator)</td></tr>
+<td>Feature Transformation - LSH (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_lsh_utils.html">ft_lsh_utils</a></td>
 <td>Utility functions for LSH models</td></tr>
 <tr><td style="width: 25%;"><a href="ft_max_abs_scaler.html">ft_max_abs_scaler</a></td>
-<td>Feature Tranformation - MaxAbsScaler (Estimator)</td></tr>
+<td>Feature Transformation - MaxAbsScaler (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_lsh.html">ft_minhash_lsh</a></td>
-<td>Feature Tranformation - LSH (Estimator)</td></tr>
+<td>Feature Transformation - LSH (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_min_max_scaler.html">ft_min_max_scaler</a></td>
-<td>Feature Tranformation - MinMaxScaler (Estimator)</td></tr>
+<td>Feature Transformation - MinMaxScaler (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_ngram.html">ft_ngram</a></td>
-<td>Feature Tranformation - NGram (Transformer)</td></tr>
+<td>Feature Transformation - NGram (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_normalizer.html">ft_normalizer</a></td>
 <td>Feature Transformation - Normalizer (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_one_hot_encoder.html">ft_one_hot_encoder</a></td>
 <td>Feature Transformation - OneHotEncoder (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_pca.html">ft_pca</a></td>
-<td>Feature Tranformation - PCA (Estimator)</td></tr>
+<td>Feature Transformation - PCA (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_polynomial_expansion.html">ft_polynomial_expansion</a></td>
 <td>Feature Transformation - PolynomialExpansion (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_quantile_discretizer.html">ft_quantile_discretizer</a></td>
 <td>Feature Transformation - QuantileDiscretizer (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_regex_tokenizer.html">ft_regex_tokenizer</a></td>
-<td>Feature Tranformation - RegexTokenizer (Transformer)</td></tr>
+<td>Feature Transformation - RegexTokenizer (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_r_formula.html">ft_r_formula</a></td>
-<td>Feature Tranformation - RFormula (Estimator)</td></tr>
+<td>Feature Transformation - RFormula (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="sql-transformer.html">ft_sql_transformer</a></td>
 <td>Feature Transformation - SQLTransformer</td></tr>
 <tr><td style="width: 25%;"><a href="ft_standard_scaler.html">ft_standard_scaler</a></td>
-<td>Feature Tranformation - StandardScaler (Estimator)</td></tr>
+<td>Feature Transformation - StandardScaler (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_stop_words_remover.html">ft_stop_words_remover</a></td>
-<td>Feature Tranformation - StopWordsRemover (Transformer)</td></tr>
+<td>Feature Transformation - StopWordsRemover (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_string_indexer.html">ft_string_indexer</a></td>
-<td>Feature Tranformation - StringIndexer (Estimator)</td></tr>
+<td>Feature Transformation - StringIndexer (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_string_indexer.html">ft_string_indexer_model</a></td>
-<td>Feature Tranformation - StringIndexer (Estimator)</td></tr>
+<td>Feature Transformation - StringIndexer (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_tokenizer.html">ft_tokenizer</a></td>
-<td>Feature Tranformation - Tokenizer (Transformer)</td></tr>
+<td>Feature Transformation - Tokenizer (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_vector_assembler.html">ft_vector_assembler</a></td>
 <td>Feature Transformation - VectorAssembler (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_vector_indexer.html">ft_vector_indexer</a></td>
-<td>Feature Tranformation - VectorIndexer (Estimator)</td></tr>
+<td>Feature Transformation - VectorIndexer (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_vector_slicer.html">ft_vector_slicer</a></td>
 <td>Feature Transformation - VectorSlicer (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_word2vec.html">ft_word2vec</a></td>
-<td>Feature Tranformation - Word2Vec (Estimator)</td></tr>
+<td>Feature Transformation - Word2Vec (Estimator)</td></tr>
 </table>
 
 <h2><a name="G">-- G --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="ml_unsupervised_tidiers.html">glance.ml_model_bisecting_kmeans</a></td>
+<td>Tidying methods for Spark ML unsupervised models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">glance.ml_model_decision_tree_classification</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">glance.ml_model_decision_tree_regression</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_unsupervised_tidiers.html">glance.ml_model_gaussian_mixture</a></td>
+<td>Tidying methods for Spark ML unsupervised models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">glance.ml_model_gbt_classification</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">glance.ml_model_gbt_regression</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
 <tr><td style="width: 25%;"><a href="ml_glm_tidiers.html">glance.ml_model_generalized_linear_regression</a></td>
 <td>Tidying methods for Spark ML linear models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_unsupervised_tidiers.html">glance.ml_model_kmeans</a></td>
+<td>Tidying methods for Spark ML unsupervised models</td></tr>
 <tr><td style="width: 25%;"><a href="ml_glm_tidiers.html">glance.ml_model_linear_regression</a></td>
 <td>Tidying methods for Spark ML linear models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_logistic_regression_tidiers.html">glance.ml_model_logistic_regression</a></td>
+<td>Tidying methods for Spark ML Logistic Regression</td></tr>
+<tr><td style="width: 25%;"><a href="ml_naive_bayes_tidiers.html">glance.ml_model_naive_bayes</a></td>
+<td>Tidying methods for Spark ML Naive Bayes</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">glance.ml_model_random_forest_classification</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">glance.ml_model_random_forest_regression</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
 </table>
 
 <h2><a name="H">-- H --</a></h2>
@@ -274,7 +318,7 @@
 <tr><td style="width: 25%;"><a href="ml_feature_importances.html">ml_feature_importances</a></td>
 <td>Spark ML - Feature Importance for Tree Models</td></tr>
 <tr><td style="width: 25%;"><a href="ft_word2vec.html">ml_find_synonyms</a></td>
-<td>Feature Tranformation - Word2Vec (Estimator)</td></tr>
+<td>Feature Transformation - Word2Vec (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ml-transform-methods.html">ml_fit</a></td>
 <td>Spark ML - Transform, fit, and predict methods (ml_ interface)</td></tr>
 <tr><td style="width: 25%;"><a href="ml-transform-methods.html">ml_fit_and_transform</a></td>
@@ -302,7 +346,7 @@
 <tr><td style="width: 25%;"><a href="ml_kmeans.html">ml_kmeans</a></td>
 <td>Spark ML - K-Means Clustering</td></tr>
 <tr><td style="width: 25%;"><a href="ft_string_indexer.html">ml_labels</a></td>
-<td>Feature Tranformation - StringIndexer (Estimator)</td></tr>
+<td>Feature Transformation - StringIndexer (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ml_lda.html">ml_lda</a></td>
 <td>Spark ML - Latent Dirichlet Allocation</td></tr>
 <tr><td style="width: 25%;"><a href="ml_linear_regression.html">ml_linear_regression</a></td>
@@ -313,6 +357,8 @@
 <td>Spark ML - Model Persistence</td></tr>
 <tr><td style="width: 25%;"><a href="ml_logistic_regression.html">ml_logistic_regression</a></td>
 <td>Spark ML - Logistic Regression</td></tr>
+<tr><td style="width: 25%;"><a href="ml_logistic_regression_tidiers.html">ml_logistic_regression_tidiers</a></td>
+<td>Tidying methods for Spark ML Logistic Regression</td></tr>
 <tr><td style="width: 25%;"><a href="ml_lda.html">ml_log_likelihood</a></td>
 <td>Spark ML - Latent Dirichlet Allocation</td></tr>
 <tr><td style="width: 25%;"><a href="ml_lda.html">ml_log_perplexity</a></td>
@@ -327,6 +373,8 @@
 <td>Spark ML - Multilayer Perceptron</td></tr>
 <tr><td style="width: 25%;"><a href="ml_naive_bayes.html">ml_naive_bayes</a></td>
 <td>Spark ML - Naive-Bayes</td></tr>
+<tr><td style="width: 25%;"><a href="ml_naive_bayes_tidiers.html">ml_naive_bayes_tidiers</a></td>
+<td>Tidying methods for Spark ML Naive Bayes</td></tr>
 <tr><td style="width: 25%;"><a href="ml_one_vs_rest.html">ml_one_vs_rest</a></td>
 <td>Spark ML - OneVsRest</td></tr>
 <tr><td style="width: 25%;"><a href="ml-params.html">ml_param</a></td>
@@ -336,7 +384,7 @@
 <tr><td style="width: 25%;"><a href="ml-params.html">ml_param_map</a></td>
 <td>Spark ML - ML Params</td></tr>
 <tr><td style="width: 25%;"><a href="ft_pca.html">ml_pca</a></td>
-<td>Feature Tranformation - PCA (Estimator)</td></tr>
+<td>Feature Transformation - PCA (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ml_pipeline.html">ml_pipeline</a></td>
 <td>Spark ML - Pipelines</td></tr>
 <tr><td style="width: 25%;"><a href="ml-transform-methods.html">ml_predict</a></td>
@@ -375,12 +423,16 @@
 <td>Spark ML - Transform, fit, and predict methods (ml_ interface)</td></tr>
 <tr><td style="width: 25%;"><a href="ml_feature_importances.html">ml_tree_feature_importance</a></td>
 <td>Spark ML - Feature Importance for Tree Models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">ml_tree_tidiers</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
 <tr><td style="width: 25%;"><a href="ml_uid.html">ml_uid</a></td>
 <td>Spark ML - UID</td></tr>
+<tr><td style="width: 25%;"><a href="ml_unsupervised_tidiers.html">ml_unsupervised_tidiers</a></td>
+<td>Tidying methods for Spark ML unsupervised models</td></tr>
 <tr><td style="width: 25%;"><a href="ml-tuning.html">ml_validation_metrics</a></td>
 <td>Spark ML - Tuning</td></tr>
 <tr><td style="width: 25%;"><a href="ft_count_vectorizer.html">ml_vocabulary</a></td>
-<td>Feature Tranformation - CountVectorizer (Estimator)</td></tr>
+<td>Feature Transformation - CountVectorizer (Estimator)</td></tr>
 </table>
 
 <h2><a name="N">-- N --</a></h2>
@@ -395,6 +447,8 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="random_string.html">random_string</a></td>
 <td>Random string generation</td></tr>
+<tr><td style="width: 25%;"><a href="reactiveSpark.html">reactiveSpark</a></td>
+<td>Reactive spark reader</td></tr>
 <tr><td style="width: 25%;"><a href="register_extension.html">registered_extensions</a></td>
 <td>Register a Package that Implements a Spark Extension</td></tr>
 <tr><td style="width: 25%;"><a href="register_extension.html">register_extension</a></td>
@@ -422,6 +476,8 @@
 <td>Checkpoint a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_coalesce.html">sdf_coalesce</a></td>
 <td>Coalesces a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_collect.html">sdf_collect</a></td>
+<td>Collect a Spark DataFrame into R.</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_copy_to.html">sdf_copy_to</a></td>
 <td>Copy an Object into Spark</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_debug_string.html">sdf_debug_string</a></td>
@@ -436,6 +492,8 @@
 <td>Spark ML - Transform, fit, and predict methods (sdf_ interface)</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_copy_to.html">sdf_import</a></td>
 <td>Copy an Object into Spark</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_is_streaming.html">sdf_is_streaming</a></td>
+<td>Spark DataFrame is Streaming</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_last_index.html">sdf_last_index</a></td>
 <td>Returns the last index of a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_len.html">sdf_len</a></td>
@@ -492,6 +550,8 @@
 <td>Create DataFrame for Range</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_sort.html">sdf_sort</a></td>
 <td>Sort a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_sql.html">sdf_sql</a></td>
+<td>Spark DataFrame from SQL</td></tr>
 <tr><td style="width: 25%;"><a href="sdf-transform-methods.html">sdf_transform</a></td>
 <td>Spark ML - Transform, fit, and predict methods (sdf_ interface)</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_with_sequential_id.html">sdf_with_sequential_id</a></td>
@@ -512,12 +572,18 @@
 <td>Define a Spark Compilation Specification</td></tr>
 <tr><td style="width: 25%;"><a href="spark_config.html">spark_config</a></td>
 <td>Read Spark Configuration</td></tr>
+<tr><td style="width: 25%;"><a href="spark_config_kubernetes.html">spark_config_kubernetes</a></td>
+<td>Kubernetes Configuration</td></tr>
+<tr><td style="width: 25%;"><a href="spark_config_settings.html">spark_config_settings</a></td>
+<td>Retrieve Available Settings</td></tr>
 <tr><td style="width: 25%;"><a href="spark-connections.html">spark_connect</a></td>
 <td>Manage Spark Connections</td></tr>
 <tr><td style="width: 25%;"><a href="spark_connection.html">spark_connection</a></td>
 <td>Retrieve the Spark Connection Associated with an R Object</td></tr>
 <tr><td style="width: 25%;"><a href="spark_connection-class.html">spark_connection-class</a></td>
 <td>spark_connection class</td></tr>
+<tr><td style="width: 25%;"><a href="spark_connection_find.html">spark_connection_find</a></td>
+<td>Find Spark Connection</td></tr>
 <tr><td style="width: 25%;"><a href="spark-connections.html">spark_connection_is_open</a></td>
 <td>Manage Spark Connections</td></tr>
 <tr><td style="width: 25%;"><a href="spark-api.html">spark_context</a></td>
@@ -554,6 +620,8 @@
 <td>Read a JSON file into a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="spark_read_libsvm.html">spark_read_libsvm</a></td>
 <td>Read libsvm file into a Spark DataFrame.</td></tr>
+<tr><td style="width: 25%;"><a href="spark_read_orc.html">spark_read_orc</a></td>
+<td>Read a ORC file into a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="spark_read_parquet.html">spark_read_parquet</a></td>
 <td>Read a Parquet file into a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="spark_read_source.html">spark_read_source</a></td>
@@ -570,6 +638,8 @@
 <td>Runtime configuration interface for the Spark Session</td></tr>
 <tr><td style="width: 25%;"><a href="checkpoint_directory.html">spark_set_checkpoint_dir</a></td>
 <td>Set/Get Spark checkpoint directory</td></tr>
+<tr><td style="width: 25%;"><a href="spark-connections.html">spark_submit</a></td>
+<td>Manage Spark Connections</td></tr>
 <tr><td style="width: 25%;"><a href="spark_table_name.html">spark_table_name</a></td>
 <td>Generate a Table Name from Expression</td></tr>
 <tr><td style="width: 25%;"><a href="spark_version.html">spark_version</a></td>
@@ -584,6 +654,8 @@
 <td>Writes a Spark DataFrame into a JDBC table</td></tr>
 <tr><td style="width: 25%;"><a href="spark_write_json.html">spark_write_json</a></td>
 <td>Write a Spark DataFrame to a JSON file</td></tr>
+<tr><td style="width: 25%;"><a href="spark_write_orc.html">spark_write_orc</a></td>
+<td>Write a Spark DataFrame to a ORC file</td></tr>
 <tr><td style="width: 25%;"><a href="spark_write_parquet.html">spark_write_parquet</a></td>
 <td>Write a Spark DataFrame to a Parquet file</td></tr>
 <tr><td style="width: 25%;"><a href="spark_write_source.html">spark_write_source</a></td>
@@ -594,6 +666,58 @@
 <td>Write a Spark DataFrame to a Text file</td></tr>
 <tr><td style="width: 25%;"><a href="src_databases.html">src_databases</a></td>
 <td>Show database list</td></tr>
+<tr><td style="width: 25%;"><a href="stream_find.html">stream_find</a></td>
+<td>Find Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_generate_test.html">stream_generate_test</a></td>
+<td>Generate Test Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_id.html">stream_id</a></td>
+<td>Spark Stream's Identifier</td></tr>
+<tr><td style="width: 25%;"><a href="stream_name.html">stream_name</a></td>
+<td>Spark Stream's Name</td></tr>
+<tr><td style="width: 25%;"><a href="stream_read_csv.html">stream_read_csv</a></td>
+<td>Read CSV Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_read_jdbc.html">stream_read_jdbc</a></td>
+<td>Read JDBC Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_read_json.html">stream_read_json</a></td>
+<td>Read JSON Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_read_kafka.html">stream_read_kafka</a></td>
+<td>Read Kafka Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_read_orc.html">stream_read_orc</a></td>
+<td>Read ORC Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_read_parquet.html">stream_read_parquet</a></td>
+<td>Read Parquet Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_read_text.html">stream_read_text</a></td>
+<td>Read Text Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_render.html">stream_render</a></td>
+<td>Render Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_stats.html">stream_stats</a></td>
+<td>Stream Statistics</td></tr>
+<tr><td style="width: 25%;"><a href="stream_stop.html">stream_stop</a></td>
+<td>Stops a Spark Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_trigger_continuous.html">stream_trigger_continuous</a></td>
+<td>Spark Stream Continuous Trigger</td></tr>
+<tr><td style="width: 25%;"><a href="stream_trigger_interval.html">stream_trigger_interval</a></td>
+<td>Spark Stream Interval Trigger</td></tr>
+<tr><td style="width: 25%;"><a href="stream_view.html">stream_view</a></td>
+<td>View Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_watermark.html">stream_watermark</a></td>
+<td>Watermark Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_write_csv.html">stream_write_csv</a></td>
+<td>Write CSV Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_write_jdbc.html">stream_write_jdbc</a></td>
+<td>Write JDBC Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_write_json.html">stream_write_json</a></td>
+<td>Write JSON Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_write_kafka.html">stream_write_kafka</a></td>
+<td>Write Kafka Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_write_memory.html">stream_write_memory</a></td>
+<td>Write Memory Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_write_orc.html">stream_write_orc</a></td>
+<td>Write a ORC Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_write_parquet.html">stream_write_parquet</a></td>
+<td>Write Parquet Stream</td></tr>
+<tr><td style="width: 25%;"><a href="stream_write_text.html">stream_write_text</a></td>
+<td>Write Text Stream</td></tr>
 </table>
 
 <h2><a name="T">-- T --</a></h2>
@@ -605,9 +729,31 @@
 <td>Use specific database</td></tr>
 <tr><td style="width: 25%;"><a href="tbl_uncache.html">tbl_uncache</a></td>
 <td>Uncache a Spark Table</td></tr>
+<tr><td style="width: 25%;"><a href="ml_unsupervised_tidiers.html">tidy.ml_model_bisecting_kmeans</a></td>
+<td>Tidying methods for Spark ML unsupervised models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">tidy.ml_model_decision_tree_classification</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">tidy.ml_model_decision_tree_regression</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_unsupervised_tidiers.html">tidy.ml_model_gaussian_mixture</a></td>
+<td>Tidying methods for Spark ML unsupervised models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">tidy.ml_model_gbt_classification</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">tidy.ml_model_gbt_regression</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
 <tr><td style="width: 25%;"><a href="ml_glm_tidiers.html">tidy.ml_model_generalized_linear_regression</a></td>
 <td>Tidying methods for Spark ML linear models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_unsupervised_tidiers.html">tidy.ml_model_kmeans</a></td>
+<td>Tidying methods for Spark ML unsupervised models</td></tr>
 <tr><td style="width: 25%;"><a href="ml_glm_tidiers.html">tidy.ml_model_linear_regression</a></td>
 <td>Tidying methods for Spark ML linear models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_logistic_regression_tidiers.html">tidy.ml_model_logistic_regression</a></td>
+<td>Tidying methods for Spark ML Logistic Regression</td></tr>
+<tr><td style="width: 25%;"><a href="ml_naive_bayes_tidiers.html">tidy.ml_model_naive_bayes</a></td>
+<td>Tidying methods for Spark ML Naive Bayes</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">tidy.ml_model_random_forest_classification</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
+<tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">tidy.ml_model_random_forest_regression</a></td>
+<td>Tidying methods for Spark ML tree models</td></tr>
 </table>
 </body></html>

@@ -16,7 +16,7 @@
 <h3>Usage</h3>
 
 <pre>
-terminalCreate(caption = NULL, show = TRUE)
+terminalCreate(caption = NULL, show = TRUE, shellType = NULL)
 </pre>
 
 
@@ -32,6 +32,16 @@ the terminal caption will be chosen by the system.</p>
 <td>
 <p>If <code>FALSE</code>, terminal won't be brought to front.</p>
 </td></tr>
+<tr valign="top"><td><code>shellType</code></td>
+<td>
+<p>Shell type for the terminal: NULL or &quot;default&quot; to use the
+shell selected in Global Options. For Microsoft Windows, alternatives
+are &quot;win-cmd&quot; for 64-bit Command Prompt, &quot;win-ps&quot; for 64-bit PowerShell,
+&quot;win-git-bash&quot; for Git Bash, or &quot;win-wsl-bash&quot; for Bash on Windows Subsystem
+for Linux. On Linux, Mac, and RStudio Server &quot;custom&quot; will use the custom
+terminal defined in Global Options. If the requested shell type is not
+available, the default shell will be used, instead.</p>
+</td></tr>
 </table>
 
 
@@ -45,7 +55,8 @@ in use).
 
 <h3>Note</h3>
 
-<p>The <code>terminalCreate</code> function was added in version 1.1.350 of RStudio.
+<p>The <code>terminalCreate</code> function was added in version 1.1.350 of RStudio
+and the ability to specify shellType was added in version 1.2.696.
 </p>
 
 
@@ -59,5 +70,5 @@ termId &lt;- rstudioapi::terminalCreate('My Terminal')
 
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.7.0-9000 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.8 <a href="00Index.html">Index</a>]</div>
 </body></html>

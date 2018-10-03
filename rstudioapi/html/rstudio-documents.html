@@ -11,6 +11,8 @@
 
 <p>Use these functions to interact with documents open in RStudio.
 </p>
+<p>Creates a new document in RStudio
+</p>
 
 
 <h3>Usage</h3>
@@ -29,6 +31,9 @@ setSelectionRanges(ranges, id = NULL)
 documentSave(id = NULL)
 
 documentSaveAll()
+
+documentNew(text, type = c("r", "rmarkdown", "sql"),
+  position = document_position(0, 0), execute = FALSE)
 </pre>
 
 
@@ -65,6 +70,15 @@ that the operation is applied on the intended document.</p>
 <td>
 <p>A list of one or more ranges, typically created
 through <code><a href="document_range.html">document_range</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>The type of document to be created.</p>
+</td></tr>
+<tr valign="top"><td><code>execute</code></td>
+<td>
+<p>Should the code be executed after the document
+is created?</p>
 </td></tr>
 </table>
 
@@ -119,6 +133,8 @@ added with version 0.99.1111 of RStudio.
 <p>The <code>documentSave</code> and <code>documentSaveAll</code> functions were added
 with version 1.1.287 of RStudio.
 </p>
+<p>The <code>documentNew</code> function was introduced in RStudio 1.2.640
+</p>
 
-<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.7.0-9000 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.8 <a href="00Index.html">Index</a>]</div>
 </body></html>

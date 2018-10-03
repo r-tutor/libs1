@@ -10,9 +10,9 @@ ft_binarizer            Feature Transformation - Binarizer
                         (Transformer)
 ft_bucketizer           Feature Transformation - Bucketizer
                         (Transformer)
-ft_chisq_selector       Feature Tranformation - ChiSqSelector
+ft_chisq_selector       Feature Transformation - ChiSqSelector
                         (Estimator)
-ft_count_vectorizer     Feature Tranformation - CountVectorizer
+ft_count_vectorizer     Feature Transformation - CountVectorizer
                         (Estimator)
 ft_dct                  Feature Transformation - Discrete Cosine
                         Transform (DCT) (Transformer)
@@ -23,48 +23,49 @@ ft_feature_hasher       Feature Transformation - FeatureHasher
                         (Transformer)
 ft_hashing_tf           Feature Transformation - HashingTF
                         (Transformer)
-ft_idf                  Feature Tranformation - IDF (Estimator)
+ft_idf                  Feature Transformation - IDF (Estimator)
 ft_imputer              Feature Transformation - Imputer (Estimator)
 ft_index_to_string      Feature Transformation - IndexToString
                         (Transformer)
 ft_interaction          Feature Transformation - Interaction
                         (Transformer)
-ft_lsh                  Feature Tranformation - LSH (Estimator)
+ft_lsh                  Feature Transformation - LSH (Estimator)
 ft_lsh_utils            Utility functions for LSH models
-ft_max_abs_scaler       Feature Tranformation - MaxAbsScaler
+ft_max_abs_scaler       Feature Transformation - MaxAbsScaler
                         (Estimator)
-ft_min_max_scaler       Feature Tranformation - MinMaxScaler
+ft_min_max_scaler       Feature Transformation - MinMaxScaler
                         (Estimator)
-ft_ngram                Feature Tranformation - NGram (Transformer)
+ft_ngram                Feature Transformation - NGram (Transformer)
 ft_normalizer           Feature Transformation - Normalizer
                         (Transformer)
 ft_one_hot_encoder      Feature Transformation - OneHotEncoder
                         (Transformer)
-ft_pca                  Feature Tranformation - PCA (Estimator)
+ft_pca                  Feature Transformation - PCA (Estimator)
 ft_polynomial_expansion
                         Feature Transformation - PolynomialExpansion
                         (Transformer)
 ft_quantile_discretizer
                         Feature Transformation - QuantileDiscretizer
                         (Estimator)
-ft_r_formula            Feature Tranformation - RFormula (Estimator)
-ft_regex_tokenizer      Feature Tranformation - RegexTokenizer
+ft_r_formula            Feature Transformation - RFormula (Estimator)
+ft_regex_tokenizer      Feature Transformation - RegexTokenizer
                         (Transformer)
 ft_sql_transformer      Feature Transformation - SQLTransformer
-ft_standard_scaler      Feature Tranformation - StandardScaler
+ft_standard_scaler      Feature Transformation - StandardScaler
                         (Estimator)
-ft_stop_words_remover   Feature Tranformation - StopWordsRemover
+ft_stop_words_remover   Feature Transformation - StopWordsRemover
                         (Transformer)
-ft_string_indexer       Feature Tranformation - StringIndexer
+ft_string_indexer       Feature Transformation - StringIndexer
                         (Estimator)
-ft_tokenizer            Feature Tranformation - Tokenizer (Transformer)
+ft_tokenizer            Feature Transformation - Tokenizer
+                        (Transformer)
 ft_vector_assembler     Feature Transformation - VectorAssembler
                         (Transformer)
-ft_vector_indexer       Feature Tranformation - VectorIndexer
+ft_vector_indexer       Feature Transformation - VectorIndexer
                         (Estimator)
 ft_vector_slicer        Feature Transformation - VectorSlicer
                         (Transformer)
-ft_word2vec             Feature Tranformation - Word2Vec (Estimator)
+ft_word2vec             Feature Transformation - Word2Vec (Estimator)
 hive_context_config     Runtime configuration interface for Hive
 invoke                  Invoke a Method on a JVM Object
 livy_config             Create a Spark Configuration for Livy
@@ -105,19 +106,29 @@ ml_linear_regression    Spark ML - Linear Regression
 ml_linear_svc           Spark ML - LinearSVC
 ml_logistic_regression
                         Spark ML - Logistic Regression
+ml_logistic_regression_tidiers
+                        Tidying methods for Spark ML Logistic
+                        Regression
 ml_model_data           Extracts data associated with a Spark ML model
 ml_multilayer_perceptron_classifier
                         Spark ML - Multilayer Perceptron
 ml_naive_bayes          Spark ML - Naive-Bayes
+ml_naive_bayes_tidiers
+                        Tidying methods for Spark ML Naive Bayes
 ml_one_vs_rest          Spark ML - OneVsRest
 ml_pipeline             Spark ML - Pipelines
 ml_random_forest_classifier
                         Spark ML - Random Forest
 ml_stage                Spark ML - Pipeline stage extraction
 ml_summary              Spark ML - Extraction of summary metrics
+ml_tree_tidiers         Tidying methods for Spark ML tree models
 ml_uid                  Spark ML - UID
+ml_unsupervised_tidiers
+                        Tidying methods for Spark ML unsupervised
+                        models
 na.replace              Replace Missing Values in Objects
 random_string           Random string generation
+reactiveSpark           Reactive spark reader
 register_extension      Register a Package that Implements a Spark
                         Extension
 sdf-saveload            Save / Load a Spark DataFrame
@@ -129,11 +140,13 @@ sdf_bind                Bind multiple Spark DataFrames by row and
 sdf_broadcast           Broadcast hint
 sdf_checkpoint          Checkpoint a Spark DataFrame
 sdf_coalesce            Coalesces a Spark DataFrame
+sdf_collect             Collect a Spark DataFrame into R.
 sdf_copy_to             Copy an Object into Spark
 sdf_debug_string        Debug Info for Spark DataFrame
 sdf_describe            Compute summary statistics for columns of a
                         data frame
 sdf_dim                 Support for Dimension Operations
+sdf_is_streaming        Spark DataFrame is Streaming
 sdf_last_index          Returns the last index of a Spark DataFrame
 sdf_len                 Create DataFrame for Length
 sdf_mutate              Mutate a Spark DataFrame
@@ -154,6 +167,7 @@ sdf_schema              Read the Schema of a Spark DataFrame
 sdf_separate_column     Separate a Vector Column into Scalar Columns
 sdf_seq                 Create DataFrame for Range
 sdf_sort                Sort a Spark DataFrame
+sdf_sql                 Spark DataFrame from SQL
 sdf_with_sequential_id
                         Add a Sequential ID Column to a Spark DataFrame
 sdf_with_unique_id      Add a Unique ID Column to a Spark DataFrame
@@ -165,10 +179,14 @@ spark_apply_log         Log Writer for Spark Apply
 spark_compilation_spec
                         Define a Spark Compilation Specification
 spark_config            Read Spark Configuration
+spark_config_kubernetes
+                        Kubernetes Configuration
+spark_config_settings   Retrieve Available Settings
 spark_connection        Retrieve the Spark Connection Associated with
                         an R Object
 spark_connection-class
                         spark_connection class
+spark_connection_find   Find Spark Connection
 spark_context_config    Runtime configuration interface for the Spark
                         Context.
 spark_dataframe         Retrieve a Spark DataFrame
@@ -187,6 +205,7 @@ spark_read_jdbc         Read from JDBC connection into a Spark
                         DataFrame.
 spark_read_json         Read a JSON file into a Spark DataFrame
 spark_read_libsvm       Read libsvm file into a Spark DataFrame.
+spark_read_orc          Read a ORC file into a Spark DataFrame
 spark_read_parquet      Read a Parquet file into a Spark DataFrame
 spark_read_source       Read from a generic source into a Spark
                         DataFrame.
@@ -206,11 +225,40 @@ spark_web               Open the Spark web interface
 spark_write_csv         Write a Spark DataFrame to a CSV
 spark_write_jdbc        Writes a Spark DataFrame into a JDBC table
 spark_write_json        Write a Spark DataFrame to a JSON file
+spark_write_orc         Write a Spark DataFrame to a ORC file
 spark_write_parquet     Write a Spark DataFrame to a Parquet file
 spark_write_source      Writes a Spark DataFrame into a generic source
 spark_write_table       Writes a Spark DataFrame into a Spark table
 spark_write_text        Write a Spark DataFrame to a Text file
 src_databases           Show database list
+stream_find             Find Stream
+stream_generate_test    Generate Test Stream
+stream_id               Spark Stream's Identifier
+stream_name             Spark Stream's Name
+stream_read_csv         Read CSV Stream
+stream_read_jdbc        Read JDBC Stream
+stream_read_json        Read JSON Stream
+stream_read_kafka       Read Kafka Stream
+stream_read_orc         Read ORC Stream
+stream_read_parquet     Read Parquet Stream
+stream_read_text        Read Text Stream
+stream_render           Render Stream
+stream_stats            Stream Statistics
+stream_stop             Stops a Spark Stream
+stream_trigger_continuous
+                        Spark Stream Continuous Trigger
+stream_trigger_interval
+                        Spark Stream Interval Trigger
+stream_view             View Stream
+stream_watermark        Watermark Stream
+stream_write_csv        Write CSV Stream
+stream_write_jdbc       Write JDBC Stream
+stream_write_json       Write JSON Stream
+stream_write_kafka      Write Kafka Stream
+stream_write_memory     Write Memory Stream
+stream_write_orc        Write a ORC Stream
+stream_write_parquet    Write Parquet Stream
+stream_write_text       Write Text Stream
 tbl_cache               Cache a Spark Table
 tbl_change_db           Use specific database
 tbl_uncache             Uncache a Spark Table
