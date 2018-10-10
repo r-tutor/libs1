@@ -6,6 +6,21 @@ suppressWarnings(
   )
 )
 
+if (isTRUE(getOption("radiant.sf_volumes", "") != "") || isTRUE(Sys.getenv("RSTUDIO") != "")) {
+  if (isTRUE(getOption("radiant.sf_volumes", "") == "")) {
+    sf_volumes <- c(Home = radiant.data::find_home())
+    Dropbox <- try(radiant.data::find_dropbox(), silent = TRUE)
+    if (!inherits(Dropbox, "try-error")) {
+      sf_volumes <- c(sf_volumes, Dropbox = Dropbox)
+    }
+    sf_volumes <- c(sf_volumes, shinyFiles::getVolumes()())
+    options(radiant.sf_volumes = sf_volumes)
+  }
+  options(radiant.shinyFiles = TRUE)
+} else {
+  options(radiant.shinyFiles = FALSE)
+}
+
 ## determining how radiant was launched
 ## should this be set in global?
 if (is.null(getOption("radiant.launch"))) {
@@ -78,7 +93,7 @@ init_data <- function(env = r_data) {
         {gsub(paste0(".", tools::file_ext(.)), "", ., fixed = TRUE)}
     } else {
       df <- data(list = dn, package = "radiant.data", envir = environment()) %>% get()
-      r_info[[paste0(dn, "_lcmd")]] <- glue::glue('{dn} <- data({dn}, package = "radiant.data") %>% get()\nregister("{dn}")')
+      r_info[[paste0(dn, "_lcmd")]] <- glue::glue('{dn} <- data({dn}, package = "radiant.data", envir = environment()) %>% get()\nregister("{dn}")')
     }
     env[[dn]] <- df
     if (!bindingIsActive(as.symbol(dn), env = env)) {
@@ -102,6 +117,9 @@ if (Sys.getenv("SHINY_PORT") == "") {
   options(radiant.report = getOption("radiant.report", default = FALSE))
   ## limit upload filesize on server (10MB)
   options(shiny.maxRequestSize = getOption("radiant.maxRequestSize", default = 10 * 1024 ^ 2))
+  if (Sys.getlocale(category = "LC_ALL") == "C") {
+    ret <- Sys.setlocale("LC_CTYPE", "en_US.UTF-8"); rm(ret)
+  }
 }
 
 ## encoding
@@ -143,12 +161,17 @@ options(
     "mean" = "mean", "median" = "median", "min" = "min", "max" = "max",
     "sum" = "sum", "var" = "var", "sd" = "sd", "se" = "se", "cv" = "cv",
     "prop" = "prop", "varprop" = "varprop", "sdprop" = "sdprop", "seprop" = "seprop",
-    "varpop" = "varpop", "sdpop" = "sdpop",
-    "1%" = "p01", "2.5%" = "p025", "5%" = "p05", "10%" = "p10", "25%" = "p25",
-    "75%" = "p75", "90%" = "p90", "95%" = "p95", "97.5%" = "p975", "99%" = "p99",
-    "skew" = "skew", "kurtosis" = "kurtosi"
+    "varpop" = "varpop", "sdpop" = "sdpop", "1%" = "p01", "2.5%" = "p025", "5%" = "p05",
+    "10%" = "p10", "25%" = "p25", "75%" = "p75", "90%" = "p90", "95%" = "p95",
+    "97.5%" = "p975", "99%" = "p99", "skew" = "skew", "kurtosis" = "kurtosi"
   )
 )
+
+## see https://github.com/tidyverse/ggplot2/issues/2655
+## requires XQuartz!
+# if(!identical(getOption("bitmapType"), "cairo") && isTRUE(capabilities()[["cairo"]])) {
+#   options(bitmapType = "cairo")
+# }
 
 ## for report and code in menu R
 knitr::opts_knit$set(progress = TRUE)
@@ -160,7 +183,8 @@ knitr::opts_chunk$set(
   warning = FALSE,
   error = TRUE,
   fig.path = normalizePath(tempdir(), winslash = "/"),
-  dev = "svg"
+  # dev = "svg" ## too slow with big scatter plots on server-side
+  dpi = 144
   # screenshot.force = FALSE,
 )
 
@@ -168,9 +192,8 @@ knitr::opts_chunk$set(
 r_sessions <- new.env(parent = emptyenv())
 
 ## create directory to hold session files
-file.path(normalizePath("~"), "radiant.sessions") %>% {
-  if (!file.exists(.)) dir.create(.)
-}
+# file.path(radiant.data::find_home(), "radiant.sessions") %>% {
+"~/radiant.sessions" %>% {if (!file.exists(.)) dir.create(.)}
 
 ## adding the figures path to avoid making a copy of all figures in www/figures
 addResourcePath("figures", file.path(getOption("radiant.path.data"), "app/tools/help/figures/"))
@@ -319,30 +342,9 @@ if (length(tmp) > 0) {
 options(radiant.versions = paste(radiant.versions, collapse = ", "))
 rm(tmp, radiant.versions)
 
-if (getOption("radiant.local", FALSE)) {
-  options(radiant.project_dir = radiant.data::find_project(mess = FALSE))
-  options(radiant.write_dir = ifelse(radiant.data::is_empty(getOption("radiant.project_dir")), "~/", ""))
-  if (radiant.data::is_empty(getOption("radiant.launch_dir"))) {
-    if (radiant.data::is_empty(getOption("radiant.project_dir"))) {
-      options(radiant.launch_dir = "~")
-    } else {
-      options(radiant.launch_dir = getOption("radiant.project_dir"))
-    }
-  }
-
-  dbdir <- try(radiant.data::find_dropbox(), silent = TRUE)
-  dbdir <- if (is(dbdir, "try-error")) "" else paste0(dbdir, "/")
-  options(radiant.dropbox_dir = dbdir)
-  rm(dbdir)
-
-  gddir <- try(radiant.data::find_gdrive(), silent = TRUE)
-  gddir <- if (is(gddir, "try-error")) "" else paste0(gddir, "/")
-  options(radiant.gdrive_dir = gddir)
-  rm(gddir)
-}
-
 navbar_proj <- function(navbar) {
-  pdir <- getOption("radiant.project_dir", default = "")
+  pdir <- radiant.data::find_project(mess = FALSE)
+  options(radiant.project_dir = if (radiant.data::is_empty(pdir)) NULL else pdir)
   proj <- if (radiant.data::is_empty(pdir)) {
     "Project: (None)"
   } else {
@@ -357,6 +359,34 @@ navbar_proj <- function(navbar) {
   )
 
   navbar
+}
+
+if (getOption("radiant.shinyFiles", FALSE)) {
+  if (radiant.data::is_empty(getOption("radiant.launch_dir"))) {
+    if (radiant.data::is_empty(getOption("radiant.project_dir"))) {
+      options(radiant.launch_dir = radiant.data::find_home())
+      options(radiant.project_dir = getOption("radiant.launch_dir"))
+    } else {
+      options(radiant.launch_dir = getOption("radiant.project_dir"))
+    }
+  }
+
+  if (radiant.data::is_empty(getOption("radiant.project_dir"))) {
+    options(radiant.project_dir = getOption("radiant.launch_dir"))
+  }
+
+  dbdir <- try(radiant.data::find_dropbox(), silent = TRUE)
+  dbdir <- if (inherits(dbdir, "try-error")) "" else paste0(dbdir, "/")
+  options(radiant.dropbox_dir = dbdir)
+  rm(dbdir)
+
+  gddir <- try(radiant.data::find_gdrive(), silent = TRUE)
+  gddir <- if (inherits(gddir, "try-error")) "" else paste0(gddir, "/")
+  options(radiant.gdrive_dir = gddir)
+  rm(gddir)
+} else {
+  options(radiant.launch_dir = radiant.data::find_home())
+  options(radiant.project_dir = getOption("radiant.launch_dir"))
 }
 
 ## formatting data.frames printed in Report > Rmd and Report > R
@@ -413,18 +443,16 @@ options(
       ),
       navbarMenu("",
         icon = icon("save"),
-        tabPanel(
-          if (!isTRUE(getOption("radiant.launch", "browser") == "browser")) {
-            actionLink("state_save", "   Save radiant state file", icon = icon("save"))
-          } else {
-            downloadLink("state_save", "   Save radiant state file", class = "fa fa-save")
-          }
-        ),
         ## inspiration for uploading state https://stackoverflow.com/a/11406690/1974918
         ## see also function in www/js/run_return.js
-        tabPanel(actionLink("state_load_link", "Load radiant state file", icon = icon("folder-open"))),
+        "Server",
+        tabPanel(actionLink("state_save_link", "Save radiant state file", icon = icon("download"))),
+        tabPanel(actionLink("state_load_link", "Load radiant state file", icon = icon("upload"))),
         tabPanel(actionLink("state_share", "Share radiant state", icon = icon("share"))),
-        tabPanel("View radiant state", uiOutput("state_view"), icon = icon("user"))
+        tabPanel("View radiant state", uiOutput("state_view"), icon = icon("user")),
+        "----", "Local",
+        tabPanel(downloadLink("state_download", "    Download radiant state file", class = "fa fa-download")),
+        tabPanel(actionLink("state_upload_link", "Upload radiant state file", icon = icon("upload")))
       ),
 
       ## stop app *and* close browser window
@@ -456,7 +484,8 @@ onStop(function() {
     unlink("~/r_figures/", recursive = TRUE)
     clean_up_list <- c(
       "r_sessions", "help_menu", "make_url_patterns", "import_fs",
-      "init_data", "navbar_proj", "knit_print.data.frame", "withMathJax"
+      "init_data", "navbar_proj", "knit_print.data.frame", "withMathJax",
+      "Dropbox", "sf_volumes"
     )
     suppressWarnings(
       suppressMessages({
@@ -464,6 +493,8 @@ onStop(function() {
         rm(res)
       })
     )
+    options(radiant.launch_dir = NULL)
+    options(radiant.project_dir = NULL)
     message("Stopped Radiant\n")
     stopApp()
   }

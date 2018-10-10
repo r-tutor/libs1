@@ -3,10 +3,10 @@ output$ui_tr_vars <- renderUI({
   vars <- varnames()
   req(available(vars))
   selectInput(
-    "tr_vars", "Select variable(s):", 
+    "tr_vars", "Select variable(s):",
     choices = vars,
-    multiple = TRUE, 
-    size = min(8, length(vars)), 
+    multiple = TRUE,
+    size = min(8, length(vars)),
     selectize = FALSE
   )
 })
@@ -407,7 +407,7 @@ observeEvent(input$tr_change_type, {
 })
 
 .change_type <- function(
-  dataset, fun, vars = "", .ext = "", 
+  dataset, fun, vars = "", .ext = "",
   store_dat = "", store = TRUE
 ) {
 
@@ -459,22 +459,26 @@ observeEvent(input$tr_change_type, {
   cmd <- fix_smart(cmd)
 
   if (!store || !is.character(dataset)) {
-    cmd <- gsub("\\s+", "", cmd)
 
-    if (cmd == "") return(dataset)
+    if (is_empty(cmd)) return(dataset)
 
     cmd <- gsub("\"", "\'", cmd) %>%
       gsub("<-", "=", .)
-    vars <-
-      strsplit(cmd, ";")[[1]] %>%
-      strsplit(., "=") %>%
-      sapply("[", 1)
+    vars <- strsplit(cmd, ";")[[1]] %>%
+      strsplit("=") %>%
+      sapply("[", 1) %>%
+      gsub("\\s+", "", .)
 
     ## in case the create command tries to over-write the group-by variable ...
     if (any(byvar %in% vars)) {
       byvar <- base::setdiff(byvar, vars)
       updateSelectInput(session = session, inputId = "tr_vars", selected = character(0))
     }
+
+    ## usefull if functions created in Report > R and Report > Rmd are
+    ## called in Data > Transform > Create
+    attach(r_data)
+    on.exit(detach(r_data))
 
     if (is_empty(byvar)) {
       ## using within and do.call because it provides better err messages
@@ -490,10 +494,10 @@ observeEvent(input$tr_change_type, {
       )
       vars <- c(byvar, vars) ## to avoid the 'added group_by variable' message
     }
-    if (is(nvar, "try-error")) {
+    if (inherits(nvar, "try-error")) {
       paste0("\nThe create command was not valid. The command entered was:\n\n", cmd, "\n\nThe error message was:\n\n", attr(nvar, "condition")$message, "\n\nPlease try again. Examples are shown in the help file")
     } else {
-      select_at(nvar, .vars = vars) %>% 
+      select_at(nvar, .vars = vars) %>%
         ungroup()
     }
   } else {
@@ -521,7 +525,7 @@ observeEvent(input$tr_change_type, {
   if (!store || !is.character(dataset)) {
     if (cmd == "") return(dataset)
     nvar <- try(car::Recode(dataset[[var]], cmd), silent = TRUE)
-    if (is(nvar, "try-error")) {
+    if (inherits(nvar, "try-error")) {
       paste0("The recode command was not valid. The error message was:\n", attr(nvar, "condition")$message, "\nPlease try again. Examples are shown in the help file (click the ? icon).")
     } else {
       as.data.frame(nvar, stringsAsFactors = FALSE) %>% setNames(rcname)
@@ -532,10 +536,7 @@ observeEvent(input$tr_change_type, {
   }
 }
 
-.rename <- function(
-  dataset, var, rnm, 
-  store_dat = "", store = TRUE
-) {
+.rename <- function(dataset, var, rnm, store_dat = "", store = TRUE) {
 
   rnm <- gsub(";", ",", rnm)
   if (gsub("\\s+", "", rnm) != "") {
@@ -547,18 +548,21 @@ observeEvent(input$tr_change_type, {
 
   if (!store || !is.character(dataset)) {
     if (all(rnm == "")) return(dataset)
-    names(dataset)[1:length(rnm)] <- rnm
+    names(dataset)[seq_len(length(rnm))] <- rnm
     dataset
   } else {
     if (store_dat == "") store_dat <- dataset
+    name_check <- fix_names(var) != var
+    if (any(name_check)) var[name_check] <- paste0("`", var[name_check], "`")
     paste0("## rename variable(s)\n", store_dat, " <- rename(", dataset, ", ", paste(rnm, var, sep = " = ", collapse = ", "), ")\n")
   }
 }
 
-.replace <- function(
-  dataset, var, rpl, 
-  store_dat = "", store = TRUE
-) {
+.replace <- function(dataset, var, rpl, store_dat = "", store = TRUE) {
+
+  if (!all(fix_names(var) == var) || !all(fix_names(rpl) == rpl)) {
+    return("\nSome of the variables names used are not valid. Please use 'Rename' to ensure\nvariable names do not have any spaces or symbols and start with a letter")
+  }
 
   if (!store || !is.character(dataset)) {
     select_at(dataset, .vars = rpl) %>% set_colnames(var)
@@ -608,7 +612,7 @@ observeEvent(input$tr_change_type, {
 }
 
 .gather <- function(
-  dataset, vars, key, value, 
+  dataset, vars, key, value,
   store_dat = "", store = TRUE
 ) {
   if (!store && !is.character(dataset)) {
@@ -673,7 +677,7 @@ observeEvent(input$tr_change_type, {
   dataset, vars = "", bins = 10, rev = FALSE,
   .ext = "_dec", store_dat = "", store = TRUE
 ) {
-  
+
   if (!store && !is.character(dataset)) {
     if (is.na(bins) || !is.integer(bins)) return("Please specify the (integer) number of bins to use")
     xt <- function(x, bins, rev) radiant.data::xtile(x, bins, rev = rev)
@@ -692,7 +696,7 @@ observeEvent(input$tr_change_type, {
 
 .training <- function(
   dataset, vars = "", n = .7, nr = 100,
-  name = "training", seed = 1234, 
+  name = "training", seed = 1234,
   store_dat = "", store = TRUE
 ) {
 
@@ -919,7 +923,7 @@ transform_main <- reactive({
       return("Copy-and-paste data with a header row from a spreadsheet")
     } else {
       cpdat <- try(read.table(header = TRUE, comment.char = "", fill = TRUE, sep = "\t", as.is = TRUE, text = input$tr_paste), silent = TRUE)
-      if (is(cpdat, "try-error")) {
+      if (inherits(cpdat, "try-error")) {
         return("The pasted data was not well formated. Please make sure the number of rows **\n** in the data in Radiant and in the spreadsheet are the same and try again.")
       } else if (nrow(cpdat) != nrow(dat)) {
         return("The pasted data does not have the correct number of rows. Please make sure **\n** the number of rows in the data in Radiant and in the spreadsheet are the **\n** same and try again.")

@@ -1,14 +1,24 @@
 file_upload_button <- function(
   inputId, label = "", multiple = FALSE,
-  accept = NULL, buttonLabel = "Load",
+  accept = NULL, buttonLabel = "Load", title = "Load data",
   class = "", icn = "upload", progress = FALSE
 ) {
 
-  if (!isTRUE(getOption("radiant.launch", "browser") == "browser")) {
-  # if (isTRUE(getOption("radiant.local", FALSE))) {
-    actionButton(inputId, buttonLabel, icon = icon(icn), class = class)
-  } else {
+  if (getOption("radiant.shinyFiles", FALSE)) {
+    shinyFiles::shinyFileChoose(
+      input = input,
+      id = inputId,
+      session = session,
+      roots = sf_volumes,
+      filetype = gsub(".", "", accept, fixed = TRUE)
+    )
 
+    # actionButton(inputId, buttonLabel, icon = icon(icn), class = class)
+    shinyFiles::shinyFilesButton(
+      inputId, buttonLabel, label, title = title,
+      multiple = FALSE, class = class, icon = icon(icn)
+    )
+  } else {
     if (length(accept) > 0) {
       accept <- paste(accept, collapse = ",")
     } else {
@@ -65,7 +75,7 @@ rstudio_context <- function(type = "rmd") {
     list(path = "", rpath = "", base = "", base_name = "", ext = "", content = "")
   } else {
     path <- normalizePath(path, winslash = "/")
-    pdir <- getOption("radiant.project_dir", default = "")
+    pdir <- getOption("radiant.project_dir", default = radiant.data::find_home())
 
     sel <- rse$selection[[1]][["text"]]
     if (is_empty(sel)) {
@@ -110,7 +120,7 @@ setup_report <- function(
     sub("<!--(.*?)-->", "", .)
 
   ## screenshot option
-  sopts <- ifelse(save_type == "PDF", ", screenshot.opts = list(vheight = 1200)", "")
+  sopts <- ifelse(save_type == "PDF", ",\n  screenshot.opts = list(vheight = 1200)", "")
 
   if (add_yml) {
     if (save_type %in% c("PDF", "Word")) {
@@ -140,8 +150,8 @@ knitr::opts_chunk$set(
   echo = ", ech, ",
   error = TRUE,
   cache = FALSE,
-  message = FALSE,\n  ",
-  ifelse(save_type == "PDF", "dpi = 144,", "dev = \"svg\","), "
+  message = FALSE,\n
+  dpi = 144,
   warning = FALSE", sopts, "
 )
 
@@ -232,7 +242,7 @@ knit_it_save <- function(report) {
 
 observeEvent(input$report_clean, {
   withProgress(message = "Cleaning report", value = 1, {
-    report <- gsub("\nr_data\\[\\[\"([^\n]+?)\"\\]\\] \\%>\\%(.*?)\\%>\\%\\s*?store\\(\"(.*?)\", (\".*?\")\\)", "\n\\3 <- \\1 %>%\\2\nregister(\"\\3\", \\4)", input$rmd_edit) %>% 
+    report <- gsub("\nr_data\\[\\[\"([^\n]+?)\"\\]\\] \\%>\\%(.*?)\\%>\\%\\s*?store\\(\"(.*?)\", (\".*?\")\\)", "\n\\3 <- \\1 %>%\\2\nregister(\"\\3\", \\4)", input$rmd_edit) %>%
       gsub("r_data\\[\\[\"([^\"]+?)\"\\]\\]", "\\1", .) %>%
       gsub("r_data\\$", "", .) %>%
       gsub("\"mean_rm\"", "\"mean\"", .) %>%
@@ -243,6 +253,7 @@ observeEvent(input$report_clean, {
       gsub("\"var_rm\"", "\"var\"", .) %>%
       gsub("\"sum_rm\"", "\"sum\"", .) %>%
       gsub("\"length\"", "\"n_obs\"", .) %>%
+      gsub("tabsort = \"desc\\(n\\)\"", "tabsort = \"desc\\(n_obs\\)\"", .) %>%
       gsub("Search\\(\"(.*?)\",\\s*?.\\)", "search_data(., \"\\1\")", .) %>%
       gsub("toFct\\(\\)", "to_fct()", .) %>%
       gsub("rounddf\\(", "round_df(", .) %>%
@@ -254,17 +265,16 @@ observeEvent(input$report_clean, {
       gsub("(combinedata\\(\\s*?x\\s*?=\\s*?)\"([^\"]+?)\",(\\s*?y\\s*?=\\s*?)\"([^\"]+?)\",", "\\1\\2,\\3\\4,", .) %>%
       gsub("(combinedata\\((.|\n)*?),\\s*?name\\s*?=\\s*?\"([^\"`]+?)\"([^\\)]+?)\\)", "\\3 <- \\1\\4)\nregister(\"\\3\")", .) %>%
       gsub("combinedata\\(", "combine_data(", .) %>%
-      gsub("result\\s*<-\\s*(simulater\\((.|\n)*?),\\s*name+\\s*=\\s*\"([^\"`]*?)\"([^\\)]*?)\\)", "\\3 <- \\1\\4)\nregister(\"\\3\")", .) %>% 
+      gsub("result\\s*<-\\s*(simulater\\((.|\n)*?),\\s*name+\\s*=\\s*\"([^\"`]*?)\"([^\\)]*?)\\)", "\\3 <- \\1\\4)\nregister(\"\\3\")", .) %>%
       gsub("data\\s*=\\s*\"([^\"]+)\",", "data = \\1,", .) %>%
-      gsub("(simulater\\((\n|.)*?)(register\\(\"(.*?)\"\\))\nsummary\\(result", "\\1\\3\nsummary(\\4", .) %>% 
-      gsub("(simulater\\((\n|.)*?)(register\\(\"(.*?)\"\\))\n(summary.*?)\nplot\\(result", "\\1\\3\n\\5\nplot(\\4", .) %>% 
+      gsub("(simulater\\((\n|.)*?)(register\\(\"(.*?)\"\\))\nsummary\\(result", "\\1\\3\nsummary(\\4", .) %>%
+      gsub("(simulater\\((\n|.)*?)(register\\(\"(.*?)\"\\))\n(summary.*?)\nplot\\(result", "\\1\\3\n\\5\nplot(\\4", .) %>%
       gsub("result\\s*<-\\s*(repeater\\((.|\n)*?),\\s*name+\\s*=\\s*\"([^\"`]*?)\"([^\\)]*?)\\)", "\\3 <- \\1\\4)\nregister(\"\\3\")", .) %>%
-      gsub("(repeater\\((\n|.)*?)(register\\(\"(.*?)\"\\))\nsummary\\(result", "\\1\\3\nsummary(\\4", .) %>% 
-      gsub("(repeater\\((\n|.)*?)(register\\(\"(.*?)\"\\))\n(summary.*?)\nplot\\(result", "\\1\\3\n\\5\nplot(\\4", .) %>% 
+      gsub("(repeater\\((\n|.)*?)(register\\(\"(.*?)\"\\))\nsummary\\(result", "\\1\\3\nsummary(\\4", .) %>%
+      gsub("(repeater\\((\n|.)*?)(register\\(\"(.*?)\"\\))\n(summary.*?)\nplot\\(result", "\\1\\3\n\\5\nplot(\\4", .) %>%
       gsub("repeater\\(((.|\n)*?),\\s*sim+\\s*=\\s*\"([^\"`]*?)\"([^\\)]*?)\\)", "repeater(\n  \\3,\\1\\4)", .) %>%
-      gsub("(```\\{r.*?\\})(\nresult <- pivotr(\n|.)*?)(\\s*)store\\(result, name = \"(.*?)\"\\)", "\\1\\2\\4\\5 <- result$tab; register(\"\\5\")\\6", .) %>% 
+      gsub("(```\\{r.*?\\})(\nresult <- pivotr(\n|.)*?)(\\s*)store\\(result, name = \"(.*?)\"\\)", "\\1\\2\\4\\5 <- result$tab; register(\"\\5\")\\6", .) %>%
       gsub("(```\\{r.*?\\})(\nresult <- explore(\n|.)*?)(\\s*)store\\(result, name = \"(.*?)\"\\)", "\\1\\2\\4\\5 <- result$tab; register(\"\\5\")\\6", .) %>%
-      gsub(",\\s*?dpi\\s*?=\\s*?[0-9]+?\\}", "}", .) %>%
       gsub("store\\(result,\\s*name\\s*=\\s*\"(.*?)\",\\s*type\\s*=\\s*\"((P|I)W)\"\\)", "\\1 <- result$\\2; register(\"\\1\")", .)
   })
 
@@ -312,22 +322,23 @@ knit_it <- function(report, type = "rmd") {
      grepl("formatnr\\(", report) ||
      grepl("formatdf\\(", report) ||
      grepl("rounddf\\(", report) ||
+     grepl("tabsort = \"desc\\(n\\)\"", report) ||
      grepl("(mean_rm|median_rm|min_rm|max_rm|sd_rm|var_rm|sum_rm)", report))
   ) {
     showModal(
       modalDialog(
         title = "The report contains deprecated code",
-        span("The use of, e.g., r_data[[...]]], dataset = \"...\", etc. in your report is 
-           deprecated. Click the 'Clean report' button to remove references that are no 
-           longer needed.", br(), br(), "Warning: It may not be possible to update all code 
-           to the latest standard automatically. For example, the use of 'store(...)' 
-           functions has changed and not all forms can be automatically updated. If this 
-           applies to your report a message should be shown when you Knit the report 
-           demonstrating how the code should be changed. You can, of course, also use the 
-           browser interface to recreate the code you need or use the help function in R or 
-           Rstudio for more information (e.g., ?radiant.model::store.model, 
-           ?radiant.model::store.model.predict, or ?radiant.model::simulater)", br(), br(), 
-           "To avoid the code-cleaning step click 'Cancel' or, if you believe the code is 
+        span("The use of, e.g., r_data[[...]]], dataset = \"...\", etc. in your report is
+           deprecated. Click the 'Clean report' button to remove references that are no
+           longer needed.", br(), br(), "Warning: It may not be possible to update all code
+           to the latest standard automatically. For example, the use of 'store(...)'
+           functions has changed and not all forms can be automatically updated. If this
+           applies to your report a message should be shown when you Knit the report
+           demonstrating how the code should be changed. You can, of course, also use the
+           browser interface to recreate the code you need or use the help function in R or
+           Rstudio for more information (e.g., ?radiant.model::store.model,
+           ?radiant.model::store.model.predict, or ?radiant.model::simulater)", br(), br(),
+           "To avoid the code-cleaning step click 'Cancel' or, if you believe the code is
            correct as-is, click the 'Ignore' button and continue to Knit your report"
         ),
         footer = tagList(
@@ -344,7 +355,7 @@ knit_it <- function(report, type = "rmd") {
 
   ## fragment also available with rmarkdown
   ## http://rmarkdown.rstudio.com/html_fragment_format.html
-  pdir <- getOption("radiant.project_dir", default = "")
+  pdir <- getOption("radiant.project_dir", default = radiant.data::find_home())
   if (!is_empty(pdir)) {
     owd <- setwd(pdir)
     on.exit(setwd(owd))
@@ -387,12 +398,15 @@ knit_it <- function(report, type = "rmd") {
 }
 
 sans_ext <- function(path) {
-  sub("(\\.rda$|\\.rds$|\\.rmd$|\\.r$|\\.rdata$)", "", path, ignore.case = TRUE)
+  sub(
+    "(\\.state\\.rda|\\.rda$|\\.rds$|\\.rmd$|\\.r$|\\.rdata$|\\.html|\\.nb\\.html|\\.pdf|\\.docx|\\.rmd|\\.zip)", "",
+    tolower(path), ignore.case = TRUE
+  )
 }
 
 report_name <- function(type = "rmd", out = "report", full.name = FALSE) {
 
-  ldir <- getOption("radiant.launch_dir", default = "~")
+  ldir <- getOption("radiant.launch_dir", default = radiant.data::find_home())
   pdir <- getOption("radiant.project_dir", default = ldir)
 
   ## generate report name based on state or project name
@@ -426,6 +440,7 @@ report_name <- function(type = "rmd", out = "report", full.name = FALSE) {
 }
 
 report_save_filename <- function(type = "rmd", full.name = TRUE) {
+  req(input[[paste0(type, "_generate")]])
 
   if (input[[paste0(type, "_generate")]] %in% c("To Rmd", "To R")) {
     cnt <- rstudio_context(type = type)
@@ -468,7 +483,7 @@ report_save_content <- function(file, type = "rmd") {
 
   if (isTRUE(getOption("radiant.report"))) {
     isolate({
-      ldir <- getOption("radiant.launch_dir", default = "~/")
+      ldir <- getOption("radiant.launch_dir", default = radiant.data::find_home())
       pdir <- getOption("radiant.project_dir", default = ldir)
 
       tdir <- tempdir()
@@ -549,6 +564,28 @@ report_save_content <- function(file, type = "rmd") {
       } else if (save_type == "R") {
         cat(report, file = file, sep = "\n")
       } else {
+        if (file.access(getwd(), mode = 2) == -1) {
+          ## A writable working directory is required to save reports
+          showModal(
+            modalDialog(
+              title = "Working directory is not writable",
+              HTML(
+                paste0(
+                  "<span>
+                    The working directory used by radiant (\"", getwd(), "\") is not writable. This is required to save a report.
+                    To save reports, restart radiant from a writable directory. Preferaby by setting up an Rstudio 
+                    project folder. See <a href='https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects' target='_blank'> 
+                    https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects</a> for more information
+                  </span>"
+                )
+              ),
+              footer = modalButton("OK"),
+              size = "s",
+              easyClose = TRUE
+            )
+          )
+          return(invisible())
+        }
 
         ## hack for rmarkdown from Report > Rmd and Report > R
         options(radiant.rmarkdown = TRUE)
@@ -568,19 +605,21 @@ report_save_content <- function(file, type = "rmd") {
             tmp_fn <- tempfile(pattern = "report-", tmpdir = ".", fileext = ".Rmd")
             cat(init, file = tmp_fn, sep = "\n")
             out <- rmarkdown::render(
-              tmp_fn, 
+              tmp_fn,
               switch(
                 save_type,
                 Notebook = rmarkdown::html_notebook(highlight = "textmate", theme = "spacelab", code_folding = "hide"),
                 HTML = rmarkdown::html_document(highlight = "textmate", theme = "spacelab", code_download = TRUE, df_print = "paged"),
                 PDF = rmarkdown::pdf_document(),
                 Word = rmarkdown::word_document(reference_docx = file.path(system.file(package = "radiant.data"), "app/www/style.docx"))
-              ), 
-              envir = r_data, quiet = TRUE, encoding = "UTF-8", 
+              ),
+              envir = r_data, quiet = TRUE, encoding = "UTF-8",
               output_options = list(pandoc_args = "--quiet")
             )
-            file.rename(out, file)
-            file.remove(tmp_fn)
+            ## file.rename may fail to overwrite even if confirmed by the users
+            # file.rename(out, file)
+            file.copy(out, file, overwrite = TRUE)
+            file.remove(out, tmp_fn)
           } else {
             ## still needed because rmarkdown requires pandoc
             setup_report(report, add_yml = FALSE, type = save_type, lib = lib) %>%
@@ -600,7 +639,7 @@ report_save_content <- function(file, type = "rmd") {
 update_report <- function(
   inp_main = "", fun_name = "", inp_out = list("", ""),
   cmd = "", pre_cmd = "result <- ", post_cmd = "",
-  xcmd = "", outputs = c("summary", "plot"), inp = "result", 
+  xcmd = "", outputs = c("summary", "plot"), inp = "result",
   wrap, figs = TRUE, fig.width = 7, fig.height = 7
 ) {
 
@@ -628,12 +667,17 @@ update_report <- function(
           tmp <- paste0(tmp, collapse = "")
         }
         if (length(tmp) > 1) {
-          tmp <- c("c(", sub("^c\\(", "", tmp))
+          if (grepl("^c\\(", tmp[1])) {
+            tmp <- c("c(", sub("^c\\(", "", tmp))
+          } else {
+            tmp <- c("list(", sub("^list\\(", "", tmp))
+          }
           if (tail(tmp, 1) != ")") {
             tmp <- c(sub("\\)$", "", tmp), ")")
           }
         }
-        x[[i]] <- paste0(tmp, collapse = "\n    ") %>%
+        x[[i]] <- sub("^\\s+", "", tmp) %>%
+          paste0(collapse = "\n    ") %>%
           sub("[ ]+\\)", "  \\)", .)
       }
       x <- paste0(paste0(paste0("\n  ", names(x)), " = ", x), collapse = ", ")
@@ -680,13 +724,17 @@ update_report <- function(
   if (xcmd != "") cmd <- paste0(cmd, "\n", xcmd)
 
   ## make into chunks if needed
-  type <- ifelse(state_init("rmd_generate", "auto") == "Use R", "r", "rmd")
+  if (length(input$rmd_generate) == 0) {
+    type <- ifelse(state_init("r_generate", "Use Rmd") == "Use Rmd", "rmd", "r")
+  } else {
+    type <- ifelse(state_init("rmd_generate", "auto") == "Use R", "r", "rmd")
+  }
 
   if (type == "r") {
     update_report_fun(cmd, type = "r")
   } else {
     if (figs) {
-      cmd <- paste0("\n```{r fig.width = ", round(7 * fig.width / 650, 2), ", fig.height = ", round(7 * fig.height / 650, 2), "}\n", cmd, "\n```\n")
+      cmd <- paste0("\n```{r fig.width = ", round(7 * fig.width / 650, 2), ", fig.height = ", round(7 * fig.height / 650, 2), ", dpi = 144}\n", cmd, "\n```\n")
     } else {
       cmd <- paste0("\n```{r}\n", cmd, "\n```\n")
     }
@@ -703,17 +751,26 @@ update_report_fun <- function(cmd, type = "rmd", rfiles = FALSE) {
     if (sinit == "manual") {
       os_type <- Sys.info()["sysname"]
       if (os_type == "Windows") {
-        cat(cmd, file = "clipboard")
+        withProgress(message = "Putting command in clipboard", value = 1, {
+          cat(cmd, file = "clipboard")
+        })
       } else if (os_type == "Darwin") {
-        out <- pipe("pbcopy")
-        cat(cmd, file = out)
-        close(out)
+        withProgress(message = "Putting command in clipboard", value = 1, {
+          out <- pipe("pbcopy")
+          cat(cmd, file = out)
+          close(out)
+        })
       } else if (os_type == "Linux") {
-        cat("Clipboard not supported on linux")
+        showModal(
+          modalDialog(
+            title = "Copy-and-paste the code shown below",
+            pre(cmd),
+            footer = modalButton("Cancel"),
+            size = "s",
+            easyClose = TRUE
+          )
+        )
       }
-      withProgress(message = "Putting command in clipboard", value = 1, {
-        cat("")
-      })
     } else if (sinit == "To Rmd") {
       withProgress(message = "Putting code chunk in Rstudio", value = 1, {
         rstudioapi::insertText(Inf, fix_smart(cmd))

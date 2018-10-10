@@ -42,9 +42,9 @@ output$state_view <- renderUI({
   )
 })
 
-state_name <- function(out = paste0("radiant-state-", Sys.Date(), ".rda"), full.name = FALSE) {
+state_name <- function(out = paste0("radiant-", Sys.Date(), ".state.rda"), full.name = FALSE) {
   rsn <- r_state$radiant_state_name
-  ldir <- getOption("radiant.launch_dir", default = "~")
+  ldir <- getOption("radiant.launch_dir", default = radiant.data::find_home())
   pdir <- getOption("radiant.project_dir", default = ldir)
   ## legacy
   if (is_empty(rsn)) rsn <- r_state$state_name 
@@ -52,7 +52,7 @@ state_name <- function(out = paste0("radiant-state-", Sys.Date(), ".rda"), full.
     fn <- rsn 
   } else {
     if (!is_empty(pdir)) {
-      fn <- paste0(basename(pdir), "-state.rda")
+      fn <- paste0(basename(pdir), ".state.rda")
       r_state$radiant_state_name <<- fn
     } else {
       fn <- out
@@ -60,13 +60,13 @@ state_name <- function(out = paste0("radiant-state-", Sys.Date(), ".rda"), full.
   }
 
   ## legacy 
-  if (tools::file_ext(fn) != "rda") {
-    fn <- paste0(fn, ".rda")
-  } 
-  ## legacy 
-  if (!grepl("state", fn)) {
-    fn <- sub("\\.rda$", "-state.rda", fn)
-  } 
+  # if (tools::file_ext(fn) != "rda") {
+  #   fn <- paste0(fn, ".rda")
+  # } 
+  # ## legacy 
+  # if (!grepl("state", fn)) {
+  #   fn <- sub("\\.rda$", ".state.rda", fn)
+  # } 
 
   if (full.name) {
     file.path(pdir, fn)
@@ -75,43 +75,21 @@ state_name <- function(out = paste0("radiant-state-", Sys.Date(), ".rda"), full.
   }
 }
 
-if (!isTRUE(getOption("radiant.launch", "browser") == "browser")) {
-# if (isTRUE(getOption("radiant.local", FALSE))) {
-  observeEvent(input$state_save, {
-    path <- rstudioapi::selectFile(
-      caption = "Radiant state file name",
-      path = state_name(full.name = TRUE),
-      filter = "Radiant state file (*.rda)",
-      existing = FALSE
-    )
-    if (!is(path, "try-error") && !is_empty(path)) {
-      r_state$radiant_state_name <<- path 
-      saveState(path)
-    }
-  })
-} else {
-  output$state_save <- downloadHandler(
-    filename = function() {
-      state_name()
-    },
-    content = function(file) {
-      saveState(file)
-    }
-  )
-
-  ## need to set suspendWhenHidden to FALSE so that the href for the 
-  ## download handler is set and keyboard shortcuts will work
-  ## see https://shiny.rstudio.com/reference/shiny/0.11/outputOptions.html
-  ## see https://stackoverflow.com/questions/48117501/click-link-in-navbar-menu
-  ## https://stackoverflow.com/questions/3871358/get-all-the-href-attributes-of-a-web-site
-  outputOptions(output, "state_save", suspendWhenHidden = FALSE)
-}
-
 observeEvent(input$state_share, {
   withProgress(message = "Preparing session sharing", value = 1, {
     saveSession(session)
   })
 })
+
+output$state_download <- downloadHandler(
+  filename = function() {
+    fn <- state_name_dlh() %>% sans_ext()
+    type <- state_name_dlh() %>% 
+      {if (grepl("\\.state\\.rda", .)) "state.rda" else tools::file_ext(.)}
+    paste0(fn, ".", type)
+  },
+  content = function(path) { saveState(path) }
+)
 
 output$show_session <- renderPrint({
   input$show_session ## only update when you toggle the checkbox

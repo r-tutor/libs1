@@ -1,3 +1,17 @@
+# radiant.multivariate 0.9.7.0
+
+## Major changes
+
+* Using [`shinyFiles`](https://github.com/thomasp85/shinyFiles) to provide convenient access to data located on a server
+
+## Minor changes
+
+* Option to add selected labels to the dendogram in hierarchical clustering
+* Replace non-ASCII characters in example datasets
+* Remove `rstudioapi` as a direct import
+* Revert from `svg` to `png` for plots in `_Report > Rmd_ and _Report > R_. `svg` scatter plots with many point get to big for practical use on servers that have to transfer images to a local browser
+* Removed dependency on `methods` package
+
 # radiant.multivariate 0.9.5.0
 
 * Fix to accomodate changes in `deparse` in R 3.5

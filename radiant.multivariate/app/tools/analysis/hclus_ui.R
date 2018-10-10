@@ -26,6 +26,7 @@ hc_inputs <- reactive({
 ###############################################################
 # Hierarchical clustering
 ###############################################################
+
 output$ui_hc_vars <- renderUI({
   isNum <- "numeric" == .get_class() | "integer" == .get_class()
   vars <- varnames()[isNum]
@@ -34,6 +35,22 @@ output$ui_hc_vars <- renderUI({
     selected = state_multiple("hc_vars", vars),
     multiple = TRUE, size = min(8, length(vars)), selectize = FALSE
   )
+})
+
+output$ui_hc_labels <- renderUI({
+  vars <- c(None = "none", varnames())
+  selectInput(
+    inputId = "hc_labels", label = "Labels:", choices = vars,
+    selected = state_single("hc_labels", vars, "none"),
+    multiple = FALSE
+  )
+})
+
+observeEvent(c(input$hc_vars, input$hc_labels != "none"), {
+  req(input$hc_vars, input$hc_labels)
+  if (input$hc_labels %in% input$hc_vars) {
+    updateSelectInput(session, "hc_labels", selected = "none")
+  }
 })
 
 observe({
@@ -60,6 +77,7 @@ output$ui_hclus <- renderUI({
       actionButton("hc_run", "Estimate model", width = "100%", icon = icon("play"), class = "btn-success")
     ),
     wellPanel(
+      uiOutput("ui_hc_labels"),
       uiOutput("ui_hc_vars"),
       selectInput(
         "hc_distance", label = "Distance measure:", choices = hc_distance,
@@ -79,18 +97,17 @@ output$ui_hclus <- renderUI({
           plugins = list("remove_button", "drag_drop")
         )
       ),
-
       with(tags, table(
         tr(
           td(numericInput(
             "hc_cutoff", "Plot cutoff:", min = 0, max = 1,
-            value = state_init("hc_cutoff", 0.05), step = .02, width = "117px"
-          )),
+            value = state_init("hc_cutoff", 0.05), step = .02
+          ), width = "50%"),
           td(numericInput(
             "hc_max_cases", "Max cases:", min = 100, max = 100000, step = 100,
-            value = state_init("hc_max_cases", 5000) 
-          ))
-        )
+            value = state_init("hc_max_cases", 5000)
+          ), width = "50%")
+        ), width = "100%"
       ))
     ),
     help_and_report(
@@ -111,7 +128,7 @@ observeEvent(input$hc_plots, {
 hc_plot <- reactive({
   plots <- input$hc_plots
   req(plots)
-  ph <- plots %>% 
+  ph <- plots %>%
     {if (length(.) == 1 && . == "dendro") 800 else 400}
   pw <- if (!is_empty(plots) && plots == "dendro") 900 else 650
   list(plot_width = pw, plot_height = ph * length(plots))
@@ -159,7 +176,7 @@ output$hclus <- renderUI({
 
 .summary_hclus <- reactive({
   if (not_available(input$hc_vars)) {
-    "This analysis requires one or more variables of type integer or numeric.\nIf these variable types are not available please select another dataset.\n\n" %>% 
+    "This analysis requires one or more variables of type integer or numeric.\nIf these variable types are not available please select another dataset.\n\n" %>%
       suggest_data("toothpaste")
   } else if (not_pressed(input$hc_run))  {
     "** Press the Estimate button to generate cluster solution **"
@@ -207,10 +224,11 @@ observeEvent(input$hclus_report, {
 })
 
 download_handler(
-  id = "dlp_hclus", 
-  fun = download_handler_plot, 
-  fn = paste0(input$dataset, "_hclustering.png"),
-  caption = "Download hierarchical cluster plots",
+  id = "dlp_hclus",
+  fun = download_handler_plot,
+  fn = function() paste0(input$dataset, "_hclustering"),
+  type = "png",
+  caption = "Save hierarchical cluster plots",
   plot = .plot_hclus,
   width = hc_plot_width,
   height = hc_plot_height

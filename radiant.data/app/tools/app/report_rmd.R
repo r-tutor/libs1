@@ -163,41 +163,46 @@ observeEvent(input$rmd_generate, {
     updateSelectInput(session, "rmd_view", selected = "pr_only")
     report_rmd$clear <- 1
 
+    no_rmd <- function() {
+      ## popup to suggest user create an .Rmd file
+      showModal(
+        modalDialog(
+          title = "Radiant to Rmd (Rstudio)",
+          span(
+            "Radiant is set to use an rmarkdown document in Rstudio
+            ('To Rstudio (Rmd)'). However, the active document in
+            Rstudio does not seem to be of type .Rmd. Please open an
+            existing .Rmd file or create a new one in Rstudio. The
+            file must be saved to disk before it can be accessed. If
+            you want to use the editor in Radiant instead, change
+            'To Rstudio (Rmd)' to 'Auto paste' or 'Manual paste'."
+          ),
+          footer = modalButton("OK"),
+          size = "s",
+          easyClose = TRUE
+        )
+      )
+    }
+
     ## get info from rstudio editor
     cnt <- rstudio_context(type = "rmd")
     if (is_empty(cnt$path) || cnt$ext != "rmd") {
       rmd <- r_state$radiant_rmd_name
-      if (!is_empty(rmd)) {
+     if (!is_empty(rmd)) {
         if (file.exists(rmd)) {
           ## useful if you are not using an Rstudio project
           rstudioapi::navigateToFile(rmd)
         } else {
-          pdir <- getOption("radiant.project_dir", default = "")
+          pdir <- getOption("radiant.project_dir", default = radiant.data::find_home())
           path <- file.path(pdir, rmd)
           if (file.exists(path)) {
             rstudioapi::navigateToFile(path)
+          } else {
+            no_rmd()
           }
         }
       } else {
-
-        ## popup to suggest user create an .Rmd file
-        showModal(
-          modalDialog(
-            title = "Radiant to Rmd (Rstudio)",
-            span(
-              "Radiant is set to use an rmarkdown document in Rstudio
-              ('To Rstudio (Rmd)'). However, the active document in
-              Rstudio does not seem to be of type .Rmd. Please open an
-              existing .Rmd file or create a new one in Rstudio. The
-              file must be saved to disk before it can be accessed. If
-              you want to use the editor in Radiant instead, change
-              'To Rstudio (Rmd)' to 'Auto paste' or 'Manual paste'."
-            ),
-            footer = modalButton("OK"),
-            size = "s",
-            easyClose = TRUE
-          )
-        )
+        no_rmd()
       }
     }
   } else if (state_init("rmd_generate", "auto") == "Use R") {
@@ -205,6 +210,7 @@ observeEvent(input$rmd_generate, {
       updateSelectInput(session, "r_generate", selected = "auto")
     }
   } else {
+    updateSelectInput(session, "r_generate", selected = "Use Rmd")
     updateSelectInput(session, "rmd_switch", selected = "switch")
     updateSelectInput(session, "rmd_view", selected = "dual")
   }
@@ -231,30 +237,46 @@ output$ui_rmd_save_type <- renderUI({
   )
 })
 
-output$ui_rmd_save <- renderUI({
+conditional_save_report <- function(id) {
   if (isTRUE(getOption("radiant.report"))) {
-    download_button("rmd_save", "Save report", class = "btn-primary")
+    download_button(id, "Save report", class = "btn-primary")
   } else {
     invisible()
   }
-})
+}
+
+conditional_read_files <- function(id) {
+  if (getOption("radiant.shinyFiles", FALSE)) {
+    download_button(id, "Read files", class = "btn-primary")
+  } else {
+    invisible()
+  }
+}
 
 output$ui_rmd_load <- renderUI({
   file_upload_button(
     "rmd_load",
     accept = c(".Rmd", ".rmd", ".md", ".html"),
-    buttonLabel = "Load report"
+    buttonLabel = "Load report",
+    title = "Load report",
+    class = "btn-default"
   )
 })
 
-output$ui_rmd_read_files <- renderUI({
-  if (!isTRUE(getOption("radiant.launch", "browser") == "browser")) {
-  # if (isTRUE(getOption("radiant.local", FALSE))) {
-    actionButton("rmd_read_files", "Read files", icon = icon("book"), class = "btn-primary")
-  } else {
-    invisible()
-  }
-})
+if (getOption("radiant.shinyFiles", FALSE)) {
+  output$ui_rmd_read_files <- renderUI({
+    shinyFiles::shinyFilesButton(
+      "rmd_read_files", "Read files", "Generate code to read selected file",
+      multiple = FALSE, icon = icon("book"), class = "btn-primary"
+    )
+  })
+  sf_rmd_read_files <- shinyFiles::shinyFileChoose(
+    input = input,
+    id = "rmd_read_files",
+    session = session,
+    roots = sf_volumes
+  )
+}
 
 radiant_auto <- reactive({
   if (any(grepl("package:radiant", search()))) {
@@ -308,9 +330,9 @@ output$report_rmd <- renderUI({
         td(uiOutput("ui_rmd_view")),
         td(uiOutput("ui_rmd_switch")),
         td(uiOutput("ui_rmd_save_type")),
-        td(uiOutput("ui_rmd_save"), style = "padding-top:5px;"),
+        td(conditional_save_report("rmd_save"), style = "padding-top:5px;"),
         td(uiOutput("ui_rmd_load"), style = "padding-top:5px;"),
-        td(uiOutput("ui_rmd_read_files"), style = "padding-top:5px;"),
+        td(conditional_read_files("rmd_read_files"), style = "padding-top:5px;"),
         td(actionButton("rmd_clear", "Clear output", icon = icon("trash"), class = "btn-danger"), style = "padding-top:5px;")
       )
     ),
@@ -441,44 +463,29 @@ output$rmd_knitted <- renderUI({
   rmd_knitted()
 })
 
-if (!isTRUE(getOption("radiant.launch", "browser") == "browser")) {
-# if (isTRUE(getOption("radiant.local", FALSE))) {
-  observeEvent(input$rmd_save, {
-    ## saving rmd report to disk
-    path <- report_save_filename(type = "rmd", full.name = TRUE)
-    path <- rstudioapi::selectFile(
-      caption = "Report file name",
-      path = path,
-      filter = "Report file name (*)",
-      existing = FALSE
-    )
-    if (!is(path, "try-error") && !is_empty(path)) {
-      r_state$radiant_rmd_name <<- path
-      report_save_content(path, type = "rmd")
-    }
-  })
-} else {
-  ## based on http://shiny.rstudio.com/gallery/download-knitr-reports.html
-  output$rmd_save <- downloadHandler(
-    filename = function() {
-      report_save_filename(type = "rmd", full.name = FALSE)
-    },
-    content = function(file) {
-      report_save_content(file, type = "rmd")
-    }
-  )
+report_save_filename_rmd <- function() {
+  report_save_filename(type = "rmd", full.name = FALSE)
 }
+
+download_handler(
+  id = "rmd_save",
+  label = "Save report",
+  fun = function(x, type = "rmd") report_save_content(x, type),
+  fn = function() report_save_filename_rmd() %>% sans_ext(),
+  type = function() report_save_filename_rmd() %>% {if (grepl("nb\\.html", .)) "nb.html" else tools::file_ext(.)},
+  caption = "Save report",
+  btn = "button",
+  class = "btn-primary"
+)
 
 observeEvent(input$rmd_load, {
   ## loading report from disk
-  if (!isTRUE(getOption("radiant.launch", "browser") == "browser")) {
-  # if (isTRUE(getOption("radiant.local", FALSE))) {
-    path <- rstudioapi::selectFile(
-      caption = "Select .Rmd, .md, or .html",
-      filter = "Select .Rmd, .md, or .html (*)",
-      path = getOption("radiant.launch_dir")
-    )
-    pp <- parse_path(path, pdir = getOption("radiant.project_dir", ""), chr = "")
+  if (getOption("radiant.shinyFiles", FALSE)) {
+    if (is.integer(input$rmd_load)) return()
+    inFile <- shinyFiles::parseFilePaths(sf_volumes, input$rmd_load)
+    if (nrow(inFile) == 0) return()
+    path <- inFile$datapath
+    pp <- parse_path(path, pdir = getOption("radiant.project_dir", radiant.data::find_home()), chr = "", mess = FALSE)
   } else {
     inFile <- input$rmd_load
     path <- inFile$datapath
@@ -489,11 +496,11 @@ observeEvent(input$rmd_load, {
     )
   }
 
-  if (!is(path, "try-error") && !is_empty(path)) {
+  if (!inherits(path, "try-error") && !is_empty(path)) {
     if (pp$fext == "html") {
       ## based on http://rmarkdown.rstudio.com/r_notebook_format.html
       rmd <- try(rmarkdown::parse_html_notebook(pp$path), silent = TRUE)
-      if (!is(rmd, "try-error")) {
+      if (!inherits(rmd, "try-error")) {
         rmd <- paste0(rmd$rmd, collapse = "\n")
         r_state$radiant_rmd_name <<- sub("(\\.nb\\.html|\\.html)", ".Rmd", pp$path)
       } else {
@@ -501,8 +508,7 @@ observeEvent(input$rmd_load, {
       }
     } else {
       rmd <- paste0(readLines(pp$path), collapse = "\n")
-      if (!isTRUE(getOption("radiant.launch", "browser") == "browser")) {
-      # if (isTRUE(getOption("radiant.local", FALSE))) {
+      if (getOption("radiant.shinyFiles", FALSE)) {
         r_state$radiant_rmd_name <<- pp$path
       } else {
         r_state$radiant_rmd_name <<- pp$filename
@@ -520,7 +526,11 @@ observeEvent(input$rmd_load, {
 })
 
 observeEvent(input$rmd_read_files, {
-  cmd <- read_files(type = "rmd", clipboard = FALSE, radiant = TRUE)
+  if (is.integer(input$rmd_read_files)) return()
+  path <- shinyFiles::parseFilePaths(sf_volumes, input$rmd_read_files)
+  if (inherits(path, "try-error") || is_empty(path$datapath)) return()
+  pdir <- getOption("radiant.project_dir", default = radiant.data::find_home())
+  cmd <- read_files(path$datapath, pdir = pdir, type = "rmd", clipboard = FALSE, radiant = TRUE)
   if (!is_empty(cmd)) {
     update_report_fun(cmd, type = "rmd", rfiles = TRUE)
   }

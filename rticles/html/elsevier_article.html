@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Elsevier journal format.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for elsevier_article {rticles}"><tr><td>elsevier_article {rticles}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Elsevier journal format.</h2>
+
+<h3>Description</h3>
+
+<p>Format for creating submissions to Elsevier journals. Adapted from
+<a href="https://www.elsevier.com/authors/author-schemas/latex-instructions">https://www.elsevier.com/authors/author-schemas/latex-instructions</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+elsevier_article(..., keep_tex = TRUE,
+  md_extensions = c("-autolink_bare_uris"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments to <code>rmarkdown::pdf_document</code></p>
+</td></tr>
+<tr valign="top"><td><code>keep_tex</code></td>
+<td>
+<p>Keep the intermediate tex file used in the conversion to PDF</p>
+</td></tr>
+<tr valign="top"><td><code>md_extensions</code></td>
+<td>
+<p>Markdown extensions to be added or removed from the
+default definition or R Markdown. See the <code><a href="../../rmarkdown/html/rmarkdown_format.html">rmarkdown_format</a></code> for
+additional details.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>R Markdown output format to pass to
+<code><a href="../../rmarkdown/html/render.html">render</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## Not run: 
+library(rmarkdown)
+draft("MyArticle.Rmd", template = "elsevier_article", package = "rticles")
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rticles</em> version 0.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

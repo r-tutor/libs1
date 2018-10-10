@@ -4,13 +4,9 @@
 
 Use the `Filter data` box to select (or omit) specific sets of rows from the data. See the help file for <a href="https://radiant-rstats.github.io/docs/data/view.html" target="_blank">_Data > View_</a> for details.
 
-### Pause plotting
-
-For larger datasets it can useful to click `Pause plotting` before selecting variables, entering filters, etc. When you are ready to generate a plot make sure that `Pause plotting` is un-checked. When `Pause plotting` is un-checked, any input change will automatically result in a new plot.
-
 ### Plot-type
 
-Select the plot type you want. For example, with the `diamonds` data loaded select `Distribution` and all (X) variables (use CTRL-a or CMD-a). This will create a histogram for all numeric variables and a bar-plot for all categorical variables in the dataset. Density plots can only be used with numeric variables. Scatter plots are used to visualize the relationship between two variables. Select one or more variables to plot on the Y-axis and one or more variables to plot on the X-axis. If one of the variables is categorical (i.e., a {factor}) it should be specified as an X-variable. Information about additional variables can be added through the `Color` or `Size` dropdown. Line plots are similar to scatter plots but they connect-the-dots and are particularly useful for time-series data. Surface plots are similar to `Heat maps` and require 3 input variables: X, Y, and Fill. Bar plots are used to show the relationship between a categorical (or integer) variable (X) and the (mean) value of a numeric variable (Y). If the Y-variable in a bar plot is categorical (i.e., a {factor}) the proportion of occurrence of the first-level in that variable is shown (e.g., if we select `color` from the `diamonds` data as the Y-variable each bar represents the proportion of observations with the value `D`). Box-plots are also used when we have a numeric Y-variable and a categorical X-variable. They are more informative than bar charts but also require a bit more effort to evaluate.
+Select the plot type you want. For example, with the `diamonds` data loaded select `Distribution` and all (X) variables (use CTRL-a or CMD-a). This will create a histogram for all numeric variables and a bar-plot for all categorical variables in the data set. Density plots can only be used with numeric variables. Scatter plots are used to visualize the relationship between two variables. Select one or more variables to plot on the Y-axis and one or more variables to plot on the X-axis. If one of the variables is categorical (i.e., a {factor}) it should be specified as an X-variable. Information about additional variables can be added through the `Color` or `Size` dropdown. Line plots are similar to scatter plots but they connect-the-dots and are particularly useful for time-series data. Surface plots are similar to `Heat maps` and require 3 input variables: X, Y, and Fill. Bar plots are used to show the relationship between a categorical (or integer) variable (X) and the (mean) value of a numeric variable (Y). If the Y-variable in a bar plot is categorical (i.e., a {factor}) the proportion of occurrence of the first-level in that variable is shown (e.g., if we select `color` from the `diamonds` data as the Y-variable each bar represents the proportion of observations with the value `D`). Box-plots are also used when we have a numeric Y-variable and a categorical X-variable. They are more informative than bar charts but also require a bit more effort to evaluate.
 
 > Note that when a categorical variable (`factor`) is selected as the `Y-variable` in a Bar chart it is converted to a 0-1 (binary) variable where the first level is coded as 1 and all other levels as 0.
 
@@ -68,6 +64,14 @@ visualize(diamonds, yvar = "price", xvar = "carat", type = "scatter", custom = T
   )
 ```
 
+The default resolution for plots is 144 dots per inch (dpi). You can change this setting up or down in _Report > Rmd_. For example, the code-chunk header below ensures the plot will be 7" wide, 3.5" tall, with a resolution of 600 dpi.
+
+```` ```{r fig.width = 7, fig.height = 3.5, dpi = 600} ````
+
+If you have the `svglite` package installed, the code-chunk header below will produce graphs in high quality `svg` format.
+
+```` ```{r fig.width = 7, fig.height = 3.5, dev = "svglite"} ````
+
 **Some common customization commands:**
 
 * Add a title: `+ labs(title = "my title")`
@@ -83,7 +87,9 @@ visualize(diamonds, yvar = "price", xvar = "carat", type = "scatter", custom = T
 * Draw a horizontal line: `+ geom_hline(yintercept = 0.1)`
 * Draw a vertical line: `+ geom_vline(xintercept = 8)`
 * Scale the y-axis as a percentage: `+ scale_y_continuous(labels = scales::percent)`
+* Scale the y-axis in millions: `+ scale_y_continuous(labels = scales::unit_format(unit = "M", scale = 1e-6))`
 * Display y-axis in \$'s: `+ scale_y_continuous(labels = scales::dollar_format())`
+* Use `,` as a thousand separator for the y-axis: `+ scale_y_continuous(labels = scales::comma)`
 
 For more on how to customize plots for communication see <a href="http://r4ds.had.co.nz/graphics-for-communication.html" target="_blank">http://r4ds.had.co.nz/graphics-for-communication.html</a>.
 
@@ -103,7 +109,6 @@ gridExtra::grid.arrange(grobs = plot_list, top = "Three bar plots", ncol = 1)
 ```
 
 See the <a href="https://cran.r-project.org/web/packages/gridExtra/vignettes/arrangeGrob.html">gridExtra vignette</a> for additional information on how to customize groups of plots.
-
 
 ### Making plots interactive in _Report > Rmd_
 

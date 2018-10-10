@@ -1,3 +1,14 @@
+# radiant.design 0.9.7.0
+
+## Major changes
+
+* Using [`shinyFiles`](https://github.com/thomasp85/shinyFiles) to provide convenient access to data located on a server
+
+## Minor changes
+
+* Revert from `svg` to `png` for plots in `_Report > Rmd_ and _Report > R_. `svg` scatter plots with many point get to big for practical use on servers that have to transfer images to a local browser
+* Removed dependency on `methods` package
+
 # radiant.design 0.9.5.0
 
 ## Major changes

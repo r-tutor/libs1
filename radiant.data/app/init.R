@@ -8,6 +8,27 @@
 # options(shiny.error = recover)
 # options(warn = 2)
 
+if (getOption("radiant.shinyFiles", FALSE)) {
+  if (isTRUE(Sys.getenv("RSTUDIO") == "")) {
+    ## Users not on Rstudio will only get access to pre-specified volumes
+    sf_volumes <- getOption("radiant.sf_volumes", "")
+  } else {
+    sf_volumes <- getOption("radiant.launch_dir")
+    if (getOption("radiant.project_dir", "") != "") {
+      sf_volumes <- unique(getOption("radiant.project_dir"), sf_volumes)
+    }
+    home <- radiant.data::find_home()
+    if (home != sf_volumes) {
+      sf_volumes <- c(sf_volumes, home) %>% set_names(c(basename(sf_volumes), "Home"))
+    } else {
+      sf_volumes <- c(Home = home)
+    }
+    if (sum(nzchar(getOption("radiant.sf_volumes", ""))) > 0) {
+      sf_volumes <- getOption("radiant.sf_volumes") %>% {c(sf_volumes, .[!. %in% sf_volumes])}
+    }
+  }
+}
+
 remove_session_files <- function(st = Sys.time()) {
   fl <- list.files(
     normalizePath("~/radiant.sessions/"),
@@ -66,7 +87,8 @@ r_ssuid <- if (getOption("radiant.local")) {
 session$sendCustomMessage("session_start", r_ssuid)
 
 ## identify the shiny environment
-r_environment <- environment()
+# r_environment <- environment()
+r_environment <- session$token
 
 r_info_legacy <- function() {
   r_info_elements <- c(
@@ -105,7 +127,7 @@ if (exists("r_data", envir = .GlobalEnv)) {
   ## read from file if not in global
   fn <- paste0(normalizePath("~/radiant.sessions"), "/r_", r_ssuid, ".rds")
   rs <- try(readRDS(fn), silent = TRUE)
-  if (is(rs, "try-error")) {
+  if (inherits(rs, "try-error")) {
     r_data <- new.env()
     r_info <- init_data(env = r_data)
     r_state <- list()
@@ -135,7 +157,7 @@ if (exists("r_data", envir = .GlobalEnv)) {
   ## restore from local folder but assign new ssuid
   fn <- paste0(normalizePath("~/radiant.sessions"), "/r_", mrsf, ".rds")
   rs <- try(readRDS(fn), silent = TRUE)
-  if (is(rs, "try-error")) {
+  if (inherits(rs, "try-error")) {
     r_data <- new.env()
     r_info <- init_data(env = r_data)
     r_state <- list()
@@ -186,6 +208,15 @@ if (isTRUE(r_state$nav_radiant == "Code")) {
   r_state$nav_radiant <- "Rmd"
 }
 
+## legacy, to deal with radio buttons that were in Data > Pivot
+if (!is.null(r_state$pvt_type)) {
+  if (isTRUE(r_state$pvt_type == "fill")) {
+    r_state$pvt_type <- TRUE
+  } else {
+    r_state$pvt_type <- FALSE
+  }
+}
+
 ## legacy, to deal with state files created before
 ## name change to rmd_edit
 if (!is.null(r_state$rmd_report) && is.null(r_state$rmd_edit)) {
@@ -218,7 +249,7 @@ observeEvent(session$clientData$url_search, {
   url_query <- parseQueryString(session$clientData$url_search)
   if ("url" %in% names(url_query)) {
     r_info[["url"]] <- url_query$url
-  } else if (is_empty(r_info[["url"]])) {
+  } else if (radiant.data::is_empty(r_info[["url"]])) {
     return()
   }
 
@@ -289,7 +320,7 @@ if (getOption("radiant.from.package", default = TRUE)) {
 } else {
   ## for shiny-server and development
   for (file in list.files("../../R", pattern = "\\.(r|R)$", full.names = TRUE)) {
-    source(file, encoding = getOption("radiant.encoding"), local = TRUE)
+    source(file, encoding = getOption("radiant.encoding", "UTF-8"), local = TRUE)
   }
   # cat("\nGetting radiant.data from source ...\n")
 }

@@ -1,3 +1,53 @@
+# radiant.data 0.9.7.0
+
+* Use `summarytools` to generate summary information for datasets in _Data > Manage_
+* Show modal with warning about non-writable working directory when saving reports in _Report > Rmd_ or _Report > R_
+* Apply `radiant.data::fix_names` to files loaded into radiant to ensure valid R-object names
+* Use the content of the `Store filtered data as` input to name the csv download in _Data > View_ 
+* Add "txt" as a recognized file type for `Read files` in _Report > Rmd_ and _Report > R_
+* Allow multiple `lines` or `loess` curves based on a selected `color` variable for scatter plots in _Data > Visualize_
+* Indicate that a plot in _Data > Visualize_ should be updated when plot labels are changed
+* Fix for [#81](https://github.com/radiant-rstats/radiant/issues/81) when variables used in _Data > Pivot_ contain dots
+* Fix for `radiant.project_dir` when no Rstudio project is used which could cause incorrect relative paths to be used
+* Fix code formatting for _Report > Rmd_ when arguments include a list (e.g., ggplot labels)
+* On Linux use a modal to show code in Report > Rmd and Report > R when reporting is set to "manual" 
+* Use `is_double` to ensure dates are not treated as numeric variables in _Data > View_
+* Make sort and filter state of tables in Data > Explore and Data > Pivot available in Report > Rmd
+* Fix names for data sets loaded using the `Read files` button in Report > Rmd or Report > R
+* Cleanup environment after closing app
+* Fix column names with spaces, etc. when reading csv files
+* Additional styling and labeling options for _Data > Visualize_ are now available in the browser interface
+* Fix for code generation related to DT filters
+
+# radiant.data 0.9.6.14
+
+## Major changes
+
+* Using [`shinyFiles`](https://github.com/thomasp85/shinyFiles) to provide convenient access to data located on a server
+* Avoid `XQuartz` requirement
+
+## Minor changes
+
+* Load `data(...)` into the current environment rather than defaulting only to the global environment
+* `file.rename` failed using docker on windows when saving a report. Using `file.copy` instead 
+* Fix for `sf_volumes` used to set the root directories to load and save files
+* Set default locale to "en_US.UTF-8" when using shiny-server unless `Sys.getlocale(category = "LC_ALL")` what set to something other than "C"
+* Modal shown if and Rmd (R) file is not available when using "To Rstudio (Rmd)" in _Report > Rmd_ or "To Rstudio (R)" in _Report > R_
+* Track progress loading (state) files
+* Fix for `radiant.sf_volumes` used for the `shinyFiles` file browser
+* Improvements for sending code from Radiant to Rstudio
+* Better support for paths when using radiant on a server (i.e., revert to home directory using `radiant.data::find_home()`)
+* Revert from `svg` to `png` for plots in `_Report > Rmd_ and _Report > R_. `svg` scatter plots with many point get to big for practical use on servers that have to transfer images to a local browser
+* Removed dependency on `methods` package
+
+# radiant.data 0.9.5.3
+
+* Fix smart comma's in data descriptions
+* Search and replace `desc(n)` in reports and replace by `desc(n_obs)`
+* Revert to storing the r_data environment as a list on stop to avoid reference problems (@josh1400)
+* Fix for plot type in _Data > Pivot_ in older state files (@josh1400)
+* Used all declared imports (CRAN)
+
 # radiant.data 0.9.5.0
 
 * Fix for `radiant.data::explore` when variable names contain an underscore 
@@ -12,13 +62,13 @@
 
 # radiant.data 0.9.3.5
 
-## minor changes
+## Minor changes
 
 * Use `dev = "svg"` for plots in _Report > Rmd_ and _Report > R_
 
 # radiant.data 0.9.3.4
 
-## minor changes
+## Minor changes
 
 * Add argument to `dtab.data.frame` to format specified columns as a percentage
 

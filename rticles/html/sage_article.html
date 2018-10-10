@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Sage Journals format.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sage_article {rticles}"><tr><td>sage_article {rticles}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Sage Journals format.</h2>
+
+<h3>Description</h3>
+
+<p>Format for creating submissions to Sage Journals. Based on the official Sage Journals
+<a href="https://uk.sagepub.com/sites/default/files/sage_latex_template_4.zip">class</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sage_article(..., highlight = NULL, citation_package = "natbib")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments to <code>rmarkdown::pdf_document</code></p>
+</td></tr>
+<tr valign="top"><td><code>highlight</code></td>
+<td>
+<p>Syntax highlighting style. Supported styles include
+&quot;default&quot;, &quot;tango&quot;, &quot;pygments&quot;, &quot;kate&quot;, &quot;monochrome&quot;, &quot;espresso&quot;,
+&quot;zenburn&quot;, and &quot;haddock&quot;. Pass <code>NULL</code> to prevent syntax highlighting.</p>
+</td></tr>
+<tr valign="top"><td><code>citation_package</code></td>
+<td>
+<p>The LaTeX package to process citations, <code>natbib</code>
+or <code>biblatex</code>. Use <code>none</code> if neither package is to be used.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Possible arguments for the YAML header are:
+</p>
+
+<ul>
+<li> <p><code>title</code> title of the manuscript
+</p>
+</li>
+<li> <p><code>runninghead</code> short author list for header
+</p>
+</li>
+<li> <p><code>author</code> list of authors, containing <code>name</code> and <code>num</code>
+</p>
+</li>
+<li> <p><code>address</code> list containing <code>num</code> and <code>org</code> for defining <code>author</code> affiliations
+</p>
+</li>
+<li> <p><code>corrauth</code> corresponding author name and address
+</p>
+</li>
+<li> <p><code>email</code> correspondence email
+</p>
+</li>
+<li> <p><code>abstract</code> abstract, limited to 200 words
+</p>
+</li>
+<li> <p><code>keywords</code> keywords for the artucle
+</p>
+</li>
+<li> <p><code>bibliography</code> BibTeX <code>.bib</code> file name
+</p>
+</li>
+<li> <p><code>classoption</code> options of the <code>sagej</code> class
+</p>
+</li>
+<li> <p><code>header-includes</code>: custom additions to the header, before the <code>\begin{document}</code> statement
+</p>
+</li>
+<li> <p><code>include-after</code>: for including additional LaTeX code before the <code>\end{document}</code> statement</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>R Markdown output format to pass to
+<code><a href="../../rmarkdown/html/render.html">render</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## Not run: 
+library(rmarkdown)
+draft("MyArticle.Rmd", template = "sage_article", package = "rticles")
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rticles</em> version 0.6 <a href="00Index.html">Index</a>]</div>
+</body></html>
