@@ -1,6 +1,36 @@
 \name{NEWS}
 \title{News for Package "sysfonts"}
 
+\section{Changes in sysfonts version 0.8}{
+  \subsection{NEW FEATURES}{
+    \itemize{
+      \item Now \code{font_files()} can report more information of the fonts, for
+            example the family name, font face, version, and PostScript font name,
+            suggested by pull request
+            \href{https://github.com/eddelbuettel/binb/pull/7}{#7} of the \pkg{binb}
+            package.
+      \item Updated Google Fonts database.
+    }
+  }
+}
+
+\section{Changes in sysfonts version 0.7.3}{
+  \subsection{NEW FEATURES}{
+    \itemize{
+      \item Added function \code{font_info_google()} to retrieve metadata of
+            Google Fonts (\href{https://github.com/yixuan/sysfonts/issues/7}{#7}),
+            thanks to
+            \href{https://github.com/camille-s}{@camille-s}.
+      \item Added an argument \code{db_cache} to \code{font_info_google()},
+            \code{font_families_google()}, and \code{font_add_google()} to force
+            using Google Fonts API to retrieve font metadata, suggested by
+            issue \href{https://github.com/yixuan/showtext/issues/23}{#23} of the
+            \pkg{showtext} package.
+      \item Updated Google Fonts database.
+    }
+  }
+}
+
 \section{Changes in sysfonts version 0.7.2}{
   \subsection{NEW FEATURES}{
     \itemize{

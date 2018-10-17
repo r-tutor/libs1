@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;raster&rsquo; version 2.6-7</h2>
+</div><h2>Documentation for package &lsquo;raster&rsquo; version 2.7-15</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 <li><a href="../doc/index.html">User guides, package vignettes and other documentation.</a></li>
@@ -194,9 +194,13 @@
 <td>Get cell, row, or column number</td></tr>
 <tr><td style="width: 25%;"><a href="cellFrom.html">cellFromRowCol</a></td>
 <td>Get cell, row, or column number</td></tr>
+<tr><td style="width: 25%;"><a href="cellFrom.html">cellFromRowCol-method</a></td>
+<td>Get cell, row, or column number</td></tr>
 <tr><td style="width: 25%;"><a href="cellFrom.html">cellFromRowColCombine</a></td>
 <td>Get cell, row, or column number</td></tr>
 <tr><td style="width: 25%;"><a href="cellFrom.html">cellFromXY</a></td>
+<td>Get cell, row, or column number</td></tr>
+<tr><td style="width: 25%;"><a href="cellFrom.html">cellFromXY-method</a></td>
 <td>Get cell, row, or column number</td></tr>
 <tr><td style="width: 25%;"><a href="cellsFromExtent.html">cellsFromExtent</a></td>
 <td>Cells from extent, and vice versa</td></tr>
@@ -222,7 +226,11 @@
 <td>Use a multi-core cluster</td></tr>
 <tr><td style="width: 25%;"><a href="rowFromCell.html">colFromCell</a></td>
 <td>Row or column number from a cell number</td></tr>
+<tr><td style="width: 25%;"><a href="rowFromCell.html">colFromCell-method</a></td>
+<td>Row or column number from a cell number</td></tr>
 <tr><td style="width: 25%;"><a href="cellFrom.html">colFromX</a></td>
+<td>Get cell, row, or column number</td></tr>
+<tr><td style="width: 25%;"><a href="cellFrom.html">colFromX-method</a></td>
 <td>Get cell, row, or column number</td></tr>
 <tr><td style="width: 25%;"><a href="colortable.html">colortable</a></td>
 <td>colortable</td></tr>
@@ -740,6 +748,14 @@
 <td>Raster to polygons conversion</td></tr>
 <tr><td style="width: 25%;"><a href="factor.html">ratify</a></td>
 <td>Factors</td></tr>
+<tr><td style="width: 25%;"><a href="Rcpp-classes.html">Rcpp_SpExtent-class</a></td>
+<td>Rcpp classes</td></tr>
+<tr><td style="width: 25%;"><a href="Rcpp-classes.html">Rcpp_SpPoly-class</a></td>
+<td>Rcpp classes</td></tr>
+<tr><td style="width: 25%;"><a href="Rcpp-classes.html">Rcpp_SpPolygons-class</a></td>
+<td>Rcpp classes</td></tr>
+<tr><td style="width: 25%;"><a href="Rcpp-classes.html">Rcpp_SpPolyPart-class</a></td>
+<td>Rcpp classes</td></tr>
 <tr><td style="width: 25%;"><a href="readAll.html">readAll</a></td>
 <td>Read values from disk</td></tr>
 <tr><td style="width: 25%;"><a href="readAll.html">readAll-method</a></td>
@@ -788,9 +804,15 @@
 <td>Integer values</td></tr>
 <tr><td style="width: 25%;"><a href="rowFromCell.html">rowColFromCell</a></td>
 <td>Row or column number from a cell number</td></tr>
+<tr><td style="width: 25%;"><a href="rowFromCell.html">rowColFromCell-method</a></td>
+<td>Row or column number from a cell number</td></tr>
 <tr><td style="width: 25%;"><a href="rowFromCell.html">rowFromCell</a></td>
 <td>Row or column number from a cell number</td></tr>
+<tr><td style="width: 25%;"><a href="rowFromCell.html">rowFromCell-method</a></td>
+<td>Row or column number from a cell number</td></tr>
 <tr><td style="width: 25%;"><a href="cellFrom.html">rowFromY</a></td>
+<td>Get cell, row, or column number</td></tr>
+<tr><td style="width: 25%;"><a href="cellFrom.html">rowFromY-method</a></td>
 <td>Get cell, row, or column number</td></tr>
 <tr><td style="width: 25%;"><a href="rowSums.html">rowSums</a></td>
 <td>rowSums and colSums for Raster objects</td></tr>
@@ -855,14 +877,28 @@
 <td>Slope and aspect</td></tr>
 <tr><td style="width: 25%;"><a href="Raster-classes.html">SpatialVector-class</a></td>
 <td>Raster* classes</td></tr>
+<tr><td style="width: 25%;"><a href="Rcpp-classes.html">SpExtent</a></td>
+<td>Rcpp classes</td></tr>
 <tr><td style="width: 25%;"><a href="spEasy.html">spLines</a></td>
 <td>Create SpatialLines* or SpatialPolygons*</td></tr>
 <tr><td style="width: 25%;"><a href="spplot.html">spplot</a></td>
 <td>Use spplot to plot a Raster* object</td></tr>
 <tr><td style="width: 25%;"><a href="spplot.html">spplot-method</a></td>
 <td>Use spplot to plot a Raster* object</td></tr>
+<tr><td style="width: 25%;"><a href="Rcpp-classes.html">SpPoly</a></td>
+<td>Rcpp classes</td></tr>
+<tr><td style="width: 25%;"><a href="Rcpp-classes.html">SpPoly-class</a></td>
+<td>Rcpp classes</td></tr>
+<tr><td style="width: 25%;"><a href="Rcpp-classes.html">SpPolygons</a></td>
+<td>Rcpp classes</td></tr>
 <tr><td style="width: 25%;"><a href="spEasy.html">spPolygons</a></td>
 <td>Create SpatialLines* or SpatialPolygons*</td></tr>
+<tr><td style="width: 25%;"><a href="Rcpp-classes.html">SpPolygons-class</a></td>
+<td>Rcpp classes</td></tr>
+<tr><td style="width: 25%;"><a href="Rcpp-classes.html">SpPolyPart</a></td>
+<td>Rcpp classes</td></tr>
+<tr><td style="width: 25%;"><a href="Rcpp-classes.html">SpPolyPart-class</a></td>
+<td>Rcpp classes</td></tr>
 <tr><td style="width: 25%;"><a href="stack.html">stack</a></td>
 <td>Create a RasterStack object</td></tr>
 <tr><td style="width: 25%;"><a href="stack.html">stack-method</a></td>
@@ -1020,7 +1056,11 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="xyFromCell.html">xFromCell</a></td>
 <td>Coordinates from a row, column or cell number</td></tr>
+<tr><td style="width: 25%;"><a href="xyFromCell.html">xFromCell-method</a></td>
+<td>Coordinates from a row, column or cell number</td></tr>
 <tr><td style="width: 25%;"><a href="xyFromCell.html">xFromCol</a></td>
+<td>Coordinates from a row, column or cell number</td></tr>
+<tr><td style="width: 25%;"><a href="xyFromCell.html">xFromCol-method</a></td>
 <td>Coordinates from a row, column or cell number</td></tr>
 <tr><td style="width: 25%;"><a href="coordinates.html">xmax</a></td>
 <td>Coordinates of the Extent of a Raster object</td></tr>
@@ -1040,6 +1080,8 @@
 <td>Resolution</td></tr>
 <tr><td style="width: 25%;"><a href="xyFromCell.html">xyFromCell</a></td>
 <td>Coordinates from a row, column or cell number</td></tr>
+<tr><td style="width: 25%;"><a href="xyFromCell.html">xyFromCell-method</a></td>
+<td>Coordinates from a row, column or cell number</td></tr>
 </table>
 
 <h2><a name="Y">-- Y --</a></h2>
@@ -1047,7 +1089,11 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="xyFromCell.html">yFromCell</a></td>
 <td>Coordinates from a row, column or cell number</td></tr>
+<tr><td style="width: 25%;"><a href="xyFromCell.html">yFromCell-method</a></td>
+<td>Coordinates from a row, column or cell number</td></tr>
 <tr><td style="width: 25%;"><a href="xyFromCell.html">yFromRow</a></td>
+<td>Coordinates from a row, column or cell number</td></tr>
+<tr><td style="width: 25%;"><a href="xyFromCell.html">yFromRow-method</a></td>
 <td>Coordinates from a row, column or cell number</td></tr>
 <tr><td style="width: 25%;"><a href="coordinates.html">ymax</a></td>
 <td>Coordinates of the Extent of a Raster object</td></tr>

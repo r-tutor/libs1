@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get the coordinates of a vector type Spatial* object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for geom {raster}"><tr><td>geom {raster}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get the coordinates of a vector type Spatial* object</h2>
+
+<h3>Description</h3>
+
+<p>Extract the coordinates of a Spatial object
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'SpatialPolygons'
+geom(x, sepNA=FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>SpatialPolygons*, SpatialLines*, or SpatialPoints* object</p>
+</td></tr>
+<tr valign="top"><td><code>sepNA</code></td>
+<td>
+<p>logical. If <code>TRUE</code>, geometries are separated by a row with <code>NA</code> values</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional arguments, none implemented</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Matrix with 6, (5 SpatialLines), or 3 (SpatialPoints) columns. object (sequential object number) part (sequential part number within the object; not for SpatialPoints), cump (cumulative part number; not for SpatialPoints), hole (is this a hole or not; only for SpatialPolygons), x (x coordinate or longitude), y (y coordinate or latitude)
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="../../sp/html/coordinates.html">coordinates</a></code>, <code><a href="../../sp/html/geometry.html">geometry</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (require(rgdal) &amp; require(rgeos)) {
+	p &lt;- shapefile(system.file("external/lux.shp", package="raster"))
+	x &lt;- geom(p)
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>raster</em> version 2.7-15 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Unique values</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for unique {raster}"><tr><td>unique {raster}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Unique values</h2>
+
+<h3>Description</h3>
+
+<p>This function returns the unique values in a RasterLayer, or the unique combinations of values in a multi-layer raster object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'RasterLayer,missing'
+unique(x, incomparables=FALSE, ...) 
+
+## S4 method for signature 'RasterStackBrick,missing'
+unique(x, incomparables=FALSE, ...) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Raster object</p>
+</td></tr>
+<tr valign="top"><td><code>incomparables</code></td>
+<td>
+<p>ignored. Must be missing</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional arguments. One implemented: <code>progress</code>, as in <code><a href="writeRaster.html">writeRaster</a></code></p>
+</td></tr>  
+</table>
+
+
+<h3>Value</h3>
+
+<p>vector or matrix
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="../../base/html/unique.html">unique</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+r &lt;- raster(ncol=10, nrow=10)
+r[] &lt;- round(runif(ncell(r))*10)
+unique(r)
+unique(stack(r, round(r/2)))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>raster</em> version 2.7-15 <a href="00Index.html">Index</a>]</div>
+</body></html>
