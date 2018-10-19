@@ -1,3 +1,10 @@
+# tidytext 0.2.0
+
+* Improvements to documentation (#117)
+* Fix for NSE thanks to @lepennec (#122).
+* Tidier for estimated regressions from **stm** package thanks to @jefferickson (#115).
+* Tidier for correlated topic model from **topicmodels** package (#123).
+
 # tidytext 0.1.9
 
 * Updates to documentation (#109) thanks to Emil Hvitfeldt.

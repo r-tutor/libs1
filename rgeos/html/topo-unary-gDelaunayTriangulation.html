@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Compute Delaunay triangulation between points</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gDelaunayTriangulation {rgeos}"><tr><td>gDelaunayTriangulation {rgeos}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Compute Delaunay triangulation between points</h2>
+
+<h3>Description</h3>
+
+<p>Function to compute the Delaunay triangulation between points; only available for GEOS &gt;= 3.4.0.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+	gDelaunayTriangulation(spgeom, tolerance=0.0, onlyEdges=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>spgeom</code></td>
+<td>
+<p>sp points object as defined in package sp</p>
+</td></tr>
+<tr valign="top"><td><code>tolerance</code></td>
+<td>
+<p>Numerical tolerance value to be used in triangulation</p>
+</td></tr>
+<tr valign="top"><td><code>onlyEdges</code></td>
+<td>
+<p>Logical, default returns triangles as polygons, if TRUE, returns a SpatialLines object with a single MULTILINESTRING</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When onlyEdges is TRUE, the SpatialLines object may be de-merged to identify the input points that are touched by each edge, making it possible to identify spatial neighbours.</p>
+
+
+<h3>Value</h3>
+
+<p>Either a SpatialPolygons object or a SpatialLines object containing a single Lines object of the undirected edges in the triangulation.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Roger Bivand</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://en.wikipedia.org/wiki/Delaunay_triangulation">http://en.wikipedia.org/wiki/Delaunay_triangulation</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (version_GEOS0() &gt; "3.4.0") {
+library(sp)
+data(meuse)
+coordinates(meuse) &lt;- c("x", "y")
+plot(gDelaunayTriangulation(meuse))
+points(meuse)
+out &lt;- gDelaunayTriangulation(meuse, onlyEdges=TRUE)
+lns &lt;- slot(slot(out, "lines")[[1]], "Lines")
+out1 &lt;- SpatialLines(lapply(seq(along=lns), function(i) Lines(list(lns[[i]]),
+ ID=as.character(i))))
+out2 &lt;- lapply(1:length(out1), function(i) which(gTouches(meuse, out1[i],
+ byid=TRUE)))
+out3 &lt;- do.call("rbind", out2)
+o &lt;- order(out3[,1], out3[,2])
+out4 &lt;- out3[o,]
+out5 &lt;- data.frame(from=out4[,1], to=out4[,2], weight=1)
+head(out5)
+## Not run: 
+if (require(spdep)) {
+class(out5) &lt;- c("spatial.neighbour", class(out5))
+attr(out5, "n") &lt;- length(meuse)
+attr(out5, "region.id") &lt;- as.character(1:length(meuse))
+nb1 &lt;- sn2listw(out5)$neighbours
+nb2 &lt;- make.sym.nb(nb1)
+}
+
+## End(Not run)
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rgeos</em> version 0.4-1 <a href="00Index.html">Index</a>]</div>
+</body></html>

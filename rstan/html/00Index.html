@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;rstan&rsquo; version 2.17.4</h2>
+</div><h2>Documentation for package &lsquo;rstan&rsquo; version 2.18.1</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 <li><a href="../doc/index.html">User guides, package vignettes and other documentation.</a></li>
@@ -44,7 +44,7 @@
 
 <table width="100%">
 <tr><td style="width: 25%;"><a href="rstan.html">rstan-package</a></td>
-<td>RStan - R interface to Stan</td></tr>
+<td>RStan - the R interface to Stan</td></tr>
 </table>
 
 <h2><a name="A">-- A --</a></h2>
@@ -72,9 +72,9 @@
 <tr><td style="width: 25%;"><a href="check_hmc_diagnostics.html">check_treedepth</a></td>
 <td>Check HMC diagnostics after sampling</td></tr>
 <tr><td style="width: 25%;"><a href="stanfit-method-logprob.html">constrain_pars</a></td>
-<td>Model's 'log_prob' and 'grad_log_prob' functions</td></tr>
+<td>'log_prob' and 'grad_log_prob' functions</td></tr>
 <tr><td style="width: 25%;"><a href="stanfit-method-logprob.html">constrain_pars-method</a></td>
-<td>Model's 'log_prob' and 'grad_log_prob' functions</td></tr>
+<td>'log_prob' and 'grad_log_prob' functions</td></tr>
 </table>
 
 <h2><a name="D">-- D --</a></h2>
@@ -106,6 +106,8 @@
 <td>Class 'stanfit': fitted Stan model</td></tr>
 <tr><td style="width: 25%;"><a href="stanfit-class.html">get_adaptation_info-method</a></td>
 <td>Class 'stanfit': fitted Stan model</td></tr>
+<tr><td style="width: 25%;"><a href="check_hmc_diagnostics.html">get_bfmi</a></td>
+<td>Check HMC diagnostics after sampling</td></tr>
 <tr><td style="width: 25%;"><a href="stanmodel-class.html">get_cppcode</a></td>
 <td>Class representing model compiled from C++</td></tr>
 <tr><td style="width: 25%;"><a href="stanmodel-class.html">get_cppcode-method</a></td>
@@ -118,6 +120,8 @@
 <td>Class representing model compiled from C++</td></tr>
 <tr><td style="width: 25%;"><a href="stanmodel-class.html">get_cxxflags-method</a></td>
 <td>Class representing model compiled from C++</td></tr>
+<tr><td style="width: 25%;"><a href="check_hmc_diagnostics.html">get_divergent_iterations</a></td>
+<td>Check HMC diagnostics after sampling</td></tr>
 <tr><td style="width: 25%;"><a href="stanfit-class.html">get_elapsed_time</a></td>
 <td>Class 'stanfit': fitted Stan model</td></tr>
 <tr><td style="width: 25%;"><a href="stanfit-class.html">get_elapsed_time-method</a></td>
@@ -130,14 +134,26 @@
 <td>Class 'stanfit': fitted Stan model</td></tr>
 <tr><td style="width: 25%;"><a href="stanfit-class.html">get_logposterior-method</a></td>
 <td>Class 'stanfit': fitted Stan model</td></tr>
+<tr><td style="width: 25%;"><a href="check_hmc_diagnostics.html">get_low_bfmi_chains</a></td>
+<td>Check HMC diagnostics after sampling</td></tr>
+<tr><td style="width: 25%;"><a href="check_hmc_diagnostics.html">get_max_treedepth_iterations</a></td>
+<td>Check HMC diagnostics after sampling</td></tr>
+<tr><td style="width: 25%;"><a href="check_hmc_diagnostics.html">get_num_divergent</a></td>
+<td>Check HMC diagnostics after sampling</td></tr>
+<tr><td style="width: 25%;"><a href="check_hmc_diagnostics.html">get_num_leapfrog_per_iteration</a></td>
+<td>Check HMC diagnostics after sampling</td></tr>
+<tr><td style="width: 25%;"><a href="check_hmc_diagnostics.html">get_num_max_treedepth</a></td>
+<td>Check HMC diagnostics after sampling</td></tr>
 <tr><td style="width: 25%;"><a href="stanfit-method-logprob.html">get_num_upars</a></td>
-<td>Model's 'log_prob' and 'grad_log_prob' functions</td></tr>
+<td>'log_prob' and 'grad_log_prob' functions</td></tr>
 <tr><td style="width: 25%;"><a href="stanfit-method-logprob.html">get_num_upars-method</a></td>
-<td>Model's 'log_prob' and 'grad_log_prob' functions</td></tr>
+<td>'log_prob' and 'grad_log_prob' functions</td></tr>
 <tr><td style="width: 25%;"><a href="stanfit-class.html">get_posterior_mean</a></td>
 <td>Class 'stanfit': fitted Stan model</td></tr>
 <tr><td style="width: 25%;"><a href="stanfit-class.html">get_posterior_mean-method</a></td>
 <td>Class 'stanfit': fitted Stan model</td></tr>
+<tr><td style="width: 25%;"><a href="expose_stan_functions.html">get_rng</a></td>
+<td>Expose user-defined Stan functions to R for testing and simulation</td></tr>
 <tr><td style="width: 25%;"><a href="stanfit-class.html">get_sampler_params</a></td>
 <td>Class 'stanfit': fitted Stan model</td></tr>
 <tr><td style="width: 25%;"><a href="stanfit-class.html">get_sampler_params-method</a></td>
@@ -158,10 +174,12 @@
 <td>Class 'stanfit': fitted Stan model</td></tr>
 <tr><td style="width: 25%;"><a href="stanfit-class.html">get_stanmodel-method</a></td>
 <td>Class 'stanfit': fitted Stan model</td></tr>
+<tr><td style="width: 25%;"><a href="expose_stan_functions.html">get_stream</a></td>
+<td>Expose user-defined Stan functions to R for testing and simulation</td></tr>
 <tr><td style="width: 25%;"><a href="stanfit-method-logprob.html">grad_log_prob</a></td>
-<td>Model's 'log_prob' and 'grad_log_prob' functions</td></tr>
+<td>'log_prob' and 'grad_log_prob' functions</td></tr>
 <tr><td style="width: 25%;"><a href="stanfit-method-logprob.html">grad_log_prob-method</a></td>
-<td>Model's 'log_prob' and 'grad_log_prob' functions</td></tr>
+<td>'log_prob' and 'grad_log_prob' functions</td></tr>
 </table>
 
 <h2><a name="I">-- I --</a></h2>
@@ -175,9 +193,15 @@
 
 <table width="100%">
 <tr><td style="width: 25%;"><a href="stanfit-method-logprob.html">log_prob</a></td>
-<td>Model's 'log_prob' and 'grad_log_prob' functions</td></tr>
+<td>'log_prob' and 'grad_log_prob' functions</td></tr>
 <tr><td style="width: 25%;"><a href="stanfit-method-logprob.html">log_prob-method</a></td>
-<td>Model's 'log_prob' and 'grad_log_prob' functions</td></tr>
+<td>'log_prob' and 'grad_log_prob' functions</td></tr>
+<tr><td style="width: 25%;"><a href="stanfit-method-loo.html">loo</a></td>
+<td>Approximate leave-one-out cross-validation</td></tr>
+<tr><td style="width: 25%;"><a href="stanfit-method-loo.html">loo-method</a></td>
+<td>Approximate leave-one-out cross-validation</td></tr>
+<tr><td style="width: 25%;"><a href="stanfit-method-loo.html">loo.stanfit</a></td>
+<td>Approximate leave-one-out cross-validation</td></tr>
 <tr><td style="width: 25%;"><a href="lookup.html">lookup</a></td>
 <td>Look up the Stan function that corresponds to a R function or name.</td></tr>
 </table>
@@ -235,7 +259,7 @@
 <tr><td style="width: 25%;"><a href="stan_csv.html">read_stan_csv</a></td>
 <td>Read CSV files of samples generated by (R)Stan into a 'stanfit' object</td></tr>
 <tr><td style="width: 25%;"><a href="rstan.html">rstan</a></td>
-<td>RStan - R interface to Stan</td></tr>
+<td>RStan - the R interface to Stan</td></tr>
 <tr><td style="width: 25%;"><a href="plotting-functions.html">rstan-plotting-functions</a></td>
 <td>RStan Plotting Functions</td></tr>
 <tr><td style="width: 25%;"><a href="rstan.package.skeleton.html">rstan.package.skeleton</a></td>
@@ -264,7 +288,7 @@
 <tr><td style="width: 25%;"><a href="stanmodel-class.html">show-method</a></td>
 <td>Class representing model compiled from C++</td></tr>
 <tr><td style="width: 25%;"><a href="stan.html">stan</a></td>
-<td>Fit a model using Stan</td></tr>
+<td>Fit a model with Stan</td></tr>
 <tr><td style="width: 25%;"><a href="stanc.html">stanc</a></td>
 <td>Translate Stan model specification to C++ code</td></tr>
 <tr><td style="width: 25%;"><a href="stanc.html">stanc_builder</a></td>
@@ -322,9 +346,9 @@
 
 <table width="100%">
 <tr><td style="width: 25%;"><a href="stanfit-method-logprob.html">unconstrain_pars</a></td>
-<td>Model's 'log_prob' and 'grad_log_prob' functions</td></tr>
+<td>'log_prob' and 'grad_log_prob' functions</td></tr>
 <tr><td style="width: 25%;"><a href="stanfit-method-logprob.html">unconstrain_pars-method</a></td>
-<td>Model's 'log_prob' and 'grad_log_prob' functions</td></tr>
+<td>'log_prob' and 'grad_log_prob' functions</td></tr>
 </table>
 
 <h2><a name="V">-- V --</a></h2>

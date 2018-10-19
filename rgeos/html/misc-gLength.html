@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Length of Geometry</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gLength {rgeos}"><tr><td>gLength {rgeos}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Length of Geometry</h2>
+
+<h3>Description</h3>
+
+<p>Calculates the length of the given geometry.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+	gLength(spgeom, byid=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>spgeom</code></td>
+<td>
+<p>sp object as defined in package sp</p>
+</td></tr>
+<tr valign="top"><td><code>byid</code></td>
+<td>
+<p>Logical determining if the function should be applied across subgeometries (TRUE) or the entire object (FALSE)</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns the length of the geometry in the units of the current projection. By definition [MULTI]POINTs have a length of 0. The length of POLYGONs is the sum of the length of their shell and their hole(s).</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Roger Bivand &amp; Colin Rundel</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="misc-gArea.html">gArea</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+gLength(readWKT("POINT(1 1)"))
+
+gLength(readWKT("LINESTRING(0 0,1 1,2 2)"))
+gLength(readWKT("LINESTRING(0 0,1 1,2 0,3 1)"))
+
+gLength(readWKT("POLYGON((0 0,3 0,3 3,0 3,0 0))"))
+gLength(readWKT("POLYGON((0 0,3 0,3 3,0 3,0 0),(1 1,2 1,2 2,1 2,1 1))"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rgeos</em> version 0.4-1 <a href="00Index.html">Index</a>]</div>
+</body></html>

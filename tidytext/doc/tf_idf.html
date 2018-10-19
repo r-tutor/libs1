@@ -12,7 +12,7 @@
 
 <meta name="author" content="Julia Silge and David Robinson" />
 
-<meta name="date" content="2018-05-28" />
+<meta name="date" content="2018-10-16" />
 
 <title>Term Frequency and Inverse Document Frequency (tf-idf) Using Tidy Data Principles</title>
 
@@ -280,7 +280,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Term Frequency and Inverse Document Frequency (tf-idf) Using Tidy Data Principles</h1>
 <h4 class="author"><em>Julia Silge and David Robinson</em></h4>
-<h4 class="date"><em>2018-05-28</em></h4>
+<h4 class="date"><em>2018-10-16</em></h4>
 
 
 
@@ -327,16 +327,16 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <pre><code>## # A tibble: 40,379 x 7
 ##    book              word      n  total     tf   idf tf_idf
 ##    &lt;fct&gt;             &lt;chr&gt; &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
-##  1 Mansfield Park    the    6206 160460 0.0387    0.     0.
-##  2 Mansfield Park    to     5475 160460 0.0341    0.     0.
-##  3 Mansfield Park    and    5438 160460 0.0339    0.     0.
-##  4 Emma              to     5239 160996 0.0325    0.     0.
-##  5 Emma              the    5201 160996 0.0323    0.     0.
-##  6 Emma              and    4896 160996 0.0304    0.     0.
-##  7 Mansfield Park    of     4778 160460 0.0298    0.     0.
-##  8 Pride &amp; Prejudice the    4331 122204 0.0354    0.     0.
-##  9 Emma              of     4291 160996 0.0267    0.     0.
-## 10 Pride &amp; Prejudice to     4162 122204 0.0341    0.     0.
+##  1 Mansfield Park    the    6206 160460 0.0387     0      0
+##  2 Mansfield Park    to     5475 160460 0.0341     0      0
+##  3 Mansfield Park    and    5438 160460 0.0339     0      0
+##  4 Emma              to     5239 160996 0.0325     0      0
+##  5 Emma              the    5201 160996 0.0323     0      0
+##  6 Emma              and    4896 160996 0.0304     0      0
+##  7 Mansfield Park    of     4778 160460 0.0298     0      0
+##  8 Pride &amp; Prejudice the    4331 122204 0.0354     0      0
+##  9 Emma              of     4291 160996 0.0267     0      0
+## 10 Pride &amp; Prejudice to     4162 122204 0.0341     0      0
 ## # ... with 40,369 more rows</code></pre>
 <p>Notice that idf and thus tf-idf are zero for these extremely common words. These are all words that appear in all six of Jane Austen’s novels, so the idf term (which will then be the natural log of 1) is zero. The inverse document frequency (and thus tf-idf) is very low (near zero) for words that occur in many of the documents in a collection; this is how this approach decreases the weight for common words. The inverse document frequency will be a higher number for words that occur in fewer of the documents in the collection. Let’s look at terms with high tf-idf in Jane Austen’s works.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">book_words <span class="op">%&gt;%</span></a>

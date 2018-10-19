@@ -90,8 +90,8 @@ if (utils::packageVersion("ggplot2") > "2.2.1")
 
 ## ------------------------------------------------------------------------
 library(mapview)
-# if (Sys.getenv("USER") != "CRAN")
-mapview(nc["BIR74"], col.regions = sf.colors(10))
+if (Sys.getenv("USER") %in% c("edzer", "travis"))
+  mapview(nc["BIR74"], col.regions = sf.colors(10))
 
 ## ------------------------------------------------------------------------
 library(tmap)

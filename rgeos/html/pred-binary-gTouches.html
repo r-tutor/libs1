@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Geometry Relationships - Touches</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gTouches {rgeos}"><tr><td>gTouches {rgeos}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Geometry Relationships - Touches</h2>
+
+<h3>Description</h3>
+
+<p>Functions for testing if the geometries have at least one boundary point in common, but no interior points</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+	gTouches(spgeom1, spgeom2 = NULL, byid = FALSE, returnDense=TRUE,
+ checkValidity=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>spgeom1, spgeom2</code></td>
+<td>
+<p>sp objects as defined in package sp. If spgeom2 is NULL then spgeom1 is compared to itself.</p>
+</td></tr>
+<tr valign="top"><td><code>byid</code></td>
+<td>
+<p>Logical vector determining if the function should be applied across ids (TRUE) or the entire object (FALSE) for spgeom1 and spgeom2</p>
+</td></tr>
+<tr valign="top"><td><code>returnDense</code></td>
+<td>
+<p>default TRUE, if false returns a list of the length of spgeom1 of integer vectors listing the <code>1:length(spgeom2)</code> indices which would be TRUE in the dense logical matrix representation; useful when the sizes of the byid=TRUE returned matrix is very large and it is sparse; essential when the returned matrix would be too large</p>
+</td></tr>
+<tr valign="top"><td><code>checkValidity</code></td>
+<td>
+<p>default FALSE; error meesages from GEOS do not say clearly which object fails if a topology exception is encountered. If this argument is TRUE, <code>gIsValid</code> is run on each in turn in an environment in which object names are available. If objects are invalid, this is reported and those affected are named</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns TRUE if the intersection of the boundaries of the two geometries is not empty.</p>
+
+
+<h3>Note</h3>
+
+<p>Error messages from GEOS, in particular topology exceptions, report 0-based object order, so geom 0 is spgeom1, and geom 1 is spgeom2.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Roger Bivand &amp; Colin Rundel</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="pred-binary-gContains.html">gContains</a></code>
+<code><a href="pred-binary-gContains.html">gContainsProperly</a></code>
+<code><a href="pred-binary-gContains.html">gCovers</a></code>
+<code><a href="pred-binary-gContains.html">gCoveredBy</a></code>
+<code><a href="pred-binary-gCrosses.html">gCrosses</a></code>
+<code><a href="pred-binary-gIntersects.html">gDisjoint</a></code>
+<code><a href="pred-binary-gEquals.html">gEquals</a></code>
+<code><a href="pred-binary-gEquals.html">gEqualsExact</a></code>
+<code><a href="pred-binary-gIntersects.html">gIntersects</a></code>
+<code><a href="pred-binary-gCrosses.html">gOverlaps</a></code>
+<code><a href="pred-binary-gRelate.html">gRelate</a></code>
+<code><a href="pred-binary-gContains.html">gWithin</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+	p1 = readWKT("POLYGON((0 0,1 0,1 1,0 1,0 0))")
+	p2 = readWKT("POLYGON((0 1,0.5 2,1 1,0 1))")
+	p3 = readWKT("POLYGON((0.5 1,0 2,1 2,0.5 1))")
+	p4 = readWKT("POLYGON((0.5 0.5,0 1.5,1 1.5,0.5 0.5))")
+	
+	l0 = readWKT("LINESTRING(0 1,0.5 2,1 1)")
+	
+	l1 = readWKT("LINESTRING(0 0,2 2)")
+	l2 = readWKT("LINESTRING(1 1,2 0)")
+	l3 = readWKT("LINESTRING(0 2,2 0)")
+	
+	
+	par(mfrow=c(2,3))
+	plot(p1,col='blue',border='blue',ylim=c(0,2.5));plot(p2,col='black',add=TRUE,pch=16)
+	title(paste("Touches:",gTouches(p1,p2)))
+	
+	plot(p1,col='blue',border='blue',ylim=c(0,2.5));plot(p3,col='black',add=TRUE,pch=16)
+	title(paste("Touches:",gTouches(p1,p3)))
+	
+	plot(p1,col='blue',border='blue',ylim=c(0,2.5));plot(p4,col='black',add=TRUE,pch=16)
+	title(paste("Touches:",gTouches(p1,p4)))
+	
+	plot(p1,col='blue',border='blue',ylim=c(0,2.5));plot(l0,lwd=2,col='black',add=TRUE,pch=16)
+	title(paste("Touches:",gTouches(p1,l0)))
+	
+	plot(l1,lwd=2,col='blue');plot(l2,lwd=2,col='black',add=TRUE,pch=16)
+	title(paste("Touches:",gTouches(l1,l2)))
+	
+	plot(l1,lwd=2,col='blue');plot(l3,lwd=2,col='black',add=TRUE,pch=16)
+	title(paste("Touches:",gTouches(l1,l3)))
+	
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rgeos</em> version 0.4-1 <a href="00Index.html">Index</a>]</div>
+</body></html>

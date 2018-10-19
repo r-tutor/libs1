@@ -1,5 +1,6 @@
 tidytext-package	tidytext
 augment	reexports
+augment.CTM	lda_tidiers
 augment.jobjRef	mallet_tidiers
 augment.LDA	lda_tidiers
 augment.STM	stm_tidiers
@@ -20,6 +21,7 @@ get_sentiments	get_sentiments
 get_stopwords	get_stopwords
 glance	reexports
 glance.corpus	corpus_tidiers
+glance.CTM	lda_tidiers
 glance.LDA	lda_tidiers
 glance.STM	stm_tidiers
 lda_tidiers	lda_tidiers
@@ -34,10 +36,12 @@ tdm_tidiers	tdm_tidiers
 tidy	reexports
 tidy.Corpus	tidy.Corpus
 tidy.corpus	corpus_tidiers
+tidy.CTM	lda_tidiers
 tidy.dfm	tdm_tidiers
 tidy.dfmSparse	tdm_tidiers
 tidy.dictionary2	dictionary_tidiers
 tidy.DocumentTermMatrix	tdm_tidiers
+tidy.estimateEffect	stm_tidiers
 tidy.jobjRef	mallet_tidiers
 tidy.LDA	lda_tidiers
 tidy.simple_triplet_matrix	tdm_tidiers

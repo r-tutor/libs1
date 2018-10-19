@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Find spatial join or intersections</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for over {rgeos}"><tr><td>over {rgeos}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Find spatial join or intersections</h2>
+
+<h3>Description</h3>
+
+<p>Find spatial join or intersections</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+overGeomGeom(x, y, returnList = FALSE, fn = NULL, ..., minDimension = -1)
+overGeomGeomDF(x, y, returnList = FALSE, fn = NULL, ..., minDimension = -1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>see <a href="../../sp/html/over.html">over</a></p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>see <a href="../../sp/html/over.html">over</a></p>
+</td></tr>
+<tr valign="top"><td><code>returnList</code></td>
+<td>
+<p>see <a href="../../sp/html/over.html">over</a></p>
+</td></tr>
+<tr valign="top"><td><code>fn</code></td>
+<td>
+<p>see <a href="../../sp/html/over.html">over</a></p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>see <a href="../../sp/html/over.html">over</a></p>
+</td></tr>
+<tr valign="top"><td><code>minDimension</code></td>
+<td>
+<p>integer; if <code>-1</code>, <a href="pred-binary-gIntersects.html">gIntersects</a> is used to find
+geometry intersections; if <code>0</code>, <code>1</code> or <code>2</code>, <a href="pred-binary-gRelate.html">gRelate</a> is used. if
+<a href="pred-binary-gRelate.html">gRelate</a> is used, intersecting geometries are ordered by the dimension of the
+intersection (2: area overlap; 1: line in common; 0: point in common), and <code>minDimension</code>
+determines the mininum dimension of intersection required. </p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>see <a href="../../sp/html/over.html">over</a></p>
+
+
+<h3>Note</h3>
+
+<p><a href="pred-binary-gRelate.html">gRelate</a> (<code>minDimension</code> &gt; -1) is likely to be substantially slower than
+<a href="pred-binary-gIntersects.html">gIntersects</a>.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Edzer Pebesma</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+p1 = readWKT("POLYGON((0 1,0.95 0.31,0.59 -0.81,-0.59 -0.81,-0.95 0.31,0 1))")
+p2 = readWKT("POLYGON((2 2,-2 2,-2 -2,2 -2,2 2),(1 1,-1 1,-1 -1,1 -1,1 1))")
+
+overGeomGeom(p1,p2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rgeos</em> version 0.4-1 <a href="00Index.html">Index</a>]</div>
+</body></html>

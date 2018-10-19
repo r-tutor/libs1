@@ -21,6 +21,7 @@ extract_sparse_parts	extract_sparse_parts
 get_adaptation_info	stanfit-class
 get_adaptation_info,ANY-method	rstan-internal
 get_adaptation_info,stanfit-method	stanfit-class
+get_bfmi	check_hmc_diagnostics
 get_cppcode	stanmodel-class
 get_cppcode,ANY-method	rstan-internal
 get_cppcode,stanmodel-method	stanmodel-class
@@ -28,6 +29,7 @@ get_cppo_mode	stanfit-class
 get_cppo_mode,stanfit-method	stanfit-class
 get_cxxflags	stanmodel-class
 get_cxxflags,stanmodel-method	stanmodel-class
+get_divergent_iterations	check_hmc_diagnostics
 get_elapsed_time	stanfit-class
 get_elapsed_time,ANY-method	rstan-internal
 get_elapsed_time,stanfit-method	stanfit-class
@@ -36,12 +38,18 @@ get_inits,stanfit-method	stanfit-class
 get_logposterior	stanfit-class
 get_logposterior,ANY-method	rstan-internal
 get_logposterior,stanfit-method	stanfit-class
+get_low_bfmi_chains	check_hmc_diagnostics
+get_max_treedepth_iterations	check_hmc_diagnostics
+get_num_divergent	check_hmc_diagnostics
+get_num_leapfrog_per_iteration	check_hmc_diagnostics
+get_num_max_treedepth	check_hmc_diagnostics
 get_num_upars	stanfit-method-logprob
 get_num_upars,ANY-method	rstan-internal
 get_num_upars,stanfit-method	stanfit-method-logprob
 get_posterior_mean	stanfit-class
 get_posterior_mean,ANY-method	rstan-internal
 get_posterior_mean,stanfit-method	stanfit-class
+get_rng	expose_stan_functions
 get_sampler_params	stanfit-class
 get_sampler_params,ANY-method	rstan-internal
 get_sampler_params,stanfit,logical-method	stanfit-class
@@ -53,6 +61,7 @@ get_stancode	stanfit-class
 get_stancode,stanfit-method	stanfit-class
 get_stanmodel	stanfit-class
 get_stanmodel,stanfit-method	stanfit-class
+get_stream	expose_stan_functions
 grab_cxxfun,cxxdso-method	rstan-internal
 grad_log_prob	stanfit-method-logprob
 grad_log_prob,ANY-method	rstan-internal
@@ -62,6 +71,9 @@ is_dso_loaded,cxxdso-method	rstan-internal
 log_prob	stanfit-method-logprob
 log_prob,ANY-method	rstan-internal
 log_prob,stanfit-method	stanfit-method-logprob
+loo	stanfit-method-loo
+loo,stanfit-method	stanfit-method-loo
+loo.stanfit	stanfit-method-loo
 lookup	lookup
 makeconf_path	makeconf_path
 monitor	monitor
@@ -69,6 +81,7 @@ names.stanfit	stanfit2array-method
 names<-.stanfit	stanfit2array-method
 optimizing	stanmodel-method-optimizing
 optimizing,stanmodel-method	stanmodel-method-optimizing
+OUT	rstan-internal
 pairs.stanfit	stanfit-method-pairs
 plot,stanfit,missing-method	stanfit-method-plot
 plot,stanfit-method	stanfit-method-plot
@@ -76,6 +89,7 @@ print.stanfit	print.stanfit
 quietgg	stan_plot
 read_rdump	read_rdump
 read_stan_csv	stan_csv
+RNG	rstan-internal
 rstan	rstan
 rstan-internal	rstan-internal
 rstan-plotting-functions	plotting-functions

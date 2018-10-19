@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Class &quot;gpc.poly.nohole&quot;</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gpc.poly.nohole-class {rgeos}"><tr><td>gpc.poly.nohole-class {rgeos}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Class &quot;gpc.poly.nohole&quot;</h2>
+
+<h3>Description</h3>
+
+<p>A class for representing polygons with multiple contours but without
+holes.
+</p>
+
+
+<h3>Objects from the Class</h3>
+
+<p>Objects can be created by calls of the form
+&lsquo;new(&quot;gpc.poly.nohole&quot;, ...) or by calling <code>read.polyfile</code>&rsquo;.
+</p>
+
+
+<h3>Slots</h3>
+
+
+<dl>
+<dt>pts</dt><dd><p>Object of class &ldquo;list&rdquo;.  See the help for
+&ldquo;gpc.poly&rdquo; for details.</p>
+</dd>
+</dl>
+
+
+
+<h3>Extends</h3>
+
+<p>Class &ldquo;gpc.poly&rdquo;, directly.
+</p>
+
+
+<h3>Methods</h3>
+
+
+<dl>
+<dt>coerce</dt><dd><p><code>signature(from = "numeric", to = "gpc.poly.nohole")</code>: ... </p>
+</dd>
+</dl>
+
+
+
+<h3>Note</h3>
+
+<p>This class is identical to &ldquo;&quot;gpc.poly&quot;&rdquo; and is needed because the
+file formats for polygons without holes is slightly different from the
+file format for polygons with holes.  For a &ldquo;gpc.poly.nohole&rdquo;
+object, the <code style="white-space: pre;">hole</code> flag for each contour is always <code>FALSE</code>.
+</p>
+<p>Also, <code>write.polyfile</code> will write the correct file format,
+depending on whether the object is of class &ldquo;gpc.poly&rdquo; or
+&ldquo;gpc.poly.nohole&rdquo;.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Roger D. Peng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="class-gpc.poly.html">gpc.poly-class</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## None
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rgeos</em> version 0.4-1 <a href="00Index.html">Index</a>]</div>
+</body></html>

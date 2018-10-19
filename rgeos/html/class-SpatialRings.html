@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Class &quot;SpatialRings&quot;</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for SpatialRings-class {rgeos}"><tr><td>SpatialRings-class {rgeos}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Class &quot;SpatialRings&quot;</h2>
+
+<h3>Description</h3>
+
+<p>  class to hold linear ring topology (without attributes) </p>
+
+
+<h3>Objects from the Class</h3>
+
+<p>Objects can be created by calls to the function <a href="constructor-SpatialRings.html">SpatialRings</a>
+</p>
+
+
+<h3>Slots</h3>
+
+
+<dl>
+<dt><code>rings</code>:</dt><dd><p>Object of class <code>"list"</code>; list elements are
+all of class <a href="class-Ring.html">Ring-class</a></p>
+</dd>
+<dt><code>bbox</code>:</dt><dd><p>Object of class <code>"matrix"</code>; see <a href="../../sp/html/Spatial-class.html">Spatial-class</a> </p>
+</dd>
+<dt><code>proj4string</code>:</dt><dd><p>Object of class <code>"CRS"</code>; see <a href="../../rgdal/html/CRS-class.html">CRS-class</a></p>
+</dd>
+</dl>
+
+
+
+<h3>Extends</h3>
+
+<p>Class <code>"Spatial"</code>, directly.
+</p>
+
+
+<h3>Methods</h3>
+
+<p>Methods defined with class &quot;SpatialRings&quot; in the signature:
+</p>
+
+<dl>
+<dt>[</dt><dd><p><code>signature(obj = "SpatialRings")</code>: select subset of (sets of) rings; NAs are not permitted in the row index</p>
+</dd>
+<dt>plot</dt><dd><p><code>signature(x = "SpatialRings", y = "missing")</code>: plot rings in SpatialRings object</p>
+</dd>
+<dt>bbox</dt><dd><p><code>signature(obj = "SpatialRings")</code>: retrieves the bbox element </p>
+</dd>
+<dt>coordinates</dt><dd><p><code>signature(object = "SpatialRings")</code>: retrieves the coords element from Ring objects in rings slot</p>
+</dd>
+<dt>coordnames</dt><dd><p><code>signature(object = "SpatialRings")</code>: retrieves coordinate names</p>
+</dd>
+<dt>row.names</dt><dd><p><code>signature(object = "SpatialRings")</code>: retrieves the ID element from Ring objects in rings slot</p>
+</dd>
+<dt>spChFIDs</dt><dd><p><code>signature(obj="SpatialRings", x="character")</code>: replaces ID element</p>
+</dd>
+<dt>coerce</dt><dd><p><code>signature(from = "SpatialRings", to = "SpatialPoints")</code>: ... </p>
+</dd>
+</dl>
+
+
+
+<h3>Author(s)</h3>
+
+<p> Colin Rundel </p>
+
+
+<h3>See Also</h3>
+
+ <p><a href="constructor-SpatialRings.html">SpatialRings</a> <a href="class-Ring.html">Ring-class</a> </p>
+
+
+<h3>Examples</h3>
+
+<pre> 
+	#NONE 
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rgeos</em> version 0.4-1 <a href="00Index.html">Index</a>]</div>
+</body></html>

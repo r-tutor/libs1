@@ -3,7 +3,10 @@ title: "5. Plotting Simple Features"
 output:
   html_document:
     toc: true
-    theme: united
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    toc_depth: 2
 vignette: >
   %\VignetteIndexEntry{5. Plotting Simple Features}
   %\VignetteEngine{knitr::rmarkdown}
@@ -193,8 +196,8 @@ Package `mapview` creates interactive maps in html pages, using package `leaflet
 
 ```{r}
 library(mapview)
-# if (Sys.getenv("USER") != "CRAN")
-mapview(nc["BIR74"], col.regions = sf.colors(10))
+if (Sys.getenv("USER") %in% c("edzer", "travis"))
+  mapview(nc["BIR74"], col.regions = sf.colors(10))
 ```
 
 gives a map which is interactive: you can zoom and pan, and query features by clicking on them.

@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: RGEOS Utility Functions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RGEOS Utility Functions {rgeos}"><tr><td>RGEOS Utility Functions {rgeos}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>RGEOS Utility Functions</h2>
+
+<h3>Description</h3>
+
+<p>Utility functions for the RGEOS package</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+	getScale()
+	setScale(scale=100000000)
+	translate(spgeom)
+	checkP4S(p4s)
+        version_GEOS(runtime = TRUE)
+        rgeos_extSoftVersion()
+        version_GEOS0()
+        set_RGEOS_polyThreshold(value)
+        get_RGEOS_polyThreshold()
+        set_RGEOS_warnSlivers(value)
+        get_RGEOS_warnSlivers()
+        set_RGEOS_dropSlivers(value)
+        get_RGEOS_dropSlivers()
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>scale</code></td>
+<td>
+<p>Numeric value determining the precision of translated geometries</p>
+</td></tr>
+<tr valign="top"><td><code>spgeom</code></td>
+<td>
+<p>sp object as defined in package sp</p>
+</td></tr>
+<tr valign="top"><td><code>p4s</code></td>
+<td>
+<p>Either a character string or an object of class <code>CRS</code></p>
+</td></tr>
+<tr valign="top"><td><code>runtime</code></td>
+<td>
+<p>default TRUE; if FALSE, installation GEOS version</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>the value to be passed to an RGEOS option in its environment</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>getScale and setScale are used to get and set the scale option in the rgeos environment. This option is used to determine the precision of coordinates when translating to and from GEOS C objects. Precision is defined as 1 / scale. The final example is a use case reported by Mao-Gui Hu, who has also made the objects available, where the default scale defeats an intended line intersection operation; changing the scale temporarily resoves the issue.
+</p>
+<p>In order to permit polygon slivers to be detected, reported and dropped, the user may set a numeric value for polyThreshold and logical values for warnSlivers and dropSlivers. By default, the threshold is 0.0, and warning and dropping are FALSE. To detect slivers, the threshold may be set to a small value and warnSlivers set to TRUE. To drop slivers from returned Polygons and Polygon objects, set dropSlivers to TRUE for a non-zero threshold.
+</p>
+<p>translate is a testing function which translates the sp object into a GEOS C object and then back into an sp object and is used extensively in the translation unit tests. In all cases it is expected that <code>spgeom</code> and <code>translate(spgeom)</code> should be identical.
+</p>
+<p>checkP4S is a validation function for proj4strings and is used in testing.
+</p>
+<p>version_GEOS returns the full runtime version string, and version_GEOS0 only the GEOS version number.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Roger Bivand &amp; Colin Rundel</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+	readWKT("POINT(1.5 1.5)")
+
+	# With scale set to 1, the following point will be rounded
+	setScale(1)
+	readWKT("POINT(1.5 1.5)")
+	
+	setScale(10)
+	readWKT("POINT(1.5 1.5)")
+	
+	getScale()
+	# Set scale option back to default
+	setScale()
+	
+	
+	
+	# scale option only affect objects when they are translated through rgeos
+	setScale(1)
+	library(sp)
+	SpatialPoints(data.frame(x=1.5,y=1.5))
+	translate( SpatialPoints(data.frame(x=1.5,y=1.5)) )
+	
+	setScale()
+
+        # added example of scale impact on intersection 120905
+sline1 &lt;- readWKT(readLines(system.file("wkts/sline1.wkt", package="rgeos")))
+sline2 &lt;- readWKT(readLines(system.file("wkts/sline2.wkt", package="rgeos")))
+rslt &lt;- gIntersection(sline1, sline2)
+class(rslt)
+getScale()
+setScale(1e+6)
+rslt &lt;- gIntersection(sline1, sline2)
+class(rslt)
+sapply(slot(rslt, "lines"), function(x) length(slot(x, "Lines")))
+rslt &lt;- gLineMerge(rslt, byid=TRUE)
+sapply(slot(rslt, "lines"), function(x) length(slot(x, "Lines")))
+setScale()
+get_RGEOS_dropSlivers()
+get_RGEOS_warnSlivers()
+get_RGEOS_polyThreshold()
+# Robert Hijmans difficult intersection case
+load(system.file("test_cases/polys.RData", package="rgeos"))
+try(res &lt;- gIntersection(a, b, byid=TRUE))
+res &lt;- gIntersection(a, b, byid=TRUE, drop_lower_td=TRUE)
+sort(unlist(sapply(slot(res, "polygons"), function(p) sapply(slot(p, "Polygons"), slot, "area"))))
+oT &lt;- get_RGEOS_polyThreshold()
+oW &lt;- get_RGEOS_warnSlivers()
+oD &lt;- get_RGEOS_dropSlivers()
+set_RGEOS_polyThreshold(1e-3)
+set_RGEOS_warnSlivers(TRUE)
+res1 &lt;- gIntersection(a, b, byid=TRUE, drop_lower_td=TRUE)
+sort(unlist(sapply(slot(res, "polygons"), function(p) sapply(slot(p, "Polygons"), slot, "area"))))
+set_RGEOS_dropSlivers(TRUE)
+res2 &lt;- gIntersection(a, b, byid=TRUE, drop_lower_td=TRUE)
+sort(unlist(sapply(slot(res, "polygons"), function(p) sapply(slot(p, "Polygons"), slot, "area"))))
+set_RGEOS_dropSlivers(FALSE)
+oo &lt;- gUnaryUnion(res1, c(rep("1", 3), "2", "3", "4"))
+unlist(sapply(slot(oo, "polygons"), function(p) sapply(slot(p, "Polygons"), slot, "area")))
+ooo &lt;- gIntersection(b, oo, byid=TRUE)
+gArea(ooo, byid=TRUE)
+unlist(sapply(slot(ooo, "polygons"), function(p) sapply(slot(p, "Polygons"), slot, "area")))
+set_RGEOS_dropSlivers(TRUE)
+ooo &lt;- gIntersection(b, oo, byid=TRUE)
+gArea(ooo, byid=TRUE)
+unlist(sapply(slot(ooo, "polygons"), function(p) sapply(slot(p, "Polygons"), slot, "area")))
+set_RGEOS_polyThreshold(oT)
+set_RGEOS_warnSlivers(oW)
+set_RGEOS_dropSlivers(oD)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rgeos</em> version 0.4-1 <a href="00Index.html">Index</a>]</div>
+</body></html>
