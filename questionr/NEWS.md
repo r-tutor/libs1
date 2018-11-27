@@ -1,3 +1,9 @@
+questionr 0.7.0
+---------------
+
+* Compatibility with `labelled` 2.0.0
+
+
 questionr 0.6.3
 ---------------
 

@@ -387,7 +387,7 @@ div.tocify {
 <pre class="r"><code>library(sf)
 ## Linking to GEOS 3.6.2, GDAL 2.2.3, PROJ 4.9.3
 nc &lt;- st_read(system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;))
-## Reading layer `nc' from data source `/tmp/RtmpMN3249/Rinst32bd71eaa947/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/RtmpGSjLeW/Rinst5e322c66649b/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -657,7 +657,7 @@ st_as_sfc(structure(list(st_as_binary(x)), class = &quot;WKB&quot;))[[1]]
 <li>negative values convert to float (4-byte real) precision</li>
 <li>positive values convert to <code>round(x*precision)/precision</code>.</li>
 </ul>
-<p>For the precion model, see also <a href="https://locationtech.github.io/jts/javadoc/org/locationtech/jts/geom/PrecisionModel.html">here</a>, where it is written that: “… to specify 3 decimal places of precision, use a scale factor of 1000. To specify -3 decimal places of precision (i.e. rounding to the nearest 1000), use a scale factor of 0.001.” Note that all coordinates, so also <code>Z</code> or <code>M</code> values (if present) are affected. Choosing values for <code>precision</code> may require some experimenting.</p>
+<p>For the precision model, see also <a href="https://locationtech.github.io/jts/javadoc/org/locationtech/jts/geom/PrecisionModel.html">here</a>, where it is written that: “… to specify 3 decimal places of precision, use a scale factor of 1000. To specify -3 decimal places of precision (i.e. rounding to the nearest 1000), use a scale factor of 0.001.” Note that all coordinates, so also <code>Z</code> or <code>M</code> values (if present) are affected. Choosing values for <code>precision</code> may require some experimenting.</p>
 </div>
 </div>
 <div id="reading-and-writing" class="section level2">
@@ -665,7 +665,7 @@ st_as_sfc(structure(list(st_as_binary(x)), class = &quot;WKB&quot;))[[1]]
 <p>As we’ve seen above, reading spatial data from an external file can be done by</p>
 <pre class="r"><code>filename &lt;- system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;)
 nc &lt;- st_read(filename)
-## Reading layer `nc' from data source `/tmp/RtmpMN3249/Rinst32bd71eaa947/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/RtmpGSjLeW/Rinst5e322c66649b/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -953,7 +953,7 @@ units::set_units(a, ha) # result in hectares
         CNTY_ID = &quot;identity&quot;, NAME = &quot;identity&quot;, FIPS = &quot;identity&quot;, FIPSNO = &quot;identity&quot;,
         CRESS_ID = &quot;identity&quot;, BIR74 = &quot;aggregate&quot;, SID74 = &quot;aggregate&quot;, NWBIR74 = &quot;aggregate&quot;,
         BIR79 = &quot;aggregate&quot;, SID79 = &quot;aggregate&quot;, NWBIR79 = &quot;aggregate&quot;))
-## Reading layer `nc' from data source `/tmp/RtmpMN3249/Rinst32bd71eaa947/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/RtmpGSjLeW/Rinst5e322c66649b/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## Attribute-geometry relationship: 0 constant, 8 aggregate, 6 identity
 ## geometry type:  MULTIPOLYGON

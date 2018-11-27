@@ -32,7 +32,10 @@ Arith-methods	Arith-methods
 as.array	as.matrix
 as.array,RasterLayer-method	as.matrix
 as.array,RasterStackBrick-method	as.matrix
+as.character	as.character
 as.character,CRS-method	projection
+as.character,Extent-method	as.character
+as.character,Raster-method	as.character
 as.data.frame	as.data.frame
 as.data.frame,Raster-method	as.data.frame
 as.data.frame,SpatialLines-method	as.data.frame
@@ -669,6 +672,7 @@ writeValues,RasterLayer,vector-method	writeValues
 xFromCell	xyFromCell
 xFromCell,Raster,numeric-method	xyFromCell
 xFromCol	xyFromCell
+xFromCol,Raster,missing-method	xyFromCell
 xFromCol,Raster,numeric-method	xyFromCell
 xmax	coordinates
 xmax,BasicRaster-method	coordinates
@@ -689,6 +693,7 @@ xyFromCell,Raster-method	xyFromCell
 yFromCell	xyFromCell
 yFromCell,Raster,numeric-method	xyFromCell
 yFromRow	xyFromCell
+yFromRow,Raster,missing-method	xyFromCell
 yFromRow,Raster,numeric-method	xyFromCell
 ymax	coordinates
 ymax,BasicRaster-method	coordinates

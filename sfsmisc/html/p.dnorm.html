@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot Parametric Density Functions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for p.dnorm {sfsmisc}"><tr><td>p.dnorm {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot Parametric Density Functions</h2>
+
+<h3>Description</h3>
+
+<p>These are utilities for pretty plotting of often used parametric
+densities.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+p.dnorm (mu = 0, s = 1, h0.col = "light gray",
+         ms.lines = TRUE, ms.col = "gray", ...)
+p.dchisq(nu,    h0.col = "light gray", ...)
+p.dgamma(shape, h0.col = "light gray", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>mu,s</code></td>
+<td>
+<p>numbers, the mean and standard deviation of the normal
+distribution.</p>
+</td></tr>
+<tr valign="top"><td><code>nu</code></td>
+<td>
+<p>positive number, the degrees of freedom <code>df</code> argument
+for the <i>chi^2</i>-density function <code><a href="../../stats/html/Chisquare.html">dchisq</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>shape</code></td>
+<td>
+<p>number, the <code>shape</code> parameter for the Gamma
+distribution.</p>
+</td></tr>
+<tr valign="top"><td><code>h0.col</code></td>
+<td>
+<p>color specification for the line <i>y = 0</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>ms.lines</code></td>
+<td>
+<p>logical, used for the normal only: should lines be
+drawn at the mean and <i>+-</i> 1 standard deviation.</p>
+</td></tr>
+<tr valign="top"><td><code>ms.col</code></td>
+<td>
+<p>color for the <code>ms</code> lines if <code>ms.lines</code> is TRUE.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further parameter passed to <code><a href="../../graphics/html/curve.html">curve</a>()</code>, e.g.,
+<code>add = TRUE</code> for adding to current plot.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Werner Stahel et al.</p>
+
+
+<h3>See Also</h3>
+
+<p>the underlying density functions,
+<code><a href="../../stats/html/Normal.html">dnorm</a></code>,  <code><a href="../../stats/html/Chisquare.html">dchisq</a></code>,  <code><a href="../../stats/html/GammaDist.html">dgamma</a></code>.</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+p.dnorm()
+p.dnorm(mu=1.5, add = TRUE, ms.lines = FALSE) # add to the plot above
+
+p.dchisq(2, main= "Chi^2 Densities -- nu = 2,3,4")
+p.dchisq(3, add = TRUE, col = "red")
+p.dchisq(4, add = TRUE, col = "blue")
+
+op &lt;- par(mfrow = c(2,2), mgp = c(1.6, 0.6,0), mar = c(3,3,1,1))
+for(sh in 1:4)
+   p.dgamma(sh)
+par(op)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

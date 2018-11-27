@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Source and Attach an R source file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sourceAttach {sfsmisc}"><tr><td>sourceAttach {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Source and Attach an R source file</h2>
+
+<h3>Description</h3>
+
+<p>Source (via <code><a href="../../base/html/sys.source.html">sys.source</a>()</code>) and attach
+(<code><a href="../../base/html/attach.html">attach</a></code>) an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> source file.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sourceAttach(file, pos=2,
+             name = paste(abbreviate(gsub(fsep,"", dirname(file)),
+                                     12, method="both.sides"),
+                          basename(file), sep=fsep),
+             keep.source = getOption("keep.source.pkgs"),
+             warn.conflicts = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>file name</p>
+</td></tr>
+<tr valign="top"><td><code>pos</code></td>
+<td>
+<p>passed to <code><a href="../../base/html/attach.html">attach</a>()</code></p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>character, with a smart default, passed to <code>attach()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>keep.source</code></td>
+<td>
+<p>logical, see <code><a href="../../base/html/sys.source.html">sys.source</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>warn.conflicts</code></td>
+<td>
+<p>logical, see <code><a href="../../base/html/attach.html">attach</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>the return value of <code><a href="../../base/html/attach.html">attach</a>()</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, 29 Jul 2011</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/attach.html">attach</a></code>, <code><a href="../../base/html/sys.source.html">sys.source</a></code>, <code><a href="../../base/html/source.html">source</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ sourceAttach(system.file("test-tools-1.R", package="Matrix", mustWork=TRUE))
+ search() # shows the new "data base" at position 2
+ ## look what it contains:
+ ls.str(pos = 2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

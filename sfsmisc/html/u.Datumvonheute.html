@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Datum und Uhrzeit (auf deutsch)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for u.Datumvonheute {sfsmisc}"><tr><td>u.Datumvonheute {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Datum und Uhrzeit (auf deutsch)</h2>
+
+<h3>Description</h3>
+
+<p>Return current date and time as a string, possibly including day of
+the week in <em>German</em>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+u.Datumvonheute(W.tag=2, Zeit=FALSE)
+
+C.Monatsname
+C.Wochentag
+C.Wochentagkurz
+C.weekday
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>W.tag</code></td>
+<td>
+<p>logical or integer specifying you want weekday (&lsquo;Wochentag&rsquo;).
+<code>0</code> or <code>FALSE</code> gives no,  <code>1</code> or <code>TRUE</code> gives a
+short and <code>2</code> the long version of the day of the week.</p>
+</td></tr>
+<tr valign="top"><td><code>Zeit</code></td>
+<td>
+<p>logical or integer specifying if time (&quot;Zeit&quot;) is desired.
+<code>0</code> or <code>FALSE</code> gives no,  <code>1</code> or <code>TRUE</code> gives a
+hours only and <code>2</code> hours and minutes.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A string with the current date/time, in the form specified by the arguments.
+</p>
+<p>The <code>C.*</code> are <code><a href="../../base/html/character.html">character</a></code> vector &ldquo;constants&rdquo;,
+the German ones actually used by <code>u.Datumvonheute</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Caterina Savi, Martin Maechler</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="u.date.html">u.date</a></code> for a similar English version, and
+<code><a href="p.datum.html">p.datum</a></code> which plots.
+For English month names, etc <code><a href="../../base/html/Constants.html">month.name</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+u.Datumvonheute()
+u.Datumvonheute(W.tag=1, Zeit=TRUE)
+u.Datumvonheute(W.tag= FALSE, Zeit=2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

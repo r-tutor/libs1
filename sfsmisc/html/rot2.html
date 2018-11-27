@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Rotate Planar Points by Angle</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rot2 {sfsmisc}"><tr><td>rot2 {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Rotate Planar Points by Angle</h2>
+
+<h3>Description</h3>
+
+<p>Rotate planar (xy) points by angle <code>phi</code> (in radians).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rot2(xy, phi)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>xy</code></td>
+<td>
+<p>numeric 2-column matrix, or coercable to one.</p>
+</td></tr>
+<tr valign="top"><td><code>phi</code></td>
+<td>
+<p>numeric scalar, the angle in radians (i.e., <code>phi=pi</code>
+corresponds to 180 degrees) by which to rotate the points.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A two column matrix as <code>xy</code>, containing the rotated points.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, Oct.1994</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Rotate three points by 60 degrees :
+(xy0 &lt;- rbind(c(1,0.5), c(1,1), c(0,1)))
+(Txy &lt;- rot2(xy0, phi = 60 * pi/180))
+plot(xy0, col = 2, type = "b", asp = 1,
+     xlim=c(-1,1), ylim=c(0,1.5), main = "rot2(*, pi/3) : 2d rotation by 60°")
+points(Txy, col = 3, type = "b")
+O &lt;- rep(0,2); P2 &lt;- rbind(xy0[2,], Txy[2,])
+arrows(O,O,P2[,1],P2[,2], col = "dark gray")
+
+xy0 &lt;- .8*rbind(c(1,0), c(.5,.6), c(.7,1), c(1,1), c(.9,.8), c(1,0)) - 0.2
+plot(xy0, col= 2, type="b", main= "rot2( &lt;polygon&gt;, pi/4 * 1:7)", asp=1,
+     xlim=c(-1,1),ylim=c(-1,1), lwd= 2, axes = FALSE, xlab="", ylab="")
+abline(h=0, v=0, col="thistle"); text(1.05, -.05, "x"); text(-.05,1.05, "y")
+for(phi in pi/4 * 0:7)
+   do.call("arrows",c(list(0,0),rot2(xy0[2,], phi), length=0.1, col="gray40"))
+for(phi in pi/4 * 1:7)
+   polygon(rot2(xy0, phi = phi), col = 1+phi/(pi/4), border=2, type = "b")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

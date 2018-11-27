@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Graphical Interactive Demo of loess()</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for loessDemo {sfsmisc}"><tr><td>loessDemo {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Graphical Interactive Demo of loess()</h2>
+
+<h3>Description</h3>
+
+<p>A graphical and interactive demonstration and visualization of how
+<code><a href="../../stats/html/loess.html">loess</a></code> works.  By clicking on the graphic, the user
+determines the current estimation window which is visualized together
+with the weights.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+loessDemo(x, y, span = 1/2, degree = 1, family = c("gaussian", "symmetric"),
+          nearest = FALSE, nout = 501,
+          xlim = numeric(0), ylim = numeric(0), strictlim = TRUE, verbose = TRUE,
+          inch.sym = 0.25, pch = 4, shade = TRUE, w.symbols = TRUE,
+          sym.col = "blue", w.col = "light blue", line.col = "steelblue")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x,y</code></td>
+<td>
+<p>numeric vectors of the same length; the demo is about
+<code><a href="../../stats/html/loess.html">loess</a>(y ~ x)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>span</code></td>
+<td>
+<p>the smoothing parameter <i>&alpha;</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>degree</code></td>
+<td>
+<p>the degree of the polynomials to be used; must be in <i>{0,1,2}</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>family</code></td>
+<td>
+<p>if <code>"gaussian"</code> fitting is by least-squares, and if
+<code>"symmetric"</code> a re-descending M estimator is used with Tukey's
+biweight function.  Can be abbreviated.</p>
+</td></tr>
+<tr valign="top"><td><code>nearest</code></td>
+<td>
+<p>logical indicating how <i>x_0</i> should be determined,
+the value at which <i>f^(x_0)</i> is computed.  If
+<code>nearest</code> is true, the closest <em>data</em> value is taken.
+</p>
+</td></tr>
+<tr valign="top"><td><code>nout</code></td>
+<td>
+<p>the number of points at which to evaluate, i.e,
+determining <i>u_i</i>, <i>i = 1,2, &hellip;, \mathtt{nout}</i>, at
+which <i>f^(u_i)</i> is computed.</p>
+</td></tr>
+<tr valign="top"><td><code>xlim</code></td>
+<td>
+<p>x-range; to extend or determine (iff <code>strictlim</code> is
+true) the <i>x</i>-range for plotting.</p>
+</td></tr>
+<tr valign="top"><td><code>ylim</code></td>
+<td>
+<p>y-range; to extend or determine (iff <code>strictlim</code> is
+true) the <i>y</i>-range for plotting.</p>
+</td></tr>
+<tr valign="top"><td><code>strictlim</code></td>
+<td>
+<p>logical determining if <code>xlim</code> and <code>ylim</code>
+should be strict limits (as e.g., in <code><a href="../../graphics/html/plot.default.html">plot.default</a></code>), or
+just a suggestion to <em>extend</em> the data-dependent ranges.</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>logical ......</p>
+</td></tr>
+<tr valign="top"><td><code>inch.sym</code></td>
+<td>
+<p>symbol size in inches of the maximal weight circle symbol.</p>
+</td></tr>
+<tr valign="top"><td><code>pch</code></td>
+<td>
+<p>plotting character, see <code><a href="../../graphics/html/points.html">points</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>shade</code></td>
+<td>
+<p>logical; if true, <code><a href="../../graphics/html/polygon.html">polygon</a>(.., density=..)</code>
+will be used to shade off the regions where the weights are zero.</p>
+</td></tr>
+<tr valign="top"><td><code>w.symbols</code></td>
+<td>
+<p>logical indicating if the non-zero weights should be
+visualized by circles with radius proportional to <code>inch.sym</code>
+and <i>&radic;{w}</i> where <i>w</i> are the weights.</p>
+</td></tr>
+<tr valign="top"><td><code>sym.col, w.col, line.col</code></td>
+<td>
+<p>colors for the symbols, weights and
+lines, respectively.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+
+<p>As function <code>loess.demo()</code>,  written and posted to S-news, on 27
+Sep 2001, by Greg Snow, Brigham Young University, 
+it was modified by Henrik Aa. Nielsen, IMM, DTU, 
+and subsequently spiffed up for <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> by Martin Maechler.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/loess.html">loess</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if(dev.interactive()) {
+
+ if(requireNamespace("lattice")) {
+    data("ethanol", package = "lattice")
+    attach(ethanol)
+    loessDemo(E,NOx, span=.25)
+    loessDemo(E,NOx, span=.25, family = "symmetric")
+
+    loessDemo(E,NOx, degree=0)# Tricube Kernel estimate
+  }
+
+ ## Artificial Example with one outlier
+ n2 &lt;- 50; x &lt;- 1:(1+2*n2)
+ fx &lt;- (x/10 - 5)^2
+ y &lt;- fx + 4*rnorm(x)
+ y[n2+1] &lt;- 1e4
+ loessDemo(x,y, span=1/3, ylim= c(0,1000))# not robust !!
+ loessDemo(x,y, span=1/3, family = "symm")
+ loessDemo(x,y, span=1/3, family = "symm", w.symb = FALSE, ylim = c(0,40))
+ loessDemo(x,y, span=1/3, family = "symm", ylim = c(0,40))
+ ## but see warnings() --- there's a "fixup"
+
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Nice Uniform Points in Interval</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for unif {sfsmisc}"><tr><td>unif {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Nice Uniform Points in Interval</h2>
+
+<h3>Description</h3>
+
+<p>Give regularly spaced points on interval <i>[-c,c]</i> with mean 0
+(exactly) and variance about 1 (very close for <b>even</b> <code>n</code>
+and larger <code>round.dig</code>).  Note that <i>c</i> depends on <code>n</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+unif(n, round.dig = 1 + trunc(log10(n)))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>positive integer specifying the number of points desired.</p>
+</td></tr>
+<tr valign="top"><td><code>round.dig</code></td>
+<td>
+<p>integer indicating to how many digits the result is
+rounded.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>numeric vector of length <code>n</code>, symmetric around 0, hence
+with exact mean <code>0</code>, and variance approximately 1.
+</p>
+
+
+<h3>Note</h3>
+
+<p>It relies on the fact that <i>Var(1,2,...,n) = n(n+1)/12</i>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, ca 1990</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/Uniform.html">runif</a></code> for producing uniform <em>random</em> numbers.</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+(u &lt;- unif(8))
+var(u)
+
+(u. &lt;- unif(8, 12))# more digits in result, hence precision for Var :
+var(u.)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

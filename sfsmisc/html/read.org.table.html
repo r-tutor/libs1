@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Read.table for an Emacs Org Table</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for read.org.table {sfsmisc}"><tr><td>read.org.table {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read.table for an Emacs Org Table</h2>
+
+<h3>Description</h3>
+
+<p>Read an emacs &ldquo;Org&rdquo; table (in <code>file</code> or <code>text</code>) by
+<code><a href="../../utils/html/read.table.html">read.table</a>()</code>. 
+
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+read.org.table(file, header = TRUE, skip = 0,
+               encoding = "native", fileEncoding = "", text, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>a file name, a <code><a href="../../base/html/connections.html">file</a></code> or other connection.</p>
+</td></tr>
+<tr valign="top"><td><code>header</code></td>
+<td>
+<p>logical indicating if the org table has header line (in
+the usual <code>"|"</code>-separated org table format).</p>
+</td></tr>
+<tr valign="top"><td><code>skip</code></td>
+<td>
+<p>integer number of initial lines to skip.</p>
+</td></tr>
+<tr valign="top"><td><code>encoding</code></td>
+<td>
+<p>to be used in the main
+<code><a href="../../base/html/readLines.html">readLines</a>(file, encoding=encoding)</code> call.</p>
+</td></tr>
+<tr valign="top"><td><code>fileEncoding</code></td>
+<td>
+<p>if <code>file</code> is a file name, i.e., a
+<code><a href="../../base/html/character.html">character</a></code> string, and <code>fileEncoding</code> is not the
+empty string, <code>file(file, "rt", encoding = fileEncoding)</code> will
+be used.</p>
+</td></tr>
+<tr valign="top"><td><code>text</code></td>
+<td>
+<p>instead of <code>file</code>, a <code><a href="../../base/html/character.html">character</a></code> or
+string (of a few lines, typically).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed to <code><a href="../../utils/html/read.table.html">read.table</a></code>.
+You should <em>not</em> use <code>encoding</code> (but possibly
+<code>fileEncoding</code>!) here, as we do not call
+<code><a href="../../utils/html/read.table.html">read.table</a></code> on <code>file</code> (but on a
+<code><a href="../../base/html/textconnections.html">textConnection</a></code>).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a <code><a href="../../base/html/data.frame.html">data.frame</a></code>
+</p>
+
+
+<h3>Note</h3>
+
+<p>TODO: It should be easy to extend <code>read.org.table()</code>  to also
+work for some of the proposed Markdown formats for tables.
+Please write to <code><a href="../../utils/html/maintainer.html">maintainer</a>("sfsmisc")</code> or open a
+github issue if you are interested.
+</p>
+
+
+<h3>References</h3>
+
+<p>Org-Mode <em>Manual</em> on tables, <a href="http://orgmode.org/manual/Tables.html">http://orgmode.org/manual/Tables.html</a>
+</p>
+<p>Org <em>tutorial</em> for tables, <a href="http://orgmode.org/worg/org-tutorials/tables.html">http://orgmode.org/worg/org-tutorials/tables.html</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p>CRAN package <a href="https://CRAN.R-project.org/package=ascii"><span class="pkg">ascii</span></a> 
+can <em>write</em> org tables.
+<code><a href="../../utils/html/read.table.html">read.table</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+t1 &lt;-
+"
+| a | var2 |   C |
+|---+------+-----|
+| 2 | may  | 3.4 |
+| 7 | feb  | 4.7 |
+"
+d &lt;- read.org.table(text = t1)
+d
+stopifnot(dim(d) == c(2, 3),
+          identical(names(d), c("a", "var2", "C")),
+          d[,"a"] == c(2,7))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

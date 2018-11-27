@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: LaTeX or Sweave friendly Formatting of Numbers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for toLatex.numeric {sfsmisc}"><tr><td>toLatex.numeric {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>LaTeX or Sweave friendly Formatting of Numbers</h2>
+
+<h3>Description</h3>
+
+<p>Formats real numbers, possibly in scientific notation, with a given
+number of digits after the decimal point.  Output can be used in LaTeX
+math mode, e.g., for printing numbers in a table, where each number
+has to be printed with the same number of digits after the decimal
+point, even if the last digits are zeros.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'numeric'
+toLatex(object, digits = format.info(object)[2],
+        scientific = format.info(object)[3] &gt; 0, times = "\\cdot", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>a numeric vector.</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>number of digits <em>after the decimal point</em> (for the
+mantissa if <code>scientific</code>).  The default behaves the same as <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span>'s
+<code><a href="../../base/html/format.html">format</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>scientific</code></td>
+<td>
+<p>logical indicating if scientific notation <code>a *
+      10^k</code> should be used.  The default behaves the same as <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span>'s
+<code><a href="../../base/html/format.html">format</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>times</code></td>
+<td>
+<p>character string indicating the LaTeX symbol to be used for
+the &lsquo;times&rsquo; sign.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>unused; for compatibility with <code><a href="../../utils/html/toLatex.html">toLatex</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a <code><a href="../../base/html/character.html">character</a></code> vector of the same length as <code>object</code>,
+containing the formatted numbers.
+</p>
+
+
+<h3>Note</h3>
+
+<p>We use <code>digits</code> for <code><a href="../../base/html/Round.html">round</a></code>, i.e., round after
+the decimal point on purpose, rather than <code><a href="../../base/html/Round.html">signif</a>()</code>icant
+digit rounding as used by <code><a href="../../base/html/print.html">print</a>()</code> or
+<code><a href="../../base/html/format.html">format</a>()</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Alain Hauser
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="pretty10exp.html">pretty10exp</a></code> which gives <code><a href="../../base/html/expression.html">expression</a></code>s
+similar to our <code>scientific=TRUE</code>.
+<code><a href="../../utils/html/toLatex.html">toLatex</a></code> with other methods.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+xx &lt;- pi * 10^(-9:9)
+
+format(xx)
+formatC(xx)
+
+toLatex(xx) #-&gt; scientific = TRUE is chosen
+toLatex(xx, scientific=FALSE)
+
+sapply(xx, toLatex)
+sapply(xx, toLatex, digits = 2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

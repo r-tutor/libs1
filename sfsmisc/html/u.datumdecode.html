@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert &quot;Numeric&quot; Dates</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for u.datumdecode {sfsmisc}"><tr><td>u.datumdecode {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert &ldquo;Numeric&rdquo; Dates</h2>
+
+<h3>Description</h3>
+
+<p>Daten der Form 8710230920 aufspalten in Jahr, Monat, Tag, Std, Min
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+u.datumdecode(d, YMDHMnames = c("Jahr", "Monat", "Tag", "Std", "Min"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>d</code></td>
+<td>
+<p>numeric dates in the form YYMMDDHHMM.</p>
+</td></tr>
+<tr valign="top"><td><code>YMDHMnames</code></td>
+<td>
+<p>(column) names to be used for the result.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a numeric matrix (or vector) with 5 columns containing the year,
+month, etc.
+</p>
+
+
+<h3>Note</h3>
+
+
+<p>MM: This is a wrong concept, and also suffers from the &ldquo;millenium bug&rdquo;
+(by using only 2 digits for the year).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>?? (someone at SfS ETH)</p>
+
+
+<h3>See Also</h3>
+
+<p><span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span>'s <em>proper</em> date-time coding: <code><a href="../../base/html/DateTimeClasses.html">DateTimeClasses</a></code>;
+<code><a href="u.date.html">u.date</a></code> etc.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+u.datumdecode(8710230920)
+##  Jahr Monat   Tag   Std   Min
+##    87    10    23     9    20
+
+u.datumdecode(c(8710230900, 9710230920, 0210230920))
+##      Jahr Monat Tag Std Min
+## [1,]   87    10  23   9  00
+## [2,]   97    10  23   9  20
+## [3,]    2    10  23   9  20
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

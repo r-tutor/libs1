@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Enhance Formula by Wrapping each Term, e.g., by &quot;s(.)&quot;</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for wrapFormula {sfsmisc}"><tr><td>wrapFormula {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Enhance Formula by Wrapping each Term, e.g., by &quot;s(.)&quot;</h2>
+
+<h3>Description</h3>
+
+<p>The main motivation for this function has been the easy construction
+of a &ldquo;full GAM formula&rdquo; from something as simple as
+<code>Y ~ .</code>. <br />
+The potential use is slightly more general.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+wrapFormula(f, data, wrapString = "s(*)")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>f</code></td>
+<td>
+<p>the initial <code><a href="../../stats/html/formula.html">formula</a></code>; typically something like
+<code>Y ~ .</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p><code><a href="../../base/html/data.frame.html">data.frame</a></code> to which the formula applies;
+see, <code><a href="../../stats/html/formula.html">formula</a></code> or also <code><a href="../../mgcv/html/gam.html">gam</a></code> or
+<code><a href="../../stats/html/lm.html">lm</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>wrapString</code></td>
+<td>
+<p><code><a href="../../base/html/character.html">character</a></code> string, containing
+<code>"*"</code>, specifying the wrapping expression to use.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a <code><a href="../../stats/html/formula.html">formula</a></code> very similar to <code>f</code>; just replacing each
+<em>additive</em> term by its wrapped version.
+</p>
+
+
+<h3>Note</h3>
+
+<p>There are limits for this to work correctly; notably the right hand
+side of the formula <code>f</code> should not be nested or otherwise
+complicated, rather typically just <code> . </code> as in the examples.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, May 2007.</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/formula.html">formula</a></code>;
+<code><a href="../../mgcv/html/gam.html">gam</a></code> from package <a href="https://CRAN.R-project.org/package=mgcv"><span class="pkg">mgcv</span></a> (or also from
+package <a href="https://CRAN.R-project.org/package=gam"><span class="pkg">gam</span></a>).
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+myF &lt;- wrapFormula(Fertility ~ . , data = swiss)
+myF # Fertility ~ s(Agriculture) + s(....) + ...
+
+if(require("mgcv")) {
+   m1 &lt;- gam(myF, data = swiss)
+   print( summary(m1) )
+   plot(m1, pages = 1) ; title(format(m1$call), line= 2.5)
+}
+
+## other wrappers:
+wrapFormula(Fertility ~ . , data = swiss, wrap = "lo(*)")
+wrapFormula(Fertility ~ . , data = swiss, wrap = "poly(*, 4)")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

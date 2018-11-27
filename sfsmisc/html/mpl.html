@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Simple Matrix Plots</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for mpl {sfsmisc}"><tr><td>mpl {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Simple Matrix Plots</h2>
+
+<h3>Description</h3>
+
+<p>Do simple matrix plots, providing an easy interface to
+<code><a href="../../graphics/html/matplot.html">matplot</a></code> by using a default x variable.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mpl(mat, ...)
+p.m(mat, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>mat</code></td>
+<td>
+<p>numeric matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed to <code><a href="../../graphics/html/matplot.html">matplot</a></code>,
+e.g., <code>type</code>, <code>xlab</code>, etc.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>p.m(m)</code> use the first column of <code>m</code> as <i>x</i> variable,
+whereas <code>mpl(m)</code> uses the integers 1, 2, ..., <code>nrow(m)</code>
+as coordinates and <code>rownames(m)</code> as axis labels if possible.
+</p>
+
+
+<h3>Note</h3>
+
+<p>These were really created for playing around with curves etc, and
+probably should be <em>deprecated</em> since in concrete examples, using
+<code>matplot()</code> directly is more appropriate.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../graphics/html/matplot.html">matplot</a></code>,
+<code><a href="../../stats/html/stats-defunct.html">plot.mts</a>(*, plot.type = "single")</code>.</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(animals, package = "cluster")
+mpl(animals, type = "l")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

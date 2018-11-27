@@ -107,6 +107,3 @@ ttm()
 #if (Sys.getenv("USER") != "CRAN")
 last_map()
 
-## ------------------------------------------------------------------------
-st_sf(a = 1:2, geom = st_sfc(st_point(0:1), st_linestring(rbind(c(1,1), c(2,2)))))
-
