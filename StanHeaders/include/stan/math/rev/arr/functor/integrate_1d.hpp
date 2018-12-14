@@ -1,6 +1,8 @@
 #ifndef STAN_MATH_REV_ARR_FUNCTOR_integrate_1d_HPP
 #define STAN_MATH_REV_ARR_FUNCTOR_integrate_1d_HPP
 
+#ifndef __sun
+
 #include <stan/math/prim/arr/fun/value_of.hpp>
 #include <stan/math/prim/arr/functor/integrate_1d.hpp>
 #include <stan/math/prim/scal/err/check_less_or_equal.hpp>
@@ -151,5 +153,5 @@ inline var integrate_1d(const F &f, const T_a &a, const T_b &b,
 
 }  // namespace math
 }  // namespace stan
-
+#endif
 #endif

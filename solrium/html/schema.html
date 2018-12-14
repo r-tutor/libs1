@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get the schema for a collection or core</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for schema {solrium}"><tr><td>schema {solrium}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get the schema for a collection or core</h2>
+
+<h3>Description</h3>
+
+<p>Get the schema for a collection or core
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+schema(conn, name, what = "", raw = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>conn</code></td>
+<td>
+<p>A solrium connection object, see <a href="SolrClient.html">SolrClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>(character) Name of a collection or core. Required.</p>
+</td></tr>
+<tr valign="top"><td><code>what</code></td>
+<td>
+<p>(character) What to retrieve. By default, we retrieve the entire
+schema. Options include: fields, dynamicfields, fieldtypes, copyfields, name,
+version, uniquekey, similarity, &quot;solrqueryparser/defaultoperator&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>raw</code></td>
+<td>
+<p>(logical) If <code>TRUE</code>, returns raw data in format specified by
+<code>wt</code> param</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>curl options passed on to <a href="../../crul/html/HttpClient.html">crul::HttpClient</a></p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# start Solr, in your CLI, run: `bin/solr start -e cloud -noprompt`
+# after that, if you haven't run `bin/post -c gettingstarted docs/` yet, do so
+
+# connect: by default we connect to localhost, port 8983
+(cli &lt;- SolrClient$new())
+
+# get the schema for the gettingstarted index
+schema(cli, name = "gettingstarted")
+
+# Get parts of the schema
+schema(cli, name = "gettingstarted", "fields")
+schema(cli, name = "gettingstarted", "dynamicfields")
+schema(cli, name = "gettingstarted", "fieldtypes")
+schema(cli, name = "gettingstarted", "copyfields")
+schema(cli, name = "gettingstarted", "name")
+schema(cli, name = "gettingstarted", "version")
+schema(cli, name = "gettingstarted", "uniquekey")
+schema(cli, name = "gettingstarted", "similarity")
+schema(cli, name = "gettingstarted", "solrqueryparser/defaultoperator")
+
+# get raw data
+schema(cli, name = "gettingstarted", "similarity", raw = TRUE)
+schema(cli, name = "gettingstarted", "uniquekey", raw = TRUE)
+
+# start Solr in Schemaless mode: bin/solr start -e schemaless
+# schema(cli, "gettingstarted")
+
+# start Solr in Standalone mode: bin/solr start
+# then add a core: bin/solr create -c helloWorld
+# schema(cli, "helloWorld")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>solrium</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

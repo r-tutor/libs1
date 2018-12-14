@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Real time get</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for solr_get {solrium}"><tr><td>solr_get {solrium}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Real time get</h2>
+
+<h3>Description</h3>
+
+<p>Get documents by id
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+solr_get(conn, ids, name, fl = NULL, wt = "json", raw = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>conn</code></td>
+<td>
+<p>A solrium connection object, see <a href="SolrClient.html">SolrClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>ids</code></td>
+<td>
+<p>Document IDs, one or more in a vector or list</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>(character) A collection or core name. Required.</p>
+</td></tr>
+<tr valign="top"><td><code>fl</code></td>
+<td>
+<p>Fields to return, can be a character vector like
+<code>c('id', 'title')</code>, or a single character vector with one or more
+comma separated names, like <code>'id,title'</code></p>
+</td></tr>
+<tr valign="top"><td><code>wt</code></td>
+<td>
+<p>(character) One of json (default) or xml. Data type returned.
+If json, uses <code><a href="../../jsonlite/html/fromJSON.html">jsonlite::fromJSON()</a></code> to parse. If xml, uses
+<code><a href="../../xml2/html/read_xml.html">xml2::read_xml()</a></code> to parse.</p>
+</td></tr>
+<tr valign="top"><td><code>raw</code></td>
+<td>
+<p>(logical) If <code>TRUE</code>, returns raw data in format specified by
+<code>wt</code> param</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>curl options passed on to <a href="../../crul/html/HttpClient.html">crul::HttpClient</a></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>We use json internally as data interchange format for this function.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+(cli &lt;- SolrClient$new())
+
+# add some documents first
+ss &lt;- list(list(id = 1, price = 100), list(id = 2, price = 500))
+add(cli, ss, name = "gettingstarted")
+
+# Now, get documents by id
+solr_get(cli, ids = 1, "gettingstarted")
+solr_get(cli, ids = 2, "gettingstarted")
+solr_get(cli, ids = c(1, 2), "gettingstarted")
+solr_get(cli, ids = "1,2", "gettingstarted")
+
+# Get raw JSON
+solr_get(cli, ids = 1, "gettingstarted", raw = TRUE, wt = "json")
+solr_get(cli, ids = 1, "gettingstarted", raw = TRUE, wt = "xml")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>solrium</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

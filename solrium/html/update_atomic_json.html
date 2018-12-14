@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Atomic updates with JSON data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for update_atomic_json {solrium}"><tr><td>update_atomic_json {solrium}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Atomic updates with JSON data</h2>
+
+<h3>Description</h3>
+
+<p>Atomic updates to parts of Solr documents
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+update_atomic_json(conn, body, name, wt = "json", raw = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>conn</code></td>
+<td>
+<p>A solrium connection object, see <a href="SolrClient.html">SolrClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>body</code></td>
+<td>
+<p>(character) JSON as a character string</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>(character) Name of the core or collection</p>
+</td></tr>
+<tr valign="top"><td><code>wt</code></td>
+<td>
+<p>(character) One of json (default) or xml. If json, uses
+<code><a href="../../jsonlite/html/fromJSON.html">jsonlite::fromJSON()</a></code> to parse. If xml, uses <code><a href="../../xml2/html/read_xml.html">xml2::read_xml()</a></code> to parse</p>
+</td></tr>
+<tr valign="top"><td><code>raw</code></td>
+<td>
+<p>(logical) If <code>TRUE</code>, returns raw data in format specified by
+<code>wt</code> param</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>curl options passed on to <a href="../../crul/html/HttpClient.html">crul::HttpClient</a></p>
+</td></tr>
+</table>
+
+
+<h3>References</h3>
+
+<p><a href="https://lucene.apache.org/solr/guide/7_0/updating-parts-of-documents.html">https://lucene.apache.org/solr/guide/7_0/updating-parts-of-documents.html</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# start Solr in Cloud mode: bin/solr start -e cloud -noprompt
+
+# connect
+(conn &lt;- SolrClient$new())
+
+# create a collection
+if (!conn$collection_exists("books")) {
+  conn$collection_delete("books")
+  conn$collection_create("books")
+}
+
+# Add documents
+file &lt;- system.file("examples", "books2.json", package = "solrium")
+cat(readLines(file), sep = "\n")
+conn$update_json(file, "books")
+
+# get a document
+conn$get(ids = 343334534545, "books")
+
+# atomic update
+body &lt;- '[{
+ "id": "343334534545",
+ "genre_s": {"set": "mystery" },
+ "pages_i": {"inc": 1 }
+}]'
+conn$update_atomic_json(body, "books")
+
+# get the document again
+conn$get(ids = 343334534545, "books")
+
+# another atomic update
+body &lt;- '[{
+ "id": "343334534545",
+ "price": {"remove": "12.5" }
+}]'
+conn$update_atomic_json(body, "books")
+
+# get the document again
+conn$get(ids = 343334534545, "books")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>solrium</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

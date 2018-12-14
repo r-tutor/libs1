@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: List collections or cores</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for collections {solrium}"><tr><td>collections {solrium}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>List collections or cores</h2>
+
+<h3>Description</h3>
+
+<p>List collections or cores
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+collections(conn, ...)
+
+cores(conn, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>conn</code></td>
+<td>
+<p>A solrium connection object, see <a href="SolrClient.html">SolrClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>curl options passed on to <a href="../../crul/html/HttpClient.html">crul::HttpClient</a></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Calls <code><a href="collection_list.html">collection_list()</a></code> or <code><a href="core_status.html">core_status()</a></code> internally,
+and parses out names for you.
+</p>
+
+
+<h3>Value</h3>
+
+<p>character vector
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# connect
+(conn &lt;- SolrClient$new())
+
+# list collections
+conn$collection_list()
+collections(conn)
+
+# list cores
+conn$core_status()
+cores(conn)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>solrium</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

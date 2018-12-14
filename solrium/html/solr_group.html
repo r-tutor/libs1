@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Grouped search</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for solr_group {solrium}"><tr><td>solr_group {solrium}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Grouped search</h2>
+
+<h3>Description</h3>
+
+<p>Returns only group items
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+solr_group(conn, name = NULL, params = NULL, body = NULL,
+  callopts = list(), raw = FALSE, parsetype = "df", concat = ",",
+  progress = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>conn</code></td>
+<td>
+<p>A solrium connection object, see <a href="SolrClient.html">SolrClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>Name of a collection or core. Or leave as <code>NULL</code> if not needed.</p>
+</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+<p>(list) a named list of parameters, results in a GET reqeust
+as long as no body parameters given</p>
+</td></tr>
+<tr valign="top"><td><code>body</code></td>
+<td>
+<p>(list) a named list of parameters, if given a POST request
+will be performed</p>
+</td></tr>
+<tr valign="top"><td><code>callopts</code></td>
+<td>
+<p>Call options passed on to <a href="../../crul/html/HttpClient.html">crul::HttpClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>raw</code></td>
+<td>
+<p>(logical) If TRUE, returns raw data in format specified by wt param</p>
+</td></tr>
+<tr valign="top"><td><code>parsetype</code></td>
+<td>
+<p>(character) One of 'list' or 'df'</p>
+</td></tr>
+<tr valign="top"><td><code>concat</code></td>
+<td>
+<p>(character) Character to concatenate elements of longer than length 1.
+Note that this only works reliably when data format is json (wt='json'). The parsing
+is more complicated in XML format, but you can do that on your own.</p>
+</td></tr>
+<tr valign="top"><td><code>progress</code></td>
+<td>
+<p>a function with logic for printing a progress
+bar for an HTTP request, ultimately passed down to <span class="pkg">curl</span>. only supports
+<code>httr::progress</code> for now. See the README for an example.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Further args to be combined into query</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>XML, JSON, a list, or data.frame
+</p>
+
+
+<h3>Group parameters</h3>
+
+
+<ul>
+<li><p> q Query terms, defaults to '<em>:</em>', or everything.
+</p>
+</li>
+<li><p> fq Filter query, this does not affect the search, only what gets returned
+</p>
+</li>
+<li><p> fl Fields to return
+</p>
+</li>
+<li><p> wt (character) Data type returned, defaults to 'json'. One of json or xml. If json,
+uses <code><a href="../../jsonlite/html/fromJSON.html">fromJSON</a></code> to parse. If xml, uses <code><a href="../../XML/html/xmlParse.html">xmlParse</a></code> to
+parse. csv is only supported in <code><a href="solr_search.html">solr_search</a></code> and <code><a href="solr_all.html">solr_all</a></code>.
+</p>
+</li>
+<li><p> key API key, if needed.
+</p>
+</li>
+<li><p> group.field (fieldname) Group based on the unique values of a field. The
+field must currently be single-valued and must be either indexed, or be another
+field type that has a value source and works in a function query - such as
+ExternalFileField. Note: for Solr 3.x versions the field must by a string like
+field such as StrField or TextField, otherwise a http status 400 is returned.
+</p>
+</li>
+<li><p> group.func (function query) Group based on the unique values of a function
+query. &lt;!&gt; Solr4.0 This parameter only is supported on 4.0
+</p>
+</li>
+<li><p> group.query (query) Return a single group of documents that also match the
+given query.
+</p>
+</li>
+<li><p> rows (number) The number of groups to return. Defaults to 10.
+</p>
+</li>
+<li><p> start (number) The offset into the list of groups.
+</p>
+</li>
+<li><p> group.limit (number) The number of results (documents) to return for each
+group. Defaults to 1.
+</p>
+</li>
+<li><p> group.offset (number) The offset into the document list of each group.
+</p>
+</li>
+<li><p> sort How to sort the groups relative to each other. For example,
+sort=popularity desc will cause the groups to be sorted according to the highest
+popularity doc in each group. Defaults to &quot;score desc&quot;.
+</p>
+</li>
+<li><p> group.sort How to sort documents within a single group. Defaults
+to the same value as the sort parameter.
+</p>
+</li>
+<li><p> group.format One of grouped or simple. If simple, the grouped documents are
+presented in a single flat list. The start and rows parameters refer to numbers of
+documents instead of numbers of groups.
+</p>
+</li>
+<li><p> group.main (logical) If true, the result of the last field grouping command
+is used as the main result list in the response, using group.format=simple
+</p>
+</li>
+<li><p> group.ngroups (logical) If true, includes the number of groups that have
+matched the query. Default is false. &lt;!&gt; Solr4.1 WARNING: If this parameter is set
+to true on a sharded environment, all the documents that belong to the same group
+have to be located in the same shard, otherwise the count will be incorrect. If you
+are using SolrCloud, consider using &quot;custom hashing&quot;
+</p>
+</li>
+<li><p> group.cache.percent (0-100) If &gt; 0 enables grouping cache. Grouping is executed
+actual two searches. This option caches the second search. A value of 0 disables
+grouping caching. Default is 0. Tests have shown that this cache only improves search
+time with boolean queries, wildcard queries and fuzzy queries. For simple queries like
+a term query or a match all query this cache has a negative impact on performance
+</p>
+</li></ul>
+
+
+
+<h3>References</h3>
+
+<p>See <a href="http://wiki.apache.org/solr/FieldCollapsing">http://wiki.apache.org/solr/FieldCollapsing</a> for more
+information.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="solr_highlight.html">solr_highlight()</a></code>, <code><a href="solr_facet.html">solr_facet()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# connect
+(cli &lt;- SolrClient$new())
+
+# by default we do a GET request
+cli$group("gettingstarted",
+  params = list(q='*:*', group.field='compName_s'))
+# OR
+solr_group(cli, "gettingstarted",
+  params = list(q='*:*', group.field='compName_s'))
+
+# connect
+(cli &lt;- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
+
+# Basic group query
+solr_group(cli, params = list(q='ecology', group.field='journal',
+  group.limit=3, fl=c('id','score')))
+solr_group(cli, params = list(q='ecology', group.field='journal',
+  group.limit=3, fl='article_type'))
+
+# Different ways to sort (notice diff btw sort of group.sort)
+# note that you can only sort on a field if you return that field
+solr_group(cli, params = list(q='ecology', group.field='journal', group.limit=3,
+   fl=c('id','score')))
+solr_group(cli, params = list(q='ecology', group.field='journal', group.limit=3,
+   fl=c('id','score','alm_twitterCount'), group.sort='alm_twitterCount desc'))
+solr_group(cli, params = list(q='ecology', group.field='journal', group.limit=3,
+   fl=c('id','score','alm_twitterCount'), sort='score asc',
+   group.sort='alm_twitterCount desc'))
+
+# Two group.field values
+out &lt;- solr_group(cli, params = list(q='ecology', group.field=c('journal','article_type'),
+  group.limit=3, fl='id'), raw=TRUE)
+solr_parse(out)
+solr_parse(out, 'df')
+
+# Get two groups, one with alm_twitterCount of 0-10, and another group
+# with 10 to infinity
+solr_group(cli, params = list(q='ecology', group.limit=3, fl=c('id','alm_twitterCount'),
+ group.query=c('alm_twitterCount:[0 TO 10]','alm_twitterCount:[10 TO *]')))
+
+# Use of group.format and group.simple.
+## The raw data structure of these two calls are slightly different, but
+## the parsing inside the function outputs the same results. You can
+## of course set raw=TRUE to get back what the data actually look like
+solr_group(cli, params = list(q='ecology', group.field='journal', group.limit=3,
+  fl=c('id','score'), group.format='simple'))
+solr_group(cli, params = list(q='ecology', group.field='journal', group.limit=3,
+  fl=c('id','score'), group.format='grouped'))
+solr_group(cli, params = list(q='ecology', group.field='journal', group.limit=3,
+  fl=c('id','score'), group.format='grouped', group.main='true'))
+
+# xml back
+solr_group(cli, params = list(q='ecology', group.field='journal', group.limit=3,
+  fl=c('id','score'), wt = "xml"))
+solr_group(cli, params = list(q='ecology', group.field='journal', group.limit=3,
+  fl=c('id','score'), wt = "xml"), parsetype = "list")
+res &lt;- solr_group(cli, params = list(q='ecology', group.field='journal', group.limit=3,
+  fl=c('id','score'), wt = "xml"), raw = TRUE)
+library("xml2")
+xml2::read_xml(unclass(res))
+
+solr_group(cli, params = list(q='ecology', group.field='journal', group.limit=3,
+  fl='article_type', wt = "xml"))
+solr_group(cli, params = list(q='ecology', group.field='journal', group.limit=3,
+  fl='article_type', wt = "xml"), parsetype = "list")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>solrium</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

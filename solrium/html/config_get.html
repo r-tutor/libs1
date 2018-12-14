@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get Solr configuration details</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for config_get {solrium}"><tr><td>config_get {solrium}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get Solr configuration details</h2>
+
+<h3>Description</h3>
+
+<p>Get Solr configuration details
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+config_get(conn, name, what = NULL, wt = "json", raw = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>conn</code></td>
+<td>
+<p>A solrium connection object, see <a href="SolrClient.html">SolrClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>(character) The name of the core. If not given, all cores.</p>
+</td></tr>
+<tr valign="top"><td><code>what</code></td>
+<td>
+<p>(character) What you want to look at. One of solrconfig or
+schema. Default: solrconfig</p>
+</td></tr>
+<tr valign="top"><td><code>wt</code></td>
+<td>
+<p>(character) One of json (default) or xml. Data type returned.
+If json, uses <code><a href="../../jsonlite/html/fromJSON.html">fromJSON</a></code> to parse. If xml, uses
+<code><a href="../../xml2/html/read_xml.html">read_xml</a></code> to parse.</p>
+</td></tr>
+<tr valign="top"><td><code>raw</code></td>
+<td>
+<p>(logical) If <code>TRUE</code>, returns raw data in format specified by
+<code>wt</code></p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>curl options passed on to <a href="../../crul/html/HttpClient.html">crul::HttpClient</a></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Note that if <code>raw=TRUE</code>, <code>what</code> is ignored. That is,
+you get all the data when <code>raw=TRUE</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list, <code>xml_document</code>, or character
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# start Solr with Cloud mode via the schemaless eg: bin/solr -e cloud
+# you can create a new core like: bin/solr create -c corename
+# where &lt;corename&gt; is the name for your core - or creaate as below
+
+# connect
+(conn &lt;- SolrClient$new())
+
+# all config settings
+conn$config_get("gettingstarted")
+
+# just znodeVersion
+conn$config_get("gettingstarted", "znodeVersion")
+
+# just znodeVersion
+conn$config_get("gettingstarted", "luceneMatchVersion")
+
+# just updateHandler
+conn$config_get("gettingstarted", "updateHandler")
+
+# just updateHandler
+conn$config_get("gettingstarted", "requestHandler")
+
+## Get XML
+conn$config_get("gettingstarted", wt = "xml")
+conn$config_get("gettingstarted", "updateHandler", wt = "xml")
+conn$config_get("gettingstarted", "requestHandler", wt = "xml")
+
+## Raw data - what param ignored when raw=TRUE
+conn$config_get("gettingstarted", raw = TRUE)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>solrium</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

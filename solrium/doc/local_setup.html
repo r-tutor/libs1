@@ -209,14 +209,16 @@ hr {
 
 <h1>Local Solr setup</h1>
 
+<p>The Solr version you are working with my differ from below. Don&#39;t worry, just go with the version you want to use.</p>
+
 <h3>OSX</h3>
 
-<p><strong>Based on <a href="http://lucene.apache.org/solr/quickstart.html">http://lucene.apache.org/solr/quickstart.html</a></strong></p>
+<p><strong>Based on <a href="http://lucene.apache.org/solr/guide/7_0/solr-tutorial.html">http://lucene.apache.org/solr/guide/7_0/solr-tutorial.html</a></strong></p>
 
 <ol>
-<li>Download most recent version from an Apache mirror <a href="http://www.apache.org/dyn/closer.cgi/lucene/solr/5.4.1">http://www.apache.org/dyn/closer.cgi/lucene/solr/5.4.1</a></li>
-<li>Unzip/untar the file. Move to your desired location. Now you have Solr <code>v.5.4.1</code></li>
-<li>Go into the directory you just created: <code>cd solr-5.4.1</code></li>
+<li>Download most recent version from an Apache mirror <a href="https://lucene.apache.org/solr/">https://lucene.apache.org/solr/</a></li>
+<li>Unzip/untar the file. Move to your desired location. Now you have Solr <code>v.7.0.0</code></li>
+<li>Go into the directory you just created: <code>cd solr-7.0.0</code></li>
 <li>Launch Solr: <code>bin/solr start -e cloud -noprompt</code> - Sets up SolrCloud mode, rather
 than Standalone mode. As far as I can tell, SolrCloud mode seems more common.</li>
 <li>Once Step 4 completes, you can go to <code>http://localhost:8983/solr/</code> now, which is
@@ -242,11 +244,23 @@ bunch of documents</li>
 
 <h3><code>solrium</code> usage</h3>
 
+<p>First, setup a connection object</p>
+
+<pre><code class="r">(conn &lt;- SolrClient$new())
+</code></pre>
+
+<pre><code>## &lt;Solr Client&gt;
+##   host: 127.0.0.1
+##   path: 
+##   port: 8983
+##   scheme: http
+##   errors: simple
+##   proxy:
+</code></pre>
+
 <p>And we can now use the <code>solrium</code> R package to query the Solr database to get raw JSON data:</p>
 
-<pre><code class="r">solr_connect(&#39;http://localhost:8983&#39;)
-solr_search(&quot;gettingstarted&quot;, q = &#39;*:*&#39;, raw = TRUE, rows = 3)
-
+<pre><code class="r">conn$search(&quot;gettingstarted&quot;, params = list(q = &#39;*:*&#39;, rows = 3), raw = TRUE)
 #&gt; [1] &quot;{\&quot;responseHeader\&quot;:{\&quot;status\&quot;:0,\&quot;QTime\&quot;:8,\&quot;params\&quot;:{\&quot;q\&quot;:\&quot;*:*\&quot;,\&quot;rows\&quot;:\&quot;3\&quot;,\&quot;wt\&quot;:\&quot;json\&quot;}},\&quot;response\&quot;:{\&quot;numFound\&quot;:3577,\&quot;start\&quot;:0,\&quot;maxScore\&quot;:1.0,\&quot;docs\&quot;:[{\&quot;id\&quot;:\&quot;/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/highlight/class-use/SolrFragmenter.html\&quot;,\&quot;stream_size\&quot;:[9016],\&quot;date\&quot;:[\&quot;2015-06-10T00:00:00Z\&quot;],\&quot;x_parsed_by\&quot;:[\&quot;org.apache.tika.parser.DefaultParser\&quot;,\&quot;org.apache.tika.parser.html.HtmlParser\&quot;],\&quot;stream_content_type\&quot;:[\&quot;text/html\&quot;],\&quot;dc_title\&quot;:[\&quot;Uses of Interface org.apache.solr.highlight.SolrFragmenter (Solr 5.2.1 API)\&quot;],\&quot;content_encoding\&quot;:[\&quot;UTF-8\&quot;],\&quot;resourcename\&quot;:[\&quot;/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/highlight/class-use/SolrFragmenter.html\&quot;],\&quot;title\&quot;:[\&quot;Uses of Interface org.apache.solr.highlight.SolrFragmenter (Solr 5.2.1 API)\&quot;],\&quot;content_type\&quot;:[\&quot;text/html\&quot;],\&quot;_version_\&quot;:1507965023127863296},{\&quot;id\&quot;:\&quot;/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/highlight/class-use/SolrFragmentsBuilder.html\&quot;,\&quot;stream_size\&quot;:[10336],\&quot;date\&quot;:[\&quot;2015-06-10T00:00:00Z\&quot;],\&quot;x_parsed_by\&quot;:[\&quot;org.apache.tika.parser.DefaultParser\&quot;,\&quot;org.apache.tika.parser.html.HtmlParser\&quot;],\&quot;stream_content_type\&quot;:[\&quot;text/html\&quot;],\&quot;dc_title\&quot;:[\&quot;Uses of Class org.apache.solr.highlight.SolrFragmentsBuilder (Solr 5.2.1 API)\&quot;],\&quot;content_encoding\&quot;:[\&quot;UTF-8\&quot;],\&quot;resourcename\&quot;:[\&quot;/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/highlight/class-use/SolrFragmentsBuilder.html\&quot;],\&quot;title\&quot;:[\&quot;Uses of Class org.apache.solr.highlight.SolrFragmentsBuilder (Solr 5.2.1 API)\&quot;],\&quot;content_type\&quot;:[\&quot;text/html\&quot;],\&quot;_version_\&quot;:1507965023153029120},{\&quot;id\&quot;:\&quot;/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/internal/csv/CSVParser.html\&quot;,\&quot;stream_size\&quot;:[32427],\&quot;date\&quot;:[\&quot;2015-06-10T00:00:00Z\&quot;],\&quot;x_parsed_by\&quot;:[\&quot;org.apache.tika.parser.DefaultParser\&quot;,\&quot;org.apache.tika.parser.html.HtmlParser\&quot;],\&quot;stream_content_type\&quot;:[\&quot;text/html\&quot;],\&quot;dc_title\&quot;:[\&quot;CSVParser (Solr 5.2.1 API)\&quot;],\&quot;content_encoding\&quot;:[\&quot;UTF-8\&quot;],\&quot;resourcename\&quot;:[\&quot;/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/internal/csv/CSVParser.html\&quot;],\&quot;title\&quot;:[\&quot;CSVParser (Solr 5.2.1 API)\&quot;],\&quot;content_type\&quot;:[\&quot;text/html\&quot;],\&quot;_version_\&quot;:1507965023221186560}]}}\n&quot;
 #&gt; attr(,&quot;class&quot;)
 #&gt; [1] &quot;sr_search&quot;
@@ -256,8 +270,7 @@ solr_search(&quot;gettingstarted&quot;, q = &#39;*:*&#39;, raw = TRUE, rows = 3)
 
 <p>Or parsed data to a data.frame (just looking at a few columns for brevity):</p>
 
-<pre><code class="r">solr_search(&quot;gettingstarted&quot;, q = &#39;*:*&#39;, fl = c(&#39;date&#39;, &#39;title&#39;))
-
+<pre><code class="r">conn$search(&quot;gettingstarted&quot;, params = list(q = &#39;*:*&#39;, fl = c(&#39;date&#39;, &#39;title&#39;)))
 #&gt; Source: local data frame [10 x 2]
 #&gt;
 #&gt;                    date                                                                         title
@@ -272,6 +285,8 @@ solr_search(&quot;gettingstarted&quot;, q = &#39;*:*&#39;, raw = TRUE, rows = 3)
 #&gt; 9  2015-06-10T00:00:00Z                                                    CSVConfig (Solr 5.2.1 API)
 #&gt; 10 2015-06-10T00:00:00Z                                             CSVConfigGuesser (Solr 5.2.1 API)
 </code></pre>
+
+<h2>Other Vignettes</h2>
 
 <p>See the other vignettes for more thorough examples:</p>
 

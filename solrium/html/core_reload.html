@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Reload a core</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for core_reload {solrium}"><tr><td>core_reload {solrium}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Reload a core</h2>
+
+<h3>Description</h3>
+
+<p>Reload a core
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+core_reload(conn, name, raw = FALSE, callopts = list())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>conn</code></td>
+<td>
+<p>A solrium connection object, see <a href="SolrClient.html">SolrClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>(character) The name of the core to be created. Required</p>
+</td></tr>
+<tr valign="top"><td><code>raw</code></td>
+<td>
+<p>(logical) If <code>TRUE</code>, returns raw data</p>
+</td></tr>
+<tr valign="top"><td><code>callopts</code></td>
+<td>
+<p>curl options passed on to <a href="../../crul/html/HttpClient.html">crul::HttpClient</a></p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# start Solr with Schemaless mode via the schemaless eg:
+#  bin/solr start -e schemaless
+# you can create a new core like: bin/solr create -c corename
+# where &lt;corename&gt; is the name for your core - or creaate as below
+
+# connect
+(conn &lt;- SolrClient$new())
+
+# Status of particular cores
+conn$core_reload("gettingstarted")
+conn$core_status("gettingstarted")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>solrium</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

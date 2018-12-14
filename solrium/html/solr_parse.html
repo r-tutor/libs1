@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Parse raw data from solr_search, solr_facet, or...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for solr_parse {solrium}"><tr><td>solr_parse {solrium}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Parse raw data from solr_search, solr_facet, or solr_highlight.</h2>
+
+<h3>Description</h3>
+
+<p>Parse raw data from solr_search, solr_facet, or solr_highlight.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+solr_parse(input, parsetype = NULL, concat)
+
+## S3 method for class 'sr_high'
+solr_parse(input, parsetype = "list", concat = ",")
+
+## S3 method for class 'sr_search'
+solr_parse(input, parsetype = "list", concat = ",")
+
+## S3 method for class 'sr_all'
+solr_parse(input, parsetype = "list", concat = ",")
+
+## S3 method for class 'sr_mlt'
+solr_parse(input, parsetype = "list", concat = ",")
+
+## S3 method for class 'sr_stats'
+solr_parse(input, parsetype = "list", concat = ",")
+
+## S3 method for class 'sr_group'
+solr_parse(input, parsetype = "list", concat = ",")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>input</code></td>
+<td>
+<p>Output from solr_facet</p>
+</td></tr>
+<tr valign="top"><td><code>parsetype</code></td>
+<td>
+<p>One of 'list' or 'df' (data.frame)</p>
+</td></tr>
+<tr valign="top"><td><code>concat</code></td>
+<td>
+<p>Character to conactenate strings by, e.g,. ',' (character).
+Used in solr_parse.sr_search only.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This is the parser used internally in solr_facet, but if you
+output raw data from solr_facet using raw=TRUE, then you can use this
+function to parse that data (a sr_facet S3 object) after the fact to a
+list of data.frame's for easier consumption. The data format type is
+detected from the attribute &quot;wt&quot; on the sr_facet object.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>solrium</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

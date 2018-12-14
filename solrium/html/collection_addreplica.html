@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Add a replica</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for collection_addreplica {solrium}"><tr><td>collection_addreplica {solrium}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Add a replica</h2>
+
+<h3>Description</h3>
+
+<p>Add a replica to a shard in a collection. The node name can be
+specified if the replica is to be created in a specific node
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+collection_addreplica(conn, name, shard = NULL, route = NULL,
+  node = NULL, instanceDir = NULL, dataDir = NULL, async = NULL,
+  raw = FALSE, callopts = list(), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>conn</code></td>
+<td>
+<p>A solrium connection object, see <a href="SolrClient.html">SolrClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>(character) The name of the core to be created. Required</p>
+</td></tr>
+<tr valign="top"><td><code>shard</code></td>
+<td>
+<p>(character) The name of the shard to which replica is to be added.
+If <code>shard</code> is not given, then <code>route</code> must be.</p>
+</td></tr>
+<tr valign="top"><td><code>route</code></td>
+<td>
+<p>(character) If the exact shard name is not known, users may pass
+the <code>route</code> value and the system would identify the name of the shard.
+Ignored if the <code>shard</code> param is also given</p>
+</td></tr>
+<tr valign="top"><td><code>node</code></td>
+<td>
+<p>(character) The name of the node where the replica should be created</p>
+</td></tr>
+<tr valign="top"><td><code>instanceDir</code></td>
+<td>
+<p>(character) The instanceDir for the core that will be created</p>
+</td></tr>
+<tr valign="top"><td><code>dataDir</code></td>
+<td>
+<p>(character)    The directory in which the core should be created</p>
+</td></tr>
+<tr valign="top"><td><code>async</code></td>
+<td>
+<p>(character) Request ID to track this action which will be processed
+asynchronously</p>
+</td></tr>
+<tr valign="top"><td><code>raw</code></td>
+<td>
+<p>(logical) If <code>TRUE</code>, returns raw data</p>
+</td></tr>
+<tr valign="top"><td><code>callopts</code></td>
+<td>
+<p>curl options passed on to <a href="../../crul/html/HttpClient.html">crul::HttpClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>You can pass in parameters like <code>property.name=value</code>    to set
+core property name to value. See the section Defining core.properties for details on
+supported properties and values.
+(https://cwiki.apache.org/confluence/display/solr/Defining+core.properties)</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+(conn &lt;- SolrClient$new())
+
+# create collection
+if (!conn$collection_exists("foobar")) {
+  conn$collection_create(name = "foobar", numShards = 2)
+  # OR bin/solr create -c foobar
+}
+
+# status
+conn$collection_clusterstatus()$cluster$collections$foobar
+
+# add replica
+if (!conn$collection_exists("foobar")) {
+  conn$collection_addreplica(name = "foobar", shard = "shard1")
+}
+
+# status again
+conn$collection_clusterstatus()$cluster$collections$foobar
+conn$collection_clusterstatus()$cluster$collections$foobar$shards
+conn$collection_clusterstatus()$cluster$collections$foobar$shards$shard1
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>solrium</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

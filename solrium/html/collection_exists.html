@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Check if a collection exists</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for collection_exists {solrium}"><tr><td>collection_exists {solrium}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Check if a collection exists</h2>
+
+<h3>Description</h3>
+
+<p>Check if a collection exists
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+collection_exists(conn, name, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>conn</code></td>
+<td>
+<p>A solrium connection object, see <a href="SolrClient.html">SolrClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>(character) The name of the core. If not given, all cores.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>curl options passed on to <a href="../../crul/html/HttpClient.html">crul::HttpClient</a></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Simply calls <code><a href="collection_list.html">collection_list()</a></code> internally
+</p>
+
+
+<h3>Value</h3>
+
+<p>A single boolean, <code>TRUE</code> or <code>FALSE</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# start Solr with Cloud mode via the schemaless eg: bin/solr -e cloud
+# you can create a new core like: bin/solr create -c corename
+# where &lt;corename&gt; is the name for your core - or creaate as below
+(conn &lt;- SolrClient$new())
+
+# exists
+conn$collection_exists("gettingstarted")
+
+# doesn't exist
+conn$collection_exists("hhhhhh")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>solrium</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

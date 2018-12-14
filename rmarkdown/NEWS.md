@@ -1,5 +1,13 @@
-rmarkdown 1.11 (unreleased)
+rmarkdown 1.11
 ================================================================================
+
+* Fixed #1483, which prevented the triangle to be displayed in Firefox when `<details><summary>...</summary></details>` was used (#1485, @bisaloo)
+
+* Provided `rmarkdown.pandoc.args` as a **knitr** package option in `knitr::opts_knit` (#1468, @noamross).
+
+* Added the exported function `pandoc_exec()`, which returns the path of the pandoc binary used by the package (#1465, #1466 @noamross).
+
+* `new_session: true` in `_site.yml` causes `render_site()` to render each file in a new R session, eliminating some cross-file difficulties, such as function masking (#1326, #1443 @jennybc).
 
 * Added the LaTeX command `\passthrough` in the default LaTeX template for the `--listings` flag of Pandoc (rstudio/bookdown#591).
 
@@ -8,6 +16,28 @@ rmarkdown 1.11 (unreleased)
 * Added the ability to generate tabset dropdowns, usable by adding the `.tabset-dropdown` class to a header (e.g., `# Heading {.tabset .tabset-dropdown}`) (#1405). Thanks @stefanfritsch for contributing the necessary code for this (#1116).
 
 * The `darkly` theme (a darker variant of the Bootswatch `flatly` theme) has been added to `html_document` and `html_notebook` (#1409, #889).
+
+* Fixed a regression that caused scrollbars on code blocks when the syntax highlighting theme is not the default (#654, #1399).
+
+* Fixed #1407: reactive expressions can break the section headers of Shiny R Markdown documents.
+
+# Fixed #1431: `render()` with the `intermediates_dir` argument when the output format is `powerpoint_presentation` with a custom `reference_doc` fails to find the reference document.
+
+* Fixed the website navbar not being able to display submenus properly (#721, #1426).
+
+* Added checks for shiny-prerendered documents to find all html dependencies, match all execution packages, and match the major R version (#1420).
+
+* Added an argument `cache = TRUE` to the internal function `rmarkdown:::find_pandoc()`, so that users can invalidate the cached path of Pandoc via `rmarkdown:::find_pandoc(cache = FALSE)` (thanks, @hammer, #1482).
+
+* Added an RStudio project template for simple R Markdown websites, so that users can create such websites from RStudio: `New Project -> New Directory -> Simple R Markdown Website` (thanks, @kevinushey, #1470).
+
+* Fixed #1471: Pandoc's (version 2.x) syntax highlighting themes don't work well with the Bootstrap style (thanks, @gponce-ars #1471, @cderv #1489).
+
+* Fixed the warnings in #1224 and #1288 when calling `render()` with an absolute `output_dir` or `intermediates_dir`.
+
+* Fixed #1300: calling `render()` with `intermediates_dir` may fail when the intermediate dir is on a difference device or filesystem.
+
+* Fixed #1358: calling `render()` with `intermediates_dir` will fail if the Rmd document contains bibliography files that are dynamically generated.
 
 
 rmarkdown 1.10
@@ -542,4 +572,3 @@ rmarkdown 0.3.11
 ================================================================================
 
 Initial release to CRAN
-

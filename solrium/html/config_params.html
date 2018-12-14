@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Set Solr configuration params</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for config_params {solrium}"><tr><td>config_params {solrium}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Set Solr configuration params</h2>
+
+<h3>Description</h3>
+
+<p>Set Solr configuration params
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+config_params(conn, name, param = NULL, set = NULL, unset = NULL,
+  update = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>conn</code></td>
+<td>
+<p>A solrium connection object, see <a href="SolrClient.html">SolrClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>(character) The name of the core. If not given, all cores.</p>
+</td></tr>
+<tr valign="top"><td><code>param</code></td>
+<td>
+<p>(character) Name of a parameter</p>
+</td></tr>
+<tr valign="top"><td><code>set</code></td>
+<td>
+<p>(list) List of key:value pairs of what to set. Create or overwrite
+a parameter set map. Default: NULL (nothing passed)</p>
+</td></tr>
+<tr valign="top"><td><code>unset</code></td>
+<td>
+<p>(list) One or more character strings of keys to unset. Default: NULL
+(nothing passed)</p>
+</td></tr>
+<tr valign="top"><td><code>update</code></td>
+<td>
+<p>(list) List of key:value pairs of what to update. Updates a parameter
+set map. This essentially overwrites the old parameter set, so all parameters must
+be sent in each update request.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>curl options passed on to <a href="../../crul/html/HttpClient.html">crul::HttpClient</a></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The Request Parameters API allows creating parameter sets that can
+override or take the place of parameters defined in solrconfig.xml. It is
+really another endpoint of the Config API instead of a separate API, and
+has distinct commands. It does not replace or modify any sections of
+solrconfig.xml, but instead provides another approach to handling parameters
+used in requests. It behaves in the same way as the Config API, by storing
+parameters in another file that will be used at runtime. In this case,
+the parameters are stored in a file named params.json. This file is kept in
+ZooKeeper or in the conf directory of a standalone Solr instance.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with response from server
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# start Solr in standard or Cloud mode
+# connect
+(conn &lt;- SolrClient$new())
+
+# set a parameter set
+myFacets &lt;- list(myFacets = list(facet = TRUE, facet.limit = 5))
+config_params(conn, "gettingstarted", set = myFacets)
+
+# check a parameter
+config_params(conn, "gettingstarted", param = "myFacets")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>solrium</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

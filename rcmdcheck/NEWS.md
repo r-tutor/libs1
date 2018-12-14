@@ -1,4 +1,17 @@
 
+# 1.3.2
+
+* `rcmdcheck()` now correctly overwrites existing tarballs if they already
+  exist in the check directory. This time for real.
+
+# 1.3.1
+
+* `rcmdcheck()` now correctly overwrites existing tarballs if they already
+  exist in the check directory (#84 @jimhester).
+
+* rcmdcheck now uses `sessioninfo::session_info()` to query session
+  information for the check.
+
 # 1.3.0
 
 * New `rcmdcheck_process` class to run `R CMD check` in the background.

@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Balance a property</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for collection_balanceshardunique {solrium}"><tr><td>collection_balanceshardunique {solrium}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Balance a property</h2>
+
+<h3>Description</h3>
+
+<p>Insures that a particular property is distributed evenly
+amongst the physical nodes that make up a collection. If the property
+already exists on a replica, every effort is made to leave it there. If the
+property is not on any replica on a shard one is chosen and the property
+is added.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+collection_balanceshardunique(conn, name, property,
+  onlyactivenodes = TRUE, shardUnique = NULL, raw = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>conn</code></td>
+<td>
+<p>A solrium connection object, see <a href="SolrClient.html">SolrClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>(character) The name of the core to be created. Required</p>
+</td></tr>
+<tr valign="top"><td><code>property</code></td>
+<td>
+<p>(character) Required. The property to balance. The literal
+&quot;property.&quot; is prepended to this property if not specified explicitly.</p>
+</td></tr>
+<tr valign="top"><td><code>onlyactivenodes</code></td>
+<td>
+<p>(logical) Normally, the property is instantiated
+on active nodes only. If <code>FALSE</code>, then inactive nodes are also included
+for distribution. Default: <code>TRUE</code></p>
+</td></tr>
+<tr valign="top"><td><code>shardUnique</code></td>
+<td>
+<p>(logical) Something of a safety valve. There is one
+pre-defined property (preferredLeader) that defaults this value to <code>TRUE</code>.
+For all other properties that are balanced, this must be set to <code>TRUE</code> or
+an error message is returned</p>
+</td></tr>
+<tr valign="top"><td><code>raw</code></td>
+<td>
+<p>(logical) If <code>TRUE</code>, returns raw data</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>You can pass in parameters like <code>property.name=value</code>    to set
+core property name to value. See the section Defining core.properties for
+details on supported properties and values.
+(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+(conn &lt;- SolrClient$new())
+
+# create collection
+if (!conn$collection_exists("addrep")) {
+  conn$collection_create(name = "mycollection")
+  # OR: bin/solr create -c mycollection
+}
+
+# balance preferredLeader property
+conn$collection_balanceshardunique("mycollection", property = "preferredLeader")
+
+# examine cluster status
+conn$collection_clusterstatus()$cluster$collections$mycollection
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>solrium</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

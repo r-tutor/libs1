@@ -229,13 +229,15 @@ devtools::install_github(&quot;ropensci/solrium&quot;)
 
 <p>Initialize connection. By default, you connect to <code>http://localhost:8983</code></p>
 
-<pre><code class="r">solr_connect()
+<pre><code class="r">(conn &lt;- SolrClient$new())
 </code></pre>
 
-<pre><code>#&gt; &lt;solr_connection&gt;
-#&gt;   url:    http://localhost:8983
+<pre><code>#&gt; &lt;Solr Client&gt;
+#&gt;   host: 127.0.0.1
+#&gt;   path: 
+#&gt;   port: 8983
+#&gt;   scheme: http
 #&gt;   errors: simple
-#&gt;   verbose: TRUE
 #&gt;   proxy:
 </code></pre>
 
@@ -246,7 +248,7 @@ devtools::install_github(&quot;ropensci/solrium&quot;)
 <h3>data.frame</h3>
 
 <pre><code class="r">df &lt;- data.frame(id = c(67, 68), price = c(1000, 500000000))
-add(df, &quot;books&quot;)
+conn$add(df, &quot;books&quot;)
 </code></pre>
 
 <pre><code>#&gt; $responseHeader
@@ -254,13 +256,13 @@ add(df, &quot;books&quot;)
 #&gt; [1] 0
 #&gt; 
 #&gt; $responseHeader$QTime
-#&gt; [1] 112
+#&gt; [1] 36
 </code></pre>
 
 <h3>list</h3>
 
 <pre><code class="r">ss &lt;- list(list(id = 1, price = 100), list(id = 2, price = 500))
-add(ss, &quot;books&quot;)
+conn$add(ss, &quot;books&quot;)
 </code></pre>
 
 <pre><code>#&gt; $responseHeader
@@ -268,7 +270,7 @@ add(ss, &quot;books&quot;)
 #&gt; [1] 0
 #&gt; 
 #&gt; $responseHeader$QTime
-#&gt; [1] 16
+#&gt; [1] 37
 </code></pre>
 
 <h2>Delete documents</h2>
@@ -280,7 +282,7 @@ add(ss, &quot;books&quot;)
 <pre><code class="r">docs &lt;- list(list(id = 1, price = 100, name = &quot;brown&quot;),
              list(id = 2, price = 500, name = &quot;blue&quot;),
              list(id = 3, price = 2000L, name = &quot;pink&quot;))
-add(docs, &quot;gettingstarted&quot;)
+conn$add(docs, &quot;gettingstarted&quot;)
 </code></pre>
 
 <pre><code>#&gt; $responseHeader
@@ -288,49 +290,25 @@ add(docs, &quot;gettingstarted&quot;)
 #&gt; [1] 0
 #&gt; 
 #&gt; $responseHeader$QTime
-#&gt; [1] 18
+#&gt; [1] 42
 </code></pre>
 
 <p>And the documents are now in your Solr database</p>
 
-<pre><code class="r">tail(solr_search(name = &quot;gettingstarted&quot;, &quot;*:*&quot;, base = &quot;http://localhost:8983/solr/select&quot;, rows = 100))
+<pre><code class="r">conn$search(name = &quot;gettingstarted&quot;, params = list(q = &quot;*:*&quot;, rows = 3))
 </code></pre>
 
-<pre><code>#&gt; Source: local data frame [3 x 4]
-#&gt; 
-#&gt;      id price  name    _version_
-#&gt;   (chr) (int) (chr)        (dbl)
-#&gt; 1     1   100 brown 1.525729e+18
-#&gt; 2     2   500  blue 1.525729e+18
-#&gt; 3     3  2000  pink 1.525729e+18
+<pre><code>#&gt; # A tibble: 3 x 4
+#&gt;   id    title   title_str `_version_`
+#&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;           &lt;dbl&gt;
+#&gt; 1 10    adfadsf adfadsf       1.62e18
+#&gt; 2 12    though  though        1.62e18
+#&gt; 3 14    animals animals       1.62e18
 </code></pre>
 
 <p>Now delete those documents just added</p>
 
-<pre><code class="r">delete_by_id(ids = c(1, 2, 3), &quot;gettingstarted&quot;)
-</code></pre>
-
-<pre><code>#&gt; $responseHeader
-#&gt; $responseHeader$status
-#&gt; [1] 0
-#&gt; 
-#&gt; $responseHeader$QTime
-#&gt; [1] 24
-</code></pre>
-
-<p>And now they are gone</p>
-
-<pre><code class="r">tail(solr_search(&quot;gettingstarted&quot;, &quot;*:*&quot;, base = &quot;http://localhost:8983/solr/select&quot;, rows = 100))
-</code></pre>
-
-<pre><code>#&gt; Source: local data frame [0 x 0]
-</code></pre>
-
-<h3>By query</h3>
-
-<p>Add some documents first</p>
-
-<pre><code class="r">add(docs, &quot;gettingstarted&quot;)
+<pre><code class="r">conn$delete_by_id(ids = c(1, 2, 3), &quot;gettingstarted&quot;)
 </code></pre>
 
 <pre><code>#&gt; $responseHeader
@@ -341,23 +319,24 @@ add(docs, &quot;gettingstarted&quot;)
 #&gt; [1] 19
 </code></pre>
 
-<p>And the documents are now in your Solr database</p>
+<p>And now they are gone</p>
 
-<pre><code class="r">tail(solr_search(&quot;gettingstarted&quot;, &quot;*:*&quot;, base = &quot;http://localhost:8983/solr/select&quot;, rows = 100))
+<pre><code class="r">conn$search(&quot;gettingstarted&quot;, params = list(q = &quot;*:*&quot;, rows = 4))
 </code></pre>
 
-<pre><code>#&gt; Source: local data frame [3 x 4]
-#&gt; 
-#&gt;      id price  name    _version_
-#&gt;   (chr) (int) (chr)        (dbl)
-#&gt; 1     1   100 brown 1.525729e+18
-#&gt; 2     2   500  blue 1.525729e+18
-#&gt; 3     3  2000  pink 1.525729e+18
+<pre><code>#&gt; # A tibble: 3 x 4
+#&gt;   id    title   title_str `_version_`
+#&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;           &lt;dbl&gt;
+#&gt; 1 10    adfadsf adfadsf       1.62e18
+#&gt; 2 12    though  though        1.62e18
+#&gt; 3 14    animals animals       1.62e18
 </code></pre>
 
-<p>Now delete those documents just added</p>
+<h3>By query</h3>
 
-<pre><code class="r">delete_by_query(query = &quot;(name:blue OR name:pink)&quot;, &quot;gettingstarted&quot;)
+<p>Add some documents first</p>
+
+<pre><code class="r">conn$add(docs, &quot;gettingstarted&quot;)
 </code></pre>
 
 <pre><code>#&gt; $responseHeader
@@ -365,19 +344,49 @@ add(docs, &quot;gettingstarted&quot;)
 #&gt; [1] 0
 #&gt; 
 #&gt; $responseHeader$QTime
-#&gt; [1] 12
+#&gt; [1] 33
+</code></pre>
+
+<p>And the documents are now in your Solr database</p>
+
+<pre><code class="r">conn$search(&quot;gettingstarted&quot;, params = list(q = &quot;*:*&quot;, rows = 5))
+</code></pre>
+
+<pre><code>#&gt; # A tibble: 5 x 7
+#&gt;   id    title   title_str `_version_` price name  name_str
+#&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;           &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   
+#&gt; 1 10    adfadsf adfadsf       1.62e18    NA &lt;NA&gt;  &lt;NA&gt;    
+#&gt; 2 12    though  though        1.62e18    NA &lt;NA&gt;  &lt;NA&gt;    
+#&gt; 3 14    animals animals       1.62e18    NA &lt;NA&gt;  &lt;NA&gt;    
+#&gt; 4 1     &lt;NA&gt;    &lt;NA&gt;          1.62e18   100 brown brown   
+#&gt; 5 2     &lt;NA&gt;    &lt;NA&gt;          1.62e18   500 blue  blue
+</code></pre>
+
+<p>Now delete those documents just added</p>
+
+<pre><code class="r">conn$delete_by_query(query = &quot;(name:blue OR name:pink)&quot;, &quot;gettingstarted&quot;)
+</code></pre>
+
+<pre><code>#&gt; $responseHeader
+#&gt; $responseHeader$status
+#&gt; [1] 0
+#&gt; 
+#&gt; $responseHeader$QTime
+#&gt; [1] 26
 </code></pre>
 
 <p>And now they are gone</p>
 
-<pre><code class="r">tail(solr_search(&quot;gettingstarted&quot;, &quot;*:*&quot;, base = &quot;http://localhost:8983/solr/select&quot;, rows = 100))
+<pre><code class="r">conn$search(&quot;gettingstarted&quot;, params = list(q = &quot;*:*&quot;, rows = 5))
 </code></pre>
 
-<pre><code>#&gt; Source: local data frame [1 x 4]
-#&gt; 
-#&gt;      id price  name    _version_
-#&gt;   (chr) (int) (chr)        (dbl)
-#&gt; 1     1   100 brown 1.525729e+18
+<pre><code>#&gt; # A tibble: 4 x 7
+#&gt;   id    title   title_str `_version_` price name  name_str
+#&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;           &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   
+#&gt; 1 10    adfadsf adfadsf       1.62e18    NA &lt;NA&gt;  &lt;NA&gt;    
+#&gt; 2 12    though  though        1.62e18    NA &lt;NA&gt;  &lt;NA&gt;    
+#&gt; 3 14    animals animals       1.62e18    NA &lt;NA&gt;  &lt;NA&gt;    
+#&gt; 4 1     &lt;NA&gt;    &lt;NA&gt;          1.62e18   100 brown brown
 </code></pre>
 
 <h2>Update documents from files</h2>
@@ -395,7 +404,7 @@ add(docs, &quot;gettingstarted&quot;)
 <h3>JSON</h3>
 
 <pre><code class="r">file &lt;- system.file(&quot;examples&quot;, &quot;books.json&quot;, package = &quot;solrium&quot;)
-update_json(file, &quot;books&quot;)
+conn$update_json(file, &quot;books&quot;)
 </code></pre>
 
 <pre><code>#&gt; $responseHeader
@@ -403,7 +412,7 @@ update_json(file, &quot;books&quot;)
 #&gt; [1] 0
 #&gt; 
 #&gt; $responseHeader$QTime
-#&gt; [1] 39
+#&gt; [1] 59
 </code></pre>
 
 <h3>Add and delete in the same file</h3>
@@ -411,7 +420,7 @@ update_json(file, &quot;books&quot;)
 <p>Add a document first, that we can later delete</p>
 
 <pre><code class="r">ss &lt;- list(list(id = 456, name = &quot;cat&quot;))
-add(ss, &quot;books&quot;)
+conn$add(ss, &quot;books&quot;)
 </code></pre>
 
 <pre><code>#&gt; $responseHeader
@@ -419,7 +428,7 @@ add(ss, &quot;books&quot;)
 #&gt; [1] 0
 #&gt; 
 #&gt; $responseHeader$QTime
-#&gt; [1] 19
+#&gt; [1] 57
 </code></pre>
 
 <p>Now add a new document, and delete the one we just made</p>
@@ -439,7 +448,6 @@ cat(readLines(file), sep = &quot;\n&quot;)
 #&gt;      &lt;field name=&quot;sequence_i&quot;&gt;1&lt;/field&gt;
 #&gt;      &lt;field name=&quot;genre_s&quot;&gt;fantasy&lt;/field&gt;
 #&gt;      &lt;field name=&quot;inStock&quot;&gt;TRUE&lt;/field&gt;
-#&gt;      &lt;field name=&quot;price&quot;&gt;12.5&lt;/field&gt;
 #&gt;      &lt;field name=&quot;pages_i&quot;&gt;384&lt;/field&gt;
 #&gt;    &lt;/doc&gt;
 #&gt;  &lt;/add&gt;
@@ -449,7 +457,7 @@ cat(readLines(file), sep = &quot;\n&quot;)
 #&gt; &lt;/update&gt;
 </code></pre>
 
-<pre><code class="r">update_xml(file, &quot;books&quot;)
+<pre><code class="r">conn$update_xml(file, &quot;books&quot;)
 </code></pre>
 
 <pre><code>#&gt; $responseHeader
@@ -457,7 +465,7 @@ cat(readLines(file), sep = &quot;\n&quot;)
 #&gt; [1] 0
 #&gt; 
 #&gt; $responseHeader$QTime
-#&gt; [1] 23
+#&gt; [1] 30
 </code></pre>
 
 <h3>Notes</h3>

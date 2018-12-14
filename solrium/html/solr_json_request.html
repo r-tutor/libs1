@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Solr json request</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for solr_json_request {solrium}"><tr><td>solr_json_request {solrium}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Solr json request</h2>
+
+<h3>Description</h3>
+
+<p>search using the JSON request API
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+solr_json_request(conn, name = NULL, body = NULL, callopts = list(),
+  progress = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>conn</code></td>
+<td>
+<p>A solrium connection object, see <a href="SolrClient.html">SolrClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>Name of a collection or core. Or leave as <code>NULL</code> if not needed.</p>
+</td></tr>
+<tr valign="top"><td><code>body</code></td>
+<td>
+<p>(list) a named list, or a valid JSON character string</p>
+</td></tr>
+<tr valign="top"><td><code>callopts</code></td>
+<td>
+<p>Call options passed on to <a href="../../crul/html/HttpClient.html">crul::HttpClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>progress</code></td>
+<td>
+<p>a function with logic for printing a progress
+bar for an HTTP request, ultimately passed down to <span class="pkg">curl</span>. only supports
+<code>httr::progress</code> for now. See the README for an example.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>JSON character string
+</p>
+
+
+<h3>Note</h3>
+
+<p>SOLR v7.1 was first version to support this. See
+<a href="https://issues.apache.org/jira/browse/SOLR-11244">https://issues.apache.org/jira/browse/SOLR-11244</a>
+</p>
+<p>POST request only, no GET request available
+</p>
+
+
+<h3>References</h3>
+
+<p>See <a href="https://lucene.apache.org/solr/guide/7_6/json-request-api.html">https://lucene.apache.org/solr/guide/7_6/json-request-api.html</a>
+for more information.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# Connect to a local Solr instance
+(conn &lt;- SolrClient$new())
+
+## body as JSON 
+a &lt;- conn$json_request("gettingstarted", body = '{"query":"*:*"}')
+jsonlite::fromJSON(a)
+## body as named list
+b &lt;- conn$json_request("gettingstarted", body = list(query = "*:*"))
+jsonlite::fromJSON(b)
+
+## body as JSON 
+a &lt;- solr_json_request(conn, "gettingstarted", body = '{"query":"*:*"}')
+jsonlite::fromJSON(a)
+## body as named list
+b &lt;- solr_json_request(conn, "gettingstarted", body = list(query = "*:*"))
+jsonlite::fromJSON(b)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>solrium</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

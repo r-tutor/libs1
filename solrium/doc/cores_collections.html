@@ -229,13 +229,15 @@ devtools::install_github(&quot;ropensci/solrium&quot;)
 
 <p>Initialize connection</p>
 
-<pre><code class="r">solr_connect()
+<pre><code class="r">(conn &lt;- SolrClient$new())
 </code></pre>
 
-<pre><code>#&gt; &lt;solr_connection&gt;
-#&gt;   url:    http://localhost:8983
+<pre><code>#&gt; &lt;Solr Client&gt;
+#&gt;   host: 127.0.0.1
+#&gt;   path: 
+#&gt;   port: 8983
+#&gt;   scheme: http
 #&gt;   errors: simple
-#&gt;   verbose: TRUE
 #&gt;   proxy:
 </code></pre>
 
@@ -258,12 +260,12 @@ devtools::install_github(&quot;ropensci/solrium&quot;)
 
 <h3>Create a core</h3>
 
-<pre><code class="r">core_create()
+<pre><code class="r">conn$core_create()
 </code></pre>
 
 <h3>Delete a core</h3>
 
-<pre><code class="r">core_unload()
+<pre><code class="r">conn$core_unload()
 </code></pre>
 
 <h2>Collections</h2>
@@ -271,38 +273,38 @@ devtools::install_github(&quot;ropensci/solrium&quot;)
 <p>There are many operations you can do on collections, including:</p>
 
 <ul>
-<li><code>collection_addreplica()</code> </li>
-<li><code>collection_addreplicaprop()</code> </li>
-<li><code>collection_addrole()</code> </li>
-<li><code>collection_balanceshardunique()</code> </li>
-<li><code>collection_clusterprop()</code> </li>
-<li><code>collection_clusterstatus()</code> </li>
-<li><code>collection_create()</code> </li>
-<li><code>collection_createalias()</code> </li>
-<li><code>collection_createshard()</code> </li>
-<li><code>collection_delete()</code> </li>
-<li><code>collection_deletealias()</code> </li>
-<li><code>collection_deletereplica()</code> </li>
-<li><code>collection_deletereplicaprop()</code> </li>
-<li><code>collection_deleteshard()</code> </li>
-<li><code>collection_list()</code> </li>
-<li><code>collection_migrate()</code> </li>
-<li><code>collection_overseerstatus()</code> </li>
-<li><code>collection_rebalanceleaders()</code> </li>
-<li><code>collection_reload()</code> </li>
-<li><code>collection_removerole()</code> </li>
-<li><code>collection_requeststatus()</code> </li>
-<li><code>collection_splitshard()</code> </li>
+<li><code>collection_addreplica()</code></li>
+<li><code>collection_addreplicaprop()</code></li>
+<li><code>collection_addrole()</code></li>
+<li><code>collection_balanceshardunique()</code></li>
+<li><code>collection_clusterprop()</code></li>
+<li><code>collection_clusterstatus()</code></li>
+<li><code>collection_create()</code></li>
+<li><code>collection_createalias()</code></li>
+<li><code>collection_createshard()</code></li>
+<li><code>collection_delete()</code></li>
+<li><code>collection_deletealias()</code></li>
+<li><code>collection_deletereplica()</code></li>
+<li><code>collection_deletereplicaprop()</code></li>
+<li><code>collection_deleteshard()</code></li>
+<li><code>collection_list()</code></li>
+<li><code>collection_migrate()</code></li>
+<li><code>collection_overseerstatus()</code></li>
+<li><code>collection_rebalanceleaders()</code></li>
+<li><code>collection_reload()</code></li>
+<li><code>collection_removerole()</code></li>
+<li><code>collection_requeststatus()</code></li>
+<li><code>collection_splitshard()</code></li>
 </ul>
 
 <h3>Create a collection</h3>
 
-<pre><code class="r">collection_create()
+<pre><code class="r">conn$collection_create()
 </code></pre>
 
 <h3>Delete a collection</h3>
 
-<pre><code class="r">collection_delete()
+<pre><code class="r">conn$collection_delete()
 </code></pre>
 
 </body>

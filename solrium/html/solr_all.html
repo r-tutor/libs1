@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: All purpose search</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for solr_all {solrium}"><tr><td>solr_all {solrium}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>All purpose search</h2>
+
+<h3>Description</h3>
+
+<p>Includes documents, facets, groups, mlt, stats, and highlights
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+solr_all(conn, name = NULL, params = NULL, body = NULL,
+  callopts = list(), raw = FALSE, parsetype = "df", concat = ",",
+  optimizeMaxRows = TRUE, minOptimizedRows = 50000L, progress = NULL,
+  ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>conn</code></td>
+<td>
+<p>A solrium connection object, see <a href="SolrClient.html">SolrClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>Name of a collection or core. Or leave as <code>NULL</code> if not needed.</p>
+</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+<p>(list) a named list of parameters, results in a GET reqeust
+as long as no body parameters given</p>
+</td></tr>
+<tr valign="top"><td><code>body</code></td>
+<td>
+<p>(list) a named list of parameters, if given a POST request
+will be performed</p>
+</td></tr>
+<tr valign="top"><td><code>callopts</code></td>
+<td>
+<p>Call options passed on to <a href="../../crul/html/HttpClient.html">crul::HttpClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>raw</code></td>
+<td>
+<p>(logical) If TRUE, returns raw data in format specified by wt param</p>
+</td></tr>
+<tr valign="top"><td><code>parsetype</code></td>
+<td>
+<p>(character) One of 'list' or 'df'</p>
+</td></tr>
+<tr valign="top"><td><code>concat</code></td>
+<td>
+<p>(character) Character to concatenate elements of longer than length 1.
+Note that this only works reliably when data format is json (wt='json'). The parsing
+is more complicated in XML format, but you can do that on your own.</p>
+</td></tr>
+<tr valign="top"><td><code>optimizeMaxRows</code></td>
+<td>
+<p>(logical) If <code>TRUE</code>, then rows parameter will be
+adjusted to the number of returned results by the same constraints.
+It will only be applied if rows parameter is higher
+than <code>minOptimizedRows</code>. Default: <code>TRUE</code></p>
+</td></tr>
+<tr valign="top"><td><code>minOptimizedRows</code></td>
+<td>
+<p>(numeric) used by <code>optimizedMaxRows</code> parameter,
+the minimum optimized rows. Default: 50000</p>
+</td></tr>
+<tr valign="top"><td><code>progress</code></td>
+<td>
+<p>a function with logic for printing a progress
+bar for an HTTP request, ultimately passed down to <span class="pkg">curl</span>. only supports
+<code>httr::progress</code> for now. See the README for an example.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Further args to be combined into query</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>XML, JSON, a list, or data.frame
+</p>
+
+
+<h3>Parameters</h3>
+
+
+<ul>
+<li><p> q Query terms, defaults to '<em>:</em>', or everything.
+</p>
+</li>
+<li><p> sort Field to sort on. You can specify ascending (e.g., score desc) or
+descending (e.g., score asc), sort by two fields (e.g., score desc, price asc),
+or sort by a function (e.g., sum(x_f, y_f) desc, which sorts by the sum of
+x_f and y_f in a descending order).
+</p>
+</li>
+<li><p> start Record to start at, default to beginning.
+</p>
+</li>
+<li><p> rows Number of records to return. Default: 10.
+</p>
+</li>
+<li><p> pageDoc If you expect to be paging deeply into the results (say beyond page 10,
+assuming rows=10) and you are sorting by score, you may wish to add the pageDoc
+and pageScore parameters to your request. These two parameters tell Solr (and Lucene)
+what the last result (Lucene internal docid and score) of the previous page was,
+so that when scoring the query for the next set of pages, it can ignore any results
+that occur higher than that item. To get the Lucene internal doc id, you will need
+to add <code>docid</code> to the &amp;fl list.
+</p>
+</li>
+<li><p> pageScore See pageDoc notes.
+</p>
+</li>
+<li><p> fq Filter query, this does not affect the search, only what gets returned.
+This parameter can accept multiple items in a lis or vector. You can't pass more than
+one parameter of the same name, so we get around it by passing multiple queries
+and we parse internally
+</p>
+</li>
+<li><p> fl Fields to return, can be a character vector like <code>c('id', 'title')</code>,
+or a single character vector with one or more comma separated names, like
+<code>'id,title'</code>
+</p>
+</li>
+<li><p> defType Specify the query parser to use with this request.
+</p>
+</li>
+<li><p> timeAllowed The time allowed for a search to finish. This value only applies
+to the search and not to requests in general. Time is in milliseconds. Values &lt;= 0
+mean no time restriction. Partial results may be returned (if there are any).
+</p>
+</li>
+<li><p> qt Which query handler used. Options: dismax, others?
+</p>
+</li>
+<li><p> NOW Set a fixed time for evaluating Date based expresions
+</p>
+</li>
+<li><p> TZ Time zone, you can override the default.
+</p>
+</li>
+<li><p> echoHandler If <code>TRUE</code>, Solr places the name of the handle used in the
+response to the client for debugging purposes. Default:
+</p>
+</li>
+<li><p> echoParams The echoParams parameter tells Solr what kinds of Request
+parameters should be included in the response for debugging purposes, legal values
+include:
+</p>
+
+<ul>
+<li><p> none - don't include any request parameters for debugging
+</p>
+</li>
+<li><p> explicit - include the parameters explicitly specified by the client in the request
+</p>
+</li>
+<li><p> all - include all parameters involved in this request, either specified explicitly
+by the client, or implicit because of the request handler configuration.
+</p>
+</li></ul>
+
+</li>
+<li><p> wt (character) One of json, xml, or csv. Data type returned, defaults
+to 'csv'. If json, uses <code><a href="../../jsonlite/html/fromJSON.html">jsonlite::fromJSON()</a></code> to parse. If xml,
+uses <code><a href="../../xml2/html/read_xml.html">xml2::read_xml()</a></code> to parse. If csv, uses <code><a href="../../utils/html/read.table.html">read.table()</a></code> to parse.
+<code>wt=csv</code> gives the fastest performance at least in all the cases we have
+tested in, thus it's the default value for <code>wt</code>
+</p>
+</li></ul>
+
+
+
+<h3>References</h3>
+
+<p>See <a href="http://wiki.apache.org/solr/#Search_and_Indexing">http://wiki.apache.org/solr/#Search_and_Indexing</a> for
+more information.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="solr_highlight.html">solr_highlight()</a></code>, <code><a href="solr_facet.html">solr_facet()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# connect
+(cli &lt;- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
+
+solr_all(cli, params = list(q='*:*', rows=2, fl='id'))
+
+# facets
+solr_all(cli, params = list(q='*:*', rows=2, fl='id', facet="true",
+  facet.field="journal"))
+
+# mlt
+solr_all(cli, params = list(q='ecology', rows=2, fl='id', mlt='true',
+  mlt.count=2, mlt.fl='abstract'))
+
+# facets and mlt
+solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true",
+  facet.field="journal", mlt='true', mlt.count=2, mlt.fl='abstract'))
+
+# stats
+solr_all(cli, params = list(q='ecology', rows=2, fl='id', stats='true',
+  stats.field='counter_total_all'))
+
+# facets, mlt, and stats
+solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true",
+  facet.field="journal", mlt='true', mlt.count=2, mlt.fl='abstract',
+  stats='true', stats.field='counter_total_all'))
+
+# group
+solr_all(cli, params = list(q='ecology', rows=2, fl='id', group='true',
+ group.field='journal', group.limit=3))
+
+# facets, mlt, stats, and groups
+solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true",
+ facet.field="journal", mlt='true', mlt.count=2, mlt.fl='abstract',
+ stats='true', stats.field='counter_total_all', group='true',
+ group.field='journal', group.limit=3))
+
+# using wt = xml
+solr_all(cli, params = list(q='*:*', rows=50, fl=c('id','score'),
+  fq='doc_type:full', wt="xml"), raw=TRUE)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>solrium</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

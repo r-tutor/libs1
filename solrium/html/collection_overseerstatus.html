@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get overseer status</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for collection_overseerstatus {solrium}"><tr><td>collection_overseerstatus {solrium}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get overseer status</h2>
+
+<h3>Description</h3>
+
+<p>Returns the current status of the overseer, performance
+statistics of various overseer APIs as well as last 10 failures per
+operation type.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+collection_overseerstatus(conn, raw = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>conn</code></td>
+<td>
+<p>A solrium connection object, see <a href="SolrClient.html">SolrClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>raw</code></td>
+<td>
+<p>(logical) If <code>TRUE</code>, returns raw data</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>You can pass in parameters like <code>property.name=value</code>    to set
+core property name to value. See the section Defining core.properties for
+details on supported properties and values.
+(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+(conn &lt;- SolrClient$new())
+conn$collection_overseerstatus()
+res &lt;- conn$collection_overseerstatus()
+res$responseHeader
+res$leader
+res$overseer_queue_size
+res$overseer_work_queue_size
+res$overseer_operations
+res$collection_operations
+res$overseer_queue
+res$overseer_internal_queue
+res$collection_queue
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>solrium</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

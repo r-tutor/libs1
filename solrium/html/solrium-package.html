@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: General purpose R interface to Solr.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for solrium-package {solrium}"><tr><td>solrium-package {solrium}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>General purpose R interface to Solr.</h2>
+
+<h3>Description</h3>
+
+<p>This package has support for all the search endpoints, as well as a suite
+of functions for managing a Solr database, including adding and deleting
+documents.
+</p>
+
+
+<h3>Important search functions</h3>
+
+
+<ul>
+<li> <p><code><a href="solr_search.html">solr_search</a></code> - General search, only returns documents
+</p>
+</li>
+<li> <p><code><a href="solr_all.html">solr_all</a></code> - General search, including all non-documents
+in addition to documents: facets, highlights, groups, mlt, stats.
+</p>
+</li>
+<li> <p><code><a href="solr_facet.html">solr_facet</a></code> - Faceting only (w/o general search)
+</p>
+</li>
+<li> <p><code><a href="solr_highlight.html">solr_highlight</a></code> - Highlighting only (w/o general search)
+</p>
+</li>
+<li> <p><code><a href="solr_mlt.html">solr_mlt</a></code> - More like this (w/o general search)
+</p>
+</li>
+<li> <p><code><a href="solr_group.html">solr_group</a></code> - Group search (w/o general search)
+</p>
+</li>
+<li> <p><code><a href="solr_stats.html">solr_stats</a></code> - Stats search (w/o general search)
+</p>
+</li></ul>
+
+
+
+<h3>Important Solr management functions</h3>
+
+
+<ul>
+<li> <p><code><a href="update_json.html">update_json</a></code> - Add or delete documents using json in a
+file
+</p>
+</li>
+<li> <p><code><a href="add.html">add</a></code> - Add documents via an R list or data.frame
+</p>
+</li>
+<li> <p><code><a href="delete.html">delete_by_id</a></code> - Delete documents by ID
+</p>
+</li>
+<li> <p><code><a href="delete.html">delete_by_query</a></code> - Delete documents by query
+</p>
+</li></ul>
+
+
+
+<h3>Vignettes</h3>
+
+<p>See the vignettes for help <code>browseVignettes(package = "solrium")</code>
+</p>
+
+
+<h3>Performance</h3>
+
+<p><code>v0.2</code> and above of this package will have <code>wt=csv</code> as the default.
+This  should give significant performance improvement over the previous
+default of <code>wt=json</code>, which pulled down json, parsed to an R list,
+then to a data.frame. With <code>wt=csv</code>, we pull down csv, and read that
+in directly to a data.frame.
+</p>
+<p>The http library we use, <span class="pkg">crul</span>, sets gzip compression header by
+default. As long as compression is used server side, you're good to go on
+compression, which should be a good peformance boost. See
+<a href="https://wiki.apache.org/solr/SolrPerformanceFactors#Query_Response_Compression">https://wiki.apache.org/solr/SolrPerformanceFactors#Query_Response_Compression</a>
+for notes on how to enable compression.
+</p>
+<p>There are other notes about Solr performance at
+<a href="https://wiki.apache.org/solr/SolrPerformanceFactors">https://wiki.apache.org/solr/SolrPerformanceFactors</a> that can be
+used server side/in your Solr config, but aren't things to tune here in
+this R client.
+</p>
+<p>Let us know if there's any further performance improvements we can make.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Scott Chamberlain <a href="mailto:myrmecocystus@gmail.com">myrmecocystus@gmail.com</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>solrium</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

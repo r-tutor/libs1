@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Update documents with CSV data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for update_csv {solrium}"><tr><td>update_csv {solrium}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Update documents with CSV data</h2>
+
+<h3>Description</h3>
+
+<p>Update documents with CSV data
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+update_csv(conn, files, name, separator = ",", header = TRUE,
+  fieldnames = NULL, skip = NULL, skipLines = 0, trim = FALSE,
+  encapsulator = NULL, escape = NULL, keepEmpty = FALSE,
+  literal = NULL, map = NULL, split = NULL, rowid = NULL,
+  rowidOffset = NULL, overwrite = NULL, commit = NULL, wt = "json",
+  raw = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>conn</code></td>
+<td>
+<p>A solrium connection object, see <a href="SolrClient.html">SolrClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>files</code></td>
+<td>
+<p>Path to a single file to load into Solr</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>(character) Name of the core or collection</p>
+</td></tr>
+<tr valign="top"><td><code>separator</code></td>
+<td>
+<p>Specifies the character to act as the field separator. Default: ','</p>
+</td></tr>
+<tr valign="top"><td><code>header</code></td>
+<td>
+<p>TRUE if the first line of the CSV input contains field or column names.
+Default: <code>TRUE</code>. If the fieldnames parameter is absent, these field names
+will be used when adding documents to the index.</p>
+</td></tr>
+<tr valign="top"><td><code>fieldnames</code></td>
+<td>
+<p>Specifies a comma separated list of field names to use when adding
+documents to the Solr index. If the CSV input already has a header, the names
+specified by this parameter will override them. Example: fieldnames=id,name,category</p>
+</td></tr>
+<tr valign="top"><td><code>skip</code></td>
+<td>
+<p>A comma separated list of field names to skip in the input. An alternate
+way to skip a field is to specify it's name as a zero length string in fieldnames.
+For example, <code>fieldnames=id,name,category&amp;skip=name</code> skips the name field,
+and is equivalent to <code>fieldnames=id,,category</code></p>
+</td></tr>
+<tr valign="top"><td><code>skipLines</code></td>
+<td>
+<p>Specifies the number of lines in the input stream to discard
+before the CSV data starts (including the header, if present). Default: <code>0</code></p>
+</td></tr>
+<tr valign="top"><td><code>trim</code></td>
+<td>
+<p>If true remove leading and trailing whitespace from values. CSV parsing
+already ignores leading whitespace by default, but there may be trailing whitespace,
+or there may be leading whitespace that is encapsulated by quotes and is thus not
+removed. This may be specified globally, or on a per-field basis.
+Default: <code>FALSE</code></p>
+</td></tr>
+<tr valign="top"><td><code>encapsulator</code></td>
+<td>
+<p>The character optionally used to surround values to preserve
+characters such as the CSV separator or whitespace. This standard CSV format handles
+the encapsulator itself appearing in an encapsulated value by doubling the
+encapsulator.</p>
+</td></tr>
+<tr valign="top"><td><code>escape</code></td>
+<td>
+<p>The character used for escaping CSV separators or other reserved
+characters. If an escape is specified, the encapsulator is not used unless also
+explicitly specified since most formats use either encapsulation or escaping, not both.</p>
+</td></tr>
+<tr valign="top"><td><code>keepEmpty</code></td>
+<td>
+<p>Keep and index empty (zero length) field values. This may be specified
+globally, or on a per-field basis. Default: <code>FALSE</code></p>
+</td></tr>
+<tr valign="top"><td><code>literal</code></td>
+<td>
+<p>Adds fixed field name/value to all documents. Example: Adds a &quot;datasource&quot;
+field with value equal to &quot;products&quot; for every document indexed from the CSV
+<code>literal.datasource=products</code></p>
+</td></tr>
+<tr valign="top"><td><code>map</code></td>
+<td>
+<p>Specifies a mapping between one value and another. The string on the LHS of
+the colon will be replaced with the string on the RHS. This parameter can be specified
+globally or on a per-field basis. Example: replaces &quot;Absolutely&quot; with &quot;true&quot; in every
+field <code>map=Absolutely:true</code>. Example: removes any values of &quot;RemoveMe&quot; in the
+field &quot;foo&quot; <code>f.foo.map=RemoveMe:&amp;f.foo.keepEmpty=false </code></p>
+</td></tr>
+<tr valign="top"><td><code>split</code></td>
+<td>
+<p>If TRUE, the field value is split into multiple values by another
+CSV parser. The CSV parsing rules such as separator and encapsulator may be specified
+as field parameters. See <a href="https://wiki.apache.org/solr/UpdateCSV#split">https://wiki.apache.org/solr/UpdateCSV#split</a> for examples.</p>
+</td></tr>
+<tr valign="top"><td><code>rowid</code></td>
+<td>
+<p>If not null, add a new field to the document where the passed in parameter
+name is the field name to be added and the current line/rowid is the value. This is
+useful if your CSV doesn't have a unique id already in it and you want to use the line
+number as one. Also useful if you simply want to index where exactly in the original
+CSV file the row came from</p>
+</td></tr>
+<tr valign="top"><td><code>rowidOffset</code></td>
+<td>
+<p>In conjunction with the rowid parameter, this integer value will be
+added to the rowid before adding it the field.</p>
+</td></tr>
+<tr valign="top"><td><code>overwrite</code></td>
+<td>
+<p>If true (the default), check for and overwrite duplicate documents,
+based on the uniqueKey field declared in the solr schema. If you know the documents you
+are indexing do not contain any duplicates then you may see a considerable speed up
+with &amp;overwrite=false.</p>
+</td></tr>
+<tr valign="top"><td><code>commit</code></td>
+<td>
+<p>Commit changes after all records in this request have been indexed. The
+default is commit=false to avoid the potential performance impact of frequent commits.</p>
+</td></tr>
+<tr valign="top"><td><code>wt</code></td>
+<td>
+<p>(character) One of json (default) or xml. If json, uses
+<code><a href="../../jsonlite/html/fromJSON.html">fromJSON</a></code> to parse. If xml, uses
+<code><a href="../../xml2/html/read_xml.html">read_xml</a></code> to parse</p>
+</td></tr>
+<tr valign="top"><td><code>raw</code></td>
+<td>
+<p>(logical) If TRUE, returns raw data in format specified by
+<code>wt</code> param</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>curl options passed on to <a href="../../crul/html/HttpClient.html">crul::HttpClient</a></p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>SOLR v1.2 was first version to support csv. See
+<a href="https://issues.apache.org/jira/browse/SOLR-66">https://issues.apache.org/jira/browse/SOLR-66</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other update: <code><a href="update_json.html">update_json</a></code>,
+<code><a href="update_xml.html">update_xml</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# start Solr: bin/solr start -f -c -p 8983
+
+# connect
+(cli &lt;- SolrClient$new())
+
+if (!cli$collection_exists("helloWorld")) {
+  cli$collection_create(name = "helloWorld", numShards = 2)
+}
+
+df &lt;- data.frame(id=1:3, name=c('red', 'blue', 'green'))
+write.csv(df, file="df.csv", row.names=FALSE, quote = FALSE)
+conn$update_csv("df.csv", "helloWorld", verbose = TRUE)
+
+# give back raw xml
+conn$update_csv("df.csv", "helloWorld", wt = "xml")
+## raw json
+conn$update_csv("df.csv", "helloWorld", wt = "json", raw = TRUE)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>solrium</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>
