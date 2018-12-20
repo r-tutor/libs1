@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Covariance functions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for covmat {spam}"><tr><td>covmat {spam}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Covariance functions</h2>
+
+<h3>Description</h3>
+
+<p>Evaluate a covariance function.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+covmat(h, theta, ... , type="sph")
+
+cov.exp(h, theta, ... , eps= getOption("spam.eps"))
+cov.sph(h, theta, ... , eps= getOption("spam.eps"))
+cov.nug(h, theta, ... , eps= getOption("spam.eps"))
+cov.wu1(h, theta, ... , eps= getOption("spam.eps"))
+cov.wu2(h, theta, ... , eps= getOption("spam.eps"))
+cov.wu3(h, theta, ... , eps= getOption("spam.eps"))
+cov.wend1(h, theta, ... , eps= getOption("spam.eps"))
+cov.wend2(h, theta, ... , eps= getOption("spam.eps"))
+cov.mat(h, theta, ... , eps= getOption("spam.eps"))
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>h</code></td>
+<td>
+<p>object containing the lags.</p>
+</td></tr>
+<tr valign="top"><td><code>theta</code></td>
+<td>
+<p>parameter of the covariance function, see
+&lsquo;Details&rsquo;.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>covariance function specification.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments passed from other methods.</p>
+</td></tr>
+<tr valign="top"><td><code>eps</code></td>
+<td>
+<p>tolerance level.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>covmat</code> is a wrapper that calls the other functions
+according to the argument <code>type</code>. The nomenclature is similar to
+<code>premat</code>
+<br />
+The parametrization is (range, partial- sill, [smoothness = 1], [nugget = 0]), where
+only the range needs to be specified.
+In case of negative parameter values, a warning is issued and the
+absolute value is retained.
+Although more cryptic, having all arguments as a single vector
+simplifies optimization with <code>optim</code>.
+<br />
+Currently, the functions distinguish between a sparse <code>spam</code>
+object <code>h</code> and any other numeric type. In the future, this might
+change and appropriate methods will be implemented.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Covariance function evaluated on <code>h</code>.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Reinhard Furrer</p>
+
+
+<h3>References</h3>
+
+<p>Any classical book about geostatistics.</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="precmat.html">precmat</a></code>.</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+locs &lt;- cbind(runif(10),runif(10))
+h &lt;- nearest.dist(locs, delta=.3)
+Sigma &lt;- cov.sph(h, c(.3, 1, .1))
+
+## Not run: 
+h &lt;- seq(0, to=1, length.out=100)
+plot( h, cov.exp(h, c(1/3,1)), type='l', ylim=c(0,1))
+type &lt;- c("sph","wendland1","wendland2","wu1","wu2","wu3")
+for (i in 1:6)
+  lines( h, covmat(h, 1, type=type[i]), col=i+1)
+legend('topright',legend=type, col=2:7, lty=1)
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>spam</em> version 2.2-1 <a href="00Index.html">Index</a>]</div>
+</body></html>

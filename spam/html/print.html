@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Printing and summarizing sparse matrices</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for print {spam}"><tr><td>print {spam}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Printing and summarizing sparse matrices</h2>
+
+<h3>Description</h3>
+
+<p>Printing (non-zero elements) of sparse matrices
+and summarizing the sparsity structure thereof. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  ## S4 method for signature 'spam'
+print(x, ...)
+## S4 method for signature 'spam'
+summary(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>matrix of class <code>spam</code> or <code>spam.chol.</code><em>method</em>.</p>
+</td></tr>
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>matrix of class <code>spam</code> or <code>spam.chol.</code><em>method</em>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>any other arguments passed
+to <code>print.default</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>getOption('spam.printsize')</code> determines  if the sparse matrix is
+coerced into a matrix and the printed as an array or if
+only the non-zero elements of the matrix are given.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>NULL</code> for <code>print</code>, because the information is printed with <code>cat</code> there
+is no real need to pass any object back. <br />
+
+A list containing the non-zero elements and the density for
+<code>summary</code>
+for class <code>spam</code>.<br />
+
+A list containing the non-zero elements of the factor, the density and
+the fill-in for  <code>summary</code> for class <code>spam.chol.NgPeyton</code>.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Reinhard Furrer</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="spam-deprecated.html">spam.options</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+set.seed(13)
+nz &lt;- 8
+ln &lt;- nz
+smat &lt;- spam(0,ln,ln)
+smat[cbind(sample(ln,nz),sample(ln,nz))] &lt;- 1:nz
+
+par(mfcol=c(1,2),pty='s')
+options(spam.printsize=1000)
+print(smat)
+options(spam.printsize=10)
+print(smat)
+summary(smat)
+(summary(smat))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>spam</em> version 2.2-1 <a href="00Index.html">Index</a>]</div>
+</body></html>
