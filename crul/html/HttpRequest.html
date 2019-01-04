@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: HTTP request object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for HttpRequest {crul}"><tr><td>HttpRequest {crul}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>HTTP request object</h2>
+
+<h3>Description</h3>
+
+<p>HTTP request object
+</p>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>url</code></td>
+<td>
+<p>(character) A url. One of <code>url</code> or <code>handle</code> required.</p>
+</td></tr>
+<tr valign="top"><td><code>opts</code></td>
+<td>
+<p>(list) curl options, a named list. See
+<code><a href="../../curl/html/curl_options.html">curl_options</a></code> for available curl options</p>
+</td></tr>
+<tr valign="top"><td><code>proxies</code></td>
+<td>
+<p>an object of class <code>proxy</code>, as returned from the
+<code><a href="proxies.html">proxy</a></code> function. Supports one proxy for now</p>
+</td></tr>
+<tr valign="top"><td><code>auth</code></td>
+<td>
+<p>result of a call to the <code><a href="auth.html">auth</a></code> function,
+e.g. <code>auth(user = "foo", pwd = "bar")</code></p>
+</td></tr>
+<tr valign="top"><td><code>headers</code></td>
+<td>
+<p>(list) a named list of headers</p>
+</td></tr>
+<tr valign="top"><td><code>handle</code></td>
+<td>
+<p>A handle, see <code><a href="handle.html">handle</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>progress</code></td>
+<td>
+<p>a function with logic for printing a progress
+bar for an HTTP request, ultimiately passed down to <span class="pkg">curl</span>.
+only supports httr::progress() for now</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This R6 class doesn't do actual HTTP requests as does
+<code><a href="HttpClient.html">HttpClient()</a></code> - it is for building requests to use for async HTTP
+requests in <code><a href="AsyncVaried.html">AsyncVaried()</a></code>
+</p>
+<p>Note that you can access HTTP verbs after creating an <code>HttpRequest</code>
+object, just as you can with <code>HttpClient</code>. See examples for usage.
+</p>
+<p>Also note that when you call HTTP verbs on a <code>HttpRequest</code> object you
+don't need to assign the new object to a variable as the new details
+you've added are added to the object itself.
+</p>
+<p><strong>Methods</strong>
+</p>
+
+<dl>
+<dt><code>get(path, query, disk, stream, ...)</code></dt><dd>
+<p>Define a GET request
+</p>
+</dd>
+<dt><code>post(path, query, body, disk, stream, ...)</code></dt><dd>
+<p>Define a POST request
+</p>
+</dd>
+<dt><code>put(path, query, body, disk, stream, ...)</code></dt><dd>
+<p>Define a PUT request
+</p>
+</dd>
+<dt><code>patch(path, query, body, disk, stream, ...)</code></dt><dd>
+<p>Define a PATCH request
+</p>
+</dd>
+<dt><code>delete(path, query, body, disk, stream, ...)</code></dt><dd>
+<p>Define a DELETE request
+</p>
+</dd>
+<dt><code>head(path, ...)</code></dt><dd>
+<p>Define a HEAD request
+</p>
+</dd>
+<dt><code>verb(verb, ...)</code></dt><dd>
+<p>Use an arbitrary HTTP verb supported on this class
+Supported verbs: get, post, put, patch, delete, head
+</p>
+</dd>
+<dt><code>method()</code></dt><dd>
+<p>Get the HTTP method (if defined)
+- returns character string
+</p>
+</dd>
+</dl>
+
+<p>See <code><a href="HttpClient.html">HttpClient()</a></code> for information on parameters.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="post-requests.html">post-requests</a>, <a href="delete-requests.html">delete-requests</a>,
+<a href="http-headers.html">http-headers</a>, <a href="writing-options.html">writing-options</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+x &lt;- HttpRequest$new(url = "https://httpbin.org/get")
+## note here how the HTTP method is shown on the first line to the right
+x$get()
+
+## assign to a new object to keep the output
+z &lt;- x$get()
+### get the HTTP method
+z$method()
+
+(x &lt;- HttpRequest$new(url = "https://httpbin.org/get")$get())
+x$url
+x$payload
+
+(x &lt;- HttpRequest$new(url = "https://httpbin.org/post"))
+x$post(body = list(foo = "bar"))
+
+HttpRequest$new(
+  url = "https://httpbin.org/get",
+  headers = list(
+    `Content-Type` = "application/json"
+  )
+)
+
+# verb: get any http method
+z &lt;- HttpRequest$new(url = "https://httpbin.org/get")
+res &lt;- z$verb('get', query = list(hello = "world"))
+res$payload
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>crul</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

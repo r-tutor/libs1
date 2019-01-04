@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Set curl options, proxy, and basic auth</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for crul-options {crul}"><tr><td>crul-options {crul}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Set curl options, proxy, and basic auth</h2>
+
+<h3>Description</h3>
+
+<p>Set curl options, proxy, and basic auth
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+set_opts(...)
+
+set_proxy(x)
+
+set_auth(x)
+
+set_headers(...)
+
+crul_settings(reset = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>For <code>set_opts()</code> any curl option in the set
+<code><a href="../../curl/html/curl_options.html">curl::curl_options()</a></code>. For <code>set_headers()</code> a named list of headers</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>For <code>set_proxy()</code> a <code>proxy</code> object made with <code><a href="proxies.html">proxy()</a></code>. For
+<code>set_auth()</code> an <code>auth</code> object made with <code><a href="auth.html">auth()</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>reset</code></td>
+<td>
+<p>(logical) reset all settings (aka, delete them).
+Default: <code>FALSE</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>the <code>mock</code> option will be seen in output of <code>crul_settings()</code>
+but is set via the function <code><a href="mock.html">mock()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# get settings
+crul_settings()
+
+# curl options
+set_opts(timeout_ms = 1000)
+crul_settings()
+set_opts(timeout_ms = 4000)
+crul_settings()
+set_opts(verbose = TRUE)
+crul_settings()
+## Not run: 
+HttpClient$new('https://httpbin.org')$get('get')
+
+## End(Not run)
+
+# basic authentication
+set_auth(auth(user = "foo", pwd = "bar", auth = "basic"))
+crul_settings()
+
+# proxies
+set_proxy(proxy("http://97.77.104.22:3128"))
+crul_settings()
+
+# headers
+crul_settings(TRUE) # reset first
+set_headers(foo = "bar")
+crul_settings()
+set_headers(`User-Agent` = "hello world")
+crul_settings()
+## Not run: 
+set_opts(verbose = TRUE)
+HttpClient$new('https://httpbin.org')$get('get')
+
+## End(Not run)
+
+# reset
+crul_settings(TRUE)
+crul_settings()
+
+# works with async functions
+## Async
+set_opts(verbose = TRUE)
+cc &lt;- Async$new(urls = c(
+    'https://httpbin.org/get?a=5',
+    'https://httpbin.org/get?foo=bar'))
+(res &lt;- cc$get())
+
+## AsyncVaried
+set_opts(verbose = TRUE)
+set_headers(stuff = "things")
+reqlist &lt;- list(
+  HttpRequest$new(url = "https://httpbin.org/get")$get(),
+  HttpRequest$new(url = "https://httpbin.org/post")$post())
+out &lt;- AsyncVaried$new(.list = reqlist)
+out$request()
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>crul</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

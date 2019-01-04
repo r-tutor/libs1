@@ -23,7 +23,8 @@ aceEditor(outputId, value, mode, theme, vimKeyBinding = FALSE,
   hotkeys = NULL, autoComplete = c("disabled", "enabled", "live"),
   autoCompleters = "", autoCompleteList = NULL, tabSize = 4,
   useSoftTabs = TRUE, showInvisibles = FALSE,
-  setBehavioursEnabled = TRUE)
+  setBehavioursEnabled = TRUE, autoScrollEditorIntoView = FALSE,
+  maxLines = NULL, minLines = NULL)
 </pre>
 
 
@@ -162,6 +163,18 @@ Default value is FALSE</p>
 <p>Determines if the auto-pairing of special characters, like 
 quotation marks, parenthesis, or brackets should be enabled. Default value is TRUE.</p>
 </td></tr>
+<tr valign="top"><td><code>autoScrollEditorIntoView</code></td>
+<td>
+<p>If TRUE, expands the size of the editor window as new lines are added</p>
+</td></tr>
+<tr valign="top"><td><code>maxLines</code></td>
+<td>
+<p>Maximum number of lines the editor window will expand to when autoScrollEditorIntoView is TRUE</p>
+</td></tr>
+<tr valign="top"><td><code>minLines</code></td>
+<td>
+<p>Minimum number of lines in the editor window when autoScrollEditorIntoView is TRUE</p>
+</td></tr>
 </table>
 
 
@@ -208,5 +221,5 @@ quotation marks, parenthesis, or brackets should be enabled. Default value is TR
 
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>shinyAce</em> version 0.3.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shinyAce</em> version 0.3.3 <a href="00Index.html">Index</a>]</div>
 </body></html>

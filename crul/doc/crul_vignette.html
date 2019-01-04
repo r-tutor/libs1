@@ -281,6 +281,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -288,14 +291,74 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -362,20 +425,32 @@ $(document).ready(function () {
 <p>The response from a http request is another R6 class <code>HttpResponse</code>, which has slots for the outputs of the request, and some functions to deal with the response:</p>
 <p>Status code</p>
 <pre class="r"><code>res$status_code
-#&gt; [1] 503</code></pre>
+#&gt; [1] 200</code></pre>
 <p>The content</p>
 <pre class="r"><code>res$content
-#&gt;  [1] 7b 22 73 74 61 74 75 73 22 3a 22 35 30 33 22 2c 22 64 65 73 63 72 69
-#&gt; [24] 70 74 69 6f 6e 22 3a 22 54 68 65 20 64 65 70 6c 6f 79 6d 65 6e 74 20
-#&gt; [47] 69 73 20 63 75 72 72 65 6e 74 6c 79 20 75 6e 61 76 61 69 6c 61 62 6c
-#&gt; [70] 65 22 7d 0a</code></pre>
+#&gt;   [1] 7b 0a 20 20 22 61 72 67 73 22 3a 20 7b 7d 2c 20 0a 20 20 22 68 65 61
+#&gt;  [24] 64 65 72 73 22 3a 20 7b 0a 20 20 20 20 22 41 22 3a 20 22 68 65 6c 6c
+#&gt;  [47] 6f 20 77 6f 72 6c 64 22 2c 20 0a 20 20 20 20 22 41 63 63 65 70 74 22
+#&gt;  [70] 3a 20 22 61 70 70 6c 69 63 61 74 69 6f 6e 2f 6a 73 6f 6e 2c 20 74 65
+#&gt;  [93] 78 74 2f 78 6d 6c 2c 20 61 70 70 6c 69 63 61 74 69 6f 6e 2f 78 6d 6c
+#&gt; [116] 2c 20 2a 2f 2a 22 2c 20 0a 20 20 20 20 22 41 63 63 65 70 74 2d 45 6e
+#&gt; [139] 63 6f 64 69 6e 67 22 3a 20 22 67 7a 69 70 2c 20 64 65 66 6c 61 74 65
+#&gt; [162] 22 2c 20 0a 20 20 20 20 22 43 6f 6e 6e 65 63 74 69 6f 6e 22 3a 20 22
+#&gt; [185] 63 6c 6f 73 65 22 2c 20 0a 20 20 20 20 22 48 6f 73 74 22 3a 20 22 68
+#&gt; [208] 74 74 70 62 69 6e 2e 6f 72 67 22 2c 20 0a 20 20 20 20 22 55 73 65 72
+#&gt; [231] 2d 41 67 65 6e 74 22 3a 20 22 6c 69 62 63 75 72 6c 2f 37 2e 35 34 2e
+#&gt; [254] 30 20 72 2d 63 75 72 6c 2f 33 2e 32 20 63 72 75 6c 2f 30 2e 36 2e 32
+#&gt; [277] 2e 39 33 33 36 22 0a 20 20 7d 2c 20 0a 20 20 22 6f 72 69 67 69 6e 22
+#&gt; [300] 3a 20 22 32 34 2e 32 31 2e 32 32 39 2e 35 39 22 2c 20 0a 20 20 22 75
+#&gt; [323] 72 6c 22 3a 20 22 68 74 74 70 73 3a 2f 2f 68 74 74 70 62 69 6e 2e 6f
+#&gt; [346] 72 67 2f 67 65 74 22 0a 7d 0a</code></pre>
 <p>HTTP method</p>
 <pre class="r"><code>res$method
 #&gt; [1] &quot;get&quot;</code></pre>
 <p>Request headers</p>
 <pre class="r"><code>res$request_headers
 #&gt; $`User-Agent`
-#&gt; [1] &quot;libcurl/7.54.0 r-curl/3.2 crul/0.5.4.9521&quot;
+#&gt; [1] &quot;libcurl/7.54.0 r-curl/3.2 crul/0.6.2.9336&quot;
 #&gt; 
 #&gt; $`Accept-Encoding`
 #&gt; [1] &quot;gzip, deflate&quot;
@@ -388,43 +463,92 @@ $(document).ready(function () {
 <p>Response headers</p>
 <pre class="r"><code>res$response_headers
 #&gt; $status
-#&gt; [1] &quot;HTTP/1.1 503 Service Temporarily Unavailable&quot;
+#&gt; [1] &quot;HTTP/1.1 200 OK&quot;
+#&gt; 
+#&gt; $connection
+#&gt; [1] &quot;keep-alive&quot;
+#&gt; 
+#&gt; $server
+#&gt; [1] &quot;gunicorn/19.9.0&quot;
 #&gt; 
 #&gt; $date
-#&gt; [1] &quot;Fri, 06 Jul 2018 23:18:54 GMT&quot;
+#&gt; [1] &quot;Thu, 03 Jan 2019 05:29:53 GMT&quot;
 #&gt; 
 #&gt; $`content-type`
 #&gt; [1] &quot;application/json&quot;
 #&gt; 
 #&gt; $`content-length`
-#&gt; [1] &quot;73&quot;
+#&gt; [1] &quot;355&quot;
 #&gt; 
-#&gt; $connection
+#&gt; $`access-control-allow-origin`
+#&gt; [1] &quot;*&quot;
+#&gt; 
+#&gt; $`access-control-allow-credentials`
+#&gt; [1] &quot;true&quot;
+#&gt; 
+#&gt; $via
+#&gt; [1] &quot;1.1 vegur&quot;</code></pre>
+<p>All response headers, including intermediate headers, if any</p>
+<pre class="r"><code>res$response_headers_all
+#&gt; [[1]]
+#&gt; [[1]]$status
+#&gt; [1] &quot;HTTP/1.1 200 OK&quot;
+#&gt; 
+#&gt; [[1]]$connection
 #&gt; [1] &quot;keep-alive&quot;
 #&gt; 
-#&gt; $etag
-#&gt; [1] &quot;\&quot;5b22ab07-49\&quot;&quot;
+#&gt; [[1]]$server
+#&gt; [1] &quot;gunicorn/19.9.0&quot;
 #&gt; 
-#&gt; $vary
-#&gt; [1] &quot;Accept&quot;
+#&gt; [[1]]$date
+#&gt; [1] &quot;Thu, 03 Jan 2019 05:29:53 GMT&quot;
 #&gt; 
-#&gt; $`x-now-trace`
-#&gt; [1] &quot;sfo1&quot;
+#&gt; [[1]]$`content-type`
+#&gt; [1] &quot;application/json&quot;
 #&gt; 
-#&gt; $server
-#&gt; [1] &quot;now&quot;
+#&gt; [[1]]$`content-length`
+#&gt; [1] &quot;355&quot;
 #&gt; 
-#&gt; $`cache-control`
-#&gt; [1] &quot;max-age=0&quot;</code></pre>
+#&gt; [[1]]$`access-control-allow-origin`
+#&gt; [1] &quot;*&quot;
+#&gt; 
+#&gt; [[1]]$`access-control-allow-credentials`
+#&gt; [1] &quot;true&quot;
+#&gt; 
+#&gt; [[1]]$via
+#&gt; [1] &quot;1.1 vegur&quot;</code></pre>
 <p>And you can parse the content with a provided function:</p>
 <pre class="r"><code>res$parse()
-#&gt; [1] &quot;{\&quot;status\&quot;:\&quot;503\&quot;,\&quot;description\&quot;:\&quot;The deployment is currently unavailable\&quot;}\n&quot;
+#&gt; [1] &quot;{\n  \&quot;args\&quot;: {}, \n  \&quot;headers\&quot;: {\n    \&quot;A\&quot;: \&quot;hello world\&quot;, \n    \&quot;Accept\&quot;: \&quot;application/json, text/xml, application/xml, */*\&quot;, \n    \&quot;Accept-Encoding\&quot;: \&quot;gzip, deflate\&quot;, \n    \&quot;Connection\&quot;: \&quot;close\&quot;, \n    \&quot;Host\&quot;: \&quot;httpbin.org\&quot;, \n    \&quot;User-Agent\&quot;: \&quot;libcurl/7.54.0 r-curl/3.2 crul/0.6.2.9336\&quot;\n  }, \n  \&quot;origin\&quot;: \&quot;24.21.229.59\&quot;, \n  \&quot;url\&quot;: \&quot;https://httpbin.org/get\&quot;\n}\n&quot;
 jsonlite::fromJSON(res$parse())
-#&gt; $status
-#&gt; [1] &quot;503&quot;
+#&gt; $args
+#&gt; named list()
 #&gt; 
-#&gt; $description
-#&gt; [1] &quot;The deployment is currently unavailable&quot;</code></pre>
+#&gt; $headers
+#&gt; $headers$A
+#&gt; [1] &quot;hello world&quot;
+#&gt; 
+#&gt; $headers$Accept
+#&gt; [1] &quot;application/json, text/xml, application/xml, */*&quot;
+#&gt; 
+#&gt; $headers$`Accept-Encoding`
+#&gt; [1] &quot;gzip, deflate&quot;
+#&gt; 
+#&gt; $headers$Connection
+#&gt; [1] &quot;close&quot;
+#&gt; 
+#&gt; $headers$Host
+#&gt; [1] &quot;httpbin.org&quot;
+#&gt; 
+#&gt; $headers$`User-Agent`
+#&gt; [1] &quot;libcurl/7.54.0 r-curl/3.2 crul/0.6.2.9336&quot;
+#&gt; 
+#&gt; 
+#&gt; $origin
+#&gt; [1] &quot;24.21.229.59&quot;
+#&gt; 
+#&gt; $url
+#&gt; [1] &quot;https://httpbin.org/get&quot;</code></pre>
 <p>With the <code>HttpClient</code> object, which holds any configuration stuff we set, we can make other HTTP verb requests. For example, a <code>HEAD</code> request:</p>
 <pre class="r"><code>x$post(
   path = &quot;post&quot;, 
@@ -438,10 +562,19 @@ f &lt;- tempfile()
 res &lt;- x$get(disk = f)
 # when using write to disk, content is a path
 res$content 
-#&gt; [1] &quot;/var/folders/fc/n7g_vrvn0sx_st0p8lxb3ts40000gn/T//Rtmpj01EFF/file7e173a5b4450&quot;</code></pre>
+#&gt; [1] &quot;/var/folders/fc/n7g_vrvn0sx_st0p8lxb3ts40000gn/T//RtmpadqqMr/filea2395660553e&quot;</code></pre>
 <p>Read lines</p>
 <pre class="r"><code>readLines(res$content, n = 10)
-#&gt; [1] &quot;{\&quot;status\&quot;:\&quot;503\&quot;,\&quot;description\&quot;:\&quot;The deployment is currently unavailable\&quot;}&quot;</code></pre>
+#&gt;  [1] &quot;&lt;!DOCTYPE html&gt;&quot;                                                                                                               
+#&gt;  [2] &quot;&lt;html lang=\&quot;en\&quot;&gt;&quot;                                                                                                            
+#&gt;  [3] &quot;&quot;                                                                                                                              
+#&gt;  [4] &quot;&lt;head&gt;&quot;                                                                                                                        
+#&gt;  [5] &quot;    &lt;meta charset=\&quot;UTF-8\&quot;&gt;&quot;                                                                                                  
+#&gt;  [6] &quot;    &lt;title&gt;httpbin.org&lt;/title&gt;&quot;                                                                                                
+#&gt;  [7] &quot;    &lt;link href=\&quot;https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700\&quot;&quot;
+#&gt;  [8] &quot;        rel=\&quot;stylesheet\&quot;&gt;&quot;                                                                                                   
+#&gt;  [9] &quot;    &lt;link rel=\&quot;stylesheet\&quot; type=\&quot;text/css\&quot; href=\&quot;/flasgger_static/swagger-ui.css\&quot;&gt;&quot;                                      
+#&gt; [10] &quot;    &lt;link rel=\&quot;icon\&quot; type=\&quot;image/png\&quot; href=\&quot;/static/favicon.ico\&quot; sizes=\&quot;64x64 32x32 16x16\&quot; /&gt;&quot;</code></pre>
 </div>
 <div id="stream-data" class="section level2">
 <h2>stream data</h2>
@@ -453,12 +586,12 @@ res$content
 #&gt;   auth: 
 #&gt;   headers: 
 #&gt;   progress: FALSE
-res &lt;- x$get('stream/5', stream = function(x) cat(rawToChar(x)))
-#&gt; {&quot;url&quot;: &quot;https://httpbin.org/stream/5&quot;, &quot;args&quot;: {}, &quot;headers&quot;: {&quot;Host&quot;: &quot;httpbin.org&quot;, &quot;Connection&quot;: &quot;close&quot;, &quot;User-Agent&quot;: &quot;libcurl/7.54.0 r-curl/3.2 crul/0.5.4.9521&quot;, &quot;Accept-Encoding&quot;: &quot;gzip, deflate&quot;, &quot;Accept&quot;: &quot;application/json, text/xml, application/xml, */*&quot;}, &quot;origin&quot;: &quot;157.130.179.86&quot;, &quot;id&quot;: 0}
-#&gt; {&quot;url&quot;: &quot;https://httpbin.org/stream/5&quot;, &quot;args&quot;: {}, &quot;headers&quot;: {&quot;Host&quot;: &quot;httpbin.org&quot;, &quot;Connection&quot;: &quot;close&quot;, &quot;User-Agent&quot;: &quot;libcurl/7.54.0 r-curl/3.2 crul/0.5.4.9521&quot;, &quot;Accept-Encoding&quot;: &quot;gzip, deflate&quot;, &quot;Accept&quot;: &quot;application/json, text/xml, application/xml, */*&quot;}, &quot;origin&quot;: &quot;157.130.179.86&quot;, &quot;id&quot;: 1}
-#&gt; {&quot;url&quot;: &quot;https://httpbin.org/stream/5&quot;, &quot;args&quot;: {}, &quot;headers&quot;: {&quot;Host&quot;: &quot;httpbin.org&quot;, &quot;Connection&quot;: &quot;close&quot;, &quot;User-Agent&quot;: &quot;libcurl/7.54.0 r-curl/3.2 crul/0.5.4.9521&quot;, &quot;Accept-Encoding&quot;: &quot;gzip, deflate&quot;, &quot;Accept&quot;: &quot;application/json, text/xml, application/xml, */*&quot;}, &quot;origin&quot;: &quot;157.130.179.86&quot;, &quot;id&quot;: 2}
-#&gt; {&quot;url&quot;: &quot;https://httpbin.org/stream/5&quot;, &quot;args&quot;: {}, &quot;headers&quot;: {&quot;Host&quot;: &quot;httpbin.org&quot;, &quot;Connection&quot;: &quot;close&quot;, &quot;User-Agent&quot;: &quot;libcurl/7.54.0 r-curl/3.2 crul/0.5.4.9521&quot;, &quot;Accept-Encoding&quot;: &quot;gzip, deflate&quot;, &quot;Accept&quot;: &quot;application/json, text/xml, application/xml, */*&quot;}, &quot;origin&quot;: &quot;157.130.179.86&quot;, &quot;id&quot;: 3}
-#&gt; {&quot;url&quot;: &quot;https://httpbin.org/stream/5&quot;, &quot;args&quot;: {}, &quot;headers&quot;: {&quot;Host&quot;: &quot;httpbin.org&quot;, &quot;Connection&quot;: &quot;close&quot;, &quot;User-Agent&quot;: &quot;libcurl/7.54.0 r-curl/3.2 crul/0.5.4.9521&quot;, &quot;Accept-Encoding&quot;: &quot;gzip, deflate&quot;, &quot;Accept&quot;: &quot;application/json, text/xml, application/xml, */*&quot;}, &quot;origin&quot;: &quot;157.130.179.86&quot;, &quot;id&quot;: 4}
+res &lt;- x$get(&#39;stream/5&#39;, stream = function(x) cat(rawToChar(x)))
+#&gt; {&quot;url&quot;: &quot;https://httpbin.org/stream/5&quot;, &quot;args&quot;: {}, &quot;headers&quot;: {&quot;Host&quot;: &quot;httpbin.org&quot;, &quot;Connection&quot;: &quot;close&quot;, &quot;User-Agent&quot;: &quot;libcurl/7.54.0 r-curl/3.2 crul/0.6.2.9336&quot;, &quot;Accept-Encoding&quot;: &quot;gzip, deflate&quot;, &quot;Accept&quot;: &quot;application/json, text/xml, application/xml, */*&quot;}, &quot;origin&quot;: &quot;24.21.229.59&quot;, &quot;id&quot;: 0}
+#&gt; {&quot;url&quot;: &quot;https://httpbin.org/stream/5&quot;, &quot;args&quot;: {}, &quot;headers&quot;: {&quot;Host&quot;: &quot;httpbin.org&quot;, &quot;Connection&quot;: &quot;close&quot;, &quot;User-Agent&quot;: &quot;libcurl/7.54.0 r-curl/3.2 crul/0.6.2.9336&quot;, &quot;Accept-Encoding&quot;: &quot;gzip, deflate&quot;, &quot;Accept&quot;: &quot;application/json, text/xml, application/xml, */*&quot;}, &quot;origin&quot;: &quot;24.21.229.59&quot;, &quot;id&quot;: 1}
+#&gt; {&quot;url&quot;: &quot;https://httpbin.org/stream/5&quot;, &quot;args&quot;: {}, &quot;headers&quot;: {&quot;Host&quot;: &quot;httpbin.org&quot;, &quot;Connection&quot;: &quot;close&quot;, &quot;User-Agent&quot;: &quot;libcurl/7.54.0 r-curl/3.2 crul/0.6.2.9336&quot;, &quot;Accept-Encoding&quot;: &quot;gzip, deflate&quot;, &quot;Accept&quot;: &quot;application/json, text/xml, application/xml, */*&quot;}, &quot;origin&quot;: &quot;24.21.229.59&quot;, &quot;id&quot;: 2}
+#&gt; {&quot;url&quot;: &quot;https://httpbin.org/stream/5&quot;, &quot;args&quot;: {}, &quot;headers&quot;: {&quot;Host&quot;: &quot;httpbin.org&quot;, &quot;Connection&quot;: &quot;close&quot;, &quot;User-Agent&quot;: &quot;libcurl/7.54.0 r-curl/3.2 crul/0.6.2.9336&quot;, &quot;Accept-Encoding&quot;: &quot;gzip, deflate&quot;, &quot;Accept&quot;: &quot;application/json, text/xml, application/xml, */*&quot;}, &quot;origin&quot;: &quot;24.21.229.59&quot;, &quot;id&quot;: 3}
+#&gt; {&quot;url&quot;: &quot;https://httpbin.org/stream/5&quot;, &quot;args&quot;: {}, &quot;headers&quot;: {&quot;Host&quot;: &quot;httpbin.org&quot;, &quot;Connection&quot;: &quot;close&quot;, &quot;User-Agent&quot;: &quot;libcurl/7.54.0 r-curl/3.2 crul/0.6.2.9336&quot;, &quot;Accept-Encoding&quot;: &quot;gzip, deflate&quot;, &quot;Accept&quot;: &quot;application/json, text/xml, application/xml, */*&quot;}, &quot;origin&quot;: &quot;24.21.229.59&quot;, &quot;id&quot;: 4}
 # when streaming, content is NULL
 res$content 
 #&gt; NULL</code></pre>

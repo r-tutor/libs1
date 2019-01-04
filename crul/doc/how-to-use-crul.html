@@ -281,6 +281,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -288,14 +291,74 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -334,7 +397,7 @@ $(document).ready(function () {
   # check to see if request failed or succeeded
   # - if succeeds this will return nothing and proceeds to next step
   res$raise_for_status()
-  # parse response to plain text (JSON in this case) - most likely you'll 
+  # parse response to plain text (JSON in this case) - most likely you&#39;ll 
   # want UTF-8 encoding
   txt &lt;- res$parse(&quot;UTF-8&quot;)
   # parse the JSON to an R list
@@ -342,7 +405,31 @@ $(document).ready(function () {
 }</code></pre>
 <p>Use the function</p>
 <pre class="r"><code>make_request(&quot;https://httpbin.org/get&quot;)
-#&gt; Error: Service Unavailable (HTTP 503)</code></pre>
+#&gt; $args
+#&gt; named list()
+#&gt; 
+#&gt; $headers
+#&gt; $headers$Accept
+#&gt; [1] &quot;application/json, text/xml, application/xml, */*&quot;
+#&gt; 
+#&gt; $headers$`Accept-Encoding`
+#&gt; [1] &quot;gzip, deflate&quot;
+#&gt; 
+#&gt; $headers$Connection
+#&gt; [1] &quot;close&quot;
+#&gt; 
+#&gt; $headers$Host
+#&gt; [1] &quot;httpbin.org&quot;
+#&gt; 
+#&gt; $headers$`User-Agent`
+#&gt; [1] &quot;libcurl/7.54.0 r-curl/3.2 crul/0.6.2.9336&quot;
+#&gt; 
+#&gt; 
+#&gt; $origin
+#&gt; [1] &quot;24.21.229.59&quot;
+#&gt; 
+#&gt; $url
+#&gt; [1] &quot;https://httpbin.org/get&quot;</code></pre>
 <p>Now you can use the <code>make_request</code> function in your script or package.</p>
 </div>
 <div id="more-customized-function" class="section level2">
@@ -386,7 +473,7 @@ $(document).ready(function () {
 #&gt; named list()
 #&gt; 
 #&gt; $message$`total-results`
-#&gt; [1] 98119404
+#&gt; [1] 102127038
 #&gt; 
 #&gt; $message$items
 #&gt; list()
@@ -419,7 +506,7 @@ make_request2(&quot;https://api.crossref.org/works?rows=0&quot;, timeout_ms = 1)
 #&gt; named list()
 #&gt; 
 #&gt; $message$`total-results`
-#&gt; [1] 98119404
+#&gt; [1] 102127038
 #&gt; 
 #&gt; $message$items
 #&gt; list()

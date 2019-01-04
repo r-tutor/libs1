@@ -281,6 +281,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -288,14 +291,74 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -331,13 +394,13 @@ $(document).ready(function () {
 <p>Build request object with 1 or more URLs</p>
 <pre class="r"><code>(cc &lt;- Async$new(
   urls = c(
-    'https://httpbin.org/get?a=5',
-    'https://httpbin.org/get?a=5&amp;b=6',
-    'https://httpbin.org/ip'
+    &#39;https://httpbin.org/get?a=5&#39;,
+    &#39;https://httpbin.org/get?a=5&amp;b=6&#39;,
+    &#39;https://httpbin.org/ip&#39;
   )
 ))
 #&gt; &lt;crul async connection&gt; 
-#&gt;   urls: 
+#&gt;   urls: (n: 3)
 #&gt;    https://httpbin.org/get?a=5
 #&gt;    https://httpbin.org/get?a=5&amp;b=6
 #&gt;    https://httpbin.org/ip</code></pre>
@@ -350,10 +413,10 @@ $(document).ready(function () {
 #&gt;   response_headers: 
 #&gt;     status: HTTP/1.1 200 OK
 #&gt;     connection: keep-alive
-#&gt;     server: gunicorn/19.8.1
-#&gt;     date: Fri, 06 Jul 2018 23:19:03 GMT
+#&gt;     server: gunicorn/19.9.0
+#&gt;     date: Thu, 03 Jan 2019 05:29:48 GMT
 #&gt;     content-type: application/json
-#&gt;     content-length: 300
+#&gt;     content-length: 364
 #&gt;     access-control-allow-origin: *
 #&gt;     access-control-allow-credentials: true
 #&gt;     via: 1.1 vegur
@@ -368,10 +431,10 @@ $(document).ready(function () {
 #&gt;   response_headers: 
 #&gt;     status: HTTP/1.1 200 OK
 #&gt;     connection: keep-alive
-#&gt;     server: gunicorn/19.8.1
-#&gt;     date: Fri, 06 Jul 2018 23:19:03 GMT
+#&gt;     server: gunicorn/19.9.0
+#&gt;     date: Thu, 03 Jan 2019 05:29:48 GMT
 #&gt;     content-type: application/json
-#&gt;     content-length: 312
+#&gt;     content-length: 383
 #&gt;     access-control-allow-origin: *
 #&gt;     access-control-allow-credentials: true
 #&gt;     via: 1.1 vegur
@@ -387,10 +450,10 @@ $(document).ready(function () {
 #&gt;   response_headers: 
 #&gt;     status: HTTP/1.1 200 OK
 #&gt;     connection: keep-alive
-#&gt;     server: gunicorn/19.8.1
-#&gt;     date: Fri, 06 Jul 2018 23:19:03 GMT
+#&gt;     server: gunicorn/19.9.0
+#&gt;     date: Thu, 03 Jan 2019 05:29:48 GMT
 #&gt;     content-type: application/json
-#&gt;     content-length: 28
+#&gt;     content-length: 31
 #&gt;     access-control-allow-origin: *
 #&gt;     access-control-allow-credentials: true
 #&gt;     via: 1.1 vegur
@@ -402,17 +465,17 @@ $(document).ready(function () {
 res[[1]]$success()
 #&gt; [1] TRUE
 res[[1]]$parse(&quot;UTF-8&quot;)
-#&gt; [1] &quot;{\&quot;args\&quot;:{\&quot;a\&quot;:\&quot;5\&quot;},\&quot;headers\&quot;:{\&quot;Accept\&quot;:\&quot;application/json, text/xml, application/xml, */*\&quot;,\&quot;Accept-Encoding\&quot;:\&quot;gzip, deflate\&quot;,\&quot;Connection\&quot;:\&quot;close\&quot;,\&quot;Host\&quot;:\&quot;httpbin.org\&quot;,\&quot;User-Agent\&quot;:\&quot;R (3.5.1 x86_64-apple-darwin15.6.0 x86_64 darwin15.6.0)\&quot;},\&quot;origin\&quot;:\&quot;157.130.179.86\&quot;,\&quot;url\&quot;:\&quot;https://httpbin.org/get?a=5\&quot;}\n&quot;</code></pre>
+#&gt; [1] &quot;{\n  \&quot;args\&quot;: {\n    \&quot;a\&quot;: \&quot;5\&quot;\n  }, \n  \&quot;headers\&quot;: {\n    \&quot;Accept\&quot;: \&quot;application/json, text/xml, application/xml, */*\&quot;, \n    \&quot;Accept-Encoding\&quot;: \&quot;gzip, deflate\&quot;, \n    \&quot;Connection\&quot;: \&quot;close\&quot;, \n    \&quot;Host\&quot;: \&quot;httpbin.org\&quot;, \n    \&quot;User-Agent\&quot;: \&quot;R (3.5.2 x86_64-apple-darwin15.6.0 x86_64 darwin15.6.0)\&quot;\n  }, \n  \&quot;origin\&quot;: \&quot;24.21.229.59\&quot;, \n  \&quot;url\&quot;: \&quot;https://httpbin.org/get?a=5\&quot;\n}\n&quot;</code></pre>
 <p>Or apply access/method calls across many results, e.g., parse all results</p>
 <pre class="r"><code>lapply(res, function(z) z$parse(&quot;UTF-8&quot;))
 #&gt; [[1]]
-#&gt; [1] &quot;{\&quot;args\&quot;:{\&quot;a\&quot;:\&quot;5\&quot;},\&quot;headers\&quot;:{\&quot;Accept\&quot;:\&quot;application/json, text/xml, application/xml, */*\&quot;,\&quot;Accept-Encoding\&quot;:\&quot;gzip, deflate\&quot;,\&quot;Connection\&quot;:\&quot;close\&quot;,\&quot;Host\&quot;:\&quot;httpbin.org\&quot;,\&quot;User-Agent\&quot;:\&quot;R (3.5.1 x86_64-apple-darwin15.6.0 x86_64 darwin15.6.0)\&quot;},\&quot;origin\&quot;:\&quot;157.130.179.86\&quot;,\&quot;url\&quot;:\&quot;https://httpbin.org/get?a=5\&quot;}\n&quot;
+#&gt; [1] &quot;{\n  \&quot;args\&quot;: {\n    \&quot;a\&quot;: \&quot;5\&quot;\n  }, \n  \&quot;headers\&quot;: {\n    \&quot;Accept\&quot;: \&quot;application/json, text/xml, application/xml, */*\&quot;, \n    \&quot;Accept-Encoding\&quot;: \&quot;gzip, deflate\&quot;, \n    \&quot;Connection\&quot;: \&quot;close\&quot;, \n    \&quot;Host\&quot;: \&quot;httpbin.org\&quot;, \n    \&quot;User-Agent\&quot;: \&quot;R (3.5.2 x86_64-apple-darwin15.6.0 x86_64 darwin15.6.0)\&quot;\n  }, \n  \&quot;origin\&quot;: \&quot;24.21.229.59\&quot;, \n  \&quot;url\&quot;: \&quot;https://httpbin.org/get?a=5\&quot;\n}\n&quot;
 #&gt; 
 #&gt; [[2]]
-#&gt; [1] &quot;{\&quot;args\&quot;:{\&quot;a\&quot;:\&quot;5\&quot;,\&quot;b\&quot;:\&quot;6\&quot;},\&quot;headers\&quot;:{\&quot;Accept\&quot;:\&quot;application/json, text/xml, application/xml, */*\&quot;,\&quot;Accept-Encoding\&quot;:\&quot;gzip, deflate\&quot;,\&quot;Connection\&quot;:\&quot;close\&quot;,\&quot;Host\&quot;:\&quot;httpbin.org\&quot;,\&quot;User-Agent\&quot;:\&quot;R (3.5.1 x86_64-apple-darwin15.6.0 x86_64 darwin15.6.0)\&quot;},\&quot;origin\&quot;:\&quot;157.130.179.86\&quot;,\&quot;url\&quot;:\&quot;https://httpbin.org/get?a=5&amp;b=6\&quot;}\n&quot;
+#&gt; [1] &quot;{\n  \&quot;args\&quot;: {\n    \&quot;a\&quot;: \&quot;5\&quot;, \n    \&quot;b\&quot;: \&quot;6\&quot;\n  }, \n  \&quot;headers\&quot;: {\n    \&quot;Accept\&quot;: \&quot;application/json, text/xml, application/xml, */*\&quot;, \n    \&quot;Accept-Encoding\&quot;: \&quot;gzip, deflate\&quot;, \n    \&quot;Connection\&quot;: \&quot;close\&quot;, \n    \&quot;Host\&quot;: \&quot;httpbin.org\&quot;, \n    \&quot;User-Agent\&quot;: \&quot;R (3.5.2 x86_64-apple-darwin15.6.0 x86_64 darwin15.6.0)\&quot;\n  }, \n  \&quot;origin\&quot;: \&quot;24.21.229.59\&quot;, \n  \&quot;url\&quot;: \&quot;https://httpbin.org/get?a=5&amp;b=6\&quot;\n}\n&quot;
 #&gt; 
 #&gt; [[3]]
-#&gt; [1] &quot;{\&quot;origin\&quot;:\&quot;157.130.179.86\&quot;}\n&quot;</code></pre>
+#&gt; [1] &quot;{\n  \&quot;origin\&quot;: \&quot;24.21.229.59\&quot;\n}\n&quot;</code></pre>
 </div>
 <div id="varied-request-async" class="section level2">
 <h2>varied request async</h2>
@@ -429,7 +492,8 @@ req1$get()
 #&gt;     verbose: TRUE
 #&gt;   proxies: 
 #&gt;   auth: 
-#&gt;   headers:
+#&gt;   headers: 
+#&gt;   progress: FALSE
 
 req2 &lt;- HttpRequest$new(
   url = &quot;https://httpbin.org/post?a=5&amp;b=6&quot;
@@ -440,19 +504,20 @@ req2$post(body = list(a = 5))
 #&gt;   curl options: 
 #&gt;   proxies: 
 #&gt;   auth: 
-#&gt;   headers:
+#&gt;   headers: 
+#&gt;   progress: FALSE
 
 (res &lt;- AsyncVaried$new(req1, req2))
 #&gt; &lt;crul async varied connection&gt; 
-#&gt;   requests: 
+#&gt;   requests: (n: 2)
 #&gt;    get: https://httpbin.org/get?a=5 
 #&gt;    post: https://httpbin.org/post?a=5&amp;b=6</code></pre>
 <p>Make requests asynchronously</p>
 <pre class="r"><code>res$request()</code></pre>
 <p>Parse all results</p>
 <pre class="r"><code>res$parse()
-#&gt; [1] &quot;{\&quot;args\&quot;:{\&quot;a\&quot;:\&quot;5\&quot;},\&quot;headers\&quot;:{\&quot;Accept\&quot;:\&quot;application/json, text/xml, application/xml, */*\&quot;,\&quot;Accept-Encoding\&quot;:\&quot;gzip, deflate\&quot;,\&quot;Connection\&quot;:\&quot;close\&quot;,\&quot;Host\&quot;:\&quot;httpbin.org\&quot;,\&quot;User-Agent\&quot;:\&quot;R (3.5.1 x86_64-apple-darwin15.6.0 x86_64 darwin15.6.0)\&quot;},\&quot;origin\&quot;:\&quot;157.130.179.86\&quot;,\&quot;url\&quot;:\&quot;https://httpbin.org/get?a=5\&quot;}\n&quot;                                                                                                                                                                                          
-#&gt; [2] &quot;{\&quot;args\&quot;:{\&quot;a\&quot;:\&quot;5\&quot;,\&quot;b\&quot;:\&quot;6\&quot;},\&quot;data\&quot;:\&quot;\&quot;,\&quot;files\&quot;:{},\&quot;form\&quot;:{\&quot;a\&quot;:\&quot;5\&quot;},\&quot;headers\&quot;:{\&quot;Accept\&quot;:\&quot;application/json, text/xml, application/xml, */*\&quot;,\&quot;Accept-Encoding\&quot;:\&quot;gzip, deflate\&quot;,\&quot;Connection\&quot;:\&quot;close\&quot;,\&quot;Content-Length\&quot;:\&quot;137\&quot;,\&quot;Content-Type\&quot;:\&quot;multipart/form-data; boundary=------------------------961f988feb1a1cfe\&quot;,\&quot;Host\&quot;:\&quot;httpbin.org\&quot;,\&quot;User-Agent\&quot;:\&quot;libcurl/7.54.0 r-curl/3.2 crul/0.5.4.9521\&quot;},\&quot;json\&quot;:null,\&quot;origin\&quot;:\&quot;157.130.179.86\&quot;,\&quot;url\&quot;:\&quot;https://httpbin.org/post?a=5&amp;b=6\&quot;}\n&quot;</code></pre>
+#&gt; [1] &quot;{\n  \&quot;args\&quot;: {\n    \&quot;a\&quot;: \&quot;5\&quot;\n  }, \n  \&quot;headers\&quot;: {\n    \&quot;Accept\&quot;: \&quot;application/json, text/xml, application/xml, */*\&quot;, \n    \&quot;Accept-Encoding\&quot;: \&quot;gzip, deflate\&quot;, \n    \&quot;Connection\&quot;: \&quot;close\&quot;, \n    \&quot;Host\&quot;: \&quot;httpbin.org\&quot;, \n    \&quot;User-Agent\&quot;: \&quot;R (3.5.2 x86_64-apple-darwin15.6.0 x86_64 darwin15.6.0)\&quot;\n  }, \n  \&quot;origin\&quot;: \&quot;24.21.229.59\&quot;, \n  \&quot;url\&quot;: \&quot;https://httpbin.org/get?a=5\&quot;\n}\n&quot;                                                                                                                                                                                                                                                     
+#&gt; [2] &quot;{\n  \&quot;args\&quot;: {\n    \&quot;a\&quot;: \&quot;5\&quot;, \n    \&quot;b\&quot;: \&quot;6\&quot;\n  }, \n  \&quot;data\&quot;: \&quot;\&quot;, \n  \&quot;files\&quot;: {}, \n  \&quot;form\&quot;: {\n    \&quot;a\&quot;: \&quot;5\&quot;\n  }, \n  \&quot;headers\&quot;: {\n    \&quot;Accept\&quot;: \&quot;application/json, text/xml, application/xml, */*\&quot;, \n    \&quot;Accept-Encoding\&quot;: \&quot;gzip, deflate\&quot;, \n    \&quot;Connection\&quot;: \&quot;close\&quot;, \n    \&quot;Content-Length\&quot;: \&quot;137\&quot;, \n    \&quot;Content-Type\&quot;: \&quot;multipart/form-data; boundary=------------------------afc81919e27a80b7\&quot;, \n    \&quot;Host\&quot;: \&quot;httpbin.org\&quot;, \n    \&quot;User-Agent\&quot;: \&quot;libcurl/7.54.0 r-curl/3.2 crul/0.6.2.9336\&quot;\n  }, \n  \&quot;json\&quot;: null, \n  \&quot;origin\&quot;: \&quot;24.21.229.59\&quot;, \n  \&quot;url\&quot;: \&quot;https://httpbin.org/post?a=5&amp;b=6\&quot;\n}\n&quot;</code></pre>
 <pre class="r"><code>lapply(res$parse(), jsonlite::prettify)
 #&gt; [[1]]
 #&gt; {
@@ -464,9 +529,9 @@ req2$post(body = list(a = 5))
 #&gt;         &quot;Accept-Encoding&quot;: &quot;gzip, deflate&quot;,
 #&gt;         &quot;Connection&quot;: &quot;close&quot;,
 #&gt;         &quot;Host&quot;: &quot;httpbin.org&quot;,
-#&gt;         &quot;User-Agent&quot;: &quot;R (3.5.1 x86_64-apple-darwin15.6.0 x86_64 darwin15.6.0)&quot;
+#&gt;         &quot;User-Agent&quot;: &quot;R (3.5.2 x86_64-apple-darwin15.6.0 x86_64 darwin15.6.0)&quot;
 #&gt;     },
-#&gt;     &quot;origin&quot;: &quot;157.130.179.86&quot;,
+#&gt;     &quot;origin&quot;: &quot;24.21.229.59&quot;,
 #&gt;     &quot;url&quot;: &quot;https://httpbin.org/get?a=5&quot;
 #&gt; }
 #&gt;  
@@ -489,12 +554,12 @@ req2$post(body = list(a = 5))
 #&gt;         &quot;Accept-Encoding&quot;: &quot;gzip, deflate&quot;,
 #&gt;         &quot;Connection&quot;: &quot;close&quot;,
 #&gt;         &quot;Content-Length&quot;: &quot;137&quot;,
-#&gt;         &quot;Content-Type&quot;: &quot;multipart/form-data; boundary=------------------------961f988feb1a1cfe&quot;,
+#&gt;         &quot;Content-Type&quot;: &quot;multipart/form-data; boundary=------------------------afc81919e27a80b7&quot;,
 #&gt;         &quot;Host&quot;: &quot;httpbin.org&quot;,
-#&gt;         &quot;User-Agent&quot;: &quot;libcurl/7.54.0 r-curl/3.2 crul/0.5.4.9521&quot;
+#&gt;         &quot;User-Agent&quot;: &quot;libcurl/7.54.0 r-curl/3.2 crul/0.6.2.9336&quot;
 #&gt;     },
 #&gt;     &quot;json&quot;: null,
-#&gt;     &quot;origin&quot;: &quot;157.130.179.86&quot;,
+#&gt;     &quot;origin&quot;: &quot;24.21.229.59&quot;,
 #&gt;     &quot;url&quot;: &quot;https://httpbin.org/post?a=5&amp;b=6&quot;
 #&gt; }
 #&gt; </code></pre>

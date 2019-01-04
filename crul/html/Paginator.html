@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Paginator client</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Paginator {crul}"><tr><td>Paginator {crul}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Paginator client</h2>
+
+<h3>Description</h3>
+
+<p>A client to help you paginate
+</p>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>client</code></td>
+<td>
+<p>an object of class <code>HttpClient</code>, from a call to <a href="HttpClient.html">HttpClient</a></p>
+</td></tr>
+<tr valign="top"><td><code>by</code></td>
+<td>
+<p>(character) how to paginate. Only 'query_params' supported for
+now. In the future will support 'link_headers' and 'cursor'. See Details.</p>
+</td></tr>
+<tr valign="top"><td><code>limit_param</code></td>
+<td>
+<p>(character) the name of the limit parameter.
+Default: limit</p>
+</td></tr>
+<tr valign="top"><td><code>offset_param</code></td>
+<td>
+<p>(character) the name of the offset parameter.
+Default: offset</p>
+</td></tr>
+<tr valign="top"><td><code>limit</code></td>
+<td>
+<p>(numeric/integer) the maximum records wanted</p>
+</td></tr>
+<tr valign="top"><td><code>limit_chunk</code></td>
+<td>
+<p>(numeric/integer) the number by which to chunk requests,
+e.g., 10 would be be each request gets 10 records</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><strong>Methods</strong>
+</p>
+
+<dl>
+<dt><code>get(path, query, ...)</code></dt><dd>
+<p>make a paginated GET request
+</p>
+</dd>
+<dt><code>post(path, query, body, encode, ...)</code></dt><dd>
+<p>make a paginated POST request
+</p>
+</dd>
+<dt><code>put(path, query, body, encode, ...)</code></dt><dd>
+<p>make a paginated PUT request
+</p>
+</dd>
+<dt><code>patch(path, query, body, encode, ...)</code></dt><dd>
+<p>make a paginated PATCH request
+</p>
+</dd>
+<dt><code>delete(path, query, body, encode, ...)</code></dt><dd>
+<p>make a paginated DELETE request
+</p>
+</dd>
+<dt><code>head(path, ...)</code></dt><dd>
+<p>make a paginated HEAD request - not sure if this makes any sense
+or not yet
+</p>
+</dd>
+<dt><code>responses()</code></dt><dd>
+<p>list responses
+- returns: a list of <code>HttpResponse</code> objects, empty list before
+requests made
+</p>
+</dd>
+<dt><code>parse(encoding = "UTF-8")</code></dt><dd>
+<p>parse content
+- returns: character vector, empty character vector before
+requests made
+</p>
+</dd>
+<dt><code>status_code()</code></dt><dd>
+<p>(integer) HTTP status codes
+- returns: numeric vector, empty numeric vector before
+requests made
+</p>
+</dd>
+<dt><code>status()</code></dt><dd>
+<p>(list) HTTP status objects
+- returns: a list of <code>http_code</code> objects, empty list before
+requests made
+</p>
+</dd>
+<dt><code>content()</code></dt><dd>
+<p>raw content
+- returns: raw list, empty list before requests made
+</p>
+</dd>
+<dt><code>times()</code></dt><dd>
+<p>curl request times
+- returns: list of named numeric vectors, empty list before
+requests made
+</p>
+</dd>
+<dt><code>url_fetch(path, query)</code></dt><dd>
+<p>get URLs that would be sent (i.e., before executing the request).
+the only things that change the URL are path and query
+parameters; body and any curl options don't change the URL
+- returns: character vector of URLs
+</p>
+</dd>
+</dl>
+
+<p>See <code><a href="HttpClient.html">HttpClient()</a></code> for information on parameters.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a list, with objects of class <code><a href="HttpResponse.html">HttpResponse()</a></code>.
+Responses are returned in the order they are passed in.
+</p>
+
+
+<h3>Methods to paginate</h3>
+
+<p>Supported now:
+</p>
+
+<ul>
+<li> <p><code>query_params</code>: the most common way, so is the default. This method
+involves setting how many records and what record to start at for each
+request. We send these query parameters for you.
+</p>
+</li></ul>
+
+<p>Supported later:
+</p>
+
+<ul>
+<li> <p><code>link_headers</code>: link headers are URLS for the next/previous/last
+request given in the response header from the server. This is relatively
+uncommon, though is recommended by JSONAPI and is implemented by a
+well known API (GitHub).
+</p>
+</li>
+<li> <p><code>cursor</code>: this works by a single string given back in each response, to
+be passed in the subsequent response, and so on until no more records
+remain. This is common in Solr
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+(cli &lt;- HttpClient$new(url = "https://api.crossref.org"))
+cc &lt;- Paginator$new(client = cli, limit_param = "rows",
+   offset_param = "offset", limit = 50, limit_chunk = 10)
+cc
+cc$get('works')
+cc
+cc$responses()
+cc$status()
+cc$status_code()
+cc$times()
+cc$content()
+cc$parse()
+lapply(cc$parse(), jsonlite::fromJSON)
+
+# get full URLs for each request to be made
+cc$url_fetch('works')
+cc$url_fetch('works', query = list(query = "NSF"))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>crul</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

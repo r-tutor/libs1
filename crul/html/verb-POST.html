@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: HTTP verb info: POST</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for verb-POST {crul}"><tr><td>verb-POST {crul}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>HTTP verb info: POST</h2>
+
+<h3>Description</h3>
+
+<p>The POST method is used to submit an entity to the specified resource,
+often causing a change in state or side effects on the server.
+</p>
+
+
+<h3>The POST method</h3>
+
+<p>If one or more resources has been created on the origin server as a
+result of successfully processing a POST request, the origin server
+SHOULD send a 201 (Created) response containing a Location header
+field that provides an identifier for the primary resource created
+(Section 7.1.2 <a href="https://tools.ietf.org/html/rfc7231#section-7.1.2">https://tools.ietf.org/html/rfc7231#section-7.1.2</a>)
+and a representation that describes the status of the
+request while referring to the new resource(s).
+</p>
+<p>See <a href="https://tools.ietf.org/html/rfc7231#section-4.3.3">https://tools.ietf.org/html/rfc7231#section-4.3.3</a> for further
+details.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://tools.ietf.org/html/rfc7231#section-4.3.3">https://tools.ietf.org/html/rfc7231#section-4.3.3</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="crul-package.html">crul-package</a>
+</p>
+<p>Other verbs: <code><a href="verb-DELETE.html">verb-DELETE</a></code>,
+<code><a href="verb-GET.html">verb-GET</a></code>, <code><a href="verb-HEAD.html">verb-HEAD</a></code>,
+<code><a href="verb-PATCH.html">verb-PATCH</a></code>, <code><a href="verb-PUT.html">verb-PUT</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+x &lt;- HttpClient$new(url = "https://httpbin.org")
+x$post(path = 'post', body = list(hello = "world"))
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>crul</em> version 0.7.0 <a href="00Index.html">Index</a>]</div>
+</body></html>
