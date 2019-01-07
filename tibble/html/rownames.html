@@ -28,24 +28,24 @@ ids starting at 1. Note that this will remove any existing row names.
 <h3>Usage</h3>
 
 <pre>
-has_rownames(df)
+has_rownames(.data)
 
-remove_rownames(df)
+remove_rownames(.data)
 
-rownames_to_column(df, var = "rowname")
+rownames_to_column(.data, var = "rowname")
 
-rowid_to_column(df, var = "rowid")
+rowid_to_column(.data, var = "rowid")
 
-column_to_rownames(df, var = "rowname")
+column_to_rownames(.data, var = "rowname")
 </pre>
 
 
 <h3>Arguments</h3>
 
 <table summary="R argblock">
-<tr valign="top"><td><code>df</code></td>
+<tr valign="top"><td><code>.data</code></td>
 <td>
-<p>A data frame</p>
+<p>A data frame.</p>
 </td></tr>
 <tr valign="top"><td><code>var</code></td>
 <td>
@@ -54,10 +54,11 @@ column_to_rownames(df, var = "rowname")
 </table>
 
 
-<h3>Details</h3>
+<h3>Value</h3>
 
-<p>In the printed output, the presence of row names is indicated by a star just
-above the row numbers.
+<p><code>column_to_rownames()</code> always returns a data frame.
+<code>has_rownames()</code> returns a scalar logical.
+All other functions return an object of the same class as the input.
 </p>
 
 
@@ -72,8 +73,8 @@ head(rownames_to_column(mtcars))
 
 mtcars_tbl &lt;- as_tibble(rownames_to_column(mtcars))
 mtcars_tbl
-column_to_rownames(as.data.frame(mtcars_tbl))
+head(column_to_rownames(mtcars_tbl))
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>tibble</em> version 1.4.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>tibble</em> version 2.0.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

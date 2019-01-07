@@ -9,6 +9,7 @@
 
 <h3>Description</h3>
 
+<a href='https://www.tidyverse.org/lifecycle/#maturing'><img src='figures/lifecycle-maturing.svg' alt='Maturing lifecycle'></a>
 <p>This is like a transposed version of <code>print()</code>: columns run down the page,
 and data runs across. This makes it possible to see every column in
 a data frame. It's a little like <code><a href="../../utils/html/str.html">str()</a></code> applied to a data frame
@@ -62,11 +63,10 @@ used within a data pipe line.
 <pre>
 glimpse(mtcars)
 
-if (!requireNamespace("nycflights13", quietly = TRUE))
-  stop("Please install the nycflights13 package to run the rest of this example")
-
-glimpse(nycflights13::flights)
+if (requireNamespace("nycflights13", quietly = TRUE)) {
+  glimpse(nycflights13::flights)
+}
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>tibble</em> version 1.4.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>tibble</em> version 2.0.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

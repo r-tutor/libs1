@@ -9,9 +9,12 @@
 
 <h3>Description</h3>
 
+<a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a>
 <p>This is a convenient way to add one or more rows of data to an existing data
 frame. See <code><a href="tribble.html">tribble()</a></code> for an easy way to create an complete
 data frame row-by-row.
+</p>
+<p><code>add_case()</code> is an alias of <code>add_row()</code>.
 </p>
 
 
@@ -31,10 +34,11 @@ add_row(.data, ..., .before = NULL, .after = NULL)
 </td></tr>
 <tr valign="top"><td><code>...</code></td>
 <td>
-<p>Name-value pairs, passed on to <code><a href="tibble.html">tibble()</a></code>. Only columns that exist
-in <code>.data</code> can be used, unset columns will get an <code>NA</code> value.
-These arguments are passed on to <code><a href="tibble.html">tibble()</a></code>, and therefore also support
-unquote via <code>!!</code> and unquote-splice via <code>!!!</code>.</p>
+<p>Name-value pairs, passed on to <code><a href="tibble.html">tibble()</a></code>. Values can be defined
+only for columns that already exist in <code>.data</code> and unset columns will get an
+<code>NA</code> value. These arguments are passed on to <code><a href="tibble.html">tibble()</a></code>, and therefore also
+support unquote via <code>!!</code> and unquote-splice via <code>!!!</code>. However, unlike in
+<span class="pkg">dplyr</span> verbs, columns in <code>.data</code> are not available for the expressions.</p>
 </td></tr>
 <tr valign="top"><td><code>.before, .after</code></td>
 <td>
@@ -44,9 +48,12 @@ default: after last row.</p>
 </table>
 
 
-<h3>Details</h3>
+<h3>Life cycle</h3>
 
-<p><code>add_case()</code> is an alias of <code>add_row()</code>.
+<p>It is unclear if <code>add_row()</code> and its alias <code>add_cases()</code> should ensure
+that all columns have length one by wrapping in a list if necessary.
+See <a href="https://github.com/tidyverse/tibble/pull/503">https://github.com/tidyverse/tibble/pull/503</a> and
+<a href="https://github.com/tidyverse/tibble/issues/205">https://github.com/tidyverse/tibble/issues/205</a> for details.
 </p>
 
 
@@ -81,5 +88,5 @@ add_row(df, z = 10)
 ## End(Not run)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>tibble</em> version 1.4.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>tibble</em> version 2.0.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

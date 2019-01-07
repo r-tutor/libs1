@@ -33,7 +33,10 @@ add_column(.data, ..., .before = NULL, .after = NULL)
 <p>Name-value pairs, passed on to <code><a href="tibble.html">tibble()</a></code>. All values must have
 one element for each row in the data frame, or be of length 1.
 These arguments are passed on to <code><a href="tibble.html">tibble()</a></code>, and therefore also support
-unquote via <code>!!</code> and unquote-splice via <code>!!!</code>.</p>
+unquote via <code>!!</code> and unquote-splice via <code>!!!</code>. However, unlike in
+<span class="pkg">dplyr</span> verbs, columns in <code>.data</code> are not available for the
+expressions. Use <code><a href="../../dplyr/html/mutate.html">dplyr::mutate()</a></code> if you need to add a column based on
+existing data.</p>
 </td></tr>
 <tr valign="top"><td><code>.before, .after</code></td>
 <td>
@@ -69,5 +72,5 @@ add_column(df, z = 1:5)
 ## End(Not run)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>tibble</em> version 1.4.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>tibble</em> version 2.0.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

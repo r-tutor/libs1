@@ -10,8 +10,9 @@
 <h3>Description</h3>
 
 <p><code>tbl_sum()</code> gives a brief textual description of a table-like object,
-which should include the dimensions, the data source, and possible grouping
-(for <code>dplyr</code>).  The default implementation forwards to <code><a href="../../pillar/html/obj_sum.html">pillar::obj_sum()</a></code>.
+which should include the dimensions and the data source in the first element,
+and additional information in the other elements (such as grouping for <span class="pkg">dplyr</span>).
+The default implementation forwards to <code><a href="../../pillar/html/obj_sum.html">pillar::obj_sum()</a></code>.
 </p>
 
 
@@ -32,10 +33,17 @@ tbl_sum(x)
 </table>
 
 
+<h3>Value</h3>
+
+<p>A named character vector, describing the dimensions in the first element
+and the data source in the name of the first element.
+</p>
+
+
 <h3>See Also</h3>
 
 <p><code><a href="../../pillar/html/type_sum.html">pillar::type_sum()</a></code>, <code><a href="../../pillar/html/is_vector_s3.html">pillar::is_vector_s3()</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>tibble</em> version 1.4.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>tibble</em> version 2.0.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

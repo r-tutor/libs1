@@ -9,6 +9,7 @@
 
 <h3>Description</h3>
 
+<a href='https://www.tidyverse.org/lifecycle/#maturing'><img src='figures/lifecycle-maturing.svg' alt='Maturing lifecycle'></a>
 <p>Create matrices laying out the data in rows, similar to
 <code>matrix(..., byrow = TRUE)</code>, with a nicer-to-read syntax.
 This is useful for small matrices, e.g. covariance matrices, where readability
@@ -29,7 +30,8 @@ frame_matrix(...)
 <tr valign="top"><td><code>...</code></td>
 <td>
 <p>Arguments specifying the structure of a <code>frame_matrix</code>.
-Column names should be formulas, and may only appear before the data.</p>
+Column names should be formulas, and may only appear before the
+data. These arguments support <a href="../../rlang/html/tidy-dots.html">tidy dots</a>.</p>
 </td></tr>
 </table>
 
@@ -50,5 +52,5 @@ frame_matrix(
 )
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>tibble</em> version 1.4.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>tibble</em> version 2.0.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

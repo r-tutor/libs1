@@ -9,6 +9,8 @@
 
 <h3>Description</h3>
 
+<p><img src="../help/figures/logo.png" align='right' />
+</p>
 <p>Provides a 'tbl_df' class (the 'tibble') that provides
 stricter checking and better formatting than the traditional data frame.
 </p>
@@ -16,38 +18,46 @@ stricter checking and better formatting than the traditional data frame.
 
 <h3>Details</h3>
 
-<p>The S3 class <code>tbl_df</code> wraps a local data frame. The main
-advantage to using a <code>tbl_df</code> over a regular data frame is the printing:
-tbl objects only print a few rows and all the columns that fit on one screen,
-describing the rest of it as text.
+<a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a>
+<p>The tibble package provides utilities for handling <strong>tibbles</strong>, where
+&quot;tibble&quot; is a colloquial term for the S3 <code><a href="tbl_df-class.html">tbl_df</a></code> class. The <code><a href="tbl_df-class.html">tbl_df</a></code>
+class is a special case of the base <code><a href="../../base/html/data.frame.html">data.frame</a></code>.
+class, developed in response to lessons learned over many years of data
+analysis with data frames.
+</p>
+<p>Tibble is the central data structure for the set of packages known as the
+<a href="https://www.tidyverse.org/packages/">tidyverse</a>, including
+<a href="http://dplyr.tidyverse.org/">dplyr</a>,
+<a href="http://ggplot2.tidyverse.org/">ggplot2</a>,
+<a href="http://tidyr.tidyverse.org/">tidyr</a>, and
+<a href="http://readr.tidyverse.org/">readr</a>.
+</p>
+<p>General resources:
 </p>
 
+<ul>
+<li><p> Website for the tibble package: <a href="https://tibble.tidyverse.org">https://tibble.tidyverse.org</a>
+</p>
+</li>
+<li> <p><a href="http://r4ds.had.co.nz/tibbles.html">Tibbles chapter</a> in <em>R for Data
+Science</em>
+</p>
+</li></ul>
 
-<h3>Methods</h3>
-
-<p><code>tbl_df</code> implements four important base methods:
+<p>Resources on specific topics:
 </p>
 
-<dl>
-<dt>print</dt><dd><p>By default only prints the first 10 rows (at most 20), and the
-columns that fit on screen; see <code><a href="formatting.html">print.tbl()</a></code></p>
-</dd>
-<dt><code>[</code></dt><dd><p>Does not simplify (drop) by default, returns a data frame</p>
-</dd>
-<dt><code>[[</code>, <code>$</code></dt><dd><p>Calls <code><a href="../../base/html/base-internal.html">.subset2()</a></code> directly,
-so is considerably faster. Returns <code>NULL</code> if column does not exist,
-<code>$</code> warns.</p>
-</dd>
-</dl>
-
-
-
-<h3>Important functions</h3>
-
-<p><code><a href="tibble.html">tibble()</a></code> and <code><a href="tribble.html">tribble()</a></code> for construction,
-<code><a href="as_tibble.html">as_tibble()</a></code> for coercion,
-and <code><a href="formatting.html">print.tbl()</a></code> and <code><a href="glimpse.html">glimpse()</a></code> for display.
+<ul>
+<li><p> Create a tibble: <code><a href="tibble.html">tibble()</a></code>, <code><a href="as_tibble.html">as_tibble()</a></code>, <code><a href="tribble.html">tribble()</a></code>, <code><a href="enframe.html">enframe()</a></code>
 </p>
+</li>
+<li><p> Inspect a tibble: <code><a href="formatting.html">print.tbl()</a></code>, <code><a href="glimpse.html">glimpse()</a></code>
+</p>
+</li>
+<li><p> Details on the S3 <code>tbl_df</code> class: <code><a href="tbl_df-class.html">tbl_df</a></code>
+</p>
+</li></ul>
+
 
 
 <h3>Author(s)</h3>
@@ -67,6 +77,9 @@ and <code><a href="formatting.html">print.tbl()</a></code> and <code><a href="gl
 
 <ul>
 <li><p> Romain Francois <a href="mailto:romain@r-enthusiasts.com">romain@r-enthusiasts.com</a> [contributor]
+</p>
+</li>
+<li><p> Jennifer Bryan <a href="mailto:jenny@rstudio.com">jenny@rstudio.com</a> [contributor]
 </p>
 </li>
 <li><p> RStudio [copyright holder]
@@ -92,13 +105,5 @@ and <code><a href="formatting.html">print.tbl()</a></code> and <code><a href="gl
 </li></ul>
 
 
-
-<h3>Examples</h3>
-
-<pre>
-tibble(a = 1:26, b = letters)
-as_tibble(iris)
-</pre>
-
-<hr /><div style="text-align: center;">[Package <em>tibble</em> version 1.4.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>tibble</em> version 2.0.0 <a href="00Index.html">Index</a>]</div>
 </body></html>
