@@ -112,8 +112,10 @@ $endif$
 
 <div class="container-fluid main-container">
     <div class="row">
-      <nav class="col-xs-3 menu" id="toc">
+      <nav class="col-xs-3 menu">
+        <div id="toc">
         $toc$
+        </div>
       </nav>
      <div class="pages col-xs-9">
      <div class="row">
@@ -175,7 +177,8 @@ $$(document).ready(function () {
   $$('.pages').magnificPopup({
 	      type:'image',
 	      closeOnContentClick: false,
-	      delegate: 'img',
+	      closeBtnInside: false,
+        delegate: 'img',
 	      gallery: {enabled: $gallery$ },
           removalDelay: 500,
           callbacks: {
@@ -191,6 +194,75 @@ $$(document).ready(function () {
 	      }
  	    });
  	$endif$
+
+  $if(cards)$
+  
+    $$('#toc ul li').first().addClass("active");
+    $$('#toc ul li').attr("data-target", function() {
+        return($$(this).children("a").attr("href"));
+    })
+    $$('body .section.level1').first().addClass("active");
+    
+    $$('#toc a[href*="#"]').click(function() {
+
+      var id = $$(this).attr("href");
+      if (id === "#") return;
+      if (id.substring(0, 8) === "#dyntab-") return;
+      toggle_page(id);
+
+      // Menu
+      var menu_entry = $$(".menu li[data-target='"+id+"']");
+      menu_entry.addClass("active");
+      $$(".menu li").not(menu_entry).removeClass("active"); 
+      
+
+    });
+
+    function toggle_page(id) {
+      $$(".page").not(page).removeClass("active").hide();
+      window.page = id;
+      var page = $$(window.page);
+      window.location.hash = window.page;
+      //$$(this).addClass("active");
+
+      page.show();
+
+      var totop = setInterval(function () {
+        $$(".pages").animate({scrollTop: 0}, 0);
+      }, 10);
+
+      setTimeout(function () {
+        page.addClass("active");
+        setTimeout(function () {
+          clearInterval(totop);
+        }, 1000);
+      }, 100);
+
+      window.dispatchEvent(new Event('resize'));
+
+    }
+
+
+    $$(".menu li").click(function () {
+
+      toggle_page($$(this).data("target"));
+
+      // Menu
+      if (!$$(this).data("target")) return;
+      if ($$(this).is(".active")) return;
+      $$(".menu li").not($$(this)).removeClass("active");
+      $$(this).addClass("active");
+
+    });
+  
+  $else$
+  
+    $$(".page").addClass("active");
+    $$('.pages').scrollspy({target: '#toc'});
+
+  $endif$
+  
+
 
     window.page = window.location.hash;
     if (window.page != "") {
