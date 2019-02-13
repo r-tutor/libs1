@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Animate a growing network</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for qgraph.animate {qgraph}"><tr><td>qgraph.animate {qgraph}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Animate a growing network
+</h2>
+
+<h3>Description</h3>
+
+<p>This function is meant to facilitate the creation of animations based on growing networks. Networks are created based on the Fruchterman Reingold algorithm, which is constraint by limiting the maximum displacement of nodes that are already in the graph.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+qgraph.animate(input, ind = NULL, ..., constraint = 10, growth = "order", 
+  titles = NULL, sleep = 0, smooth = TRUE, plotGraphs = TRUE, progress = TRUE,
+  initLayout)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>input</code></td>
+<td>
+
+<p>A weights matrix of the graph or a list of weigths matrices with different weights of the same graph (see details). See <code><a href="qgraph.html">qgraph</a></code>. Edgelists are currently not supported.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ind</code></td>
+<td>
+
+<p>An object that specifies which nodes ar included or excluded. See details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Additional arguments sent to <code><a href="qgraph.html">qgraph</a></code>
+</p>
+</td></tr>
+<tr valign="top"><td><code>constraint</code></td>
+<td>
+
+<p>The constraint factor of included nodes. See details. Defaults to 10 for an soft-constrained animation. Set to Inf for a hard-constrained animation.
+</p>
+</td></tr>
+<tr valign="top"><td><code>growth</code></td>
+<td>
+
+<p>The way nodes are added by default. Set to &quot;order&quot; to include nodes in the order they appear in the weigths matrix and to &quot;degree&quot; to include nodes based on their degree (high degree first)
+</p>
+</td></tr>
+<tr valign="top"><td><code>titles</code></td>
+<td>
+
+<p>Optional vector with a title for each plot
+</p>
+</td></tr>
+<tr valign="top"><td><code>sleep</code></td>
+<td>
+
+<p>Optional value sent to Sys.sleep() for showing the animation in R
+</p>
+</td></tr>
+<tr valign="top"><td><code>smooth</code></td>
+<td>
+
+<p>Logical. If set to <code>TRUE</code> smoothing via <a href="../../stats/html/loess.html">loess</a> is performed on the layout of all frames.
+</p>
+</td></tr>
+<tr valign="top"><td><code>plotGraphs</code></td>
+<td>
+
+<p>Logical. If set to <code>FALSE</code> graphs are not plotted.
+</p>
+</td></tr>
+<tr valign="top"><td><code>progress</code></td>
+<td>
+
+<p>Logical. If set to <code>TRUE</code> progress bars are included.
+</p>
+</td></tr>
+<tr valign="top"><td><code>initLayout</code></td>
+<td>
+<p>An optional n by 2 matrix containing the initial placement of nodes in the animation.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Let n be the number of nodes in total in the graph.
+</p>
+<p>This function is designed to facilitate the production of animations by constraining the Fruchterman Reingold algorithm. Several frames are plotted of (a subset of) the same graph. If a node was already in the graph its maximum displacement per iteration of Fruchterman Reingold is equal to the number of nodes times the inverse of the constraint argument (so by default n/10). The higher this constraint value the stricter nodes stay in the same place between plots.
+</p>
+<p>How many and which plots are made are defined by the 'input' and 'ind' arguments. There are two ways to specify the 'input' argument, either by speficying one weigths matrix or by specifying a list of weights matrices. In the sections below is explained what both of these methods do and how they are used.
+</p>
+<p>This function, since it can be seen as an expression that makes several plots, works well in combination with the animation package for saving the animation to a wide variety of filetypes.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Invisibly returns a list of all graphs.
+</p>
+
+
+<h3>Single weigths matrix</h3>
+
+<p>If 'input' is a single weigths matrix then in each frame a subset of the same graph is plotted. This is especially usefull for animating the growth of a network. Which nodes are in each frame is determined by the 'ind' argument.
+</p>
+<p>If 'int' is not specified an animation is created in which in each frame a single node is added. This node is either in order of apearance in the weigths matrix or by its degree, which is determined with the 'growth' argument.
+</p>
+<p>If 'ind' is a logical vector of length n than the first frame will contain the nodes specified with this vector and all other frames will grow in the same way as explained above (each step one node is added).
+</p>
+<p>If 'ind' is a numeric vector of length n which contains all integers between 1 and n ( a single entry per node) then the first frame starts with only the node specified in the first element of the vector and in frame i the ith element is added (each step one node is added).
+</p>
+<p>If 'ind' is a list with numeric vectors as elements containing integers between 1 and n then in frame i the nodes from the ith element of the list will be added. Node numbers that occur multiple times in the list are ignored (they are already added the first time).
+</p>
+<p>Finally, if 'ind' is a logical matrix with n columns and an arbitrary amount of rows, then in frame i only the nodes that are TRUE in row i are included. This is the only way to specify removal of nodes.
+</p>
+
+
+<h3>List of weigths matrices</h3>
+
+<p>The 'input' argument can also be given a list of weigths matrices if all these matrices have the same dimension (i.e.\ only the weights differ). If this is done than in frame i the ith weigths matrix is used. This is especially usefull for animating the change in a graph.
+</p>
+<p>In this case, the 'ind' argument behaves differently. If this argument is not specified then in each frame all nodes are included.
+</p>
+<p>If 'ind' is a logical vector of length n then only one plot is made with the nodes specified with that vector, and only if the length of 'input' is one.
+</p>
+<p>Other methods woth in the same way as above. However, if the 'ind' argument indicates a different number of frames than the 'input' argument the function will stop and give an error.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Sacha Epskamp (mail@sachaepskamp.com)
+</p>
+
+
+<h3>References</h3>
+
+<p>Sacha Epskamp, Angelique O. J. Cramer, Lourens J.
+Waldorp, Verena D. Schmittmann, Denny Borsboom (2012).
+qgraph: Network Visualizations of Relationships in
+Psychometric Data. Journal of Statistical Software,
+48(4), 1-18. URL http://www.jstatsoft.org/v48/i04/.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="qgraph.html">qgraph</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+## For these examples, first generate a scale free network using preferential attachment:
+
+# Number of nodes:
+n &lt;- 100
+# Empty vector with Degrees:
+Degs &lt;- rep(0, n)
+# Empty Edgelist:
+E &lt;- matrix(NA, n - 1, 2)
+# Add and connect nodes 1 and 2:
+E[1, ] &lt;- 1:2
+Degs[1:2] &lt;- 1
+# For each node, add it with probability proportional to degree:
+for (i in 2:(n - 1))
+{
+E[i, 2] &lt;- i + 1
+con &lt;- sample(1:i, 1, prob = Degs[1:i]/sum(Degs[1:i]),i)
+Degs[c(con,i+1)] &lt;- Degs[c(con,i+1)] + 1
+E[i, 1] &lt;- con
+}
+
+# Because this is an edgelist we need a function to convert this to an adjacency matrix:
+E2adj &lt;- function(E,n)
+{
+  adj &lt;- matrix(0,n,n)
+  for (i in 1:nrow(E))
+  {
+      adj[E[i,1],E[i,2]]  &lt;- 1
+  }
+  adj &lt;- adj + t(adj)
+  return(adj)
+}
+
+
+
+### EXAMPLE 1: Animation of construction algorithm: ###
+adjs &lt;- lapply(1:nrow(E),function(i) E2adj(E[1:i,,drop=FALSE],n))
+qgraph.animate(adjs,color="black",labels=FALSE,sleep=0.1, smooth = FALSE)
+rm(adjs)
+
+### EXAMPLE 2: Add nodes by final degree: ###
+adj &lt;- E2adj(E,n)
+qgraph.animate(E2adj(E,n),color="black",labels=FALSE,constraint=100,sleep=0.1)
+
+### EXAMPLE 3: Changing edge weights: ###
+adjW &lt;- adj*rnorm(n^2)
+adjW &lt;- (adjW + t(adjW))/2
+adjs &lt;- list(adjW)
+for (i in 2:100)
+{
+  adjW &lt;- adj*rnorm(n^2)
+  adjW &lt;- (adjW + t(adjW))/2
+  adjs[[i]] &lt;- adjs[[i-1]] + adjW
+}
+qgraph.animate(adjs,color="black",labels=FALSE,constraint=100,sleep=0.1)
+
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>qgraph</em> version 1.6.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

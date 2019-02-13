@@ -8,7 +8,7 @@
 
 
 ###################################################
-### code chunk number 2: variablekey.Rnw:143-144
+### code chunk number 2: variablekey.Rnw:138-139
 ###################################################
 if(!dir.exists("plots")) dir.create("plots")
 
@@ -24,7 +24,7 @@ pdf.options(onefile=F,family="Times",pointsize=10)
 
 
 ###################################################
-### code chunk number 4: variablekey.Rnw:328-343
+### code chunk number 4: variablekey.Rnw:322-337
 ###################################################
 set.seed(234234)
 N <- 200
@@ -44,13 +44,13 @@ mydf$x5[sample(1:N, 10)] <- -999
 
 
 ###################################################
-### code chunk number 5: variablekey.Rnw:371-372 (eval = FALSE)
+### code chunk number 5: variablekey.Rnw:365-366 (eval = FALSE)
 ###################################################
 ## key_wide <- keyTemplate(mydf, file = "key_wide.csv", max.levels = 5)
 
 
 ###################################################
-### code chunk number 6: variablekey.Rnw:378-379 (eval = FALSE)
+### code chunk number 6: variablekey.Rnw:372-373 (eval = FALSE)
 ###################################################
 ## key_long <- keyTemplate(mydf, long = TRUE, file = "key_long.csv", max.levels = 5)
 
@@ -87,7 +87,7 @@ print(xtable(key_long), include.rownames = FALSE, size = "small", floating = FAL
 
 
 ###################################################
-### code chunk number 12: variablekey.Rnw:608-609 (eval = FALSE)
+### code chunk number 12: variablekey.Rnw:600-601 (eval = FALSE)
 ###################################################
 ## mydf.cleaned <- keyApply(mydf, mydf.keylist)
 

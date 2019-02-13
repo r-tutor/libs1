@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Compute Gaussian graphical model using graphical lasso based...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for EBICglasso {qgraph}"><tr><td>EBICglasso {qgraph}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Compute Gaussian graphical model using graphical lasso based on extended BIC criterium.
+</h2>
+
+<h3>Description</h3>
+
+<p>This function uses the <code><a href="../../glasso/html/glasso.html">glasso</a></code> package (Friedman, Hastie and Tibshirani, 2011) to compute a sparse gaussian graphical model with the graphical lasso (Friedman, Hastie \&amp; Tibshirani, 2008). The tuning parameter is chosen using the Extended Bayesian Information criterium  (EBIC). 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+EBICglasso(S, n, gamma = 0.5, penalize.diagonal = FALSE, nlambda = 100, 
+            lambda.min.ratio = 0.01, returnAllResults = FALSE, checkPD = TRUE, 
+            penalizeMatrix, countDiagonal = FALSE, refit = FALSE, threshold = FALSE,
+            verbose = TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>S</code></td>
+<td>
+
+<p>A covariance or correlation matrix
+</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+
+<p>Sample size used in computing <code>S</code>
+</p>
+</td></tr>
+<tr valign="top"><td><code>gamma</code></td>
+<td>
+
+<p>EBIC tuning parameter. 0.5 is generally a good choice. Setting to zero will cause regular BIC to be used.
+</p>
+</td></tr>
+<tr valign="top"><td><code>penalize.diagonal</code></td>
+<td>
+
+<p>Should the diagonal be penalized? 
+</p>
+</td></tr>
+<tr valign="top"><td><code>nlambda</code></td>
+<td>
+
+<p>Number of lambda values to test.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lambda.min.ratio</code></td>
+<td>
+
+<p>Ratio of lowest lambda value compared to maximal lambda
+</p>
+</td></tr>
+<tr valign="top"><td><code>returnAllResults</code></td>
+<td>
+
+<p>If <code>TRUE</code> this function does not return a network but the results of the entire glasso path.
+</p>
+</td></tr>
+<tr valign="top"><td><code>checkPD</code></td>
+<td>
+
+<p>If <code>TRUE</code>, the function will check if <code>S</code> is positive definite and return an error if not. It is not advised to use a non-positive definite matrix as input as (a) that can not be a covariance matrix and (b) glasso can hang if the input is not positive definite.
+</p>
+</td></tr>
+<tr valign="top"><td><code>penalizeMatrix</code></td>
+<td>
+
+<p>Optional logical matrix to indicate which elements are penalized
+</p>
+</td></tr>
+<tr valign="top"><td><code>countDiagonal</code></td>
+<td>
+
+<p>Should diagonal be counted in EBIC computation? Defaults to <code>FALSE</code>. Set to <code>TRUE</code> to mimic qgraph &lt; 1.3 behavior (not recommended!).
+</p>
+</td></tr>
+<tr valign="top"><td><code>refit</code></td>
+<td>
+
+<p>Logical, should the optimal graph be refitted without LASSO regularization? Defaults to <code>FALSE</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>threshold</code></td>
+<td>
+
+<p>Logical, should elements of the precision matrix that are below (log(p*(p-1)/2)) / sqrt(n) be removed (both before EBIC computation and in final model)? Set to <code>TRUE</code> to ensure high specificity.
+</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+
+<p>Logical, should progress output be printed to the console?
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Arguments sent to <code><a href="../../glasso/html/glasso.html">glasso</a></code>
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The glasso is run for 100 values of the tuning parameter logarithmically spaced between the maximal value of the tuning parameter at which all edges are zero, lamba_max, and lambda_max/100. For each of these graphs the EBIC is computed and the graph with the best EBIC is selected. The partial correlation matrix is computed using <code><a href="wi2net.html">wi2net</a></code> and returned. When <code>threshold = TRUE</code>, elements of the inverse variance-covariance matrix are first thresholded using the theoretical bound (Jankova and van de Geer, 2018).
+</p>
+
+
+<h3>Value</h3>
+
+<p>A partial correlation matrix
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Sacha Epskamp &lt;mail@sachaepskamp.com&gt;
+</p>
+
+
+<h3>References</h3>
+
+<p>Friedman, J., Hastie, T., &amp; Tibshirani, R. (2008). Sparse inverse covariance estimation with the graphical lasso. Biostatistics, 9(3), 432-441.
+Chicago  
+</p>
+<p>Jerome Friedman, Trevor Hastie and Rob Tibshirani (2011). glasso: Graphical lasso-estimation of Gaussian graphical models. R package version 1.7.
+http://CRAN.R-project.org/package=glasso
+</p>
+<p>Foygel, R., &amp; Drton, M. (2010, November). Extended Bayesian Information Criteria for Gaussian Graphical Models. In NIPS (pp. 604-612).
+Chicago  
+</p>
+<p>Revelle, W. (2014) psych: Procedures for Personality and Psychological Research,
+Northwestern University, Evanston, Illinois, USA,
+http://CRAN.R-project.org/package=psych Version = 1.4.4.
+</p>
+<p>Bates, D., and Maechler, M. (2014). Matrix: Sparse and Dense Matrix Classes and
+Methods. R package version 1.1-3. http://CRAN.R-project.org/package=Matrix
+</p>
+<p>Jankova, J., and van de Geer, S. (2018) Inference for high-dimensional graphical models. In: Handbook of graphical models (editors: Drton, M., Maathuis, M., Lauritzen, S., and Wainwright, M.). CRC Press: Boca Raton, Florida, USA.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+### Using bfi dataset from psych ###
+library("psych")
+data(bfi)
+
+# Compute correlations:
+CorMat &lt;- cor_auto(bfi[,1:25])
+
+# Compute graph with tuning = 0 (BIC):
+BICgraph &lt;- EBICglasso(CorMat, nrow(bfi), 0, threshold = TRUE)
+
+# Compute graph with tuning = 0.5 (EBIC)
+EBICgraph &lt;- EBICglasso(CorMat, nrow(bfi), 0.5, threshold = TRUE)
+
+# Plot both:
+layout(t(1:2))
+BICgraph &lt;- qgraph(BICgraph, layout = "spring", title = "BIC", details = TRUE)
+EBICgraph &lt;- qgraph(EBICgraph, layout = "spring", title = "EBIC")
+
+# Compare centrality and clustering:
+layout(1)
+centralityPlot(list(BIC = BICgraph, EBIC = EBICgraph))
+clusteringPlot(list(BIC = BICgraph, EBIC = EBICgraph))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>qgraph</em> version 1.6.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

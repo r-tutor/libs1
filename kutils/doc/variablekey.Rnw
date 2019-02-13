@@ -1,4 +1,4 @@
-%% LyX 2.2.3 created this file.  For more info, see http://www.lyx.org/.
+%% LyX 2.3.1 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 \documentclass[english,american,noae]{scrartcl}
 \usepackage{lmodern}
@@ -116,18 +116,13 @@
 
 \usepackage{babel}
 \begin{document}
-
 \title{The Variable Key Data Management Framework}
-\selectlanguage{english}%
-
-\author{Paul E. Johnson<pauljohn@ku.edu>\\
+\author{\selectlanguage{english}%
+Paul E. Johnson<pauljohn@ku.edu>\\
 Benjamin A. Kite<bakite@ku.edu> \\
 Center for Research Methods and Data Analysis\\
 University of Kansas}
-\begin{singlespace}
-
-\date{\noindent \textbf{\today}}
-\end{singlespace}
+\date{\singlespacing{}\noindent \textbf{\today}}
 \maketitle
 \selectlanguage{american}%
 \begin{abstract}
@@ -244,7 +239,6 @@ V54532 & income & . & numeric\tabularnewline
 \hline 
 \end{tabular}
 \end{table}
-
 It was tedious to assemble that table, but it helped quite a bit in
 our discussions. The vertical bars were used to indicate that the
 original data had discrete values. When a variable has a natural ordering,
@@ -437,7 +431,6 @@ key_long <- keyTemplate(mydf, long = TRUE, max.levels = 5)
 print(xtable(key_wide), include.rownames = FALSE, size = "small", floating = FALSE )
 @
 \end{table}
-
 \begin{table}
 \caption{The Long Key Template\label{tab:Long-Key}}
 
@@ -446,7 +439,6 @@ print(xtable(key_wide), include.rownames = FALSE, size = "small", floating = FAL
 print(xtable(key_long), include.rownames = FALSE, size = "small", floating = FALSE)
 @
 \end{table}
-
 The value of \code{class\_old} in the key is the first element in
 the return from the function class for a variable. There is one exception,
 where we have tried to differentiate integer variables from numeric
@@ -680,7 +672,6 @@ x2 & x2.gpa & character & integer & a|b|c|d|f & 4|3|2|1|0\tabularnewline
 \hline 
 \end{tabular}
 \end{table}
-
 In line one of Table \ref{tab:Change-Type-Example1}, the class \code{character}
 remains the same. That line will produce a new character variable
 with embellished values. Line two demonstrates how to create an R
@@ -707,7 +698,6 @@ x6 & x6.f & integer & factor & 1|2|3|4|5 & F|D|C|B|A\tabularnewline
 \hline 
 \end{tabular}
 \end{table}
-
 If a variable's \code{class\_old} is ordered, and we simply want
 to relabel the existing levels, the work is also easy (see Table \ref{tab:Change-Type-Example3}).
 The second row in Table \ref{tab:Change-Type-Example3} shows that
@@ -727,7 +717,6 @@ x7 & x7.gpa & ordered & integer & f<d<c<b<a & 0|1|2|3|4\tabularnewline
 \hline 
 \end{tabular}
 \end{table}
-
 Working with ordered variables, whether as input or output, becomes
 more complicated if the existing data are not ordered in the way we
 want. In the \code{mydf} example, the variable \code{mydf\$x3} was
@@ -761,7 +750,6 @@ x3 & x3.passfail & ordered & ordered & low<med<hi & low<pass<pass\tabularnewline
 \hline 
 \end{tabular}
 \end{table}
-
 The key importer will check that all ``duplicated levels'' are adjacent
 with one another, so that the values above low are grouped together.
 
@@ -786,7 +774,6 @@ x3 & x3.passfail & ordered & ordered & high & pass\\
 \bottomrule
 \end{tabular}
 \end{table}
-
 What to do about missing values. Even within our small group, there
 is some disagreement about this. The SAS tradition would have us enter
 a period, ``.'', in value\_new for a level that is to be treated
@@ -864,7 +851,6 @@ c(a,b) & values equal to or greater than a and less than or equal to b  & c(-999
 \hline 
 \end{tabular}
 \end{table}
-
 The key specification for \code{recodes} is discussed in the help
 page of the \code{assignRecode} function in \code{kutils}. The \code{recodes}
 column takes R code and applies it to the desired variable. For example,
@@ -967,11 +953,11 @@ recode box open, why not use it to recode your date information?''
 If the variable key template says that a column is ``integer,''
 but you expected a date, then all is likely to be fine if we set the
 origin. One needs to find out what the origin should be and tell R
-about it. The right recode statement is likely to be \code{as.Date(x, origin = \textquotedbl{}1970-01-01\textquotedbl{})}.
+about it. The right recode statement is likely to be \code{as.Date(x, origin = \textquotedbl 1970-01-01\textquotedbl )}.
 On the other hand, if the date information is in text format, with
 values like ``2016-11-19'', then it is necessary to learn the shorthand
 notation for date symbols. The right recode will be something like
-\code{as.Date(x, format = \textquotedbl{}\%Y-\%m-\%d\textquotedbl{})}.
+\code{as.Date(x, format = \textquotedbl\%Y-\%m-\%d\textquotedbl )}.
 
 If one sets \code{class\_new} = \code{Date}, the \code{keyApply}
 function will succeed if the return value from the recode function

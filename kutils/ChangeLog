@@ -1,3 +1,38 @@
+2018-11-28  Paul Johnson  <pauljohn@delllap-16>
+
+	* ../R/importQualtrics.R (importQualtrics): dropText argument used
+
+2018-11-27  Paul Johnson  <pauljohn@delllap-16>
+
+	* ../R/variableKey.R (makeOneWide):
+	(unique.one): if != 1, not > 1
+	(keysPool): add factor, character in legal class conversions
+	(makeOneWide): Trying this approach now
+	sep_old <- if("ordered" %in% unique(x$class_old)) "<" else "|"
+        sep_new <- if("ordered" %in% unique(x$class_new)) "<" else "|"
+
+2018-05-31  Paul Johnson  <pauljohn@delllap-16>
+
+	* ../R/variableKey.R (makeOneWide): fix warning where x$missings
+	and x$recodes did not exist in long2wide. Silences warnings in
+	keyTemplateSPSS and keyTemplateStata.
+
+2018-05-28  Paul Johnson  <pauljohn@delllap-16>
+
+	* ../R/semTable.R (markupConvert): use file should not include
+	".tex", ".html" or ".csv" on end, but if it does, don't add another
+	(markupConvert): table declaration now has <table style="padding-right:50px;padding-left:40px;">
+
+
+2018-05-23  Paul Johnson  <pauljohn@delllap-16>
+
+	* ../R/variableKey.R (keyImport): new key column name check and
+	cleanup. User column name errors are fixed by partial matching
+	where possible. Will stop if name_old, class_old, or value_old
+	columns are not present after that. Will try to fill in guesses
+	for name_new, class_new, and value_new.  If recodes and missings
+	are not present, they will be created as columns of empty.
+
 2018-05-18  Paul Johnson  <pauljohn@delllap-16>
 
 	* ../R/modelcomparison.R (print.kutable): class "kutable" created,

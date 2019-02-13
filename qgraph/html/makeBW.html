@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A qgraph plot can be understood in black and white</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for makeBW {qgraph}"><tr><td>makeBW {qgraph}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+A qgraph plot can be understood in black and white
+</h2>
+
+<h3>Description</h3>
+
+<p>Plot a qgraph network that can be understood also in black and white or grayscale. Positive lines are full and negative ones are dashed. Nodes colors are associated to unique motifs. Up to 12 different motifs are supported at the moment.  
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+makeBW(x, colorlist = NA,  plot = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+
+<p>A qgraph object
+</p>
+</td></tr>
+<tr valign="top"><td><code>colorlist</code></td>
+<td>
+
+<p>Optional: a vector of colors. See details. 
+</p>
+</td></tr>
+<tr valign="top"><td><code>plot</code></td>
+<td>
+
+<p>logical: if FALSE, the network is not plotted. 
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If no colorlist is specified, each color is randomly associated to one of the motifs. Specifying colorlist serves for (a) assigning colors to a specific motif, because the first color in the vector will always be associated to the first motif (this can be used e.g., for being consistent across plots), or (b) for associating motifs only to some of the colors, but not to others, since only in colors in the colorlist are associated to motifs if a colorlist is specified.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Silently returns a qgraph object &quot;x&quot; in which two new elements are present, &quot;$graphAttributes$Nodes$density&quot; and &quot;$graphAttributes$Nodes$angles&quot;, which affect how the nodes are plotted. Can also be further customized and then re-plotted using plot(x). 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Giulio Costantini
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+set.seed(1)
+x &lt;- cor(matrix(rnorm(25), nrow = 5))
+colors &lt;- c("red", "red", "blue", "blue", "white")
+
+# colored qgraph plot
+qg &lt;- qgraph(x, colors = colors)
+
+# randomly assing motifs to colors (notice that white nodes stay white)
+makeBW(qg)
+# associate a motif only to one of the colors
+makeBW(qg, colorlist = c("blue"))
+# define an order, which allows to choose motifs
+makeBW(qg, colorlist = c("blue", "red"))
+makeBW(qg, colorlist = c("red", "blue"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>qgraph</em> version 1.6.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

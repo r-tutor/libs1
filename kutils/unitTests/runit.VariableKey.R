@@ -634,7 +634,8 @@ test.keyUpdate <- function() {
     ## check name preservation
     key1$name_new <- c("ScoreVar", "GenderVar")
     key2 <- keyUpdate(key1, dat2)
-    checkEquals(key1$name_new, key2$name_new[1:2])
+    ## Check that all name_new from key1 are still present in key2
+    checkEquals(all(key1[ , "name_new"] %in% key2[ , "name_new"]), TRUE)
 }
 
 
@@ -716,9 +717,22 @@ test.keysPool <- function() {
     key3 <- keyTemplate(dat3, long = TRUE)
     key4 <- keyTemplate(dat4, long = TRUE)
     stackedKeys2 <- rbind(key3, key4)
-    stackedKeys2Fix <- tryCatch(kutils:::keysPool(stackedKeys2),
-                                warning=function(w) w)
-    checkTrue("warning" %in% class(stackedKeys2Fix))
+    stackedKeys2Fix <- keysPool(stackedKeys2)
+
+    stackedKeys2Fix.saved <-
+        structure(list(
+            name_old = c("x1", "x1", "x1", "x1", "x1", "x1", "x2", "x2", "x2"), name_new = c("x1", "x1", "x1", "x1", "x1", "x1", "x2", "x2", "x2"),
+            class_old = c("numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "character","character", "character"),
+            class_new = c("numeric", "numeric",
+                          "numeric", "numeric", "numeric", "numeric", "character", "character",  "character" ),
+            value_old = c("-2", "-1", "0", "1", "2", ".", "Apple",
+                          "Orange", "."), value_new = c("-2", "-1", "0", "1", "2", ".", "Apple", "Orange", "."),
+            missings = c("", "", "", "", "", "", "", "", ""),
+            recodes = c("", "", "", "", "", "", "", "", "")), missSymbol = ".",
+            row.names = c("x1.1", "x1.2", "x1.3", "x1.4", "x1.5", "x1.6", "x2.7",
+                          "x2.8", "x2.9" ), class = c("keylong", "data.frame"))
+    stack.diff <-  keyDiff(stackedKeys2Fix, stackedKeys2Fix.saved[NROW(stackedKeys2Fix.saved):1 , ])
+    checkEquals(stack.diff, NULL)
 }
 
 
