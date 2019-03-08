@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create (partial) factorial design</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for doe {radiant.design}"><tr><td>doe {radiant.design}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create (partial) factorial design</h2>
+
+<h3>Description</h3>
+
+<p>Create (partial) factorial design
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+doe(factors, int = "", trials = NA, seed = NA)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>factors</code></td>
+<td>
+<p>Categorical variables used as input for design</p>
+</td></tr>
+<tr valign="top"><td><code>int</code></td>
+<td>
+<p>Vector of interaction terms to consider when generating design</p>
+</td></tr>
+<tr valign="top"><td><code>trials</code></td>
+<td>
+<p>Number of trials to create. If NA then all feasible designs will be considered until a design with perfect D-efficiency is found</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>Random seed to use as the starting point</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/design/doe.html">https://radiant-rstats.github.io/docs/design/doe.html</a> for an example in Radiant
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with all variables defined in the function as an object of class doe
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="summary.doe.html">summary.doe</a></code> to summarize results
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+doe(c("price; $10; $13; $16", "food; popcorn; gourmet; no food"))
+doe(
+  c("price; $10; $13; $16", "food; popcorn; gourmet; no food"),
+  int = "price:food", trials = 9, seed = 1234
+)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.design</em> version 0.9.9 <a href="00Index.html">Index</a>]</div>
+</body></html>

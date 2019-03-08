@@ -22,6 +22,9 @@ To include log normally distributed random variables in the analysis select `Log
 
 To include normally distributed random variables in the analysis select `Normal` from the `Select types` dropdown and use `Normal variables` inputs. For example, enter a `Name` (`demand`), the `Mean` (1000) and the standard deviation (`St.dev.`, 100). Then press the <i title='Add variable' href='#' class='fa fa-plus-circle'></i> icon. Alternatively, enter (or remove) input directly in the text input area (e.g., `demand 1000 100`).
 
+### Poisson
+
+The Poisson distribution is useful to simulate the number of times and event occurs in a particular time span, such as the number of patients arriving in an emergency room between 10 and 11pm. To include Poisson distributed random variables in the analysis select `Poisson` from the `Select types` dropdown and use `Poisson variables` inputs. For example, enter a `Name` (`patients`) and a value for the number of occurrences `Lambda` the event of interest (20). Then press the <i title='Add variable' href='#' class='fa fa-plus-circle'></i> icon. Alternatively, enter (or remove) input directly in the text input area (e.g., `patients 20`).
 
 ### Uniform
 
@@ -134,7 +137,7 @@ z = abs(x)
 optimal_price = find_max(profit, price)
 ```
 
-- To determine the minimum (maximum) value for each pair of values across two variables (e.g., x and y) use the functions `pmin` and `pmax`. In the example below, z will take on the value of x when x is larger than y and take on the value of y otherwise
+- To determine the minimum (maximum) value for each pair of values across multiple variables (e.g., x and y) use the functions `pmin` and `pmax`. In the example below, z will take on the value of x when x is larger than y and take on the value of y otherwise. 
 
 ```r
 z = pmax(x, y)
@@ -178,8 +181,53 @@ See the table below for an example:
   </tr>
 </tbody>
 </table>
+- Similar to `pmin` and `pmax` a number of functions are available to calculate summary statics across multiple variables. For example, `psum` calculates the sum of elements across different vectors. See <https://radiant-rstats.github.io/radiant.data/reference/pfun.html>{target="_blank"} for more information.
 
-Other commonly used functions are `ln` for the natural logaritm (e.g., ln(x)), `sqrt` for the square-root of x (e.g., sqrt(x)) and `square` to calculate square of a variable (e.g., square(x)).
+```r
+z = psum(x, y)
+```
+
+See the table below for an example:
+
+<table class='table table-condensed table-hover' style='width:40%;'>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> x </th>
+   <th style="text-align:left;"> y </th>
+   <th style="text-align:left;"> psum(x,y) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:left;"> 5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:left;"> 8 </td>
+   <td style="text-align:left;"> 11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 4 </td>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:left;"> 6 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 5 </td>
+   <td style="text-align:left;"> 10 </td>
+   <td style="text-align:left;"> 15 </td>
+  </tr>
+</tbody>
+</table>
+
+
+Other commonly used functions are `ln` for the natural logarithm (e.g., ln(x)), `sqrt` for the square-root of x (e.g., sqrt(x)) and `square` to calculate square of a variable (e.g., square(x)).
 
 To return a single value from a calculation use functions such as `min`, `max`, `mean`, `sd`, etc.
 

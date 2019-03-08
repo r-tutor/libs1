@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Factor analysis (PCA)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for full_factor {radiant.multivariate}"><tr><td>full_factor {radiant.multivariate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Factor analysis (PCA)</h2>
+
+<h3>Description</h3>
+
+<p>Factor analysis (PCA)
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+full_factor(dataset, vars, method = "PCA", nr_fact = 1,
+  rotation = "varimax", data_filter = "")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dataset</code></td>
+<td>
+<p>Dataset</p>
+</td></tr>
+<tr valign="top"><td><code>vars</code></td>
+<td>
+<p>Variables to include in the analysis</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>Factor extraction method to use</p>
+</td></tr>
+<tr valign="top"><td><code>nr_fact</code></td>
+<td>
+<p>Number of factors to extract</p>
+</td></tr>
+<tr valign="top"><td><code>rotation</code></td>
+<td>
+<p>Apply varimax rotation or no rotation (&quot;varimax&quot; or &quot;none&quot;)</p>
+</td></tr>
+<tr valign="top"><td><code>data_filter</code></td>
+<td>
+<p>Expression entered in, e.g., Data &gt; View to filter the dataset in Radiant. The expression should be a string (e.g., &quot;price &gt; 10000&quot;)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/multivariate/full_factor.html">https://radiant-rstats.github.io/docs/multivariate/full_factor.html</a> for an example in Radiant
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with all variables defined in the function as an object of class full_factor
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="summary.full_factor.html">summary.full_factor</a></code> to summarize results
+</p>
+<p><code><a href="plot.full_factor.html">plot.full_factor</a></code> to plot results
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+full_factor(shopping, "v1:v6") %&gt;% str()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.multivariate</em> version 0.9.9 <a href="00Index.html">Index</a>]</div>
+</body></html>

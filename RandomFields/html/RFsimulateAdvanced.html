@@ -1,0 +1,532 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Simulation of Random Fields - Advanced</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RFsimulateAdvanced {RandomFields}"><tr><td>RFsimulateAdvanced {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Simulation of Random Fields &ndash; Advanced</h2>
+
+<h3>Description</h3>
+
+<p>This function simulates <b>unconditional</b> random fields:
+</p>
+
+<ul>
+<li><p> univariate and multivariate,
+spatial and spatio-temporal Gaussian random fields
+</p>
+</li>
+<li> <p><a href="RPpoisson.html">stationary Poisson fields</a>
+</p>
+</li>
+<li> <p><a href="RPchi2.html">Chi2 fields</a>
+</p>
+</li>
+<li> <p><a href="RPt.html">t fields</a>
+</p>
+</li>
+<li> <p><a href="RPbernoulli.html">Binary fields</a>
+</p>
+</li>
+<li> <p><a href="RPmaxstable.html">stationary max-stable random fields</a>.
+</p>
+</li></ul>
+
+<p>It also simulates <b>conditional</b> random fields for
+</p>
+
+<ul>
+<li><p> univariate and multivariate,
+spatial and spatio-temporal Gaussian random fields.
+</p>
+</li></ul>
+
+<p>For basic simulation of Gaussian random fields, see <a href="RFsimulate.html">RFsimulate</a>.
+See  <a href="RFsimulate.more.examples.html">RFsimulate.more.examples</a> and
+<a href="RFsimulate.sophisticated.examples.html">RFsimulate.sophisticated.examples</a> for further examples.
+</p>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>model</code></td>
+<td>
+<p>object of class <code><a href="RMmodel-class.html">RMmodel</a></code>,
+<code><a href="RFformula.html">RFformula</a></code> or <code><a href="../../stats/html/formula.html">formula</a></code>;
+specifies the model to be simulated
+</p>
+
+<ul>
+<li><p> if of class <code><a href="RMmodel-class.html">RMmodel</a></code>, <code>model</code>
+specifies
+</p>
+
+<ul>
+<li><p> the type of random field by using <code>RP</code>functions,
+e.g.,
+</p>
+ 
+<ul>
+<li> <p><code><a href="RPgauss.html">RPgauss</a></code>: Gaussian random field (default
+if none of the functions in the list is given)
+
+
+
+
+
+</p>
+</li>
+<li> <p><code><a href="RPsmith.html">RPsmith</a></code>: Smith model
+
+
+See<code> <a href="RP.html">RP</a></code> for an overview.
+</p>
+</li></ul>
+
+</li>
+<li><p> the covariance or variogram model in case of a Gaussian random
+field (<code><a href="RPgauss.html">RPgauss</a></code>) and for fields based on Gaussian fields
+(e.g. <code><a href="RPbernoulli.html">RPbernoulli</a></code>);
+type <code><a href="RFgetModelNames.html">RFgetModelNames</a>(type="variogram")</code>
+for a list of available models; see also <code><a href="RMmodel.html">RMmodel</a></code>.
+</p>
+</li>
+<li><p> the shape function in case of a shot noise process; type
+<code><a href="RFgetModelNames.html">RFgetModelNames</a>(type='shape')</code> for a list of
+available models.
+</p>
+
+
+
+</li></ul>
+
+</li>
+<li><p> if of class <code><a href="RFformula.html">RFformula</a></code> or <code><a href="../../stats/html/formula.html">formula</a></code>,
+<code>submodel</code> specifies a linear mixed model where random
+effects can be modelled by Gaussian random fields;
+see <code><a href="RFformula.html">RFformula</a></code> for details on model
+specification.
+</p>
+</li></ul>
+
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>matrix of coordinates, or vector of x coordinates, or object
+of class <code><a href="../../sp/html/GridTopology-class.html">GridTopology</a></code> or
+<code><a href="../../raster/html/raster.html">raster</a></code>; 
+if matrix, <code>ncol(x)</code> is the dimension
+of the index space; matrix notation is required in case of more than 3 space
+dimensions; in this case, if <code>grid=FALSE</code>, <code>x_ij</code> is the
+i-th coordinate in the j-th dimension; otherwise, if
+<code>grid=TRUE</code>, the columns of <code>x</code> are interpreted as
+gridtriples (see <code>grid</code>); if of class <code><a href="../../sp/html/GridTopology-class.html">GridTopology</a></code>,
+<code>x</code> is interpreted as grid definition and <code>grid</code>
+is automatically set to <code>TRUE</code>. 
+</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>optional vector of y coordinates, ignored if <code>x</code>
+is a matrix</p>
+</td></tr>
+<tr valign="top"><td><code>z</code></td>
+<td>
+<p>optional vector of z coordinates, ignored if <code>x</code>
+is a matrix</p>
+</td></tr>
+<tr valign="top"><td><code>T</code></td>
+<td>
+<p>optional vector of time coordinates, 
+<code>T</code> must always be an equidistant vector or given in a
+gridtriple format (see argument <code>grid</code>); for each component
+of <code>T</code>, the random field is simulated at all location points.
+</p>
+</td></tr>
+<tr valign="top"><td><code>grid</code></td>
+<td>
+<p>logical; determines whether the vectors <code>x</code>,
+<code>y</code>, and <code>z</code> or the columns of <code>x</code> should be
+interpreted as a grid definition (see Details). If <code>grid=TRUE</code>,
+either <code>x</code>, <code>y</code>, and <code>z</code> must
+be equidistant vectors in ascending order or the columns of <code>x</code>
+must be given in the gridtriple format:
+<code>c(from, stepsize, len)</code>.
+</p>
+<p>Note: If <code>grid</code> is not given, <code><a href="RFsimulate.html">RFsimulate</a></code> tries to
+guess what is meant.
+</p>
+<p><code>c(from, stepsize, len)</code> (see Details)
+</p>
+</td></tr> 
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>matrix, data.frame or object of class <code><a href="RFsp-class.html">RFsp</a></code>;
+coordinates and response values of
+measurements in case that conditional simulation is to
+be performed;
+if a matrix or a data.frame, the first columns are
+interpreted as coordinate vectors, and the last column(s) as
+(multiple) measurement(s) of the field; if <code>x</code> is missing,
+<code>data</code> may contain <code>NA</code>s, which are then replaced by
+conditionally simulated values; if <code>data</code> is missing, unconditional
+simulation is performed;
+for details on matching of variable names see Details; if of class
+<code><a href="RFsp-class.html">RFsp</a></code>
+</p>
+</td></tr>
+<tr valign="top"><td><code>err.model</code></td>
+<td>
+<p>same as <code>model</code>; gives the model of the
+measurement errors for the measured <code>data</code> (which must be given
+in this case!), see Details.
+<code>err.model=NULL</code> (default) corresponds to error-free
+measurements, the most common alternative is
+<code>err.model=<a href="RMnugget.html">RMnugget</a>()</code>;
+ignored if <code>data</code> is missing.
+</p>
+</td></tr>
+<tr valign="top"><td><code>distances</code></td>
+<td>
+<p>object of class <code><a href="../../stats/html/dist.html">dist</a></code> representing
+the upper triangular part of the matrix of Euclidean distances
+between the points at which the field is to be simulated; only
+applicable for stationary and isotropic models; if not <code>NULL</code>,
+<code>dim</code> must be given and <code>x</code>, <code>y</code>, <code>z</code> and
+<code>T</code> must be missing or <code>NULL</code>.
+</p>
+<p>If <code>distances</code> are given, the current value of <code>spConform</code>, see
+<code><a href="RFoptions.html">RFoptions</a></code>, is ignored and instead
+<code>spConform=FALSE</code> is used. (This fact may change in future.) 
+</p>
+</td></tr>
+<tr valign="top"><td><code>dim</code></td>
+<td>
+
+<p>integer; space or space-time dimension of the field
+</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of realizations to generate</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further options and control arguments for the simulation
+that are passed to and processed by <code><a href="RFoptions.html">RFoptions</a></code>
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code><a href="RFsimulate.html">RFsimulate</a></code> simulates different classes of random fields,
+controlled by the wrapping model.
+</p>
+<p>If the wrapping function of the <code>model</code> argument is a covariance
+or variogram model, i.e., one of the list obtained by
+<code><a href="RFgetModelNames.html">RFgetModelNames</a>(type="variogram",
+ group.by="type")</code>, by default, a Gaussian field 
+with the corresponding covariance structure is simulated.
+By default, the simulation method is chosen automatically through internal algorithms.
+The simulation method can be set explicitly by enclosing the
+covariance function with a <a href="GaussianFields.html">method specification</a>.
+</p>
+<p>If other than Gaussian fields are to be simulated, the <code>model</code>
+argument must be enclosed by a function specifying the type of the
+random field.
+</p>
+<p>There are different possibilities of passing the locations at which
+the field is to be simulated. If <code>grid=FALSE</code>, all coordinate
+vectors (except for the time component <i>T</i>) must have the same
+length and the field is only simulated at the locations given by the
+rows of <i>x</i> or of <code>cbind(x, y, z)</code>. If <i>T</i> is not
+missing, the field is simulated for all combinations
+<i>(x[i, ], T[k])</i> or <i>(x[i], y[i], z[i], T[k])</i>,
+<i>i=1, ..., </i><code>nrow(x)</code>, <i>k=1, ..., </i><code>length(T)</code>,
+even if <code>model</code> is not explicitly a space-time model. 
+<br />
+If <code>grid=TRUE</code>, the vectors <code>x</code>,
+<code>y</code>, <code>z</code> and <code>T</code> or the columns of <code>x</code> and
+<code>T</code> are
+interpreted as a grid definition, i.e. the field is simulated at all
+locations <i>(x_i, y_j, z_k, T_l)</i>, as given by
+<code>expand.grid(x, y, z, T)</code>. 
+Here, &ldquo;grid&rdquo; means &ldquo;equidistant in each direction&rdquo;, i.e. all
+vectors must be equidistant and in ascending order.
+In case of more than 3 space dimensions, the coordinates must be
+given in matrix notation. To enable different grid lengths for each
+direction in combination with the matrix notation, the
+&ldquo;gridtriple&rdquo; notation <code>c(from, stepsize, len)</code> is used:
+If <code>x</code>, <code>y</code>,
+<code>z</code>, <code>T</code> or the columns of <code>x</code> are of length 3, they
+are internally replaced by <code>seq(from=from,
+ to=from+(len-1)*stepsize, by=stepsize)</code> , i.e. the field
+is simulated at all locations<br />
+<code>expand.grid(seq(x$from, length.out=x$len, by=x$stepsize),
+ seq(y$from, length.out=y$len, by=y$stepsize),
+ seq(z$from, length.out=z$len, by=z$stepsize),
+ seq(T$from, length.out=T$len, by=T$stepsize))</code>
+</p>
+<p>If <code>data</code> is passed, conditional simulation is performed. 
+</p>
+
+<ul>
+<li>
+<p>If of class <code><a href="RFsp-class.html">RFsp</a></code>,
+<code>ncol(data@coords)</code> must equal the dimension of the index
+space. If <code>data@data</code> contains only a single variable,
+variable names are optional. If <code>data@data</code> contains
+more than one variable, variables must be named and <code>model</code>
+must be given in the tilde notation <code>resp ~ ... </code> (see
+<code><a href="RFformula.html">RFformula</a></code>) and <code>"resp"</code> must be contained
+in <code>names(data@data)</code>.
+</p>
+</li>
+<li>
+
+<p>If <code>data</code> is a matrix or a data.frame, either <code>ncol(data)</code>
+equals <i>(dimension of index space + 1)</i> and the order of the
+columns is (x, y, z, T, response) or, if <code>data</code> contains
+more than one 
+response variable (i.e. <code>ncol(data) &gt; (dimension of index
+ space + 1)</code>), <code>colnames(data)</code> must contain
+<code>colnames(x)</code> or those of <code>"x", "y", "z", "T"</code> that
+are not missing. The response variable name is matched with
+<code>model</code>, which must be given in the tilde notation. If
+<code>"x", "y", "z", "T"</code> are missing and <code>data</code> contains
+<code>NA</code>s, <code>colnames(data)</code> must contain an element which starts
+with &lsquo;data&rsquo;; the corresponding column and those behind it are
+interpreted as the given data and those before the corresponding
+column are interpreted as the coordinates.
+</p>
+</li>
+<li>
+<p>If <code>x</code> is missing, <code><a href="RFsimulate.html">RFsimulate</a></code> searches for
+<code>NA</code>s in the data and performs a conditional simulation
+for them.
+</p>
+</li></ul>
+
+<p>Specification of <code>err.model</code>:
+In geostatistics we have two different interpretations of a nugget
+effect: small scale variability and measurement error.
+The result of conditional simulation usually does not include the
+measurement error. Hence the measurement error <code>err.model</code>
+must be given separately. For sake of generality, any model (and not
+only the nugget effect) is allowed.
+Consequently, <code>err.model</code> is ignored
+when unconditional simulation is performed.
+</p>
+
+
+<h3>Value</h3>
+
+<p>By default, 
+an object of the virtual class
+<code><a href="RFsp-class.html">RFsp</a></code>;
+result is of class
+<code><a href="RFspatialGridDataFrame-class.html">RFspatialGridDataFrame</a></code>
+if <i>[space-time-dimension &gt; 1]</i> and the coordinates are on a grid,
+result is of class 
+<code><a href="RFgridDataFrame-class.html">RFgridDataFrame</a></code>
+if <i>[space-time-dimension = 1]</i> and the coordinates are on a grid,
+result is of class
+<code><a href="RFspatialPointsDataFrame-class.html">RFspatialPointsDataFrame</a></code>
+if <i>[space-time-dimension &gt; 1]</i> and the coordinates are not on a grid,
+result is of class 
+<code><a href="RFpointsDataFrame-class.html">RFpointsDataFrame</a></code>
+if <i>[space-time-dimension = 1]</i> and the coordinates are not on a
+grid.
+</p>
+<p>The output format can be switched to the &quot;old&quot; array format using
+<code><a href="RFoptions.html">RFoptions</a></code>, either by globally setting
+<code><a href="RFoptions.html">RFoptions</a>(spConform=FALSE)</code> or by passing <code>spConform=FALSE</code>
+in the call of <code><a href="RFsimulate.html">RFsimulate</a></code>.
+Then the object returned by <code><a href="RFsimulate.html">RFsimulate</a></code>
+depends on the arguments <code>n</code> and <code>grid</code> in the following way:<br />
+</p>
+<p>If <code>vdim &gt; 1</code> the <code>vdim</code>-variate vector makes the first dimension.
+</p>
+<p>If <code>grid=TRUE</code> an array of the dimension of the
+random field makes the next dimensions. Here, the dimensions
+are ordered in the sequence <code>x</code>, <code>y</code>, <code>z</code>, <code>T</code>
+(if given).
+</p>
+<p>Else if no time component is given, then the values are passed as a
+single vector. Else if the time component is given the next 2
+dimensions give the space and the time, respectively.
+</p>
+<p>If <code>n &gt; 1</code> the repetitions make the last dimension.
+</p>
+<p>Note: Conversion between the <span class="pkg">sp</span>
+format and the conventional format can be
+done using the method <code>RFspDataFrame2conventional</code> and the
+function <code>conventional2RFspDataFrame</code>. 
+</p>
+<p><code>InitRFsimulate</code> returns 0 if no error has occurred and a positive value
+if failed.<br />
+</p>
+
+
+<h3>Note</h3>
+
+<p>Advanced options are
+</p>
+
+<ul>
+<li> <p><code>spConform</code> (suppressed return of S4 objects)
+</p>
+</li>
+<li> <p><code>practicalrange</code> (forces range of covariances to be one)
+</p>
+</li>
+<li> <p><code>exactness</code> (chooses the simulation method by precision)
+</p>
+</li>
+<li> <p><code>seed</code> (sets <code><a href="../../base/html/.Random.seed.html">.Random.seed</a></code> locally or
+globally)
+</p>
+</li></ul>
+
+<p>See <code><a href="RFoptions.html">RFoptions</a></code> for further options.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+
+
+<p>General
+</p>
+
+<ul>
+<li>
+<p>Lantuejoul, Ch. (2002) <em>Geostatistical simulation.</em>
+<b>New York:</b> Springer.
+</p>
+</li>
+<li>
+<p>Schlather, M. (1999) <em>An introduction to positive definite
+functions and to unconditional simulation of random fields.</em>
+Technical report ST 99-10, Dept. of Maths and Statistics,
+Lancaster University.
+</p>
+</li></ul>
+
+<p>Original work:
+</p>
+
+<ul>
+<li><p> Circulant embedding:
+</p>
+<p>Chan, G. and Wood, A.T.A. (1997)
+An algorithm for simulating stationary Gaussian random fields.
+<em>J. R. Stat. Soc., Ser. C</em> <b>46</b>, 171-181.
+</p>
+<p>Dietrich, C.R. and Newsam, G.N. (1993)
+A fast and exact method for multidimensional Gaussian
+stochastic simulations.
+<em>Water Resour. Res.</em> <b>29</b>, 2861-2869. 
+</p>
+<p>Dietrich, C.R. and Newsam, G.N. (1996)
+A fast and exact method for multidimensional Gaussian stochastic
+simulations: Extensions to realizations conditioned on direct and
+indirect measurement 
+<em>Water Resour. Res.</em> <b>32</b>, 1643-1652. 
+</p>
+<p>Wood, A.T.A. and Chan, G. (1994)
+Simulation of stationary Gaussian processes in <i>[0,1]^d</i>
+<em>J. Comput. Graph. Stat.</em> <b>3</b>, 409-432.
+</p>
+<p>The code used in <cite>RandomFields</cite> is based on
+Dietrich and Newsam (1996).
+</p>
+</li>
+<li><p> Intrinsic embedding and Cutoff embedding:
+</p>
+<p>Stein, M.L. (2002)
+Fast and exact simulation of fractional Brownian surfaces.
+<em>J. Comput. Graph. Statist.</em> <b>11</b>, 587&ndash;599.
+</p>
+<p>Gneiting, T., Sevcikova, H., Percival, D.B., Schlather, M. and
+Jiang, Y. (2005)
+Fast and Exact Simulation of Large Gaussian Lattice Systems in
+<i>R^2</i>: Exploring the Limits
+<em>J. Comput. Graph. Statist.</em> Submitted.
+</p>
+</li>
+<li><p> Markov Gaussian Random Field:
+</p>
+<p>Rue, H. (2001) Fast sampling of Gaussian Markov random fields.
+<em>J. R. Statist. Soc., Ser. B</em>, <b>63</b> (2), 325-338.
+</p>
+<p>Rue, H., Held, L. (2005) <em>Gaussian Markov Random Fields:
+Theory and Applications.</em>
+Monographs on Statistics and Applied Probability, no <b>104</b>,
+Chapman \&amp; Hall.
+</p>
+</li>
+<li><p> Turning bands method (TBM), turning layers:
+</p>
+<p>Dietrich, C.R. (1995) A simple and efficient space domain implementation
+of the turning bands method. <em>Water Resour. Res.</em> <b>31</b>,
+147-156.
+</p>
+<p>Mantoglou, A. and Wilson, J.L. (1982) The turning bands method for
+simulation of random fields using line generation by a spectral
+method. <em>Water. Resour. Res.</em> <b>18</b>, 1379-1394.
+</p>
+<p>Matheron, G. (1973)
+The intrinsic random functions and their applications.
+<em>Adv. Appl. Probab.</em> <b>5</b>, 439-468.
+</p>
+<p>Schlather, M. (2004)
+Turning layers: A space-time extension of turning bands.
+<em>Submitted</em>
+</p>
+</li>
+<li><p> Random coins:
+</p>
+<p>Matheron, G. (1967) <em>Elements pour une Theorie des Milieux
+Poreux</em>. Paris: Masson.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RFoptions.html">RFoptions</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFgui.html">RFgui</a></code>,
+<code><a href="GaussianFields.html">methods for simulating Gaussian random fields</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>,
+<code><a href="RFvariogram.html">RFvariogram</a></code>,
+<a href="RFsimulate.more.examples.html">RFsimulate.more.examples</a>,
+<a href="RFsimulate.sophisticated.examples.html">RFsimulate.sophisticated.examples</a>,
+<code><a href="RPgauss.html">RPgauss</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

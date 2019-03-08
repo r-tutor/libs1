@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Schur product</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMschur {RandomFields}"><tr><td>RMschur {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Schur product</h2>
+
+<h3>Description</h3>
+
+<p>The covariance function is
+</p>
+<p style="text-align: center;"><i>C(x)= M * &phi;(x)</i></p>
+
+<p>where &lsquo;*&rsquo; denotes the Schur product, i.e. elementwise
+multiplication.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMschur(phi, M,  diag, rhored, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>phi</code></td>
+<td>
+<p>covariance function of class <code><a href="RMmodel-class.html">RMmodel</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>M</code></td>
+<td>
+<p>constant <i>n x n</i> covariance matrix of the
+same size as multivariate model <code>phi</code></p>
+</td></tr>
+<tr valign="top"><td><code>diag,rhored</code></td>
+<td>
+<p>alternative way of passing <code>M</code>:
+<code>diag</code> is a vector of variances, <code>rhored</code> is a vector
+containing the correlations of the lower triangle of the <code>M</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMschur.html">RMschur</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> ?
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RMmatrix.html">RMmatrix</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+model &lt;- RMschur(M=matrix(c(2, 1, 1, 1), ncol=2), RMparswm(nudiag=c(0.5, 2)))
+plot(model)
+x &lt;- seq(0, 10, 0.02)
+plot(RFsimulate(model, x=x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Definition of Distribution Families</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RRdistr {RandomFields}"><tr><td>RRdistr {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Definition of Distribution Families</h2>
+
+<h3>Description</h3>
+
+<p><code>RRdistr</code> defines a distribution family given by <code>fct</code>.
+It is used to introduce <a href="RR.html">random parameters</a> based on
+distributions defined on R.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RRdistr(name, nrow, ncol, 
+        envir, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>an arbitrary family of distributions. E.g.
+<code>norm()</code> for the family <code>dnorm</code>, <code>pnorm</code>,
+<code>qnorm</code>, <code>rnorm</code>. See examples below.
+</p>
+</td></tr>
+<tr valign="top"><td><code>nrow, ncol</code></td>
+<td>
+<p>The matrix size (or vector if <code>ncol=1</code>)
+the family returns. Except for very advanced modelling we always have
+<code>nrow=ncol=1</code>, which is the default.</p>
+</td></tr>
+</table>
+
+
+
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>envir</code></td>
+<td>
+<p>an environment; defaults to
+<code><a href="../../base/html/new.env.html">new.env</a>()</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Second possibility to pass the distribution family is to
+pass a character string as <code>name</code> and to give the argument
+within <code>...</code>. See examples below.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code><a href="RRdistr.html">RRdistr</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p><code><a href="RRdistr.html">RRdistr</a></code> is the generic model introduced
+automatically when distribution families in R are used in the model
+definition. See the examples below.
+</p>
+
+
+<h3>Note</h3>
+
+<p>See <a href="Bayesian.html">Bayesian Modelling</a> for a less technical introduction to
+hierarchical modelling. 
+</p>
+<p>The use of <code>RRdistr</code> is completely on the risk of the user. There is no
+way to check whether the expressions of the user are mathematically
+correct.
+</p>
+<p>Further, <code><a href="RRdistr.html">RRdistr</a></code> may not be used in connection with obsolete
+commands of RandomFields.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>,
+<a href="RR.html">RR</a>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFdistr.html">RFdistr</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+## here a model with random scale parameter
+model &lt;- RMgauss(scale=exp(rate=1))
+x &lt;- seq(0,10,0.02)
+n &lt;- 10
+ 
+for (i in 1:n) {  
+  readline(paste("Simulation no.", i, ": press return", sep=""))
+  plot(RFsimulate(model, x=x, seed=i))
+}
+
+## another possibility to define exactly the same model above is
+## model &lt;- RMgauss(scale=exp())
+
+## note that however, the following two definitions lead
+## to covariance models with fixed scale parameter:
+## model &lt;- RMgauss(scale=exp(1))   # fixed to 2.7181
+## model &lt;- RMgauss(scale=exp(x=1)) # fixed to 2.7181
+
+
+## here, just two other examples:
+## fst
+model &lt;- RMmatern(nu=unif(min=0.1, max=2)) # random
+for (i in 1:n) {
+  readline(paste("Simulation no.", i, ": press return", sep=""))
+  plot(RFsimulate(model, x=x, seed=i))
+}
+
+## snd, part 1
+## note that the fist 'exp' refers to the exponential function,
+## the second to the exponential distribution.
+(model1 &lt;- RMgauss(var=exp(3), scale=exp(rate=1)))
+x &lt;- 1:100/10
+plot(z1 &lt;- RFsimulate(model=model, x=x))
+
+## snd, part 2
+## exactly the same result as in the previous example
+(model2 &lt;- RMgauss(var=exp(3), scale=RRdistr("exp", rate=1)))
+plot(z2 &lt;- RFsimulate(model=model, x=x))
+all.equal(model1, model2)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

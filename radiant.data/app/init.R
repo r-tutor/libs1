@@ -9,7 +9,7 @@
 # options(warn = 2)
 
 if (getOption("radiant.shinyFiles", FALSE)) {
-  if (isTRUE(Sys.getenv("RSTUDIO") == "")) {
+  if (isTRUE(Sys.getenv("RSTUDIO") == "") && isTRUE(Sys.getenv("SHINY_PORT") != "")) {
     ## Users not on Rstudio will only get access to pre-specified volumes
     sf_volumes <- getOption("radiant.sf_volumes", "")
   } else {
@@ -31,8 +31,8 @@ if (getOption("radiant.shinyFiles", FALSE)) {
 
 remove_session_files <- function(st = Sys.time()) {
   fl <- list.files(
-    normalizePath("~/radiant.sessions/"),
-    pattern = "*.rds",
+    normalizePath("~/.radiant.sessions/"),
+    pattern = "*.state.rda",
     full.names = TRUE
   )
 
@@ -52,8 +52,8 @@ isolate({
 
 most_recent_session_file <- function() {
   fl <- list.files(
-    normalizePath("~/radiant.sessions/"),
-    pattern = "*.rds",
+    normalizePath("~/.radiant.sessions/"),
+    pattern = "*.state.rda",
     full.names = TRUE
   )
 
@@ -64,7 +64,7 @@ most_recent_session_file <- function() {
       .[["fn"]] %>%
       as.character() %>%
       basename() %>%
-      gsub("r_(.*).rds", "\\1", .)
+      gsub("r_(.*).state.rda", "\\1", .)
   } else {
     NULL
   }
@@ -87,7 +87,6 @@ r_ssuid <- if (getOption("radiant.local")) {
 session$sendCustomMessage("session_start", r_ssuid)
 
 ## identify the shiny environment
-# r_environment <- environment()
 r_environment <- session$token
 
 r_info_legacy <- function() {
@@ -123,10 +122,11 @@ if (exists("r_data", envir = .GlobalEnv)) {
     r_info <- do.call(reactiveValues, r_sessions[[r_ssuid]]$r_info)
   }
   r_state <- r_sessions[[r_ssuid]]$r_state
-} else if (file.exists(paste0("~/radiant.sessions/r_", r_ssuid, ".rds"))) {
+} else if (file.exists(paste0("~/.radiant.sessions/r_", r_ssuid, ".state.rda"))) {
   ## read from file if not in global
-  fn <- paste0(normalizePath("~/radiant.sessions"), "/r_", r_ssuid, ".rds")
-  rs <- try(readRDS(fn), silent = TRUE)
+  fn <- paste0(normalizePath("~/.radiant.sessions"), "/r_", r_ssuid, ".state.rda")
+  rs <- new.env(emptyenv())
+  try(load(fn, envir = rs), silent = TRUE)
   if (inherits(rs, "try-error")) {
     r_data <- new.env()
     r_info <- init_data(env = r_data)
@@ -153,10 +153,11 @@ if (exists("r_data", envir = .GlobalEnv)) {
 
   unlink(fn, force = TRUE)
   rm(rs)
-} else if (isTRUE(getOption("radiant.local")) && file.exists(paste0("~/radiant.sessions/r_", mrsf, ".rds"))) {
+} else if (isTRUE(getOption("radiant.local")) && file.exists(paste0("~/.radiant.sessions/r_", mrsf, ".state.rda"))) {
   ## restore from local folder but assign new ssuid
-  fn <- paste0(normalizePath("~/radiant.sessions"), "/r_", mrsf, ".rds")
-  rs <- try(readRDS(fn), silent = TRUE)
+  fn <- paste0(normalizePath("~/.radiant.sessions"), "/r_", mrsf, ".state.rda")
+  rs <- new.env(emptyenv())
+  try(load(fn, envir = rs), silent = TRUE)
   if (inherits(rs, "try-error")) {
     r_data <- new.env()
     r_info <- init_data(env = r_data)
@@ -325,23 +326,9 @@ if (getOption("radiant.from.package", default = TRUE)) {
   # cat("\nGetting radiant.data from source ...\n")
 }
 
-## this should work but doesn't seem to fix ...
+## Getting screen width ...
 ## https://github.com/rstudio/rstudio/issues/1870
 ## https://community.rstudio.com/t/rstudio-resets-width-option-when-running-shiny-app-in-viewer/3661
 observeEvent(input$get_screen_width, {
   if (getOption("width", default = 250) != 250) options(width = 250)
 })
-
-## check every 5 seconds if width has been reset
-## https://github.com/rstudio/rstudio/issues/1870
-## https://community.rstudio.com/t/rstudio-resets-width-option-when-running-shiny-app-in-viewer/3661
-# reactivePoll(
-#   5000,
-#   session,
-#   checkFunc = function() {
-#     if (getOption("width", default = 250) != 250) options(width = 250)
-#   },
-#   valueFunc = function() {
-#     return()
-#   }
-# )

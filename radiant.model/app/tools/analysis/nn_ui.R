@@ -1,7 +1,7 @@
 nn_plots <- c(
-  "None" = "none", 
-  "Network" = "net", 
-  "Olden" = "olden", 
+  "None" = "none",
+  "Network" = "net",
+  "Olden" = "olden",
   "Garson" = "garson",
   "Dashboard" = "dashboard"
 )
@@ -33,13 +33,13 @@ nn_pred_inputs <- reactive({
 
   nn_pred_args$pred_cmd <- nn_pred_args$pred_data <- ""
   if (input$nn_predict == "cmd") {
-    nn_pred_args$pred_cmd <- gsub("\\s{2,}", " ", input$nn_pred_cmd) %>% 
+    nn_pred_args$pred_cmd <- gsub("\\s{2,}", " ", input$nn_pred_cmd) %>%
       gsub(";\\s+", ";", .) %>%
       gsub("\"", "\'", .)
   } else if (input$nn_predict == "data") {
     nn_pred_args$pred_data <- input$nn_pred_data
   } else if (input$nn_predict == "datacmd") {
-    nn_pred_args$pred_cmd <- gsub("\\s{2,}", " ", input$nn_pred_cmd) %>% 
+    nn_pred_args$pred_cmd <- gsub("\\s{2,}", " ", input$nn_pred_cmd) %>%
       gsub(";\\s+", ";", .) %>%
       gsub("\"", "\'", .)
     nn_pred_args$pred_data <- input$nn_pred_data
@@ -193,7 +193,7 @@ output$ui_nn_nrobs <- renderUI({
   choices <- c("1,000" = 1000, "5,000" = 5000, "10,000" = 10000, "All" = -1) %>%
     .[. < nrobs]
   selectInput(
-    "nn_nrobs", "Number of data points plotted:", 
+    "nn_nrobs", "Number of data points plotted:",
     choices = choices,
     selected = state_single("nn_nrobs", choices, 1000)
   )
@@ -207,7 +207,7 @@ observe({
   ## notify user when the model needs to be updated
   ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
   if (pressed(input$nn_run)) {
-    if (is.null(input$nn_evar)) { 
+    if (is.null(input$nn_evar)) {
       updateTabsetPanel(session, "tabs_nn ", selected = "Summary")
       updateActionButton(session, "nn_run", "Estimate model", icon = icon("play"))
     } else if (isTRUE(attr(nn_inputs, "observable")$.invalidated)) {
@@ -262,7 +262,7 @@ output$ui_nn <- renderUI({
           selectizeInput(
             inputId = "nn_pred_data", label = "Prediction data:",
             choices = c("None" = "", r_info[["datasetlist"]]),
-            selected = state_single("nn_pred_data", c("None" = "", r_info[["datasetlist"]])), 
+            selected = state_single("nn_pred_data", c("None" = "", r_info[["datasetlist"]])),
             multiple = FALSE
           )
         ),
@@ -377,7 +377,7 @@ output$nn <- renderUI({
       verbatimTextOutput("predict_nn")
     ),
     tabPanel(
-      "Plot", 
+      "Plot",
       download_link("dlp_nn"),
       plotOutput("plot_nn", width = "100%", height = "100%")
     )
@@ -395,18 +395,18 @@ nn_available <- reactive({
   req(input$nn_type)
   if (not_available(input$nn_rvar)) {
     if (input$nn_type == "classification") {
-      "This analysis requires a response variable with two levels and one\nor more explanatory variables. If these variables are not available\nplease select another dataset.\n\n" %>% 
+      "This analysis requires a response variable with two levels and one\nor more explanatory variables. If these variables are not available\nplease select another dataset.\n\n" %>%
         suggest_data("titanic")
     } else {
-      "This analysis requires a response variable of type integer\nor numeric and one or more explanatory variables.\nIf these variables are not available please select another dataset.\n\n" %>% 
+      "This analysis requires a response variable of type integer\nor numeric and one or more explanatory variables.\nIf these variables are not available please select another dataset.\n\n" %>%
         suggest_data("diamonds")
     }
   } else if (not_available(input$nn_evar)) {
     if (input$nn_type == "classification") {
-      "Please select one or more explanatory variables.\n\n" %>% 
+      "Please select one or more explanatory variables.\n\n" %>%
         suggest_data("titanic")
     } else {
-      "Please select one or more explanatory variables.\n\n" %>% 
+      "Please select one or more explanatory variables.\n\n" %>%
         suggest_data("diamonds")
     }
   } else {
@@ -452,7 +452,7 @@ nn_available <- reactive({
 
 .predict_plot_nn <- reactive({
   req(
-    pressed(input$nn_run), input$nn_pred_plot, 
+    pressed(input$nn_run), input$nn_pred_plot,
     available(input$nn_xvar),
     !is_empty(input$nn_predict, "none")
   )
@@ -503,9 +503,11 @@ observeEvent(input$nn_store_res, {
   req(pressed(input$nn_run))
   robj <- .nn()
   if (!is.list(robj)) return()
+  fixed <- fix_names(input$nn_store_res_name)
+  updateTextInput(session, "nn_store_res_name", value = fixed)
   withProgress(
     message = "Storing residuals", value = 1,
-    r_data[[input$dataset]] <- store(r_data[[input$dataset]], robj, name = input$nn_store_res_name)
+    r_data[[input$dataset]] <- store(r_data[[input$dataset]], robj, name = fixed)
   )
 })
 
@@ -513,12 +515,13 @@ observeEvent(input$nn_store_pred, {
   req(!is_empty(input$nn_pred_data), pressed(input$nn_run))
   pred <- .predict_nn()
   if (is.null(pred)) return()
+  fixed <- fix_names(input$nn_store_pred_name)
+  updateTextInput(session, "nn_store_pred_name", value = fixed)
   withProgress(
     message = "Storing predictions", value = 1,
-    # store(pred, data = input$nn_pred_data, name = input$nn_store_pred_name)
     r_data[[input$nn_pred_data]] <- store(
-      r_data[[input$nn_pred_data]], pred, 
-      name = input$nn_store_pred_name
+      r_data[[input$nn_pred_data]], pred,
+      name = fixed
     )
   )
 })
@@ -541,7 +544,9 @@ observeEvent(input$nn_report, {
   }
 
   if (!is_empty(input$nn_store_res_name)) {
-    xcmd <- paste0(input$dataset, " <- store(", input$dataset, ", result, name = \"", input$nn_store_res_name, "\")\n")
+    fixed <- fix_names(input$nn_store_res_name)
+    updateTextInput(session, "nn_store_res_name", value = fixed)
+    xcmd <- paste0(input$dataset, " <- store(", input$dataset, ", result, name = \"", fixed, "\")\n")
   } else {
     xcmd <- ""
   }
@@ -550,31 +555,28 @@ observeEvent(input$nn_report, {
     (!is_empty(input$nn_pred_data) || !is_empty(input$nn_pred_cmd))) {
     pred_args <- clean_args(nn_pred_inputs(), nn_pred_args[-1])
 
-    # if (!is_empty(pred_args[["pred_cmd"]])) {
-    #   pred_args[["pred_cmd"]] <- strsplit(pred_args[["pred_cmd"]], ";")[[1]]
-    # }
-
     if (!is_empty(pred_args$pred_cmd)) {
       pred_args$pred_cmd <- strsplit(pred_args$pred_cmd, ";")[[1]]
+    } else {
+      pred_args$pred_cmd <- NULL
     }
+
     if (!is_empty(pred_args$pred_data)) {
       pred_args$pred_data <- as.symbol(pred_args$pred_data)
-    } 
+    } else {
+      pred_args$pred_data <- NULL
+    }
 
     inp_out[[2 + figs]] <- pred_args
     outputs <- c(outputs, "pred <- predict")
     xcmd <- paste0(xcmd, "print(pred, n = 10)")
     if (input$nn_predict %in% c("data", "datacmd")) {
-      # xcmd <- paste0(xcmd, "\nstore(pred, data = \"", input$nn_pred_data, "\", name = \"", input$nn_store_pred_name, "\")")
-      xcmd <- paste0(xcmd, "\n", input$nn_pred_data, " <- store(", 
-        input$nn_pred_data, ", pred, name = \"", input$nn_store_pred_name, "\")"
+      fixed <- fix_names(input$nn_store_pred_name)
+      updateTextInput(session, "nn_store_pred_name", value = fixed)
+      xcmd <- paste0(xcmd, "\n", input$nn_pred_data , " <- store(",
+        input$nn_pred_data, ", pred, name = \"", fixed, "\")"
       )
     }
-
-    # if (getOption("radiant.local", default = FALSE)) {
-    #   pdir <- getOption("radiant.write_dir", default = "~/")
-    #   xcmd <- paste0(xcmd, "\n# readr::write_csv(pred, path = \"", pdir, "nn", input$nn_size, "_predictions.csv\")")
-    # }
 
     if (input$nn_pred_plot && !is_empty(input$nn_xvar)) {
       inp_out[[3 + figs]] <- clean_args(nn_pred_plot_inputs(), nn_pred_plot_args[-1])
@@ -610,16 +612,16 @@ dl_nn_pred <- function(path) {
 }
 
 download_handler(
-  id = "dl_nn_pred", 
-  fun = dl_nn_pred, 
+  id = "dl_nn_pred",
+  fun = dl_nn_pred,
   fn = function() paste0(input$dataset, "_nn_pred"),
   type = "csv",
   caption = "Save predictions"
 )
 
 download_handler(
-  id = "dlp_nn_pred", 
-  fun = download_handler_plot, 
+  id = "dlp_nn_pred",
+  fun = download_handler_plot,
   fn = function() paste0(input$dataset, "_nn_pred"),
   type = "png",
   caption = "Save neural network prediction plot",
@@ -629,8 +631,8 @@ download_handler(
 )
 
 download_handler(
-  id = "dlp_nn", 
-  fun = download_handler_plot, 
+  id = "dlp_nn",
+  fun = download_handler_plot,
   fn = function() paste0(input$dataset, "_nn"),
   type = "png",
   caption = "Save neural network plot",

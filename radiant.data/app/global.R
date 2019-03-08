@@ -6,9 +6,17 @@ suppressWarnings(
   )
 )
 
-if (isTRUE(getOption("radiant.sf_volumes", "") != "") || isTRUE(Sys.getenv("RSTUDIO") != "")) {
+## set volumes if sf_volumes was preset (e.g., on a server) or
+## we are running in Rstudio or if we are running locally
+if (isTRUE(getOption("radiant.sf_volumes", "") != "") ||
+    isTRUE(Sys.getenv("RSTUDIO") != "") ||
+    isTRUE(Sys.getenv("SHINY_PORT") == "")) {
+
   if (isTRUE(getOption("radiant.sf_volumes", "") == "")) {
     sf_volumes <- c(Home = radiant.data::find_home())
+    if (dir.exists(paste0(sf_volumes["Home"], "/Desktop"))) {
+      sf_volumes <- c(sf_volumes, Desktop = paste0(sf_volumes["Home"], "/Desktop"))
+    }
     Dropbox <- try(radiant.data::find_dropbox(), silent = TRUE)
     if (!inherits(Dropbox, "try-error")) {
       sf_volumes <- c(sf_volumes, Dropbox = Dropbox)
@@ -192,8 +200,7 @@ knitr::opts_chunk$set(
 r_sessions <- new.env(parent = emptyenv())
 
 ## create directory to hold session files
-# file.path(radiant.data::find_home(), "radiant.sessions") %>% {
-"~/radiant.sessions" %>% {if (!file.exists(.)) dir.create(.)}
+"~/.radiant.sessions" %>% {if (!file.exists(.)) dir.create(.)}
 
 ## adding the figures path to avoid making a copy of all figures in www/figures
 addResourcePath("figures", file.path(getOption("radiant.path.data"), "app/tools/help/figures/"))
@@ -451,7 +458,7 @@ options(
         tabPanel(actionLink("state_share", "Share radiant state", icon = icon("share"))),
         tabPanel("View radiant state", uiOutput("state_view"), icon = icon("user")),
         "----", "Local",
-        tabPanel(downloadLink("state_download", "    Download radiant state file", class = "fa fa-download")),
+        tabPanel(downloadLink("state_download", tagList(icon("download"), "Download radiant state file"))),
         tabPanel(actionLink("state_upload_link", "Upload radiant state file", icon = icon("upload")))
       ),
 

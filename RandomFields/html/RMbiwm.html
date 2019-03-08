@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Full Bivariate Whittle Matern Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMbiwm {RandomFields}"><tr><td>RMbiwm {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Full Bivariate Whittle Matern Model</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMbiwm.html">RMbiwm</a></code> is a bivariate stationary isotropic covariance model
+whose corresponding covariance function only depends on the distance
+<i>r &ge; 0</i> between
+two points and is given for <i>i,j = 1,2</i> by
+</p>
+<p style="text-align: center;"><i>C_{ij}(r)=c_{ij} W_{&nu;_{ij}}(r/s_{ij}).</i></p>
+
+<p>Here <i>W_&nu;</i> is the covariance of the
+<code><a href="RMmatern.html">RMwhittle</a></code> model.
+For constraints on the constants see Details.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMbiwm(nudiag, nured12, nu, s, cdiag, rhored, c, notinvnu, var,
+ scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>nudiag</code></td>
+<td>
+<p>a vector of length 2 of numerical values; each entry
+positive; the vector <i>(&nu;_{11},&nu;_{22})</i></p>
+</td></tr>
+<tr valign="top"><td><code>nured12</code></td>
+<td>
+<p>a numerical value in the interval <i>[1,&infin;)</i>;
+<i>&nu;_{21}</i> is calculated as <i>0.5 (&nu;_{11} + &nu;_{22})*&nu;_{red}</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>nu</code></td>
+<td>
+<p>alternative to <code>nudiag</code> and <code>nured12</code>:
+a vector of length 3 of numerical values; each entry
+positive; the vector <i>(&nu;_{11},&nu;_{21},&nu;_{22})</i>.
+Either
+<code>nured</code> and <code>nudiag</code>, or <code>nu</code> must be given.</p>
+</td></tr>
+<tr valign="top"><td><code>s</code></td>
+<td>
+<p>a vector of length 3 of numerical values; each entry
+positive; the vector <i>(s_{11},s_{21},s_{22})</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>cdiag</code></td>
+<td>
+<p>a vector of length 2 of numerical values; each entry
+positive; the vector <i>(c_{11},c_{22})</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>rhored</code></td>
+<td>
+<p>a numerical value; in the interval <i>[-1,1]</i>. See
+also the Details for the corresponding value of <i>c_{12}=c_{21}</i>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>c</code></td>
+<td>
+<p>a vector of
+length 3 of numerical values; 
+the vector <i>(c_{11},c_{21}, c_{22})</i>. Either 
+<code>rhored</code> and <code>cdiag</code> or <code>c</code> must be given.</p>
+</td></tr>
+<tr valign="top"><td><code>notinvnu</code></td>
+<td>
+<p>logical or <code>NULL</code>.
+If not given (default) then the formula of the 
+(<code><a href="RMmatern.html">RMwhittle</a></code>) model applies.
+If logical then the formula for the <code><a href="RMmatern.html">RMmatern</a></code> model
+applies. See there for details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Constraints on the constants: 
+For the diagonal elements we have
+</p>
+<p style="text-align: center;"><i>&nu;_{ii}, s_{ii}, c_{ii} &gt; 0.</i></p>
+
+<p>For the offdiagonal elements we have 
+</p>
+<p style="text-align: center;"><i>s_{12}=s_{21} &gt; 0,</i></p>
+
+<p style="text-align: center;"><i>&nu;_{12} =&nu;_{21} = 0.5 (&nu;_{11} + &nu;_{22}) * &nu;_{red}</i></p>
+
+<p>for some constant <i>&nu;_{red} \in [1,&infin;)</i> and
+</p>
+<p style="text-align: center;"><i>c_{12} =c_{21} = &rho;_{red} &radic;{f m c_{11} c_{22}}</i></p>
+
+<p>for some constant <i>&rho;_{red}</i> in <i>[-1,1]</i>.
+</p>
+<p>The constants <i>f</i> and <i>m</i> in the last equation are given as follows:
+</p>
+<p style="text-align: center;"><i>f = (&Gamma;(&nu;_{11} + d/2) &Gamma;(&nu;_{22} + d/2)) / (&Gamma;(&nu;_{11}) &Gamma;(&nu;_{22})) * (&Gamma;(&nu;_{12}) / &Gamma;(&nu;_{12}+d/2))^2 * ( s_{12}^{2*&nu;_{12}} / (s_{11}^{&nu;_{11}} s_{22}^{&nu;_{22}}) )^2</i></p>
+
+<p>where <i>&Gamma;</i> is the Gamma function and <i>d</i> is the dimension
+of the space.
+The constant <i>m</i> is 
+the infimum of the function <i>g</i> on <i>[0,&infin;)</i> where
+</p>
+<p style="text-align: center;"><i>g(t) = (1/s_{12}^2 +t^2)^{2&nu;_{12} + d} (1/s_{11}^2 + t^2)^{-&nu;_{11}-d/2} (1/s_{22}^2 + t^2)^{-&nu;_{22}-d/2}</i></p>
+ 
+<p>(cf. Gneiting, T., Kleiber, W., Schlather, M. (2010), Full 
+Bivariate Matern Model (Section 2.2)).
+
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMbiwm.html">RMbiwm</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Gneiting, T., Kleiber, W., Schlather, M. (2010)
+Matern covariance functions for multivariate random fields
+<em>JASA</em>
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMparswm.html">RMparswm</a></code>,
+<code><a href="RMmatern.html">RMwhittle</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>,
+<a href="RMmodelsMultivariate.html">Multivariate RMmodels</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+x &lt;- y &lt;- seq(-10, 10, 0.2)
+model &lt;- RMbiwm(nudiag=c(0.3, 2), nured=1, rhored=1, cdiag=c(1, 1.5), 
+                s=c(1, 1, 2))
+plot(model)
+plot(RFsimulate(model, x, y))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

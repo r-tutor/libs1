@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Whittle-Matern Covariance Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMwhittlematern {RandomFields}"><tr><td>RMwhittlematern {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Whittle-Matern Covariance Model</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMmatern.html">RMmatern</a></code> is a stationary isotropic covariance model
+belonging to the Matern family. 
+The corresponding covariance function only depends on the distance
+<i>r &ge; 0</i>
+between two points.
+</p>
+<p>The Whittle model is given by
+</p>
+<p style="text-align: center;"><i>C(r)=W_{&nu;}(r)=2^{1- &nu;}
+ &Gamma;(&nu;)^{-1}r^{&nu;}K_{&nu;}(r)</i></p>
+ 
+<p>where <i>&nu; &gt; 0</i> and <i>K_&nu;</i> is the modified
+Bessel function of second kind.
+</p>
+<p>The Matern model is given by
+</p>
+<p style="text-align: center;"><i>C(r) = 2^{1- &nu;} &Gamma;(&nu;)^{-1} (&radic;{2&nu;}
+ r)^&nu; K_&nu;(&radic;{2&nu;} r)</i></p>
+
+<p>The Handcock-Wallis parametrisation is given by
+</p>
+<p style="text-align: center;"><i>C(r) = 2^{1- &nu;} &Gamma;(&nu;)^{-1} (2&radic;{&nu;}
+ r)^&nu; K_&nu;(2&radic;{&nu;} r)</i></p>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+RMwhittle(nu, notinvnu, var, scale, Aniso, proj)
+
+RMmatern(nu, notinvnu, var, scale, Aniso, proj)
+
+RMhandcock(nu, notinvnu, var, scale, Aniso, proj)
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>nu</code></td>
+<td>
+<p>a numerical value called &ldquo;smoothness parameter&rdquo;;
+should be greater than 0.</p>
+</td></tr> 
+<tr valign="top"><td><code>notinvnu</code></td>
+<td>
+<p>logical. If <code>FALSE</code> then in the definition
+of the models <i>&nu;</i> is replaced by <i>1/&nu;</i>.
+This parametrization seems to be more natural.
+Default is, however, <code>TRUE</code> according with the definitions in
+literature. 
+</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The three models 
+are alternative parametrizations of the same covariance function.
+The Matern model or the Handcock-Wallis parametrisation
+should be preferred as they seperate the
+effects of the scaling parameter and the shape parameter. 
+</p>
+<p>The Whittle-Matern model is the model of choice if the smoothness of a
+random field is to be parametrized: the sample paths of a Gaussian
+random field with this covariance structure are <i>m</i> times
+differentiable if and only if <i>&nu; &gt; m</i> (see Gelfand et
+al., 2010, p. 24).
+</p>
+<p>Furthermore, the fractal dimension (see also <code><a href="RFfractaldim.html">RFfractaldim</a></code>)
+<em>D</em> of the Gaussian sample paths
+is determined by <i>&nu;</i>: We have
+</p>
+<p style="text-align: center;"><i>D = d + 1 - &nu;, 0 &lt; &nu; &lt; 1</i></p>
+
+<p>and <i>D = d</i> for <i>&nu; &gt; 1</i> where <i>d</i> is
+the dimension of the random field (see Stein, 1999, p. 32).
+</p>
+<p>If <i>&nu;=0.5</i> the Matern model equals <code><a href="RMexp.html">RMexp</a></code>.
+</p>
+<p>For <i>&nu;</i> tending to <i>&infin;</i> a rescaled Gaussian
+model <code><a href="RMgauss.html">RMgauss</a></code> <i>C(r) = -r^2</i>
+appears as limit of the above Handcock-Wallis parametrisation. 
+</p>
+<p>For generalizations see section &lsquo;See Also&rsquo;.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The functions return an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The Whittle-Matern model is a normal scale mixture.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+<p>Covariance function
+</p>
+
+<ul>
+<li><p> Chiles,
+J.-P. and Delfiner, P. (1999)
+<em>Geostatistics. Modeling Spatial Uncertainty.</em>
+New York: Wiley.
+</p>
+</li>
+<li><p> Gelfand, A. E., Diggle, P., Fuentes, M. and Guttorp,
+P. (eds.) (2010) <em>Handbook of Spatial Statistics.</em>
+Boca Raton: Chapman &amp; Hall/CRL.
+</p>
+</li>
+<li><p> Guttorp, P. and Gneiting, T. (2006) Studies in the
+history of probability and statistics. XLIX. On the Matern
+correlation family. <em>Biometrika</em> <b>93</b>, 989&ndash;995.
+</p>
+</li>
+<li><p> Handcock, M. S. and Wallis, J. R. (1994) An approach to
+statistical spatio-temporal modeling of meteorological fields.
+<em>JASA</em> <b>89</b>, 368&ndash;378.
+</p>
+</li>
+<li><p> Stein, M. L. (1999) <em>Interpolation of Spatial Data &ndash;
+Some Theory for Kriging.</em> New York: Springer.
+</p>
+</li></ul>
+
+<p>Tail correlation function (for <i>0 &lt; &nu; &le; 1/2</i>)
+</p>
+
+<ul>
+<li><p> Strokorb, K., Ballani, F., and  Schlather, M. (2014)
+Tail correlation functions of max-stable processes: Construction
+principles, recovery and diversity of some mixing max-stable
+processes with identical TCF. 
+<em>Extremes</em>,  Submitted.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="RMexp.html">RMexp</a></code>, <code><a href="RMgauss.html">RMgauss</a></code> for special
+cases of the model (for <i>&nu;=0.5</i> and
+<i>&nu;=&infin;</i>, respectively)
+</p>
+</li>
+<li> <p><code><a href="RMhyperbolic.html">RMhyperbolic</a></code> for a univariate
+generalization
+</p>
+</li>
+<li> <p><code><a href="RMbiwm.html">RMbiwm</a></code> for a multivariate generalization
+</p>
+</li>
+<li> <p><code><a href="RMnonstwm.html">RMnonstwm</a></code>, <code><a href="RMstein.html">RMstein</a></code> for anisotropic (space-time) generalizations
+</p>
+
+</li>
+<li> <p><code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code> for general use.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+x &lt;- seq(0, 1, len=100)
+model &lt;- RMwhittle(nu=1, Aniso=matrix(nc=2, c(1.5, 3, -3, 4)))
+plot(model, dim=2, xlim=c(-1,1))
+z &lt;- RFsimulate(model=model, x, x)
+plot(z)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Non-Separable Space-Time model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMgennsst {RandomFields}"><tr><td>RMgennsst {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Non-Separable Space-Time model</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMgennsst.html">RMgennsst</a></code> is a univariate stationary spaceisotropic
+covariance model on <i>R^d</i>
+whose corresponding covariance is given by
+</p>
+<p style="text-align: center;"><i>C(h,u)= &phi;( sqrt(h^\top &psi;^{-1}(u) h)) / &radic;(det(psi))</i></p>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+RMgennsst(phi, psi, dim_u, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>phi</code></td>
+<td>
+<p>is a normal mixture <code><a href="RMmodel.html">RMmodel</a></code>, cf.<br />
+<code>RFgetModelNames(monotone="normal mixture")</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>psi</code></td>
+<td>
+<p>is a <i>d</i>-variate variogram model
+<code><a href="RMmodel.html">RMmodel</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>dim_u</code></td>
+<td>
+<p>the dimension of the component <code>u</code></p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This model is used for space-time modelling where the spatial
+component is isotropic.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMgennsst.html">RMgennsst</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+
+
+
+
+<ul>
+<li><p> Schlather, M. (2010)
+On some covariance models based on normal scale mixtures.
+<em>Bernoulli</em>, <b>16</b>, 780-797.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMnsst.html">RMnsst</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

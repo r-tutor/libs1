@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Class CLASS_FIT</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMmodelFit-class {RandomFields}"><tr><td>RMmodelFit-class {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Class CLASS_FIT </h2>
+
+<h3>Description</h3>
+
+<p> Extension of class <code><a href="RMmodel-class.html">RMmodel</a></code>
+which additionally contains
+the likelihood of the data w.r.t. the covariance model represented by
+the CLASS_CLIST part, the estimated trend of the data if it is a
+constant trend, and the residuals of the data w.r.t. the model. Objects
+of this class only occur as slots in the output of &quot;RFfit&quot;.
+</p>
+
+
+<h3>Creating Objects</h3>
+
+<p>Objects are only meant to be created by the function
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Slots</h3>
+
+
+<dl>
+<dt><code>model,formel</code>:</dt><dd><p>See <code><a href="RMmodel.html">RMmodel</a></code>.</p>
+</dd>
+<dt><code>variab</code>:</dt><dd>
+<p>vector of estimated variables. Variables
+are used in the internal representation and
+can be a subset of the parameters.
+</p>
+</dd>
+<dt><code>param</code>:</dt><dd>
+<p>vector of estimated parameters
+</p>
+</dd>
+<dt><code>covariate</code>:</dt><dd>
+<p>to do
+</p>
+</dd>
+<dt><code>globalvariance</code>:</dt><dd>
+<p>to do
+</p>
+</dd>
+<dt><code>hessian</code>:</dt><dd>
+<p>to do
+</p>
+</dd>
+<dt><code>likelihood</code>:</dt><dd><p>numeric; the likelihood of the data
+w.r.t. the covariance model</p>
+</dd> 
+<dt><code>AIC</code>:</dt><dd><p>the AIC value for the ml estimation</p>
+</dd>
+<dt><code>AICc</code>:</dt><dd><p>the corrected AIC value for the ml estimation</p>
+</dd>
+<dt><code>BIC</code>:</dt><dd><p>the BIC value for the ml estimation</p>
+</dd>
+<dt><code>residuals</code>:</dt><dd><p>array or of class <code><a href="RFsp-class.html">RFsp</a></code>;
+residuals of the data w.r.t. the trend model</p>
+</dd> 
+</dl>
+
+
+
+
+
+
+
+
+
+<h3>Extends</h3>
+
+<p>Class <code>CLASS_CLIST</code>, directly.
+</p>
+
+
+<h3>Methods</h3>
+
+
+<dl>
+<dt>[</dt><dd><p><code>signature(x = CLASS_FIT)</code>: enables accessing
+the slots via the <code>"["</code>-operator, e.g. <code>x["likelihood"]</code></p>
+</dd>
+<dt>[&lt;-</dt><dd><p><code>signature(x = CLASS_FIT)</code>: enables replacing
+the slots via the <code>"["</code>-operator</p>
+</dd>
+<dt>show</dt><dd><p><code>signature(x = "RFfit")</code>: returns the structure
+of <code>x</code></p>
+</dd>
+<dt>print</dt><dd><p><code>signature(x = "RFfit")</code>: identical with
+<code>show</code>-method</p>
+</dd>
+<dt>anova</dt><dd><p>performs a likelihood ratio test base on a chisq approximation
+</p>
+</dd>
+<dt>summary</dt><dd><p>gives a summary</p>
+</dd>
+</dl>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Alexander Malinowski; Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel-class.html">RMmodel</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# see RFfit
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

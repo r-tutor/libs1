@@ -22,7 +22,7 @@ To use the `Profit` and `ROME` (Return on Marketing Expenditures) charts, enter 
 
 #### Show results for
 
-If a `filter` is active (e.g., set in the _Data > View_ tab) generate results for `All` data, `Training` data, `Validation` data, or `Both` training and validation data. If no filter is active calculations are applied to all data.
+If a `filter` is active (e.g., set in the _Data > View_ tab) generate results for `All` data, `Training` data, `Test` data, or `Both` training and test data. If no filter is active calculations are applied to all data.
 
 #### Plots
 
@@ -30,7 +30,7 @@ Generate Lift, Gains, Profit, and/or ROME charts.
 
 ### Report > Rmd
 
-Add code to <a href="https://radiant-rstats.github.io/docs/data/report.html" target="_blank">_Report > Rmd_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
+Add code to <a href="https://radiant-rstats.github.io/docs/data/report_rmd.html" target="_blank">_Report > Rmd_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
 
 If we create a set of four charts in the _Plots_ tab we can add a title above the group of plots and impose a two-column layout using `gridExtra::grid.arrange` as follows:
 
@@ -73,7 +73,7 @@ AUC										   | Area Under the ROC Curve (AUC). ROC stands for Receiver Operat
 
 ### Report > Rmd (confusion)
 
-Add code to <a href="https://radiant-rstats.github.io/docs/data/report.html" target="_blank">_Report > Rmd_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
+Add code to <a href="https://radiant-rstats.github.io/docs/data/report_rmd.html" target="_blank">_Report > Rmd_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
 
 Only `kappa`, `index`, `ROME`, and `AUC` are plotted by default. It is possible to customize the plotted results through _Report > Rmd_. To change the plot use, for example: 
 
@@ -98,7 +98,7 @@ The Lift and Gains charts below show little evidence of overfitting and suggest 
 
 <p align="center"><img src="https://radiant-rstats.github.io/docs/model/figures_model/evalbin_lift_gains.png"></p>
 
-<!-- This insight is confirmed by looking at the confusion matrix. The True Positive Rate in the training and validation sample are 94.0% and 93.4% respectively.
+<!-- This insight is confirmed by looking at the confusion matrix. The True Positive Rate in the training and test sample are 94.0% and 93.4% respectively.
 
 <p align="center"><img src="https://radiant-rstats.github.io/docs/model/figures_model/evalbin_confusion.png"></p>
 -->

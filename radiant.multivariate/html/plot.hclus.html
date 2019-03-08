@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot method for the hclus function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plot.hclus {radiant.multivariate}"><tr><td>plot.hclus {radiant.multivariate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot method for the hclus function</h2>
+
+<h3>Description</h3>
+
+<p>Plot method for the hclus function
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'hclus'
+plot(x, plots = c("scree", "change"), cutoff = 0.05,
+  shiny = FALSE, custom = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Return value from <code><a href="hclus.html">hclus</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>plots</code></td>
+<td>
+<p>Plots to return. &quot;change&quot; shows the percentage change in within-cluster heterogeneity as respondents are grouped into different number of clusters, &quot;dendro&quot; shows the dendrogram, &quot;scree&quot; shows a scree plot of within-cluster heterogeneity</p>
+</td></tr>
+<tr valign="top"><td><code>cutoff</code></td>
+<td>
+<p>For large datasets plots can take time to render and become hard to interpret. By selection a cutoff point (e.g., 0.05 percent) the initial steps in hierarchical cluster analysis are removed from the plot</p>
+</td></tr>
+<tr valign="top"><td><code>shiny</code></td>
+<td>
+<p>Did the function call originate inside a shiny app</p>
+</td></tr>
+<tr valign="top"><td><code>custom</code></td>
+<td>
+<p>Logical (TRUE, FALSE) to indicate if ggplot object (or list of ggplot objects) should be returned. This option can be used to customize plots (e.g., add a title, change x and y labels, etc.). See examples and <a href="http://docs.ggplot2.org">http://docs.ggplot2.org</a> for options.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed to or from other methods</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/multivariate/hclus.html">https://radiant-rstats.github.io/docs/multivariate/hclus.html</a> for an example in Radiant
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="hclus.html">hclus</a></code> to generate results
+</p>
+<p><code><a href="summary.hclus.html">summary.hclus</a></code> to summarize results
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+result &lt;- hclus(shopping, vars = c("v1:v6"))
+plot(result, plots = c("change", "scree"), cutoff = .05)
+plot(result, plots = "dendro", cutoff = 0)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.multivariate</em> version 0.9.9 <a href="00Index.html">Index</a>]</div>
+</body></html>

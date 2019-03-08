@@ -1,0 +1,352 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Simulation Techniques</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RFgetMethodNames {RandomFields}"><tr><td>RFgetMethodNames {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Simulation Techniques</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RFgetMethodNames.html">RFgetMethodNames</a></code> prints and returns a list of currently
+implemented methods for simulating Gaussian random fields
+and max stable random fields
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RFgetMethodNames()
+</pre>
+
+
+<h3>Details</h3>
+
+<p>By default, <code><a href="RFsimulate.html">RFsimulate</a></code> automatically chooses an appropriate
+method for simulation. The method can also be set explicitly by the
+user via <code><a href="RFoptions.html">RFoptions</a></code>, in particular by passing
+<code>gauss.method=_a valid method string_</code> as an additional argument
+to <code><a href="RFsimulate.html">RFsimulate</a></code> or by globally changing the options via
+<code><a href="RFoptions.html">RFoptions</a>(gauss.method=_a valid method string_)</code>.
+The following methods are available:
+</p>
+
+<ul>
+<li><p> (random spatial) Averages<br />
+&ndash; details soon
+</p>
+</li>
+<li><p> Boolean functions.<br />
+See marked point processes.
+</p>
+</li>
+<li> <p><code>circulant embedding</code>. <br />
+Introduced by Dietrich &amp; Newsam (1993) and Wood and Chan (1994). 
+</p>
+<p>Circulant embedding is a fast simulation method based on
+Fourier transformations. It is garantueed to be an exact method
+for covariance functions with finite support, e.g. the spherical
+model.
+</p>
+<p>See also <code>cutoff embedding</code> and <code>intrinsic embedding</code> for
+variants of the method.
+</p>
+</li>
+<li> <p><code>cutoff embedding</code>. <br />
+Modified circulant embedding method so that exact simulation is guaranteed
+for further covariance models, e.g. the whittle matern model.
+In fact, the circulant embedding is called with the cutoff
+hypermodel, see <code><a href="RMmodel.html">RMmodel</a></code>, and <i>A=B</i> there.
+<code>cutoff embedding</code> halfens the maximum number of
+elements models used to define the covariance function of interest
+(from 10 to 5).
+</p>
+<p>Here, multiplicative models are not allowed (yet).
+</p>
+</li>
+<li> <p><code>direct matrix decomposition</code>.<br />
+This method is based on the well-known method for simulating
+any multivariate Gaussian distribution, using the square root of the
+covariance matrix. The method is pretty slow and limited to
+about 8000 points, i.e. a 20x20x20 grid in three dimensions. 
+This implementation can use the Cholesky decomposition and
+the singular value decomposition. 
+It allows for arbitrary points and arbitrary grids.
+</p>
+</li>
+<li> <p><code>hyperplane method</code>.<br />
+The method is based on a tessellation of the space by
+hyperplanes. Each cell takes a spatially constant value
+of an i.i.d. random variables. The superposition of several
+such random fields yields approximatively a Gaussian random field.
+</p>
+</li>
+<li> <p><code>intrinsic embedding</code>. <br />
+Modified circulant embedding so that exact simulation is guaranteed
+for further <em>variogram</em> models, e.g. the fractal brownian one.
+Note that the simulated random field is always <em>non-stationary</em>.
+In fact, the circulant embedding is called with the Stein
+hypermodel, see <code><a href="RMmodel.html">RMmodel</a></code>, and <i>A=B</i> there.
+</p>
+<p>Here, multiplicative models are not allowed (yet).
+</p>
+</li>
+<li><p> Marked point processes.<br />
+Some methods are based on marked point process
+<i>P = ([x_1,m_1], [x_2,m_2], ...)</i>
+where the marks <i>m_i</i>
+are deterministic or i.i.d. random functions on <i>R^d</i>.
+</p>
+
+<ul>
+<li> <p><code>add.MPP</code> (Random coins).<br />
+Here the functions are elements
+of the intersection <i>(L1 cap L2)</i>
+of the Hilbert spaces <i>L1</i> and <i>L2</i>.
+A random field Z is obtained by adding the marks:
+</p>
+<p style="text-align: center;"><i>
+	Z(.) = sum_i m_i( . - x_i)</i></p>
+
+<p>In this package, only stationary Poisson point fields
+are allowed
+as underlying unmarked point processes.
+Thus, if the marks <i>m_i</i>
+are all indicator functions, we obtain 
+a Poisson random field. If the intensity of the Poisson
+process is high we obtain an approximative Gaussian random
+field by the central limit theorem - this is the
+<code>add.mpp</code> method.
+</p>
+</li>
+<li> <p><code>max.MPP</code> (Boolean functions).<br />
+If the random functions are multiplied by suitable,
+independent random values, and then the maximum is
+taken, a max-stable random field with unit Frechet margins
+is obtained - this is the <code>max.mpp</code>
+method.
+</p>
+</li></ul>
+
+</li>
+<li> <p><code>nugget</code>.<br />
+The method allows for generating a random field of 
+independent Gaussian random variables.
+This method is called automatically if the nugget
+effect is positive except the method <code>"circulant embedding"</code>
+or <code>"direct"</code> has been explicitly chosen.
+</p>
+<p>The method has been extended to zonal anisotropies, see
+also argument <code>nugget.tol</code> in <code><a href="RFoptions.html">RFoptions</a></code>.
+</p>
+</li>
+<li> <p><code>particular</code> method<br />
+&ndash; details missing &ndash;
+</p>
+</li>
+<li><p> Random coins.<br />
+See marked point processes.
+</p>
+</li>
+<li> <p><code>sequential</code>
+This method is programmed for spatio-temporal models
+where the field is modelled sequentially in the time direction
+conditioned on the previous <i>k</i> instances.
+For <i>k=5</i> the method has its limits for about 1000 spatial
+points. It is an approximative method. The larger <i>k</i> the
+better.
+It also works for certain grids where the last dimension should
+contain the highest number of grid points.
+</p>
+</li>
+<li> <p><code>spectral TBM</code> (Spectral turning bands).<br />
+The principle of <code>spectral TBM</code>
+does not differ from the other
+turning bands methods. However, line simulations are performed by a
+spectral technique (Mantoglou and Wilson, 1982).
+</p>
+<p>The standard method
+allows for the simulation of 2-dimensional random
+fields defined on arbitrary points or arbitrary grids. Here, a realisation is given as the cosine with random
+amplitude and random phase. 
+</p>
+</li>
+<li> <p><code>TBM2</code>, <code>TBM3</code> (Turning bands methods; turning layers).<br />
+It is generally difficult to use the turning bands method
+(<code>TBM2</code>) directly
+in the 2-dimensional space.
+Instead, 2-dimensional random fields are frequently obtained
+by simulating a 3-dimensional random field (using
+<code>TBM3</code>) and taking a 2-dimensional cross-section.
+TBM3 allows for multiplicative models; in case of anisotropy the
+anisotropy matrices must be multiples of the first matrix or the
+anisotropy matrix consists of a time component only (i.e. all
+components are zero except the very last one).<br />
+<code>TBM2</code> and <code>TBM3</code> allow for arbitrary points, and
+arbitrary grids
+(arbitrary number of points in each direction, arbitrary grid length
+for each direction).
+</p>
+<p><b>Note:</b> Both the precision and the simulation time
+depend heavily on <code>TBM*.linesimustep</code> and
+<code>TBM*.linesimufactor</code>
+that can be set by <code><a href="RFoptions.html">RFoptions</a></code>.
+For covariance models with larger values of the scale parameter,
+<code>TBM*.linesimufactor=2</code> is too small.
+</p>
+<p>The turning layers are used for the simulations with time component.
+Here, 
+if the model is a
+multiplicative covariance function then the
+product may contain matrices with pure time component. All
+the other matrices must be equal up to a factor and the temporal
+part of the anisotropy matrix (right column) may contain only
+zeros, except the very last entry. 
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>an invisible string vector of the Gaussian methods.
+</p>
+
+
+<h3>Automatic selection algorithm</h3>
+
+<p>&mdash; details coming soon &mdash;
+</p>
+
+
+<h3>Note</h3>
+
+<p>Most methods possess additional arguments,
+see <code><a href="RFoptions.html">RFoptions</a>()</code>
+that control the precision of the result. The default arguments 
+are chosen such that the simulations are fine for many models
+and their parameters. 
+The example in <code><a href="RFvariogram.html">RFvariogram</a>()</code>
+shows a way of checking the precision.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+<p>Gneiting, T. and Schlather, M. (2004)
+Statistical modeling with covariance functions.
+<em>In preparation.</em>
+</p>
+<p>Lantuejoul, Ch. (2002) <em>Geostatistical simulation.</em>
+<b>New York:</b> Springer.
+</p>
+<p>Schlather, M. (1999) <em>An introduction to positive definite
+functions and to unconditional simulation of random fields.</em>
+Technical report ST 99-10, Dept. of Maths and Statistics,
+Lancaster University. 
+</p>
+<p>Original work:
+</p>
+
+<ul>
+<li><p> Circulant embedding:
+</p>
+<p>Chan, G. and Wood, A.T.A. (1997)
+An algorithm for simulating stationary Gaussian random fields.
+<em>J. R. Stat. Soc., Ser. C</em> <b>46</b>, 171-181.
+</p>
+<p>Dietrich, C.R. and Newsam, G.N. (1993)
+A fast and exact method for multidimensional Gaussian
+stochastic simulations.
+<em>Water Resour. Res.</em> <b>29</b>, 2861-2869. 
+</p>
+<p>Dietrich, C.R. and Newsam, G.N. (1996)
+A fast and exact method for multidimensional Gaussian stochastic
+simulations: Extensions to realizations conditioned on direct and
+indirect measurement 
+<em>Water Resour. Res.</em> <b>32</b>, 1643-1652. 
+</p>
+<p>Wood, A.T.A. and Chan, G. (1994)
+Simulation of stationary Gaussian processes in <i>[0,1]^d</i>
+<em>J. Comput. Graph. Stat.</em> <b>3</b>, 409-432.
+</p>
+<p>The code used in <cite>RandomFields</cite> is based on
+Dietrich and Newsam (1996).
+</p>
+</li>
+<li><p> Intrinsic embedding and Cutoff embedding:
+</p>
+<p>Stein, M.L. (2002)
+Fast and exact simulation of fractional Brownian surfaces.
+<em>J. Comput. Graph. Statist.</em> <b>11</b>, 587&ndash;599.
+</p>
+<p>Gneiting, T., Sevcikova, H., Percival, D.B., Schlather, M. and
+Jiang, Y. (2005)
+Fast and Exact Simulation of Large Gaussian Lattice Systems in
+<i>R^2</i>: Exploring the Limits
+<em>J. Comput. Graph. Statist.</em> Submitted.
+</p>
+</li>
+<li><p> Markov Gaussian Random Field:
+</p>
+<p>Rue, H. (2001) Fast sampling of Gaussian Markov random fields.
+<em>J. R. Statist. Soc., Ser. B</em>, <b>63</b> (2), 325-338.
+</p>
+<p>Rue, H., Held, L. (2005) <em>Gaussian Markov Random Fields:
+Theory and Applications.</em>
+Monographs on Statistics and Applied Probability, no <b>104</b>,
+Chapman \&amp; Hall.
+</p>
+</li>
+<li><p> Turning bands method (TBM), turning layers:
+</p>
+<p>Dietrich, C.R. (1995) A simple and efficient space domain implementation
+of the turning bands method. <em>Water Resour. Res.</em> <b>31</b>,
+147-156.
+</p>
+<p>Mantoglou, A. and Wilson, J.L. (1982) The turning bands method for
+simulation of random fields using line generation by a spectral
+method. <em>Water. Resour. Res.</em> <b>18</b>, 1379-1394.
+</p>
+<p>Matheron, G. (1973)
+The intrinsic random functions and their applications.
+<em>Adv. Appl. Probab.</em> <b>5</b>, 439-468.
+</p>
+<p>Schlather, M. (2004)
+Turning layers: A space-time extension of turning bands.
+<em>Submitted</em>
+</p>
+</li>
+<li><p> Random coins:
+</p>
+<p>Matheron, G. (1967) <em>Elements pour une Theorie des Milieux
+Poreux</em>. Paris: Masson.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<a href="RandomFields.html">RandomFields</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFgetMethodNames()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

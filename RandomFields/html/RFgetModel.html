@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Internally stored model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RFgetModel {RandomFields}"><tr><td>RFgetModel {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Internally stored model</h2>
+
+<h3>Description</h3>
+
+<p>The function returns the stored model.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RFgetModel(register, explicite.natscale, show.call=FALSE,
+           origin="original")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>register</code></td>
+<td>
+<p><i>0,...,21</i> or an evaluating function,
+e.g. <code><a href="RFsimulate.html">RFsimulate</a></code>.
+Place where intermediate calculations are stored.
+See also section <code>Registers</code> in <code><a href="RFoptions.html">RFoptions</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>explicite.natscale</code></td>
+<td>
+<p>logical. Advanced option.
+If missing, then the model is returned as stored.
+If <code>FALSE</code> then any <code><a href="RMnatsc.html">RMnatsc</a></code> is ignored.
+If <code>TRUE</code> then any  <code><a href="RMnatsc.html">RMnatsc</a></code> is tried to be
+combined with leading <code><a href="RMS.html">RMS</a></code>, or returned as such.
+</p>
+</td></tr>
+<tr valign="top"><td><code>show.call</code></td>
+<td>
+<p>logical or character. If <code>FALSE</code> then the model
+is shown as interpreted. If <code>TRUE</code> then the user's input
+including the calling function is returned. See example below.
+</p>
+<p>If <code>show.call</code> is a character it behaves as
+<code><a href="RFgetModelInfo.html">which.submodels</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>origin</code></td>
+<td>
+<p>character; one of <code>"original"</code>, <code>"MLE conform"</code>, <code>"all"</code>. This argument determines the parameters that are returned.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Whereas
+<code><a href="RFgetModel.html">RFgetModel</a></code> returns a model that can be re-used
+by the user,
+<code>RFgetModelInfo</code> can return detailed information.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The stored model is returned in list format.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Put <code>Storing=TRUE</code>, see <code><a href="RFoptions.html">RFoptions</a></code>,
+if you like to have (more)
+internal information in case of failure of an initialization of
+a random field simulation.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RFgetModelInfo.html">RFgetModelInfo</a></code>, <code><a href="RFsimulate.html">RFsimulate</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+model &lt;- RMexp(scale=4, var=2) + RMnugget(var=3) + RMtrend(mean=1)
+z &lt;- RFsimulate(model, 1:4)
+RFgetModel(show.call=FALSE)
+RFgetModel(show.call=TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

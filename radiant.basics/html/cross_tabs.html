@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Evaluate associations between categorical variables</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cross_tabs {radiant.basics}"><tr><td>cross_tabs {radiant.basics}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Evaluate associations between categorical variables</h2>
+
+<h3>Description</h3>
+
+<p>Evaluate associations between categorical variables
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cross_tabs(dataset, var1, var2, tab = NULL, data_filter = "")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dataset</code></td>
+<td>
+<p>Dataset (i.e., a data.frame or table)</p>
+</td></tr>
+<tr valign="top"><td><code>var1</code></td>
+<td>
+<p>A categorical variable</p>
+</td></tr>
+<tr valign="top"><td><code>var2</code></td>
+<td>
+<p>A categorical variable</p>
+</td></tr>
+<tr valign="top"><td><code>tab</code></td>
+<td>
+<p>Table with frequencies as alternative to dataset</p>
+</td></tr>
+<tr valign="top"><td><code>data_filter</code></td>
+<td>
+<p>Expression entered in, e.g., Data &gt; View to filter the dataset in Radiant. The expression should be a string (e.g., &quot;price &gt; 10000&quot;)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/basics/cross_tabs.html">https://radiant-rstats.github.io/docs/basics/cross_tabs.html</a> for an example in Radiant
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list of all variables used in cross_tabs as an object of class cross_tabs
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="summary.cross_tabs.html">summary.cross_tabs</a></code> to summarize results
+</p>
+<p><code><a href="plot.cross_tabs.html">plot.cross_tabs</a></code> to plot results
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+cross_tabs(newspaper, "Income", "Newspaper") %&gt;% str()
+table(select(newspaper, Income, Newspaper)) %&gt;% cross_tabs(tab = .)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.basics</em> version 0.9.9 <a href="00Index.html">Index</a>]</div>
+</body></html>

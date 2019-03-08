@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot method for the single_prop function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plot.single_prop {radiant.basics}"><tr><td>plot.single_prop {radiant.basics}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot method for the single_prop function</h2>
+
+<h3>Description</h3>
+
+<p>Plot method for the single_prop function
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'single_prop'
+plot(x, plots = "bar", shiny = FALSE,
+  custom = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Return value from <code><a href="single_prop.html">single_prop</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>plots</code></td>
+<td>
+<p>Plots to generate. &quot;bar&quot; shows a bar chart of the data. The &quot;simulate&quot; chart shows the location of the sample proportion and the comparison value (comp_value). Simulation is used to demonstrate the sampling variability in the data under the null-hypothesis</p>
+</td></tr>
+<tr valign="top"><td><code>shiny</code></td>
+<td>
+<p>Did the function call originate inside a shiny app</p>
+</td></tr>
+<tr valign="top"><td><code>custom</code></td>
+<td>
+<p>Logical (TRUE, FALSE) to indicate if ggplot object (or list of ggplot objects) should be returned. This option can be used to customize plots (e.g., add a title, change x and y labels, etc.). See examples and <a href="http://docs.ggplot2.org">http://docs.ggplot2.org</a> for options.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed to or from other methods</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/basics/single_prop.html">https://radiant-rstats.github.io/docs/basics/single_prop.html</a> for an example in Radiant
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="single_prop.html">single_prop</a></code> to generate the result
+</p>
+<p><code><a href="summary.single_prop.html">summary.single_prop</a></code> to summarize the results
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+result &lt;- single_prop(titanic, "survived", lev = "Yes", comp_value = 0.5,  alternative = "less")
+plot(result, plots = c("bar", "simulate"))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.basics</em> version 0.9.9 <a href="00Index.html">Index</a>]</div>
+</body></html>

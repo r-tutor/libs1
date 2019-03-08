@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Scale model for a few areas of different scales and/or...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMblend {RandomFields}"><tr><td>RMblend {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Scale model for a few areas of different scales and/or
+differentiabilities</h2>
+
+<h3>Description</h3>
+
+<p>Let <i>Z=(Z_1, &hellip; Z_k)</i> be an <i>k</i>-variate random field
+and <i>A_1,&hellip;, A_k</i> a partition of the space.
+Then
+</p>
+<p style="text-align: center;"><i>Y(x) = &sum;_{i=1}^k Z_i * 1(x \in A_i)</i></p>
+
+<p>i.e. the model blends the components of <i>Z</i> to a new, univariate
+model <i>Y</i>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMblend(multi, blend, thresholds, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>multi</code></td>
+<td>
+<p>a multivariate covariance function</p>
+</td></tr>
+<tr valign="top"><td><code>blend,thresholds</code></td>
+<td>
+<p>The <code>threshold</code> is a vector of increasing
+values. If the value of <code>blend</code> is below all thresholds up to
+the <i>k</i>-th threshold, then the <i>k</i>-th component of the field
+given by <code>multi</code> is taken. If necessary the components are recycled.
+</p>
+<p>Default: <code>threshold = 0.5</code>, useful for blending a bivariate
+field if <code>blend</code> takes only the values <i>0</i> and 1.
+</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMblend.html">RMblend</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Bonat, W.H. , Ribeiro, P. Jr. and Schlather, M. (2019)
+Modelling non-stationarity in scale. In preparation.
+</p>
+</li>
+<li><p> Genton, Apanovich Biometrika.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMSadvanced.html">RMSadvanced</a></code>,
+<code><a href="RMbubble.html">RMbubble</a></code>,
+<code><a href="RMscale.html">RMscale</a></code>,
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+x &lt;- seq(0,1, if (interactive()) 0.01 else 0.5)
+len &lt;- length(x)
+m &lt;- matrix(1:len, nc=len, nr=len)
+m &lt;- m &gt; t(m)
+image(m) # two areas separated by the first bisector
+
+biwm &lt;- RMbiwm(nudiag=c(0.3, 1), nured=1, rhored=1, cdiag=c(1, 1), 
+                s=c(1, 1, 0.5))
+model &lt;- RMblend(multi=biwm, blend=RMcovariate(data = as.double(m), raw=TRUE))
+plot(z &lt;- RFsimulate(model, x, x)) ## takes a while ...
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Brown-Resnick process</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for BrownResnick {RandomFields}"><tr><td>BrownResnick {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Brown-Resnick process</h2>
+
+<h3>Description</h3>
+
+ 
+<p><code>RPbrownresnick</code> defines a Brown-Resnick process.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  RPbrownresnick(phi, tcf, xi, mu, s)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>phi</code></td>
+<td>
+<p>specifies the covariance model or variogram, see
+<a href="RMmodel.html">RMmodel</a> and <a href="RMmodelsAdvanced.html">RMmodelsAdvanced</a>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>tcf</code></td>
+<td>
+<p>the extremal correlation function; either <code>phi</code> or
+<code>tcf</code> must be given.</p>
+</td></tr>
+<tr valign="top"><td><code>xi, mu, s</code></td>
+<td>
+<p>the extreme value index, the location parameter and the
+scale parameter, respectively, of the generalized extreme value
+distribution. See Details.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The argument <code>xi</code> is always a number, i.e. <i>&xi;</i> is constant in space. In contrast, <i>&mu;</i> and <i>s</i> might be constant numerical values or (in future!) be given by an <code><a href="RMmodel.html">RMmodel</a></code>, in particular by an <code><a href="RMtrend.html">RMtrend</a></code> model.  <br /> For <i>xi=0</i>, the default values of <i>mu</i> and <i>s</i> are <i>0</i> and <i>1</i>, respectively. For <i>xi\not=0</i>, the default values of <i>mu</i> and <i>s</i> are <i>1</i> and <i>|&xi;|</i>, respectively, so that it defaults to the standard Frechet case if <i>&xi; &gt; 0</i>.
+</p>
+<p>The functions <code>RPbrorig</code>, <code>RPbrshifted</code> and <code>RPbrmixed</code>
+perform the simulation of a Brown-Resnick process, which is defined by
+</p>
+<p style="text-align: center;"><i>Z(x) = max_{i=1, 2, ...} X_i * exp(W_i(x) - gamma^2),</i></p>
+
+<p>where the <i>X_i</i> are the points of a Poisson point process on the
+positive real half-axis with intensity <i>1/x^2 dx</i>,
+<i>W_i ~ Y</i> are iid centered Gaussian processes with
+stationary increments and variogram <i>gamma</i> given by
+<code>phi</code>.
+</p>
+<p>For simulation, internally, one of the methods
+<code><a href="BRmethods.html">RPbrorig</a></code>, <code><a href="BRmethods.html">RPbrshifted</a></code> and
+<code><a href="BRmethods.html">RPbrmixed</a></code> is chosen automatically.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Advanced options
+are <code>maxpoints</code> and <code>max_gauss</code>, see
+<code><a href="RFoptions.html">RFoptions</a></code>.
+</p>
+<p>Further advanced options related to the
+simulation methods <code><a href="BRmethods.html">RPbrorig</a></code>,
+<code><a href="BRmethods.html">RPbrshifted</a></code> and <code><a href="BRmethods.html">RPbrmixed</a></code> can be
+found in the paragraph &lsquo;Specific method options for Brown-Resnick
+Fields&rsquo; in <code><a href="RFoptions.html">RFoptions</a></code>.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Marco Oesting, <a href="mailto:oesting@mathematik.uni-siegen.de">oesting@mathematik.uni-siegen.de</a>, <a href="https://www.uni-siegen.de/fb6/src/scheffler/mitarbeiter/oesting">https://www.uni-siegen.de/fb6/src/scheffler/mitarbeiter/oesting</a>; Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li>
+<p>Brown, B.M. and Resnick, S.I. (1977).
+Extreme values of independent stochastic
+processes. <em>J. Appl. Probab.</em> <b>14</b>, 732-739.
+</p>
+</li>
+<li>
+<p>Buishand, T., de Haan , L. and Zhou, C. (2008).
+On spatial extremes: With application to
+a rainfall problem. <em>Ann. Appl. Stat.</em> <b>2</b>, 624-642.
+</p>
+</li>
+<li><p> Kabluchko, Z., Schlather, M. and de Haan, L (2009)
+Stationary max-stable random fields associated to negative
+definite functions <em>Ann. Probab.</em> <b>37</b>, 2042-2065.
+</p>
+</li>
+<li><p>  Oesting, M., Kabluchko, Z. and Schlather M. (2012)
+Simulation of Brown-Resnick Processes, <em>Extremes</em>,
+<b>15</b>, 89-107.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="BRmethods.html">RPbrorig</a></code>,
+<code><a href="BRmethods.html">RPbrshifted</a></code>,
+<code><a href="BRmethods.html">RPbrmixed</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RPgauss.html">RPgauss</a></code>,
+<code><a href="RPmaxstable.html">maxstable</a></code>,
+<code><a href="RPmaxstableAdvanced.html">maxstableAdvanced</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+
+## for some more sophisticated models see 'maxstableAdvanced'
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

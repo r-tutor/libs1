@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Modified De Wijsian Variogram Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMdewijsian {RandomFields}"><tr><td>RMdewijsian {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Modified De Wijsian Variogram Model</h2>
+
+<h3>Description</h3>
+
+<p>The modified <code>RMdewijsian</code> model
+is an intrinsically stationary isotropic variogram model.
+The corresponding centered semi-variogram only depends on the distance
+<i>r &ge; 0</i> between two points and is given by
+</p>
+<p style="text-align: center;"><i>&gamma;(r)=log(r^{&alpha;}+1)</i></p>
+
+<p>where <i>0 &lt; &alpha; &le; 2</i>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMdewijsian(alpha, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>a numerical value; in the interval (0,2].</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+variogram remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Originally, the logarithmic model <i>&gamma;(r) = \log(r)</i> was named
+after de Wijs and reflects a principle of similarity (cf. Chiles,
+J.-P. and Delfiner, P. (1999), p. 90).
+But note that <i>&gamma;(r) = \log(r)</i> is not a valid variogram
+(<i>&gamma;(0)</i> does not vanish) and can only be understood as a
+characteristic of a generalized random field.
+</p>
+<p>The modified <code>RMdewijsian</code> model
+<i>&gamma;(r) = \log(r^{&alpha;}+1)</i> is a valid variogram model
+(cf. Wackernagel, H. (2003), p. 336).
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMdewijsian.html">RMdewijsian</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Note that the (non-modified) de Wijsian model equals
+<i>&gamma;(r) = \log(r)</i>.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+
+
+
+<ul>
+<li><p> Wackernagel, H. (2003) <em>Multivariate Geostatistics.</em> Berlin:
+Springer, 3nd edition.
+
+
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+model &lt;- RMdewijsian(alpha=1)
+x &lt;- seq(0, 10, 0.02)
+plot(model)
+plot(RFsimulate(model, x=x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

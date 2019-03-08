@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Constants used in RandomFields (RC constants)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Constants {RandomFields}"><tr><td>Constants {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Constants used in RandomFields (RC constants)</h2>
+
+<h3>Description</h3>
+
+<p>Several constants are provided that might make
+the use of some functions easier, e.g. <code><a href="RFgetModelNames.html">RFgetModelNames</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>RC_TYPE_NAMES = c(
+    "tail correlation", "positive definite", "variogram", "negative definite",
+    "point-shape function", "shape function", "trend", "distribution or shape",
+    "of manifold type", "process", "method for Gauss process", 
+    "normed process (non-negative values with maximum value being 0 or 1)",
+    "method for Brown-Resnick process",
+    "Smith", "Schlather", "Poisson", "PoissonGauss",
+    "distribution family", "interface", "mathematical operator",
+    "other type")
+  </code>
+</p>
+<p><code>RC_DOMAIN_NAMES = c("single variable", "kernel",
+    "framework dependent", "submodel dependent",
+    "parameter dependent", "&lt;keep copy&gt;", "mismatch")
+  </code>
+</p>
+<p><code>RC_ISO_NAMES = c("isotropic", "space-isotropic",
+    "vector-isotropic", "symmetric",
+    "cartesian system", "gnomonic projection", "orthographic projection",
+    "spherical isotropic", "spherical symmetric", "spherical system", 
+    "earth isotropic", "earth symmetric",  "earth system",
+    "cylinder system", "non-dimension-reducing", "framework dependent", 
+    "submodel dependent", "parameter dependent",
+    "&lt;internal keep copy&gt;", "&lt;mismatch&gt;")
+  </code>
+</p>
+<p><code>RC_MONOTONE_NAMES = c(
+    "not set", "mismatch in monotonicity", "submodel dependent monotonicity",
+    "previous model dependent monotonicity",
+    "parameter dependent monotonicity",
+    "not monotone", "monotone", "Gneiting-Schaback class", 
+    "normal mixture", 
+    "completely monotone",  
+    "Bernstein")
+  </code>
+</p>
+<p><code>RC_ISOTROPIC</code> gives the numerical code for option
+<code>"isotropic"</code>
+</p>
+<p><code>RC_DOUBLEISOTROPIC</code> gives the numerical code for option
+<code>"space-isotropic"</code>
+</p>
+<p><code>RC_CARTESIAN_COORD</code> gives the numerical code for option
+<code>"cartesian system"</code>
+</p>
+<p><code>RC_GNOMONIC_PROJ</code> gives the numerical code for
+the gnomonic projection, see also <code>zenit</code> in <code><a href="RFoptions.html">RFoptions</a></code>.
+</p>
+<p><code>RC_ORTHOGRAPHIC_PROJ</code> gives the numerical code for
+the orthographic
+projection, see also <code>zenit</code> in <code><a href="RFoptions.html">RFoptions</a></code>.
+</p>
+<p><code>RC_EARTH_COORDS</code> gives the numerical code for option
+<code>"earth coordinates"</code>
+</p>
+<p><code>RC_EARTH_ISOTROPIC</code> gives the numerical code for option
+<code>"earth isotropic"</code>
+</p>
+<p><code>RC_SPHERICAL_COORDS</code> gives the numerical code for option
+<code>"earth coordinates"</code>
+</p>
+<p><code>RC_OPTIMISER_NAMES</code> and <code>RC_NLOPTR_NAMES</code> give the
+names for the options <code>optimiser</code> and <code>algorithm</code>,
+respectively, <code>RFfitoptimiser</code>.
+</p>
+<p><code>RC_LIKELIHOOD_NAMES = c("auto", "full", "composite",
+    "tesselation")</code>
+gives the names of the ML variants: (i) internal
+choice according to the
+number of data, (ii) full likelihood, (iii) (pairwise) composite likelihood,
+and (iv) composite likelihood based on a tessellation of the space.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><a href="RF.html">RF</a>,   <a href="RM.html">RM</a>,  <a href="RP.html">RP</a>, <a href="RR.html">RR</a>, <a href="QMath.html">R.</a>,
+<code><a href="RFgetModelNames.html">RFgetModelNames</a></code>,
+<a href="RMmodelgenerator-class.html">RMmodelgenerator-class</a>,
+<code><a href="RMtrafo.html">RMtrafo</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+RC_ISO_NAMES
+RC_ISO_NAMES[RC_ISOTROPIC:RC_CARTESIAN_COORD + 1]
+## Not run: 
+RFgetModelNames(isotropy=RC_ISO_NAMES[RC_ISOTROPIC:RC_CARTESIAN_COORD +
+1])
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

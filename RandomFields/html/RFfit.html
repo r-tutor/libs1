@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Fitting model parameters to spatial data (regionalised...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RFfit {RandomFields}"><tr><td>RFfit {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Fitting model parameters to spatial data (regionalised variables)
+and to linear (mixed) models</h2>
+
+<h3>Description</h3>
+
+<p>The function estimates arbitrary parameters of
+a random field specification with various methods.
+Currently, the models to be fitted can be
+</p>
+
+<ul>
+<li><p><a href="RPgauss.html">Gaussian random fields</a>
+</p>
+</li>
+<li><p><a href="RFformula.html">linear models</a>
+</p>
+</li></ul>
+
+<p>The fitting of max-stable random fields and others
+has not been implemented yet.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RFfit(model, x, y = NULL, z = NULL, T = NULL, grid=NULL, data,
+      lower = NULL, upper = NULL, methods,
+      sub.methods, optim.control = NULL, users.guess = NULL,
+      distances = NULL, dim, transform = NULL, params=NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>model,params</code></td>
+<td>
+<p> object of class  <code><a href="RMmodel-class.html">RMmodel</a></code>, <code><a href="RFformula.html">RFformula</a></code> or  <code><a href="../../stats/html/formula.html">formula</a></code>; best is to consider the examples below, first. <br /> The argument <code>params</code> is a list that specifies free parameters in a formula description, see <a href="RFformula.html">RMformula</a>.
+</p>
+<p>All parameters that are set to <code>NA</code> will be estimated;
+see the examples below.
+</p>
+<p>Type <code><a href="RFgetModelNames.html">RFgetModelNames</a>(type="variogram")</code> to get all options
+for <code>model</code>. 
+</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>vector of x coordinates, or object of class <code><a href="../../sp/html/GridTopology-class.html">GridTopology</a></code> or <code><a href="../../raster/html/raster.html">raster</a></code>; for more options see <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>y,z</code></td>
+<td>
+<p>optional vectors of y (z) coordinates, which should not be given if <code>x</code> is a matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>T</code></td>
+<td>
+<p>optional vector of time coordinates, <code>T</code> must always be an equidistant vector. Instead of <code>T=seq(from=From, by=By, len=Len)</code>, one may also write <code>T=c(From, By, Len)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>grid</code></td>
+<td>
+<p>logical; the function finds itself the correct value in nearly all cases, so that usually <code>grid</code> need not be given. See also <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>matrix, data.frame or object of class <code><a href="RFsp-class.html">RFsp</a></code>; <br /> If a matrix is given the ordering of the colums is the following: space, time, multivariate, repetitions, i.e. the index for the space runs the fastest and that for repetitions the slowest.</p>
+</td></tr>
+<tr valign="top"><td><code>lower</code></td>
+<td>
+<p>list or vector. Lower bounds for the parameters. If <code>lower</code> is a vector, <code>lower</code> has to be a vector as well and its length must equal the number of parameters to be estimated. The order of <code>lower</code> has to be maintained. A component being <code>NA</code> means that no manual lower bound for the corresponding parameter is set. <br />  If <code>lower</code> is a list, <code>lower</code> has to be of (exactly) the same structure of the model.</p>
+</td></tr>
+<tr valign="top"><td><code>upper</code></td>
+<td>
+<p>list or vector. Upper bounds for the parameters. See <code>lower</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>methods</code></td>
+<td>
+<p> Main methods to be used for estimating. If several methods are given, estimation will be performed with each method and the results reported.</p>
+</td></tr> 
+<tr valign="top"><td><code>sub.methods</code></td>
+<td>
+<p>variants of the least squares fit of the variogram. variants of the maximum likelihood fit of the covariance function.. See Details.</p>
+</td></tr>
+<tr valign="top"><td><code>users.guess</code></td>
+<td>
+<p> User's guess of the parameters. All the parameters must be given using the same rules as for <code>lower</code> (except that no NA's should be contained).</p>
+</td></tr>
+<tr valign="top"><td><code>distances,dim</code></td>
+<td>
+<p>another alternative for the argument <code>x</code> to pass the (relative) coordinates, see <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>optim.control</code></td>
+<td>
+<p>control list for <code><a href="../../stats/html/optim.html">optim</a></code>, which uses &lsquo;L-BFGS-B&rsquo;. However <code>parscale</code> may not be given.</p>
+</td></tr>
+<tr valign="top"><td><code>transform</code></td>
+<td>
+<p>obsolete for users; use <code>param</code> instead. <code>transform=list()</code> will return structural information to set up the correct function.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>for advanced use: further options and control arguments for the simulation that are passed to and processed by <code><a href="RFoptions.html">RFoptions</a></code>. If <code>params</code> is given, then <code>...</code> may include also the variables used in <code>params</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For details on the simulation methods see
+</p>
+
+<ul>
+<li> <p><a href="fitgauss.html">fitgauss</a> for <a href="RPgauss.html">Gaussian random fields</a>
+</p>
+</li>
+<li> <p><a href="fitgauss.html">fitgauss</a> for <a href="RFformula.html">linear models</a>
+</p>
+</li></ul>
+
+<p>If <code>x</code>-coordinates are not given, the function will check
+<code>data</code> for <code>NA</code>s and will perform imputing.
+</p>
+<p>The function has many more options to tune the optimizer,
+see <code><a href="RFoptions.html">RFoptions</a></code> for details.
+</p>
+<p>If the model defines a Gaussian random field, the options
+for <code>methods</code> and <code>submethods</code> are currently
+<code>"ml"</code> and <code>c("self", "plain", "sqrt.nr", "sd.inv", "internal")</code>,
+respectively.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The result depends on the logical value of
+<code><a href="RFoptions.html">spConform</a></code>.
+If <code>TRUE</code>, an  S4 object is created. In case the model indicates
+a Gaussian random field, an
+<a href="RFfit-class.html">RFfit</a> object is created.
+</p>
+<p>If <code>spConform=FALSE</code>, a list is returned.
+In case the model indicates
+a Gaussian random field, the details are given in <a href="fitgauss.html">fitgauss</a>.
+</p>
+
+
+<h3>Note</h3>
+
+
+<ul>
+<li>
+<p>An important optional argument is <code>boxcox</code> which indicates
+a Box-Cox transformation; see <code>boxcox</code> in <code><a href="RFoptions.html">RFoptions</a></code>
+and <code>RFboxcox</code> for details.
+</p>
+</li>
+<li>
+<p>Instead of <code><a href="../../stats/html/optim.html">optim</a></code>, other optimisers can be used,
+see <a href="RFfitOptimiser.html">RFfitOptimiser</a>.
+</p>
+</li>
+<li>
+<p>Several advanced options can be found in sections &lsquo;General
+options&rsquo; and &lsquo;fit&rsquo; of <code><a href="RFoptions.html">RFoptions</a></code>.
+</p>
+</li>
+<li>
+<p>In particular, <code>boxcox</code>, <code>boxcox_lb</code>,  <code>boxcox_ub</code>
+allow Box-Cox transformation.
+</p>
+</li>
+<li>
+<p>This function does not depend on the value of
+<code><a href="RFoptions.html">RFoptions</a></code><code>()$PracticalRange</code>. 
+The function <code>RFfit</code> always uses the standard specification
+of the covariance model as given in <code><a href="RMmodel.html">RMmodel</a></code>.
+</p>
+</li></ul>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Burnham, K. P. and Anderson, D. R. (2002)
+<em>Model selection and Multi-Model Inference: A Practical
+Information-Theoretic Approach.</em>
+2nd edition. New York: Springer.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RFfitOptimiser.html">RFfitOptimiser</a></code>,
+<code><a href="RFloglikelihood.html">RFlikelihood</a></code>,
+<code><a href="RFratiotest.html">RFratiotest</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RandomFields.html">RandomFields</a></code>,
+<code><a href="weather.html">weather</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+
+
+
+RFoptions(modus_operandi="sloppy")
+
+
+#########################################################
+## simulate some data first                            ## 
+points &lt;- 100
+x &lt;- runif(points, 0, 3)
+y &lt;- runif(points, 0, 3) ## random points in square [0, 3]^2
+model &lt;- RMgencauchy(alpha=1, beta=2)
+d &lt;- RFsimulate(model, x=x, y=y, grid=FALSE, n=100) #1000
+
+
+#########################################################
+## estimation; 'NA' means: "to be estimated"           ##
+estmodel &lt;- RMgencauchy(var=NA, scale=NA, alpha=NA, beta=2) +
+            RMtrend(mean=NA)
+RFfit(estmodel, data=d)
+
+
+#########################################################
+## coupling alpha and beta                             ##
+estmodel &lt;- RMgencauchy(var=NA, scale=NA, alpha=NA, beta=NA) + 
+            RMtrend(NA)
+RFfit(estmodel, data=d, transform = NA) ## just for information
+trafo &lt;- function(a) c(a[1], rep(a[2], 2))
+fit &lt;- RFfit(estmodel, data=d,
+             transform = list(c(TRUE, TRUE, FALSE), trafo))
+print(fit)
+print(fit, full=TRUE)
+
+
+
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Gradient of a field</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMderiv {RandomFields}"><tr><td>RMderiv {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Gradient of a field</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMderiv.html">RMderiv</a></code>
+is a multivariate covariance model which
+models a field and its gradient.
+</p>
+<p>For an isotropic covariance model <i>varphi</i>, the covariance <i>C</i> given by
+<code>RMderiv</code> equals
+</p>
+<p style="text-align: center;"><i>C_{11}(x,y) = \varphi(\| x - y\|)</i></p>
+
+<p style="text-align: center;"><i>C_{j1}(x,y) = -C_{1j}(x,y) = \partial \varphi(\|x - y\|) /
+   \partial x</i></p>
+
+<p style="text-align: center;"><i>C_{i,j}(x,y) = \partial^2 \varphi(\|x - y\|) /
+   \partial x \partial y</i></p>
+
+<p>for <i>i,j = 2,&hellip;, d</i> where <i>d</i> is the dimension of the field.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMderiv(phi, which, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>phi</code></td>
+<td>
+<p>a univariate stationary covariance model (in 2 or 3 dimensions).</p>
+</td></tr>
+<tr valign="top"><td><code>which</code></td>
+<td>
+<p>vector of integers. If not given all components are
+returned; otherwise the selected components are returned.
+</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMderiv.html">RMderiv</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Matheron
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMcurlfree.html">RMcurlfree</a></code>,
+<code><a href="RMdivfree.html">RMdivfree</a></code>,
+<code><a href="RMvector.html">RMvector</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+model &lt;- RMderiv(RMgauss(), scale=4)
+plot(model, dim=2)
+
+x.seq &lt;- y.seq &lt;- seq(-10, 10, 0.4)
+simulated &lt;- RFsimulate(model=model, x=x.seq, y=y.seq)
+
+plot(simulated)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Scaling operator - comments for advanced applications</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMSadvanced {RandomFields}"><tr><td>RMSadvanced {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Scaling operator &ndash; comments for advanced applications</h2>
+
+<h3>Description</h3>
+
+<p>Here advances uses are given for the arguments
+<code>var</code>, <code>scale</code>, <code>Aniso</code>, <code>proj</code> that are available
+to most of the models
+</p>
+
+
+<h3>Usage</h3>
+
+<p>RMS(phi, var, scale, Aniso, proj, anisoT)
+</p>
+
+
+<h3>Arguments</h3>
+
+
+<dl>
+<dt>phi</dt><dd><p>submodel</p>
+</dd>
+<dt>var</dt><dd><p>Instead of a constant it can be 
+also an arbitrary non-negative function, see <code><a href="QMath.html">R.</a></code>
+and <code><a href="RMuser.html">RMuser</a></code> for defining arbitrary functions.
+</p>
+</dd>
+<dt>scale</dt><dd><p>instead of a positive constant  it can be an arbitrary,
+positive 
+deterministic function. In case of the latter, the scale should be
+given by one of the functions <code><a href="RMbubble.html">RMbubble</a></code> or
+<code><a href="RMscale.html">RMscale</a></code>. In case none of them are given,
+<code><a href="RMscale.html">RMscale</a></code> is assumed with scale penality
+<i>\|s(x) - s(y)\|^2</i> for the square of the norm.
+</p>
+<p>The scale can be also a random variable
+in case of Bayesian modelling.
+</p>
+</dd>
+<dt>Aniso</dt><dd><p>matrix or <code><a href="RMmodel.html">RMmodel</a></code>.
+Instead of a matrix, <code>Aniso</code> can be an arbitrary, vector-valued
+function .
+</p>
+</dd> 
+<dt>proj</dt><dd><p>is the optional projection vector which defines a diagonal
+matrix of zeros and ones and <code>proj</code> gives the 
+positions of the ones (integer values between 1 and the dimension of
+<i>x</i>). It also allows for the values <code>'space'</code> and
+<code>'time'</code> in case of space-time modelling.
+</p>
+</dd>
+<dt>anisoT</dt><dd><p>the transpose of the anisotropy matrix <i>B</i>,
+multiplied from the left by a distance vector <i>x</i>, i.e. <i>x^\top B</i>.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Details</h3>
+
+<p>See the reference for Gneitings nsst model used for modelling scales.
+See also the example below.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMSadvanced.html">RMSadvanced</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Bonat, W.H. , Ribeiro, P. Jr. and Schlather, M. (2019)
+Modelling non-stationarity in scale. In preparation.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMS.html">RMS</a></code>,
+<code><a href="RMblend.html">RMblend</a></code> for a different approach on modelling
+different scales 
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+x &lt;- seq(0,1, if (interactive()) 0.01 else 0.5)
+d &lt;- sqrt(rowSums(as.matrix(expand.grid(x-0.5, x-0.5))^2))
+d &lt;- matrix(d &lt; 0.25, nc=length(x))
+image(d)
+
+scale &lt;- RMcovariate(data=as.double(d) * 2 + 0.5, raw=TRUE)
+
+S &lt;- RMexp(scale = scale)
+plot(zS &lt;- RFsimulate(S, x, x))
+CS &lt;- RFcovmatrix(S, x, x)
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

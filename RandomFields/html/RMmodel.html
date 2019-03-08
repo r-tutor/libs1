@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Covariance and Variogram Models in 'RandomFields' (RM...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMmodel {RandomFields}"><tr><td>RMmodel {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Covariance and Variogram Models in <span class="pkg">RandomFields</span> (RM commands)</h2>
+
+<h3>Description</h3>
+
+<p>Summary of implemented covariance and variogram models
+</p>
+
+
+<h3>Details</h3>
+
+<p>To generate a covariance or variogram model for use within
+<span class="pkg">RandomFields</span>, calls of the form
+</p>
+<p style="text-align: center;"><i>RM_name_(..., var, scale, Aniso, proj)</i></p>
+
+<p>can be used,
+where _name_ has to be replaced by a valid model name.
+</p>
+
+<ul>
+<li>
+<p><code>...</code> can take model specific arguments. 
+
+</p>
+</li>
+<li>
+<p><code>var</code> is the optional variance argument <i>v</i>,
+</p>
+</li>
+<li>
+<p><code>scale</code> the optional scale argument <i>s</i>,
+</p>
+</li>
+<li>
+<p><code>Aniso</code> an optional anisotropy matrix <i>A</i> or given by <code><a href="RMangle.html">RMangle</a></code>, and
+</p>
+</li>
+<li>
+<p><code>proj</code> is the optional projection.
+</p>
+</li></ul>
+ 
+<p>With <i>&phi;</i> denoting the original model, the transformed model is
+<i>C(h) = v * &phi;(A*h/s)</i>.
+See <code><a href="RMS.html">RMS</a></code> for more details.
+</p>
+<p><code>RM_name_</code> must be a function of class
+<code><a href="RMmodelgenerator-class.html">RMmodelgenerator</a></code>.
+The return value of all functions <code>RM_name_</code> is of class
+<code><a href="RMmodel-class.html">RMmodel</a></code>.<br />
+</p>
+<p>The following models are available
+(cf. <code><a href="RFgetModelNames.html">RFgetModelNames</a></code>):
+
+</p>
+<p><b>Basic stationary and isotropic models</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMcauchy.html">RMcauchy</a></code> </td><td style="text-align: left;"> Cauchy family </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMexp.html">RMexp</a></code> </td><td style="text-align: left;"> exponential model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMgencauchy.html">RMgencauchy</a></code> </td><td style="text-align: left;"> generalized Cauchy family </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMgauss.html">RMgauss</a></code> </td><td style="text-align: left;"> Gaussian model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMgneiting.html">RMgneiting</a></code> </td><td style="text-align: left;"> differentiable model with compact support </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMmatern.html">RMmatern</a></code> </td><td style="text-align: left;"> Whittle-Matern model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMnugget.html">RMnugget</a></code> </td><td style="text-align: left;"> nugget effect model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMspheric.html">RMspheric</a></code> </td><td style="text-align: left;"> spherical model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMstable.html">RMstable</a></code> </td><td style="text-align: left;"> symmetric stable family or powered exponential model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMmatern.html">RMwhittle</a></code> </td><td style="text-align: left;"> Whittle-Matern model, alternative
+ parametrization</td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+ </td>
+</tr>
+
+</table>
+
+<p><b>Variogram models (stationary increments/intrinsically stationary)</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMfbm.html">RMfbm</a></code> </td><td style="text-align: left;"> fractal Brownian motion</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ </td>
+</tr>
+
+</table>
+
+<p><b>Basic Operations</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMmult.html">RMmult</a></code>, <code>*</code> </td><td style="text-align: left;"> product of covariance models </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMplus.html">RMplus</a></code>, <code>+</code> </td><td style="text-align: left;"> sum of covariance models or variograms</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ </td>
+</tr>
+
+</table>
+
+
+
+
+
+
+
+
+
+
+<p><b>Others</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+   <code><a href="RMtrend.html">RMtrend</a></code> </td><td style="text-align: left;"> trend </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code><a href="RMangle.html">RMangle</a></code> </td><td style="text-align: left;"> defines a 2x2 anisotropy matrix by
+   rotation and stretch arguments.
+ </td>
+</tr>
+
+</table>
+
+
+
+
+
+
+
+<h3>Author(s)</h3>
+
+<p>Alexander Malinowski; Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Chiles, J.-P. and Delfiner, P. (1999)
+<em>Geostatistics. Modeling Spatial Uncertainty.</em>
+New York: Wiley.
+
+
+
+</p>
+</li>
+<li><p> Schlather, M. (1999) <em>An introduction to positive definite
+functions and to unconditional simulation of random fields.</em>
+Technical report ST 99-10, Dept. of Maths and Statistics,
+Lancaster University.
+</p>
+</li>
+<li><p> Schlather, M. (2011) Construction of covariance functions and
+unconditional simulation of random fields. In Porcu, E., Montero, J.M.
+and Schlather, M., <em>Space-Time Processes and Challenges Related
+to Environmental Problems.</em> New York: Springer.
+</p>
+</li>
+<li><p> Yaglom, A.M. (1987) <em>Correlation Theory of Stationary and
+Related Random Functions I, Basic Results.</em>
+New York: Springer.
+</p>
+</li>
+<li><p> Wackernagel, H. (2003) <em>Multivariate Geostatistics.</em> Berlin:
+Springer, 3nd edition.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><a href="RM.html">RM</a> for an overview over more advanced classes of models<br />
+<a href="RC.html">RC</a>, <a href="RF.html">RF</a>, <a href="RP.html">RP</a>, <a href="RR.html">RR</a>, <a href="QMath.html">R.</a>,
+<code><a href="RFcov.html">RFcov</a></code>,
+<code><a href="RFformula.html">RFformula</a></code>,
+<code><a href="RMmodelsAdvanced.html">RMmodelsAdvanced</a></code>,
+<code><a href="RMmodelsAuxiliary.html">RMmodelsAuxiliary</a></code>,
+<a href="RMmodelsTrend.html">trend modelling</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+## an example of a simple model
+model &lt;- RMexp(var=1.6, scale=0.5) + RMnugget(var=0) #exponential + nugget
+plot(model)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

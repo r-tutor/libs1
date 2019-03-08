@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Evaluation operators (RF commands)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RFfunction {RandomFields}"><tr><td>RFfunction {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Evaluation operators (RF commands)</h2>
+
+<h3>Description</h3>
+
+<p>Here, all the <code>RF_name_</code> commands are listed.
+</p>
+
+
+<h3>Functionals of <code><a href="RMmodel.html">RMmodels</a></code></h3>
+
+<p>The user's <code><a href="RMmodel.html">RMmodel</a></code> is supplemented internally by
+operators that are tacitely assumed, e.g. <code><a href="RPgauss.html">RPgauss</a></code>.
+</p>
+<p>Further completions of the user's model determine what should be
+done with the model, e.g. calculation of the covariance
+(<code><a href="RFcov.html">RFcov</a></code>).
+The following list gives those <code>RFfunctions</code> that have
+an internal representation as completion to the user's model.
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+  
+     <code><a href="QMath.html">RFcalc</a></code> </td><td style="text-align: left;"> performs some simple calculations
+    based on <code><a href="QMath.html">R.models</a></code>
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RFcov.html">RFcov</a></code> </td><td style="text-align: left;"> assigns to a covariance model the
+    covariance values
+    at given locations
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RFcovmatrix.html">RFcovmatrix</a></code> </td><td style="text-align: left;"> assigns to a covariance model the
+    matrix of covariance values at given locations
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    
+   <code><a href="RFdistr.html">RFdistr</a></code> </td><td style="text-align: left;"> generic function
+    assigning to a distribution family various values of the
+    distribution 
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RFfctn.html">RFfctn</a></code> </td><td style="text-align: left;"> assigns to a model the
+    value of the function at given locations. In case of a covariance
+    model <code><a href="RFfctn.html">RFfctn</a></code> is identical to <code><a href="RFcov.html">RFcov</a></code>.
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code><a href="RFloglikelihood.html">RFlikelihood</a></code> </td><td style="text-align: left;"> assigns to a model and a dataset the
+    (log)likelihood value.
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RFlinearpart.html">RFlinearpart</a></code> </td><td style="text-align: left;"> assigns to a model and a set of
+    coordinates the linear part of the model, i.e. the deterministic
+    trend and the design matrix.
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RFpseudovariogram.html">RFpseudovariogram</a></code> </td><td style="text-align: left;"> assigns to a  model the
+    values of the pseudo variogram
+    at given locations</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RFsimulate.html">RFsimulate</a></code> </td><td style="text-align: left;"> assigns to a model
+    a realisation of the corresponding random field
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RFvariogram.html">RFvariogram</a></code> </td><td style="text-align: left;"> assigns to a  model the
+    values of the (cross-)variogram
+    at given locations</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  </td>
+</tr>
+
+</table>
+
+
+
+<h3>Estimation and Inference</h3>
+
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+ 
+     <code><a href="RFcrossvalidate.html">RFcrossvalidate</a></code> </td><td style="text-align: left;"> cross validation for Gaussian fields
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RFvariogram.html">RFvariogram</a></code> </td><td style="text-align: left;">
+    empirical variogram
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RFfit.html">RFfit</a></code> </td><td style="text-align: left;">
+    (maximum likelihood) fitting of the parameters
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RFinterpolate.html">RFinterpolate</a></code> </td><td style="text-align: left;"> <code>'kriging' and 'imputing'</code>
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+
+    <code><a href="RFratiotest.html">RFratiotest</a></code> </td><td style="text-align: left;"> likelihood ratio test for Gaussian fields
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  </td>
+</tr>
+
+</table>
+
+
+
+<h3>Graphics for Gaussian fields</h3>
+
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RFgui.html">RFgui</a></code> </td><td style="text-align: left;"> educational tool for</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    </td><td style="text-align: left;"> * manual selection of a covariance model</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    </td><td style="text-align: left;"> * manual fitting to the empirical variogram
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RFfractaldim.html">RFfractaldim</a></code> </td><td style="text-align: left;">
+    determination of the fractal dimension
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RFhurst.html">RFhurst</a></code> </td><td style="text-align: left;">
+    determination of the Hurst effect (long range dependence)
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  </td>
+</tr>
+
+</table>
+
+
+
+<h3>Coordinate transformations</h3>
+
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+   <code><a href="RMtrafo.html">RFearth2cartesian</a></code> </td><td style="text-align: left;">
+   transformation of earth coordinates to cartesian coordinates
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RMtrafo.html">RFearth2dist</a></code> </td><td style="text-align: left;"> transformation of earth
+    coordinates to Euclidean distances
+  </td>
+</tr>
+
+</table>
+
+
+
+<h3>Information from and to RandomFields</h3>
+
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RFgetMethodNames.html">RFgetMethodNames</a></code> </td><td style="text-align: left;">
+    currently implemented list of simulation methods
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RFgetModel.html">RFgetModel</a></code> </td><td style="text-align: left;">
+    returns the model used in a <code><a href="RF.html">RFfunction</a></code>, with some
+    more details
+    
+   
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">	  
+    <code><a href="RFgetModelInfo.html">RFgetModelInfo</a></code> </td><td style="text-align: left;">
+    similar to <code><a href="RFgetModel.html">RFgetModel</a></code>, but with detailed
+    information on the implementation
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RFgetModelNames.html">RFgetModelNames</a></code> </td><td style="text-align: left;">
+    lists the implemented models
+    </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RFoptions.html">RFoptions</a></code> </td><td style="text-align: left;">
+    options of package RandomFields
+  </td>
+</tr>
+
+</table>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><a href="RC.html">RC</a>, <a href="RM.html">RM</a>, <a href="RP.html">RP</a>,
+<a href="RR.html">RR</a>, <a href="QMath.html">R.</a>,
+<code><a href="RMmodelgenerator-class.html">RMmodelgenerator</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+z &lt;- RFsimulate(model=RMexp(), 1:10)
+RFgetModel(RFsimulate, show.call = TRUE)  # user's definition
+RFgetModel(RFsimulate, show.call = FALSE) # main internal part
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

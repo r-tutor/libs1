@@ -50,7 +50,13 @@ Fisk                    The Fisk Distribution
 Foldnorm                The Folded-Normal Distribution
 Frank                   Frank's Bivariate Distribution
 Frechet                 The Frechet Distribution
+Genabinom               Generally-Altered Binomial Distribution
+Genapois                Generally-Altered Poisson Distribution
 GenbetaII               The Generalized Beta II Distribution
+Genibinom               Generally-Inflated Binomial Distribution
+Genipois                Generally-Inflated Poisson Distribution
+Gentbinom               Generally-Truncated-Binomial Distribution
+Gentpois                Generally-Truncated Poisson Distribution
 Gompertz                The Gompertz Distribution
 Gumbel-II               The Gumbel-II Distribution
 Huggins89.t1            Table 1 of Huggins (1989)
@@ -201,7 +207,7 @@ calibrate.rrvglm.control
 cao                     Fitting Constrained Additive Ordination (CAO)
 cao.control             Control Function for RR-VGAMs (CAO)
 cardioid                Cardioid Distribution Family Function
-cauchit                 Cauchit Link Function
+cauchitlink             Cauchit Link Function
 cauchy                  Cauchy Distribution Family Function
 cdf.lmscreg             Cumulative Distribution Function for LMS
                         Quantile Regression
@@ -215,7 +221,7 @@ chinese.nz              Chinese Population in New Zealand 1867-2001
                         Data
 chisq                   Chi-squared Distribution
 clo                     Redirects the User to rrvglm()
-cloglog                 Complementary Log-log Link Function
+clogloglink             Complementary Log-log Link Function
 coalminers              Breathlessness and Wheeze Amongst Coalminers
                         Data
 coefvgam                Extract Model Coefficients of a vgam() Object
@@ -279,13 +285,13 @@ felix                   Felix Distribution Family Function
 fff                     F Distribution Family Function
 fill                    Creates a Matrix of Appropriate Dimension
 finney44                Toxicity trial for insects
-fisherz                 Fisher's Z Link Function
+fisherzlink             Fisher's Z Link Function
 fisk                    Fisk Distribution family function
 fittedvlm               Fitted Values of a VLM object
 flourbeetle             Mortality of Flour Beetles from Carbon
                         Disulphide
 foldnormal              Folded Normal Distribution Family Function
-foldsqrt                Folded Square Root Link Function
+foldsqrtlink            Folded Square Root Link Function
 formulavlm              Model Formulae and Term Names for VGLMs
 frechet                 Frechet Distribution Family Function
 freund61                Freund's (1961) Bivariate Extension of the
@@ -296,13 +302,21 @@ gammaR                  2-parameter Gamma Distribution
 gammahyperbola          Gamma Hyperbola Bivariate Distribution
 garma                   GARMA (Generalized Autoregressive
                         Moving-Average) Models
+genapoisson             Generally-Altered Poisson Distribution Family
+                        Function
 genbetaII               Generalized Beta Distribution of the Second
                         Kind
 gengamma.stacy          Generalized Gamma distribution family function
 gengammaUC              The Generalized Gamma Distribution
+genipoisson             Generally-Inflated Poisson Distribution Family
+                        Function
 genpoisson              Generalized Poisson distribution
 genray                  The Generalized Rayleigh Distribution
 genrayleigh             Generalized Rayleigh Distribution Family
+                        Function
+gentbinomial            Generally-Truncated Binomial Distribution
+                        Family Function
+gentpoisson             Generally-Truncated Poisson Distribution Family
                         Function
 geometric               Geometric (Truncated and Untruncated)
                         Distributions
@@ -312,8 +326,8 @@ gev                     Generalized Extreme Value Distribution Family
                         Function
 gevUC                   The Generalized Extreme Value Distribution
 gew                     General Electric and Westinghouse Data
-golf                    Gamma-Ordinal Link Function
 gompertz                Gompertz Distribution Family Function
+gordlink                Gamma-Ordinal Link Function
 gpd                     Generalized Pareto Distribution Family Function
 gpdUC                   The Generalized Pareto Distribution
 grain.us                Grain Prices Data in USA
@@ -327,6 +341,7 @@ has.interceptvlm        Has a Fitted VGLM Got an Intercept Term?
 hatvalues               Hat Values and Regression Deletion Diagnostics
 hdeff                   Hauck-Donner Effects: A Detection Test for Wald
                         Tests
+hdeffsev                Hauck-Donner Effects: Severity Measures
 hormone                 Hormone Assay Data
 hspider                 Hunting Spider Data
 huber2                  Huber's Least Favourable Distribution Family
@@ -375,19 +390,19 @@ log1mexp                Logarithms with an Unit Offset and Exponential
 logF                    Natural Exponential Family Generalized
                         Hyperbolic Secant Distribution Family Function
 logLik.vlm              Extract Log-likelihood for VGLMs/VGAMs/etc.
-logc                    Complementary-log Link Function
-loge                    Log Link Function, and Variants
+logclink                Complementary-log Link Function
 logff                   Logarithmic Distribution
 logistic                Logistic Distribution Family Function
-logit                   Logit Link Function
+logitlink               Logit Link Function
 logitoffsetlink         Logit-with-an-Offset Link Function
 loglaplace1             Log-Laplace and Logit-Laplace Distribution
                         Family Functions
 loglinb2                Loglinear Model for Two Binary Responses
 loglinb3                Loglinear Model for Three Binary Responses
-loglog                  Log-log Link Function
+loglink                 Log Link Function, and Variants
+logloglink              Log-log and Log-log-log Link Functions
 lognormal               Lognormal Distribution
-logoff                  Log Link Function with an Offset
+logofflink              Log Link Function with an Offset
 lomax                   Lomax Distribution Family Function
 lqnorm                  Minimizing the L-q norm Family Function
 lrt.stat                Likelihood Ratio Test Statistics Evaluated at
@@ -414,11 +429,11 @@ model.framevlm          Construct the Model Frame of a VLM Object
 model.matrixqrrvglm     Construct the Model Matrix of a QRR-VGLM Object
 model.matrixvlm         Construct the Design Matrix of a VLM Object
 moffset                 Matrix Offset
-multilogit              Multi-logit Link Function
+multilogitlink          Multi-logit Link Function
 multinomial             Multinomial Logit Model
 nakagami                Nakagami Distribution Family Function
 nbcanlink               Negative Binomial Canonical Link Function
-nbolf                   Negative Binomial-Ordinal Link Function
+nbordlink               Negative Binomial-Ordinal Link Function
 negbinomial             Negative Binomial Distribution Family Function
 negbinomial.size        Negative Binomial Distribution Family Function
                         With Known Size
@@ -465,7 +480,7 @@ pneumo                  Pneumoconiosis in Coalminers Data
 poisson.points          Poisson-points-on-a-plane/volume Distances
                         Distribution
 poissonff               Poisson Family Function
-polf                    Poisson-Ordinal Link Function
+pordlink                Poisson-Ordinal Link Function
 posbernUC               Positive Bernoulli Sequence Model
 posbernoulli.b          Positive Bernoulli Family Function with
                         Behavioural Effects
@@ -484,7 +499,7 @@ predictqrrvglm          Predict Method for a CQO fit
 predictvglm             Predict Method for a VGLM fit
 prentice74              Prentice (1974) Log-gamma Distribution
 prinia                  Yellow-bellied Prinia
-probit                  Probit Link Function
+probitlink              Probit Link Function
 profilevglm             Method for Profiling vglm Objects
 propodds                Proportional Odds Model for Ordinal Regression
 prplot                  Probability Plots for Categorical Data Analysis
@@ -501,9 +516,9 @@ rec.exp1                Upper Record Values from a 1-parameter
                         Exponential Distribution
 rec.normal              Upper Record Values from a Univariate Normal
                         Distribution
-reciprocal              Reciprocal Link Function
+reciprocallink          Reciprocal Link Function
 residualsvglm           Residuals for a VGLM fit
-rhobit                  Rhobit Link Function
+rhobitlink              Rhobit Link Function
 riceff                  Rice Distribution Family Function
 rigff                   Reciprocal Inverse Gaussian distribution
 rlplot.gevff            Return Level Plot for GEV Fits
@@ -520,6 +535,7 @@ sc.studentt2            Scaled Student t Distribution with 2 df Family
                         Function
 score.stat              Rao's Score Test Statistics Evaluated at the
                         Null Values
+seglines                Hauck-Donner Effects: Segmented Lines Plot
 seq2binomial            The Two-stage Sequential Binomial Distribution
                         Family Function
 setup.smart             Smart Prediction Setup

@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Extremal t process</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Extremal t {RandomFields}"><tr><td>Extremal t {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Extremal t process</h2>
+
+<h3>Description</h3>
+
+ 
+<p><code>RPopitz</code> defines an extremal t process.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RPopitz(phi, xi, mu, s, alpha)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>phi</code></td>
+<td>
+<p>an <code><a href="RMmodel.html">RMmodel</a></code>;
+covariance model for a standardized
+Gaussian random field, or the field itself.
+</p>
+</td></tr>
+<tr valign="top"><td><code>xi,mu,s</code></td>
+<td>
+<p>the extreme value index, the location parameter and the
+scale parameter, respectively, of the generalized extreme value
+distribution. See Details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>originally referred to the <i>&alpha;</i>-Frechet marginal
+distribution, see the original literature for details.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The argument <code>xi</code> is always a number, i.e. <i>&xi;</i> is constant in space. In contrast, <i>&mu;</i> and <i>s</i> might be constant numerical values or (in future!) be given by an <code><a href="RMmodel.html">RMmodel</a></code>, in particular by an <code><a href="RMtrend.html">RMtrend</a></code> model.  <br /> For <i>xi=0</i>, the default values of <i>mu</i> and <i>s</i> are <i>0</i> and <i>1</i>, respectively. For <i>xi\not=0</i>, the default values of <i>mu</i> and <i>s</i> are <i>1</i> and <i>|&xi;|</i>, respectively, so that it defaults to the standard Frechet case if <i>&xi; &gt; 0</i>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li>
+<p>Davison, A.C., Padoan, S., Ribatet, M. (2012).
+Statistical modelling of spatial extremes.
+<em>Stat. Science</em> <b>27</b>, 161-186.
+</p>
+</li>
+<li>
+<p>Opitz, T. (2012) A spectral construction of the extremal t process.
+<em>arxiv</em> <b>1207.2296</b>.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RPgauss.html">RPgauss</a></code>,
+<code><a href="RPmaxstable.html">maxstable</a></code>,
+<code><a href="RPmaxstableAdvanced.html">maxstableAdvanced</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## sorry, does not work savely yet
+
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

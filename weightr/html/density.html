@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a Density Plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for density {weightr}"><tr><td>density {weightr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a Density Plot</h2>
+
+<h3>Description</h3>
+
+<p>This function allows you to create a plot displaying the unadjusted and adjusted densities of the specified model. Note that you must first specify a model using <code>weightfunct</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+density(x, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an object of class weightfunct</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function produces an approximate graphical illustration of the estimated unweighted and weighted densities. The unweighted density is represented by a dashed line and the weighted density by a solid line. For the unweighted density, the effect sizes are assumed to be normally distributed, with a mean equal to their unadjusted mean and a variance equal to their unadjusted variance component plus their individual sampling variances. This plot is an approximation because it is necessary to use a fixed sampling variance; here, we fix the sampling variance to the median of the distribution of sampling variances.
+</p>
+<p>For the adjusted density, the expected density for effect sizes within each specified p-value interval is multiplied by the estimated weight for the corresponding interval. Greater density in an interval then represents a greater likelihood of effect-size survival. (Remember, of course, that the weight for the first interval is fixed to one, and other intervals should be interpreted relative to it.) Each discontinuity in the solid line, therefore, represents a p-value cutpoint.
+</p>
+<p>Users may wonder why the adjusted density, or the solid line, sometimes falls outside of the unadjusted density, or the dashed line. In answer, recall that the mean and variance of the adjusted density also differ. Based on the severity of this difference, the adjusted density may fall outside of its unadjusted counterpart.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+test &lt;- weightfunct(effect, v, steps)
+density(test)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>weightr</em> version 2.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

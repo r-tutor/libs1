@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Gaussian Covariance Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMgauss {RandomFields}"><tr><td>RMgauss {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Gaussian Covariance Model</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMgauss.html">RMgauss</a></code> is a stationary isotropic covariance model.
+The corresponding covariance function only depends on the distance
+<i>r &ge; 0</i> between two points and is given by
+</p>
+<p style="text-align: center;"><i>C(r)=e^{-r^2}.</i></p>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+RMgauss(var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This model is called Gaussian because of the functional similarity of
+the spectral density of a process with that covariance function to the
+Gaussian probability density function.
+</p>
+<p>The Gaussian model has an infinitely differentiable covariance
+function. This smoothness is artificial. Furthermore, this often leads to
+singular matrices and therefore numerically instable procedures
+(cf. Stein, M. L. (1999), p. 29).
+
+
+</p>
+<p>The Gaussian model is included in the symmetric stable class (see
+<code><a href="RMstable.html">RMstable</a></code>) for the choice <i>alpha = 2</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMgauss.html">RMgauss</a></code> returns an object of class
+<code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The use of <code>RMgauss</code> is questionable from both a theoretical
+(analytical paths) and a practical point of view (e.g. speed of
+algorithms).
+Instead, <code><a href="RMgneiting.html">RMgneiting</a></code> should be used.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+<p>Gelfand, A. E., Diggle, P., Fuentes, M. and Guttorp,
+P. (eds.) (2010) <em>Handbook of Spatial Statistics.</em>
+Boca Raton: Chapman &amp; Hall/CRL.
+</p>
+<p>Stein, M. L. (1999) <em>Interpolation of Spatial Data.</em> New York: Springer-Verlag 
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMstable.html">RMstable</a></code> and <code><a href="RMmatern.html">RMmatern</a></code> for generalizations;
+<br />
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+<p>Do not mix up with <code><a href="RPgauss.html">RPgauss</a></code> or <code><a href="RRgauss.html">RRgauss</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+model &lt;- RMgauss(scale=0.4)
+x &lt;- seq(0, 10, 0.02)
+plot(model)
+lines(RMgauss(), col="red")
+plot(RFsimulate(model, x=x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,3 +1,18 @@
+# radiant.multivariate 0.9.9.0
+
+* Create bi-plots in _Multivariate > Factor_
+* Fixes to accommodate breaking changes in dplyr 0.8.0
+
+# radiant.multivariate 0.9.8.0
+
+* Ensure variable and dataset names are valid for R (i.e., no spaces or symbols), "fixing" the input as needed
+* Fix initial plot size for `kclus` in the browser interface
+* Fix labels in `pre_factor` after a ggplot2 update
+* Avoid a warning in the `pre_factor` Plot tab on refresh
+* Option to pass additional arguments to `shiny::runApp` when starting radiant such as the port to use. For example, radiant.multivariate::radiant.multivariate("https://github.com/radiant-rstats/docs/raw/gh-pages/examples/demo-dvd-rnd.state.rda", port = 8080) 
+* Avoid generatign `pred_data = ""` for conjoint predictions
+* Load a state file on startup by providing a (relative) file path or a url
+
 # radiant.multivariate 0.9.7.0
 
 ## Major changes

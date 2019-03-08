@@ -588,6 +588,7 @@ test.long2wide <- function() {
 ##   3. Preserve name_new and class_new in updated key
 test.keyUpdate <- function() {
     ## check long key
+    set.seed(1233)
     dat1 <- data.frame(Score = c(1, 2, 3, 42, 4, 2),
                        Gender = c("M", "M", NA, "F", "F", "F"))
     ##   setting up key
@@ -639,28 +640,28 @@ test.keyUpdate <- function() {
 }
 
 
-## test keyDiff() function
-## test.keyDiff <- function() {
-##     ## check that keyUpdate changes are reflected in keyDiff
-##     dat1 <- data.frame(Score = c(1, 2, 3, 42, 4, 2),
-##                        Gender = c("M", "M", "M", "F", "F", "F"))
-##     key1 <- keyTemplate(dat1, long = TRUE)
-##     key1[5, "value_new"] <- 10
-##     key1[6, "value_new"] <- "female"
-##     key1[7, "value_new"] <- "male"
-##     key1[key1$name_old=="Score", "name_new"] <- "ScoreVar"
-##     dat2 <- data.frame(Score = 7, Gender = "other", Weight = rnorm(3))
-##     dat2 <- plyr::rbind.fill(dat1, dat2)
-##     key2 <- keyUpdate(key1, dat2, append=FALSE)
-##     diffOutput1 <- keyDiff2(key1, key2)
-##     checkEquals(grepl("Gender", diffOutput1), TRUE)
-##     checkEquals(grepl("ScoreVar", diffOutput1), FALSE)
+## ## test keyDiff() function
+## ## test.keyDiff <- function() {
+## ##     ## check that keyUpdate changes are reflected in keyDiff
+## ##     dat1 <- data.frame(Score = c(1, 2, 3, 42, 4, 2),
+## ##                        Gender = c("M", "M", "M", "F", "F", "F"))
+## ##     key1 <- keyTemplate(dat1, long = TRUE)
+## ##     key1[5, "value_new"] <- 10
+## ##     key1[6, "value_new"] <- "female"
+## ##     key1[7, "value_new"] <- "male"
+## ##     key1[key1$name_old=="Score", "name_new"] <- "ScoreVar"
+## ##     dat2 <- data.frame(Score = 7, Gender = "other", Weight = rnorm(3))
+## ##     dat2 <- plyr::rbind.fill(dat1, dat2)
+## ##     key2 <- keyUpdate(key1, dat2, append=FALSE)
+## ##     diffOutput1 <- keyDiff2(key1, key2)
+## ##     checkEquals(grepl("Gender", diffOutput1), TRUE)
+## ##     checkEquals(grepl("ScoreVar", diffOutput1), FALSE)
 
-##     ## check identity condition
-##     diffOutput2 <- keyDiff(key1, key1)
-##     checkEquals(grepl("no differences", diffOutput2), TRUE)
+## ##     ## check identity condition
+## ##     diffOutput2 <- keyDiff(key1, key1)
+## ##     checkEquals(grepl("no differences", diffOutput2), TRUE)
     
-## }
+## ## }
 
 
 ## test keyRead() function:
@@ -679,6 +680,7 @@ test.keyRead <- function() {
 ##   2. Non-legal conversions result in warning
 test.keysPool <- function() {
     ## setup
+    set.seed(1234)
     dat1 <- data.frame(x1 = as.integer(rnorm(100)),
                        x2 = sample(c("Apple", "Orange"), 100, replace = TRUE),
                        x3 = ifelse(rnorm(100) < 0, TRUE, FALSE))
@@ -696,42 +698,62 @@ test.keysPool <- function() {
                 stackedKeysFix$class_new,
                 c(rep("numeric", 4), rep("factor", 3), rep("numeric", 5)))
 
-    ## PJ 20171204: this check fails, it doesn't make sense to check this.
-    ## ## check change restricted to class_old
-    ## stackedKeysFix2 <- kutils:::keysPool(stackedKeys, colnames="class_old")
-    ## checkEquals(stackedKeysFix2$class_old,
-    ##             c(rep("numeric", 7), rep("factor", 6), rep("numeric", 6)))
-    
-    ## PJ 20171204: this check fails, it doesn't make sense to check this.
-    ## check change restricted to class_new
-    ## stackedKeysFix3 <- kutils:::keysPool(stackedKeys, colnames="class_new")    
-    ## checkEquals(stackedKeysFix3$class_new,
-    ##            c(rep("numeric", 7), rep("factor", 6), rep("numeric", 6)))
-    
     ## check case where to homogenization is not possible
-    dat3 <- data.frame(x1 = as.integer(rnorm(100)),
-                       x2 = sample(c("Apple", "Orange"), 100, replace = TRUE))
-    dat4 <- data.frame(x1 = rnorm(100),
-                       x2 = sample(c("Apple", "Orange"), 100, replace = TRUE),
-                       stringsAsFactors = FALSE)
-    key3 <- keyTemplate(dat3, long = TRUE)
-    key4 <- keyTemplate(dat4, long = TRUE)
+    set.seed(123456)
+
+    key3 <- structure(list(
+        name_old = c("x1", "x1", "x1", "x1", "x1", "x1",
+                     "x2", "x2", "x2"),
+        name_new = c("x1", "x1", "x1", "x1", "x1",
+                     "x1", "x2", "x2", "x2"),
+        class_old = c("integer", "integer",
+                      "integer", "integer", "integer", "integer", "factor", "factor",
+                      "factor"),
+        class_new = c("integer", "integer", "integer", "integer",
+                      "integer", "integer", "factor", "factor", "factor"),
+        value_old = c("-2", "-1", "0", "1", "2", ".", "Apple", "Orange", "."),
+        value_new = c("-2","-1", "0", "1", "2", ".", "Apple", "Orange", "."),
+        missings = c("","", "", "", "", "", "", "", ""),
+        recodes = c("", "", "", "",
+                    "", "", "", "", "")),
+        row.names = c(NA, -9L), class = c("keylong",
+                                          "data.frame"), missSymbol = ".")
+
+    key4 <- structure(list(
+        name_old = c("x1", "x2", "x2", "x2"), name_new = c("x1",
+                                                           "x2", "x2", "x2"),
+        class_old = c("numeric", "character", "character",
+                      "character"),
+        class_new = c("numeric", "character", "character",
+                      "character"),
+        value_old = c(".", "Apple", "Orange", "."),
+        value_new = c(".", "Apple", "Orange", "."),
+        missings = c("", "", "", ""),
+        recodes = c("", "", "", "")),
+        row.names = c(NA, -4L), class = c("keylong", "data.frame"),
+        missSymbol = ".")
     stackedKeys2 <- rbind(key3, key4)
     stackedKeys2Fix <- keysPool(stackedKeys2)
 
     stackedKeys2Fix.saved <-
-        structure(list(
-            name_old = c("x1", "x1", "x1", "x1", "x1", "x1", "x2", "x2", "x2"), name_new = c("x1", "x1", "x1", "x1", "x1", "x1", "x2", "x2", "x2"),
-            class_old = c("numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "character","character", "character"),
-            class_new = c("numeric", "numeric",
-                          "numeric", "numeric", "numeric", "numeric", "character", "character",  "character" ),
-            value_old = c("-2", "-1", "0", "1", "2", ".", "Apple",
-                          "Orange", "."), value_new = c("-2", "-1", "0", "1", "2", ".", "Apple", "Orange", "."),
-            missings = c("", "", "", "", "", "", "", "", ""),
-            recodes = c("", "", "", "", "", "", "", "", "")), missSymbol = ".",
-            row.names = c("x1.1", "x1.2", "x1.3", "x1.4", "x1.5", "x1.6", "x2.7",
-                          "x2.8", "x2.9" ), class = c("keylong", "data.frame"))
-    stack.diff <-  keyDiff(stackedKeys2Fix, stackedKeys2Fix.saved[NROW(stackedKeys2Fix.saved):1 , ])
+        structure(list(name_old = c("x1", "x1", "x1", "x1", "x1", "x1", 
+                                    "x2", "x2", "x2"), name_new = c("x1", "x1", "x1", "x1", "x1", 
+                                                                    "x1", "x2", "x2", "x2"),
+                       class_old = c("numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "character", "character", 
+                                     "character"), class_new = c("numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
+                                                                 "character", "character", "character"),
+                       value_old = c("-2", "-1", "0", "1", "2", ".", "Apple", "Orange",  "."),
+                       value_new = c("-2", "-1", "0", "1", "2", ".", "Apple", "Orange", "."),
+                       missings = c("", "", "", "", "", "", "", "", ""),
+                       recodes = c("", "", "", "", "", "", "", "", "")),
+                  missSymbol = ".", row.names = c("x1.1", "x1.2", "x1.3", "x1.4", "x1.5", "x1.6", "x2.7", "x2.8", "x2.9"),
+                  class = c("keylong", "data.frame"))
+    stack.diff <-  keyDiff(stackedKeys2Fix, stackedKeys2Fix.saved)
+    saveRDS(stack.diff, file = "stack.diff.rds")
+    saveRDS(key3, file = "key3.rds")
+    saveRDS(key4, file = "key4.rds")
+    saveRDS(stackedKeys2Fix, file = "stackedKeys2Fix.rds")
+    saveRDS(stackedKeys2Fix.saved, file = "stackedKeys2Fix.saved.rds")
     checkEquals(stack.diff, NULL)
 }
 

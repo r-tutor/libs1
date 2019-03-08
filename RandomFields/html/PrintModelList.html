@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Information about the implemented covariance models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for PrintModelList {RandomFields}"><tr><td>PrintModelList {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Information about the implemented covariance models</h2>
+
+<h3>Description</h3>
+
+<p><code>PrintModelList</code> prints the list of currently implemented models
+including the corresponding simulation methods.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+
+PrintModelList(operators=FALSE, internal=FALSE, newstyle=TRUE)
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>operators</code></td>
+<td>
+<p>logical. Flag whether operators should also be considered.
+</p>
+</td></tr>
+<tr valign="top"><td><code>internal</code></td>
+<td>
+<p>logical. Flag whether internal models should also be considered. In case of <code>PrintModelList</code> and
+<code>internal=2</code>, variants of internal models are also printed.
+</p>
+</td></tr>
+<tr valign="top"><td><code>newstyle</code></td>
+<td>
+
+<p>logical. If <code>FALSE</code> then only the old style model names (Version 2
+and earlier) are shown. These names can still be used in the list
+definition of models, see <a href="RMmodelsAdvanced.html">RMmodelsAdvanced</a>.
+If <code>TRUE</code> then the standard names will also be shown.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="RMmodel.html">RMmodel</a> for a description of the models and their use.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>PrintModelList</code> prints a table of the currently implemented covariance
+functions and the matching methods.
+<code>PrintModelList</code> returns <code>NULL</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>From version 3.0 on, the command <code>PrintModelList()</code>
+is replaced by the call
+<code><a href="RFgetModelNames.html">RFgetModelNames</a>(internal=FALSE)</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RFgetModelNames.html">RFgetModelNames</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+PrintModelList()
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

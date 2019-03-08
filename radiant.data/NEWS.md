@@ -1,3 +1,49 @@
+# radiant.data 0.9.9.0
+
+* Added option to save _Report > Rmd_ as a powerpoint file using `Rmarkdown`
+* Removed dependency on `summarytools` due to breaking changes
+* Fix for interaction (`iterm`) and non-linear term (`qterm`) creation if character strings rather than integers are passed to the function
+* Remove specific symbols from reports in _Report > Rmd_ to avoid issues when generating HTML or PDF documents
+* Keyboard shortcuts, i.e., CTRL-O and CTRL-S (CMD-O and CMD-S on macOS) to open and save data files in the _Data > Manage_ tab 
+* Various fixes to address breaking changes in dplyr 0.8.0
+* Added `radiant_` prefix to all attributes, except `description`, to avoid conflicts with other packages (e.g., `vars` in dplyr)
+
+# radiant.data 0.9.8.6
+
+* Use `stringi::stri_trans_general` to replace special symbols in Rmarkdown that may cause problems
+* Add empty line before and after code chunks when saving reports to Rmarkdown
+* Use `rio` to load `sav`, `dta`, or `sas7bdat` files through the `read files` button in _Report > Rmd_ and _Report > R_.
+* Create a `qscatter` plot similar to the function of the same name in Stata
+* New radiant icon
+* Fix for setting where both `xlim` and `ylim` are set in `visualize` function 
+* Use an expandable `shinyAce` input for the R-code log in _Data > Transform_
+
+# radiant.data 0.9.8.0
+
+* Added an "autosave" options. Use `options(radiant.autosave = c(10, 180)); radiant::radiant()` to auto-save the application state to the `~/.radiant.session` folder every 10 minutes for the next 180 minutes. This can be useful if radiant is being used during an exam, for example.
+* Emergency backups are now saved to `~/.radiant.session/r_some_id.state.rda`. The files should be automatically loaded when needed but can also be loaded as a regular radiant state file
+* Replace option to load an `.rda` from from a URL in _Data > Manage_ to load `.rds` files instead
+* Ensure variable and dataset names are valid for R (i.e., no spaces or symbols), "fixing" the input as needed
+* Fix to visualize now `ggplot::labs` no longer accepts a list as input
+* Add option to generate square and cubed terms for use in linear and logistic regression in `radiant.model`
+* Fix for error when trying to save invalid predictions in `radiant.model`. This action now generates a pop-up in the browser interface
+* Add a specified description to a data.frame immediately on `register`
+* Option to pass additional arguments to `shiny::runApp` when starting radiant such as the port to use. For example, radiant.data::radiant.data("https://github.com/radiant-rstats/docs/raw/gh-pages/examples/demo-dvd-rnd.state.rda", port = 8080) 
+* Option for automatic cleanup of deprecated code in both _Report > Rmd_ and _Report > R_
+* Avoid attempt to fix deprecated code in _Report > Rmd_ if `pred_data = ""` 
+* Fix for download icon linked to downloading of a state file after upgrade to shiny 1.2
+* Update documentation for _Data > Combine_
+* Fix for `format_df` when the data.frame contains missing values. This fix is relevant for several `summary` functions run in _Report > Rmd_ or _Report > R_
+* Fix for directory set when using `Knit report` in _Report > Rmd_ and _Report > R_ **without** an Rstudio project. Will now correctly default to the working directory used in R(studio)
+* Added option to change `smooth` setting for histograms with a density plot
+* Similar to `pmin` and `pmax`, `pfun` et al. calculate summary statistics elementwise across multiple vectors
+* Add `Desktop` as a default directory to show in the `shinyFiles` file browser
+* Load a state file on startup by providing a (relative) file path or a url. For example, radiant.data::radiant.data("https://github.com/radiant-rstats/docs/raw/gh-pages/examples/demo-dvd-rnd.state.rda") 
+or radiant.data::radiant.data("assignment.state.rda")
+* Update example report in _Report > Rmd_
+* Add `deregister` function to remove data in radiant from memory and the `datasets` dropdown list
+* Fix for invalid column names if used in `Data > Pivot`
+
 # radiant.data 0.9.7.0
 
 * Use `summarytools` to generate summary information for datasets in _Data > Manage_

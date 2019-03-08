@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Schoenberg's representation for the classes psi_d and...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMchoquet {RandomFields}"><tr><td>RMchoquet {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Schoenberg's representation for the classes psi_d and <i>psi_{&infin;}</i> in d=2</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMchoquet.html">RMchoquet</a></code> is an isotropic covariance model. The
+corresponding covariance function only depends on the angle
+<i>0 &le; &theta; &le; &pi;</i>
+between two points on the sphere and is given for d=2 by 
+</p>
+<p style="text-align: center;"><i>&psi;(&theta;) = &sum;_{n=0}^{&infin;} b_{n,2}/(n+1)*P_n(cos(&theta;)),</i></p>
+
+<p>where </p>
+<p style="text-align: center;"><i>&sum;_{n=0}^{&infin;} b_{n,d}=1</i></p>
+
+<p>and <i>P_n</i> is the Legendre Polynomial of integer order <i>n &gt;= 0</i>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMchoquet(b)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>b</code></td>
+<td>
+<p>a numerical vector of weights in <i>(0,1)</i>, such that sum(b)=1.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>By the results (cf. Gneiting, T. (2013), p.1333) of Schoenberg and
+others like Menegatto, Chen, Sun,  Oliveira and Peron, the class
+<i>psi_d</i> of all real valued funcions on <i>[0,&pi;]</i>, with
+<i>&psi;(0)=1</i> and such that the associated isotropic function
+</p>
+<p style="text-align: center;"><i>h(x,y)=&psi;(theta)     with     cos(&theta;)=&lt;x,y&gt;</i></p>
+
+<p style="text-align: center;"><i>for x,y in  {x in R^d: ||x|| = 1}</i></p>
+
+<p>is (strictly) positive definite is represented by this
+covariance model. The model can be interpreted as Choquet
+representation in terms of extremal members, which are non-strictly
+positive definite.
+</p>
+<p>Special cases are the multiquadric family (see
+<code><a href="RMmultiquad.html">RMmultiquad</a></code>) and the model of the sine power function (see
+<code><a href="RMsinepower.html">RMsinepower</a></code>).
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMchoquet.html">RMchoquet</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Christoph Berreth; Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Gneiting, T. (2013)
+<em>Strictly and non-strictly positive definite functions on
+spheres.</em> Bernoulli, <b>19</b>(4), 1327-1349.
+</p>
+</li>
+<li><p> Schoenberg, I.J. (1942)
+<em>Positive definite functions on spheres.</em> Duke Math.J.,<b>9</b>, 96-108.
+</p>
+</li>
+<li><p> Menegatto, V.A. (1994)
+<em>Strictly positive definite kernels on the Hilbert sphere.</em>
+Appl. Anal., <b>55</b>, 91-101.
+</p>
+</li>
+<li><p> Chen, D., Menegatto, V.A., and Sun, X. (2003)
+<em>A necessary and sufficient condition for strictly positive
+definite functions on spheres.</em>
+Proc. Amer. Math. Soc.,<b>131</b>, 2733-2740.
+</p>
+</li>
+<li><p> Menegatto, V.A., Oliveira, C.P. and Peron, A.P. (2006)
+<em>Strictly positive definite kernels on subsets of the complex
+plane.</em> Comput. Math. Appl., <b>51</b>, 1233-1250.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>,
+<code><a href="RMmodelsSphere.html">spherical models</a></code>,
+<code><a href="RMmultiquad.html">RMmultiquad</a></code>,
+<code><a href="RMsinepower.html">RMsinepower</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+## to do
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

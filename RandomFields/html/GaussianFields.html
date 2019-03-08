@@ -1,0 +1,361 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Methods for Gaussian Random Fields</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for GaussianFields {RandomFields}"><tr><td>GaussianFields {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Methods for Gaussian Random Fields</h2>
+
+<h3>Description</h3>
+
+<p>Here, all the methods (models) for simulating
+Gaussian random fields are listed.
+</p>
+
+
+<h3>Implemented models</h3>
+
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPcirculant.html">RPcirculant</a></code> </td><td style="text-align: left;"> simulation by circulant embedding </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPcirculant.html">RPcutoff</a></code> </td><td style="text-align: left;"> simulation by a variant of circulant embedding </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPcoin.html">RPcoins</a></code> </td><td style="text-align: left;"> simulation by random coin / shot noise
+ </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPdirect.html">RPdirect</a></code> </td><td style="text-align: left;"> through the square root of the covariance matrix</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPgauss.html">RPgauss</a></code> </td><td style="text-align: left;"> generic model that chooses automatically
+ among the specific methods
+ </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPhyperplane.html">RPhyperplane</a></code> </td><td style="text-align: left;"> simulation by hyperplane tessellation </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPcirculant.html">RPintrinsic</a></code> </td><td style="text-align: left;"> simulation by a variant of circulant
+ embedding </td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+ <code><a href="RPnugget.html">RPnugget</a></code> </td><td style="text-align: left;"> simulation of (anisotropic) nugget effects </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPsequential.html">RPsequential</a></code> </td><td style="text-align: left;"> sequential method </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPspecific.html">RPspecific</a></code> </td><td style="text-align: left;"> model specific methods (very advanced)</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPspectral.html">RPspectral</a></code> </td><td style="text-align: left;"> spectral method </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPtbm.html">RPtbm</a></code> </td><td style="text-align: left;"> turning bands </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+
+
+<h3>Computing demand for simulations</h3>
+
+<p>Assume at <i>n</i> locations in <i>d</i> dimensions a <i>v</i>-variate
+field has to be simulated.
+Let </p>
+<p style="text-align: center;"><i>f(n, d) = 2^d * n * log(n)</i></p>
+
+<p>The following table gives in particular the time and memory needed for
+the specific simulation method.
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+  </td><td style="text-align: left;"> grid </td><td style="text-align: left;"> <i>v</i> </td><td style="text-align: left;"> <i>d</i> </td><td style="text-align: left;"> time </td><td style="text-align: left;"> memory </td><td style="text-align: left;"> comments</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <code><a href="RPcirculant.html">RPcirculant</a></code>
+  </td><td style="text-align: left;"> yes </td><td style="text-align: left;"> any </td><td style="text-align: left;"> <i>&lt;=13</i> </td><td style="text-align: left;"><i>O(v^3f(n, d))</i> </td><td style="text-align: left;">
+  <i>O(v^2f(n, d))</i></td><td style="text-align: left;"> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  </td><td style="text-align: left;"> no </td><td style="text-align: left;"> any </td><td style="text-align: left;"> <i>&lt;=13</i> </td><td style="text-align: left;"> <i>O(v^3 f(k, d))</i> </td><td style="text-align: left;"> <i>O(v^2f(k, d))</i>
+  </td><td style="text-align: left;"> <i>k ~ </i><code><a href="RFoptions.html">approx_step</a></code><i>^{-d}</i></td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPcirculant.html">RPcutoff</a></code> </td><td style="text-align: left;"> </td><td style="text-align: left;"> </td><td style="text-align: left;"> </td><td style="text-align: left;"> </td><td style="text-align: left;"> </td><td style="text-align: left;"> see
+  RPcirculant above
+ </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPcoin.html">RPcoins</a></code> </td><td style="text-align: left;"> yes </td><td style="text-align: left;"> <i>1</i> </td><td style="text-align: left;"> <i>&lt;=4</i> </td><td style="text-align: left;"> <i>O(k * n)</i> </td><td style="text-align: left;"><i> O(n) </i></td><td style="text-align: left;">
+ <i>k ~ </i><i>(lattice spacing)^{-d}</i> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ </td><td style="text-align: left;"> no </td><td style="text-align: left;"> <i>1</i> </td><td style="text-align: left;"> <i>&lt;=4</i> </td><td style="text-align: left;"> <i>O(k * n)</i> </td><td style="text-align: left;">
+  <i>O(n)</i> </td><td style="text-align: left;"> <i>k</i> depends on the geometry
+ </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPdirect.html">RPdirect</a></code>
+ </td><td style="text-align: left;"> any</td><td style="text-align: left;"> any</td><td style="text-align: left;"> any </td><td style="text-align: left;"><i> O(v^2 * n^2)</i></td><td style="text-align: left;"><i> O(v^2 * n^2)</i></td><td style="text-align: left;"> effort to investigate the covariance matrix, if
+ <code><a href="RFoptions.html">matrix_methods</a></code> is not specified (default)</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ </td><td style="text-align: left;"> </td><td style="text-align: left;"> </td><td style="text-align: left;">  </td><td style="text-align: left;"><i> O(v * n)</i></td><td style="text-align: left;"><i> O(v * n)</i></td><td style="text-align: left;"> covariance matrix is diagonal </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ </td><td style="text-align: left;"> </td><td style="text-align: left;"> </td><td style="text-align: left;">  </td><td style="text-align: left;"> see <span class="pkg"><a href="../../spam/html/SPAM.html">spam</a></span> </td><td style="text-align: left;"> <i>O(z + v * n)</i></td><td style="text-align: left;"> covariance matrix is sparse
+ matrix with <i>z</i> non-zeros</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ </td><td style="text-align: left;"></td><td style="text-align: left;"> </td><td style="text-align: left;">  </td><td style="text-align: left;"> <i>O(v^3 * n^3)</i></td><td style="text-align: left;">
+  <i>O(v^2*n^2)</i></td><td style="text-align: left;"> arbitrary covariance matrix (preparation) </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  </td><td style="text-align: left;"></td><td style="text-align: left;"> </td><td style="text-align: left;">  </td><td style="text-align: left;"> <i>O(v^2*n^2)</i></td><td style="text-align: left;">
+  <i>O(v^2*n^2)</i></td><td style="text-align: left;"> arbitrary covariance matrix (simulation)</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPgauss.html">RPgauss</a></code> </td><td style="text-align: left;"> any </td><td style="text-align: left;"> any </td><td style="text-align: left;"> any </td><td style="text-align: left;"> <i>O(1)..O(v^3*n^3)</i> </td><td style="text-align: left;">
+ <i>O(1)..O(n^2)</i></td><td style="text-align: left;"> <b>only</b> the selection
+ process; <i>O(1)</i> if first method tried is successful
+ </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPhyperplane.html">RPhyperplane</a></code> </td><td style="text-align: left;"> any </td><td style="text-align: left;"> <i>1</i> </td><td style="text-align: left;"> <i>2</i> </td><td style="text-align: left;">
+ <i>O(n / s^d)</i> </td><td style="text-align: left;"> <i>O(n / s^d)</i></td><td style="text-align: left;">
+ <i>s = </i><code><a href="RMmodel.html">scale</a></code></td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPcirculant.html">RPintrinsic</a></code> </td><td style="text-align: left;">  </td><td style="text-align: left;"> </td><td style="text-align: left;"> </td><td style="text-align: left;"> </td><td style="text-align: left;"> </td><td style="text-align: left;"> see
+  RPcirculant above</td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+ <code><a href="RPnugget.html">RPnugget</a></code> </td><td style="text-align: left;"> any  </td><td style="text-align: left;"> any</td><td style="text-align: left;"> any</td><td style="text-align: left;"> <i>O(v n)</i>
+  </td><td style="text-align: left;"> <i>O(v n)</i> </td><td style="text-align: left;"></td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPsequential.html">RPsequential</a></code> </td><td style="text-align: left;"> any</td><td style="text-align: left;"> <i>1</i> </td><td style="text-align: left;"> any </td><td style="text-align: left;">
+ <i>O(S^3 * b^3)</i>
+ </td><td style="text-align: left;">
+ <i>O(S^2*b^2)</i>
+ </td><td style="text-align: left;">
+ <i>n = S * T</i>;
+ <i>S</i> and <i>T</i> the number of spatial and temporal locations,
+  respectively; <i>b = </i><code><a href="RPsequential.html">back_steps</a></code> (preparation) </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ </td><td style="text-align: left;"> </td><td style="text-align: left;">  </td><td style="text-align: left;">  </td><td style="text-align: left;">
+ <i>O(n * S * b^2)</i>
+ </td><td style="text-align: left;">
+ <i>O(n)</i> 
+ </td><td style="text-align: left;"> (simulation) </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPspectral.html">RPspectral</a></code> </td><td style="text-align: left;"> any </td><td style="text-align: left;"> <i>1</i> </td><td style="text-align: left;"> <i>&lt;=2</i>
+  </td><td style="text-align: left;"><i>O(C(d) * n)</i>
+ </td><td style="text-align: left;"> <i> O(n) </i></td><td style="text-align: left;">  <i>C(d)</i> : large constant increasing in <i>d</i> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPtbm.html">RPtbm</a></code> </td><td style="text-align: left;"> any </td><td style="text-align: left;"> <i>1</i> </td><td style="text-align: left;"> <i>&lt;=4</i> </td><td style="text-align: left;">
+  <i> O(C(d) * (n + L))</i> </td><td style="text-align: left;"><i> O(n + L)</i>  </td><td style="text-align: left;"><i>C(d)</i> :
+  large constant increasing in <i>d</i>; <i>L</i> is the effort needed to
+  simulate on a line (or plane)</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPspecific.html">RPspecific</a></code>  </td><td style="text-align: left;"> </td><td style="text-align: left;"> </td><td style="text-align: left;"> </td><td style="text-align: left;"> </td><td style="text-align: left;"> </td><td style="text-align: left;"> <b>only</b>
+  the specific part </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ * * <code><a href="RMplus.html">RMplus</a></code></td><td style="text-align: left;"> any </td><td style="text-align: left;"> any </td><td style="text-align: left;"> any </td><td style="text-align: left;"> O(v n) </td><td style="text-align: left;">
+  O(v n) </td><td style="text-align: left;"></td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ * * <code><a href="RMS.html">RMS</a></code></td><td style="text-align: left;"> any </td><td style="text-align: left;"> any </td><td style="text-align: left;"> any  </td><td style="text-align: left;"> O(1) </td><td style="text-align: left;"> O(v n) </td><td style="text-align: left;"></td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ * * <code><a href="RMmult.html">RMmult</a></code></td><td style="text-align: left;"> any </td><td style="text-align: left;"> any </td><td style="text-align: left;"> any  </td><td style="text-align: left;"> O(v n) </td><td style="text-align: left;">
+  O(v n) </td><td style="text-align: left;"></td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+
+
+<h3>Computing demand for interpolation</h3>
+
+<p>Assume <i>v</i>-variate data are given at 
+<i>n</i> locations in <i>d</i> dimensions.
+To interpolate at <i>k</i> locations RandomFields needs
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+  grid </td><td style="text-align: left;"> <i>v</i> </td><td style="text-align: left;"> <i>d</i> </td><td style="text-align: left;"> time </td><td style="text-align: left;"> memory </td><td style="text-align: left;"> comments</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  any</td><td style="text-align: left;"> any</td><td style="text-align: left;"> any </td><td style="text-align: left;"> <i> O(v^2 * n^2)</i></td><td style="text-align: left;"><i> O(v^2 * n^2)</i></td><td style="text-align: left;"> effort to investigate the covariance matrix, if
+ <code><a href="RFoptions.html">matrix_methods</a></code> is not specified (default)
+ </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  </td><td style="text-align: left;"> </td><td style="text-align: left;">  </td><td style="text-align: left;"><i> O(v^2 * n k)</i></td><td style="text-align: left;"><i> O(v * (n + k))</i></td><td style="text-align: left;"> covariance matrix is diagonal
+  </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  </td><td style="text-align: left;"> </td><td style="text-align: left;">  </td><td style="text-align: left;"> see <span class="pkg"><a href="../../spam/html/SPAM.html">spam</a></span>+ O(v^2nk) </td><td style="text-align: left;"> <i>O(z + v * (n + k))</i></td><td style="text-align: left;"> covariance matrix is sparse
+ matrix with <i>z</i> non-zeros</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ </td><td style="text-align: left;"> </td><td style="text-align: left;">  </td><td style="text-align: left;"> <i>O(v^3*n^3 + v^2*n*k)</i></td><td style="text-align: left;">
+ <i>O(v^2*n^2 + v*k)</i></td><td style="text-align: left;"> arbitrary covariance matrix
+</td>
+</tr>
+
+</table>
+
+
+
+<h3>Computing demand for conditional simulation</h3>
+
+<p>Assume <i>v</i>-variate data are given at 
+<i>n</i> locations <i>x_1,...,x_n</i> in <i>d</i> dimensions.
+To conditionally simulate at <i>k</i> locations
+<i>y_1,...,y_k</i>, the
+computing demand equals the
+sum of the demand for interpolating and
+the demand for simulating on the <i>k+n</i> locations.
+(Grid algorithms for simulating will apply if the <i>k</i> locations
+<i>y_1,...,y_k</i>
+are defined by a grid and the <i>n</i> locations
+<i>x_1,...,x_n</i> are a subset of
+<i>y_1,...,y_k</i>, a situation typical in image analysis.)
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Chiles, J.-P. and Delfiner, P. (1999)
+<em>Geostatistics. Modeling Spatial Uncertainty.</em>
+New York: Wiley.
+
+
+
+</p>
+</li>
+<li><p> Schlather, M. (1999) <em>An introduction to positive definite
+functions and to unconditional simulation of random fields.</em>
+Technical report ST 99-10, Dept. of Maths and Statistics,
+Lancaster University.
+</p>
+</li>
+<li><p> Schlather, M. (2010)
+On some covariance models based on normal scale mixtures.
+<em>Bernoulli</em>, <b>16</b>, 780-797.
+</p>
+</li>
+<li><p> Schlather, M. (2011) Construction of covariance functions and
+unconditional simulation of random fields. In Porcu, E., Montero, J.M.
+and Schlather, M., <em>Space-Time Processes and Challenges Related
+to Environmental Problems.</em> New York: Springer.
+
+
+</p>
+</li>
+<li><p> Yaglom, A.M. (1987) <em>Correlation Theory of Stationary and
+Related Random Functions I, Basic Results.</em>
+New York: Springer.
+</p>
+</li>
+<li><p> Wackernagel, H. (2003) <em>Multivariate Geostatistics.</em> Berlin:
+Springer, 3nd edition.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><a href="RP.html">RP</a>,
+<code><a href="RMmodelsAuxiliary.html">Other models</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFgetMethodNames.html">RFgetMethodNames</a></code>,
+<code><a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+set.seed(1)
+x &lt;- runif(90, 0, 500)
+z &lt;- RFsimulate(RMspheric(), x)
+z &lt;- RFsimulate(RMspheric(), x, max_variab=10000)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

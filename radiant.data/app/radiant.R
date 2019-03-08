@@ -40,7 +40,7 @@ MRB <- function(x, env = parent.frame(), init = FALSE) {
   }
 }
 
-saveSession <- function(session = session) {
+saveSession <- function(session = session, timestamp = FALSE) {
   if (!exists("r_sessions")) return()
 
   LiveInputs <- toList(input)
@@ -49,24 +49,31 @@ saveSession <- function(session = session) {
   ## removing the non-active bindings
   rem_non_active()
 
+  r_data <- env2list(r_data)
+  r_info <- toList(r_info)
+
   r_sessions[[r_ssuid]] <- list(
-    r_data = env2list(r_data),
-    r_info = toList(r_info),
+    r_data = r_data,
+    r_info = r_info,
     r_state = r_state,
     timestamp = Sys.time()
   )
 
-  ## saving session information to file
-  fn <- paste0(normalizePath("~/radiant.sessions"), "/r_", r_ssuid, ".rds")
-  saveRDS(r_sessions[[r_ssuid]], file = fn)
+  ## saving session information to state file
+  if (timestamp) {
+    fn <- paste0(normalizePath("~/.radiant.sessions"), "/r_", r_ssuid, "-", gsub("( |:)", "-", Sys.time()), ".state.rda")
+  } else {
+    fn <- paste0(normalizePath("~/.radiant.sessions"), "/r_", r_ssuid, ".state.rda")
+  }
+  save(r_data, r_info, r_state, file = fn)
 }
 
 observeEvent(input$refresh_radiant, {
   if (isTRUE(getOption("radiant.local"))) {
-    fn <- normalizePath("~/radiant.sessions")
+    fn <- normalizePath("~/.radiant.sessions")
     file.remove(list.files(fn, full.names = TRUE))
   } else {
-    fn <- paste0(normalizePath("~/radiant.sessions"), "/r_", r_ssuid, ".rds")
+    fn <- paste0(normalizePath("~/.radiant.sessions"), "/r_", r_ssuid, ".state.rda")
     if (file.exists(fn)) unlink(fn, force = TRUE)
   }
 
@@ -151,8 +158,8 @@ saveStateOnRefresh <- function(session = session) {
 groupable_vars <- reactive({
   .get_data() %>%
     summarise_all(
-      funs(
-        is.factor(.) || is.logical(.) || lubridate::is.Date(.) ||
+      list(
+        ~ is.factor(.) || is.logical(.) || lubridate::is.Date(.) ||
         is.integer(.) || is.character(.) ||
         ((length(unique(.)) / n()) < .30)
       )
@@ -164,8 +171,8 @@ groupable_vars <- reactive({
 groupable_vars_nonum <- reactive({
   .get_data() %>%
     summarise_all(
-      funs(
-        is.factor(.) || is.logical(.) ||
+      list(
+        ~ is.factor(.) || is.logical(.) ||
         lubridate::is.Date(.) || is.integer(.) ||
         is.character(.)
       )
@@ -184,7 +191,7 @@ two_level_vars <- reactive({
     }
   }
   .get_data() %>%
-    summarise_all(funs(two_levs)) %>%
+    summarise_all(two_levs) %>%
     {. == 2} %>%
     which(.) %>%
     varnames()[.]
@@ -193,7 +200,7 @@ two_level_vars <- reactive({
 ## used in visualize - don't plot Y-variables that don't vary
 varying_vars <- reactive({
   .get_data() %>%
-    summarise_all(funs(does_vary(.))) %>%
+    summarise_all(does_vary) %>%
     as.logical() %>%
     which() %>%
     varnames()[.]
@@ -263,7 +270,7 @@ show_data_snippet <- function(dataset = input$dataset, nshow = 7, title = "", fi
   ## name exists
   dataset[1:min(nshow, nr), , drop = FALSE] %>%
     mutate_if(is_date, as.character) %>%
-    mutate_if(is.character, funs(strtrim(., 40))) %>%
+    mutate_if(is.character, list(~ strtrim(., 40))) %>%
     xtable::xtable(.) %>%
     print(
       type = "html", print.results = FALSE, include.rownames = FALSE,
@@ -832,3 +839,42 @@ state_multiple <- function(var, vals, init = character(0)) {
 #   out <- paste0(capture.output(...), collapse = "\n")
 #   cat("--\n", out, "\n--", sep = "\n", file = "~/r_cat.txt", append = TRUE)
 # }
+
+## autosave option
+if (length(getOption("radiant.autosave", default = NULL) > 0)) {
+  start_time <- Sys.time()
+  interval <- getOption("radiant.autosave")[1] * 60000
+  max_duration <- getOption("radiant.autosave")[2]
+  reactivePoll(
+    interval,
+    session,
+    checkFunc = function() {
+      curr_time <- Sys.time()
+      diff_time <- difftime(curr_time, start_time, units = "mins")
+      if (diff_time < max_duration) {
+        saveSession(session, timestamp = TRUE)
+        options(radiant.autosave = c(interval, max_duration - diff_time))
+        message("Radiant state was auto-saved at ", curr_time)
+      } else {
+        if (length(getOption("radiant.autosave", default = NULL) > 0)) {
+          showModal(
+            modalDialog(
+              title = "Radiant state autosave",
+              span("The autosave feature has been turned off. Time to save and submit your work by clicking
+                on the 'Save' icon in the navigation bar and then on 'Save radiant state file'. To clean the
+                state files that were auto-saved, run the following command from the R(studio) console:
+                unlink('~/.radiant.sessions/*.state.rda', force = TRUE)"),
+              footer = modalButton("OK"),
+              size = "s",
+              easyClose = TRUE
+            )
+          )
+          options(radiant.autosave = NULL)
+        }
+      }
+    },
+    valueFunc = function() {
+      return()
+    }
+  )
+}

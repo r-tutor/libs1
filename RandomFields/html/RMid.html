@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Identical Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMid {RandomFields}"><tr><td>RMid {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Identical Model</h2>
+
+<h3>Description</h3>
+
+<p><code>RMid</code> is the identical function <i>f(x) = x</i>
+where <i>x</i> is a vector of coordinates and <i>f(x)</i> is a model value.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMid()
+</pre>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMid.html">RMid</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>.
+<code>RMid</code>,
+<code>RMtrafo</code>,
+<code>RMprod</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+## C(x,y) = &lt; x, y &gt;
+RFcov(RMprod(RMid()), as.matrix(1:10), as.matrix(1:10), grid=FALSE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

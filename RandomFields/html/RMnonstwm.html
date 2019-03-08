@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Non-stationary Whittle-Matern Covariance Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMnonstwm {RandomFields}"><tr><td>RMnonstwm {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Non-stationary Whittle-Matern Covariance Model</h2>
+
+<h3>Description</h3>
+
+<p>The non-stationary Whittle-Matern model
+<i>C</i> is given by 
+</p>
+<p style="text-align: center;"><i>C(x, y)=&Gamma;(&mu;) &Gamma;(&nu;(x))^{-1/2}
+ &Gamma;(&nu;(y))^{-1/2} 
+ W_{&mu;} (|x-y|)</i></p>
+
+<p>where <i>&mu; = [&nu;(x) + &nu;(y)]/2</i>, and
+<i>&nu;</i> must be a positive function.
+</p>
+<p><i>W_{&mu;}</i> is the
+covariance of the <code><a href="RMmatern.html">RMwhittle</a></code> model or the
+<code><a href="RMmatern.html">RMmatern</a></code> model.
+</p>
+
+
+<h3>Details</h3>
+
+<p>The non-stationary Whittle-Matern models are obtained by
+the respective stationary model, replacing the 
+real-valued argument for <code>nu</code>  by a non-negative function.
+</p>
+
+
+<h3>Note</h3>
+
+<p>It cannot be checked whether <code>nu</code> only takes positive values. So
+the responsibility is completely left to the user.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Stein, M. (2005)
+Nonstationary Spatial Covariance Functions.
+Tech. Rep., 2005
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmatern.html">RMwhittle</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+x &lt;- seq(-1.2, 1.2, len=50)
+model &lt;- RMwhittle(nu=RMgauss())
+
+z &lt;- RFsimulate(model=model, x, x, n=4)
+plot(z)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

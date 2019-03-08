@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="$lang$" xml:lang="$lang$"$if(dir)$ dir="$dir$"$endif$>
   <head>
     <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
 $for(author-meta)$
     <meta name="author" content="$author-meta$" />
 $endfor$
@@ -48,10 +48,21 @@ $for(include-after)$
 $include-after$
 $endfor$
 
-$if(mathjax-url)$
 <script>
 (function() {
-  var i, text, code, codes = document.getElementsByTagName('code');
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+$if(mathjax-url)$
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
   for (i = 0; i < codes.length;) {
     code = codes[i];
     if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
@@ -65,7 +76,8 @@ $if(mathjax-url)$
     }
     i++;
   }
-})();
+};
+slideshow._releaseMath(document);
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

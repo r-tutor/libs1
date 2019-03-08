@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Turning Bands method</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Tbm {RandomFields}"><tr><td>Tbm {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Turning Bands method</h2>
+
+<h3>Description</h3>
+
+<p>The Turning Bands method is a simulation method for stationary, isotropic
+(univariate or multivariate)
+random fields in any dimension and defined on arbitrary points or
+arbitrary grids. It performs a multidimensional simulation
+by superposing lower-dimensional fields. In fact, the Turning Bands
+method is called with the Turning Bands model, see  
+<code><a href="RMtbm.html">RMtbm</a></code>.
+<br />
+For details see <code><a href="RMtbm.html">RMtbm</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RPtbm(phi, boxcox, fulldim, reduceddim, layers, lines,
+      linessimufactor, linesimustep, center, points)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>phi</code></td>
+<td>
+<p>object of class <code><a href="RMmodel-class.html">RMmodel</a></code>;
+specifies the covariance function to be simulated;
+a univariate stationary isotropic covariance model
+(see <code>RFgetModelNames(type="positive definite",
+      domain="single variable", isotropy="isotropic",  vdim=1)</code>)
+which is valid in dimension <code>fulldim</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>boxcox</code></td>
+<td>
+<p>the one or two parameters of the box cox transformation.
+If not given, the globally defined parameters are used.
+See <code><a href="RFboxcox.html">RFboxcox</a></code> for details.
+</p>
+</td></tr>
+</table>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fulldim</code></td>
+<td>
+<p>a positive integer. The dimension of the space of the
+random field to be simulated.</p>
+</td></tr>
+<tr valign="top"><td><code>reduceddim</code></td>
+<td>
+<p>a positive integer; less than <code>fulldim</code>. 
+The dimension of the auxiliary hyperplane (most frequently a line,
+i.e. <code>reduceddim=1</code>) used in the simulation.
+</p>
+</td></tr>
+<tr valign="top"><td><code>layers</code></td>
+<td>
+<p>a boolean value; for space-time model. If <code>TRUE</code>
+then the turning layers are 
+used whenever a time component is given.
+If <code>NA</code> the turning layers are used only when the
+traditional TBM is not applicable.
+If <code>FALSE</code> then turning layers may never be used.
+</p>
+<p>Default: <code>TRUE</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lines</code></td>
+<td>
+
+<p>Number of lines used.
+Default: <code>60</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>linessimufactor</code></td>
+<td>
+ <p><code>linessimufactor</code> or
+<code>linesimustep</code> must be non-negative; if
+<code>linesimustep</code>
+is positive then <code>linessimufactor</code> is ignored.
+If both
+arguments are naught then <code>points</code> is used (and must be
+positive).
+The grid on the line is <code>linessimufactor</code>-times
+finer than the smallest distance. 
+See also <code>linesimustep</code>.
+</p>
+<p>Default: <code>2.0</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>linesimustep</code></td>
+<td>
+
+<p>If <code>linesimustep</code> is positive the grid on the line has lag
+<code>linesimustep</code>. 
+See also <code>linessimufactor</code>.
+</p>
+<p>Default: <code>0.0</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>center</code></td>
+<td>
+<p>Scalar or vector.
+If not <code>NA</code>, the <code>center</code> is used as the center of
+the turning bands for <code>fulldim</code>.
+Otherwise the center is determined
+automatically such that the line length is minimal.
+See also <code>points</code> and the examples below.
+</p>
+<p>Default: <code>NA</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>points</code></td>
+<td>
+<p>integer. If greater than 0,
+<code>points</code> gives the number of points simulated on the TBM
+line, hence 
+must be greater than the minimal number of points given by
+the size of the simulated field and the two parameters
+<code>linessimufactor</code> and <code>linesimustep</code>.
+If <code>points</code> is not positive the number of points is
+determined automatically.
+The use of <code>center</code> and <code>points</code> is highlighted
+in an example below.
+</p>
+<p>Default: <code>0</code>.
+</p>
+</td></tr> 
+</table>
+
+
+<h3>Details</h3>
+
+
+<ul>
+<li><p> 2-dimensional case<br />
+It is generally difficult to use the turning bands method
+(<code>RPtbm</code>) directly in the 2-dimensional space.
+Instead, 2-dimensional random fields are frequently obtained
+by simulating a 3-dimensional random field (using
+<code>RPtbm</code>) and taking a 2-dimensional cross-section.
+See also the arguments <code>fulldim</code> and <code>reduceddim</code>.
+</p>
+</li>
+<li><p> 4-dimensional case<br />
+The turning layers can be used for the simulations with a (formal)
+time component. It works for all isotropic models, 
+some special models such as <code><a href="RMnsst.html">RMnsst</a></code>, and
+multiplicative models that separate the time component. 
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p><code>RPtbm</code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Both the precision and the simulation time
+depend heavily on <code>linesimustep</code> and
+<code>linessimufactor</code>.
+For covariance models with larger values of the scale parameter,
+<code>linessimufactor=2</code> is too small.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+<p>Turning bands
+</p>
+
+<ul>
+<li><p> Lantuejoul, C. (2002)
+<em>Geostatistical Simulation: Models and Algorithms.</em>
+Springer.
+</p>
+</li>
+<li>
+<p>Matheron, G. (1973).
+The intrinsic random functions and their applications.
+<em>Adv. Appl. Probab.</em>, <b>5</b>, 439-468.
+</p>
+</li>
+<li>
+<p>Strokorb, K., Ballani, F., and  Schlather, M. (2014)
+Tail correlation functions of max-stable processes: Construction principles, recovery and diversity of some mixing max-stable processes with identical TCF.
+<em>Extremes</em>,  Submitted.
+</p>
+</li></ul>
+
+<p>Turning layers
+</p>
+
+<ul>
+<li><p> Schlather, M. (2011) Construction of covariance functions and
+unconditional simulation of random fields. In Porcu, E., Montero, J.M.
+and Schlather, M., <em>Space-Time Processes and Challenges Related
+to Environmental Problems.</em> New York: Springer.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><a href="GaussianFields.html">Gaussian</a>,
+<a href="RP.html">RP</a>,
+<code><a href="RPspectral.html">RPspectral</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+## isotropic example that forces the use of the turning bands method
+model &lt;- RPtbm(RMstable(s=1, alpha=1.8))
+x &lt;- seq(-3, 3, 0.1)
+z &lt;- RFsimulate(model=model, x=x, y=x)
+plot(z)
+
+## anisotropic example that forces the use of the turning bands method
+model &lt;- RPtbm(RMexp(Aniso=matrix(nc=2, rep(1,4))))
+z &lt;- RFsimulate(model=model, x=x, y=x)
+plot(z)
+
+## isotropic example that uses the turning layers method
+model &lt;- RMgneiting(orig=FALSE, scale=0.4)
+x &lt;- seq(0, 10, 0.1)
+z &lt;- RFsimulate(model, x=x, y=x, z=x, T=c(1,1,5))
+plot(z, MARGIN.slices=4, MARGIN.movie=3)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

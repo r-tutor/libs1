@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Transformation of an 'sp' object to an 'RFsp' object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sp2RF {RandomFields}"><tr><td>sp2RF {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Transformation of an 'sp' object to an 'RFsp' object</h2>
+
+<h3>Description</h3>
+
+<p>The function transforms an 'sp' object to an 'RFsp' object.
+</p>
+<p>This explicit transformation is only necessary if several variables and
+repeated measurements are given.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sp2RF(sp, param=list(n=1, vdim=1)) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>sp</code></td>
+<td>
+<p>an &lsquo;sp&rsquo; object</p>
+</td></tr>
+<tr valign="top"><td><code>param</code></td>
+<td>
+<p><code>n</code>: number of repetitions; <code>vdim</code>: the number of
+variables (multivariability)
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code><a href="sp2RF.html">sp2RF</a></code> returns an object of class
+<code><a href="RFsp-class.html">RFsp</a></code>. 
+</p>
+
+
+<h3>Note</h3>
+
+<p>The two options <code>varnames</code> and <code>coordnames</code>,
+cf. section &lsquo;coords&rsquo; in <code><a href="RFoptions.html">RFoptions</a></code>,
+might be useful.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RFsp-class.html">RFsp</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+p &lt;- 100
+n &lt;- 5
+x &lt;- runif(p, 0, 1)
+y &lt;- runif(p, 0, 1)
+z &lt;- RFsimulate(RMexp(), x=x, y=y, n=n)
+z1 &lt;- z2 &lt;- as.data.frame(z)
+coordinates(z2) &lt;- ~coords.x1 + coords.x2
+
+(emp.var &lt;- RFvariogram(data=z))
+(emp.var1 &lt;- RFvariogram(data=z1))
+(emp.var2 &lt;- RFvariogram(data=sp2RF(z2, param=list(n=n, vdim=1))))
+
+stopifnot(all.equal(emp.var, emp.var1))
+stopifnot(all.equal(emp.var, emp.var2))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

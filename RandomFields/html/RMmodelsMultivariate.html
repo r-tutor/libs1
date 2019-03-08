@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Multivariate models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMmodelsMultivariate {RandomFields}"><tr><td>RMmodelsMultivariate {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Multivariate models</h2>
+
+<h3>Description</h3>
+
+<p>Here, multivariate and vector-valued covariance models are presented.
+</p>
+
+
+<h3>Details</h3>
+
+<p><b>Bivariate covariance models</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMbicauchy.html">RMbicauchy</a></code> </td><td style="text-align: left;"> a bivariate Cauchy model</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMbiwm.html">RMbiwm</a></code> </td><td style="text-align: left;"> full bivariate Whittle-Matern model (stationary and isotropic)</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMbigneiting.html">RMbigneiting</a></code> </td><td style="text-align: left;"> bivariate Gneiting model (stationary and isotropic)</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMbistable.html">RMbistable</a></code> </td><td style="text-align: left;"> a bivariate stable model</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ </td>
+</tr>
+
+</table>
+
+<p><b>Physically motivated, vector valued covariance and variogram  models</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMcurlfree.html">RMcurlfree</a></code> </td><td style="text-align: left;"> curlfree (spatial) vector-valued field (stationary and anisotropic)</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMdivfree.html">RMdivfree</a></code> </td><td style="text-align: left;"> divergence free (spatial) vector-valued
+field (stationary and anisotropic)</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMkolmogorov.html">RMkolmogorov</a></code> </td><td style="text-align: left;"> Kolmogorov's model of turbulence</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMvector.html">RMvector</a></code> </td><td style="text-align: left;"> vector-valued field (combining <code><a href="RMcurlfree.html">RMcurlfree</a></code> and <code><a href="RMdivfree.html">RMdivfree</a></code>)
+</td>
+</tr>
+
+</table>
+
+<p><b>Multivariate covariance models</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMdelay.html">RMdelay</a></code> </td><td style="text-align: left;">  delay effect model
+(stationary)</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMderiv.html">RMderiv</a></code> </td><td style="text-align: left;"> field and its gradient</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMmatrix.html">RMmatrix</a></code> </td><td style="text-align: left;"> linear model of coregionalization</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMparswm.html">RMparswm</a></code> </td><td style="text-align: left;"> multivariate Whittle-Matern model (stationary and isotropic)</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+<p><b>Operators</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMcov.html">RMcov</a></code> </td><td style="text-align: left;"> covariance structure given by a multivariate variogram</td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+<code><a href="RMexponential.html">RMexponential</a></code> </td><td style="text-align: left;"> functional returning <i>exp(C)</i></td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMmatrix.html">RMmatrix</a></code> </td><td style="text-align: left;"> linear model of coregionalization</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMmqam.html">RMmqam</a></code> </td><td style="text-align: left;"> multivariate quasi-arithmetic mean (stationary)</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMschur.html">RMschur</a></code> </td><td style="text-align: left;"> element-wise product with a positive definite
+matrix</td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+<code><a href="RMtbm.html">RMtbm</a></code> </td><td style="text-align: left;"> turning bands operator</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+<p><b>Trend models</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+  <code><a href="RMtrend.html">RMtrend</a></code> </td><td style="text-align: left;"> for explicit trend modelling</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <code><a href="QMath.html">R.models</a></code> </td><td style="text-align: left;"> for implicit trend modelling</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <code><a href="QMath.html">R.c</a></code> </td><td style="text-align: left;"> binding univariate trend models into a vector</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Chiles, J.-P. and Delfiner, P. (1999)
+<em>Geostatistics. Modeling Spatial Uncertainty.</em>
+New York: Wiley.
+
+
+
+</p>
+</li>
+<li><p> Schlather, M. (2011) Construction of covariance functions and
+unconditional simulation of random fields. In Porcu, E., Montero, J.M.
+and Schlather, M., <em>Space-Time Processes and Challenges Related
+to Environmental Problems.</em> New York: Springer.
+
+
+</p>
+</li>
+<li>
+<p>Schlather, M., Malinowski, A., Menck, P.J., Oesting, M. and
+Strokorb, K. (2015) 
+Analysis, simulation and prediction of multivariate
+random fields with package <span class="pkg">RandomFields</span>. <em>
+Journal of Statistical Software</em>, <b>63</b> (8), 1-25,
+url          = &lsquo;http://www.jstatsoft.org/v63/i08/&rsquo;
+</p>
+</li>
+<li>
+<p>Wackernagel, H. (2003) <em>Multivariate Geostatistics.</em> Berlin:
+Springer, 3rd edition. 
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RFformula.html">RFformula</a></code>, <code><a href="RMmodel.html">RMmodels</a></code>,
+<code><a href="RM.html">RM</a></code>,
+<code><a href="RMmodelsAdvanced.html">RMmodelsAdvanced</a></code>
+</p>
+<p>&lsquo;<a href="../doc/multivariate_jss.pdf">multivariate</a>&rsquo;, a vignette
+for multivariate geostatistics
+</p>
+
+
+<h3>Examples</h3>
+
+<pre> 
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+n &lt;- 100
+x &lt;- runif(n=n, min=1, max=50)
+y &lt;- runif(n=n, min=1, max=50)
+
+rho &lt;- matrix(nc=2, c(1, -0.8, -0.8, 1))
+model &lt;- RMparswmX(nudiag=c(0.5, 0.5), rho=rho)
+
+## generation of artifical data
+dta &lt;- RFsimulate(model = model, x=x, y=y, grid=FALSE)
+
+## introducing some NAs ...
+dta@data$variable1[1:10] &lt;- NA
+if (interactive()) dta@data$variable2[90:100] &lt;- NA
+
+plot(dta)
+
+
+## co-kriging
+x &lt;- y &lt;- seq(0, 50, 1)
+
+k &lt;- RFinterpolate(model, x=x, y=y, data= dta)
+plot(k, dta)
+
+## conditional simulation
+z &lt;- RFsimulate(model, x=x, y=y, data= dta) ## takes a while
+plot(z, dta)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

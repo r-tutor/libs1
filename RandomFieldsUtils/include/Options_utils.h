@@ -5,7 +5,7 @@
  Martin Schlather, schlather@math.uni-mannheim.de
 
 
- Copyright (C) 2015 Martin Schlather
+ Copyright (C) 2015 -- 2017 Martin Schlather
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -35,44 +35,47 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define R_PRINTLEVEL 1
 #define C_PRINTLEVEL 1
-extern int PL;
+#ifdef SCHLATHERS_MACHINE
+#define INITCORES 4
+#else
+#define INITCORES 1
+#endif
+
+extern int PL, CORES;
 
 
 #define LEN_OPTIONNAME 201
 
-#define basicN 7
+#define basicN 9
 // IMPORTANT: all names of basic must be at least 3 letters long !!!
 extern const char *basic[basicN];
 typedef struct basic_param {
-  bool 
-   skipchecks,
-     asList;
   int 
   Rprintlevel,
     Cprintlevel,
     seed, cores;
+  bool skipchecks, asList, kahanCorrection, helpinfo;
 } basic_param;
 #define basic_START \
-  { false,  true, 						\
-      R_PRINTLEVEL, C_PRINTLEVEL, NA_INTEGER, 1			\
+  { R_PRINTLEVEL, C_PRINTLEVEL, NA_INTEGER, INITCORES,   \
+      false, true, false, true				 \
       }
 
 
-#define nr_InversionMethods ((int) Diagonal + 1)
-#define nr_user_InversionMethods ((int) NoInversionMethod + 1)
 extern const char * InversionNames[nr_InversionMethods];
 
-#define PIVOT_NONE 0
-#define PIVOT_MMD 1
-#define PIVOT_RCM 2
 #define SOLVE_SVD_TOL 3
-#define solveN 12
+#define solveN 20
 typedef struct solve_param {
-  usr_bool sparse;
-  double spam_tol, spam_min_p, svd_tol, eigen2zero;
+  usr_bool sparse, pivot_check;
+  bool det_as_log;
+  double spam_tol, spam_min_p, svd_tol, eigen2zero, pivot_relerror,
+    max_deviation, max_reldeviation;
   InversionMethod Methods[SOLVE_METHODS];
-  int spam_min_n, spam_sample_n, spam_factor,
-    pivot, max_chol, max_svd;
+  int spam_min_n, spam_sample_n, spam_factor, pivotsparse, max_chol,
+    max_svd, pivot,
+    actual_pivot, actual_size,
+    *pivot_idx, pivot_idx_n;//permutation; phys+logi laenge
   //  bool tmp_delete;
 } solve_param;
 #ifdef SCHLATHERS_MACHINE
@@ -80,10 +83,14 @@ typedef struct solve_param {
 #else
 #define svd_tol_start 0
 #endif
-#define solve_START				\
-  { Nan, DBL_EPSILON,	0.8, svd_tol_start, 1e-12,	\
-      {NoInversionMethod, NoInversionMethod},		\
-      400, 500, 4294967, PIVOT_MMD, 16384, 10000}
+#define solve_START							\
+  { Nan, False, true, 							\
+    DBL_EPSILON, 0.8, svd_tol_start, 1e-12, 1e-11,			\
+    1e-10, 1e-10,							\
+  {NoInversionMethod,  NoFurtherInversionMethod},			\
+      400, 500, 4294967, PIVOTSPARSE_MMD, 16384,			\
+	10000, PIVOT_NONE, /* never change -- see RFoptions.Rd */	\
+        PIVOT_UNDEFINED, 0, NULL, 0}
 extern const char * solve[solveN];
 
 
@@ -94,10 +101,11 @@ typedef struct utilsparam{
 
 
 
-typedef void (*setparameterfct) (int, int, SEXP, char[200], bool);
-typedef void (*getparameterfct) (SEXP*);
-typedef void (*finalsetparameterfct) ();
-#define ADD(ELT) SET_VECTOR_ELT(sublist[i], k++, ELT);
+typedef void (*setparameterfct) (int, int, SEXP, char[200], bool, int);
+typedef void (*getparameterfct) (SEXP, int, int);
+typedef void (*finalsetparameterfct) (int);
+typedef void (*deleteparameterfct) (int);
+#define ADD(ELT) SET_VECTOR_ELT(sublist, k++, ELT);
 #define ADDCHAR(ELT) x[0] = ELT; ADD(ScalarString(mkChar(x)));
 
 

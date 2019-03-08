@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Natural scale</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMnatsc {RandomFields}"><tr><td>RMnatsc {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Natural scale</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMnatsc.html">RMnatsc</a></code> is a stationary isotropic covariance model that
+depends on a stationary isotropic covariance model <i>phi</i>.
+The covariance is given by 
+</p>
+<p style="text-align: center;"><i> C(h) = phi(h / s),</i></p>
+
+<p>where the argument <code>s</code> is chosen by <code><a href="RMnatsc.html">RMnatsc</a></code>
+such that the practical range or the mathematical range, if finite, is 1.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMnatsc(phi, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>phi</code></td>
+<td>
+<p>a stationary isotropic covariance <code><a href="RMmodel.html">RMmodel</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For internal use only.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMnatsc.html">RMnatsc</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+model &lt;- RMnatsc(RMexp())
+x &lt;- seq(0, 10, 0.02)
+plot(RMexp(), model=model)
+RFcov(model, 1)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

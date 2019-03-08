@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Simulation of Max-Stable Random Fields</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Max-stable random fields {RandomFields}"><tr><td>Max-stable random fields {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Simulation of Max-Stable Random Fields</h2>
+
+<h3>Description</h3>
+
+<p>Here, a list of models and methods for simulating max-stable random
+fields is given.
+</p>
+<p>See also <a href="RPmaxstableAdvanced.html">maxstableAdvanced</a> for more advanced examples.
+</p>
+
+
+<h3>Implemented models and methods</h3>
+
+<p>Models
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPbrownresnick.html">RPbrownresnick</a></code> </td><td style="text-align: left;"> Brown-Resnick process
+ using an automatic choice of the 3 <code>RPbr*</code> methods below </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RPopitz.html">RPopitz</a></code> </td><td style="text-align: left;">  extremal t
+ process </td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+ <code><a href="RPschlather.html">RPschlather</a></code> </td><td style="text-align: left;"> extremal Gaussian
+ process </td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+ <code><a href="RPsmith.html">RPsmith</a></code> </td><td style="text-align: left;"> M3 processes </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+<p>Methods
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+ <code><a href="BRmethods.html">RPbrmixed</a></code> </td><td style="text-align: left;"> simulation of Brown-Resnick processes
+ using M3 representation</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="BRmethods.html">RPbrorig</a></code> </td><td style="text-align: left;"> simulation of Brown-Resnick processes using
+ the original definition</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="BRmethods.html">RPbrshifted</a></code> </td><td style="text-align: left;"> simulation of Brown-Resnick processes using
+ a random shift</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Kabluchko, Z., Schlather, M. &amp; de Haan, L (2009)
+Stationary max-stable random fields associated to negative definite functions
+<em>Ann. Probab.</em> <b>37</b>, 2042-2065.
+</p>
+</li>
+<li><p> Schlather, M. (2002) Models for stationary max-stable
+random fields. <em>Extremes</em> <b>5</b>, 33-44.
+</p>
+</li>
+<li><p> Smith, R.L. (1990) Max-stable processes and spatial extremes
+Unpublished Manuscript.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><a href="RP.html">RP</a>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RPgauss.html">RPgauss</a></code>,
+<code><a href="RPbernoulli.html">RPbernoulli</a></code>,
+<code><a href="RPmaxstableAdvanced.html">maxstableAdvanced</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+### currently not programmed
+
+
+
+## Not run: \dontshow{
+## to do : seq(0, 10, 0.02) oben ist furchtbar langsam. Warum?
+}
+## End(Not run)
+
+## Not run: \dontshow{
+model &lt;- RMball()
+x &lt;- seq(0, 10, 5) # nice for   x &lt;- seq(0, 10, 0.02)
+z &lt;- RFsimulate(RPsmith(model, xi=0), x, n=1000, every=1000)
+plot(z)
+hist(unlist(z@data), 150, freq=FALSE) #not correct; to do; sqrt(2) wrong
+curve(exp(-x) * exp(-exp(-x)), from=-3, to=8, add=TRUE, col=3)
+}
+## End(Not run)
+
+model &lt;- RMgauss()
+x &lt;- seq(0, 10, 0.05)
+z &lt;- RFsimulate(RPschlather(model, xi=0), x, n=1000)
+plot(z)
+hist(unlist(z@data), 50, freq=FALSE)
+curve(exp(-x) * exp(-exp(-x)), from=-3, to=8, add=TRUE)
+
+
+## for some more sophisticated models see maxstableAdvanced
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

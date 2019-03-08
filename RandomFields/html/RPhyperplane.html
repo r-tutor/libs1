@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Hyperplane method</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Hyperplane {RandomFields}"><tr><td>Hyperplane {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Hyperplane method</h2>
+
+<h3>Description</h3>
+
+<p>The Hyperplane method is a simulation method for stationary, isotropic
+random fields with exponential covariance function. It is
+based on a tessellation of the space by
+hyperplanes. Each cell takes a spatially constant value
+of an i.i.d. random variable. The superposition of several
+such random fields yields approximatively a Gaussian random field.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RPhyperplane(phi, boxcox, superpos, maxlines, mar_distr, mar_param ,additive)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>phi</code></td>
+<td>
+<p>object of class <code><a href="RMmodel-class.html">RMmodel</a></code>;
+specifies the covariance function to be simulated;
+only exponential covariance functions and scale mixtures
+of it are allowed.
+</p>
+</td></tr>
+</table>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>boxcox</code></td>
+<td>
+<p>the one or two parameters of the box cox transformation.
+If not given, the globally defined parameters are used.
+See <code><a href="RFboxcox.html">RFboxcox</a></code> for details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>superpos</code></td>
+<td>
+<p>integer. number of superposed hyperplane tessellations.
+Default: <code>300</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>maxlines</code></td>
+<td>
+<p>integer.
+Maximum number of allowed lines.
+</p>
+<p>Default: <code>1000</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>mar_distr</code></td>
+<td>
+<p>integer.
+code for the marginal distribution used in the
+simulation:
+</p>
+
+<dl>
+<dt><code>0</code></dt><dd><p>uniform distribution</p>
+</dd>
+<dt><code>1</code></dt><dd><p>Frechet distribution with form parameter
+<code>mar_param</code></p>
+</dd>
+<dt><code>2</code></dt><dd><p>Bernoulli distribution (Binomial with <i>n=1</i>) with
+argument <code>mar_param</code></p>
+</dd>
+</dl>
+
+<p>This argument should not be changed yet.
+</p>
+<p>Default: <code>0</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>mar_param</code></td>
+<td>
+<p>Argument used for the marginal
+distribution. The argument should not be changed yet.
+</p>
+<p>Default: <code>NA</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>additive</code></td>
+<td>
+<p>logical.
+If <code>TRUE</code> independent realizations are added, else
+the maximum is taken.
+</p>
+<p>Default: <code>TRUE</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>RPhyperplane</code> returns an object of class
+<code><a href="RMmodel-class.html">RMmodel</a></code>. 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Lantuejoul, C. (2002)
+<em>Geostatistical Simulation: Models and Algorithms.</em>
+Springer.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+ <p><a href="GaussianFields.html">Gaussian</a>,
+<a href="RP.html">RP</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+model &lt;- RPhyperplane(RMexp(s=2), superpos=1)
+x &lt;- seq(0, 3, 0.04)
+z &lt;- RFsimulate(x=x, x, model=model, n=1)
+plot(z)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

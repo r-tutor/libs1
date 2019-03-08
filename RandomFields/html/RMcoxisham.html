@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Cox Isham Covariance Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMcoxisham {RandomFields}"><tr><td>RMcoxisham {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Cox Isham Covariance Model</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMcoxisham.html">RMcoxisham</a></code> is a stationary covariance model
+which depends on a univariate stationary isotropic covariance model
+<i>C_0</i>, which is a normal scale mixture.
+</p>
+<p>The corresponding covariance function only depends on the difference
+<i>(h,t)</i> between two points in <i>d+1</i>-dimensional space and is given by
+</p>
+<p style="text-align: center;"><i>C(h,t)=|E + t^&beta; D|^{-1/2} C_0([(h - t &mu;)^T (E + t^&beta;
+ D)^{-1} (h - t &mu;)]^{1/2})</i></p>
+
+<p>Here <i>&mu;</i> is a vector in
+<i>d</i>-dimensional space;
+<i>E</i> is the <i>d x d</i>-identity matrix and <i>D</i> is
+a <i>d x d</i>-correlation matrix with <i>|D| &gt; 0</i>.
+The parameter <i>&beta;</i> is in <i>(0,2]</i>.
+Currently, the implementation is done only for <i>d=2</i>. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMcoxisham(phi,mu,D,beta,var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>phi</code></td>
+<td>
+<p>a univariate stationary isotropic covariance model for random fields
+on <i>d</i>-dimensional space, which is moreover a normal scale
+mixture, that means an
+<code><a href="RMmodel.html">RMmodel</a></code> whose <code>monotone</code> property equals
+<code>'normal mixture'</code>,
+see
+<br />
+<code><a href="RFgetModelNames.html">RFgetModelNames</a>(monotone="normal mixture")</code>
+<br />
+and whose <code>maxdim</code> is at least 2.</p>
+</td></tr>
+<tr valign="top"><td><code>mu</code></td>
+<td>
+<p>a vector in <i>d</i>-dimensional space</p>
+</td></tr>
+<tr valign="top"><td><code>D</code></td>
+<td>
+<p>a <i>d x d</i>-correlation matrix with <i>|D| &gt;
+ 0</i></p>
+</td></tr>
+<tr valign="top"><td><code>beta</code></td>
+<td>
+<p>numeric in the interval <i>(0,2]</i>; default value is 2 </p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This model stems from a rainfall model (cf. Cox, D.R., Isham,
+V.S. (1988)) and equals the following expectation
+</p>
+<p style="text-align: center;"><i>C(h,t)=\bold{E}_V C_0(h-Vt)</i></p>
+
+<p>where the random wind speed vector <i>V</i> follows a <i>d</i>-variate
+normal distribution with expectation <i>mu</i> and covariance matrix <i>D/2</i>
+(cf. Schlather, M. (2010), Example 9).
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMcoxisham.html">RMcoxisham</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Cox, D.R., Isham, V.S. (1988)
+A simple spatial-temporal model of rainfall.
+<em>Proc. R. Soc. Lond. A</em>, <b>415</b>, 317-328.
+</p>
+</li>
+<li><p> Schlather, M. (2010)
+On some covariance models based on normal scale mixtures.
+<em>Bernoulli</em>, <b>16</b>, 780-797.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+model &lt;- RMcoxisham(RMgauss(), mu=1, D=1)
+x &lt;- seq(0, 10, 0.3)
+plot(model, dim=2)
+plot(RFsimulate(model, x=x, y=x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

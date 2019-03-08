@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Details on fitting Gaussian random fields, including Box-Cox...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for fitgauss {RandomFields}"><tr><td>fitgauss {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Details on fitting Gaussian random fields, including Box-Cox transformation</h2>
+
+<h3>Description</h3>
+
+<p>Here, some details of <code><a href="RFfit.html">RFfit</a></code> are given
+concerning the fitting of models for Gaussian random fields.
+</p>
+<p><b>  This documentation is far from being complete. </b>
+</p>
+
+
+<h3>Maximum likelihood</h3>
+
+<p>The application of the usual maximum likelihood method and
+reporting the result is the default.
+</p>
+
+
+<h3>Least squares</h3>
+
+<p>The weighted least squares methods minimize
+</p>
+<p style="text-align: center;"><i>
+ &sum;_{i} w_i (\hat &gamma;(h_i) - &gamma;(h_i))^2
+ </i></p>
+
+<p>over all parametrized models of <i>&gamma;</i>.
+Here, <i>i</i> runs over all <i>N</i> bins of the binned variogram
+<i>\hat &gamma;</i> 
+and <i>h_i</i> is the centre of bin <i>i</i>.
+</p>
+<p>The following variants of the least squares methods,
+passed as <code>sub.methods</code> in <code><a href="RFfit.html">RFfit</a></code> are implemented:
+</p>
+
+<dl>
+<dt><code>'self'</code></dt><dd>
+<p><i>w_i = (&gamma;(h_i))^{-2}</i>
+</p>
+</dd>
+<dt><code>'plain'</code></dt><dd><p><i>w_i = 1</i> for all <i>i</i>.
+</p>
+</dd>
+<dt><code>'sqrt.nr'</code></dt><dd><p><i>w_i^2</i> equals the number of points
+<i>n_i</i> in bin <i>i</i>.
+</p>
+</dd>
+<dt><code>'sd.inv'</code></dt><dd><p><i>1 / w_i</i> equals the standard deviation
+of the variogram cloud within bin <i>i</i>.
+</p>
+</dd>
+<dt><code>'internal'</code></dt><dd>
+<p>Three subvariants are implemented:
+</p>
+
+<dl>
+<dt><code>'internal1'</code></dt><dd>
+<p><i>w_i^2 = (N-i+1) n_i </i> 
+</p>
+</dd>
+<dt><code>'internal2'</code></dt><dd>
+<p><i>w_i = N-i+1</i>
+</p>
+</dd>
+<dt><code>'internal3'</code></dt><dd>
+<p><i>w_i^2 = N-i+1</i>
+</p>
+</dd>
+</dl>
+
+</dd>
+</dl>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RFfit.html">RFfit</a></code>, <code>RFfit-class</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+## See 'RFfit'.
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

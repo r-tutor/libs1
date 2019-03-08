@@ -1,3 +1,32 @@
+# radiant.model 0.9.9.0
+
+* Allow any variable in the prediction dataset to be used to customize a prediction when using _Predict > Data & Command_
+* Fix for `write.coeff` when interactions, quadratic, and/or cubic terms are included in a linear or logistic regression
+* Rescale predictions in `cv.nn` so RMSE and MAE are in the original scale even if the data were standardized for estimation
+* Rename `scaledf` to `scale_df` for consistency
+* Fix for plot sizing and printing of missing values in collaborative filtering
+* Fix for `cv.nn` when weights are used in estimation
+* Improve documentation for cross-validation of `nn` and `crtree` models (i.e., `cv.nn` and `cv.crtree`)
+* Fixes for breaking changes in dplyr 0.8.0
+* Fix to download tables from _Model > Evaluate classificiation_
+* Use an expandable `shinyAce` input for the formula and function inputs in _Model > Simulate_
+* Fixes for repeated simulation with grid-search
+* Use `test` instead of `validation` 
+
+# radiant.model 0.9.8.0
+
+* Option to add user defined function to simulations. This dramatically increases the flexibility of the simulation tool
+* Ensure variable and dataset names are valid for R (i.e., no spaces or symbols), "fixing" the input as needed
+* Cross validation functions for decision trees (`cv.crtree`) and neural networks(`cv.nn`) that can use various performance metrics for during evaluation e.g., `auc` or `profit`
+* Option to add square and cube terms in _Model > Linear regression_ and _Model > Logistic regression_.
+* Option to pass additional arguments to `shiny::runApp` when starting radiant such as the port to use. For example, radiant.model::radiant.model("https://github.com/radiant-rstats/docs/raw/gh-pages/examples/demo-dvd-rnd.state.rda", port = 8080) 
+* Avoid empty string showing up in auto-generated code for model prediction (i.e., `pred_data` or `pred_cmd`) 
+* Fix for VIF based on `car` for `regress` and `logistic`
+* Load a state file on startup by providing a (relative) file path or a url. For example, radiant.model::radiant.model("https://github.com/radiant-rstats/docs/raw/gh-pages/examples/demo-dvd-rnd.state.rda") 
+* Don't  live-update the active tree input to make it easier to save edits to a new tree without adding edits to the existing tree (Model > Decision analysis)
+* Fix for NA error when last line of a decision analysis input is a node without a payoff or probability
+* Load input (CMD + O) and Save input (CMD + S) keyboard shortcuts for decision analysis
+
 # radiant.model 0.9.7.0
 
 ## Major changes

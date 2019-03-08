@@ -348,7 +348,7 @@ output$r_knitted <- renderUI({
           }
         }
         report <- paste0("\n```{r echo = TRUE}\n", report, "\n```\n")
-        knit_it(report)
+        knit_it(report, type = "r")
       })
     }
   })
@@ -420,7 +420,9 @@ observeEvent(input$r_read_files, {
   if (is.integer(input$r_read_files)) return()
   path <- shinyFiles::parseFilePaths(sf_volumes, input$r_read_files)
   if (inherits(path, "try-error") || is_empty(path$datapath)) return()
-  pdir <- getOption("radiant.project_dir", default = radiant.data::find_home())
+  ldir <- getOption("radiant.launch_dir", default = radiant.data::find_home())
+  pdir <- getOption("radiant.project_dir", default = ldir)
+
   cmd <- read_files(path$datapath, pdir = pdir, type = "r", clipboard = FALSE, radiant = TRUE)
 
   if (!is_empty(cmd)) {

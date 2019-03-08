@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Gneiting-Wendland Covariance Models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMgengneiting {RandomFields}"><tr><td>RMgengneiting {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Gneiting-Wendland Covariance Models</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMgengneiting.html">RMgengneiting</a></code> is a stationary isotropic covariance model family whose elements 
+are specified by the two parameters <i>&kappa;</i> and <i>&mu;</i> with <i>n</i> being a non-negative integer and 
+<i>&mu; &ge; d/2</i> with <i>d</i> denoting the dimension of the random field
+(the models can be used for any dimension). 
+A corresponding covariance function only depends on the distance <i>r &ge; 0</i> between
+two points. For the case <i>&kappa; = 0</i> the Gneiting-Wendland model
+equals the Askey model <code><a href="RMaskey.html">RMaskey</a></code>,
+</p>
+<p style="text-align: center;"><i>
+ C(r) = (1-r)^&beta; 1_{[0,1]}(r), &beta; = &mu; + 1/2 = &mu; + 2&kappa; + 1/2.</i></p>
+
+<p>For <i>&kappa; = 1</i>
+the Gneiting model is given by
+</p>
+<p style="text-align: center;"><i> C(r) = (1+&beta; r)(1-r)^&beta;
+ 1_{[0,1]}(r), &beta; = &mu; + 2&kappa; + 1/2.</i></p>
+
+<p>If <i>&kappa; = 2</i>
+</p>
+<p style="text-align: center;"><i> C(r) = (1 + &beta; r + (&beta;^2 - 1) r^2 / 3) (1 - r)^&beta;
+ 1_{[0,1]}(r), &beta; = &mu; + 2&kappa; + 1/2.</i></p>
+ 
+<p>In the case <i>&kappa; = 3</i>
+</p>
+<p style="text-align: center;"><i> C(r) = (1 + &beta; r + (2 &beta;^2 - 3
+ )r^2 / 5 + (&beta;^2 - 4) &beta;
+ r^3 / 15)(1-r)^&beta; 1_{[0,1]}(r), &beta; = &mu; + 2&kappa; + 1/2.</i></p>
+
+<p>A special case of this model is <code><a href="RMgneiting.html">RMgneiting</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMgengneiting(kappa, mu, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>kappa</code></td>
+<td>
+<p><i>0,...,3</i></p>
+</td></tr></table>
+<p>; it chooses between the three
+different covariance models above.
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>mu</code></td>
+<td>
+<p><code>mu</code> has to be greater than or equal to
+<i>d / 2</i> where <i>d</i> is the dimension of the
+random field.</p>
+</td></tr> 
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This isotropic family of covariance functions is valid for any dimension of the random field. 
+</p>
+<p>A special case of this family is <code><a href="RMgneiting.html">RMgneiting</a></code> (with <i>s = 1</i> there) for the choice <i>&kappa; = 3, &mu; = 3/2</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMgengneiting.html">RMgengneiting</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Gneiting, T. (1999)
+Correlation functions for atmospherical data analysis.
+<em>Q. J. Roy. Meteor. Soc</em> Part A <b>125</b>, 2449-2464.
+</p>
+</li>
+<li><p> Wendland, H. (2005) <em>Scattered Data Approximation.</em>
+Cambridge Monogr. Appl. Comput. Math.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMaskey.html">RMaskey</a></code>,
+<code><a href="RMbigneiting.html">RMbigneiting</a></code>,
+<code><a href="RMgneiting.html">RMgneiting</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+model &lt;- RMgengneiting(kappa=1, mu=1.5)
+x &lt;- seq(0, 10, 0.02)
+plot(model)
+plot(RFsimulate(model, x=x))
+
+
+## same models:
+model2 &lt;- RMgengneiting(kappa=3, mu=1.5, scale= 1 / 0.301187465825)
+plot(RMgneiting(), model2=model2, type=c("p", "l"), pch=20)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

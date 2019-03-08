@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Cauchy Family Covariance Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMcauchy {RandomFields}"><tr><td>RMcauchy {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Cauchy Family Covariance Model</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMcauchy.html">RMcauchy</a></code> is a stationary isotropic covariance model
+belonging to the Cauchy family.
+The corresponding covariance function only depends on the distance <i>r &ge; 0</i> between
+two points and is given by
+</p>
+<p style="text-align: center;"><i>C(r) = (1 + r^2)^(-&gamma;)</i></p>
+
+<p>where <i>&gamma; &gt; 0</i>.
+See also <code><a href="RMgencauchy.html">RMgencauchy</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMcauchy(gamma, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gamma</code></td>
+<td>
+<p>a numerical value; should be positive
+to provide a valid covariance function for a random field of any dimension.</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The paramater <i>&gamma;</i> determines the asymptotic power law. The smaller <i>&gamma;</i>, the longer the long-range dependence. The covariance function is very regular near the origin, because its Taylor expansion only contains even terms and reaches its sill slowly.
+</p>
+<p>Each covariance function of the Cauchy Family is a normal scale mixture.
+</p>
+<p>The generalized Cauchy Family (see <code><a href="RMgencauchy.html">RMgencauchy</a></code>)
+includes this family for the choice <i>&alpha; = 2</i> and
+<i>&beta; = 2 &gamma;</i>.
+The generalized Hyperbolic Family (see <code><a href="RMhyperbolic.html">RMhyperbolic</a></code>)
+includes this family for the choice <i>&xi; = 0</i> and
+<i>&gamma; = -&nu;/2</i>; in this case scale=<i>&delta;</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMcauchy.html">RMcauchy</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Gneiting, T. and Schlather, M. (2004)
+Stochastic models which separate fractal dimension and Hurst effect.
+<em>SIAM review</em> <b>46</b>, 269&ndash;282.
+</p>
+</li>
+<li><p> Gelfand, A. E., Diggle, P., Fuentes, M. and Guttorp,
+P. (eds.) (2010) <em>Handbook of Spatial Statistics.</em>
+Boca Raton: Chapman &amp; Hall/CRL.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMcauchytbm.html">RMcauchytbm</a></code>,
+<code><a href="RMgencauchy.html">RMgencauchy</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+model &lt;- RMcauchy(gamma=1)
+x &lt;- seq(0, 10, 0.02)
+plot(model, xlim=c(-3, 3))
+plot(RFsimulate(model, x=x, n=4))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

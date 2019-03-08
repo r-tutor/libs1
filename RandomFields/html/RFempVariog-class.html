@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Class 'RFempVariog'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RFempVariog-class {RandomFields}"><tr><td>RFempVariog-class {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Class <code>RFempVariog</code></h2>
+
+<h3>Description</h3>
+
+<p>Class for RandomFields' representation of empirical variograms 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RFplotEmpVariogram(x, model = NULL, nmax.phi = NA, nmax.theta = NA,
+                    nmax.T = NA,
+                     plot.nbin = TRUE, plot.sd=FALSE, method = "ml",
+                     variogram=TRUE,
+                               boundaries = TRUE,
+                               ...)
+## S4 method for signature 'RFempVariog,missing'
+plot(x, y, ...)
+## S4 method for signature 'RFempVariog'
+persp(x, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+  
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>object of class 
+<code><a href="RFempVariog-class.html">RFempVariog</a></code>
+</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>unused</p>
+</td></tr>
+<tr valign="top"><td><code>model</code></td>
+<td>
+<p> object of class  <code><a href="RMmodel-class.html">RMmodel</a></code>, <code><a href="RFformula.html">RFformula</a></code> or  <code><a href="../../stats/html/formula.html">formula</a></code>; best is to consider the examples below, first. <br /> The argument <code>params</code> is a list that specifies free parameters in a formula description, see <a href="RFformula.html">RMformula</a>.. Or a list of such models. Tit gives the
+covariance or variogram models that are to be plotted into the same
+plot as the empirical variogram (and the fitted models)</p>
+</td></tr>
+<tr valign="top"><td><code>nmax.phi</code></td>
+<td>
+<p>even integer; only for <code>class(x)=="RFempVariog"</code>;
+the number of bins of angle phi that are to be
+plotted</p>
+</td></tr></table>
+<p>.
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>nmax.theta</code></td>
+<td>
+<p>integer; only for <code>class(x)=="RFempVariog"</code>;
+the number of bins of angle theta that are to be
+plotted</p>
+</td></tr> 
+<tr valign="top"><td><code>nmax.T</code></td>
+<td>
+<p>integer; only for <code>class(x)=="RFempVariog"</code>;
+the maximal number of different time bins that are to be
+plotted</p>
+</td></tr> 
+<tr valign="top"><td><code>plot.nbin</code></td>
+<td>
+<p>logical; only for <code>class(x)=="RFempVariog"</code>;
+indicates whether the number of pairs per bin are to be plotted</p>
+</td></tr>
+<tr valign="top"><td><code>plot.sd</code></td>
+<td>
+<p>logical; only for <code>class(x)=="RFempVariog"</code>;
+indicates whether the calculated standard deviation (<code>x@sd</code>) is
+to be plotted (in form of arrows of length +-1*sd)</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>character. Currently restricted to <code>"ml"</code> for
+maximum-likelihood method.
+</p>
+</td></tr>
+<tr valign="top"><td><code>variogram</code></td>
+<td>
+<p>logical; This argument should currently not be set
+by the user. If <code>TRUE</code> then the empirical variogram
+is plotted, else an estimate for the covariance function.</p>
+</td></tr> 
+<tr valign="top"><td><code>boundaries</code></td>
+<td>
+<p>logical; only for <code>class(x)=="RFempVariog"</code> and
+the anisotropic case where <code>model</code> is given.
+As the empirical variogram is calculated on a sector of angles,
+no exact variogram curve corresponds to the mean values in this
+sector.
+If <code>boundaries=TRUE</code> the values of the variogram on the sector
+boundaries are plotted. If <code>FALSE</code> some kind of mean
+model values are plotted. Neither the boundaries may contain
+the values of empirical variogram nor does the mean values
+need to be close the empirical variogram.  
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to be passed to methods; mainly graphical
+arguments.
+
+</p>
+</td></tr>
+</table>
+
+
+<h3>Slots</h3>
+
+
+<dl>
+<dt><code>centers</code>:</dt><dd><p>the bin centres of the spatial distances</p>
+</dd> 
+<dt><code>empirical</code>:</dt><dd><p>value of the empirical variogram</p>
+</dd> 
+<dt><code>var</code>:</dt><dd>
+<p>the empirical (overall) variance in the data
+</p>
+</dd>
+<dt><code>sd</code>:</dt><dd><p>standard deviation of the variogram cloud within each
+bin</p>
+</dd> 
+<dt><code>n.bin</code>:</dt><dd><p>number of bins</p>
+</dd> 
+<dt><code>phi.centers</code>:</dt><dd><p>centres of the bins with respect to the
+(first) angle (for anisotropic empirical variograms only)</p>
+</dd> 
+<dt><code>theta.centers</code>:</dt><dd><p>centres of the bins with respect to the
+second angle (for anisotropic empirical variograms in 3D only)</p>
+</dd> 
+<dt><code>T</code>:</dt><dd><p>the bin centres of the time axis</p>
+</dd> 
+<dt><code>vdim</code>:</dt><dd><p>the multivariate dimension</p>
+</dd>
+<dt><code>coordunits</code>:</dt><dd><p>string giving the units of the coordinates,
+see also option <code>coordunits</code> of <code><a href="RFoptions.html">RFoptions</a></code>.
+</p>
+</dd>
+<dt><code>varunits</code>:</dt><dd><p>string giving the units of the variables,
+see also option <code>varunits</code> of <code><a href="RFoptions.html">RFoptions</a></code>.
+</p>
+</dd>
+<dt><code>call</code>:</dt><dd><p>language object; the function call by which the
+object was generated</p>
+</dd>
+<dt><code>method</code>:</dt><dd><p>integer; variogram (0), covariance (2), madogram (4) </p>
+</dd>
+</dl>
+
+
+
+<h3>Methods</h3>
+
+
+<dl>
+<dt>plot</dt><dd><p><code>signature(x = "RFempVariog")</code>: gives a plot of the
+empirical variogram, for more details see
+<code><a href="plot-method.html">plot-method</a></code>.</p>
+</dd>
+<dt>plot</dt><dd><p><code>signature(x = "RFempVariog", y = "missing")</code></p>
+</dd></dl>
+<p>Gives nice
+plots of the empirical variogram; handles binning in up to three
+space-dimensions and a time-dimension, where the empirical variogram
+is plotted along lines which are directed according to the
+angle-centers given in <code>x@phi.centers</code> and
+<code>x@theta.centers</code>; arbitrary theoretical model curves
+can be added to the plot by using the argument <code>model</code>.
+If no bins are given, i.e. (<code>x@bin=NULL</code>),
+<code><a href="../../graphics/html/image.html">image</a></code>-plots are generated.
+</p>
+<dl>
+<dt>as</dt><dd><p><code>signature(x = "RFempVariog")</code>:
+converts into other formats, only implemented for target class
+<code><a href="../../methods/html/list-class.html">list</a></code>.</p>
+</dd>
+<dt>show</dt><dd><p><code>signature(x = "RFfit")</code>: returns the structure
+of <code>x</code></p>
+</dd>
+<dt>persp</dt><dd><p><code>signature(obj =
+	"RFempVariog")</code>: generates nice <code><a href="../../graphics/html/persp.html">persp</a></code> plots
+</p>
+</dd>
+<dt>print</dt><dd><p><code>signature(x = "RFfit")</code>: identical with
+<code>show</code>-method</p>
+</dd>
+<dt>summary</dt><dd><p>provides a summary</p>
+</dd>
+</dl>
+
+
+
+<h3>Details</h3>
+
+<p><code>print</code> returns also an invisible list that is convenient to access.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Alexander Malinowski, Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RFvariogram.html">RFvariogram</a></code>,
+<code><a href="plot-method.html">plot-method</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#  see 'RFvariogram'
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,8 +1,24 @@
-# radiant.data 0.9.7.0
+# radiant.basics 0.9.9.0
+
+* Various fixes to address (soft) deprecations in dplyr 0.8.0
+
+# radiant.basics 0.9.8.0
+
+* Option to pass additional arguments to `shiny::runApp` when starting radiant such as the port to use. For example, radiant.basics::radiant.basics("https://github.com/radiant-rstats/docs/raw/gh-pages/examples/demo-dvd-rnd.state.rda", port = 8080) 
+* Catch settings where the number of levels in a comparison of means or proportions is the same as the number of rows in the data (e.g., grouping by a unique identifier)
+* Show significant stars for `Compare means` and `Compare proportions` even when `Show additional output` is not selected
+* `ci` in summary table `compare_means` and `compare_props` should be margin of err (`me`)
+* Option to use `Z-test` in `single_prop`
+
+# radiant.basics 0.9.7.2
+
+* Load a state file on startup by providing a (relative) file path or a url
+
+# radiant.basics 0.9.7.0
 
 * Using [`shinyFiles`](https://github.com/thomasp85/shinyFiles) to provide convenient access to data located on a server
 
-# radiant.design 0.9.5.0
+# radiant.basics 0.9.5.0
 
 ## Major changes
 

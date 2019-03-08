@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Fast and Exact Simulation of Large Gaussian Lattice Systems...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for GSPSJ06 {RandomFields}"><tr><td>GSPSJ06 {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Fast and Exact Simulation of Large Gaussian Lattice Systems
+in R2</h2>
+
+<h3>Description</h3>
+
+<p>Here, the code of the paper on &lsquo;Fast and Exact Simulation of Large Gaussian Lattice Systems
+in R2&rsquo; is given.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+ 
+<ul>
+<li>
+<p>Gneiting, T., Sevcikova, H., Percival, D.B., Schlather, M., Jiang,
+Y. (2006) Fast and Exact Simulation of Large Gaussian Lattice Systems
+in R2: Exploring the Limits. <em>J. Comput. Graph. Stat.</em>,
+<b>15</b>, 483-501.
+</p>
+</li></ul>
+
+
+
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+## Figure 1 (pretty time consuming)
+stabletest &lt;- function(alpha, theta, size=512) {
+  RFoptions(trials=1, tolIm = 1e-8, tolRe=0, force = FALSE,
+            useprimes=TRUE, strategy=0, skipchecks=!FALSE,
+             storing=TRUE)
+  model &lt;- RMcutoff(diameter=theta, a=1, RMstable(alpha=alpha))
+  RFcov(dist=0, model=model, dim=2, seed=0)
+  r &lt;- RFgetModelInfo(modelname="RMcutoff", level=3)$storage$R_theor
+  x &lt;- seq(0, r, by= r / (size - 1)) * theta
+  err &lt;- try(RFsimulate(x, x, model=RPcirculant(model), n=0))
+  return(if (class(err) == "try-error") NA else r)
+}
+
+alphas &lt;- seq(1.52, 2.0, 0.02) 
+thetas &lt;- seq(0.05, 3.5, 0.05)
+
+m &lt;- matrix(NA, nrow=length(thetas), ncol=length(alphas))
+for (it in 1:length(thetas)) {
+  theta &lt;- thetas[it]
+  for (ia in 1:length(alphas)) {
+  alpha &lt;- alphas[ia]
+  cat("alpha=", alpha, "theta=", theta,"\n")
+  m[it, ia] &lt;- stabletest(alpha=alpha, theta=theta)
+  if (is.na(m[it, ia])) break
+  }
+  if (any(is.finite(m))) image(thetas, alphas, m, col=rainbow(100))
+}
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

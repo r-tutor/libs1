@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Stein's non-separable space-time model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMstein {RandomFields}"><tr><td>RMstein {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Stein's non-separable space-time model</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMstein.html">RMstein</a></code> is a univariate stationary covariance model
+whose corresponding covariance function only depends on the difference
+<i>h</i> between two points and is given by 
+</p>
+<p style="text-align: center;"><i> C(h, t) = W_&nu;(y) - &lt; h, z &gt; t W_{&nu;-1}(y) / [
+ (&nu;-1) (2&nu; + d + 1) ]</i></p>
+
+<p>Here, <i>W_&nu;</i> is the covariance of the
+<code><a href="RMmatern.html">RMwhittle</a></code> model with
+smoothness parameter <i>&nu;</i>;
+<i>y = ||(h,t)||</i> is the norm of the vector
+<i>(h,t)</i>,
+<i>d</i> is the dimension of the space on which the random field is considered.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMstein(nu, z, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>nu</code></td>
+<td>
+<p>numerical value; greater than 1; smoothness parameter of the
+RMwhittle model</p>
+</td></tr>
+<tr valign="top"><td><code>z</code></td>
+<td>
+<p>a vector; the norm of <i>z</i> must be less or equal to 1.</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See Stein (2005).
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMstein.html">RMstein</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Stein, M.L. (2005) Space-time covariance functions.
+<em>J. Amer. Statist. Assoc.</em> <b>100</b>, 310-321. Equation (8).
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+model &lt;- RMstein(nu=1.5, z=0.9)
+x &lt;- seq(0, 10, 0.05)
+plot(RFsimulate(model, x=x, y=x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

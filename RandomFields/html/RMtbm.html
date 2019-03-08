@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Turning Bands Method</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMtbm {RandomFields}"><tr><td>RMtbm {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Turning Bands Method</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMtbm.html">RMtbm</a></code> is a univariate or multivaraiate stationary isotropic covariance
+model in dimension <code>reduceddim</code> which depends on a univariate or
+multivariate stationary
+isotropic covariance <i>phi</i> in a bigger dimension <code>fulldim</code>.
+For formulas for the covariance function see details.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMtbm(phi, fulldim, reduceddim, layers, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+ 
+<table summary="R argblock">
+<tr valign="top"><td><code>phi, fulldim, reduceddim, layers</code></td>
+<td>
+<p>See <code><a href="RPtbm.html">RPtbm</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The turning bands method stems from the 1:1 correspondence between the
+isotropic covariance functions of different dimensions. See Gneiting
+(1999) and Strokorb and Schlather (2014).
+</p>
+<p>The standard case is <code>reduceddim=1</code> and <code>fulldim=3</code>.
+If only one of the arguments is given, then the difference of the two
+arguments equals 2.
+</p>
+<p>For <code>d == n + 2</code>, where <code>n=reduceddim</code> and 
+<code>d==fulldim</code> the original dimension, we have
+</p>
+<p style="text-align: center;"><i>
+    C(r) = phi(r) + r phi'(r) / n
+  </i></p>
+
+<p>which for <code>n=1</code> reduces to the standard TBM operator
+</p>
+<p style="text-align: center;"><i>
+    C(r) = d/dr [ r phi(r) ]
+  </i></p>
+
+<p>For <code>d == 2 &amp;&amp; n == 1</code> we have
+</p>
+<p style="text-align: center;"><i>
+    C(r) = d/dr int_0^r [ r phi(r) ] / [ sqrt{r^2 - u^2} ] d u
+  </i></p>
+
+<p>&lsquo;Turning layers&rsquo; is a generalization of the turning bands
+method, see Schlather (2011).
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMtbm.html">RMtbm</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+<p>Turning bands
+</p>
+
+<ul>
+<li><p> Gneiting, T. (1999)
+On the derivatives of radial positive definite function.
+<em>J. Math. Anal. Appl</em>, <b>236</b>, 86-99
+</p>
+</li>
+<li>
+<p>Matheron, G. (1973).
+The intrinsic random functions and their applications.
+<em>Adv . Appl. Probab.</em>, <b>5</b>, 439-468.
+</p>
+</li>
+<li>
+<p>Strokorb, K., Ballani, F., and  Schlather, M. (2014)
+Tail correlation functions of max-stable processes: Construction
+principles, recovery and diversity of some mixing max-stable
+processes with identical TCF. 
+<em>Extremes</em>,  Submitted.    
+</p>
+</li></ul>
+
+<p>Turning layers
+</p>
+
+<ul>
+<li><p> Schlather, M. (2011) Construction of covariance functions and
+unconditional simulation of random fields. In Porcu, E., Montero, J.M.
+and Schlather, M., <em>Space-Time Processes and Challenges Related
+to Environmental Problems.</em> New York: Springer.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RPtbm.html">RPtbm</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+x &lt;- seq(0, 10, 0.02)
+model &lt;- RMspheric()
+plot(model, model.on.the.line=RMtbm(RMspheric()), xlim=c(-1.5, 1.5))
+
+z &lt;- RFsimulate(RPtbm(model), x, x)
+plot(z)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

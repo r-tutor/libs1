@@ -1,12 +1,9 @@
-
-
-
 /*
  Authors 
  Martin Schlather, schlather@math.uni-mannheim.de
 
 
- Copyright (C) 2015 Martin Schlather
+ Copyright (C) 2015 -- 2017  Martin Schlather
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -32,7 +29,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #endif
 #include <R.h>
 #include <Rmath.h>
+#include "AutoRandomFieldsUtils.h"
 
+
+#ifndef DO_PARALLEL_ALREADY_CONSIDERED
 
 #ifdef _OPENMP
 #define DO_PARALLEL 1
@@ -41,6 +41,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #undef DO_PARALLEL
 #endif
 #endif
+
+#ifdef DO_PARALLEL
+//#undef DO_PARALLEL
+#endif
+
+
+#endif // DO_PARALLEL_ALREADY_CONSIDERED
+
+
+//#ifdef WIN32
+//#ifdef DO_PARALLEL
+//#undef DO_PARALLEL // make a comment to get parallel (part 1, see also part 2)
+//#endif
+//#endif
+
 
 #define MULTIMINSIZE(S) ((S) > 20)
 // #define MULTIMINSIZE(S) false
@@ -53,17 +68,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 #define DOPRINT true
-//
-#define SCHLATHERS_MACHINE 1
+//#define SCHLATHERS_MACHINE 1
 
-// // 1
+
 // #define HIDE_UNUSED_VARIABLE 1
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-  // Fortran Code by Reinhard Furrer
   void spamcsrdns_(int*, double *, int *, int*, double*);
   void spamdnscsr_(int*, int*, double *, int*, double*, int*, int*, double*);
   void cholstepwise_(int*, int*, double*, int*, int*, int*, int*, int*,
@@ -99,15 +112,13 @@ typedef enum usr_bool {
 #define RF_INF R_PosInf
 #define T_PI M_2_PI
 
-#define MAXUNITS 4
-#define MAXCHAR 18 // max number of characters for (covariance) names  
 #define OBSOLETENAME "obsolete" 
-#define RFOPTIONS "RFoptions"
 
 #define MAXINT 2147483647
+#define MININT -2147483647
+#define MAXUNSIGNED (MAXINT * 2) + 1
 #define INFDIM MAXINT
 #define INFTY INFDIM
-
 
 #define LENGTH length // safety, in order not to use LENGTH defined by R
 #define complex Rcomplex
@@ -139,30 +150,48 @@ typedef enum usr_bool {
 #define MAX(A,B) ((A) > (B) ? (A) : (B))
 
 
-#define ACOS(X) std::acos(X)
-#define ASIN(X) std::asin(X)
-#define ATAN(X) std::atan(X)
+#define ACOS std::acos
+#define ASIN std::asin
+#define ATAN std::atan
 #define CEIL(X) std::ceil((double) X) // keine Klammern um X!
-#define COS(X) std::cos(X)
-#define EXP(X) std::exp(X)
+#define COS std::cos
+#define EXP std::exp
 #define FABS(X) std::fabs((double) X) // keine Klammern um X!
-#define FLOOR(X) std::floor(X)
-#define Log(X) std::log(X)
+#define FLOOR std::floor
+#define LOG std::log
 #define POW(X, Y) R_pow((double) X, (double) Y) // keine Klammern um X!
-#define SIN(X) std::sin(X)
+#define SIGN(X) sign((double) X)
+#define SIN std::sin
 #define SQRT(X) std::sqrt((double) X)
 #define STRCMP(A, B) std::strcmp(A, B)
 #define STRCPY(A, B) std::strcpy(A, B)
-#define STRLEN(X) std::strlen(X)
+#define STRLEN std::strlen
 #define STRNCMP(A, B, C) std::strncmp(A, B, C)
-#define TAN(X) std::tan(X)
+#define STRNCPY(A, B, N) strcopyN(A, B, N)
+#define TAN std::tan
 #define MEMCOPYX std::memcpy
+#define MEMSET std::memset  
+#define AALLOC std::aligned_alloc
 #define CALLOCX std::calloc
 #define MALLOCX std::malloc
 #define FREEX std::free
 #define SPRINTF std::sprintf //
-#define ROUND(X) std::round(X)
+#define ROUND(X) ownround((double) X)
 #define TRUNC(X) ftrunc((double) X) // keine Klammern um X!
 #define QSORT std::qsort
+
+
+#define PRINTF Rprintf //
+#ifdef SCHLATHERS_MACHINE
+#ifdef DO_PARALLEL
+#include <omp.h>
+#undef PRINTF
+#define PRINTF if (omp_get_num_threads() > 1) { error("\n\nnever use Rprintf/PRINTF within parallel constructions!!\n\n"); } else Rprintf // OK
+#endif
+#endif
+
+#define DOPRINTF if (!DOPRINT) {} else PRINTF
+#define print NEVER_USE_print_or_PRINTF_WITHIN_PARALLEL /* // */
+
 
 #endif

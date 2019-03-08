@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Sample size calculation for comparisons</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sample_size_comp {radiant.design}"><tr><td>sample_size_comp {radiant.design}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Sample size calculation for comparisons</h2>
+
+<h3>Description</h3>
+
+<p>Sample size calculation for comparisons
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sample_size_comp(type, n1 = NULL, n2 = NULL, p1 = NULL, p2 = NULL,
+  delta = NULL, sd = NULL, conf_lev = NULL, power = NULL,
+  ratio = 1, alternative = "two.sided")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>Choose &quot;mean&quot; or &quot;proportion&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>n1</code></td>
+<td>
+<p>Sample size for group 1</p>
+</td></tr>
+<tr valign="top"><td><code>n2</code></td>
+<td>
+<p>Sample size for group 2</p>
+</td></tr>
+<tr valign="top"><td><code>p1</code></td>
+<td>
+<p>Proportion 1 (only used when &quot;proportion&quot; is selected)</p>
+</td></tr>
+<tr valign="top"><td><code>p2</code></td>
+<td>
+<p>Proportion 2 (only used when &quot;proportion&quot; is selected)</p>
+</td></tr>
+<tr valign="top"><td><code>delta</code></td>
+<td>
+<p>Difference in means between two groups (only used when &quot;mean&quot; is selected)</p>
+</td></tr>
+<tr valign="top"><td><code>sd</code></td>
+<td>
+<p>Standard deviation (only used when &quot;mean&quot; is selected)</p>
+</td></tr>
+<tr valign="top"><td><code>conf_lev</code></td>
+<td>
+<p>Confidence level</p>
+</td></tr>
+<tr valign="top"><td><code>power</code></td>
+<td>
+<p>Power</p>
+</td></tr>
+<tr valign="top"><td><code>ratio</code></td>
+<td>
+<p>Sampling ratio (n1 / n2)</p>
+</td></tr>
+<tr valign="top"><td><code>alternative</code></td>
+<td>
+<p>Two or one sided test</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/design/sample_size_comp.html">https://radiant-rstats.github.io/docs/design/sample_size_comp.html</a> for an example in Radiant
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list of variables defined in sample_size_comp as an object of class sample_size_comp
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="summary.sample_size_comp.html">summary.sample_size_comp</a></code> to summarize results
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+sample_size_comp(
+  type = "proportion", p1 = 0.1, p2 = 0.15,
+  conf_lev = 0.95, power = 0.8
+)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.design</em> version 0.9.9 <a href="00Index.html">Index</a>]</div>
+</body></html>

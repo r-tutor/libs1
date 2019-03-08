@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Compare sample means</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for compare_means {radiant.basics}"><tr><td>compare_means {radiant.basics}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Compare sample means</h2>
+
+<h3>Description</h3>
+
+<p>Compare sample means
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+compare_means(dataset, var1, var2, samples = "independent",
+  alternative = "two.sided", conf_lev = 0.95, comb = "",
+  adjust = "none", test = "t", data_filter = "")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dataset</code></td>
+<td>
+<p>Dataset</p>
+</td></tr>
+<tr valign="top"><td><code>var1</code></td>
+<td>
+<p>A numeric variable or factor selected for comparison</p>
+</td></tr>
+<tr valign="top"><td><code>var2</code></td>
+<td>
+<p>One or more numeric variables for comparison. If var1 is a factor only one variable can be selected and the mean of this variable is compared across (factor) levels of var1</p>
+</td></tr>
+<tr valign="top"><td><code>samples</code></td>
+<td>
+<p>Are samples independent (&quot;independent&quot;) or not (&quot;paired&quot;)</p>
+</td></tr>
+<tr valign="top"><td><code>alternative</code></td>
+<td>
+<p>The alternative hypothesis (&quot;two.sided&quot;, &quot;greater&quot; or &quot;less&quot;)</p>
+</td></tr>
+<tr valign="top"><td><code>conf_lev</code></td>
+<td>
+<p>Span of the confidence interval</p>
+</td></tr>
+<tr valign="top"><td><code>comb</code></td>
+<td>
+<p>Combinations to evaluate</p>
+</td></tr>
+<tr valign="top"><td><code>adjust</code></td>
+<td>
+<p>Adjustment for multiple comparisons (&quot;none&quot; or &quot;bonf&quot; for Bonferroni)</p>
+</td></tr>
+<tr valign="top"><td><code>test</code></td>
+<td>
+<p>t-test (&quot;t&quot;) or Wilcox (&quot;wilcox&quot;)</p>
+</td></tr>
+<tr valign="top"><td><code>data_filter</code></td>
+<td>
+<p>Expression entered in, e.g., Data &gt; View to filter the dataset in Radiant. The expression should be a string (e.g., &quot;price &gt; 10000&quot;)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/basics/compare_means.html">https://radiant-rstats.github.io/docs/basics/compare_means.html</a> for an example in Radiant
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list of all variables defined in the function as an object of class compare_means
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="summary.compare_means.html">summary.compare_means</a></code> to summarize results
+</p>
+<p><code><a href="plot.compare_means.html">plot.compare_means</a></code> to plot results
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+compare_means(diamonds, "cut", "price") %&gt;% str()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.basics</em> version 0.9.9 <a href="00Index.html">Index</a>]</div>
+</body></html>

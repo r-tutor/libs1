@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Spherical Covariance Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMspheric {RandomFields}"><tr><td>RMspheric {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The Spherical Covariance Model</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMspheric.html">RMspheric</a></code> is a stationary isotropic covariance model
+which is only valid up to dimension 3.
+The corresponding covariance function only depends on the distance
+<i>r &ge; 0</i> between two points and is given by
+</p>
+<p style="text-align: center;"><i>C(r) = (1 - 1.5 r + 0.5 r^3) 1_{[0,1]}(r).</i></p>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+RMspheric(var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This covariance model is valid only for dimensions less than or equal
+to 3.
+</p>
+<p>The covariance function has a finite range.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMspheric.html">RMspheric</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Although this model is valid on a sphere, do not mix up this model
+with valid models on a sphere; see <a href="RMmodelsSphere.html">spherical models</a>
+for a list of the latter.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+<p>Gelfand, A. E., Diggle, P., Fuentes, M. and Guttorp,
+P. (eds.) (2010) <em>Handbook of Spatial Statistics.</em>
+Boca Raton: Chapman &amp; Hall/CRL.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>,
+<a href="RMmodelsSphere.html">spherical models</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+model &lt;- RMspheric()
+x &lt;- seq(0, 10, 0.02)
+plot(model)
+plot(RFsimulate(model, x=x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

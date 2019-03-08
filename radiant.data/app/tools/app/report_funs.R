@@ -116,6 +116,8 @@ setup_report <- function(
 ) {
 
   report <- fix_smart(report) %>%
+    gsub("^```\\s*\\{", "\n\n```{", .) %>%
+    gsub("^```\\s*\n", "```\n\n", .) %>%
     sub("^---\n(.*?)\n---", "", .) %>%
     sub("<!--(.*?)-->", "", .)
 
@@ -123,7 +125,7 @@ setup_report <- function(
   sopts <- ifelse(save_type == "PDF", ",\n  screenshot.opts = list(vheight = 1200)", "")
 
   if (add_yml) {
-    if (save_type %in% c("PDF", "Word")) {
+    if (save_type %in% c("PDF", "Word", "Powerpoint")) {
       yml <- ""
     } else if (save_type == "HTML") {
       yml <- '---\noutput:\n  html_document:\n    highlight: textmate\n    theme: spacelab\n    df_print: paged\n    toc: yes\n---\n\n'
@@ -137,7 +139,7 @@ setup_report <- function(
   }
 
   if (missing(ech)) {
-    ech <- if (save_type %in% c("PDF", "Word", "HTML")) "FALSE" else "TRUE"
+    ech <- if (save_type %in% c("PDF", "Word", "Powerpoint", "HTML")) "FALSE" else "TRUE"
   }
 
   if (grepl("```{r r_setup, include = FALSE}\n", report, fixed = TRUE)) {
@@ -240,9 +242,9 @@ knit_it_save <- function(report) {
     gsub("<table>", "<table class='table table-condensed table-hover'>", .)
 }
 
-observeEvent(input$report_clean, {
+report_clean <- function(report) {
   withProgress(message = "Cleaning report", value = 1, {
-    report <- gsub("\nr_data\\[\\[\"([^\n]+?)\"\\]\\] \\%>\\%(.*?)\\%>\\%\\s*?store\\(\"(.*?)\", (\".*?\")\\)", "\n\\3 <- \\1 %>%\\2\nregister(\"\\3\", \\4)", input$rmd_edit) %>%
+    report <- gsub("\nr_data\\[\\[\"([^\n]+?)\"\\]\\] \\%>\\%(.*?)\\%>\\%\\s*?store\\(\"(.*?)\", (\".*?\")\\)", "\n\\3 <- \\1 %>%\\2\nregister(\"\\3\", \\4)", report) %>%
       gsub("r_data\\[\\[\"([^\"]+?)\"\\]\\]", "\\1", .) %>%
       gsub("r_data\\$", "", .) %>%
       gsub("\"mean_rm\"", "\"mean\"", .) %>%
@@ -287,12 +289,22 @@ observeEvent(input$report_clean, {
   #     report <- paste0(readLines(tmp_fn), collapse = "\n")
   #   })
   # }
+  removeModal()
+  fix_smart(report)
+}
 
+observeEvent(input$report_clean_r, {
+  shinyAce::updateAceEditor(
+    session, "r_edit",
+    value = report_clean(input$r_edit)
+  )
+})
+
+observeEvent(input$report_clean_rmd, {
   shinyAce::updateAceEditor(
     session, "rmd_edit",
-    value = fix_smart(report)
+    value = report_clean(input$rmd_edit)
   )
-  removeModal()
 })
 
 observeEvent(input$report_ignore, {
@@ -315,7 +327,7 @@ knit_it <- function(report, type = "rmd") {
      grepl("store\\(pred,\\s*data\\s*=\\s*\"", report) ||
      grepl("\\s+data\\s*=\\s*\".*?\",", report)  ||
      grepl("\\s+dataset\\s*=\\s*\".*?\",", report)  ||
-     grepl("\\s+pred_data\\s*=\\s*\".*?\",", report)  ||
+     grepl("\\s+pred_data\\s*=\\s*\"[^\"]+?\",", report)  ||
      grepl("result\\s*<-\\s*simulater\\(", report)  ||
      grepl("result\\s*<-\\s*repeater\\(", report)  ||
      grepl("combinedata\\(\\s*x\\s*=\\s*\"[^\"]+?\"", report) ||
@@ -344,7 +356,7 @@ knit_it <- function(report, type = "rmd") {
         footer = tagList(
           modalButton("Cancel"),
           actionButton("report_ignore", "Ignore", title = "Ignore cleaning popup", class = "btn-primary"),
-          actionButton("report_clean", "Clean report", title = "Clean report", class = "btn-success")
+          actionButton(paste0("report_clean_", type), "Clean report", title = "Clean report", class = "btn-success")
         ),
         size = "s",
         easyClose = TRUE
@@ -355,11 +367,14 @@ knit_it <- function(report, type = "rmd") {
 
   ## fragment also available with rmarkdown
   ## http://rmarkdown.rstudio.com/html_fragment_format.html
-  pdir <- getOption("radiant.project_dir", default = radiant.data::find_home())
-  if (!is_empty(pdir)) {
-    owd <- setwd(pdir)
-    on.exit(setwd(owd))
-  }
+
+  ## setting the working directory to use
+  ldir <- getOption("radiant.launch_dir", default = radiant.data::find_home())
+  pdir <- getOption("radiant.project_dir", default = ldir)
+
+  tdir <- tempdir()
+  owd <- ifelse(is_empty(pdir), setwd(tdir), setwd(pdir))
+  on.exit(setwd(owd))
 
   ## sizing issue with ggplotly and knitr
   ## see https://github.com/ropensci/plotly/issues/1171
@@ -399,7 +414,7 @@ knit_it <- function(report, type = "rmd") {
 
 sans_ext <- function(path) {
   sub(
-    "(\\.state\\.rda|\\.rda$|\\.rds$|\\.rmd$|\\.r$|\\.rdata$|\\.html|\\.nb\\.html|\\.pdf|\\.docx|\\.rmd|\\.zip)", "",
+    "(\\.state\\.rda|\\.rda$|\\.rds$|\\.rmd$|\\.r$|\\.rdata$|\\.html|\\.nb\\.html|\\.pdf|\\.docx|\\.pptx|\\.rmd|\\.zip)", "",
     tolower(path), ignore.case = TRUE
   )
 }
@@ -472,6 +487,7 @@ report_save_filename <- function(type = "rmd", full.name = TRUE) {
     HTML = "html",
     PDF = "pdf",
     Word = "docx",
+    Powerpoint = "pptx",
     Rmd = "Rmd",
     `Rmd + Data (zip)` = "zip",
     R = "R",
@@ -573,8 +589,8 @@ report_save_content <- function(file, type = "rmd") {
                 paste0(
                   "<span>
                     The working directory used by radiant (\"", getwd(), "\") is not writable. This is required to save a report.
-                    To save reports, restart radiant from a writable directory. Preferaby by setting up an Rstudio 
-                    project folder. See <a href='https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects' target='_blank'> 
+                    To save reports, restart radiant from a writable directory. Preferaby by setting up an Rstudio
+                    project folder. See <a href='https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects' target='_blank'>
                     https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects</a> for more information
                   </span>"
                 )
@@ -594,7 +610,8 @@ report_save_content <- function(file, type = "rmd") {
           report <- paste0("\n```{r echo = TRUE}\n", report, "\n```\n")
         }
 
-        init <- setup_report(fix_smart(report), save_type = save_type, lib = lib)
+        init <- setup_report(report, save_type = save_type, lib = lib) %>%
+          fix_smart()
 
         ## on linux ensure you have you have pandoc > 1.14 installed
         ## you may need to use http://pandoc.org/installing.html#installing-from-source
@@ -611,18 +628,23 @@ report_save_content <- function(file, type = "rmd") {
                 Notebook = rmarkdown::html_notebook(highlight = "textmate", theme = "spacelab", code_folding = "hide"),
                 HTML = rmarkdown::html_document(highlight = "textmate", theme = "spacelab", code_download = TRUE, df_print = "paged"),
                 PDF = rmarkdown::pdf_document(),
-                Word = rmarkdown::word_document(reference_docx = file.path(system.file(package = "radiant.data"), "app/www/style.docx"))
+                Word = rmarkdown::word_document(
+                  reference_docx = getOption("radiant.word_style", default = file.path(system.file(package = "radiant.data"), "app/www/style.docx")),
+                ),
+                Powerpoint = rmarkdown::powerpoint_presentation(
+                  reference_doc = getOption("radiant.powerpoint_style", default = file.path(system.file(package = "radiant.data"), "app/www/style.potx"))
+                )
               ),
               envir = r_data, quiet = TRUE, encoding = "UTF-8",
               output_options = list(pandoc_args = "--quiet")
             )
-            ## file.rename may fail to overwrite even if confirmed by the users
-            # file.rename(out, file)
+            ## no using file.rename as it may fail to overwrite even if confirmed by the users
             file.copy(out, file, overwrite = TRUE)
             file.remove(out, tmp_fn)
           } else {
             ## still needed because rmarkdown requires pandoc
             setup_report(report, add_yml = FALSE, type = save_type, lib = lib) %>%
+              fix_smart() %>%
               knit_it_save() %>%
               cat(file = file, sep = "\n")
           }

@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Simulation methods for Brown-Resnick processes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Brown-Resnick-Specific {RandomFields}"><tr><td>Brown-Resnick-Specific {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Simulation methods for Brown-Resnick processes</h2>
+
+<h3>Description</h3>
+
+<p>These models define particular ways to simulate Brown-Resnick
+processes.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RPbrmixed(phi, tcf, xi, mu, s, meshsize, vertnumber, optim_mixed,
+          optim_mixed_tol,lambda, areamat, variobound) 
+
+RPbrorig(phi, tcf, xi, mu, s)
+
+RPbrshifted(phi, tcf, xi, mu, s)
+
+RPloggaussnormed(variogram, prob, optimize_p, nth, burn.in, rejection)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>phi,variogram</code></td>
+<td>
+<p>object of class <code><a href="RMmodel-class.html">RMmodel</a></code>;
+specifies the covariance model to be simulated.</p>
+</td></tr>
+<tr valign="top"><td><code>tcf</code></td>
+<td>
+<p>the extremal correlation function; either <code>phi</code> or
+<code>tcf</code> must be given.</p>
+</td></tr>
+<tr valign="top"><td><code>xi, mu, s</code></td>
+<td>
+<p>the shape parameter, the location parameter and the
+scale parameter, respectively, of the generalized extreme value
+distribution. See Details.</p>
+</td></tr>
+<tr valign="top"><td><code>lambda</code></td>
+<td>
+<p>positive constant factor in the intensity of the Poisson
+point process used in the M3 representation, cf. Thm. 6 and Remark 7
+in Oesting et. al (2012); can be estimated by setting
+<code>optim_mixed</code> if unknown. Default value is 1.</p>
+</td></tr>
+<tr valign="top"><td><code>areamat</code></td>
+<td>
+<p>vector of values in <i>[0,1]</i>. The value of the <i>k</i>th
+component represents the portion of processes whose maximum is located at a 
+distance <i>d</i> with <i>k-1 &lt;= d &lt; k</i> from the origin 
+taken into account for the simulation of the shape function in the M3 
+representation. <code>areamat</code> can be used for isotropic models only; can be 
+optimized by setting <code>optim_mixed</code> if unknown. Default value is 1.</p>
+</td></tr>
+<tr valign="top"><td><code>meshsize, vertnumber, optim_mixed,
+optim_mixed_tol, variobound</code></td>
+<td>
+<p>further arguments
+for simulation via the mixed moving maxima (M3) representation; see
+<code><a href="RFoptions.html">RFoptions</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>prob</code></td>
+<td>
+<p>to do
+</p>
+</td></tr>
+<tr valign="top"><td><code>optimize_p</code></td>
+<td>
+<p>to do
+</p>
+</td></tr>
+<tr valign="top"><td><code>nth</code></td>
+<td>
+<p>to do
+</p>
+</td></tr>
+<tr valign="top"><td><code>burn.in</code></td>
+<td>
+<p>to do
+</p>
+</td></tr>
+<tr valign="top"><td><code>rejection</code></td>
+<td>
+<p>to do
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The argument <code>xi</code> is always a number, i.e. <i>&xi;</i> is constant
+in space. In contrast, <i>&mu;</i> and <i>s</i> might be constant
+numerical values or given an <code><a href="RMmodel.html">RMmodel</a></code>, in particular by an
+<code><a href="RMtrend.html">RMtrend</a></code> model. 
+</p>
+<p>The functions <code>RPbrorig</code>, <code>RPbrshifted</code> and <code>RPbrmixed</code>
+simulate a Brown-Resnick process, which is defined by
+</p>
+<p style="text-align: center;"><i>Z(x) = max_{i=1, 2, ...} X_i * exp(W_i(x) - gamma),</i></p>
+
+<p>where the <i>X_i</i> are the points of a Poisson point process on the
+positive real half-axis with intensity <i>1/x^2 dx</i>,
+<i>W_i ~ Y</i> are iid centered Gaussian processes with
+stationary increments and variogram <i>gamma</i> given by
+<code>model</code>. The functions correspond to the following ways of
+simulation:
+</p>
+
+<dl>
+<dt><code>RPbrorig</code></dt><dd><p>simulation using the original definition
+(method 0 in Oesting et al., 2012)</p>
+</dd>
+<dt><code>RPbrshifted</code></dt><dd><p>simulation using a random shift (similar to
+method 1 and 2)</p>
+</dd>
+<dt><code>RPbrmixed</code></dt><dd><p>simulation using M3 representation (method
+4)</p>
+</dd>
+</dl>
+
+
+
+<h3>Value</h3>
+
+<p>The functions return an object of class
+<code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Advanced options for <code>RPbroriginal</code> and <code>RPbrshifted</code>
+are <code>maxpoints</code> and <code>max_gauss</code>, see <code><a href="RFoptions.html">RFoptions</a></code>.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Marco Oesting, <a href="mailto:oesting@mathematik.uni-siegen.de">oesting@mathematik.uni-siegen.de</a>, <a href="https://www.uni-siegen.de/fb6/src/scheffler/mitarbeiter/oesting">https://www.uni-siegen.de/fb6/src/scheffler/mitarbeiter/oesting</a>; Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p>  Oesting, M., Kabluchko, Z. and Schlather M. (2012)
+Simulation of Brown-Resnick Processes, <em>Extremes</em>,
+<b>15</b>, 89-107.
+</p>
+</li></ul>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RPbrownresnick.html">RPbrownresnick</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RPgauss.html">RPgauss</a></code>,
+<code><a href="RPmaxstable.html">maxstable</a></code>,
+<code><a href="RPmaxstableAdvanced.html">maxstableAdvanced</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+
+## currently does not work
+
+
+
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

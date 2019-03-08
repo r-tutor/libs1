@@ -1,0 +1,349 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Class 'RFfit'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RFfit-class {RandomFields}"><tr><td>RFfit-class {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Class <code>RFfit</code></h2>
+
+<h3>Description</h3>
+
+<p> Class for RandomFields' representation of model estimation
+results 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'RFfit'
+residuals(object, ..., method="ml", full=FALSE)
+## S4 method for signature 'RFfit'
+summary(object, ..., method="ml")
+## S4 method for signature 'RFfit,missing'
+plot(x, y, ...) 
+
+## S3 method for class 'RFfit'
+contour(x, ...) 
+## S3 method for class 'RFempVariog'
+contour(x, ...)
+
+RFhessian(model)
+</pre>
+
+
+<h3>Arguments</h3>
+
+  
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>see the  generic function;
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+
+<ul>
+<li> <p><code>plot</code>: arguments to be passed to methods; mainly graphical
+arguments, or further models in case of class <code>CLASS_CLIST</code>,
+see Details.
+</p>
+</li>
+<li> <p><code>summary</code>:  see the generic function
+</p>
+</li>
+<li> <p><code>contour</code> : see <code><a href="RFempVariog-class.html">RFplotEmpVariogram</a></code>
+</p>
+</li></ul>
+
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>character; only for <code>class(x)=="RFfit"</code>; a
+vector of slot names for which the fitted covariance or variogram
+model is to be plotted; should be a subset of 
+<code>slotNames(x)</code> for which the corresponding slots are of class
+<code>CLASS_FIT</code>; by default, the maximum likelihood fit
+(<code>"ml"</code>) will be
+plotted</p>
+</td></tr> 
+<tr valign="top"><td><code>full</code></td>
+<td>
+<p>logical.
+if <code>TRUE</code> submodels are reported as well (if available).
+</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>object of class <code><a href="RFsp-class.html">RFsp</a></code> or
+<code><a href="RFempVariog-class.html">RFempVariog</a></code> or
+<code><a href="RFfit-class.html">RFfit</a></code> or
+<code><a href="RMmodel-class.html">RMmodel</a></code>; in the latter case, <code>x</code> can
+be any sophisticated model but it must be either stationary or a
+variogram model</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>unused</p>
+</td></tr>
+<tr valign="top"><td><code>model</code></td>
+<td>
+
+<p><code>class(x)=="RF_fit"</code> or <code>class(x)=="RFfit"</code>, obtained
+from <code><a href="RFfit.html">RFfit</a></code>
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>for the definition of <code>plot</code> see <code><a href="RFempVariog-class.html">RFplotEmpVariogram</a></code>.
+</p>
+
+
+<h3>Creating Objects</h3>
+
+<p>Objects are created by the function 
+<code><a href="RFfit.html">RFfit</a></code>
+</p>
+
+
+<h3>Slots</h3>
+
+
+<dl>
+<dt><code>autostart</code>:</dt><dd><p>RMmodelFit; contains the estimation results
+for the method 'autostart' including a likelihood value, a constant
+trend and the residuals</p>
+</dd> 
+<dt><code>boxcox</code>:</dt><dd><p>logical; whether the
+parameter of a Box Cox tranformation has been estimated
+</p>
+</dd>
+<dt><code>coordunits</code>:</dt><dd><p>string giving the units of the coordinates,
+see also option <code>coordunits</code> of <code><a href="RFoptions.html">RFoptions</a></code>.
+</p>
+</dd>
+<dt><code>deleted</code>:</dt><dd><p>integer vector.
+Positions of the parameters that have been deleted to get the set of
+variables, used in the optimization.
+</p>
+</dd>
+<dt><code>ev</code>:</dt><dd><p>list; list of objects of class
+<code><a href="RFempVariog-class.html">RFempVariog</a></code>, 
+contains the empirical variogram estimates of the data</p>
+</dd> 
+<dt><code>fixed</code>:</dt><dd>
+<p>list of two vectors. The fist gives the position where the
+parameters are set to zero. The second gives the position where the
+parameters are set to one.
+</p>
+</dd>
+<dt><code>internal1</code>:</dt><dd><p>RMmodelFit; analog to slot 'autostart'</p>
+</dd> 
+<dt><code>internal2</code>:</dt><dd><p>RMmodelFit; analog to slot 'autostart'</p>
+</dd> 
+<dt><code>internal3</code>:</dt><dd><p>RMmodelFit; analog to slot 'autostart'</p>
+</dd> 
+<dt><code>lowerbounds</code>:</dt><dd><p>RMmodel; covariance model in which each
+parameter value gives the lower bound for the respective parameter</p>
+</dd> 
+<dt><code>ml</code>:</dt><dd><p>RMmodelFit; analog to slot 'autostart'
+</p>
+</dd>
+<dt><code>modelinfo</code>:</dt><dd><p> table with information on the parameters:
+name, boundaries, type of   parameter 
+</p>
+</dd>
+<dt><code>n.covariates</code>:</dt><dd><p>   number of covariates
+</p>
+</dd>
+<dt><code>n.param</code>:</dt><dd>
+<p>number of parameters (given by the user)
+</p>
+</dd>
+<dt><code>n.variab</code>:</dt><dd>
+<p>number of variables (used internally);
+<code>n.variab</code> is always less than or equal to <code>n.param</code>
+</p>
+</dd>
+<dt><code>number.of.data</code>:</dt><dd>
+<p>the number of data values passed to <code><a href="RFfit.html">RFfit</a></code> that are
+not <code>NA</code> or <code>NaN</code>
+</p>
+</dd>
+<dt><code>number.of.parameters</code>:</dt><dd>
+<p>total number of parameters of the model that had to be estimated
+including variances, scales, co-variables, etc.
+</p>
+</dd>
+<dt><code>p.proj</code>:</dt><dd><p>vector of integers. The original position of those
+parameters that are used in the submodel
+</p>
+</dd>
+<dt><code>plain</code>:</dt><dd><p>RMmodelFit; analog to slot 'autostart'</p>
+</dd> 
+<dt><code>report</code>:</dt><dd>
+<p>If not empty, it indicates that this model should be reported
+and gives a standard name of the model.
+</p>
+<p>Various functions, e.g. <code>print.RMmodelFit</code>, use
+this information if their argument <code>full</code> equals <code>TRUE</code>.
+</p>
+</dd>
+<dt><code>self</code>:</dt><dd><p>RMmodelFit; analog to slot 'autostart'</p>
+</dd> 
+<dt><code>sd.inv</code>:</dt><dd><p>RMmodelFit; analog to slot 'autostart'</p>
+</dd> 
+<dt><code>sqrt.nr</code>:</dt><dd><p>RMmodelFit; analog to slot 'autostart'</p>
+</dd> 
+<dt><code>submodels</code>:</dt><dd>
+<p>list. Sequence  (in some cases even nested sequence)
+of models that is used to determine an initial value in
+
+</p>
+</dd>
+<dt><code>table</code>:</dt><dd><p>matrix; summary of estimation results of
+different methods</p>
+</dd> 
+<dt><code>transform</code>:</dt><dd><p>function; </p>
+</dd> 
+<dt><code>true.tsdim</code>:</dt><dd>
+<p>time space dimension of the (original!) data,
+even for submodels that consider parts of separable models.
+</p>
+</dd>
+<dt><code>true.vdim</code>:</dt><dd>
+<p>multivariability of the (original!) data,
+even for submodels that consider independent models
+for the multivariate components.
+</p>
+</dd>
+<dt><code>upperbounds</code>:</dt><dd><p>RMmodel; see slot 'lowerbounds'</p>
+</dd> 
+<dt><code>users.guess</code>:</dt><dd><p>RMmodelFit; analog to slot 'autostart'</p>
+</dd> 
+<dt><code>ml</code>:</dt><dd><p>RMmodelFit; analog to slot 'autostart'; with maximum
+likelihood method</p>
+</dd>
+<dt><code>v.proj</code>:</dt><dd><p>vector of integers.
+The components selected in one of the submodels
+</p>
+</dd>
+<dt><code>varunits</code>:</dt><dd><p>string giving the units of the variables,
+see also option <code>varunits</code> of <code><a href="RFoptions.html">RFoptions</a></code>.
+</p>
+</dd>
+<dt><code>x.proj</code>:</dt><dd>
+<p>logical or integer. If logical, it means that no
+separable model is considered there. If integer, then
+it gives the considered directions of a separable model.
+</p>
+</dd>
+<dt><code>Z</code>:</dt><dd>
+<p>standardized list of information on the data
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Methods</h3>
+
+
+<dl>
+<dt>plot</dt><dd><p><code>signature(x = "RFfit")</code>: gives a plot of the
+empirical variogram together with the fitted model, for more details see
+<code><a href="plot-method.html">plot-method</a></code>.
+</p>
+</dd>
+<dt>show</dt><dd><p><code>signature(x = "RFfit")</code>: returns the structure
+of <code>x</code>
+</p>
+</dd>
+<dt>persp</dt><dd><p><code>signature(obj =
+	"RFfit")</code>: generates <code><a href="../../graphics/html/persp.html">persp</a></code> plots
+</p>
+</dd>
+<dt>print</dt><dd><p><code>signature(x = "RFfit")</code>: identical with
+<code>show</code>-method, additional argument is <code>max.level</code>
+</p>
+</dd>
+<dt>[</dt><dd><p><code>signature(x = "RFfit")</code>: enables accessing
+the slots via the <code>"["</code>-operator, e.g. <code>x["ml"]</code>
+</p>
+</dd>
+<dt>as</dt><dd><p><code>signature(x = "RFfit")</code>:
+converts into other formats, only implemented for target class 
+<code><a href="RFempVariog-class.html">RFempVariog</a></code>
+</p>
+</dd>
+<dt>anova</dt><dd><p>performs a likelihood ratio test base on a chisq approximation
+</p>
+</dd>
+<dt>summary</dt><dd><p>provides a summary</p>
+</dd>
+<dt>logLik</dt><dd><p>provides an object of class <code>"logLik"</code>
+</p>
+</dd>
+<dt>AIC,BIC</dt><dd><p>provides the AIC and BIC information, respectively</p>
+</dd>
+<dt><code>signature(x = "RFfit", y = "missing")</code></dt><dd><p>Combines the plot of
+the empirical variogram with the estimated covariance or variogram
+model (theoretical) curves; further models can be added via the
+argument <code>model</code>.</p>
+</dd>
+</dl>
+
+
+
+<h3>Further 'methods'</h3>
+
+<p><code>AICc.RFfit(object, ..., method="ml", full=FALSE)</code>
+</p>
+<p><code>AICc.RF_fit(object, ..., method="ml", full=TRUE)</code>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Alexander Malinowski; Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+<p>AICc:
+</p>
+
+<ul>
+<li><p> Hurvich, C.M. and Tsai, C.-L. (1989)
+Regression and Time Series Model Selection in Small Samples
+<em>Biometrika</em>, <b>76</b>, 297-307.  
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RFfit.html">RFfit</a></code>,
+<code><a href="RFvariogram.html">RFvariogram</a></code>,
+<code><a href="RMmodel-class.html">RMmodel-class</a></code>,
+<code><a href="RMmodelExt-class.html">RMmodelFit-class</a></code>,
+<code><a href="plot-method.html">plot-method</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# see RFfit
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

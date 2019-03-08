@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot method for the goodness function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plot.goodness {radiant.basics}"><tr><td>plot.goodness {radiant.basics}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot method for the goodness function</h2>
+
+<h3>Description</h3>
+
+<p>Plot method for the goodness function
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'goodness'
+plot(x, check = "", fillcol = "blue",
+  shiny = FALSE, custom = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Return value from <code><a href="goodness.html">goodness</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>check</code></td>
+<td>
+<p>Show plots for variable var. &quot;observed&quot; for the observed frequencies table, &quot;expected&quot; for the expected frequencies table (i.e., frequencies that would be expected if the null hypothesis holds), &quot;chi_sq&quot; for the contribution to the overall chi-squared statistic for each cell (i.e., (o - e)^2 / e), and &quot;dev_std&quot; for the standardized differences between the observed and expected frequencies (i.e., (o - e) / sqrt(e))</p>
+</td></tr>
+<tr valign="top"><td><code>fillcol</code></td>
+<td>
+<p>Color used for bar plots</p>
+</td></tr>
+<tr valign="top"><td><code>shiny</code></td>
+<td>
+<p>Did the function call originate inside a shiny app</p>
+</td></tr>
+<tr valign="top"><td><code>custom</code></td>
+<td>
+<p>Logical (TRUE, FALSE) to indicate if ggplot object (or list of ggplot objects) should be returned. This option can be used to customize plots (e.g., add a title, change x and y labels, etc.). See examples and <a href="http://docs.ggplot2.org">http://docs.ggplot2.org</a> for options.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed to or from other methods</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/basics/goodness">https://radiant-rstats.github.io/docs/basics/goodness</a> for an example in Radiant
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="goodness.html">goodness</a></code> to calculate results
+</p>
+<p><code><a href="summary.goodness.html">summary.goodness</a></code> to summarize results
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+result &lt;- goodness(newspaper, "Income")
+plot(result, check = c("observed", "expected", "chi_sq"))
+goodness(newspaper, "Income") %&gt;% plot(c("observed","expected"))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.basics</em> version 0.9.9 <a href="00Index.html">Index</a>]</div>
+</body></html>

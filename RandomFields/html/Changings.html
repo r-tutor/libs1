@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Documentation of some further changings</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Changings {RandomFields}"><tr><td>Changings {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Documentation of some further changings</h2>
+
+<h3>Description</h3>
+
+
+<ul>
+<li><p>Version 3.3
+</p>
+
+<ul>
+<li><p><code>RFempiricalvariogram</code>, <code>RFempiricalcovariance</code>
+and <code>RFempiricalmadogram</code> became obsolete. Use 
+<code><a href="RFvariogram.html">RFvariogram</a></code>,
+<code><a href="RFcov.html">RFcov</a></code>,
+<code><a href="RFmadogram.html">RFmadogram</a></code>
+instead.
+</p>
+</li>
+<li> <p><code>RFoptions(grDefault=FALSE)</code> returns to the old style
+of graphical device handling. Otherwise there is no handling.
+</p>
+</li>
+<li><p> C code is started to be parallelized.
+</p>
+</li>
+<li><p> Some new <a href="RMmodelsMultivariate.html">Multivariate RMmodels</a>
+</p>
+</li>
+<li><p> New way of passing models, see <a href="RFformula.html">RFformula</a>, which
+allows connections (formulae) between parameters, e.g. one
+parameter value might be twice as large as another parameter
+value. Also dummy variables can be <code><a href="RMdeclare.html">RMdeclare</a></code>d.
+</p>
+</li></ul>
+
+</li>
+<li><p>Options getting obsolete (Version 3 and older)
+</p>
+
+<ul>
+<li><p><code>oldstyle</code> is becoming <code>warn_oldstyle</code> 
+</p>
+</li>
+<li><p><code>newstyle</code> is becoming <code>warn_newstyle</code> 
+</p>
+</li>
+<li><p><code>newAniso</code> is becoming <code>warn_newAniso</code> 
+</p>
+</li>
+<li><p><code>ambiguous</code> is becoming <code>warn_ambiguous</code> 
+</p>
+</li>
+<li><p><code>normal_mode</code> is becoming <code>warn_normal_mode</code> 
+</p>
+</li>
+<li><p><code>colour_palette</code> is becoming <code>warn_colour_palette</code> 
+</p>
+</li></ul>
+
+</li>
+<li> <p><b>Changings in option names</b>
+</p>
+
+<ul>
+<li><p> several changes in <code>RFoptions()$graphics</code> in version 3.1.11
+</p>
+</li>
+<li><p><code>pdfnumber</code> became in version 3.0.42 <code>filenumber</code>      
+</p>
+</li>
+<li><p><code>pdfonefile</code> became in version 3.0.42 <code>onefile</code>      
+</p>
+</li>
+<li><p><code>pdffile</code> became in version 3.0.42 <code>file</code>      
+</p>
+</li>
+<li><p><code>tbmdim</code> became in version 3.0.41 <code>reduceddim</code> 
+</p>
+</li>
+<li><p><code>coord_units</code> became in version 3.0.39 <code>coordunits</code> 
+</p>
+</li>
+<li><p><code>new_coord_units</code> became in version 3.0.39
+<code>new_coordunits</code> 
+</p>
+</li>
+<li><p><code>variab_units</code> became in version 3.0.39 <code>varunits</code>      
+</p>
+</li></ul>
+
+</li></ul>
+ 
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><a href="MajorRevisions.html">MajorRevisions</a>,
+<a href="RandomFields.html">RandomFields</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## no examples given
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

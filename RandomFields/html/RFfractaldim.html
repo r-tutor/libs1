@@ -1,0 +1,297 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: RFfractaldimension</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RFfractaldim {RandomFields}"><tr><td>RFfractaldim {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>RFfractaldimension</h2>
+
+<h3>Description</h3>
+
+<p>The function estimates the fractal dimension of a process
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RFfractaldim(x, y = NULL, z = NULL, data, grid, 
+ bin=NULL,
+ vario.n=5,
+ sort=TRUE,
+ fft.m = c(65, 86), ## in % of range of l.lambda
+ fft.max.length=Inf,
+ fft.max.regr=150000,
+ fft.shift = 50, # in %; 50:WOSA; 100: no overlapping
+ method=c("variogram", "fft"), 
+ mode = if (interactive ()) c("plot", "interactive") else "nographics", 
+ pch=16, cex=0.2, cex.main=0.85,
+ printlevel = RFoptions()$basic$printlevel,
+ height=3.5,
+ ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>vector of x coordinates, or object of class <code><a href="../../sp/html/GridTopology-class.html">GridTopology</a></code> or <code><a href="../../raster/html/raster.html">raster</a></code>; for more options see <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>. If
+<code>x</code> is not given and <code>data</code> is not an <span class="pkg">sp</span> object, a grid with unit grid length is assumed</p>
+</td></tr>
+<tr valign="top"><td><code>y,z</code></td>
+<td>
+<p>optional vectors of y (z) coordinates, which should not be given if <code>x</code> is a matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>the values measured; it can also be an <span class="pkg">sp</span> object</p>
+</td></tr>
+<tr valign="top"><td><code>grid</code></td>
+<td>
+<p>logical; the function finds itself the correct value in nearly all cases, so that usually <code>grid</code> need not be given. See also <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>bin</code></td>
+<td>
+<p>sequence of bin boundaries for the empirical variogram</p>
+</td></tr>
+<tr valign="top"><td><code>vario.n</code></td>
+<td>
+<p>first <code>vario.n</code> values of the empirical variogram
+are used for the regression fit that are not <code>NA</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>sort</code></td>
+<td>
+<p>If <code>TRUE</code> then the coordinates are permuted
+such that the largest grid length is in <code>x</code>-direction; this is
+of interest for algorithms that slice higher dimensional fields
+into one-dimensional sections.</p>
+</td></tr>
+</table>
+
+
+
+
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fft.m</code></td>
+<td>
+<p>numeric vector of two components; interval of frequencies
+for which the regression should be calculated; the interval is given
+in percent of the range of the frequencies in log scale.</p>
+</td></tr>
+<tr valign="top"><td><code>fft.max.length</code></td>
+<td>
+<p>The first dimension of the data is cut into pieces
+of length <code>fft.max.length</code>. For each piece the FFT is
+calculated and then the average for all pieces is taken. The pieces
+may overlap, see the argument <code>fft.shift</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>fft.max.regr</code></td>
+<td>
+<p>If the <code>fft.m</code> is too large, parts of the
+regression fit will take a very long time.
+Therefore, the regression fit is calculated only if the number points
+given by <code>fft.m</code> is less than <code>fft.max.regr</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>fft.shift</code></td>
+<td>
+<p>This argument is given in percent [of
+<code>fft.max.length</code>] and defines the overlap of the pieces defined
+by <code>fft.max.length</code>. If <code>fft.shift=50</code> the WOSA estimator is
+given; if <code>fft.shift=100</code> no overlap exists.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+
+<p>list of implemented methods to calculate the fractal dimension; see Details
+</p>
+</td></tr>
+<tr valign="top"><td><code>mode</code></td>
+<td>
+<p>character. A vector with components
+<code>'nographics'</code>, <code>'plot'</code> or <code>'interactive'</code>: 
+</p>
+
+<dl>
+<dt><code>'nographics'</code></dt><dd><p>no graphical output</p>
+</dd>
+<dt><code>'plot'</code></dt><dd><p>the regression line is plotted</p>
+</dd>
+<dt><code>'interactive'</code></dt><dd><p>the regression domain can be chosen interactively</p>
+</dd>
+</dl>
+
+<p>Usually only one mode is given. Two modes may make sense
+in the combination <code>c("plot", "interactive")</code>. In this case, all the results are plotted first, and then the interactive mode is called. 
+In the interactive mode, the regression domain is chosen by
+two mouse clicks with the left
+mouse; a right mouse click leaves the plot.
+</p>
+</td></tr>
+<tr valign="top"><td><code>pch</code></td>
+<td>
+<p>vector or scalar; sign by which data are plotted.</p>
+</td></tr>
+<tr valign="top"><td><code>cex</code></td>
+<td>
+<p>vector or scalar; size of <code>pch</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>cex.main</code></td>
+<td>
+<p>The size of the title in the regression plots.</p>
+</td></tr>
+<tr valign="top"><td><code>printlevel</code></td>
+<td>
+<p>integer. If <code>printlevel</code> is 0 nothing is
+printed. If <code>printlevel=1</code> error messages are printed. 
+If <code>printlevel=2</code> warnings and the regression results
+are given. If <code>printlevel&gt;2</code> tracing information is given.
+</p>
+</td></tr>
+<tr valign="top"><td><code>height</code></td>
+<td>
+<p>height of the graphics window</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>graphical arguments</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+ 
+<p>The function calculates the fractal dimension by various methods:
+</p>
+
+<ul>
+<li><p> variogram method
+
+
+</p>
+</li>
+<li><p> Fourier transform
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>The function returns a list with elements
+<code>vario</code>, 
+<code>fft</code> corresponding to
+the 2 methods given in the Details.
+</p>
+<p>Each of the elements is itself a list that contains the
+following elements.
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>the x-coordinates used for the regression fit</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>the y-coordinates used for the regression fit</p>
+</td></tr>
+<tr valign="top"><td><code>regr</code></td>
+<td>
+<p>the return list of the <code><a href="../../stats/html/lm.html">lm</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>sm</code></td>
+<td>
+<p>smoothed curve through the (x,y) points</p>
+</td></tr>
+<tr valign="top"><td><code>x.u</code></td>
+<td>
+<p><code>NULL</code> or the restricted x-coordinates given
+by the user in the interactive plot</p>
+</td></tr>
+<tr valign="top"><td><code>y.u</code></td>
+<td>
+<p><code>NULL</code> or y-coordinates according to <code>x.u</code></p>
+</td></tr>
+<tr valign="top"><td><code>regr.u</code></td>
+<td>
+<p><code>NULL</code> or the return list of
+<code><a href="../../stats/html/lm.html">lm</a></code> for <code>x.u</code> and <code>y.u</code></p>
+</td></tr>
+<tr valign="top"><td><code>D</code></td>
+<td>
+<p>the fractal dimension</p>
+</td></tr>
+<tr valign="top"><td><code>D.u</code></td>
+<td>
+<p><code>NULL</code> or the fractal dimension corresponding to the
+user's regression line</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+
+
+
+<p>variogram method
+</p>
+
+<ul>
+<li><p> Constantine, A.G. and Hall, P. (1994)
+Characterizing surface smoothness via estimation of effective
+fractal dimension. <em>J. R. Statist. Soc. Ser. B</em> <b>56</b>, 97-113.
+</p>
+</li></ul>
+
+
+
+
+
+
+
+
+
+<p>fft
+</p>
+
+<ul>
+<li><p> Chan, Hall and Poskitt (1995)
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>, <code><a href="RFhurst.html">RFhurst</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+x &lt;- seq(0, 10, 0.001)
+z &lt;- RFsimulate(RMexp(), x)
+RFfractaldim(data=z)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

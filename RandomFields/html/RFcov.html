@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: (Cross-)Covariance function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RFcov {RandomFields}"><tr><td>RFcov {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>(Cross-)Covariance function</h2>
+
+<h3>Description</h3>
+
+<p>Calculates both the empirical and the theoretical (cross-)covariance function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RFcov(model, x, y = NULL, z = NULL, T=NULL, grid, params, distances, dim, ...,
+      data, bin=NULL, phi=NULL, theta = NULL, deltaT = NULL, vdim=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>model,params</code></td>
+<td>
+<p> object of class  <code><a href="RMmodel-class.html">RMmodel</a></code>, <code><a href="RFformula.html">RFformula</a></code> or  <code><a href="../../stats/html/formula.html">formula</a></code>; best is to consider the examples below, first. <br /> The argument <code>params</code> is a list that specifies free parameters in a formula description, see <a href="RFformula.html">RMformula</a>. </p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>vector of x coordinates, or object of class <code><a href="../../sp/html/GridTopology-class.html">GridTopology</a></code> or <code><a href="../../raster/html/raster.html">raster</a></code>; for more options see <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>y,z</code></td>
+<td>
+<p>optional vectors of y (z) coordinates, which should not be given if <code>x</code> is a matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>T</code></td>
+<td>
+<p>optional vector of time coordinates, <code>T</code> must always be an equidistant vector. Instead of <code>T=seq(from=From, by=By, len=Len)</code>, one may also write <code>T=c(From, By, Len)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>grid</code></td>
+<td>
+<p>logical; the function finds itself the correct value in nearly all cases, so that usually <code>grid</code> need not be given. See also <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>matrix, data.frame or object of class <code><a href="RFsp-class.html">RFsp</a></code>; <br /> If a matrix is given the ordering of the colums is the following: space, time, multivariate, repetitions, i.e. the index for the space runs the fastest and that for repetitions the slowest.</p>
+</td></tr>
+<tr valign="top"><td><code>bin</code></td>
+<td>
+<p>a vector giving the borders of the bins; If not specified an array describing the empirical (pseudo-)(cross-) covariance function  in every direction is returned.</p>
+</td></tr>
+<tr valign="top"><td><code>phi</code></td>
+<td>
+<p>an integer defining the number of sectors one half of the X/Y plane shall be divided into. If not specified, either an array is returned (if bin missing) or isotropy is assumed (if bin specified).</p>
+</td></tr> 
+<tr valign="top"><td><code>theta</code></td>
+<td>
+<p>an integer defining the number of sectors one half of the X/Z plane shall be divided into. Use only for dimension <i>d=3</i> if phi is already specified.</p>
+</td></tr> 
+<tr valign="top"><td><code>deltaT</code></td>
+<td>
+<p>vector of length 2, specifying the temporal bins. The internal bin vector becomes <code>seq(from=0, to=deltaT[1], by=deltaT[2])</code></p>
+</td></tr>
+<tr valign="top"><td><code>distances,dim</code></td>
+<td>
+<p>another alternative for the argument <code>x</code> to pass the (relative) coordinates, see <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>vdim</code></td>
+<td>
+<p>the number of variables of a multivariate data set. If not given and <code>data</code> is an <code>RFsp</code> object created by <span class="pkg">RandomFields</span>, the information there is  taken from there. Otherwise <code>vdim</code> is assumed to be one. NOTE: still the argument <code>vdim</code> is an experimental stage.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>for advanced use: further options and control arguments for the simulation that are passed to and processed by <code><a href="RFoptions.html">RFoptions</a></code>. If <code>params</code> is given, then <code>...</code> may include also the variables used in <code>params</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+ <p><code><a href="RFcov.html">RFcov</a></code> computes the empirical
+cross-covariance function for given (multivariate) spatial data. 
+</p>
+<p>The empirical
+(cross-)covariance function of two random fields <i>X</i> and <i>Y</i> is given by 
+</p>
+<p style="text-align: center;"><i>&gamma;(r):=1/N(r)
+   &sum;_{(t_{i},t_{j})|t_{i,j}=r} (X(t_{i})Y(t_{j})) - m_{X} m_{Y}</i></p>
+
+<p>where <i>t_{i,j}:=t_{i}-t_{j}</i>, <i>N(r)</i>
+denotes the number of pairs of data points with distancevector
+<i>t_{i,j}=r</i> and where
+<i>m_{X} := \frac{1}{N(r)} &sum;_{(t_{i},t_{j})|t_{i,j}=r}
+  X_{t_{i}}</i> and <i>m_{Y} := 1/N(r) &sum;_{(t_{i},t_{j})|t_{i,j}=r}
+  Y_{t_{i}}</i> denotes the mean of data points with distancevector
+<i>t_{i,j}=r</i>.
+</p>
+<p>The spatial coordinates <code>x</code>, <code>y</code>, <code>z</code>
+should be vectors. For random fields of
+spatial dimension <i>d &gt; 3</i> write all vectors as columns of matrix x. In
+this case do neither use y, nor z and write the columns in
+<code>gridtriple</code> notation.
+</p>
+<p>If the data is spatially located on a grid a fast algorithm based on
+the fast Fourier transformed (fft) will be used.
+As advanced option the calculation method can also be changed for grid
+data (see <code><a href="RFoptions.html">RFoptions</a></code>.)
+</p>
+<p>It is also possible to use <code><a href="RFcov.html">RFcov</a></code> to calculate
+the pseudocovariance function (see <code><a href="RFoptions.html">RFoptions</a></code>).
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RFcov.html">RFcov</a></code> returns objects of class
+<code><a href="RFempVariog-class.html">RFempVariog</a></code>. 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Jonas Auel; Sebastian Engelke; Johannes Martini; Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+<p>Gelfand, A. E., Diggle, P., Fuentes, M. and Guttorp,
+P. (eds.) (2010) <em>Handbook of Spatial Statistics.</em>
+Boca Raton: Chapman &amp; Hall/CRL.
+</p>
+<p>Stein, M. L. (1999) <em>Interpolation of Spatial Data.</em>
+New York: Springer-Verlag 
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RFvariogram.html">RFvariogram</a></code>,
+<code><a href="RFmadogram.html">RFmadogram</a></code>,
+<code><a href="RMstable.html">RMstable</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+n &lt;- 1 ## use n &lt;- 2 for better results
+
+## isotropic model
+model &lt;- RMexp()
+x &lt;- seq(0, 10, 0.02)
+z &lt;- RFsimulate(model, x=x, n=n)
+emp.vario &lt;- RFcov(data=z)
+plot(emp.vario, model=model)
+
+
+## anisotropic model
+model &lt;- RMexp(Aniso=cbind(c(2,1), c(1,1)))
+x &lt;- seq(0, 10, 0.05)
+z &lt;- RFsimulate(model, x=x, y=x, n=n)
+emp.vario &lt;- RFcov(data=z, phi=4)
+plot(emp.vario, model=model)
+
+
+## space-time model
+model &lt;- RMnsst(phi=RMexp(), psi=RMfbm(alpha=1), delta=2)
+x &lt;- seq(0, 10, 0.05)
+T &lt;- c(0, 0.1, 100)
+z &lt;- RFsimulate(x=x, T=T, model=model, n=n)
+emp.vario &lt;- RFcov(data=z, deltaT=c(10, 1))
+plot(emp.vario, model=model, nmax.T=3)
+
+
+## multivariate model
+model &lt;- RMbiwm(nudiag=c(1, 2), nured=1, rhored=1, cdiag=c(1, 5), 
+                s=c(1, 1, 2))
+x &lt;- seq(0, 20, 0.1)
+z &lt;- RFsimulate(model, x=x, y=x, n=n)
+emp.vario &lt;- RFcov(data=z)
+plot(emp.vario, model=model)
+
+
+## multivariate and anisotropic model
+model &lt;- RMbiwm(A=matrix(c(1,1,1,2), nc=2),
+                nudiag=c(0.5,2), s=c(3, 1, 2), c=c(1, 0, 1))
+x &lt;- seq(0, 20, 0.1)
+dta &lt;- RFsimulate(model, x, x, n=n)
+ev &lt;- RFcov(data=dta, phi=4)
+plot(ev, model=model, boundaries=FALSE)
+
+
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

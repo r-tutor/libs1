@@ -12,11 +12,11 @@ output:
       countIncrementalSlides: false
 ---
 
+background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
+
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 ```
-
-background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
 
 ???
 
@@ -27,7 +27,7 @@ class: center, middle
 
 # xaringan
 
-### /ʃæ.'riŋ.ɡæn/
+### /ʃaː.'riŋ.ɡan/
 
 ---
 class: inverse, center, middle
@@ -364,11 +364,13 @@ This is invalid R code, so it is a plain fenced code block that is not executed.
 .pull-right[
 An example using `{{}}`:
 
-    `r ''````{r tidy=FALSE}
-    if (TRUE) {
-    *{{ message("Very important!") }}
-    }
-    ```
+````
+`r ''````{r tidy=FALSE}
+if (TRUE) {
+*{{ message("Very important!") }}
+}
+```
+````
 Output:
 ```{r tidy=FALSE}
 if (TRUE) {

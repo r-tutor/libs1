@@ -1,33 +1,50 @@
 RandomFields-package	RandomFields
+%%	QMath
+%%,ANY,RMmodel-method	QMath
+%%,RMmodel,ANY-method	QMath
 *	RMmult
+*,character,RMmodel-method	QMath
 *,logical,RMmodel-method	RMmodel-class
 *,numeric,RMmodel-method	RMmodel-class
+*,RMmodel,character-method	QMath
 *,RMmodel,logical-method	RMmodel-class
 *,RMmodel,numeric-method	RMmodel-class
 *,RMmodel,RMmodel-method	RMmodel-class
 +	RMplus
 ++	RMmppplus
++,character,RMmodel-method	QMath
++,data.frame,RMmodel-method	QMath
++,factor,RMmodel-method	QMath
 +,logical,RMmodel-method	RMmodel-class
 +,numeric,RMmodel-method	RMmodel-class
++,RMmodel,character-method	QMath
++,RMmodel,factor-method	QMath
++,RMmodel,list-method	QMath
 +,RMmodel,logical-method	RMmodel-class
 +,RMmodel,numeric-method	RMmodel-class
 +,RMmodel,RMmodel-method	RMmodel-class
 -	QMath
+-,character,RMmodel-method	QMath
 -,logical,RMmodel-method	RMmodel-class
 -,numeric,RMmodel-method	RMmodel-class
+-,RMmodel,character-method	QMath
 -,RMmodel,logical-method	RMmodel-class
 -,RMmodel,numeric-method	RMmodel-class
 -,RMmodel,RMmodel-method	RMmodel-class
 .RFfit	RFfit-class
 .RF_fit	RFfit-class
 /	QMath
+/,character,RMmodel-method	QMath
 /,logical,RMmodel-method	RMmodel-class
 /,numeric,RMmodel-method	RMmodel-class
+/,RMmodel,character-method	QMath
 /,RMmodel,logical-method	RMmodel-class
 /,RMmodel,numeric-method	RMmodel-class
 /,RMmodel,RMmodel-method	RMmodel-class
 abs	QMath
+abs,RMmodel-method	QMath
 acosh	QMath
+acosh,RMmodel-method	QMath
 Advanced RMmodels	RMmodelsAdvanced
 AIC,RFfit-method	RFfit-class
 AIC.RF_fit	RFfit-class
@@ -54,10 +71,16 @@ as.vector.RFpointsDataFrame	RFpointsDataFrame-class
 as.vector.RFspatialGridDataFrame	RFspatialGridDataFrame-class
 as.vector.RFspatialPointsDataFrame	RFspatialPointsDataFrame-class
 asin	QMath
+asin,RMmodel-method	QMath
 asinh	QMath
+asinh,RMmodel-method	QMath
 atan	QMath
+atan,RMmodel-method	QMath
 atan2	QMath
+atan2,ANY,RMmodel-method	QMath
+atan2,RMmodel,ANY-method	QMath
 atanh	QMath
+atanh,RMmodel-method	QMath
 Auxiliary Models	RMmodelsAuxiliary
 Auxiliary RMmodels	RMmodelsAuxiliary
 AuxiliaryModels	RMmodelsAuxiliary
@@ -67,7 +90,7 @@ bayesian	Bayesian
 Bayesian Modelling	Bayesian
 BIC,RFfit-method	RFfit-class
 BIC.RF_fit	RFfit-class
-BRmethods	BRspecific
+BRmethods	BRmethods
 Brown-Resnick	RPbrownresnick
 Brown-Resnick process	RPbrownresnick
 c	QMath
@@ -76,6 +99,9 @@ cbind.RFgridDataFrame	RFgridDataFrame-class
 cbind.RFpointsDataFrame	RFpointsDataFrame-class
 cbind.RFspatialGridDataFrame	RFspatialGridDataFrame-class
 cbind.RFspatialPointsDataFrame	RFspatialPointsDataFrame-class
+cbrt	QMath
+ceiling	QMath
+ceiling,RMmodel-method	QMath
 Changings	Changings
 changings	Changings
 checkExamples	internal
@@ -96,27 +122,31 @@ coerce,RFspatialPointsDataFrame,RFspatialGridDataFrame-method	RFspatialPointsDat
 coerce,SpatialGridDataFrame,RFspatialGridDataFrame-method	RFspatialGridDataFrame-class
 coerce,SpatialPointsDataFrame,RFspatialPointsDataFrame-method	RFspatialPointsDataFrame-class
 Coins	RPcoin
-CondSimu	obsolete
+CondSimu	obsolete2
 constants	RC
 contour.RFempVariog	RFfit-class
 contour.RFfit	RFfit-class
 contour.RFspatialGridDataFrame	plot-method
 conventional2RFspDataFrame	conventional2RFspDataFrame
 coordinate system	CoordinateSystems
+Coordinate systems	CoordinateSystems
 coordinate systems	CoordinateSystems
 coordinates	CoordinateSystems
 coord_units	Changings
 coregionalisation	RMmatrix
 coregionalization	RMmatrix
 cos	QMath
+cos,RMmodel-method	QMath
 cosh	QMath
-Covariance	obsolete
-CovarianceFct	obsolete
-CovMatrix	obsolete
+cosh,RMmodel-method	QMath
+Covariance	obsolete2
+CovarianceFct	obsolete2
+CovMatrix	obsolete2
 Cutoff	RPcirculant
-DeleteAllRegisters	obsolete
-DeleteRegister	obsolete
+DeleteAllRegisters	obsolete2
+DeleteRegister	obsolete2
 Dependencies	internal
+derivative	RMderiv
 dimensions,RFdataFrame-method	RFsp-class
 dimensions,RFgridDataFrame-method	RFgridDataFrame-class
 dimensions,RFpointsDataFrame-method	RFpointsDataFrame-class
@@ -124,29 +154,36 @@ dimensions,RFsp-method	RFsp-class
 dimensions,RFspatialDataFrame-method	RFsp-class
 dimensions,RFspatialGridDataFrame-method	RFspatialGridDataFrame-class
 dimensions,RFspatialPointsDataFrame-method	RFspatialPointsDataFrame-class
-Direct	RPsequential
-DoSimulateRF	obsolete
+Direct	RPdirect
+DoSimulateRF	obsolete2
 Earth models	RMmodelsSphere
 earth models	RMmodelsSphere
-EmpiricalVariogram	obsolete
+EmpiricalVariogram	obsolete2
+erf	QMath
+erfc	QMath
 error function model	RMbrownresnick
 exp	QMath
+exp,RMmodel-method	QMath
+exp2	QMath
 expm1	QMath
+expm1,RMmodel-method	QMath
 extremal Gaussian	RPschlather
 extremal Gaussian process	RPschlather
 extremal t	RPopitz
 extremal t process	RPopitz
 FinalizeExample	internal
 fitgauss	fitgauss
-fitvario	obsolete
+fitvario	obsolete2
 floor	QMath
-fractal.dim	obsolete
+floor,RMmodel-method	QMath
+fractal.dim	obsolete2
 gamma	QMath
 Gaussian	GaussianFields
-GaussRF	obsolete
+GaussRF	obsolete2
 GetModelList	PrintModelList
 GetModelNames	PrintModelList
 GKS11	weather
+gradient	RMderiv
 GridTopology2gridVectors,GridTopology-method	RFspatialGridDataFrame-class
 GridTopology2gridVectors,matrix-method	RFspatialGridDataFrame-class
 GSPSJ06	papers.GSPSJ06
@@ -156,42 +193,41 @@ hist.RFgridDataFrame	RFgridDataFrame-class
 hist.RFpointsDataFrame	RFpointsDataFrame-class
 hist.RFspatialGridDataFrame	RFspatialGridDataFrame-class
 hist.RFspatialPointsDataFrame	RFspatialPointsDataFrame-class
-hurst	obsolete
+hurst	obsolete2
 Hyperplane	RPhyperplane
 Hyperplanes	RPhyperplane
+hypot	QMath
 image,RMmodel-method	RMmodel-class
-InitGaussRF	obsolete
-InitMaxStableRF	obsolete
-InitSimulateRF	obsolete
+InitGaussRF	obsolete2
+InitMaxStableRF	obsolete2
+InitSimulateRF	obsolete2
 Intrinsic	RPcirculant
 Inverse multiquadric	RMmultiquad
-isGridded	RFsp-class
-isGridded,RFgridDataFrame-method	RFgridDataFrame-class
-isGridded,RFpointsDataFrame-method	RFpointsDataFrame-class
-isGridded,RFsp-method	RFsp-class
-isGridded,RFspatialGridDataFrame-method	RFspatialGridDataFrame-class
-isGridded,RFspatialPointsDataFrame-method	RFspatialPointsDataFrame-class
 jss14	papers.jss14
-Kriging	obsolete
+Kriging	obsolete2
 kriging	RFinterpolate
 lgamma	QMath
+lgamma,RMmodel-method	QMath
 lines,RMmodel-method	RMmodel-class
 lines.RMmodel	RMmodel-class
 log	QMath
+log,RMmodel-method	QMath
 log1p	QMath
+log1p,RMmodel-method	QMath
 log2	QMath
-logb	QMath
+log2,RMmodel-method	QMath
 logLik.RFfit	RFfit-class
 logLik.RF_fit	RFfit-class
 M2	RPsmith
 M3	RPsmith
+maintainers.machine	internal
 MajorRevisions	MajorRevisions
 math.c	QMath
 max	QMath
 Maxstable	RPmaxstable
 maxstable	RPmaxstable
 maxstableAdvanced	RPmaxstableAdvanced
-MaxStableRF	obsolete
+MaxStableRF	obsolete2
 min	QMath
 mixed moving maxima	RPsmith
 moving maxima	RPsmith
@@ -284,17 +320,19 @@ R.fmin	QMath
 R.fmod	QMath
 R.gamma	QMath
 R.hypot	QMath
+R.ilogb	QMath
 R.is	QMath
 R.lat	QMath
 R.lgamma	QMath
 R.log	QMath
 R.log1p	QMath
 R.log2	QMath
-R.logb	QMath
 R.lon	QMath
 R.minus	QMath
 R.models	QMath
 R.mult	QMath
+R.nextafter	QMath
+R.nexttoward	QMath
 R.p	QMath
 R.plus	QMath
 R.pow	QMath
@@ -314,10 +352,12 @@ range.RFspatialPointsDataFrame	RFspatialPointsDataFrame-class
 RC	RC
 RC_CARTESIAN_COORD	RC
 RC_DOMAIN_NAMES	RC
+RC_DOUBLEISOTROPIC	RC
 RC_EARTH_COORDS	RC
+RC_EARTH_ISOTROPIC	RC
 RC_GNOMONIC_PROJ	RC
-RC_ISONAMES	RC
 RC_ISOTROPIC	RC
+RC_ISO_NAMES	RC
 RC_LIKELIHOOD_NAMES	RC
 RC_MONOTONE_NAMES	RC
 RC_NLOPTR_NAMES	RC
@@ -325,13 +365,14 @@ RC_OPTIMISER_NAMES	RC
 RC_ORTHOGRAPHIC_PROJ	RC
 RC_SPACEISOTROPIC	RC
 RC_SPHERICAL_COORDS	RC
-RC_TYPENAMES	RC
+RC_TYPE_NAMES	RC
+RC_UNREDUCED	RC
 residuals,RFfit-method	RFfit-class
 RF	RF
 RFboxcox	RFboxcox
 RFcalc	QMath
 RFcov	RFcov
-RFcovmatrix	RFcov
+RFcovmatrix	RFcovmatrix
 RFcrossvalidate	RFcrossvalidate
 RFcrossvalidate.default	RFcrossvalidate
 RFdataFrame	RFsp-class
@@ -340,17 +381,18 @@ RFddistr	RFdistr
 RFdistr	RFdistr
 RFearth2cartesian	RMtrafo
 RFearth2dist	RMtrafo
-RFempiricalcovariance	RFempiricalcovariance
-RFempiricalmadogram	RFempiricalmadogram
-RFempiricalvariogram	RFempiricalvariogram
+RFempiricalcovariance	obsolete3
+RFempiricalmadogram	obsolete3
+RFempiricalvariogram	obsolete3
 RFempVariog-class	RFempVariog-class
-RFfctn	RFcov
+RFfctn	RFfctn
 RFfit	RFfit
 RFfit-class	RFfit-class
 RFfit.default	RFfit
 RFfitOptimiser	RFfitOptimiser
 RFfitoptimiser	RFfitOptimiser
 RFformula	RFformula
+RFformulaAdvanced	RFformulaAdvanced
 RFfractaldim	RFfractaldim
 RFfunction	RF
 RFfunctions	RF
@@ -373,13 +415,15 @@ RFinterpolate	RFinterpolate
 RFlikelihood	RFloglikelihood
 RFlinearpart	RFlinearpart
 RFloglikelihood	RFloglikelihood
+RFmadogram	RFmadogram
 RFmodel	RF
 RFmodels	RF
 RFoldstyle	RFoldstyle
+RFOPTIONS	RFoptions
 RFoptions	RFoptions
 RFoptionsAdvanced	RFoptionsAdvanced
 RFpar	RFpar
-RFparameters	obsolete
+RFparameters	obsolete2
 RFpdistr	RFdistr
 RFplotEmpVariogram	RFempVariog-class
 RFplotModel	RMmodel-class
@@ -387,7 +431,8 @@ RFplotSimulation	plot-method
 RFplotSimulation1D	plot-method
 RFpointsDataFrame	RFpointsDataFrame-class
 RFpointsDataFrame-class	RFpointsDataFrame-class
-RFpseudovariogram	RFcov
+RFpseudomadogram	RFpseudomadogram
+RFpseudovariogram	RFpseudovariogram
 RFqdistr	RFdistr
 RFratiotest	RFratiotest
 RFrdistr	RFdistr
@@ -412,7 +457,7 @@ RFspDataFrame2dataArray	RFsp-class
 RFspDataFrame2dataArray,RFgridDataFrame-method	RFgridDataFrame-class
 RFspDataFrame2dataArray,RFsp-method	RFsp-class
 RFspDataFrame2dataArray,RFspatialGridDataFrame-method	RFspatialGridDataFrame-class
-RFvariogram	RFcov
+RFvariogram	RFvariogram
 RF_fit-class	RFfit-class
 RM	RM
 RMangle	RMangle
@@ -427,24 +472,29 @@ RMbigneiting	RMbigneiting
 RMbistable	RMbistable
 RMbiwendland	RMbigneiting
 RMbiwm	RMbiwm
+RMblend	RMblend
 RMbr2bg	RMbr2bg
-RMbr2eg	RMbr2
+RMbr2eg	RMbr2eg
 RMbrownresnick	RMbrownresnick
+RMbubble	RMbubble
 RMcardinalsine	RMwave
 RMcauchy	RMcauchy
 RMcauchytbm	RMcauchytbm
 RMchoquet	RMchoquet
 RMcircular	RMcircular
 RMconstant	RMconstant
-RMcoord	RMcoord
+RMcov	RMcov
 RMcovariate	RMcovariate
+RMCOV_X	RMcov
 RMcoxisham	RMcoxisham
 RMcubic	RMcubic
 RMcurlfree	RMcurlfree
 RMcutoff	RMcutoff
 RMdagum	RMdagum
 RMdampedcos	RMdampedcos
+RMdeclare	RMdeclare
 RMdelay	RMdelay
+RMderiv	RMderiv
 RMdewijsian	RMdewijsian
 RMdivfree	RMdivfree
 RMeaxxa	RMeaxxa
@@ -456,6 +506,7 @@ RMfbm	RMfbm
 RMfixcov	RMfix
 RMfixed	RMfixed
 RMflatpower	RMoesting
+RMformula	RFformula
 RMfractdiff	RMfractdiff
 RMfractgauss	RMfractgauss
 RMgauss	RMgauss
@@ -469,6 +520,7 @@ RMhandcock	RMmatern
 RMhyperbolic	RMhyperbolic
 RMiaco	RMiaco
 RMid	RMid
+RMidmodel	RMidmodel
 RMintern	RMintern
 RMintexp	RMintexp
 RMintrinsic	RMintrinsic
@@ -495,6 +547,7 @@ RMmodelsMultivariate	RMmodelsMultivariate
 RMmodelsNonstationary	RMmodelsNonstatationary
 RMmodelsSpaceTime	RMmodelsSpaceTime
 RMmodelsSpacetime	RMmodelsSpaceTime
+RMmodelsSphere	RMmodelsSphere
 RMmodelsTailCorrelation	RMmodelsTailcorrelation
 RMmodelsTrend	RMmodelsTrend
 RMmppplus	RMmppplus
@@ -526,6 +579,8 @@ RMrational	RMrational
 RMrotat	RMrotat
 RMrotation	RMrotat
 RMS	RMS
+RMSadvanced	RMSadvanced
+RMscale	RMscale
 RMschlather	RMschlather
 RMschur	RMschur
 RMselect	RMintern
@@ -542,9 +597,9 @@ RMstatShape	RMintern
 RMstein	RMstein
 RMstp	RMstp
 RMstrokorb	RMstrokorb
-RMstrokorbBall	RMstrokorb
-RMstrokorbMono	RMstrokorb
-RMstrokorbPoly	RMstrokorb
+RMstrokorbBall	obsolete3
+RMstrokorbMono	obsolete3
+RMstrokorbPoly	obsolete3
 RMsum	RMsum
 RMtbm	RMtbm
 RMtent	RMaskey
@@ -556,26 +611,37 @@ RMvector	RMvector
 RMwave	RMwave
 RMwendland	RMgengneiting
 RMwhittle	RMmatern
+RM_COVARIATE	RMcovariate
+RM_DECLARE	RMdeclare
+RM_DEFAULT	internal
+RM_DISTR	RRdistr
 RM_modelFit-class	RMmodelExt-class
+RM_MULT	RMmult
+RM_NUGGET	RMnugget
+RM_PLUS	RMplus
+RM_TREND	RMtrend
+RM_USER	RMuser
 RO#	RMintern
 RO>	RMintern
 ROmissing	RMintern
 round	QMath
+round,RMmodel,missing-method	QMath
 RP	RP
 RPaverage	RPcoin
 RPbernoulli	RPbernoulli
-RPbrmixed	BRspecific
-RPbrorig	BRspecific
+RPbrmixed	BRmethods
+RPbrorig	BRmethods
 RPbrownresnick	RPbrownresnick
-RPbrshifted	BRspecific
+RPbrshifted	BRmethods
 RPchi2	RPchi2
 RPcirculant	RPcirculant
 RPcoins	RPcoin
 RPcutoff	RPcirculant
-RPdirect	RPsequential
+RPdirect	RPdirect
 RPgauss	RPgauss
 RPhyperplane	RPhyperplane
 RPintrinsic	RPcirculant
+RPloggaussnormed	BRmethods
 RPmaxstable	RPmaxstable
 RPmaxstableAdvanced	RPmaxstableAdvanced
 RPmodel	RP
@@ -628,8 +694,10 @@ show,RMmodelFit-method	RMmodelExt-class
 show,RMmodelgenerator-method	RMmodelgenerator-class
 showManpages	internal
 sin	QMath
+sin,RMmodel-method	QMath
 sine power function	RMsinepower
 sinh	QMath
+sinh,RMmodel-method	QMath
 Sobolev	RMmatern
 soil	soil
 sp2RF	sp2RF
@@ -640,6 +708,7 @@ sphere	RMmodelsSphere
 Spherical models	RMmodelsSphere
 spherical models	RMmodelsSphere
 sqrt	QMath
+sqrt,RMmodel-method	QMath
 SS12	papers.SS11
 StartExample	internal
 str.RMmodel	RMmodel-class
@@ -655,13 +724,16 @@ summary.RM_modelFit	RMmodelExt-class
 Tail correlation functions	RMmodelsTailcorrelation
 tail correlation functions	RMmodelsTailcorrelation
 tan	QMath
+tan,RMmodel-method	QMath
 tanh	QMath
+tanh,RMmodel-method	QMath
 Tbm	RPtbm
 tbmdim	Changings
 tcf	RMmodelsTailcorrelation
 trend	RMtrend
 trend modelling	RMmodelsTrend
 trunc	QMath
+trunc,RMmodel-method	QMath
 truncated power function	RMaskey
 variab_units	Changings
 variance,RFgridDataFrame-method	RFgridDataFrame-class
@@ -669,7 +741,7 @@ variance,RFpointsDataFrame-method	RFpointsDataFrame-class
 variance,RFsp-method	RFsp-class
 variance,RFspatialGridDataFrame-method	RFspatialGridDataFrame-class
 variance,RFspatialPointsDataFrame-method	RFspatialPointsDataFrame-class
-Variogram	obsolete
+Variogram	obsolete2
 weather	weather
 whittle-matern	RMmatern
 zenit	CoordinateSystems
@@ -720,8 +792,13 @@ zenit	CoordinateSystems
 [<-,RMmodelgenerator,ANY,ANY,ANY-method	RMmodelgenerator-class
 [<-,RMmodelgenerator,ANY,ANY-method	RMmodelgenerator-class
 [<-,RMmodelgenerator-method	RMmodelgenerator-class
+^	QMath
+^,ANY,RMmodel-method	QMath
+^,character,RMmodel-method	QMath
 ^,logical,RMmodel-method	RMmodel-class
 ^,numeric,RMmodel-method	RMmodel-class
+^,RMmodel,ANY-method	QMath
+^,RMmodel,character-method	QMath
 ^,RMmodel,logical-method	RMmodel-class
 ^,RMmodel,numeric-method	RMmodel-class
 ^,RMmodel,RMmodel-method	RMmodel-class

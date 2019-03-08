@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Quasi-arithmetic mean</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMqam {RandomFields}"><tr><td>RMqam {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Quasi-arithmetic mean</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMqam.html">RMqam</a></code> is a univariate stationary covariance model depending
+on a submodel <i>phi</i> such that
+<i>psi( . ) := phi(sqrt( . ))</i>
+is completely monotone, and depending on further stationary
+covariance models <i>C_i</i>. The covariance is given by
+</p>
+<p style="text-align: center;"><i>C(h)
+ = phi(sqrt(sum_i theta_i (phi^{-1}(C_i(h)))^2))</i></p>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+RMqam(phi, C1, C2, C3, C4, C5, C6, C7, C8, C9, theta, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>phi</code></td>
+<td>
+<p>a valid covariance <code><a href="RMmodel.html">RMmodel</a></code> that is a normal
+scale mixture. See, for instance,
+<br />
+<code><a href="RFgetModelNames.html">RFgetModelNames</a>(monotone="normal mixture")</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>C1, C2, C3, C4, C5, C6, C7, C8, C9</code></td>
+<td>
+<p>optional further univariate
+stationary <code><a href="RMmodel.html">RMmodel</a></code>s</p>
+</td></tr>
+<tr valign="top"><td><code>theta</code></td>
+<td>
+<p>a vector with positive entries</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any <code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Note that <i>psi( . ) :=
+ phi(sqrt( . ))</i> is completely monotone if and only if
+<i>phi</i> is a valid covariance function for all dimensions,
+e.g. <code><a href="RMstable.html">RMstable</a></code>, <code><a href="RMgauss.html">RMgauss</a></code>, <code><a href="RMexponential.html">RMexponential</a></code>.
+</p>
+<p>Warning: <code>RandomFields</code> cannot check whether the combination
+of <i>phi</i> and <i>C_i</i> is valid.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMqam.html">RMqam</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Porcu, E., Mateu, J. &amp; Christakos, G. (2007) Quasi-arithmetic
+means of covariance functions with potential applications to
+space-time data. Submitted to Journal of Multivariate Analysis.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmqam.html">RMmqam</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+model &lt;- RMqam(phi=RMgauss(), RMexp(), RMgauss(),
+               theta=c(0.3, 0.7), scale=0.5)
+x &lt;- seq(0, 10, 0.02)
+plot(model)
+plot(RFsimulate(model, x=x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

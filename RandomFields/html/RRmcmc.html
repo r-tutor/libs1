@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Random Sample From The Modulus Of A Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RRmcmc {RandomFields}"><tr><td>RRmcmc {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Random Sample From The Modulus Of A Function</h2>
+
+<h3>Description</h3>
+
+<p><code>RRmcmc</code> draws a random sample from the
+modulus of any given function (provided the integral is finite).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RRmcmc(phi, mcmc_n, sigma, normed, maxdensity, rand.loc, gibbs)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>phi</code></td>
+<td>
+<p>an arbitrary integrable function
+</p>
+</td></tr>
+<tr valign="top"><td><code>mcmc_n</code></td>
+<td>
+
+<p>positive integer. Every <code>mcmc_n</code>th element of the MCMC chain
+is returned.
+</p>
+</td></tr>
+<tr valign="top"><td><code>sigma</code></td>
+<td>
+<p>positive real number.
+The MCMC update is done by adding a normal variable with
+standard deviation <code>sigma</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>normed</code></td>
+<td>
+<p>logical.
+Only used if the value of the density is calculated.
+If <code>FALSE</code> the unnormed value given by <code>phi</code> is returned.
+</p>
+<p>Default: <code>FALSE</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>maxdensity</code></td>
+<td>
+<p>positive real number.
+The given density is truncated at <code>maxdensity</code>.
+</p>
+<p>Default: 1000.
+</p>
+</td></tr>
+<tr valign="top"><td><code>rand.loc</code></td>
+<td>
+<p>logical. Internal. Do not change the value.
+</p>
+<p>Default: <code>FALSE</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>gibbs</code></td>
+<td>
+<p>logical. If <code>TRUE</code> only one component is updated at a
+time.
+</p>
+<p>Default: <code>FALSE</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RRmcmc.html">RRmcmc</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The use of <code>RRmcmc</code> is completely on the risk of the user. There is no
+way to check whether the integral of the modulus is finite.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>,
+<a href="RR.html">RR</a>,
+<code><a href="RRdistr.html">RRdistr</a></code>,
+<code><a href="RMuser.html">RMuser</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+## here a model with random scale parameter
+
+## not exponential, but the Laplace distribution as symmetry is assumed
+z &lt;- RFrdistr(RRmcmc(RMexp(), sigma=1), n=10000, cores=1)
+hist(z, 100, freq=FALSE)
+curve(0.5 * exp(-abs(x)), add=TRUE, col="blue") ## Laplace distribution
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Interpolation methods</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RFinterpolate {RandomFields}"><tr><td>RFinterpolate {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Interpolation methods</h2>
+
+<h3>Description</h3>
+
+<p>The function allows for different methods of interpolation.
+Currently, only various kinds of kriging are installed.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RFinterpolate(model, x, y = NULL, z = NULL, T = NULL, grid=NULL,
+              distances, dim, data, given=NULL, params, err.model, err.params,
+              ignore.trend = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>model,params</code></td>
+<td>
+<p> object of class  <code><a href="RMmodel-class.html">RMmodel</a></code>, <code><a href="RFformula.html">RFformula</a></code> or  <code><a href="../../stats/html/formula.html">formula</a></code>; best is to consider the examples below, first. <br /> The argument <code>params</code> is a list that specifies free parameters in a formula description, see <a href="RFformula.html">RMformula</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>vector of x coordinates, or object of class <code><a href="../../sp/html/GridTopology-class.html">GridTopology</a></code> or <code><a href="../../raster/html/raster.html">raster</a></code>; for more options see <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>y,z</code></td>
+<td>
+<p>optional vectors of y (z) coordinates, which should not be given if <code>x</code> is a matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>T</code></td>
+<td>
+<p>optional vector of time coordinates, <code>T</code> must always be an equidistant vector. Instead of <code>T=seq(from=From, by=By, len=Len)</code>, one may also write <code>T=c(From, By, Len)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>grid</code></td>
+<td>
+<p>logical; the function finds itself the correct value in nearly all cases, so that usually <code>grid</code> need not be given. See also <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>distances,dim</code></td>
+<td>
+<p>another alternative for the argument <code>x</code> to pass the (relative) coordinates, see <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>matrix, data.frame or object of class <code><a href="RFsp-class.html">RFsp</a></code>; <br /> If a matrix is given the ordering of the colums is the following: space, time, multivariate, repetitions, i.e. the index for the space runs the fastest and that for repetitions the slowest.  If <code>given</code> is not given and <code>data</code> is a matrix or <code>data</code> is  a data.frame, <span class="pkg">RandomFields</span> tries to identify  where the data and the coordinates are, e.g. by names in formulae or by fixed names,  see <a href="CoordinateSystems.html">Coordinate systems</a>. See also <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.  If all fails, the first columns are interpreted as coordinate vectors, and the last column(s) as (multiple) measurement(s) of the field. Notes that also lists of data can be passed.
+</p>
+<p>If the argument
+<code>x</code> is missing,
+<code>data</code> may contain <code>NA</code>s, which are then replaced through imputing.
+</p>
+</td></tr>
+<tr valign="top"><td><code>given</code></td>
+<td>
+<p>optional, matrix or list.  If <code>given</code> matrix then the coordinates  can be given separately, namely by <code>given</code> where, in each row, a single location is given.<br />  If <code>given</code> is a  list, it may consist of <code>x</code>, <code>y</code>, <code>z</code>, <code>T</code>,  <code>grid</code>.<br />  If <code>given</code> is provided, <code>data</code> must be a matrix or an array containing the data only. </p>
+</td></tr>
+<tr valign="top"><td><code>err.model,err.params</code></td>
+<td>
+<p>For conditional simulation and random imputing
+only. <br />In case of (assumed) error-free measurements (which is mostly the case in geostatistics) the argument <code>err.model</code> is not given. In case of measurement errors we have  <code>err.model=RMnugget(var=var)</code>.<br /> <code>err.param</code> plays the same role as <code>params</code> for <code>model</code>.</p>
+</td></tr> 
+<tr valign="top"><td><code>ignore.trend</code></td>
+<td>
+<p>logical. If <code>TRUE</code> only the
+covariance model of the given model is considered, without the trend
+part.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>for advanced use: further options and control arguments for the simulation that are passed to and processed by <code><a href="RFoptions.html">RFoptions</a></code>. If <code>params</code> is given, then <code>...</code> may include also the variables used in <code>params</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>In case of repeated data, they are kriged 
+<em>separately</em>; if the argument <code>x</code> is missing,
+<code>data</code> may contain <code>NA</code>s, which are then replaced by
+the kriged values (imputing); 
+</p>
+<p>In case of intrinsic cokriging (intrinsic kriging for multivariate
+random fields) the pseudo-cross-variogram is used (cf. Ver Hoef and
+Cressie, 1991).
+</p>
+
+
+<h3>Value</h3>
+
+<p>The value depends on the additional argument <code>variance.return</code>,
+see <code><a href="RFoptions.html">RFoptions</a></code>. 
+</p>
+<p>If <code>variance.return=FALSE</code> (default), <code>Kriging</code> returns a
+vector or matrix of kriged values corresponding to the
+specification of <code>x</code>, <code>y</code>, <code>z</code>, and
+<code>grid</code>, and <code>data</code>.<br />
+</p>
+<p><code>data</code>: a vector or matrix with <em>one</em> column<br />
+* <code>grid=FALSE</code>. A vector of simulated values is
+returned (independent of the dimension of the random field)<br />
+* <code>grid=TRUE</code>. An array of the dimension of the
+random field is returned (according to the specification
+of <code>x</code>, <code>y</code>, and <code>z</code>).<br />
+</p>
+<p><code>data</code>: a matrix with <em>at least two</em> columns<br />
+* <code>grid=FALSE</code>. A matrix with the <code>ncol(data)</code> columns
+is returned.<br />
+* <code>grid=TRUE</code>. An array of dimension
+<i>d+1</i>, where <i>d</i> is the dimension of
+the random field, is returned (according to the specification
+of <code>x</code>, <code>y</code>, and <code>z</code>). The last
+dimension contains the realisations.
+</p>
+<p>If <code>variance.return=TRUE</code>, a list of two elements, <code>estim</code> and
+<code>var</code>, i.e. the kriged field and the kriging variances,
+is returned. The format of <code>estim</code> is the same as described
+above. The format of <code>var</code> is accordingly.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Important options are
+</p>
+
+<ul>
+<li> <p><code>method</code> (overwriting the automatically detected variant
+of kriging)
+</p>
+</li>
+<li> <p><code>return_variance</code> (returning also the kriging variance)
+</p>
+</li>
+<li> <p><code>locmaxm</code> (maximum number of conditional values before
+neighbourhood kriging is performed)
+</p>
+</li>
+<li> <p><code>fillall</code> imputing estimates location by default
+</p>
+</li>
+<li> <p><code>varnames</code> and <code>coordnames</code> in case
+<code>data.frame</code>s are used to tell which column contains the data
+and the coordinates, respectively.
+</p>
+</li></ul>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a>; Marco Oesting, <a href="mailto:oesting@mathematik.uni-siegen.de">oesting@mathematik.uni-siegen.de</a>, <a href="https://www.uni-siegen.de/fb6/src/scheffler/mitarbeiter/oesting">https://www.uni-siegen.de/fb6/src/scheffler/mitarbeiter/oesting</a>
+</p>
+
+
+<h4>Author(s) of the code:</h4>
+
+ <p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a>; Alexander Malinowski; Marco Oesting, <a href="mailto:oesting@mathematik.uni-siegen.de">oesting@mathematik.uni-siegen.de</a>, <a href="https://www.uni-siegen.de/fb6/src/scheffler/mitarbeiter/oesting">https://www.uni-siegen.de/fb6/src/scheffler/mitarbeiter/oesting</a></p>
+
+
+
+<h3>References</h3>
+
+<p>Chiles, J.-P. and Delfiner, P. (1999)
+<em>Geostatistics. Modeling Spatial Uncertainty.</em>
+New York: Wiley.
+</p>
+<p>Cressie, N.A.C. (1993)
+<em>Statistics for Spatial Data.</em>
+New York: Wiley.
+</p>
+<p>Goovaerts, P. (1997) <em>Geostatistics for Natural Resources
+Evaluation.</em> New York: Oxford University Press.
+</p>
+<p>Ver Hoef, J.M. and Cressie, N.A.C. (1993)
+Multivariate Spatial Prediction.
+<em>Mathematical Geology</em> <b>25</b>(2), 219-240.
+</p>
+<p>Wackernagel, H. (1998) <em>Multivariate Geostatistics.</em> Berlin:
+Springer, 2nd edition. 
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFvariogram.html">RFvariogram</a></code>,
+<code><a href="RandomFields.html">RandomFields</a></code>,
+</p>
+
+
+<h3>Examples</h3>
+
+<pre> 
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+## Preparation of graphics
+dev.new(height=7, width=16) 
+
+## creating random variables first
+## here, a grid is chosen, but does not matter
+p &lt;- 3:8
+points &lt;- as.matrix(expand.grid(p,p))
+model &lt;- RMexp() + RMtrend(mean=1)
+dta &lt;- RFsimulate(model, x=points)
+plot(dta)
+x &lt;- seq(0, 9, 0.25)
+
+
+## Simple kriging with the exponential covariance model
+model &lt;- RMexp()
+z &lt;- RFinterpolate(model, x=x, y=x, data=dta)
+plot(z, dta)
+
+## Simple kriging with mean=4 and scaled covariance
+model &lt;- RMexp(scale=2) + RMtrend(mean=4)
+z &lt;- RFinterpolate(model, x=x, y=x, data=dta)
+plot(z, dta)
+
+## Ordinary kriging
+model &lt;- RMexp() + RMtrend(mean=NA)
+z &lt;- RFinterpolate(model, x=x, y=x, data=dta)
+plot(z, dta)
+
+
+
+## Co-Kriging
+n &lt;- 100
+x &lt;- runif(n=n, min=1, max=50)
+y &lt;- runif(n=n, min=1, max=50)
+
+
+
+rho &lt;- matrix(nc=2, c(1, -0.8, -0.8, 1))
+model &lt;- RMparswmX(nudiag=c(0.5, 0.5), rho=rho)
+
+## generation of artifical data
+data &lt;- RFsimulate(model = model, x=x, y=y, grid=FALSE)
+## introducing some NAs ...
+print(data)
+len &lt;- length(data)
+data@data$variable1[1:(len / 10)] &lt;- NA
+data@data$variable2[len - (0:len / 100)] &lt;- NA
+print(data)
+plot(data)
+
+## co-kriging
+x &lt;- y &lt;- seq(0, 50, 1)
+
+k &lt;- RFinterpolate(model, x=x, y=y, data= data)
+plot(k, data)
+
+## conditional simulation
+z &lt;- RFsimulate(model, x=x, y=y, data= data) ## takes some time
+plot(z, data)
+
+
+
+
+
+
+
+
+close.screen(all = TRUE)
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

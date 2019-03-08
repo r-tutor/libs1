@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Gneiting-Wendland Covariance Models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMbigneiting {RandomFields}"><tr><td>RMbigneiting {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Gneiting-Wendland Covariance Models</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMbigneiting.html">RMbigneiting</a></code> is a bivariate stationary isotropic covariance
+model family whose elements 
+are specified by seven parameters.
+</p>
+<p>Let </p>
+<p style="text-align: center;"><i>&delta;_{ij} = &mu; + &gamma;_{ij} + 1.</i></p>
+
+<p>Then, 
+</p>
+<p style="text-align: center;"><i>
+ C_{n}(h) = c_{ij} (C_{n, &delta;} (h / s_{ij}))_{i,j=1,2}
+ </i></p>
+
+<p>and <i> C_{n, &delta;} </i>
+is the generalized Gneiting model
+with parameters <i>n</i> and <i>&delta;</i>, see
+<code><a href="RMgengneiting.html">RMgengneiting</a></code>, i.e.,
+</p>
+<p style="text-align: center;"><i> 
+ C_{&kappa;=0, &delta;}(r) = (1 - r)^&beta; 1_{[0,1]}(r), &beta;=&delta; + 2&kappa; + 1/2;</i></p>
+
+<p style="text-align: center;"><i>
+ C_{&kappa;=1, &delta;}(r) = (1+ &beta; r)(1-r)^&beta; 1_{[0,1]}(r),
+ &beta; = &delta; + 2&kappa; + 1/2;</i></p>
+ 
+<p style="text-align: center;"><i>
+ C(_{&kappa;=2, &delta;}(r) = (1 + &beta; r + (&beta;^2-1) r^(2)/3)(1-r)^&beta;
+ 1_{[0,1]}(r), &beta; = &delta; + 2&kappa; + 1/2;</i></p>
+ 
+<p style="text-align: center;"><i>
+ C_{&kappa;=3, &delta;}(r) = (1 + &beta; r + (2 &beta;^2-3 )r^(2)/5+(&beta;^2 - 4) &beta;
+ r^(3)/15)(1-r)^&beta; 1_{[0,1]}(r), &beta;=&delta; + 2&kappa; + 1/2.</i></p>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+RMbigneiting(kappa, mu, s, sred12, gamma, cdiag, rhored, c, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>kappa</code></td>
+<td>
+<p>argument that chooses between the four different covariance
+models and may take values <i>0,...,3</i>.
+The model is <i>k</i> times
+differentiable.</p>
+</td></tr>
+<tr valign="top"><td><code>mu</code></td>
+<td>
+<p><code>mu</code> has to be greater than or equal to
+<i>d/2</i> where <i>d</i> is the (arbitrary)
+dimension of the random field.</p>
+</td></tr>
+<tr valign="top"><td><code>s</code></td>
+<td>
+<p>vector of two elements giving the scale of the models on the
+diagonal, i.e. the vector <i>(s_{11}, s_{22})</i>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>sred12</code></td>
+<td>
+<p>value in <i>[-1,1]</i>. The scale on the offdiagonals is
+given by <i>s_{12} = s_{21} =</i>
+<code>sred12 *</code>
+<i>min{s_{11}, s_{22}}</i>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>gamma</code></td>
+<td>
+<p>a vector of length 3 of numerical values; each entry is
+positive.
+The vector <code>gamma</code> equals
+<i>(&gamma;_{11},&gamma;_{21},&gamma;_{22})</i>.
+Note that <i>&gamma;_{12} =&gamma;_{21}</i>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>cdiag</code></td>
+<td>
+<p>a vector of length 2 of numerical values; each entry
+positive; the vector <i>(c_{11},c_{22})</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>c</code></td>
+<td>
+<p>a vector of length 3 of numerical values;
+the vector <i>(c_{11}, c_{21}, c_{22})</i>.
+Note that <i>c_{12}= c_{21}</i>.
+</p>
+<p>Either 
+<code>rhored</code> and <code>cdiag</code> or <code>c</code> must be given.
+</p>
+</td></tr>
+<tr valign="top"><td><code>rhored</code></td>
+<td>
+<p>value in <i>[-1,1]</i>.
+See
+also the Details for the corresponding value of <i>c_{12}=c_{21}</i>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A sufficient condition for the
+constant <i>c_{ij}</i> is
+</p>
+<p style="text-align: center;"><i>
+ c_{ij} = &rho;_r m (c_{11} c_{22})^{1/2}
+ </i></p>
+
+<p>where <i>&rho;_r in [-1,1]</i>.
+</p>
+<p>The constant <i>m</i> in the formula above is obtained as follows:
+</p>
+<p style="text-align: center;"><i>m = min{1, m_{-1}, m_{+1}}</i></p>
+
+<p>Let
+</p>
+<p style="text-align: center;"><i>a = 2 &gamma;_{12} - &gamma;_{11} -&gamma;_{22}</i></p>
+
+<p style="text-align: center;"><i>b = -2 &gamma;_{12} (s_{11} + s_{22}) + &gamma;_{11} (s_{12} +
+ s_{22}) + &gamma;_{22} (s_{12} + s_{11})</i></p>
+
+<p style="text-align: center;"><i>e = 2 &gamma;_{12} s_{11}s_{22} - &gamma;_{11}s_{12}s_{22} -
+ &gamma;_{22}s_{12}s_{11}</i></p>
+
+<p style="text-align: center;"><i>d = b^2 - 4ae</i></p>
+
+<p style="text-align: center;"><i>t_j =(-b + j &radic; d) / (2 a) </i></p>
+
+<p>If <i>d &ge;0</i> and <i>t_j in (0, s_{12})^c</i> then <i>m_j=&infin;</i> else
+</p>
+<p style="text-align: center;"><i>
+ m_j =
+ \frac{(1 - t_j/s_{11})^{&gamma;_{11}}(1 -
+ t_j/s_{22})^{&gamma;_{22}}}{(1 - t_j/s_{12})^{2 &gamma;_{11}}
+ }{
+ m_j = (1 - t_j/s_{11})^{&gamma;_{11}} (1 -
+ t_j/s_{22})^{&gamma;_{22}} / (1 - t_j/s_{12})^{2 &gamma;_{11}}
+ }
+ </i></p>
+
+<p>In the function <code><a href="RMbigneiting.html">RMbigneiting</a></code>, either <code>c</code> is
+passed, then the above condition is checked, or <code>rhored</code> is passed;
+then <i>c_{12}</i> is calculated by the above formula.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMbigneiting.html">RMbigneiting</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Bevilacqua, M., Daley, D.J., Porcu, E., Schlather, M. (2012)
+Classes of compactly supported correlation functions for multivariate
+random fields. Technical report.
+</p>
+<p><code>RMbigeneiting</code> is based on this original work.
+D.J. Daley, E. Porcu and M. Bevilacqua have published end of 
+2014 an article intentionally
+without clarifying the genuine authorship of <code>RMbigneiting</code>,
+in particular,
+neither referring to this original work nor to <span class="pkg">RandomFields</span>,
+which has included <code>RMbigneiting</code> since version 3.0.5 (05 Dec
+2013).
+</p>
+</li>
+<li><p> Gneiting, T. (1999)
+Correlation functions for atmospherical data analysis.
+<em>Q. J. Roy. Meteor. Soc</em> Part A <b>125</b>, 2449-2464.
+</p>
+</li>
+<li><p> Wendland, H. (2005) <em>Scattered Data Approximation.</em>
+Cambridge Monogr. Appl. Comput. Math.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMaskey.html">RMaskey</a></code>,
+<code><a href="RMbiwm.html">RMbiwm</a></code>,
+<code><a href="RMgengneiting.html">RMgengneiting</a></code>,
+<code><a href="RMgneiting.html">RMgneiting</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+
+model &lt;- RMbigneiting(kappa=2, mu=0.5, gamma=c(0, 3, 6), rhored=1)
+x &lt;- seq(0, 10, 0.02)
+plot(model)
+plot(RFsimulate(model, x=x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

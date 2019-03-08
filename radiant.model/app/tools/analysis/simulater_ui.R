@@ -2,23 +2,18 @@
 ## Simulate data
 #######################################
 
-####
-####
-####
+#### Add a "function" input for custom functions
+#### This should produce named functions in Report > Rmd
+#### that are passed to the simulation and repeat calls
+#### Perhaps use an environment instead of a list when you
+#### setup a simulation
+
 #### Try putting all input$sim_... and input$rep_... into a list
 #### so you can have multiple simulations in the state file and
 #### can restore them in the GUI
 #### This should be similar to the dtree setup
 ####
 #### Also checkout https://github.com/daattali/advanced-shiny/tree/master/update-input0
-####
-####
-
-# sim_types <- c(
-#   "Binomial" = "binom", "Constant" = "const", "Discrete" = "discrete",
-#   "Log normal" = "lnorm", "Normal" = "norm", "Uniform" = "unif",
-#   "Data" = "data", "Grid search" = "grid", "Sequence" = "sequ"
-# )
 
 sim_types <- list(
   `Probability distributions` = c(
@@ -97,8 +92,16 @@ rep_plot_inputs <- reactive({
 
 textinput_maker <- function(
   id = "const", lab = "Constant", rows = 3, pre = "sim_",
-  placeholder = "Provide values in the input boxes above and then press the + symbol"
+  placeholder = "Provide values in the input boxes above and then press the + symbol",
+  allow_tab = TRUE
+
 ) {
+
+  if (allow_tab) {
+    onkeydown <- ""
+  } else {
+    onkeydown <- "if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}"
+  }
 
   ## avoid all sorts of 'helpful' behavior from your browser
   ## based on https://stackoverflow.com/a/35514029/1974918
@@ -112,7 +115,8 @@ textinput_maker <- function(
     autocorrect = "off",
     autocapitalize = "off",
     spellcheck = "false",
-    class = "form-control"
+    class = "form-control",
+    onkeydown = onkeydown
   )
 }
 
@@ -158,6 +162,7 @@ output$ui_rep_vars <- renderUI({
     svars <- c()
     for (i in 1:length(s)) {
       if (grepl("^\\s*#", s[[i]][1])) next
+      if (grepl("\\s*<-\\s*function\\s*\\(", s[[i]][1])) next
       if (grepl(s[[i]][1], s[[i]][2])) next
       svars <- c(svars, s[[i]][1])
     }
@@ -229,7 +234,7 @@ output$ui_rep_fun <- renderUI({
 
 var_updater <- function(variable, var_str, var_inputs) {
   if (is.null(variable) || variable == 0) return()
-  if (any(is.na(var_inputs))) {
+  if (is_empty(var_inputs[1]) || any(is.na(var_inputs[-1]))) {
     showModal(
       modalDialog(
         title = "Inputs required",
@@ -240,11 +245,11 @@ var_updater <- function(variable, var_str, var_inputs) {
       )
     )
   } else {
+    var_inputs[1] <- fix_names(var_inputs[1])
     inp <- paste(var_inputs, collapse = " ")
     if (is_empty(input[[var_str]])) {
       val <- paste0(inp, ";")
     } else {
-      # val <- paste0(inp, ";\n", input[[var_str]])
       val <- paste0(input[[var_str]], "\n", inp, ";")
     }
 
@@ -256,7 +261,6 @@ var_remover <- function(variable) {
   input[[variable]] %>%
     strsplit("\n") %>%
     unlist() %>%
-    # .[-1] %>%
     head(., -1) %>%
     paste0(collapse = "\n") %>%
     updateTextInput(session = session, variable, value = .)
@@ -567,7 +571,11 @@ output$ui_simulater <- renderUI({
           td(textInput("sim_name", "Simulated data:", state_init("sim_name", "simdat"))),
           td(numericInput("sim_dec", label = "Decimals:", value = state_init("sim_dec", 4), min = 0, width = "95px"))
         )),
-        checkboxInput("sim_show_plots", "Show plots", state_init("sim_show_plots", FALSE))
+        with(tags, table(
+          td(checkboxInput("sim_add_functions", "Add functions", state_init("sim_add_functions", FALSE))),
+          td(HTML("&nbsp; &nbsp;")),
+          td(checkboxInput("sim_show_plots", "Show plots", state_init("sim_show_plots", FALSE)))
+        ))
       ),
       help_and_report(
         modal_title = "Simulate", fun_name = "simulater",
@@ -615,7 +623,11 @@ output$ui_simulater <- renderUI({
           td(textInput("rep_name", "Repeat data:", state_init("rep_name", "repdat"))),
           td(numericInput("rep_dec", label = "Decimals:", value = state_init("rep_dec", 4), min = 0, max = 10, width = "95px"))
         )),
-        checkboxInput("rep_show_plots", "Show plots", state_init("rep_show_plots", FALSE))
+        with(tags, table(
+          # td(checkboxInput("rep_add_functions", "Add functions", state_init("rep_add_functions", FALSE))),
+          # td(HTML("&nbsp; &nbsp;")),
+          td(checkboxInput("rep_show_plots", "Show plots", state_init("rep_show_plots", FALSE)))
+        ))
       ),
       help_and_report(
         modal_title = "Repeat simulation", fun_name = "repeater",
@@ -647,10 +659,39 @@ output$simulater <- renderUI({
     tabPanel(
       "Simulate",
       HTML("<label>Simulation formulas:</label>"),
-      textinput_maker(
-        "form", "Formula",
-        rows = 5,
-        placeholder = "Use formulas to perform calculations on simulated variables (e.g., demand = 5 * price). Press the Simulate button to run the simulation. Click the ? icon on the bottom left of your screen for help and examples"
+      shinyAce::aceEditor(
+        "sim_form",
+        mode = "r",
+        theme = getOption("radiant.ace_theme", default = "tomorrow"),
+        wordWrap = TRUE,
+        height = "120px",
+        value = state_init("sim_form", "##  Use formulas to perform calculations on simulated variables (e.g., demand = 5 * price). Press the Simulate button to run the simulation. Click the ? icon on the bottom left of your screen for help and examples") %>% fix_smart(),
+        vimKeyBinding = getOption("radiant.ace_vim.keys", default = FALSE),
+        tabSize = getOption("radiant.ace_tabSize", 2),
+        useSoftTabs = getOption("radiant.ace_useSoftTabs", TRUE),
+        showInvisibles = getOption("radiant.ace_showInvisibles", FALSE),
+        autoScrollEditorIntoView = TRUE,
+        minLines = 7,
+        maxLines = 20
+      ),
+      conditionalPanel(
+        "input.sim_add_functions == true",
+        HTML("</br><label>Simulation functions:</label>"),
+        shinyAce::aceEditor(
+          "sim_funcs",
+          mode = "r",
+          theme = getOption("radiant.ace_theme", default = "tomorrow"),
+          wordWrap = TRUE,
+          height = "120px",
+          value = state_init("sim_funcs", "## Create your own R functions (e.g., add = function(x, y) {x + y}). Call these functions in the 'formula' input and press the Simulate button to run the simulation. Click the ? icon on the bottom left of your screen for help and examples") %>% fix_smart(),
+          vimKeyBinding = getOption("radiant.ace_vim.keys", default = FALSE),
+          tabSize = getOption("radiant.ace_tabSize", 2),
+          useSoftTabs = getOption("radiant.ace_useSoftTabs", TRUE),
+          showInvisibles = getOption("radiant.ace_showInvisibles", FALSE),
+          autoScrollEditorIntoView = TRUE,
+          minLines = 7,
+          maxLines = 20
+        )
       ),
       HTML("</br><label>Simulation summary:</label>"),
       verbatimTextOutput("summary_simulate"),
@@ -664,10 +705,39 @@ output$simulater <- renderUI({
     tabPanel(
       "Repeat",
       HTML("<label>Repeated simulation formulas:</label>"),
-      textinput_maker(
-        "form", "Rformula",
-        rows = 5, pre = "rep_",
-        placeholder = "Press the Repeat button to repeat the simulation specified in the Simulate tab. Use formulas to perform additional calculations on the repeated simulation data. Click the ? icon on the bottom left of your screen for help and examples"
+      shinyAce::aceEditor(
+        "rep_form",
+        mode = "r",
+        theme = getOption("radiant.ace_theme", default = "tomorrow"),
+        wordWrap = TRUE,
+        height = "120px",
+        value = state_init("rep_form", "## Press the Repeat button to repeat the simulation specified in the Simulate tab. Use formulas to perform additional calculations on the repeated simulation data. Click the ? icon on the bottom left of your screen for help and examples") %>% fix_smart(),
+        vimKeyBinding = getOption("radiant.ace_vim.keys", default = FALSE),
+        tabSize = getOption("radiant.ace_tabSize", 2),
+        useSoftTabs = getOption("radiant.ace_useSoftTabs", TRUE),
+        showInvisibles = getOption("radiant.ace_showInvisibles", FALSE),
+        autoScrollEditorIntoView = TRUE,
+        minLines = 7,
+        maxLines = 20
+      ),
+      conditionalPanel(
+        "input.rep_add_functions == true",
+        HTML("</br><label>Repeated simulation functions:</label>"),
+        shinyAce::aceEditor(
+          "rep_funcs",
+          mode = "r",
+          theme = getOption("radiant.ace_theme", default = "tomorrow"),
+          wordWrap = TRUE,
+          height = "120px",
+          value = state_init("rep_funcs", "## Create R functions to perform calculations (e.g., add = function(x, y) {x + y}). You can then call these functions in the 'formula' input. Press the Repeat button to repeat the simulation specified in the Simulate tab. Use functions to perform additional calculations on the repeated simulation data. Click the ? icon on the bottom left of your screen for help and examples") %>% fix_smart(),
+          vimKeyBinding = getOption("radiant.ace_vim.keys", default = FALSE),
+          tabSize = getOption("radiant.ace_tabSize", 2),
+          useSoftTabs = getOption("radiant.ace_useSoftTabs", TRUE),
+          showInvisibles = getOption("radiant.ace_showInvisibles", FALSE),
+          autoScrollEditorIntoView = TRUE,
+          minLines = 7,
+          maxLines = 20
+        )
       ),
       HTML("</br><label>Repeated simulation summary:</label>"),
       verbatimTextOutput("summary_repeat"),
@@ -696,20 +766,21 @@ output$simulater <- renderUI({
       "No formulas or simulated variables specified"
     )
   )
-  withProgress(message = "Running simulation", value = 1, {
-    sim <- do.call(simulater, sim_inputs())
+  fixed <- fix_names(input$sim_name)
+  updateTextInput(session, "sim_name", value = fixed)
+  withProgress(message = "Running simulation", value = 0.5, {
+   inp <- sim_inputs()
+    inp$name <- fixed
+    sim <- do.call(simulater, inp)
     if (is.data.frame(sim)) {
-      r_data[[input$sim_name]] <- sim
-      register(input$sim_name)
+      r_data[[fixed]] <- sim
+      register(fixed)
     }
     sim
   })
 })
 
-.summary_simulate <- eventReactive({
-  input$sim_run
-  input$sim_dec
-}, {
+.summary_simulate <- eventReactive({c(input$sim_run, input$sim_dec)}, {
   if (not_pressed(input$sim_run)) {
     "** Press the Run simulation button to simulate data **"
   } else {
@@ -721,7 +792,6 @@ sim_plot_width <- function() 650
 sim_plot_height <- function() {
   sim <- .simulater()
   if (is.character(sim)) {
-    # if (sim[1] == "error") return(300)
     300
   } else {
     if (dim(sim)[1] == 0) {
@@ -730,17 +800,6 @@ sim_plot_height <- function() {
       ceiling(sum(sapply(sim, does_vary)) / 2) * 300
     }
   }
-  # if (is.character(sim)) {
-  #   if (sim[1] == "error") return(300)
-  #   # sim <- get_data(sim)
-  #   if (dim(sim)[1] == 0) {
-  #     300
-  #   } else {
-  #     ceiling(sum(sapply(sim, does_vary)) / 2) * 300
-  #   }
-  # } else {
-    # 300
-  # }
 }
 
 .plot_simulate <- eventReactive(input$sim_run, {
@@ -752,28 +811,25 @@ sim_plot_height <- function() {
 })
 
 .repeater <- eventReactive(input$rep_run, {
-  withProgress(message = "Running repeated simulation", value = 1, {
-    rep <- do.call(repeater, rep_inputs())
-    if (is.data.frame(rep)) {
-      r_data[[input$rep_name]] <- rep
-      register(input$rep_name)
-    }
-    rep
-  })
+  fixed <- fix_names(input$rep_name)
+  updateTextInput(session, "rep_name", value = fixed)
+  inp <- rep_inputs()
+  inp$name <- fixed
+  rep <- do.call(repeater, inp)
+  if (is.data.frame(rep)) {
+    r_data[[fixed]] <- rep
+    register(fixed)
+  }
+  rep
 })
 
-.summary_repeat <- eventReactive({
-  input$rep_run
-  input$rep_dec
-}, {
+.summary_repeat <- eventReactive({c(input$rep_run, input$rep_dec)}, {
   if (not_pressed(input$rep_run)) {
     "** Press the Repeat simulation button **"
   } else if (length(input$rep_sum_vars) == 0) {
     "Select at least one Output variable"
   } else if (input$rep_byvar == "sim" && is_empty(input$rep_nr)) {
     "Please specify the number of repetitions in '# reps'"
-  } else if (input$rep_byvar == "rep" && is_empty(input$rep_grid)) {
-    "Specify one or more constants in the Grid search input"
   } else {
     summary(.repeater(), dec = input$rep_dec)
   }
@@ -827,6 +883,9 @@ observeEvent(input$simulater_report, {
 
   ## report cleaner turns seed and nr into strings
   inp <- clean_args(sim_inputs(), sim_args) %>% lapply(report_cleaner)
+  sim_name <- fix_names(input$sim_name)
+  updateTextInput(session, "sim_name", value = sim_name)
+
   if (!is_empty(inp$seed)) inp$seed <- as_numeric(inp$seed)
   if (!is_empty(inp$nr)) inp$nr <- as_numeric(inp$nr)
   if (!"norm" %in% names(inp)) {
@@ -840,20 +899,43 @@ observeEvent(input$simulater_report, {
       inp[[i]] <- strsplit(inp[[i]], ";")[[1]]
     }
   }
+  if (length(inp[["form"]]) == 1 && grepl("^#", inp[["form"]])) {
+    inp[["form"]] <- NULL
+  }
   if (is_empty(inp$data)) {
     inp$data <- NULL
   } else {
     inp$data <- as.symbol(inp$data)
+  }
+
+  pre_cmd <- paste0(sim_name, " <- ")
+  if (!is_empty(input$sim_funcs)) {
+    ## dealing with user defined functions in simulate tab
+    pre_cmd <- gsub("    ", "  ", input$sim_funcs) %>%
+      gsub("\t", "  ", .) %>%
+      paste0("\n\n", pre_cmd)
+    funcs <- parse(text = input$sim_funcs)
+    lfuncs <- list()
+    for (i in seq_len(length(funcs))) {
+      tmp <- strsplit(as.character(funcs[i]), "(\\s*=|\\s*<-)")[[1]][1]
+      lfuncs[[tmp]] <- as.symbol(tmp)
+    }
+    if (length(lfuncs) == 0) {
+      pre_cmd <- paste0(sim_name, " <- ")
+      inp$funcs <- NULL
+    } else {
+      inp$funcs <- lfuncs
+    }
   }
   inp$name <- NULL
   update_report(
     inp_main = inp,
     fun_name = "simulater",
     inp_out = inp_out,
-    pre_cmd = paste0(input$sim_name, " <- "),
-    xcmd = paste0("register(\"", input$sim_name, "\")"),
+    pre_cmd = pre_cmd,
+    xcmd = paste0("register(\"", sim_name, "\")"),
     outputs = outputs,
-    inp = input$sim_name,
+    inp = sim_name,
     figs = figs,
     fig.width = sim_plot_width(),
     fig.height = sim_plot_height()
@@ -874,12 +956,20 @@ observeEvent(input$repeater_report, {
 
   ## report cleaner turns seed and nr into strings
   inp <- clean_args(rep_inputs(), rep_args) %>% lapply(report_cleaner)
+  rep_name <- fix_names(input$rep_name)
+  updateTextInput(session, "rep_name", value = rep_name)
+  inp$dataset <- fix_names(input$sim_name)
+  updateTextInput(session, "sim_name", value = inp$dataset)
+
   if (!is_empty(inp$seed)) inp$seed <- as_numeric(inp$seed)
   if (!is_empty(inp$nr)) inp$nr <- as_numeric(inp$nr)
   if (input$rep_byvar == "sim") inp$grid <- NULL
 
   if (!is_empty(inp[["form"]])) {
     inp[["form"]] <- strsplit(inp[["form"]], ";")[[1]]
+    if (length(inp[["form"]]) == 1 && grepl("^#", inp[["form"]])) {
+      inp[["form"]] <- NULL
+    }
   }
   if (!is_empty(inp[["grid"]])) {
     inp[["grid"]] <- strsplit(inp[["grid"]], ";")[[1]]
@@ -889,10 +979,10 @@ observeEvent(input$repeater_report, {
     inp_main = inp,
     fun_name = "repeater",
     inp_out = inp_out,
-    pre_cmd = paste0(input$rep_name, " <- "),
-    xcmd = paste0("register(\"", input$rep_name, "\")"),
+    pre_cmd = paste0(rep_name, " <- "),
+    xcmd = paste0("register(\"", rep_name, "\")"),
     outputs = outputs,
-    inp = input$rep_name,
+    inp = rep_name,
     figs = figs,
     fig.width = rep_plot_width(),
     fig.height = rep_plot_height()

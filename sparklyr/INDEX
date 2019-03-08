@@ -78,6 +78,7 @@ ml-tuning               Spark ML - Tuning
 ml_aft_survival_regression
                         Spark ML - Survival Regression
 ml_als                  Spark ML - ALS
+ml_als_tidiers          Tidying methods for Spark ML ALS
 ml_bisecting_kmeans     Spark ML - Bisecting K-Means Clustering
 ml_chisquare_test       Chi-square hypothesis testing for categorical
                         data.
@@ -105,8 +106,10 @@ ml_isotonic_regression_tidiers
                         Regression
 ml_kmeans               Spark ML - K-Means Clustering
 ml_lda                  Spark ML - Latent Dirichlet Allocation
+ml_lda_tidiers          Tidying methods for Spark ML LDA models
 ml_linear_regression    Spark ML - Linear Regression
 ml_linear_svc           Spark ML - LinearSVC
+ml_linear_svc_tidiers   Tidying methods for Spark ML linear svc
 ml_logistic_regression
                         Spark ML - Logistic Regression
 ml_logistic_regression_tidiers
@@ -115,10 +118,14 @@ ml_logistic_regression_tidiers
 ml_model_data           Extracts data associated with a Spark ML model
 ml_multilayer_perceptron_classifier
                         Spark ML - Multilayer Perceptron
+ml_multilayer_perceptron_tidiers
+                        Tidying methods for Spark ML MLP
 ml_naive_bayes          Spark ML - Naive-Bayes
 ml_naive_bayes_tidiers
                         Tidying methods for Spark ML Naive Bayes
 ml_one_vs_rest          Spark ML - OneVsRest
+ml_pca_tidiers          Tidying methods for Spark ML Principal
+                        Component Analysis
 ml_pipeline             Spark ML - Pipelines
 ml_random_forest_classifier
                         Spark ML - Random Forest
@@ -155,7 +162,6 @@ sdf_dim                 Support for Dimension Operations
 sdf_is_streaming        Spark DataFrame is Streaming
 sdf_last_index          Returns the last index of a Spark DataFrame
 sdf_len                 Create DataFrame for Length
-sdf_mutate              Mutate a Spark DataFrame
 sdf_num_partitions      Gets number of partitions of a Spark DataFrame
 sdf_partition           Partition a Spark Dataframe
 sdf_persist             Persist a Spark DataFrame
@@ -200,6 +206,8 @@ spark_default_compilation_spec
                         Default Compilation Specification for Spark
                         Extensions
 spark_dependency        Define a Spark dependency
+spark_dependency_fallback
+                        Fallback to Spark Dependency
 spark_home_set          Set the SPARK_HOME environment variable
 spark_jobj              Retrieve a Spark JVM Object Reference
 spark_jobj-class        spark_jobj class

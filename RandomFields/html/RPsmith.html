@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: (Mixed) Moving Maxima</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Smith {RandomFields}"><tr><td>Smith {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>(Mixed) Moving Maxima</h2>
+
+<h3>Description</h3>
+
+<p><code>RPsmith</code> defines a moving maximum process or a mixed moving
+maximum process with finite number of shape functions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RPsmith(shape, tcf, xi, mu, s)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>shape</code></td>
+<td>
+<p>an <code><a href="RMmodel.html">RMmodel</a></code> giving the spectral function</p>
+</td></tr>
+<tr valign="top"><td><code>tcf</code></td>
+<td>
+<p>an <code><a href="RMmodel.html">RMmodel</a></code> specifying the
+extremal correlation function; either <code>shape</code> or <code>tcf</code> must
+be given. If <code>tcf</code> is given a shape function is tried to be 
+constructed via the <code><a href="RMstrokorb.html">RMm2r</a></code> construction of
+deterministic, monotone functions.
+</p>
+</td></tr>
+<tr valign="top"><td><code>xi,mu,s</code></td>
+<td>
+<p>the extreme value index, the location parameter and the
+scale parameter, respectively, of the generalized extreme value
+distribution. See Details.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The argument <code>xi</code> is always a number, i.e. <i>&xi;</i> is constant in space. In contrast, <i>&mu;</i> and <i>s</i> might be constant numerical values or (in future!) be given by an <code><a href="RMmodel.html">RMmodel</a></code>, in particular by an <code><a href="RMtrend.html">RMtrend</a></code> model.  <br /> For <i>xi=0</i>, the default values of <i>mu</i> and <i>s</i> are <i>0</i> and <i>1</i>, respectively. For <i>xi\not=0</i>, the default values of <i>mu</i> and <i>s</i> are <i>1</i> and <i>|&xi;|</i>, respectively, so that it defaults to the standard Frechet case if <i>&xi; &gt; 0</i>.
+</p>
+<p>It simulates max-stable processes <i>Z</i> that are referred to as
+&ldquo;Smith model&rdquo;.
+</p>
+<p style="text-align: center;"><i>Z(x) = max_{i=1, 2, ...} X_i * Y_i(x - W_i),</i></p>
+
+<p>where <i>(W_i, X_i)</i> are the points of a Poisson point process on 
+<i>R^d x (0, &infin;)</i> with intensity
+<i>dw * c/x^2 dx</i> and <i>Y_i ~ Y</i> are iid measurable
+random functions with
+<i>E[int max(0, Y(x)) dx ] &lt; &infin;</i>. 
+The constant <i>c</i> is chosen such that <i>Z</i> has standard Frechet
+margins.
+</p>
+
+
+<h3>Note</h3>
+
+<p>IMPORTANT: For consistency reasons with the geostatistical definitions
+in this package the scale argument differs froms the original
+definition of the Smith model! See the example below.
+</p>
+<p><code>RPsmith</code> depends on <code><a href="RRrectangular.html">RRrectangular</a></code>
+and its arguments.
+</p>
+<p>Advanced options
+are <code>maxpoints</code> and <code>max_gauss</code>, see
+<code><a href="RFoptions.html">RFoptions</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Haan, L. (1984) 
+A spectral representation for max-stable processes.
+<em>Ann. Probab.</em>, <b>12</b>,
+1194-1204.
+</p>
+</li>
+<li><p> Smith, R.L. (1990) Max-stable processes and spatial extremes
+Unpublished Manuscript.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodelsAdvanced.html">Advanced RMmodels</a></code>,
+<code><a href="RMmodelsAuxiliary.html">Auxiliary RMmodels</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RPbernoulli.html">RPbernoulli</a></code>,
+<code><a href="RPgauss.html">RPgauss</a></code>,
+<a href="RPmaxstable.html">maxstable</a>,
+<code><a href="RPmaxstableAdvanced.html">maxstableAdvanced</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+model &lt;- RMball()
+x &lt;- seq(0, 1000, 0.2)
+z &lt;- RFsimulate(RPsmith(model, xi=0), x)
+plot(z)
+hist(z@data$variable1, 50, freq=FALSE)
+curve(exp(-x) * exp(-exp(-x)), from=-3, to=8, add=TRUE)
+
+## 2-dim
+x &lt;- seq(0, 10, 0.1) 
+z &lt;- RFsimulate(RPsmith(model, xi=0), x, x)
+plot(z)
+
+## original Smith model
+x &lt;- seq(0, 10, 0.05)
+model &lt;- RMgauss(scale = sqrt(2)) # !! cf. definition of RMgauss
+z &lt;- RFsimulate(RPsmith(model, xi=0), x, x)
+plot(z)
+
+
+
+
+## for some more sophisticated models see 'maxstableAdvanced'
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

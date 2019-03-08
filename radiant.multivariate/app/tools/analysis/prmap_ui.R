@@ -63,7 +63,7 @@ output$ui_pm_pref <- renderUI({
 
 output$ui_pm_plots <- renderUI({
   plot_list <- c("Brands" = "brand", "Attributes" = "attr")
-  if (!is.null(input$pm_pref)) plot_list <- c(plot_list, c("Preferences" = "pref"))
+  if (!is_empty(input$pm_pref)) plot_list <- c(plot_list, c("Preferences" = "pref"))
   checkboxGroupInput(
     "pm_plots", NULL, plot_list,
     selected = state_group("pm_plots"),
@@ -130,7 +130,7 @@ output$ui_prmap <- renderUI({
         condition = "input.tabs_prmap == 'Plot'",
         uiOutput("ui_pm_plots"),
         tags$table(
-          tags$td(numericInput("pm_scaling", "Arrow scale:", state_init("pm_scaling", 2), .5, 4, .1, width = "117px")),
+          tags$td(numericInput("pm_scaling", "Attribute scale:", state_init("pm_scaling", 2), .5, 4, .1, width = "117px")),
           tags$td(numericInput("pm_fontsz", "Font size:", state_init("pm_fontsz", 5), 1, 20, 1, width = "117px")),
           width = "100%"
         )
@@ -197,12 +197,12 @@ output$prmap <- renderUI({
     "Please select two or more attribute variables"
   } else {
     brand <- .get_data()[[input$pm_brand]]
-    if (length(unique(brand)) < length(brand)) {
-      "Number of observations and unique IDs for the brand variable do not match.\nPlease choose another brand variable or another dataset.\n\n" %>%
-        suggest_data("retailers")
-    } else {
+    # if (length(unique(brand)) < length(brand)) {
+      # "Number of observations and unique IDs for the brand variable do not match.\nPlease choose another brand variable or another dataset.\n\n" %>%
+        # suggest_data("retailers")
+    # } else {
       "available"
-    }
+    # }
   }
 })
 
@@ -237,9 +237,9 @@ observeEvent(input$prmap_report, {
   inp <- clean_args(pm_inputs(), pm_args)
   if (!is_empty(inp$nr_dim)) inp$nr_dim <- as_integer(inp$nr_dim)
   if (!is_empty(input$pm_store_name)) {
-    xcmd <- paste0(input$dataset, " <- store(",
-      input$dataset, ", result, name = \"", input$pm_store_name, "\")"
-    )
+    fixed <- fix_names(input$pm_store_name)
+    updateTextInput(session, "pm_store_name", value = fixed)
+    xcmd <- glue('{input$dataset} <- store({input$dataset}, result, name = "{fixed}")')
   } else {
     xcmd <- ""
   }
@@ -256,11 +256,13 @@ observeEvent(input$prmap_report, {
 ## store factor scores
 observeEvent(input$pm_store, {
   req(input$pm_store_name, input$pm_run)
+  fixed <- fix_names(input$pm_store_name)
+  updateTextInput(session, "pm_store_name", value = fixed)
   robj <- .prmap()
   if (!is.character(robj)) {
     withProgress(
       message = "Storing factor scores", value = 1,
-      r_data[[input$dataset]] <- store(r_data[[input$dataset]], robj, name = input$pm_store_name)
+      r_data[[input$dataset]] <- store(r_data[[input$dataset]], robj, name = fixed)
     )
   }
 })

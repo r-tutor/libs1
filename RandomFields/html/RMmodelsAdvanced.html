@@ -1,0 +1,445 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Advanced features of the models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMmodelsAdvanced {RandomFields}"><tr><td>RMmodelsAdvanced {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Advanced features of the models</h2>
+
+<h3>Description</h3>
+
+<p>Here, further models and advanced comments for <code><a href="RMmodel.html">RMmodel</a></code>
+are given. See also <code><a href="RFgetModelNames.html">RFgetModelNames</a></code>.
+</p>
+
+
+<h3>Details</h3>
+
+<p><b>Further stationary and isotropic models</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMaskey.html">RMaskey</a></code> </td><td style="text-align: left;"> Askey model (generalized test or triangle model) </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMbcw.html">RMbcw</a></code> </td><td style="text-align: left;"> bridging model between
+                       <code><a href="RMcauchy.html">RMcauchy</a></code> and <code><a href="RMgenfbm.html">RMgenfbm</a></code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMbessel.html">RMbessel</a></code> </td><td style="text-align: left;"> Bessel family </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMcircular.html">RMcircular</a></code> </td><td style="text-align: left;"> circular model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMconstant.html">RMconstant</a></code> </td><td style="text-align: left;"> spatially constant model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMcubic.html">RMcubic</a></code> </td><td style="text-align: left;"> cubic model (see Chiles and Delfiner) </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMdagum.html">RMdagum</a></code> </td><td style="text-align: left;"> Dagum model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMdampedcos.html">RMdampedcos</a></code> </td><td style="text-align: left;"> exponentially damped cosine </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMqexp.html">RMqexp</a></code> </td><td style="text-align: left;"> variant of the exponential model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMfractdiff.html">RMfractdiff</a></code> </td><td style="text-align: left;"> fractionally differenced process </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMfractgauss.html">RMfractgauss</a></code> </td><td style="text-align: left;"> fractional Gaussian noise </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMgengneiting.html">RMgengneiting</a></code> </td><td style="text-align: left;"> generalized Gneiting model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMgneitingdiff.html">RMgneitingdiff</a></code> </td><td style="text-align: left;"> Gneiting model for tapering </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMhyperbolic.html">RMhyperbolic</a></code> </td><td style="text-align: left;"> generalized hyperbolic model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMlgd.html">RMlgd</a></code> </td><td style="text-align: left;"> Gneiting's local-global distinguisher</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMlsfbm.html">RMlsfbm</a></code> </td><td style="text-align: left;"> locally stationary fractal Brownian motion </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMpenta.html">RMpenta</a></code> </td><td style="text-align: left;"> penta model (see Chiles and Delfiner) </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMpower.html">RMpower</a></code> </td><td style="text-align: left;"> Golubov's model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMwave.html">RMwave</a></code> </td><td style="text-align: left;"> cardinal sine </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+<p><b>Variogram models (stationary increments/intrinsically stationary)</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMbcw.html">RMbcw</a></code> </td><td style="text-align: left;"> bridging model between
+                       <code><a href="RMcauchy.html">RMcauchy</a></code> and <code><a href="RMgenfbm.html">RMgenfbm</a></code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMdewijsian.html">RMdewijsian</a></code> </td><td style="text-align: left;"> generalized version of the DeWijsian model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMgenfbm.html">RMgenfbm</a></code> </td><td style="text-align: left;"> generalized fractal Brownian motion </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMoesting.html">RMflatpower</a></code> </td><td style="text-align: left;"> similar to fractal Brownian motion but
+always smooth at the origin</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+<p><b>General composed models (operators)</b>
+</p>
+<p>Here, composed models are given that can be of any kind (stationary/non-stationary), depending on the submodel.
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+
+<code><a href="RMbernoulli.html">RMbernoulli</a></code> </td><td style="text-align: left;"> Correlation function of a binary field
+based on a Gaussian field </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMexponential.html">RMexponential</a></code> </td><td style="text-align: left;"> exponential of a covariance model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMintexp.html">RMintexp</a></code> </td><td style="text-align: left;"> integrated exponential of a covariance model (INCLUDES <code>ma2</code>)</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMpower.html">RMpower</a></code> </td><td style="text-align: left;"> powered variograms</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMqam.html">RMqam</a></code> </td><td style="text-align: left;"> Porcu's quasi-arithmetic-mean model</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMS.html">RMS</a></code> </td><td style="text-align: left;"> details on the optional transformation
+ arguments (<code>var</code>, <code>scale</code>, <code>Aniso</code>, <code>proj</code>)
+</td>
+</tr>
+
+</table>
+
+<p><b>Stationary and isotropic composed models (operators)</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMcutoff.html">RMcutoff</a></code> </td><td style="text-align: left;"> Gneiting's modification towards finite range</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMintrinsic.html">RMintrinsic</a></code> </td><td style="text-align: left;"> Stein's modification towards finite range</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMnatsc.html">RMnatsc</a></code> </td><td style="text-align: left;"> practical range</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+ <code><a href="RMstein.html">RMstein</a></code> </td><td style="text-align: left;"> Stein's modification towards finite range</td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+
+
+ <code><a href="RMtbm.html">RMtbm</a></code></td><td style="text-align: left;"> Turning bands operator
+</td>
+</tr>
+
+</table>
+
+<p><b>Stationary space-time models</b>
+<br />
+See <a href="RMmodelsSpaceTime.html">RMmodelsSpaceTime</a>.
+</p>
+<p><b>Non-stationary models</b>
+<br />
+See <a href="RMmodelsNonstatationary.html">RMmodelsNonstationary</a>.
+</p>
+<p><b>Negative definite models that are not variograms</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+<code><a href="RMsum.html">RMsum</a></code> </td><td style="text-align: left;"> a non-stationary variogram model</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+<p><b>Models related to max-stable random fields (tail correlation
+functions)</b>
+<br />
+See <a href="RMmodelsTailcorrelation.html">RMmodelsTailCorrelation</a>.
+</p>
+<p><b>Other covariance models</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+  <code><a href="RMcov.html">RMcov</a></code> </td><td style="text-align: left;"> covariance structure given by a variogram</td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+  <code><a href="RMfix.html">RMfixcov</a></code> </td><td style="text-align: left;"> User defined covariance structure</td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+ <code><a href="RMuser.html">RMuser</a></code> </td><td style="text-align: left;"> User defined model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+<p><b>Trend models</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+  <code><a href="RMS.html">Aniso</a></code> </td><td style="text-align: left;"> for space transformation (not really
+  trend, but similar)</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <code><a href="RMcovariate.html">RMcovariate</a></code> </td><td style="text-align: left;"> spatial covariates</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <code><a href="RMprod.html">RMprod</a></code> </td><td style="text-align: left;"> to model variability of the variance</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <code><a href="RMpolynome.html">RMpolynome</a></code> </td><td style="text-align: left;"> easy modelling of polynomial trends </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <code><a href="RMtrend.html">RMtrend</a></code> </td><td style="text-align: left;"> for explicit trend modelling</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <code><a href="QMath.html">R.models</a></code> </td><td style="text-align: left;"> for implicit trend modelling</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <code><a href="QMath.html">R.c</a></code> </td><td style="text-align: left;"> for multivariate trend modelling </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+<p><b>Auxiliary models</b><br />
+See <b><a href="RMmodelsAuxiliary.html">Auxiliary RMmodels</a>.</b>
+</p>
+
+
+<h3>Note</h3>
+
+
+<ul>
+<li>
+<p>Note that, instead of the named arguments, a single argument <code>k</code>
+can be passed. This is possible if all the arguments
+are scalar. Then <code>k</code> must have a length equal to the number of
+arguments.
+</p>
+</li>
+<li>
+<p>If an argument equals <code>NULL</code> the
+argument is not set (but must have a valid name).
+</p>
+</li>
+<li>
+<p><code>Aniso</code> can be given also by <code><a href="RMangle.html">RMangle</a></code>
+or any other <code><a href="RMmodel.html">RMmodel</a></code> instead of a matrix
+</p>
+</li>
+<li>
+<p>Note also that a completely different possibility exists to define a
+model, namely by a list. This format allows for easy flexible models
+and modifications (and some few more options, as well as some
+abbreviations to the model names, see <code>PrintModelList()</code>).
+Here, the argument <code>var</code>, <code>scale</code>,
+<code>Aniso</code> and <code>proj</code> must be passed by the model
+<code><a href="RMS.html">RMS</a></code>. 
+For instance,
+</p>
+
+<ul>
+<li>
+<p><code>model &lt;- RMexp(scale=2, var=5)</code>
+<br />
+is equivalent to
+<br />
+<code>model &lt;- list("RMS", scale=2, var=5, list("RMexp"))</code>
+<br />
+The latter definition can be also obtained by
+</p>
+<p><code>print(RMexp(scale=2, var=5))</code>
+</p>
+</li>
+<li>
+<p><code>model &lt;- RMnsst(phi=RMgauss(var=7), psi=RMfbm(alpha=1.5),
+	scale=2, var=5)</code>
+<br />
+is equivalent to
+<br />
+<code>model &lt;- list("RMS", scale=2, var=5,</code> <br />
+<code>list("RMnsst", phi=list("RMS", var=7, list("RMgauss")),</code> <br />
+<code>psi=list("RMfbm", alpha=1.5))
+	)</code>.
+</p>
+</li></ul>
+
+<p>All models have secondary names that stem from 
+<span class="pkg">RandomFields</span> versions 2 and earlier and
+that can also be used as strings in the list notation.
+See <code><a href="RFgetModelNames.html">RFgetModelNames</a>(internal=FALSE)</code> for
+the full list.     
+</p>
+</li></ul>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Alexander Malinowski; Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Chiles, J.-P. and Delfiner, P. (1999)
+<em>Geostatistics. Modeling Spatial Uncertainty.</em>
+New York: Wiley.
+
+
+
+</p>
+</li>
+<li><p> Schlather, M. (1999) <em>An introduction to positive definite
+functions and to unconditional simulation of random fields.</em>
+Technical report ST 99-10, Dept. of Maths and Statistics,
+Lancaster University.
+</p>
+</li>
+<li><p> Schlather, M. (2011) Construction of covariance functions and
+unconditional simulation of random fields. In Porcu, E., Montero, J.M.
+and Schlather, M., <em>Space-Time Processes and Challenges Related
+to Environmental Problems.</em> New York: Springer.
+
+
+</p>
+</li>
+<li>
+<p>Schlather, M., Malinowski, A., Menck, P.J., Oesting, M. and
+Strokorb, K. (2015) 
+Analysis, simulation and prediction of multivariate
+random fields with package <span class="pkg">RandomFields</span>. <em>
+Journal of Statistical Software</em>, <b>63</b> (8), 1-25,
+url          = &lsquo;http://www.jstatsoft.org/v63/i08/&rsquo;
+</p>
+<p>&lsquo;<a href="../doc/multivariate_jss.pdf">multivariate</a>&rsquo;, the
+corresponding vignette.
+</p>
+</li>
+<li><p> Yaglom, A.M. (1987) <em>Correlation Theory of Stationary and
+Related Random Functions I, Basic Results.</em>
+New York: Springer. </p>
+</li>
+<li><p> Wackernagel, H. (2003) <em>Multivariate Geostatistics.</em> Berlin:
+Springer, 3nd edition.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RFformula.html">RFformula</a></code>,
+<a href="RM.html">RM</a>,
+<code><a href="RMmodel.html">RMmodels</a></code>,
+<code><a href="RMmodelsAuxiliary.html">RMmodelsAuxiliary</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+## a non-stationary field with a sharp boundary
+## of the differentiabilities
+x &lt;- seq(-0.6, 0.6, len=50)
+model &lt;- RMwhittle(nu=0.8 + 1.5 * R.is(R.p(new="isotropic"), "&lt;=", 0.5))
+z &lt;- RFsimulate(model=model, x, x, n=4)
+plot(z)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

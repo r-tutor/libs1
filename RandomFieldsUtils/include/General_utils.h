@@ -5,7 +5,7 @@
  Martin Schlather, schlather@math.uni-mannheim.de
 
 
- Copyright (C) 2015 Martin Schlather
+ Copyright (C) 2015 -- 2017 Martin Schlather
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -35,12 +35,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "errors_messages.h"
 #include "kleinkram.h"
 #include "Solve.h"
+#include "scalar.h"
 
 
-
-#define DOPRINTF if (DOPRINT) Rprintf
-#define PRINTF Rprintf
-#define print PRINTF /* // */
 
 #ifdef HIDE_UNUSED_VARIABLE
 #define VARIABLE_IS_NOT_USED __attribute__ ((unused))
@@ -60,16 +57,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define INTERNAL SERR("Sorry. This functionality does not exist currently. There is work in progress at the moment by the maintainer.")
 #define assert(X) {}
 #define BUG {								\
-    SPRINTF(BUG_MSG, "Severe error occured in function '%s' (file '%s', line %d). Please contact maintainer martin.schlather@math.uni-mannheim.de .", \
+    RFERROR3("Severe error occured in function '%.50s' (file '%.50s', line %d). Please contact maintainer martin.schlather@math.uni-mannheim.de .", \
 	    __FUNCTION__, __FILE__, __LINE__);				\
-    RFERROR(BUG_MSG);							\
-  }									
+  }					
 #define DO_TESTS false
-//#define MEMCOPY(A,B,C) {memcpy(A,B,C); printf("memcpy %s %d\n", __FILE__, __LINE__);}
+//#define MEMCOPY(A,B,C) {MEMCPY(A,B,C); printf("memcpy %.50s %d\n", __FILE__, __LINE__);}
 #define MEMCOPY(A,B,C) MEMCOPYX(A,B,C)
+#define AMALLOC(ELEMENTS, SIZE) AALLOC(SIZE, (SIZE) * (ELEMENTS))
 #define MALLOC MALLOCX
 #define CALLOC CALLOCX
+#define XCALLOC CALLOCX
+//
 #define FREE(X) if ((X) != NULL) {FREEX(X); (X)=NULL;}
+//#define FREE(X) if ((X) != NULL) {printf("utils free %.50s %ld Line %d %s\n", #X, (long) X, __LINE__, __FILE__); FREEX(X); (X)=NULL;}
 #define UNCONDFREE(X) {FREEX(X); (X)=NULL;}
 #endif // not SCHLATHERS_MACHINE
 
@@ -80,27 +80,26 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define MAXALLOC 1e9
 
 // __extension__ unterdrueckt Fehlermeldung wegen geklammerter Argumente
-#define INTERNAL  \
-  SPRINTF(BUG_MSG, \
-	  "made to be an internal function '%s' ('%s', line %d).", /* // */ \
-	  __FUNCTION__, __FILE__, __LINE__);				\
-  /* warning(BUG_MSG) */						\
-  SERR(BUG_MSG)
- 
-#define assert(X) if (!__extension__ (X)) {				\
-    SPRINTF(BUG_MSG,"'assert(%s)' failed in function '%s'.",#X,__FUNCTION__); \
-    ERR(BUG_MSG);							\
+#define INTERNAL  {		\
+    RFERROR3("made to be an internal function '%.50s' ('%.50s', line %d).", \
+	     __FUNCTION__, __FILE__, __LINE__);				\
+  }
+
+#define assert(X) if (!__extension__ (X)) {	     \
+    RFERROR3("'assert' failed in function '%.50s' (%.50s, line %d).", \
+	    __FUNCTION__, __FILE__, __LINE__);				\
   }
 #define SHOW_ADDRESSES 1
-#define BUG { PRINTF("BUG in '%s'.",  __FUNCTION__);  ERR(BUG_MSG); }
+#define BUG { RFERROR2("BUG in '%.50s' line %d.\n",  __FUNCTION__, __LINE__);}
 #define DO_TESTS true
 
-#define MEMCOPY(A,B,C) __extension__ ({ assert((A)!=NULL && (B)!=NULL); MEMCOPYX(A,B,C); })
+#define MEMCOPY(A,B,C) __extension__ ({ assert((A)!=NULL && (B)!=NULL && (C)>0 && (C)<=MAXALLOC); MEMCOPYX(A,B,C); })
 //#define MEMCOPY(A,B,C) memory_copy(A, B, C)
 #define MALLOC(X) __extension__ ({assert((X)>0 && (X)<=MAXALLOC); MALLOCX(X);})
 #define CALLOC(X, Y) __extension__({assert((X)>0 && (X)<=MAXALLOC && (Y)>0 && (Y)<=64); CALLOCX(X,Y);})
-#define FREE(X) { if ((X) != NULL) {if (showfree) DOPRINTF("(free in %s, line %d)\n", __FILE__, __LINE__); FREEX(X); (X)=NULL;}}
-#define UNCONDFREE(X) { if (showfree) DOPRINTF("(free in %s, line %d)\n", __FILE__, __LINE__); FREEX(X); (X)=NULL;}
+#define XCALLOC(X, Y) __extension__({assert((X)>0 && (X)<=MAXALLOC && (Y)>0); CALLOCX(X,Y);})
+#define FREE(X) { if ((X) != NULL) {if (showfree) { DOPRINTF("(free in %.50s, line %d)\n", __FILE__, __LINE__);} FREEX(X); (X)=NULL;}}
+#define UNCONDFREE(X) { if (showfree) {DOPRINTF("(free in %.50s, line %d)\n", __FILE__, __LINE__);} FREEX(X); (X)=NULL;}
 #endif // SCHLATHERS_MACHINE
 
 
@@ -108,25 +107,30 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #ifdef RANDOMFIELDS_DEBUGGING
 #undef MALLOC
-#define MALLOC(X) __extension__({DOPRINTF("(MALL %s, line %d)\n", __FILE__, __LINE__);assert((X)>0 && (X)<=3e9); MALLOCX(X);})
+#define MALLOC(X) __extension__({DOPRINTF("(MLLC %.50s, line %d)\n", __FILE__, __LINE__);assert((X)>0 && (X)<=3e9); MALLOCX(X);})
 //
 #undef CALLOC
-#define CALLOC(X, Y) __extension__({DOPRINTF("(CALL %s, line %d)\n",__FILE__, __LINE__);assert((X)>0 && (X)<MAXALLOC && (Y)>0 && (Y)<=64); CALLOCX(X,Y);})
+#undef XCALLOC
+#define CALLOC(X, Y) __extension__({DOPRINTF("(CLLC %.50s, line %d)\n",__FILE__, __LINE__);assert((X)>0 && (X)<MAXALLOC && (Y)>0 && (Y)<=216); CALLOCX(X,Y);})
+#define XCALLOC(X, Y) __extension__({DOPRINTF("(CLLC %.50s, line %d)\n",__FILE__, __LINE__);assert((X)>0 && (X)<MAXALLOC && (Y)>0); CALLOCX(X,Y);})
 //#define MALLOC malloc
 //#define CALLOC calloc
 
+
+// note that DEBUGINDOERR is redefined in MachineDebugging.h
 #define DEBUGINFOERR {						\
-    errorstring_type dummy_; strcpy(dummy_, ERRORSTRING);		\
-    SPRINTF(ERRORSTRING, "%s (%s, line %d)\n", dummy_, __FILE__, __LINE__); \
+    errorstring_type dummy_; STRCPY(dummy_, WHICH_ERRORSTRING);		\
+    SPRINTF(WHICH_ERRORSTRING, "%.50s (%.50s, line %d)\n", dummy_, __FILE__, __LINE__); \
   }
-#define DEBUGINFO DOPRINTF("(currently at  %s, line %d)\n", __FILE__, __LINE__)
+#define DEBUGINFO DOPRINTF("(currently at  %.50s, line %d)\n", __FILE__, __LINE__)
 
 #else
 #define DEBUGINFO
-#define DEBUGINFOERR if (PL >= PL_ERRORS) PRINTF("error: %s\n", ERRORSTRING);
+#define DEBUGINFOERR if (PL >= PL_ERRORS) {PRINTF("error: %.50s\n", WHICH_ERRORSTRING);}
 #endif
 
 
+extern int PLoffset;
 #define PL_IMPORTANT 1 
 #define PL_BRANCHING 2
 #define PL_DETAILSUSER 3
@@ -143,8 +147,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define PL_SUBDETAILS 10
 
 #define MATERN_NU_THRES 100
+#define BESSEL_NU_THRES 100
+#define LOW_MATERN 1e-20
+#define LOW_BESSEL 1e-20
 
 
 #endif
-
-

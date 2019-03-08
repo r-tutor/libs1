@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Fitting model parameters to spatial data (regionalised...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RFcrossvalidate {RandomFields}"><tr><td>RFcrossvalidate {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Fitting model parameters to spatial data (regionalised variables)
+and to linear (mixed) models</h2>
+
+<h3>Description</h3>
+
+<p>The function estimates arbitrary parameters of
+a random field specification with various methods.
+Currently, the models to be fitted can be
+</p>
+
+<ul>
+<li><p><a href="RPgauss.html">Gaussian random fields</a>
+</p>
+</li>
+<li><p><a href="RFformula.html">linear models</a>
+</p>
+</li></ul>
+
+<p>The fitting of max-stable random fields and others
+has not been implemented yet.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RFcrossvalidate(model, x, y=NULL, z=NULL, T=NULL, grid=NULL, data,
+                params, lower=NULL, upper=NULL, method="ml",
+                users.guess=NULL, distances=NULL, dim, optim.control=NULL,
+                transform=NULL, full = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>model,params</code></td>
+<td>
+<p> object of class  <code><a href="RMmodel-class.html">RMmodel</a></code>, <code><a href="RFformula.html">RFformula</a></code> or  <code><a href="../../stats/html/formula.html">formula</a></code>; best is to consider the examples below, first. <br /> The argument <code>params</code> is a list that specifies free parameters in a formula description, see <a href="RFformula.html">RMformula</a>. </p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>vector of x coordinates, or object of class <code><a href="../../sp/html/GridTopology-class.html">GridTopology</a></code> or <code><a href="../../raster/html/raster.html">raster</a></code>; for more options see <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>y,z</code></td>
+<td>
+<p>optional vectors of y (z) coordinates, which should not be given if <code>x</code> is a matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>T</code></td>
+<td>
+<p>optional vector of time coordinates, <code>T</code> must always be an equidistant vector. Instead of <code>T=seq(from=From, by=By, len=Len)</code>, one may also write <code>T=c(From, By, Len)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>grid</code></td>
+<td>
+<p>logical; the function finds itself the correct value in nearly all cases, so that usually <code>grid</code> need not be given. See also <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>matrix, data.frame or object of class <code><a href="RFsp-class.html">RFsp</a></code>; <br /> If a matrix is given the ordering of the colums is the following: space, time, multivariate, repetitions, i.e. the index for the space runs the fastest and that for repetitions the slowest.</p>
+</td></tr>
+<tr valign="top"><td><code>lower</code></td>
+<td>
+<p>list or vector. Lower bounds for the parameters. If <code>lower</code> is a vector, <code>lower</code> has to be a vector as well and its length must equal the number of parameters to be estimated. The order of <code>lower</code> has to be maintained. A component being <code>NA</code> means that no manual lower bound for the corresponding parameter is set. <br />  If <code>lower</code> is a list, <code>lower</code> has to be of (exactly) the same structure of the model.</p>
+</td></tr>
+<tr valign="top"><td><code>upper</code></td>
+<td>
+<p>list or vector. Upper bounds for the parameters. See <code>lower</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+
+<p>Single method to be used for estimating, either
+one of the <code>methods</code> or one of the <code>sub.methods</code>
+see <code><a href="RFfit.html">RFfit</a></code>
+</p>
+</td></tr>
+<tr valign="top"><td><code>users.guess</code></td>
+<td>
+<p> User's guess of the parameters. All the parameters must be given using the same rules as for <code>lower</code> (except that no NA's should be contained).</p>
+</td></tr>
+<tr valign="top"><td><code>distances,dim</code></td>
+<td>
+<p>another alternative for the argument <code>x</code> to pass the (relative) coordinates, see <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>optim.control</code></td>
+<td>
+<p>control list for <code><a href="../../stats/html/optim.html">optim</a></code>, which uses &lsquo;L-BFGS-B&rsquo;. However <code>parscale</code> may not be given.</p>
+</td></tr>
+<tr valign="top"><td><code>transform</code></td>
+<td>
+<p>obsolete for users; use <code>param</code> instead. <code>transform=list()</code> will return structural information to set up the correct function.</p>
+</td></tr>
+<tr valign="top"><td><code>full</code></td>
+<td>
+<p>logical.
+If <code>TRUE</code> then cross-validation is also performed
+for intermediate models used in
+<code>RFfit</code> (if any).
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>for advanced use: further options and control arguments for the simulation that are passed to and processed by <code><a href="RFoptions.html">RFoptions</a></code>. If <code>params</code> is given, then <code>...</code> may include also the variables used in <code>params</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of the <code><a href="../../base/html/class.html">class</a></code> <code>"RFcrossvalidate"</code> which is
+a list with the following components, cf. <code>xvalid</code> in the
+package <span class="pkg">geoR</span> :
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>the original data.  </p>
+</td></tr>
+<tr valign="top"><td><code>predicted</code></td>
+<td>
+<p>the values predicted by cross-validation.  </p>
+</td></tr>
+<tr valign="top"><td><code>krige.var</code></td>
+<td>
+<p>the cross-validation prediction variance.  </p>
+</td></tr>
+<tr valign="top"><td><code>error</code></td>
+<td>
+<p>the differences <code>data - predicted value</code>.   </p>
+</td></tr>
+<tr valign="top"><td><code>std.error</code></td>
+<td>
+<p>the errors divided by the square root of the
+prediction variances.  </p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+
+<p>In contrast to <span class="pkg">geoR</span> the p-value is returned,
+i.e. the probability
+that a difference with absolute value larger than the absolute
+value of the actual difference is observed.
+</p>
+<p>A method for <code>summary</code> returns summary statistics for the errors
+and standard errors similar to <span class="pkg">geoR</span>.
+</p>
+<p>If <code>cross_refit = TRUE</code> and <code>detailed_output = TRUE</code>
+the returned object also contains a <code>fitted</code> which is
+a list of fitted models.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Methods</h3>
+
+
+<dl>
+<dt>print</dt><dd><p>prints the summary</p>
+</dd>
+<dt>summary</dt><dd><p>gives a summary</p>
+</dd>
+</dl>
+
+
+
+<h3>Note</h3>
+
+<p>An important option is <code>cross_refit</code> that determines
+whether the model is refitted for each location left out.
+Default is <code>FALSE</code>. See also <code><a href="RFoptions.html">RFoptions</a></code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function does not depend on the value of
+<code><a href="RFoptions.html">RFoptions</a></code><code>()$PracticalRange</code>. 
+The function <code>RFcrossvalidate</code> always uses the standard specification
+of the covariance model as given in <code><a href="RMmodel.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Ribeiro, P.J., Jr. and Diggle, P.J (2014) R package <span class="pkg">geoR</span>.
+</p>
+</li>
+<li><p> Burnham, K. P. and Anderson, D. R. (2002)
+<em>Model selection and Multi-Model Inference: A Practical
+Information-Theoretic Approach.</em>
+2nd edition. New York: Springer.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RFratiotest.html">RFratiotest</a></code>
+<code><a href="RFfit.html">RFfit</a></code>
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RandomFields.html">RandomFields</a></code>,
+<code><a href="weather.html">weather</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+
+
+
+## currently disabled!
+
+
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

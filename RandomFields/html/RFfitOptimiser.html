@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Optimisers for fitting model parameters to spatial data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RFfitoptimiser {RandomFields}"><tr><td>RFfitoptimiser {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Optimisers for
+fitting model parameters to spatial data
+</h2>
+
+<h3>Description</h3>
+
+<p>See <code><a href="RFfit.html">RFfit</a></code> for a detailed description of
+the fitting procedure.
+</p>
+
+
+<h3>Details</h3>
+
+<p>Two parameters, see also <code><a href="RFoptions.html">RFoptions</a></code>
+can be passed to <code><a href="RFfit.html">RFfit</a></code> that allow
+for choosing an optimiser different from <code><a href="../../stats/html/optim.html">optim</a></code>:
+</p>
+<p><code>optimiser</code> takes one of the values
+<code>"optim"</code>, <code>"optimx"</code>, <code>"soma"</code>, <code>"nloptr"</code>,
+<code>"GenSA"</code>, <code>"minqa"</code>, <code>"pso"</code> or <code>"DEoptim"</code>,
+see the corresponding packages for a description.
+</p>
+<p>If <code>optimiser="nloptr"</code>, then the additional parameter
+<code>algorithm</code> must be given which takes the values
+<code>"NLOPT_GN_DIRECT"</code>,  
+<code>"NLOPT_GN_DIRECT_L"</code>,
+<code>"NLOPT_GN_DIRECT_L_RAND"</code>, 
+<code>"NLOPT_GN_DIRECT_NOSCAL"</code>,
+<code>"NLOPT_GN_DIRECT_L_NOSCAL"</code>, 
+<code>"NLOPT_GN_DIRECT_L_RAND_NOSCAL"</code>,
+<code>"NLOPT_GN_ORIG_DIRECT"</code>, 
+<code>"NLOPT_GN_ORIG_DIRECT_L"</code>,
+<code>"NLOPT_LN_PRAXIS"</code>, 
+<code>"NLOPT_GN_CRS2_LM"</code>, 
+<code>"NLOPT_LN_COBYLA"</code>,
+<code>"NLOPT_LN_NELDERMEAD"</code>, 
+<code>"NLOPT_LN_SBPLX"</code>,
+<code>"NLOPT_LN_BOBYQA"</code>,
+<code>"NLOPT_GN_ISRES"</code>,
+see <span class="pkg">nloptr</span> for a description.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RFfit.html">RFfit</a></code>, <code><a href="RFoptions.html">RFoptions</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+## Not run: 
+## Here some alternative optimisers to 'optim' are considered.
+## All but the \pkg{nloptr} algorithms are largely slower than 'optim'.
+## Only a few of them return results as good as 'optim'.
+
+data(soil)
+str(soil)
+soil &lt;- RFspatialPointsDataFrame(
+ coords = soil[ , c("x.coord", "y.coord")],
+ data = soil[ , c("moisture", "NO3.N", "Total.N", "NH4.N", "DOC", "N20N")],
+ RFparams=list(vdim=6, n=1)
+)
+dta &lt;- soil["moisture"]
+\dontshow{if (RFoptions()$internal$examples_red) {
+  warning("data have been reduced !")
+  All &lt;- 1:7 
+  rm(soil)
+  data(soil)
+  soil &lt;- RFspatialPointsDataFrame(
+     coords = soil[All, c("x.coord", "y.coord")],
+     data = soil[All, c("moisture", "NO3.N", "Total.N",
+      "NH4.N", "DOC", "N20N")],
+      RFparams=list(vdim=6, n=1)
+  )
+  dta &lt;- soil["moisture"]
+}}
+
+model &lt;- ~1 + RMwhittle(scale=NA, var=NA, nu=NA) + RMnugget(var=NA)
+\dontshow{if (RFoptions()$internal$examples_red){model&lt;-~1+RMwhittle(scale=NA,var=NA,nu=1/2)}}
+## standard optimiser 'optim'
+print(system.time(fit &lt;- RFfit(model, data=dta)))
+print(fit)
+
+opt &lt;- "optimx" #  30 sec; better result
+print(system.time(fit2 &lt;- try(RFfit(model, data=dta, optimiser=opt))))
+print(fit2)
+
+\dontshow{\dontrun{ 
+opt &lt;- "soma" #  450 sec 
+print(system.time(fit2 &lt;- try(RFfit(model, data=dta, optimiser=opt))))
+print(fit2)
+}}
+
+opt &lt;- "minqa" # 330 sec 
+print(system.time(fit2 &lt;- try(RFfit(model, data=dta, optimiser=opt))))
+print(fit2)
+
+
+opt &lt;- "nloptr"
+algorithm &lt;- RC_NLOPTR_NAMES
+\dontshow{if(!interactive()) algorithm &lt;- RC_NLOPTR_NAMES[1]}
+for (i in 1:length(algorithm)) { 
+  print(algorithm[i])
+  print(system.time(fit2 &lt;- try(RFfit(model, data=dta, optimiser=opt,
+                                    algorithm=algorithm[i]))))
+  print(fit2)
+}
+
+
+
+if (interactive()) {
+## the following two optimisers are too slow to be run on CRAN.
+
+opt &lt;- "pso" # 600 sec
+print(system.time(fit2 &lt;- try(RFfit(model, data=dta, optimiser=opt))))
+print(fit2)
+
+opt &lt;- "GenSA" #  10^4 sec
+print(system.time(fit2 &lt;- try(RFfit(model, data=dta, optimiser=opt))))
+print(fit2)
+}
+
+## End(Not run)
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

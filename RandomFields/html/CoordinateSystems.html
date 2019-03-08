@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Coordinate systems</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Coordinate systems {RandomFields}"><tr><td>Coordinate systems {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Coordinate systems</h2>
+
+<h3>Description</h3>
+
+<p>Implemented Coordinate Systems.
+</p>
+
+
+<h3>Implemented coordinate systems</h3>
+
+
+<ul>
+<li><p> Cartesian coordinate system
+</p>
+</li>
+<li><p> Earth coordinate systems<br />
+The earth is considered as an ellipsoid;
+The first angle takes values in <i>[0, 360)</i>,
+the second angle takes values in <i>[-90, 90]</i>.
+</p>
+</li>
+<li><p> Spherical coordinate systems<br />
+The earth is considered as an ellipsoid;
+The first angle takes values in <i>[0, 2&pi;)</i>,
+the second angle takes values in <i>[-&pi;/2, &pi;/2]</i>.
+</p>
+</li></ul>
+
+
+
+<h3>Transformations between the system</h3>
+
+
+<ul>
+<li><p> Earth to cartesian<br />
+The 3-dimensional resulting coordinates
+are either given in &lsquo;km&rsquo; or in &lsquo;miles&rsquo;.
+</p>
+</li>
+<li><p> Gnomonic and orthographic projections<br />
+The 2-dimensional resulting coordinates
+are either given in &lsquo;km&rsquo; or in &lsquo;miles&rsquo;.
+The projection direction is given by the <code>zenit</code>.
+</p>
+</li>
+<li><p> Earth to spherical<br />
+In this case the Earth is considered as a ball.    
+</p>
+</li></ul>
+
+<p>Cartesian systems cannot be transformed to earth or spherical
+coordinate systems, nor a spherical system to earth coordinates.
+</p>
+
+
+<h3>Options</h3>
+
+
+<dl>
+<dt><code>coord_system</code></dt><dd><p>character.
+One of the values <code>"auto"</code>, <code>"cartesian"</code>, <code>"earth"</code>
+
+</p>
+<p>If <code>"auto"</code>, then the coordinates are considered as
+<code>"cartesian"</code> except the names of the given coordinates
+indicate a
+different system. Currently, only <code>"longitude"</code> and
+<code>"latidute"</code> (or abbreviations of them) are excepted
+as names for given coordinates
+and indicate an earth coordinate systems. See the examples below.
+</p>
+<p>Default: <code>"auto"</code>
+</p>
+</dd>
+<dt><code>coordidx</code></dt><dd><p>integer vector of column numbers of the variables in
+the data frame. <code>varidx</code> can be set alternatively to
+<code>coordnames</code>.
+This parameter gives the coordinate columns in a data frame
+by starting column and ending column or the sequence.
+An <code>NA</code> in the second component  means
+&lsquo;until the end&rsquo;.    
+</p>
+</dd>
+<dt><code>coordnames</code></dt><dd><p>vector of characters that can be set
+alternatively to coordidx.
+This parameter gives the coordinate columns in a data frame by names.
+If it is <code>"NA"</code>, then, depending on the context, either
+an error message is returned or it is assumed that the first
+columns give the coordinates.    
+</p>
+</dd>
+<dt><code>coordunits</code></dt><dd><p>any string.     
+If <code>coordinate_system = "earth"</code> and longitude and latitude
+are transformed to 3d cartesian coordinates, <code>coordunits</code>
+determines 
+whether the radius is given in kilometers (<code>"km"</code>) or miles
+(<code>"miles"</code>).
+If empty, then <code>"km"</code> is chosen.
+</p>
+<p>Default: <code>""</code>
+</p>
+</dd>
+<dt><code>new_coord_system</code></dt><dd>
+<p>One of the values <code>"keep"</code>, <code>"cartesian"</code>, <code>"earth"</code>,
+<code>"plane"</code>.
+
+</p>
+
+<ol>
+<li> <p><code>"keep"</code><br />
+The <code>coord_system</code> is kept (except an explicit transformation
+is given, see <code><a href="RMtrafo.html">RMtrafo</a></code>.
+</p>
+<p>Note that some classes of models, e.g. completely monotone
+functions and compactly supported covariance models with
+range less than <i>&pi;</i> are valid models on a sphere.
+In this case the models are considered as models on the sphere.
+See <a href="RMmodelsSphere.html">spherical models</a> for lists.
+</p>
+</li>
+<li> <p><code>"cartesian"</code><br />
+If <code>coord_system</code> is <code>"earth"</code> the coordinates are transformed
+to cartesian coordinates before any model is considered.
+</p>
+</li>
+<li> <p><code>"orthographic"</code>, <code>"genomic"</code> <br />
+If <code>coord_system</code> is <code>"earth"</code> the locations are projected
+to a plane before any
+model is considered.
+</p>
+</li></ol>
+
+<p>Default: <code>"keep"</code>
+</p>
+</dd>
+<dt><code>new_coordunits</code></dt><dd><p>internal and should not be set by the user.
+</p>
+<p>Default: <code>""</code>
+</p>
+</dd>
+<dt><code>polar_coord</code></dt><dd><p>logical.
+If <code>FALSE</code> the spherical coordinates agree with
+the earth coordinate parametrization, except that
+radians are used for spherical coordinates instead
+of degrees for the earth coordinates.
+</p>
+<p>If <code>TRUE</code> the spherical coordinates signify polar coordinates.
+</p>
+<p>Default : <code>FALSE</code>
+</p>
+</dd>
+<dt><code>varidx</code></dt><dd><p>integer vector of length 2.
+<code>varidx</code> can be set alternatively to
+<code>varnames</code>.
+This parameter gives the data columns in a data frame, either
+by starting column and ending column.
+An <code>NA</code> in the second component  means
+&lsquo;until the end&rsquo;.    
+</p>
+</dd>
+<dt><code>varnames</code></dt><dd><p>vector of characters that can be set
+alternatively to <code>varidx</code>.  This parameter gives
+the data columns in a data frame by names.
+</p>
+<p>if <code>varnames</code> equals <code>"NA"</code>
+then for keywords &lsquo;data&rsquo;,
+&lsquo;value&rsquo; and &lsquo;variable&rsquo; will be searched for keywords.
+If none of them are found, depending on the context, either
+an error message is returned or it is assumed that the last
+columns give the data.    
+</p>
+</dd>
+<dt><code>varunits</code></dt><dd><p>vector of characters.
+The default units of the variables.
+</p>
+<p>Default: <code>""</code>
+</p>
+</dd>
+<dt><code>xyz_notation</code></dt><dd><p>logical or <code>NA</code>. Used by
+<code><a href="RMuser.html">RMuser</a></code> only.  
+</p>
+<p><code>NA</code> : automatic choice (if possible)
+</p>
+<p><code>FALSE</code> : notation (x, y) should not be understood as kernel definition, not as xyz notation
+</p>
+<p><code>TRUE</code>: xyz notation used
+</p>
+
+
+</dd>
+<dt><code>zenit</code></dt><dd><p>two angles of the central
+projection direction for the gnomonic projection
+(<a href="http://en.wikipedia.org/wiki/Gnomonic_projection">http://en.wikipedia.org/wiki/Gnomonic_projection</a>,
+<a href="http://de.wikipedia.org/wiki/Gnomonische_Projektion">http://de.wikipedia.org/wiki/Gnomonische_Projektion</a>)
+and the orthographic projection,
+(<a href="http://en.wikipedia.org/wiki/Orthographic_projection_in_cartography">http://en.wikipedia.org/wiki/Orthographic_projection_in_cartography</a>,
+<a href="http://de.wikipedia.org/wiki/Orthografische_Azimutalprojektion">http://de.wikipedia.org/wiki/Orthografische_Azimutalprojektion</a>).
+</p>
+<p>If <code>any(is.na(zenit))</code>
+then either the value of either of the components may not be <code>NA</code>,
+whose value will be denoted by <i>p</i>.
+</p>
+<p>If <i>p=1</i> then the mean of the locations is calculated;
+if <i>p=Inf</i> then the mean of the range is calculated.
+</p>
+<p>Default: <code>c(1, NA)</code>
+</p>
+</dd>
+</dl>
+
+
+
+<h3>References</h3>
+
+<p>Covariance models in a cartesian system
+</p>
+
+<ul>
+<li><p> Schlather, M. (2011) Construction of covariance functions and
+unconditional simulation of random fields. In Porcu, E., Montero, J.M.
+and Schlather, M., <em>Space-Time Processes and Challenges Related
+to Environmental Problems.</em> New York: Springer.
+</p>
+</li></ul>
+
+<p>Covariance models on a sphere
+</p>
+
+<ul>
+<li><p> Gneiting, T. (2013) Strictly and non-strictly positive definite
+functions on spheres.
+<em>Bernoulli</em>, <b>19</b>, 1327-1349.
+</p>
+</li></ul>
+
+<p>Tail correlation function
+</p>
+
+<ul>
+<li><p> Strokorb, K., Ballani, F., and  Schlather, M. (2014)
+Tail correlation functions of max-stable processes: Construction
+principles, recovery and diversity of some mixing max-stable
+processes with identical TCF. 
+<em>Extremes</em>,  Submitted.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMtrafo.html">RMtrafo</a></code>,
+<code><a href="RMtrafo.html">RFearth2cartesian</a></code>,
+<code><a href="RPdirect.html">RPdirect</a></code>,
+<code><a href="RMmodelsSphere.html">models valid on a sphere</a></code>,
+<code><a href="RFoptions.html">RFoptions</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+z &lt;- 1:4
+x &lt;- cbind(z, 0)
+y &lt;- cbind(0, z)
+model &lt;- RMwhittle(nu=0.5)
+RFcov(model, x, y, grid=FALSE) ##  standard is (cartesian) model
+
+
+## same as above, but explicit:
+RFcov(model, x, y, grid=FALSE, coord_sys="cartesian") 
+
+
+## model is not valid on a sphere; x,y coordinates are
+## transformed from earth coordinates to spherical coordinates
+RFcov(model, x, y, grid=FALSE, coord_sys="earth")
+
+
+## now the scale is chosen such that the covariance
+## values are comparable to those in the cartesian case
+RFcov(RMS(model, s= 1 / 180 * pi), x, y, grid=FALSE,
+      coord_sys="earth")
+
+
+## projection onto a plane first. Then the scale is interpreted
+## in the usual, i.e. cartesian, sense, i.e. the model does not
+## really make sense
+RFoptions(zenit = c(2.5, 2.5))
+RFcov(model, x, y, grid=FALSE,
+      coord_sys="earth", new_coord_sys="orthographic")
+
+
+## again, here the scale is chosen to be comparable to the cartesian case
+## here the (standard) units are [km]
+(z1 &lt;- RFcov(RMS(model, s= 6350 / 180 * pi), x, y, grid=FALSE,
+             coord_sys="earth", new_coord_sys="orthographic"))
+
+
+## as above, but in miles
+(z2 &lt;- RFcov(RMS(model, s= 6350 / 1.609344 / 180 * pi), x, y, grid=FALSE,
+             coord_sys="earth", new_coord_sys="orthographic",
+             new_coordunits="miles"))
+stopifnot(all.equal(z1, z2))
+
+
+## again, projection onto a plane first, but now using the
+## gnomonic projection
+## here the (standard) units are [km]
+(z1 &lt;- RFcov(RMS(model, s= 6350 / 180 * pi), x, y, grid=FALSE,
+             coord_sys="earth", new_coord_sys="gnomonic"))
+
+## as above, but in miles
+(z2 &lt;- RFcov(RMS(model, s= 6350 / 1.609344 / 180 * pi), x, y, grid=FALSE,
+             coord_sys="earth", new_coord_sys="gnomonic",
+             new_coordunits="miles"))
+stopifnot(all.equal(z1, z2, tol=1e-5))
+
+
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

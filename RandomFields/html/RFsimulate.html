@@ -1,0 +1,336 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Simulation of Random Fields</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RFsimulate {RandomFields}"><tr><td>RFsimulate {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Simulation of Random Fields</h2>
+
+<h3>Description</h3>
+
+<p>This function simulates <b>unconditional</b> random fields:
+</p>
+
+<ul>
+<li><p> univariate and multivariate,
+spatial and spatio-temporal <a href="GaussianFields.html">Gaussian random fields</a>
+</p>
+</li>
+<li><p> fields based on Gaussian fields such as <a href="RPchi2.html">Chi2 fields</a>
+or <a href="RPbernoulli.html">Binary fields</a>, see <a href="RP.html">RP</a>.
+</p>
+</li>
+<li> <p><a href="RPpoisson.html">stationary Poisson fields</a>
+</p>
+</li>
+<li> <p><a href="RPmaxstable.html">stationary max-stable random fields</a>.
+</p>
+</li></ul>
+
+<p>It also simulates <b>conditional</b> random fields for
+</p>
+
+<ul>
+<li><p> univariate and multivariate,
+spatial and spatio-temporal Gaussian random fields
+</p>
+</li></ul>
+
+<p>Here, only the simulation of Gaussian random fields is described.
+For other kinds of random fields (binary, max-stable, etc.) or
+more sophisticated approaches see <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RFsimulate(model, x, y=NULL, z=NULL, T=NULL, grid=NULL,
+           distances, dim, data, given=NULL, err.model, params,
+           err.params, n=1, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>model,params</code></td>
+<td>
+<p> object of class  <code><a href="RMmodel-class.html">RMmodel</a></code>, <code><a href="RFformula.html">RFformula</a></code> or  <code><a href="../../stats/html/formula.html">formula</a></code>; best is to consider the examples below, first. <br /> The argument <code>params</code> is a list that specifies free parameters in a formula description, see <a href="RFformula.html">RMformula</a>.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>vector of x coordinates, or object of class <code><a href="../../sp/html/GridTopology-class.html">GridTopology</a></code> or <code><a href="../../raster/html/raster.html">raster</a></code>; for more options see <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>y,z</code></td>
+<td>
+<p>optional vectors of y (z) coordinates, which should not be given if <code>x</code> is a matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>T</code></td>
+<td>
+<p>optional vector of time coordinates, <code>T</code> must always be an equidistant vector. Instead of <code>T=seq(from=From, by=By, len=Len)</code>, one may also write <code>T=c(From, By, Len)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>grid</code></td>
+<td>
+<p>logical; the function finds itself the correct value in nearly all cases, so that usually <code>grid</code> need not be given. See also <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>distances,dim</code></td>
+<td>
+<p>another alternative for the argument <code>x</code> to pass the (relative) coordinates, see <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>For conditional simulation and random imputing only. If
+<code>data</code> is missing, unconditional 
+simulation is performed.<br />
+</p>
+<p>matrix, data.frame or object of class <code><a href="RFsp-class.html">RFsp</a></code>; <br /> If a matrix is given the ordering of the colums is the following: space, time, multivariate, repetitions, i.e. the index for the space runs the fastest and that for repetitions the slowest.  If <code>given</code> is not given and <code>data</code> is a matrix or <code>data</code> is  a data.frame, <span class="pkg">RandomFields</span> tries to identify  where the data and the coordinates are, e.g. by names in formulae or by fixed names,  see <a href="CoordinateSystems.html">Coordinate systems</a>. See also <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.  If all fails, the first columns are interpreted as coordinate vectors, and the last column(s) as (multiple) measurement(s) of the field. Notes that also lists of data can be passed.
+</p>
+<p>If the argument
+<code>x</code> is missing,
+<code>data</code> may contain <code>NA</code>s, which are then replaced by
+conditionally simulated values (random imputing);
+</p>
+</td></tr>
+<tr valign="top"><td><code>given</code></td>
+<td>
+<p>optional, matrix or list.  If <code>given</code> matrix then the coordinates  can be given separately, namely by <code>given</code> where, in each row, a single location is given.<br />  If <code>given</code> is a  list, it may consist of <code>x</code>, <code>y</code>, <code>z</code>, <code>T</code>,  <code>grid</code>.<br />  If <code>given</code> is provided, <code>data</code> must be a matrix or an array containing the data only.  </p>
+</td></tr>
+<tr valign="top"><td><code>err.model,err.params</code></td>
+<td>
+<p>For conditional simulation and random
+imputing only.<br />In case of (assumed) error-free measurements (which is mostly the case in geostatistics) the argument <code>err.model</code> is not given. In case of measurement errors we have  <code>err.model=RMnugget(var=var)</code>.<br /> <code>err.param</code> plays the same role as <code>params</code> for <code>model</code>..</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of realizations to generate.
+For a very advanced feature, see the notes in <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>for advanced use: further options and control arguments for the simulation that are passed to and processed by <code><a href="RFoptions.html">RFoptions</a></code>. If <code>params</code> is given, then <code>...</code> may include also the variables used in <code>params</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>By default, all Gaussian random fields have zero mean. 
+Simulating with trend can be done by including <code><a href="RMtrend.html">RMtrend</a></code>
+in the model, see the examples below.
+</p>
+<p>If <code>data</code> is passed, conditional simulation based on
+simple kriging is performed: 
+</p>
+
+<ul>
+<li>
+<p>If of class <code><a href="RFsp-class.html">RFsp</a></code>,
+<code>ncol(data@coords)</code> must equal the dimension of the index
+space. If <code>data@data</code> contains only a single variable,
+variable names are optional. If <code>data@data</code> contains
+more than one variable, variables must be named and <code>model</code>
+must be given in the tilde notation <code>resp ~ ... </code> (see
+<code><a href="RFformula.html">RFformula</a></code>) and <code>"resp"</code> must be contained
+in <code>names(data@data)</code>.
+</p>
+</li>
+<li>
+
+<p>If <code>data</code> is a matrix or a data.frame, either <code>ncol(data)</code>
+equals <i>(dimension of index space + 1)</i> and the order of the
+columns is (x, y, z, T, response) or, if <code>data</code> contains
+more than one 
+response variable (i.e. <code>ncol(data) &gt; (dimension of index
+ space + 1)</code>), <code>colnames(data)</code> must contain
+<code>colnames(x)</code> or those of <code>"x", "y", "z", "T"</code> that
+are not missing. The response variable name is matched with
+<code>model</code>, which must be given in the tilde notation. If
+<code>"x", "y", "z", "T"</code> are missing and <code>data</code> contains
+<code>NA</code>s, <code>colnames(data)</code> must contain an element which starts
+with &lsquo;data&rsquo;; the corresponding column and those behind it are
+interpreted as the given data and those before the corresponding
+column are interpreted as the coordinates.
+</p>
+</li>
+<li>
+<p>If <code>x</code> is missing, <code><a href="RFsimulate.html">RFsimulate</a></code> searches for
+<code>NA</code>s in the data and performs a conditional simulation
+for them.
+</p>
+</li></ul>
+
+<p>Specification of <code>err.model</code>:
+In geostatistics we have two different interpretations of a nugget
+effect: small scale variability and measurement error.
+The result of conditional simulation usually does not include the
+measurement error. Hence the measurement error <code>err.model</code>
+must be given separately. For sake of generality, any model (and not
+only the nugget effect) is allowed.
+Consequently, <code>err.model</code> is ignored
+when unconditional simulation is performed.
+</p>
+
+
+<h3>Value</h3>
+
+<p>By default, 
+an object of the virtual class <code><a href="RFsp-class.html">RFsp</a></code>;
+result is of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+<ul>
+<li>
+<p><code><a href="RFspatialGridDataFrame-class.html">RFspatialGridDataFrame</a></code>
+if the space-time dimension is greater than 1
+and the coordinates are on a grid,
+</p>
+</li>
+<li>
+<p><code><a href="RFgridDataFrame-class.html">RFgridDataFrame</a></code>
+if the space-time dimension equals 1 and the coordinates are on a grid,
+</p>
+</li>
+<li>
+<p><code><a href="RFspatialPointsDataFrame-class.html">RFspatialPointsDataFrame</a></code>
+if the space-time dimension is greater than 1 and the coordinates are not on a grid,
+</p>
+</li>
+<li>
+<p><code><a href="RFpointsDataFrame-class.html">RFpointsDataFrame</a></code>
+if the space-time dimension equals 1 and the coordinates are not on a
+grid.
+</p>
+</li></ul>
+
+<p>In case of a multivariate 
+</p>
+<p>If <code>n &gt; 1</code> the repetitions make the last dimension.
+</p>
+<p>See <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a> for additional options.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Several advanced options can be found in sections &lsquo;General
+options&rsquo; and &lsquo;coords&rsquo; of <code><a href="RFoptions.html">RFoptions</a></code>.
+In particular, option <code>spConform=FALSE</code> leads to a simpler
+(and faster!) output, see  <code><a href="RFoptions.html">RFoptions</a></code> for details.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+<p> Lantuejoul, Ch. (2002) <em>Geostatistical simulation.</em> <b>New York:</b> Springer.
+</p>
+<p>Schlather, M. (1999) <em>An introduction to positive definite functions and to unconditional simulation of random fields.</em> Technical report ST 99-10, Dept. of Maths and Statistics, Lancaster University.
+</p>
+<p>See <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a> for more specific literature.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RFvariogram.html">RFvariogram</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>,
+<code><a href="RFgetModelInfo.html">RFgetModelInfo</a></code>,
+<code><a href="RFgui.html">RFgui</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFoptions.html">RFoptions</a></code>,
+<code><a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a></code>,
+<code><a href="RFsimulate.more.examples.html">RFsimulate.more.examples</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+#############################################################
+## ##
+## ONLY TWO VERY BASIC EXAMPLES ARE GIVEN HERE ##
+## see ##
+## ?RMsimulate.more.examples ##
+## and ##
+## ?RFsimulateAdvanced ##
+## for more examples ##
+## ##
+#############################################################
+
+#############################################################
+## ##
+## Unconditional simulation ## 
+## ##
+#############################################################
+
+## first let us look at the list of implemented models
+RFgetModelNames(type="positive definite", domain="single variable",
+                iso="isotropic") 
+
+## our choice is the exponential model;
+## the model includes nugget effect and the mean:
+model &lt;- RMexp(var=5, scale=10) + # with variance 4 and scale 10
+ RMnugget(var=1) + # nugget
+ RMtrend(mean=0.5) # and mean
+ 
+## define the locations:
+from &lt;- 0
+to &lt;- 20
+x.seq &lt;- seq(from, to, length=200) 
+y.seq &lt;- seq(from, to, length=200)
+
+simu &lt;- RFsimulate(model, x=x.seq, y=y.seq)
+plot(simu)
+
+
+
+#############################################################
+## ##
+## Conditional simulation ## 
+## ##
+#############################################################
+
+# first we simulate some random values at 
+# 100 random locations:
+n &lt;- 100
+x &lt;- runif(n=n, min=-1, max=1)
+y &lt;- runif(n=n, min=-1, max=1)
+dta &lt;- RFsimulate(model = RMexp(), x=x, y=y, grid=FALSE)
+plot(dta)
+
+# let simulate a field conditional on the above data
+L &lt;- if (interactive()) 100 else 5
+x.seq.cond &lt;- y.seq.cond &lt;- seq(-1.5, 1.5, length=L)
+model &lt;- RMexp()
+cond &lt;- RFsimulate(model, x=x.seq.cond, y=y.seq.cond, data=dta)
+plot(cond, dta)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

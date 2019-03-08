@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Vector Covariance Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMvector {RandomFields}"><tr><td>RMvector {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Vector Covariance Model</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMvector.html">RMvector</a></code> is a multivariate covariance model which depends on
+a univariate covariance model that is stationary in the first <i>Dspace</i>
+coordinates <i>h</i> and where the covariance function phi(h,t)
+is twice differentiable in the first component <i>h</i>. 
+</p>
+<p>The corresponding matrix-valued covariance function C of the model
+only depends on the difference <i>h</i> between two points in the
+first component.
+It is given by
+</p>
+<p style="text-align: center;"><i>
+ C(h,t)=( -0.5 * (a + 1) &Delta; + a \nabla \nabla^T ) C_0(h, t)
+ </i></p>
+ 
+<p>where the operator is applied to the first component <i>h</i> only. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMvector(phi, a, Dspace, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>phi</code></td>
+<td>
+<p>an <code><a href="RMmodel.html">RMmodel</a></code>; has two components <i>h</i> (2- or 3-dimensional and stationary) and <i>t</i> (arbitrary dimension).</p>
+</td></tr>
+<tr valign="top"><td><code>a</code></td>
+<td>
+<p>a numerical value; should be in the interval <i>[-1,1]</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>Dspace</code></td>
+<td>
+<p>an integer; either 2 or 3; the first <i>Dspace</i>
+coordinates give the first component <i>h</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><i>C_0</i> is either a spatio-temporal model (then <i>t</i> is the
+time component) or it is an isotropic model. Then, the first <i>Dspace</i>
+coordinates are considered as <i>h</i> coordinates and the remaining
+ones as <i>t</i> coordinates. By default, <i>Dspace</i> equals the
+dimension of the field (and there is no <i>t</i> component).
+If <i>a=-1</i> then the field is curl free; if <i>a=1</i> then the field is
+divergence free.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMvector.html">RMvector</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Scheuerer, M. and Schlather, M. (2012)
+Covariance Models for Divergence-Free and Curl-Free Random Vector Fields.
+<em>Stochastic Models</em> <b>28:3</b>.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMcurlfree.html">RMcurlfree</a></code>,
+<code><a href="RMdivfree.html">RMdivfree</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+model &lt;- RMvector(RMgauss(), scale=0.3)
+x &lt;- seq(0, 10, 0.4)
+plot(RFsimulate(model, x=x, y=x, z=0), select.variables=list(1:2))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

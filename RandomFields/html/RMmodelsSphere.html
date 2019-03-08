@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Covariance models valid on a sphere</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Spherical models {RandomFields}"><tr><td>Spherical models {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Covariance models valid on a sphere</h2>
+
+<h3>Description</h3>
+
+<p>This page summarizes the covariance models that can be used
+for spherical coordinates (and earth coordinates).
+</p>
+
+
+<h3>Details</h3>
+
+<p>The following models are available:
+</p>
+<p><b>Completely monotone functions allowing for arbitrary scale</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+     <code><a href="RMbcw.html">RMbcw</a></code> </td><td style="text-align: left;"> Model bridging stationary and
+    intrinsically stationary processes for <i>&alpha; &le; 1</i>
+    and <i>&beta; &lt; 0</i></td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+       <code><a href="RMcubic.html">RMcubic</a></code> </td><td style="text-align: left;"> cubic model</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code><a href="RMdagum.html">RMdagum</a></code> </td><td style="text-align: left;"> Dagum model with <i>&beta; &lt; &gamma;</i>
+    and <i>&gamma; &le; 1</i></td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RMexp.html">RMexp</a></code> </td><td style="text-align: left;"> exponential model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RMgencauchy.html">RMgencauchy</a></code> </td><td style="text-align: left;"> generalized Cauchy family with
+    <i>&alpha; &le; 1</i> (and arbitrary <i>&beta;&gt; 0</i>)</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RMmatern.html">RMmatern</a></code> </td><td style="text-align: left;"> Whittle-Matern model with
+    <i>&nu; &le; 1/2</i></td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    
+    
+    <code><a href="RMstable.html">RMstable</a></code> </td><td style="text-align: left;"> symmetric stable family or powered
+    exponential model with <i>&alpha; &le; 1</i></td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RMmatern.html">RMwhittle</a></code> </td><td style="text-align: left;"> Whittle-Matern model, alternative
+    parametrization with <i>&nu; &le; 1/2</i></td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+  </td>
+</tr>
+
+</table>
+
+<p><b>Other isotropic models with arbitrary scale</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+   <code><a href="RMconstant.html">RMconstant</a></code> </td><td style="text-align: left;"> spatially constant model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code><a href="RMnugget.html">RMnugget</a></code> </td><td style="text-align: left;"> nugget effect model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  </td>
+</tr>
+
+</table>
+
+<p><b>Compactly supported covariance functions allowing for scales up to
+<i>&pi;</i> (or <i>180</i> degrees)</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+      <code><a href="RMaskey.html">RMaskey</a></code> </td><td style="text-align: left;"> Askey's model</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+      <code><a href="RMcircular.html">RMcircular</a></code> </td><td style="text-align: left;"> circular model</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+     <code><a href="RMgengneiting.html">RMgengneiting</a></code> </td><td style="text-align: left;"> Wendland-Gneiting model;
+      differentiable models with compact support </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code><a href="RMgneiting.html">RMgneiting</a></code> </td><td style="text-align: left;"> differentiable model with compact
+    support </td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+    <code><a href="RMspheric.html">RMspheric</a></code> </td><td style="text-align: left;"> spherical model </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  </td>
+</tr>
+
+</table>
+
+<p><b>Anisotropic models</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+    None up to now.
+  </td>
+</tr>
+
+</table>
+
+<p><b>Basic Operators</b>
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RMmult.html">RMmult</a></code>, <code>*</code> </td><td style="text-align: left;"> product of covariance models </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code><a href="RMplus.html">RMplus</a></code>, <code>+</code> </td><td style="text-align: left;"> sum of covariance models
+    or variograms</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  </td>
+</tr>
+
+</table>
+
+<p><b>See <a href="RMmodel.html">RMmodels</a> for cartesian models.</b>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><a href="CoordinateSystems.html">coordinate systems</a>,
+<code><a href="RMmodel.html">RMmodels</a></code>,
+<code><a href="RMtrafo.html">RMtrafo</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+RFgetModelNames(isotropy=c("spherical isotropic"))
+
+## an example of a simple model valid on a sphere
+model &lt;- RMexp(var=1.6, scale=0.5) + RMnugget(var=0) #exponential + nugget
+plot(model)
+
+
+## a simple simulation
+l &lt;- seq(0, 85, 1.2)
+coord &lt;- cbind(lon=l, lat=l)
+
+
+z &lt;- RFsimulate(RMwhittle(s=30, nu=0.45), coord, grid=TRUE) # takes 1 min
+plot(z)
+
+
+z &lt;- RFsimulate(RMwhittle(s=500, nu=0.5), coord, grid=TRUE,
+                new_coord_sys="orthographic", zenit=c(25, 25)) 
+plot(z)
+
+
+z &lt;- RFsimulate(RMwhittle(s=500, nu=0.5), coord, grid=TRUE,
+                new_coord_sys="gnomonic", zenit=c(25, 25)) 
+plot(z)
+
+
+## space-time modelling on the sphere
+sigma &lt;- 5 * sqrt((R.lat()-30)^2 + (R.lon()-20)^2)
+model &lt;- RMprod(sigma) * RMtrafo(RMexp(s=500, proj="space"), "cartesian") *
+  RMspheric(proj="time") 
+z &lt;- RFsimulate(model, 0:10, 10:20, T=seq(0, 1, 0.1),
+                coord_system="earth", new_coordunits="km")
+plot(z, MARGIN.slices=3)
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

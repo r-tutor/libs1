@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Gneiting's modification towards finite range</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMcutoff {RandomFields}"><tr><td>RMcutoff {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Gneiting's modification towards finite range</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMcutoff.html">RMcutoff</a></code> is a functional on univariate stationary
+isotropic covariance functions <i>phi</i>. 
+</p>
+<p>The corresponding function <i>C</i> (which is not necessarily a
+covariance function, 
+see details) only depends on the distance <i>r</i> between two
+points in <i>d</i>-dimensional space and is given by
+</p>
+<p style="text-align: center;"><i>C(r)=&phi;(r), 0&le; r &le; d</i></p>
+
+<p style="text-align: center;"><i>C(r) = b_0 ((dR)^a - r^a)^{2 a}, d &le; r &le; dR</i></p>
+
+<p style="text-align: center;"><i>C(r) = 0, dR &le; r</i></p>
+
+<p>The parameters <i>R</i> and <i>b_0</i>
+are chosen internally such that <i>C</i> is a smooth function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMcutoff(phi, diameter, a, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>phi</code></td>
+<td>
+<p>a univariate stationary isotropic covariance model.    
+See, for instance,
+</p>
+<p><code>RFgetModelNames(type="positive definite",
+      domain="single variable", isotropy="isotropic",  vdim=1)</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>diameter</code></td>
+<td>
+<p>a numerical value; should be greater than 0; the
+diameter of the domain on which the simulation is done</p>
+</td></tr>
+<tr valign="top"><td><code>a</code></td>
+<td>
+<p>a numerical value; should be greater than 0; has been shown to be
+optimal for <i>a = 1/2</i> or <i>a =1</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The algorithm that checks the given parameters knows
+only about some few necessary conditions.
+Hence it is not ensured that
+the cutoff-model is a valid covariance function for any
+choice of <i>&phi;</i> and the parameters. 
+</p>
+<p>For certain models <i>phi</i>, e.g. <code><a href="RMstable.html">RMstable</a></code>,
+<code><a href="RMmatern.html">RMwhittle</a></code> and <code><a href="RMgencauchy.html">RMgencauchy</a></code>, some
+sufficient conditions 
+are known (cf. Gneiting et al. (2006)).
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMcutoff.html">RMcutoff</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Gneiting, T., Sevecikova, H, Percival, D.B., Schlather M.,
+Jiang Y. (2006) Fast and Exact Simulation of Large Gaussian
+Lattice Systems in $R^2$: Exploring the Limits.
+<em>J. Comput. Graph. Stat.</em> <b>15</b>, 483&ndash;501.
+</p>
+</li>
+<li><p> Stein, M.L. (2002) Fast and exact simulation of fractional
+Brownian surfaces. <em>J. Comput. Graph. Statist.</em> <b>11</b>, 587&ndash;599
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+model &lt;- RMexp()
+plot(model, model.cutoff=RMcutoff(model, diameter=1), xlim=c(0, 4))
+
+model &lt;- RMstable(alpha = 0.8)
+plot(model, model.cutoff=RMcutoff(model, diameter=2), xlim=c(0, 5))
+x &lt;- y &lt;- seq(0, 4, 0.05)
+plot(RFsimulate(RMcutoff(model), x=x, y = y))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

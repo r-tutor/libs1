@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Studies on the Effectiveness of Writing-to-Learn...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dat.bangertdrowns2004 {weightr}"><tr><td>dat.bangertdrowns2004 {weightr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Studies on the Effectiveness of Writing-to-Learn Interventions</h2>
+
+<h3>Description</h3>
+
+<p>Results from 48 studies on the effectiveness of school-based writing-to-learn
+interventions on academic achievement.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dat.bangertdrowns2004
+</pre>
+
+
+<h3>Format</h3>
+
+<p>A data frame; for documentation, see <code>dat.bangertdrowns2004</code>
+in Wolfgang Viechtbauer's R package <code>metafor</code>.</p>
+
+
+<h3>Details</h3>
+
+<p>This reproduced dataset and its documentation are credited to Wolfgang
+Viechtbauer and his <code>metafor</code> package (2010). Please see his package for
+details.
+</p>
+
+
+<h3>Source</h3>
+
+<p>Bangert-Drowns, R. L., Hurley, M. M., &amp; Wilkinson, B. (2004). The
+effects of school-based writing-to-learn interventions on academic achievement:
+A meta-analysis. Review of Educational Research, 74, 29-58.
+</p>
+
+
+<h3>References</h3>
+
+<p>Bangert-Drowns, R. L., Hurley, M. M., &amp; Wilkinson, B. (2004). The
+effects of school-based writing-to-learn interventions on academic achievement:
+A meta-analysis. Review of Educational Research, 74, 29-58.
+</p>
+<p>Viechtbauer, W. (2010). Conducting meta-analysis in R with the metafor package.
+Journal of Statistical Software, 36(3), 1-48.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+dat.bangertdrowns2004
+
+# Extracting the effect sizes and sampling variances:
+effect &lt;- dat.bangertdrowns2004$yi
+v &lt;- dat.bangertdrowns2004$vi
+
+# The weight-function model with no mean model:
+weightfunct(effect, v)
+
+# The weight-function model with a mean model:
+weightfunct(effect, v, mods=~dat.bangertdrowns2004$info)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>weightr</em> version 2.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

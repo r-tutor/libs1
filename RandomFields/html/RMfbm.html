@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Variogram Model of Fractal Brownian Motion</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMfbm {RandomFields}"><tr><td>RMfbm {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Variogram Model of Fractal Brownian Motion</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMfbm.html">RMfbm</a></code> is an intrinsically stationary isotropic variogram
+model. The corresponding centered semi-variogram only depends on the
+distance <i>r &ge; 0</i> between two points and is given by
+</p>
+<p style="text-align: center;"><i>&gamma;(r) = r^&alpha;</i></p>
+
+<p>where <i>0 &lt; &alpha; &le; 2</i>.<br />
+By now, the model is implemented for dimensions up to 3.<br />
+For a generalized model see also <code><a href="RMgenfbm.html">RMgenfbm</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMfbm(alpha, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>numeric in <i>(0,2]</i>; refers to the fractal dimension of the
+process</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+variogram remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The variogram is unbounded and belongs to a non-stationary process with
+stationary increments. For <i>&alpha;=1</i> and <code>scale=2</code>
+we get a variogram corresponding to a standard Brownian Motion.
+</p>
+<p>For <i>0 &lt; &alpha; &lt; 2</i> the quantity <i>H=&alpha;/2</i> is called Hurst index and determines
+the fractal dimension <i>D</i> of the corresponding Gaussian sample paths
+</p>
+<p style="text-align: center;"><i>D = d + 1 - H</i></p>
+
+<p>where <i>d</i> is the dimension of the random field (see Chiles and
+Delfiner, 1999, p. 89).
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMfbm.html">RMfbm</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Chiles, J.-P. and P. Delfiner (1999) <em>Geostatistics. Modeling
+Spatial Uncertainty.</em> New York, Chichester: John Wiley &amp; Sons.
+</p>
+</li>
+<li><p> Stein, M.L. (2002) Fast and exact simulation of fractional
+Brownian surfaces. <em>J. Comput. Graph. Statist.</em> <b>11</b>, 587&ndash;599.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMgenfbm.html">RMgenfbm</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+model &lt;- RMfbm(alpha=1)
+x &lt;- seq(0, 10, 0.02)
+plot(model)
+plot(RFsimulate(model, x=x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

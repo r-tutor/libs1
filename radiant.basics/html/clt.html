@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Central Limit Theorem simulation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for clt {radiant.basics}"><tr><td>clt {radiant.basics}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Central Limit Theorem simulation</h2>
+
+<h3>Description</h3>
+
+<p>Central Limit Theorem simulation
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+clt(dist, n = 100, m = 100, norm_mean = 0, norm_sd = 1,
+  binom_size = 10, binom_prob = 0.2, unif_min = 0, unif_max = 1,
+  expo_rate = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dist</code></td>
+<td>
+<p>Distribution to simulate</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>Sample size</p>
+</td></tr>
+<tr valign="top"><td><code>m</code></td>
+<td>
+<p>Number of samples</p>
+</td></tr>
+<tr valign="top"><td><code>norm_mean</code></td>
+<td>
+<p>Mean for the normal distribution</p>
+</td></tr>
+<tr valign="top"><td><code>norm_sd</code></td>
+<td>
+<p>Standard deviation for the normal distribution</p>
+</td></tr>
+<tr valign="top"><td><code>binom_size</code></td>
+<td>
+<p>Size for the binomial distribution</p>
+</td></tr>
+<tr valign="top"><td><code>binom_prob</code></td>
+<td>
+<p>Probability for the binomial distribution</p>
+</td></tr>
+<tr valign="top"><td><code>unif_min</code></td>
+<td>
+<p>Minimum for the uniform distribution</p>
+</td></tr>
+<tr valign="top"><td><code>unif_max</code></td>
+<td>
+<p>Maximum for the uniform distribution</p>
+</td></tr>
+<tr valign="top"><td><code>expo_rate</code></td>
+<td>
+<p>Rate for the exponential distribution</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/basics/clt.html">https://radiant-rstats.github.io/docs/basics/clt.html</a> for an example in Radiant
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with the name of the Distribution and a matrix of simulated data
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+clt("Uniform", 10, 10, unif_min = 10, unif_max = 20)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.basics</em> version 0.9.9 <a href="00Index.html">Index</a>]</div>
+</body></html>

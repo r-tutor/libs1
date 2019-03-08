@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Special models for rotation like fields</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMeaxxa {RandomFields}"><tr><td>RMeaxxa {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Special models for rotation like fields</h2>
+
+<h3>Description</h3>
+
+<p><code>RMeaxxa</code> and <code>RMetaxxa</code> define the auxiliary functions
+</p>
+<p style="text-align: center;"><i>C(h) = h^T A A^T h + diag(E)</i></p>
+
+<p>and
+</p>
+<p style="text-align: center;"><i>C(h) = h^T A R R^R A^T h
+   + diag(E),</i></p>
+
+<p>respectively.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMeaxxa(E, A) 
+RMetaxxa(E, A, alpha)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>E</code></td>
+<td>
+<p>m-variate vector of positive values</p>
+</td></tr>
+<tr valign="top"><td><code>A</code></td>
+<td>
+<p><i>m x k</i> matrix</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>angle for the rotation matrix <i>R</i></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code><a href="RMeaxxa.html">RMeaxxa</a></code> is defined in space and returns an m-variate model.
+</p>
+<p><code><a href="RMeaxxa.html">RMetaxxa</a></code> is a space-time model with two spatial dimensions.
+The matrix R is a rotation matrix with angle <i>&beta; t</i> where
+<i>t</i> is the time component.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMeaxxa.html">RMeaxxa</a></code> and <code><a href="RMeaxxa.html">RMetaxxa</a></code> return an
+object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Schlather, M. (2010)
+On some covariance models based on normal scale mixtures.
+<em>Bernoulli</em>, <b>16</b>, 780-797. 
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>,
+<a href="papers.S10.html">S10</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# see S10
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

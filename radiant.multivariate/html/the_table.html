@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Function to calculate the PW and IW table for conjoint</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for the_table {radiant.multivariate}"><tr><td>the_table {radiant.multivariate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Function to calculate the PW and IW table for conjoint</h2>
+
+<h3>Description</h3>
+
+<p>Function to calculate the PW and IW table for conjoint
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+the_table(model, dataset, evar)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>model</code></td>
+<td>
+<p>Tidied model results (broom) output from <code><a href="conjoint.html">conjoint</a></code> passed on by summary.conjoint</p>
+</td></tr>
+<tr valign="top"><td><code>dataset</code></td>
+<td>
+<p>Conjoint data</p>
+</td></tr>
+<tr valign="top"><td><code>evar</code></td>
+<td>
+<p>Explanatory variables used in the conjoint regression</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/multivariate/conjoint.html">https://radiant-rstats.github.io/docs/multivariate/conjoint.html</a> for an example in Radiant
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="conjoint.html">conjoint</a></code> to generate results
+</p>
+<p><code><a href="summary.conjoint.html">summary.conjoint</a></code> to summarize results
+</p>
+<p><code><a href="plot.conjoint.html">plot.conjoint</a></code> to plot results
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+result &lt;- conjoint(mp3, rvar = "Rating", evar = "Memory:Shape")
+the_table(tidy(result$model_list[[1]][["model"]]), result$dataset, result$evar)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.multivariate</em> version 0.9.9 <a href="00Index.html">Index</a>]</div>
+</body></html>

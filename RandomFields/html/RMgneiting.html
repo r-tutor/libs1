@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Gneiting Covariance Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMgneiting {RandomFields}"><tr><td>RMgneiting {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Gneiting Covariance Model</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMgneiting.html">RMgneiting</a></code> is a stationary isotropic covariance model
+which is only valid up to dimension 3, or 5 (see the argument <code>orig</code>).
+The corresponding covariance function only depends on the distance
+<i>r &ge; 0</i> between 
+two points and is given by
+</p>
+<p style="text-align: center;"><i>C(r) = (1 + 8 s r + 25 s^2 r^2 + 32 s^3 r^3)(1-s r)^8 </i></p>
+
+<p>if <i>0 &lt;= r &lt;= 1/s</i> and 
+</p>
+<p style="text-align: center;"><i>C(r)=0</i></p>
+<p> otherwise. Here,
+<i>s=0.301187465825</i>.
+For a generalized model see also <code><a href="RMgengneiting.html">RMgengneiting</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMgneiting(orig, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+<tr valign="top"><td><code>orig</code></td>
+<td>
+<p>logical.
+If <code>TRUE</code> the above model is used.
+Otherwise
+the <code><a href="RMgengneiting.html">RMgengneiting</a></code> model C(s r) with <code>kappa=3</code> as above, but with <code>mu = 2.683509</code> and <code>s=0.2745640815</code> is used.
+The latter has the advantage of being closer to the Gaussian model and
+it is valid up to dimension 5.
+</p>
+<p>Default: <code>TRUE</code>.   
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This isotropic covariance function is valid only for dimensions less than or equal to 3. 
+It is 6 times differentiable and has compact support.
+</p>
+<p>This model is an alternative to <code><a href="RMgauss.html">RMgauss</a></code> as its graph is hardly distinguishable from the 
+graph of the Gaussian model, but possesses neither the mathematical nor the numerical disadvantages of the Gaussian model.
+</p>
+<p>It is a special case of <code><a href="RMgengneiting.html">RMgengneiting</a></code> for the choice <i>&kappa;=3, &mu;=1.5</i>.
+</p>
+<p>Note that, in the original work by Gneiting (1999), a numerical value slightly deviating from
+the optimal one was used for <i>&mu;=1.5</i>: <i>s=10 sqrt(2)/47</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMgneiting.html">RMgneiting</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+<p>For the original version
+</p>
+
+<ul>
+<li><p> Gneiting, T. (1999)
+Correlation functions for atmospherical data analysis.
+<em>Q. J. Roy. Meteor. Soc</em> Part A <b>125</b>, 2449-2464.
+</p>
+</li></ul>
+
+<p>For the version (<code>orig=FALSE</code>)
+</p>
+
+<ul>
+<li><p> this package <span class="pkg">RandomFields</span>.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMbigneiting.html">RMbigneiting</a></code>,
+<code><a href="RMgengneiting.html">RMgengneiting</a></code>,
+<code><a href="RMgauss.html">RMgauss</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+plot(RMgneiting(), model2=RMgneiting(orig=FALSE), model3=RMgauss(), 
+     xlim=c(-3,3), maxchar=100)
+plot(RMgneiting(), model2=RMgneiting(orig=FALSE), model3=RMgauss(), 
+     xlim=c(1.5,2.5), maxchar=100)
+
+model &lt;- RMgneiting(orig=FALSE, scale=0.4)
+x &lt;- seq(0, 10, 0.2) ## nicer with 0.1 instead of 0.2
+z &lt;- RFsimulate(model, x=x, y=x, z=x, T=c(1,1,4), maxGB=3)
+plot(z, MARGIN.slices=4, MARGIN.movie=3)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

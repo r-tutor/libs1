@@ -2,7 +2,7 @@
 ### Encoding: UTF-8
 
 ###################################################
-### code chunk number 1: rockchalk.Rnw:17-18
+### code chunk number 1: rockchalk.Rnw:18-19
 ###################################################
   if(exists(".orig.enc")) options(encoding = .orig.enc)
 
@@ -16,40 +16,40 @@ options(useFancyQuotes = FALSE)
 
 
 ###################################################
-### code chunk number 3: rockchalk.Rnw:187-188
+### code chunk number 3: rockchalk.Rnw:188-189
 ###################################################
 library(rockchalk)
 
 
 ###################################################
-### code chunk number 4: rockchalk.Rnw:194-197
+### code chunk number 4: rockchalk.Rnw:195-198
 ###################################################
-library(car)
+library(carData)
 data(Chile)
 (summChile <- summarize(Chile))
 
 
 ###################################################
-### code chunk number 5: rockchalk.Rnw:211-212
+### code chunk number 5: rockchalk.Rnw:212-213
 ###################################################
 centralValues(Chile)
 
 
 ###################################################
-### code chunk number 6: rockchalk.Rnw:229-230
+### code chunk number 6: rockchalk.Rnw:230-231
 ###################################################
 m1 <- lm(statusquo ~ age + income + population + region + sex, data = Chile)
 
 
 ###################################################
-### code chunk number 7: rockchalk.Rnw:236-238
+### code chunk number 7: rockchalk.Rnw:237-239
 ###################################################
 m1pred <- predictOMatic(m1)
 m1pred
 
 
 ###################################################
-### code chunk number 8: rockchalk.Rnw:269-275
+### code chunk number 8: rockchalk.Rnw:270-276
 ###################################################
 mypred2 <- predictOMatic(m1, predVals = c("age", "region"), n = 3)
 mypred2
@@ -60,35 +60,35 @@ mypred4
 
 
 ###################################################
-### code chunk number 9: rockchalk.Rnw:296-298
+### code chunk number 9: rockchalk.Rnw:297-299
 ###################################################
 mynewdf <- newdata(m1, predVals = c("age","region"), n = 3)
 mynewdf
 
 
 ###################################################
-### code chunk number 10: rockchalk.Rnw:301-303
+### code chunk number 10: rockchalk.Rnw:302-304
 ###################################################
 mynewdf2 <- newdata(m1, predVals = list(age = "std.dev.", region = c("SA", "C","N")))
 mynewdf2
 
 
 ###################################################
-### code chunk number 11: rockchalk.Rnw:306-308
+### code chunk number 11: rockchalk.Rnw:307-309
 ###################################################
 mynewdf3 <- newdata(m1, predVals = list(age = c(20, 30, 40), region = c("SA", "C","N")))
 mynewdf3
 
 
 ###################################################
-### code chunk number 12: rockchalk.Rnw:313-315
+### code chunk number 12: rockchalk.Rnw:314-316
 ###################################################
 mynewdf <- newdata(m1, predVals = list(age = getFocal(Chile$age, n = 3), region = getFocal(Chile$region, n = 3)))
 mynewdf
 
 
 ###################################################
-### code chunk number 13: rockchalk.Rnw:339-344
+### code chunk number 13: rockchalk.Rnw:340-345
 ###################################################
 df <- data.frame(ldose = rep(0:5, 2), sex = factor(rep(c("M", "F"), c(6, 6))), 
 	SF.numdead = c(1, 4, 9, 13, 18, 20, 0, 2, 6, 10, 12, 16))      
@@ -98,7 +98,7 @@ predictOMatic(budworm.lg, predVals = c(ldose = "std.dev.", sex = "table"), inter
 
 
 ###################################################
-### code chunk number 14: rockchalk.Rnw:360-361
+### code chunk number 14: rockchalk.Rnw:361-362
 ###################################################
 descriptiveTable(m1, digits=6)
 
@@ -143,17 +143,20 @@ or2 <- outreg(list(m1,gm1), modelLabels = c("OLS:y","GLM: Categorized y"))
 ###################################################
 ### code chunk number 20: ps05
 ###################################################
-m1ps <- plotSlopes(m1, plotx = "x2", xlab = "x2 from model m1", interval = "confidence", opacity = 80, col = "red", ylim = c(20, 70))
+getOption("SweaveHooks")[["fig"]]()
+m1ps <- plotSlopes(m1, plotx = "x2", xlab = "x2 from model m1", interval = "confidence", opacity = 80, col = "red",
+ylim = c(-70, 15), legendArgs = list(x="topright"))
 
 
 ###################################################
-### code chunk number 21: rockchalk.Rnw:507-508 (eval = FALSE)
+### code chunk number 21: rockchalk.Rnw:509-510 (eval = FALSE)
 ###################################################
-## m1ps <- plotSlopes(m1, plotx = "x2", xlab = "x2 from model m1", interval = "confidence", opacity = 80, col = "red", ylim = c(20, 70))
+## m1ps <- plotSlopes(m1, plotx = "x2", xlab = "x2 from model m1", interval = "confidence", opacity = 80, col = "red",
+## ylim = c(-70, 15), legendArgs = list(x="topright"))
 
 
 ###################################################
-### code chunk number 22: rockchalk.Rnw:522-523
+### code chunk number 22: rockchalk.Rnw:524-525
 ###################################################
 m1ps$newdata[1:3, ]
 
@@ -168,23 +171,26 @@ m4 <- lm(y4 ~ x1*x2 + x3, data = dat)
 ###################################################
 ### code chunk number 24: ps10
 ###################################################
+getOption("SweaveHooks")[["fig"]]()
 par(mfcol=c(2,1))
 m4psa <- plotSlopes(m4, plotx = "x1", modx = "x2", xlab = "x1 is a fun plotx")
-m4psb <- plotSlopes(m4, plotx = "x2", modx = "x1", modxVals = "std.dev.", xlab = "x2 is plotx", ylim = c(-100, 20))
+m4psb <- plotSlopes(m4, plotx = "x2", modx = "x1", modxVals = "std.dev.", xlab = "x2 is plotx", ylim = c(-120, 15),
+legendArgs = list(x = "topright"))
 par(mfcol=c(1,1))
 
 
 ###################################################
-### code chunk number 25: rockchalk.Rnw:560-561 (eval = FALSE)
+### code chunk number 25: rockchalk.Rnw:563-564 (eval = FALSE)
 ###################################################
 ## par(mfcol=c(2,1))
 ## m4psa <- plotSlopes(m4, plotx = "x1", modx = "x2", xlab = "x1 is a fun plotx")
-## m4psb <- plotSlopes(m4, plotx = "x2", modx = "x1", modxVals = "std.dev.", xlab = "x2 is plotx", ylim = c(-100, 20))
+## m4psb <- plotSlopes(m4, plotx = "x2", modx = "x1", modxVals = "std.dev.", xlab = "x2 is plotx", ylim = c(-120, 15),
+## legendArgs = list(x = "topright"))
 ## par(mfcol=c(1,1))
 
 
 ###################################################
-### code chunk number 26: rockchalk.Rnw:577-581
+### code chunk number 26: rockchalk.Rnw:580-584
 ###################################################
 fourCat <- gl(4,25, labels=c("East","West","South", "Midwest"))
 dat$x4 <- sample(fourCat, 100, replace = TRUE)
@@ -195,23 +201,25 @@ m5 <- lm (y5 ~ x1*x4 + x3, data=dat)
 ###################################################
 ### code chunk number 27: ps20
 ###################################################
+getOption("SweaveHooks")[["fig"]]()
 m5psa <- plotSlopes(m5, plotx = "x1", modx = "x4", xlab = "x1 is a Continuous Predictor", xlim = magRange(dat$x1, c(1.2,1)))
 
 
 ###################################################
 ### code chunk number 28: ps21
 ###################################################
+getOption("SweaveHooks")[["fig"]]()
 m5psb <- plotSlopes(m5, plotx = "x1", modx = "x4", modxVals = c("West","East"), xlab = "x1 is a Continuous Predictor", xlim=magRange(dat$x1, c(1.2,1)), interval = "conf")
 
 
 ###################################################
-### code chunk number 29: rockchalk.Rnw:604-605 (eval = FALSE)
+### code chunk number 29: rockchalk.Rnw:607-608 (eval = FALSE)
 ###################################################
 ## m5psa <- plotSlopes(m5, plotx = "x1", modx = "x4", xlab = "x1 is a Continuous Predictor", xlim = magRange(dat$x1, c(1.2,1)))
 
 
 ###################################################
-### code chunk number 30: rockchalk.Rnw:616-617 (eval = FALSE)
+### code chunk number 30: rockchalk.Rnw:619-620 (eval = FALSE)
 ###################################################
 ## m5psb <- plotSlopes(m5, plotx = "x1", modx = "x4", modxVals = c("West","East"), xlab = "x1 is a Continuous Predictor", xlim=magRange(dat$x1, c(1.2,1)), interval = "conf")
 
@@ -219,86 +227,113 @@ m5psb <- plotSlopes(m5, plotx = "x1", modx = "x4", modxVals = c("West","East"), 
 ###################################################
 ### code chunk number 31: ts10
 ###################################################
+getOption("SweaveHooks")[["fig"]]()
 m4psats <- testSlopes(m4psa)
 plot(m4psats)
 
 
 ###################################################
-### code chunk number 32: rockchalk.Rnw:720-721
+### code chunk number 32: rockchalk.Rnw:729-730
 ###################################################
 dat$y5 <- with(dat, -3*x1 + 15*log(0.1 + x2 - min(x2)) + 1.1*x2 + 8.2 *x1 * x2 + 10*rnorm(100))
 
 
 ###################################################
-### code chunk number 33: pcps20
+### code chunk number 33: rockchalk.Rnw:735-736
 ###################################################
 m5 <- lm(y5 ~ log(x2) + x1 * x2, data = dat)
-m5pc <- plotCurves(m5, plotx = "x2", modx = "x1")
 
 
 ###################################################
-### code chunk number 34: rockchalk.Rnw:735-736 (eval = FALSE)
+### code chunk number 34: pcps20a (eval = FALSE)
 ###################################################
-## m5 <- lm(y5 ~ log(x2) + x1 * x2, data = dat)
-## m5pc <- plotCurves(m5, plotx = "x2", modx = "x1")
+getOption("SweaveHooks")[["fig"]]()
+## m5pc <- plotCurves(m5, plotx = "x2", modx = "x1", main = "plotCurves output", ylim = c(-210, 330),
+## legendArgs = list(x = "topleft", title = "x1", cex = 0.8))
 
 
 ###################################################
-### code chunk number 35: pp100
+### code chunk number 35: psps20b (eval = FALSE)
 ###################################################
+getOption("SweaveHooks")[["fig"]]()
+## m5ps <- plotSlopes(m5, plotx = "x2", modx = "x1", main = "plotSlopes outout", ylim = c(-210, 330),
+## legendArgs = list(x = "topleft", title = "x1", cex = 0.8))
+
+
+###################################################
+### code chunk number 36: rockchalk.Rnw:757-758
+###################################################
+getOption("SweaveHooks")[["fig"]]()
+m5pc <- plotCurves(m5, plotx = "x2", modx = "x1", main = "plotCurves output", ylim = c(-210, 330),
+legendArgs = list(x = "topleft", title = "x1", cex = 0.8))
+
+
+###################################################
+### code chunk number 37: rockchalk.Rnw:761-762
+###################################################
+getOption("SweaveHooks")[["fig"]]()
+m5ps <- plotSlopes(m5, plotx = "x2", modx = "x1", main = "plotSlopes outout", ylim = c(-210, 330),
+legendArgs = list(x = "topleft", title = "x1", cex = 0.8))
+
+
+###################################################
+### code chunk number 38: pp100
+###################################################
+getOption("SweaveHooks")[["fig"]]()
 p100 <- plotPlane(m4, plotx1 = "x1", plotx2 = "x2", phi = 10, theta = -80, lcol = gray(.70))
 
 
 ###################################################
-### code chunk number 36: rockchalk.Rnw:769-770 (eval = FALSE)
+### code chunk number 39: rockchalk.Rnw:799-800 (eval = FALSE)
 ###################################################
 ## p100 <- plotPlane(m4, plotx1 = "x1", plotx2 = "x2", phi = 10, theta = -80, lcol = gray(.70))
 
 
 ###################################################
-### code chunk number 37: pp111
+### code chunk number 40: pp111
 ###################################################
+getOption("SweaveHooks")[["fig"]]()
 ppm5 <- plotPlane(m5, plotx1 = "x2", plotx2 = "x1", phi = 0, npp = 15, lcol = gray(.80))
 addLines(from = m5pc, to = ppm5, col = m5pc$col)
 
 
 ###################################################
-### code chunk number 38: rockchalk.Rnw:817-819
+### code chunk number 41: rockchalk.Rnw:847-849
 ###################################################
 m4 <- lm (y4 ~ x1 * x2, data = dat)
 m4s <- standardize(m4)
 
 
 ###################################################
-### code chunk number 39: rockchalk.Rnw:825-826
+### code chunk number 42: rockchalk.Rnw:855-856
 ###################################################
 summary(m4s)
 
 
 ###################################################
-### code chunk number 40: stdreg10
+### code chunk number 43: stdreg10
 ###################################################
 or10 <- outreg(list(m4, m4s), tight = F, modelLabels = c("Not Standardized","Standardized"))
 
 
 ###################################################
-### code chunk number 41: rockchalk.Rnw:872-874
+### code chunk number 44: rockchalk.Rnw:902-904
 ###################################################
 m4mc <- meanCenter(m4)
 summary(m4mc)
 
 
 ###################################################
-### code chunk number 42: rockchalk.Rnw:907-909
+### code chunk number 45: rockchalk.Rnw:938-940
 ###################################################
 m4rc <- residualCenter(m4)
 summary(m4rc)
 
 
 ###################################################
-### code chunk number 43: rockchalk.Rnw:1051-1056
+### code chunk number 46: rockchalk.Rnw:1082-1087
 ###################################################
-dat2 <- genCorrelatedData(N=400, rho=.4, stde=300, beta=c(2,0.1,0.1,0.2))
+dat2 <- genCorrelatedData3(N=400, rho=.4, stde=300, beta=c(2,0.1,0.1,0.2))
 m6linear <- lm (y ~ x1 + x2, data=dat2)
 m6int <- lm (y ~ x1 * x2, data=dat2)
 m6mc <- meanCenter(m6int)
@@ -306,14 +341,15 @@ m6rc <- residualCenter(m6int)
 
 
 ###################################################
-### code chunk number 44: mcenter10
+### code chunk number 47: mcenter10
 ###################################################
 or11 <- outreg(list(m6linear, m6int, m6mc, m6rc), tight=F, modelLabels=c("Linear", "Interaction","Mean-centered","Residual-centered"), alpha = c(0.05, 0.01))
 
 
 ###################################################
-### code chunk number 45: pscenter
+### code chunk number 48: pscenter
 ###################################################
+getOption("SweaveHooks")[["fig"]]()
 par(mfcol = c(2, 1))
 plotSlopes(m6int, plotx = "x1", modx = "x2", modxVals = "std.dev.",  n = 2, interval = "confidence", main= "Not Centered")
 plotSlopes(m6mc, plotx = "x1c", modx = "x2c", modxVals = "std.dev.", n = 2, interval = "confidence", main = "Mean Centered")
@@ -321,8 +357,9 @@ par(mfcol = c(1, 1))
 
 
 ###################################################
-### code chunk number 46: mcenter50
+### code chunk number 49: mcenter50
 ###################################################
+getOption("SweaveHooks")[["fig"]]()
 op <- par(no.readonly = TRUE)
 par(mfcol=c(2,2))
 par(mar=c(2,2,2,1))
@@ -334,8 +371,9 @@ par(op)
 
 
 ###################################################
-### code chunk number 47: rcenter40
+### code chunk number 50: rcenter40
 ###################################################
+getOption("SweaveHooks")[["fig"]]()
 dat3 <- centerNumerics(dat2)
 ##m6mcpred <- fitted(m6mc) ##
 m6mcpred <- predict(m6mc, newdata=dat3)

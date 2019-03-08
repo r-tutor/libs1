@@ -46,6 +46,7 @@ copy_all                Source all package functions
 copy_attr               Copy attributes from one object to another
 copy_from               Source for package functions
 cv                      Coefficient of variation
+deregister              Deregister a data.frame or list in Radiant
 describe                Show dataset description
 diamonds                Diamond prices
 does_vary               Does a vector have non-zero variability?
@@ -87,7 +88,8 @@ is_double               Is input a double (and not a date type)?
 is_empty                Is a character variable defined
 is_not                  Convenience function for is.null or is.na
 is_string               Is input a string?
-iterms                  Create a vector of interaction terms
+iterms                  Create a vector of interaction terms for linear
+                        and logistic regression
 knit_print              Exporting knit_print from knitr
 kurtosi                 Exporting kurtosi from psych
 launch                  Launch radiant apps
@@ -105,12 +107,16 @@ n_obs                   Number of observations
 normalize               Normalize a variable x by a variable y
 p01                     Calculate percentiles
 parse_path              Parse file path into useful components
+pfun                    Summarize a set of numeric vectors per row
 pivotr                  Create a pivot table
 plot.pivotr             Plot method for the pivotr function
 print.gtable            Print/draw method for grobs produced by
                         gridExtra
 prop                    Calculate proportion
 publishers              Comic publishers
+qscatter                Create a qscatter plot similar to Stata
+qterms                  Create a vector of quadratic and cubed terms
+                        for use in linear and logist regression
 radiant.data            radiant.data
 radiant.data-deprecated
                         Deprecated function(s) in the radiant.data

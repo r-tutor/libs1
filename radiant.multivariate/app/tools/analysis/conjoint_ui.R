@@ -1,5 +1,5 @@
 ################################################################
-# Conjoint 
+# Conjoint
 ################################################################
 ca_show_interactions <- c("None" = "", "2-way" = 2, "3-way" = 3)
 ca_predict <- c("None" = "none", "Data" = "data", "Command" = "cmd", "Data & Command" = "datacmd")
@@ -60,13 +60,13 @@ ca_pred_inputs <- reactive({
 
   ca_pred_args$pred_cmd <- ca_pred_args$pred_data <- ""
   if (input$ca_predict == "cmd") {
-    ca_pred_args$pred_cmd <- gsub("\\s{2,}", " ", input$ca_pred_cmd) %>% 
+    ca_pred_args$pred_cmd <- gsub("\\s{2,}", " ", input$ca_pred_cmd) %>%
       gsub(";\\s+", ";", .) %>%
       gsub("\"", "\'", .)
   } else if (input$ca_predict == "data") {
     ca_pred_args$pred_data <- input$ca_pred_data
   } else if (input$ca_predict == "datacmd") {
-    ca_pred_args$pred_cmd <- gsub("\\s{2,}", " ", input$ca_pred_cmd) %>% 
+    ca_pred_args$pred_cmd <- gsub("\\s{2,}", " ", input$ca_pred_cmd) %>%
       gsub(";\\s+", ";", .) %>%
       gsub("\"", "\'", .)
     ca_pred_args$pred_data <- input$ca_pred_data
@@ -175,7 +175,7 @@ observe({
   ## notify user when the model needs to be updated
   ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
   if (pressed(input$ca_run)) {
-    if (is.null(input$ca_evar)) { 
+    if (is.null(input$ca_evar)) {
       updateTabsetPanel(session, "tabs_conjoint ", selected = "Summary")
       updateActionButton(session, "ca_run", "Estimate model", icon = icon("play"))
     } else if (isTRUE(attr(ca_inputs, "observable")$.invalidated)) {
@@ -216,7 +216,6 @@ output$ui_ca_store_pred <- renderUI({
   tags$table(
     if (!input$ca_pred_plot) tags$br(),
     HTML(lab),
-    # tags$td(textInput("ca_store_pred_name", NULL, state_init("ca_store_pred_name", name))),
     tags$td(textInput("ca_store_pred_name", NULL, name, placeholder = "Provide data name")),
     tags$td(actionButton("ca_store_pred", "Store", icon = icon("plus")), style = "padding-top:5px;")
   )
@@ -235,7 +234,7 @@ output$ui_ca_pred_data <- renderUI({
   selectizeInput(
     inputId = "ca_pred_data", label = "Prediction data:",
     choices = c("None" = "", r_info[["datasetlist"]]),
-    selected = state_single("ca_pred_data", c("None" = "", r_info[["datasetlist"]])), 
+    selected = state_single("ca_pred_data", c("None" = "", r_info[["datasetlist"]])),
     multiple = FALSE
   )
 })
@@ -341,10 +340,10 @@ ca_available <- reactive({
   if (not_pressed(input$ca_run)) {
     "** Press the Estimate button to run the conjoint analysis **"
   } else if (not_available(input$ca_rvar)) {
-    "This analysis requires a response variable of type integer\nor numeric and one or more explanatory variables.\nIf these variables are not available please select another dataset.\n\n" %>% 
+    "This analysis requires a response variable of type integer\nor numeric and one or more explanatory variables.\nIf these variables are not available please select another dataset.\n\n" %>%
       suggest_data("carpet")
   } else if (not_available(input$ca_evar)) {
-    "Please select one or more explanatory variables of type factor.\nIf none are available please choose another dataset\n\n" %>% 
+    "Please select one or more explanatory variables of type factor.\nIf none are available please choose another dataset\n\n" %>%
       suggest_data("carpet")
   } else {
     "available"
@@ -451,7 +450,7 @@ output$conjoint <- renderUI({
 })
 
 .predict_print_conjoint <- reactive({
-  .predict_conjoint() %>% 
+  .predict_conjoint() %>%
     {if (is.character(.)) cat(., "\n") else print(.)}
 })
 
@@ -476,7 +475,7 @@ output$conjoint <- renderUI({
     return("** Press the Estimate button to estimate the model **")
   } else if (is_empty(input$ca_plots, "none")) {
     return("Please select a conjoint plot from the drop-down menu")
-  } 
+  }
   input$ca_scale_plot
   input$ca_plots
   isolate({
@@ -502,10 +501,14 @@ observeEvent(input$conjoint_report, {
 
   if (input$ca_by != "none") {
     if (!is_empty(input$ca_store_pw_name)) {
-      xcmd <- paste0(xcmd, input$ca_store_pw_name, " <- result$PW; register(\"", input$ca_store_pw_name, "\")\n")
+      fixed <- fix_names(input$ca_store_pw_name)
+      updateTextInput(session, "ca_store_pw_name", value = fixed)
+      xcmd <- glue('{xcmd}{fixed} <- result$PW\nregister("{fixed}")\n\n')
     }
     if (!is_empty(input$ca_store_iw_name)) {
-      xcmd <- paste0(xcmd, input$ca_store_iw_name, " <- result$IW; register(\"", input$ca_store_iw_name, "\")\n")
+      fixed <- fix_names(input$ca_store_iw_name)
+      updateTextInput(session, "ca_store_iw_name", value = fixed)
+      xcmd <- glue('{xcmd}{fixed} <- result$IW\nregister("{fixed}")\n\n')
     }
   }
 
@@ -513,33 +516,39 @@ observeEvent(input$conjoint_report, {
      (!is_empty(input$ca_pred_data) || !is_empty(input$ca_pred_cmd))) {
 
     pred_args <- clean_args(ca_pred_inputs(), ca_pred_args[-1])
-    if (!is_empty(pred_args[["pred_cmd"]])) {
-      pred_args[["pred_cmd"]] <- strsplit(pred_args[["pred_cmd"]], ";")[[1]]
+    if (!is_empty(pred_args$pred_cmd)) {
+      pred_args$pred_cmd <- strsplit(pred_args$pred_cmd, ";")[[1]]
+    } else {
+      pred_args$pred_cmd <- NULL
     }
+
     if (!is_empty(pred_args$pred_data)) {
       pred_args$pred_data <- as.symbol(pred_args$pred_data)
-    } 
+    } else {
+      pred_args$pred_data <- NULL
+    }
 
     inp_out[[2 + figs]] <- pred_args
-    pred_name <- "pred"
+    fixed <- "pred"
     if (!is_empty(input$ca_by, "none") && !is_empty(input$ca_store_pred_name)) {
-      pred_name <- input$ca_store_pred_name
-      outputs <- c(outputs, paste0(pred_name, " <- predict"))
-      xcmd <- paste0(xcmd, pred_name %>% paste0("register(\"", ., "\")\nprint(", . ,", n = 10)"))
+      fixed <- fix_names(input$ca_store_pred_name)
+      updateTextInput(session, "ca_store_pred_name", value = fixed)
+      outputs <- c(outputs, paste0(fixed, " <- predict"))
+      xcmd <- paste0(xcmd, fixed %>% paste0("register(\"", ., "\")\nprint(", . ,", n = 10)"))
     } else {
       outputs <- c(outputs, "pred <- predict")
       xcmd <- paste0(xcmd, "print(pred, n = 10)")
       if (input$ca_predict %in% c("data", "datacmd")) {
         if (is_empty(input$ca_by, "none")) {
-          name <- unlist(strsplit(input$ca_store_pred_name, "(\\s*,\\s*|\\s*;\\s*|\\s+)")) %>%
-            gsub("\\s", "", .) %>%
+          fixed <- unlist(strsplit(input$ca_store_pred_name, "(\\s*,\\s*|\\s*;\\s*)")) %>%
+            fix_names() %>%
             deparse(., control = getOption("dctrl"), width.cutoff = 500L)
-          xcmd <- paste0(xcmd, "\n", input$ca_pred_data , " <- store(", 
-            input$ca_pred_data, ", pred, name = ", name, ")"
+          xcmd <- paste0(xcmd, "\n", input$ca_pred_data , " <- store(",
+            input$ca_pred_data, ", pred, name = ", fixed, ")"
           )
-        } 
+        }
       }
-    } 
+    }
 
     if (input$ca_pred_plot && !is_empty(input$ca_xvar)) {
       inp_out[[3 + figs]] <- clean_args(ca_pred_plot_inputs(), ca_pred_plot_args[-1])
@@ -550,9 +559,9 @@ observeEvent(input$conjoint_report, {
   }
   update_report(
     inp_main = clean_args(ca_inputs(), ca_args),
-    fun_name = "conjoint", 
+    fun_name = "conjoint",
     inp_out = inp_out,
-    outputs = outputs, 
+    outputs = outputs,
     figs = figs,
     fig.width = ca_plot_width(),
     fig.height = ca_plot_height(),
@@ -563,43 +572,49 @@ observeEvent(input$conjoint_report, {
 observeEvent(input$ca_store_pw, {
   name <- input$ca_store_pw_name
   req(pressed(input$ca_run), name)
+  fixed <- fix_names(input$ca_store_pw_name)
+  updateTextInput(session, "ca_store_pw_name", value = fixed)
   robj <- .conjoint()
   if (!is.list(robj)) return()
   withProgress(
     message = "Storing PWs", value = 1,
-    r_data[[name]] <- robj$PW
+    r_data[[fixed]] <- robj$PW
   )
-  register(name)
+  register(fixed)
 })
 
 observeEvent(input$ca_store_iw, {
   name <- input$ca_store_iw_name
   req(pressed(input$ca_run), name)
+  fixed <- fix_names(input$ca_store_iw_name)
+  updateTextInput(session, "ca_store_iw_name", value = fixed)
   robj <- .conjoint()
   if (!is.list(robj)) return()
   withProgress(
     message = "Storing IWs", value = 1,
-    r_data[[name]] <- robj$IW
+    r_data[[fixed]] <- robj$IW
   )
-  register(name)
+  register(fixed)
 })
 
 observeEvent(input$ca_store_pred, {
   req(!is_empty(input$ca_pred_data), pressed(input$ca_run))
   pred <- .predict_conjoint()
   if (is.null(pred)) return()
+  fixed <- fix_names(input$ca_store_pred_name)
+  updateTextInput(session, "ca_store_pred_name", value = fixed)
   if ("conjoint.predict.by" %in% class(pred)) {
     withProgress(
       message = "Storing predictions in new dataset", value = 1,
-        r_data[[input$ca_store_pred_name]] <- pred, 
+        r_data[[fixed]] <- pred,
     )
-    register(input$ca_store_pred_name)
+    register(fixed)
   } else {
     withProgress(
       message = "Storing predictions", value = 1,
       r_data[[input$ca_pred_data]] <- radiant.model:::store.model.predict(
-        r_data[[input$ca_pred_data]], pred, 
-        name = input$ca_store_pred_name
+        r_data[[input$ca_pred_data]], pred,
+        name = fixed
       )
     )
   }
@@ -619,8 +634,8 @@ dl_ca_PWs <- function(path) {
 }
 
 download_handler(
-  id = "dl_ca_PWs", 
-  fun = dl_ca_PWs, 
+  id = "dl_ca_PWs",
+  fun = dl_ca_PWs,
   fn = function() paste0(input$dataset, "_PWs"),
   type = "csv",
   caption = "Save part worths"
@@ -635,16 +650,16 @@ dl_ca_pred <- function(path) {
 }
 
 download_handler(
-  id = "dl_ca_pred", 
-  fun = dl_ca_pred, 
+  id = "dl_ca_pred",
+  fun = dl_ca_pred,
   fn = function() paste0(input$dataset, "_conjoint_pred"),
   type = "csv",
   caption = "Save predictions"
 )
 
 download_handler(
-  id = "dlp_ca_pred", 
-  fun = download_handler_plot, 
+  id = "dlp_ca_pred",
+  fun = download_handler_plot,
   fn = function() paste0(input$dataset, "_conjoint_pred"),
   type = "png",
   caption = "Save conjoint prediction plot",
@@ -654,8 +669,8 @@ download_handler(
 )
 
 download_handler(
-  id = "dlp_conjoint", 
-  fun = download_handler_plot, 
+  id = "dlp_conjoint",
+  fun = download_handler_plot,
   fn = function() paste0(input$dataset, "_conjoint"),
   type = "png",
   caption = "Save conjoint plot",

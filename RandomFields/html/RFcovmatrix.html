@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Covariance matrix</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RFcovmatrix {RandomFields}"><tr><td>RFcovmatrix {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Covariance matrix</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RFcovmatrix.html">RFcovmatrix</a></code> returns the covariance matrix for a set of points;
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RFcovmatrix(model, x, y = NULL, z = NULL, T = NULL, grid, params,
+            distances, dim,...)
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>model,params</code></td>
+<td>
+<p> object of class  <code><a href="RMmodel-class.html">RMmodel</a></code>, <code><a href="RFformula.html">RFformula</a></code> or  <code><a href="../../stats/html/formula.html">formula</a></code>; best is to consider the examples below, first. <br /> The argument <code>params</code> is a list that specifies free parameters in a formula description, see <a href="RFformula.html">RMformula</a>. </p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>vector of x coordinates, or object of class <code><a href="../../sp/html/GridTopology-class.html">GridTopology</a></code> or <code><a href="../../raster/html/raster.html">raster</a></code>; for more options see <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>y,z</code></td>
+<td>
+<p>optional vectors of y (z) coordinates, which should not be given if <code>x</code> is a matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>T</code></td>
+<td>
+<p>optional vector of time coordinates, <code>T</code> must always be an equidistant vector. Instead of <code>T=seq(from=From, by=By, len=Len)</code>, one may also write <code>T=c(From, By, Len)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>grid</code></td>
+<td>
+<p>logical; the function finds itself the correct value in nearly all cases, so that usually <code>grid</code> need not be given. See also <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>distances,dim</code></td>
+<td>
+<p>another alternative for the argument <code>x</code> to pass the (relative) coordinates, see <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>for advanced use: further options and control arguments for the simulation that are passed to and processed by <code><a href="RFoptions.html">RFoptions</a></code>. If <code>params</code> is given, then <code>...</code> may include also the variables used in <code>params</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>RFcovmatrix</code> returns a covariance matrix. Here, a matrix of coordinates (<code>x</code>) or a vector or a matrix of <code>distances</code>
+is expected.
+</p>
+<p><code>RFcovmatrix</code> also allows for variogram models. Then the negative of the
+variogram matrix is returned.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>RFcovmatrix</code> returns a covariance matrix. 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+	
+<p><code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>,
+<code><a href="RFfctn.html">RFfctn</a></code>,
+<code><a href="QMath.html">RFcalc</a></code>,
+<code><a href="RFcov.html">RFcov</a></code>,
+<code><a href="RFpseudovariogram.html">RFpseudovariogram</a></code>,
+<code><a href="RFvariogram.html">RFvariogram</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+##################################################
+# Example: get covariance matrix C(x_i,x_j)    
+# at given locations x_i, i=1,...,n 
+#
+# here for an isotropic stationary covariance model
+# yields a 4 times 4 covariance matrix of the form
+# C(0)   C(5)   C(3)   C(2.5)
+# C(5)   C(0)   C(4)   C(2.5)
+# C(3)   C(4)   C(0)   C(2.5)
+# C(2.5) C(2.5) C(2.5) C(0)
+
+model &lt;- RMexp() # the covariance function C(x,y)=C(r) of this model
+#                  depends only on the distance r between x and y
+RFcovmatrix(model=model, distances=c(5,3,2.5,4,2.5,2.5), dim=4)
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

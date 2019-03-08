@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Generalized Cauchy Family Covariance Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMepscauchy {RandomFields}"><tr><td>RMepscauchy {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Generalized Cauchy Family Covariance Model</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMepscauchy.html">RMepscauchy</a></code> is a stationary isotropic covariance model
+belonging to the generalized Cauchy family. <b>In contrast to most
+other models it is not a correlation function.</b>
+The corresponding covariance function only depends on the distance <i>r &ge; 0</i> between
+two points and is given by
+</p>
+<p style="text-align: center;"><i>C(r) = (&epsilon; + r^&alpha;)^(-&beta;/&alpha;)</i></p>
+
+<p>where <i>&epsilon; &gt; 0</i>,
+<i>0 &lt; &alpha; &le; 2</i> and <i>&beta; &gt; 0</i>.
+See also <code><a href="RMcauchy.html">RMcauchy</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMepscauchy(alpha, beta, eps, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>a numerical value; should be in the interval (0,2]
+to provide a valid covariance function for a random field of any dimension.</p>
+</td></tr>
+<tr valign="top"><td><code>beta</code></td>
+<td>
+<p>a numerical value; should be positive to provide a valid
+covariance function for a random field of any dimension.</p>
+</td></tr>
+<tr valign="top"><td><code>eps</code></td>
+<td>
+<p>a positive value</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This model has a smoothness parameter <i>&alpha;</i> and a
+parameter <i>&beta;</i> which determines the asymptotic power law.
+More precisely, this model admits simulating random fields where fractal dimension
+<em>D</em> of the Gaussian sample and Hurst coefficient <em>H</em>
+can be chosen independently (compare also <code><a href="RMlgd.html">RMlgd</a></code>): Here, we have
+</p>
+<p style="text-align: center;"><i> D = d + 1 - &alpha;/2, 0
+ &lt; &alpha; &le; 2</i></p>
+
+<p>and
+</p>
+<p style="text-align: center;"><i> H = 1 - &beta;/2, &beta; &gt; 0.</i></p>
+
+<p>I. e. the smaller <i>&beta;</i>, the longer the long-range
+dependence.
+</p>
+<p>The covariance function is very regular near the origin, because its
+Taylor expansion only contains even terms and reaches its sill slowly.
+</p>
+<p>Each covariance function of the Cauchy family is a normal scale mixture.
+</p>
+<p>Note that the Cauchy Family (see <code><a href="RMcauchy.html">RMcauchy</a></code>) is included
+in this family for the choice <i>&alpha; = 2</i> and
+<i>&beta; = 2 &gamma;</i>. 
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMepscauchy.html">RMepscauchy</a></code> returns an object of class <code><a href="RMmodel-class.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+
+
+<ul>
+<li><p> Gneiting, T. and Schlather, M. (2004)
+Stochastic models which separate fractal dimension and Hurst effect.
+<em>SIAM review</em> <b>46</b>, 269&ndash;282.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMcauchy.html">RMcauchy</a></code>,
+<code><a href="RMcauchytbm.html">RMcauchytbm</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+model &lt;- RMepscauchy(alpha=1.5, beta=1.5, scale=0.3, eps=0.5)
+x &lt;- seq(0, 10, 0.02)
+plot(model)
+plot(RFsimulate(model, x=x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Class 'RFsp'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RFsp-class {RandomFields}"><tr><td>RFsp-class {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Class <code>RFsp</code></h2>
+
+<h3>Description</h3>
+
+ <p><code>"RFsp"</code> is a virtual class which contains the four classes
+<code><a href="RFspatialGridDataFrame-class.html">RFspatialGridDataFrame</a></code> 
+(data on a full grid and <i>space-time-dimension &gt; 2</i>), 
+<code><a href="RFspatialPointsDataFrame-class.html">RFspatialPointsDataFrame</a></code>
+(data not on a grid and <i>space-time-dimension &gt; 2</i>), 
+<code><a href="RFgridDataFrame-class.html">RFgridDataFrame</a></code>
+(data on a full grid and <i>space-time-dimension = 1</i>), 
+<code><a href="RFpointsDataFrame-class.html">RFpointsDataFrame</a></code>
+(data not on a grid and <i>space-time-dimension = 1</i>)
+</p>
+<p>The first two subclasses are summarized in
+<code>"RFspatialDataFrame"</code> whilst the latter two are
+summarized in <code>"RFdataFrame"</code>.
+</p>
+
+
+
+
+
+<h3>Objects from the Class</h3>
+
+<p>are never to be generated; only derived classes can be meaningful. </p>
+
+
+<h3>Methods</h3>
+
+
+
+<dl>
+<dt>summary</dt><dd><p><code>signature(obj = "RFsp")</code>: returns a summary of the
+object; uses or imitates summary method of class
+<code><a href="../../sp/html/Spatial-class.html">Spatial</a></code> from the <span class="pkg">sp</span>-package</p>
+</dd>
+<dt>dimensions</dt><dd><p><code>signature(obj = "RFsp")</code>: retrieves the number
+of spatial or spatio-temporal dimensions spanned </p>
+</dd>
+</dl>
+
+
+<dl>
+<dt>RFspDataFrame2dataArray</dt><dd><p><code>signature(obj = "RFsp")</code>:
+transforms <code>RFsp</code> objects to array
+</p>
+</dd>
+<dt>RFspDataFrame2conventional</dt><dd><p><code>signature(obj = "RFsp")</code>:
+transforms <code>RFsp</code> objects to a list with additional information
+</p>
+</dd>
+<dt>[</dt><dd><p><code>signature(obj = "RFsp")</code>: selects columns of the
+<code>data</code>-slot, while all other slots are kept unmodified</p>
+</dd>
+<dt>[&lt;-</dt><dd><p><code>signature(obj = "RFsp")</code>: replaces columns of the
+<code>data</code>-slot, while all other slots are kept unmodified</p>
+</dd>
+</dl>
+
+
+
+<dl>
+<dt>variance</dt><dd><p><code>signature(object = "RFsp")</code>: returns the kriging
+variance if available</p>
+</dd>
+</dl>
+
+
+
+<h3>Warning </h3>
+
+<p>This class is not useful itself, but the above
+mentioned classes in this package derived from it. </p>
+
+
+<h3>Author(s)</h3>
+
+<p>Alexander Malinowski; Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RFspatialGridDataFrame-class.html">RFspatialGridDataFrame</a></code>,
+<code><a href="RFspatialPointsDataFrame-class.html">RFspatialPointsDataFrame</a></code>,
+<code><a href="RFgridDataFrame-class.html">RFgridDataFrame</a></code>,
+<code><a href="RFpointsDataFrame-class.html">RFpointsDataFrame</a></code>,
+<code><a href="sp2RF.html">sp2RF</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+## Generating an object of class "RFspatialGridDataFrame"
+## and one of class "RFspatialPointsDataFrame".
+
+model &lt;- RMcauchy(gamma=4, var=0.1, scale=2)
+x &lt;- seq(0,10,len=100)
+r &lt;- cbind(runif(100, min=1, max=9),runif(100, min=1, max=9))
+
+z1 &lt;- RFsimulate(model=model, x=x, y=x, n=4)
+z2 &lt;- RFsimulate(model=model, x=r, n=2)
+
+## Applying available functions.
+
+class(z1)
+class(z2)
+summary(z1)
+summary(z2)
+plot(z1)
+plot(z2)
+
+
+
+z4 &lt;- RFspDataFrame2conventional(z2)
+str(z2)
+str(z4)
+
+dta &lt;- data.frame(coords=z4$x,data=z2@data[,1])
+z3&lt;-RFinterpolate(model=model, x=x, y=x, data=dta) 
+plot(z3,z2)
+
+## Illustrating the warning.
+
+a1 &lt;- new("RFpointsDataFrame")
+str(a1)
+try(a2 &lt;- new("RFsp")) ## ERROR
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

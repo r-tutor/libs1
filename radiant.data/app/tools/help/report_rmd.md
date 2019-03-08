@@ -18,7 +18,7 @@ Using Rmarkdown is extremely powerful because you can replicate your entire anal
 
 You can add text, bullets, headers, etc. around the code chunks to describe and explain the results using <a href="http://rmarkdown.rstudio.com/authoring_pandoc_markdown.html" target="_blank">markdown</a>. For an interactive markdown tutorial visit <a href="http://commonmark.org/help/" target="_blank">commonmark.org</a>.
 
-If you started Radiant from Rstudio you can save the report in various formats (i.e., Notebook, HTML, Word, or PDF). To save the Rmarkdown file open in the editor select `Rmd` (or `Rmd + Data (zip)`) and press `Save report`. Previously saved Rmarkdown files can be loaded into Radiant by using the `Load report` button.
+If you started Radiant from Rstudio you can save the report in various formats (i.e., Notebook, HTML, Word, Powerpoint, or PDF). For  more on generating powerpoint presentation see <https://bookdown.org/yihui/rmarkdown/powerpoint-presentation.html>{target="_blank"}. To save the Rmarkdown file open in the editor select `Rmd` (or `Rmd + Data (zip)`) and press `Save report`. Previously saved Rmarkdown files can be loaded into Radiant by using the `Load report` button. For more 
 
 You can also click the `Read files` button to browse for files and generate code to read it into Radiant. For example, read rda, rds, xls, yaml, and feather and add them to the `Datasets` dropdown. You can also read images, R-code, and text (e.g., Rmd or md) to include in your report. If the file type you want to load is not currently supported, the path to the file will be returned. If Radiant was started from an Rstudio project, the file paths used will be relative to the project root. Paths to files synced to local Dropbox or Google Drive folder will use the `find_dropbox` and `find_gdrive` functions to enhances reproducibility.
 
@@ -30,7 +30,7 @@ If you are using Radiant for a class I suggest you use the _Report > Rmd_ featur
 
 ## Options
 
-The editor used in _Report > Rmd_ and _Report > R_ has several options that can be set in `.Rprofile`.
+The editor used in _Report > Rmd_ and _Report > R_ has several options that can be set in `.Rprofile`. You can use `usethis::edit_r_profile()` to alter the settings in .Rprofile
 
 <pre>
 options(radiant.ace_vim.keys = FALSE)
@@ -39,6 +39,8 @@ options(radiant.ace_tabSize = 2)
 options(radiant.ace_useSoftTabs = TRUE)
 options(radiant.ace_showInvisibles = TRUE)
 options(radiant.ace_autoComplete = "live")
+options(radiant.powerpoint_style = "~/Dropbox/rmd-styles/style.potx")
+options(radiant.word_style = "~/Dropbox/rmd-styles/style.docx")
 </pre>
 
 Notes:
@@ -48,6 +50,9 @@ Notes:
 * Tabs are converted to 2 spaces by default (i.e., 'soft' tabs). You can change the number of spaces used from 2 to, for example, 4
 * `showInvisibles` shows tabs and spaces in the editor
 * Autocomplete has options "live", "enabled", and "disabled" 
+* Radiant has default styles for Word and Powerpoint files. These can be replaced with styles files you created however. Click the links below to download the style files used in Radiant to your computer. Edit the files and use `options` as shown above to tell Radiant where to find the style files you want to use.
+    * <a href="https://github.com/radiant-rstats/radiant.data/raw/master/inst/app/www/style.docx" target="_blank">Word style file</a>
+    * <a href="https://github.com/radiant-rstats/radiant.data/raw/master/inst/app/www/style.potx" target="_blank">Powerpoint style file</a>
 
 ### R-functions
 

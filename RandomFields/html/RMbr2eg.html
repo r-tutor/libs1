@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Transformation from Brown-Resnick to Gauss</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMbr2eg {RandomFields}"><tr><td>RMbr2eg {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Transformation from Brown-Resnick to Gauss</h2>
+
+<h3>Description</h3>
+
+<p>This function can be used to model a max-stable process
+based on a binary field,  with the same extremal correlation
+function as a Brown-Resnick process
+</p>
+<p style="text-align: center;"><i>
+    C_{eg}(h) = 1 - 2 (1 - 2 &Phi;(&radic;{&gamma;(h) / 2}) )^2 
+  </i></p>
+
+<p>Here, <i>&Phi;</i> is the standard normal distribution
+function, and <i>&gamma;</i> is a <b>semi-</b>variogram with sill
+</p>
+<p style="text-align: center;"><i> 4(erf^{-1}(1/&radic; 2))^2 = 2 * [&Phi;^{-1}( [1 + 1/&radic; 2] /
+    2)]^2  = 4.425098 / 2 = 2.212549</i></p>
+ 
+
+
+<h3>Usage</h3>
+
+<pre>
+RMbr2eg(phi, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>phi</code></td>
+<td>
+<p>covariance function of class <code><a href="RMmodel-class.html">RMmodel</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code><a href="RMbr2eg.html">RMbr2eg</a></code> <br />
+The extremal Gaussian model <code><a href="RPschlather.html">RPschlather</a></code>
+simulated with <code><a href="RMbr2eg.html">RMbr2eg</a>(<a href="RMmodel.html">RMmodel</a>())</code> has
+tail correlation function that equals
+the tail correlation function of Brown-Resnick process with
+variogram <code><a href="RMmodel.html">RMmodel</a></code>.
+</p>
+<p>Note that the reference paper is based on the notion of the
+(genuine) variogram, whereas the package <span class="pkg">RandomFields</span>
+is based on the notion of semi-variogram. So formulae
+differ by factor 2.
+</p>
+
+
+<h3>Value</h3>
+
+<p>object of class <code><a href="RMmodel-class.html">RMmodel</a></code>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p>    Strokorb, K., Ballani, F., and  Schlather, M. (2014)
+Tail correlation functions of max-stable processes: Construction
+principles, recovery and diversity of some mixing max-stable processes
+with identical TCF. 
+<em>Extremes</em>,  Submitted.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><a href="RPmaxstableAdvanced.html">maxstableAdvanced</a>,
+<code><a href="RMbr2bg.html">RMbr2bg</a></code>,
+<code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RMstrokorb.html">RMm2r</a></code>,
+<code><a href="RPbernoulli.html">RPbernoulli</a></code>,
+<code><a href="RPbrownresnick.html">RPbrownresnick</a></code>,
+<code><a href="RPschlather.html">RPschlather</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+model &lt;- RMexp(var=1.62 / 2) 
+binary.model &lt;- RPbernoulli(RMbr2bg(model))
+x &lt;- seq(0, 10, 0.05)
+
+z &lt;- RFsimulate(RPschlather(binary.model), x, x)
+plot(z)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

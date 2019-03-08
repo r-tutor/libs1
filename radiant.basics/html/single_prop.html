@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Compare a sample proportion to a population proportion</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for single_prop {radiant.basics}"><tr><td>single_prop {radiant.basics}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Compare a sample proportion to a population proportion</h2>
+
+<h3>Description</h3>
+
+<p>Compare a sample proportion to a population proportion
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+single_prop(dataset, var, lev = "", comp_value = 0.5,
+  alternative = "two.sided", conf_lev = 0.95, test = "binom",
+  data_filter = "")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dataset</code></td>
+<td>
+<p>Dataset</p>
+</td></tr>
+<tr valign="top"><td><code>var</code></td>
+<td>
+<p>The variable selected for the proportion comparison</p>
+</td></tr>
+<tr valign="top"><td><code>lev</code></td>
+<td>
+<p>The factor level selected for the proportion comparison</p>
+</td></tr>
+<tr valign="top"><td><code>comp_value</code></td>
+<td>
+<p>Population value to compare to the sample proportion</p>
+</td></tr>
+<tr valign="top"><td><code>alternative</code></td>
+<td>
+<p>The alternative hypothesis (&quot;two.sided&quot;, &quot;greater&quot;, or &quot;less&quot;)</p>
+</td></tr>
+<tr valign="top"><td><code>conf_lev</code></td>
+<td>
+<p>Span of the confidence interval</p>
+</td></tr>
+<tr valign="top"><td><code>test</code></td>
+<td>
+<p>bionomial exact test (&quot;binom&quot;) or Z-test (&quot;z&quot;)</p>
+</td></tr>
+<tr valign="top"><td><code>data_filter</code></td>
+<td>
+<p>Expression entered in, e.g., Data &gt; View to filter the dataset in Radiant. The expression should be a string (e.g., &quot;price &gt; 10000&quot;)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/basics/single_prop.html">https://radiant-rstats.github.io/docs/basics/single_prop.html</a> for an example in Radiant
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list of variables used in single_prop as an object of class single_prop
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="summary.single_prop.html">summary.single_prop</a></code> to summarize the results
+</p>
+<p><code><a href="plot.single_prop.html">plot.single_prop</a></code> to plot the results
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+single_prop(titanic, "survived") %&gt;% str()
+single_prop(titanic, "survived", lev = "Yes", comp_value = 0.5,  alternative = "less") %&gt;% str()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.basics</em> version 0.9.9 <a href="00Index.html">Index</a>]</div>
+</body></html>

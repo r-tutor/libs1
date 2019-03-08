@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Internal functions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Internal functions {RandomFields}"><tr><td>Internal functions {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Internal functions</h2>
+
+<h3>Description</h3>
+
+<p>These functions are internal and should not be used.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rfGenerateModels(package = "RandomFields", assigning,
+                 RFpath ="~/svn/RandomFields/RandomFields",
+                 RMmodels.file=paste(RFpath, "R/RMmodels.R", sep="/"),
+                 PL = RFoptions()$basic$printlevel)
+
+rfGenerateConstants(package="RandomFields", aux.package = "RandomFieldsUtils",
+	   RFpath = paste0("~/svn/",package, "/", package),
+           RCauto.file = paste(RFpath, "R/aaa_auto.R", sep="/"),
+	   header.source =
+	   c(if (length(aux.package) &gt; 0) paste0("../../", aux.package,"/",
+				 aux.package, "/src/Auto", aux.package, ".h"),
+	     paste0("src/Auto",package,".h")),
+	   c.source = paste0("src/Auto", package, ".cc"))
+
+rfGenerateTest(package = "RandomFields", files = NULL,
+               RFpath = paste0("~/svn/", package, "/", package))
+
+rfGenerateMaths(package = "RandomFields",
+			    files = "/usr/include/tgmath.h",
+			    do.cfile = FALSE,
+                            ## copy also in ../private/lit
+                            Cfile = "QMath",
+                            Rfile = "RQmodels",
+                            RFpath = paste0("~/svn/",package,"/", package))
+
+
+checkExamples(exclude = NULL, include=1:length(.fct.list),
+               ask=FALSE, echo=TRUE, halt=FALSE, ignore.all = FALSE,
+               path=package, package = "RandomFields", 
+               read.rd.files=TRUE, local = TRUE, libpath = NULL,
+               single.runs = FALSE)
+
+ScreenDevice(height, width)
+
+FinalizeExample()
+StartExample(reduced = TRUE, save.seed = TRUE)
+
+
+
+showManpages(path="/home/schlather/svn/RandomFields/RandomFields/man")
+
+plotWithCircles(data, factor=1.0,
+                xlim=range(data[,1])+c(-maxr,maxr),
+                ylim=range(data[,2])+c(-maxr,maxr),
+                col=1, fill=0, ...)
+
+maintainers.machine()
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>package,assigning, RFpath, RMmodels.file, PL</code></td>
+<td>
+<p>internal</p>
+</td></tr>
+<tr valign="top"><td><code>aux.package,RCauto.file,header.source,c.source</code></td>
+<td>
+<p>internal</p>
+</td></tr>
+<tr valign="top"><td><code>files</code></td>
+<td>
+<p>internal</p>
+</td></tr>
+<tr valign="top"><td><code>Cfile, Rfile, do.cfile </code></td>
+<td>
+<p>internal</p>
+</td></tr>
+<tr valign="top"><td><code>exclude, include, ask, echo, halt, ignore.all, path, 
+read.rd.files, libpath, single.runs
+</code></td>
+<td>
+<p>internal; 
+ignore.all refers to the &lsquo;all&rsquo; export statement in the
+namespace &ndash; whether this should be ignored.
+If <code>read.rf.files</code> is <code>TRUE</code> or a path to the Rd files, then
+the man pages are analysed to get all examples; <code>ignore.all</code> is
+then ignored. If <code>FALSE</code> only examples of functions (which are
+searched in the environments) are run.
+</p>
+</td></tr>
+</table>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>height,width</code></td>
+<td>
+<p>window sizes</p>
+</td></tr>
+<tr valign="top"><td><code>data, factor, xlim, ylim, col, fill, ...</code></td>
+<td>
+<p>internal</p>
+</td></tr>
+<tr valign="top"><td><code>reduced, save.seed, local</code></td>
+<td>
+<p>internal</p>
+</td></tr>
+</table>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+## internal functions: no examples given
+
+
+# for (i in dep.packages) cat(maintainer(i), "\n") 
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

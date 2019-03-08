@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Fixed Effect Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMfixed {RandomFields}"><tr><td>RMfixed {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Fixed Effect Model</h2>
+
+<h3>Description</h3>
+
+<p>Expressions of the form <code>X@RMfixed(beta)</code> can be used
+within a formula of the type
+</p>
+<p style="text-align: center;"><i>response ~ fixed effects + random effects + error term</i></p>
+
+<p>that specifies the Linear Mixed Model.
+</p>
+<p>Important remark: <code>RMfixed</code> is NOT a function although
+the parentheses notation is used to specify the vector of coefficients.
+</p>
+<p>The matrix <i>X</i> is the design matrix  and <i>&beta;</i> is a vector of coefficients.
+</p>
+<p>Note that a fixed effect of the form <i>X</i> is interpreted as
+<code>X@RMfixed(beta=NA)</code> by default (and <i>&beta;</i> is estimated
+provided that the formula is used in <code><a href="RFfit.html">RFfit</a></code>).
+Note that the <code>1</code> in an expression <code>1@RMfixed(beta)</code> is
+interpreted as the identity matrix. 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFformula.html">RFformula</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ ## For examples see the help page of 'RFformula'. ##
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

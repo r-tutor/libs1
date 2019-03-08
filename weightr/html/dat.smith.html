@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Studies From Smith, Glass, and Miller's (1980) Meta-Analysis...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dat.smith {weightr}"><tr><td>dat.smith {weightr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Studies From Smith, Glass, and Miller's (1980) Meta-Analysis of Psychotherapy Outcomes</h2>
+
+<h3>Description</h3>
+
+<p>An arbitrary subset of 74 studies from a meta-analysis assessing the effectiveness of psychotherapy. Contains two moderator variables.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dat.smith
+</pre>
+
+
+<h3>Format</h3>
+
+<p>A data frame containing the following columns:
+</p>
+
+<dl>
+<dt><code>es</code></dt><dd><p>standardized mean difference effect sizes</p>
+</dd>
+<dt><code>v</code></dt><dd><p>corresponding sampling variances</p>
+</dd>
+<dt><code>age</code></dt><dd><p>continuous moderator representing clients' average age in years</p>
+</dd>
+<dt><code>diagnosis</code></dt><dd><p>categorical moderator representing disorder for which clients were treated; 1 = complex phobia, 2 = simple phobia, 3 = other</p>
+</dd>
+</dl>
+
+
+<h3>Details</h3>
+
+<p>This dataset consists of an arbitrarily selected subset of 74 studies assessing the effectiveness of psychotherapy. Smith, Glass, and Miller (1980) published a meta-analysis designed to explore the current state of knowledge about psychotherapy effectiveness. Their original meta-analysis contains more than 1,700 effect sizes from 475 studies with multiple moderators and outcome measures. This subset is vastly simplified and intended solely for the purpose of demonstration.
+</p>
+
+
+<h3>Source</h3>
+
+<p>Smith, M. L., Glass, G. V., &amp; Miller, T. I. (1980). Meta-analysis of psychotherapy. American Psychologist, 41, 165-180.
+</p>
+
+
+<h3>References</h3>
+
+<p>Smith, M. L., Glass, G. V., &amp; Miller, T. I. (1980). Meta-analysis of psychotherapy. American Psychologist, 41, 165-180.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+dat.smith
+effect &lt;- dat.smith$es
+v &lt;- dat.smith$v
+weightfunct(effect, v)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>weightr</em> version 2.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

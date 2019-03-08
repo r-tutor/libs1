@@ -1,8 +1,8 @@
 logit_show_interactions <- c("None" = "", "2-way" = 2, "3-way" = 3)
 logit_predict <- c(
-  "None" = "none", 
-  "Data" = "data", 
-  "Command" = "cmd", 
+  "None" = "none",
+  "Data" = "data",
+  "Command" = "cmd",
   "Data & Command" = "datacmd"
 )
 logit_check <- c(
@@ -76,13 +76,13 @@ logit_pred_inputs <- reactive({
 
   logit_pred_args$pred_cmd <- logit_pred_args$pred_data <- ""
   if (input$logit_predict == "cmd") {
-    logit_pred_args$pred_cmd <- gsub("\\s{2,}", " ", input$logit_pred_cmd) %>% 
+    logit_pred_args$pred_cmd <- gsub("\\s{2,}", " ", input$logit_pred_cmd) %>%
       gsub(";\\s+", ";", .) %>%
       gsub("\"", "\'", .)
   } else if (input$logit_predict == "data") {
     logit_pred_args$pred_data <- input$logit_pred_data
   } else if (input$logit_predict == "datacmd") {
-    logit_pred_args$pred_cmd <- gsub("\\s{2,}", " ", input$logit_pred_cmd) %>% 
+    logit_pred_args$pred_cmd <- gsub("\\s{2,}", " ", input$logit_pred_cmd) %>%
       gsub(";\\s+", ";", .) %>%
       gsub("\"", "\'", .)
     logit_pred_args$pred_data <- input$logit_pred_data
@@ -121,8 +121,8 @@ output$ui_logit_rvar <- renderUI({
 
 output$ui_logit_lev <- renderUI({
   req(available(input$logit_rvar))
-  levs <- .get_data()[[input$logit_rvar]] %>% 
-    as.factor() %>% 
+  levs <- .get_data()[[input$logit_rvar]] %>%
+    as.factor() %>%
     levels()
   selectInput(
     inputId = "logit_lev", label = "Choose level:",
@@ -150,8 +150,8 @@ output$ui_logit_wts <- renderUI({
   vars <- varnames()[isNum]
   if (length(vars) > 0 && any(vars %in% input$logit_evar)) {
     vars <- base::setdiff(vars, input$logit_evar)
-    names(vars) <- varnames() %>% 
-      {.[match(vars, .)]} %>% 
+    names(vars) <- varnames() %>%
+      {.[match(vars, .)]} %>%
       names()
   }
   vars <- c("None", vars)
@@ -182,7 +182,29 @@ observeEvent(is.null(input$logit_test_var), {
 })
 
 output$ui_logit_show_interactions <- renderUI({
-  choices <- logit_show_interactions[1:max(min(3, length(input$logit_evar)), 1)]
+  # choices <- logit_show_interactions[1:max(min(3, length(input$logit_evar)), 1)]
+  vars <- input$logit_evar
+  isNum <- .get_class() %in% c("numeric", "integer")
+  if (any(vars %in% varnames()[isNum])) {
+    choices <- logit_show_interactions[1:3]
+  } else {
+    choices <- logit_show_interactions[1:max(min(3, length(input$logit_evar)), 1)]
+  }
+  radioButtons(
+    inputId = "logit_show_interactions", label = "Interactions:",
+    choices = choices, selected = state_init("logit_show_interactions"),
+    inline = TRUE
+  )
+})
+
+output$ui_logit_show_interactions <- renderUI({
+  vars <- input$logit_evar
+  isNum <- .get_class() %in% c("numeric", "integer")
+  if (any(vars %in% varnames()[isNum])) {
+    choices <- logit_show_interactions[1:3]
+  } else {
+    choices <- logit_show_interactions[1:max(min(3, length(input$logit_evar)), 1)]
+  }
   radioButtons(
     inputId = "logit_show_interactions", label = "Interactions:",
     choices = choices, selected = state_init("logit_show_interactions"),
@@ -191,16 +213,28 @@ output$ui_logit_show_interactions <- renderUI({
 })
 
 output$ui_logit_int <- renderUI({
+  choices <- character(0)
   if (isolate("logit_show_interactions" %in% names(input)) &&
     is_empty(input$logit_show_interactions)) {
-    choices <- character(0)
   } else if (is_empty(input$logit_show_interactions)) {
     return()
   } else {
     vars <- input$logit_evar
-    if (not_available(vars) || length(vars) < 2) return()
-    ## list of interaction terms to list
-    choices <- iterms(vars, input$logit_show_interactions)
+    if (not_available(vars)) {
+      return()
+    } else {
+      ## quadratic and qubic terms
+      num <- .get_class() %in% c("numeric", "integer")
+      num <- intersect(vars, varnames()[num])
+      if (length(num) > 0) {
+        choices <- qterms(num, input$logit_show_interactions)
+      }
+      ## list of interaction terms to show
+      if (length(vars) > 1) {
+        choices <- c(choices, iterms(vars, input$logit_show_interactions))
+      }
+      if (length(choices) == 0) return()
+    }
   }
 
   selectInput(
@@ -228,7 +262,7 @@ output$ui_logit_nrobs <- renderUI({
   choices <- c("1,000" = 1000, "5,000" = 5000, "10,000" = 10000, "All" = -1) %>%
     .[. < nrobs]
   selectInput(
-    "logit_nrobs", "Number of data points plotted:", 
+    "logit_nrobs", "Number of data points plotted:",
     choices = choices,
     selected = state_single("logit_nrobs", choices, 1000)
   )
@@ -248,7 +282,7 @@ observe({
   ## notify user when the model needs to be updated
   ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
   if (pressed(input$logit_run)) {
-    if (is.null(input$logit_evar)) { 
+    if (is.null(input$logit_evar)) {
       updateTabsetPanel(session, "tabs_logistic ", selected = "Summary")
       updateActionButton(session, "logit_run", "Estimate model", icon = icon("play"))
     } else if (isTRUE(attr(logit_inputs, "observable")$.invalidated)) {
@@ -302,7 +336,7 @@ output$ui_logistic <- renderUI({
           selectizeInput(
             inputId = "logit_pred_data", label = "Prediction data:",
             choices = c("None" = "", r_info[["datasetlist"]]),
-            selected = state_single("logit_pred_data", c("None" = "", r_info[["datasetlist"]])), 
+            selected = state_single("logit_pred_data", c("None" = "", r_info[["datasetlist"]])),
             multiple = FALSE
           )
         ),
@@ -444,19 +478,19 @@ output$logistic <- renderUI({
   )
 
   stat_tab_panel(
-    menu = "Model > Estimate", 
+    menu = "Model > Estimate",
     tool = "Logistic regression (GLM)",
-    tool_ui = "ui_logistic", 
+    tool_ui = "ui_logistic",
     output_panels = logit_output_panels
   )
 })
 
 logit_available <- reactive({
   if (not_available(input$logit_rvar)) {
-    "This analysis requires a response variable with two levels and one\nor more explanatory variables. If these variables are not available\nplease select another dataset.\n\n" %>% 
+    "This analysis requires a response variable with two levels and one\nor more explanatory variables. If these variables are not available\nplease select another dataset.\n\n" %>%
       suggest_data("titanic")
   } else if (not_available(input$logit_evar)) {
-    "Please select one or more explanatory variables.\n\n" %>% 
+    "Please select one or more explanatory variables.\n\n" %>%
       suggest_data("titanic")
   } else {
     "available"
@@ -495,13 +529,13 @@ logit_available <- reactive({
 })
 
 .predict_print_logistic <- reactive({
-  .predict_logistic() %>% 
+  .predict_logistic() %>%
     {if (is.character(.)) cat(., "\n") else print(.)}
 })
 
 .predict_plot_logistic <- reactive({
   req(
-    pressed(input$logit_run), input$logit_pred_plot, 
+    pressed(input$logit_run), input$logit_pred_plot,
     available(input$logit_xvar),
     !is_empty(input$logit_predict, "none")
   )
@@ -556,7 +590,9 @@ observeEvent(input$logistic_report, {
   }
 
   if (!is_empty(input$logit_store_res_name)) {
-    xcmd <- paste0(input$dataset, " <- store(", input$dataset, ", result, name = \"", input$logit_store_res_name, "\")\n")
+    fixed <- fix_names(input$logit_store_res_name)
+    updateTextInput(session, "logit_store_res_name", value = fixed)
+    xcmd <- paste0(input$dataset, " <- store(", input$dataset, ", result, name = \"", fixed, "\")\n")
   } else {
     xcmd <- ""
   }
@@ -564,23 +600,29 @@ observeEvent(input$logistic_report, {
   if (!is_empty(input$logit_predict, "none") &&
      (!is_empty(input$logit_pred_data) || !is_empty(input$logit_pred_cmd))) {
     pred_args <- clean_args(logit_pred_inputs(), logit_pred_args[-1])
+
     if (!is_empty(pred_args$pred_cmd)) {
       pred_args$pred_cmd <- strsplit(pred_args$pred_cmd, ";")[[1]]
+    } else {
+      pred_args$pred_cmd <- NULL
     }
+
     if (!is_empty(pred_args$pred_data)) {
       pred_args$pred_data <- as.symbol(pred_args$pred_data)
-    } 
+    } else {
+      pred_args$pred_data <- NULL
+    }
 
     inp_out[[2 + figs]] <- pred_args
     outputs <- c(outputs, "pred <- predict")
 
     xcmd <- paste0(xcmd, "print(pred, n = 10)")
     if (input$logit_predict %in% c("data", "datacmd")) {
-      name <- unlist(strsplit(input$logit_store_pred_name, "(\\s*,\\s*|\\s*;\\s*|\\s+)")) %>%
-        gsub("\\s", "", .) %>%
+      fixed <- unlist(strsplit(input$logit_store_pred_name, "(\\s*,\\s*|\\s*;\\s*)")) %>%
+        fix_names() %>%
         deparse(., control = getOption("dctrl"), width.cutoff = 500L)
-      xcmd <- paste0(xcmd, "\n", input$logit_pred_data, " <- store(", 
-        input$logit_pred_data, ", pred, name = ", name, ")"
+      xcmd <- paste0(xcmd, "\n", input$logit_pred_data, " <- store(",
+        input$logit_pred_data, ", pred, name = ", fixed, ")"
       )
     }
     # xcmd <- paste0(xcmd, "\n# write.csv(pred, file = \"~/logit_predictions.csv\", row.names = FALSE)")
@@ -605,23 +647,15 @@ observeEvent(input$logistic_report, {
   )
 })
 
-# observeEvent(input$logit_store_res, {
-#   req(pressed(input$logit_run))
-#   robj <- .logistic()
-#   if (!is.list(robj)) return()
-#   withProgress(
-#     message = "Storing residuals", value = 1,
-#     store(robj, name = input$logit_store_res_name)
-#   )
-# })
-
 observeEvent(input$logit_store_res, {
   req(pressed(input$logit_run))
   robj <- .logistic()
   if (!is.list(robj)) return()
+  fixed <- fix_names(input$logit_store_res_name)
+  updateTextInput(session, "logit_store_res_name", value = fixed)
   withProgress(
     message = "Storing residuals", value = 1,
-    r_data[[input$dataset]] <- store(r_data[[input$dataset]], robj, name = input$logit_store_res_name)
+    r_data[[input$dataset]] <- store(r_data[[input$dataset]], robj, name = fixed)
   )
 })
 
@@ -629,13 +663,16 @@ observeEvent(input$logit_store_pred, {
   req(!is_empty(input$logit_pred_data), pressed(input$logit_run))
   pred <- .predict_logistic()
   if (is.null(pred)) return()
+  fixed <- unlist(strsplit(input$logit_store_pred_name, "(\\s*,\\s*|\\s*;\\s*)")) %>%
+    fix_names() %>%
+    paste0(collapse = ", ")
+  updateTextInput(session, "logit_store_pred_name", value = fixed)
   withProgress(
     message = "Storing predictions", value = 1,
     r_data[[input$logit_pred_data]] <- store(
-      r_data[[input$logit_pred_data]], pred, 
-      name = input$logit_store_pred_name
+      r_data[[input$logit_pred_data]], pred,
+      name = fixed
     )
-    # store(pred, data = input$logit_pred_data, name = input$logit_store_pred_name)
   )
 })
 
@@ -648,8 +685,8 @@ dl_logit_coef <- function(path) {
 }
 
 download_handler(
-  id = "dl_logit_coef", 
-  fun = dl_logit_coef, 
+  id = "dl_logit_coef",
+  fun = dl_logit_coef,
   fn = function() paste0(input$dataset, "_logit_coef"),
   type = "csv",
   caption = "Save coefficients"
@@ -664,16 +701,16 @@ dl_logit_pred <- function(path) {
 }
 
 download_handler(
-  id = "dl_logit_pred", 
-  fun = dl_logit_pred, 
+  id = "dl_logit_pred",
+  fun = dl_logit_pred,
   fn = function() paste0(input$dataset, "_logit_pred"),
   type = "csv",
   caption = "Save predictions"
 )
 
 download_handler(
-  id = "dlp_logit_pred", 
-  fun = download_handler_plot, 
+  id = "dlp_logit_pred",
+  fun = download_handler_plot,
   fn = function() paste0(input$dataset, "_logit_pred"),
   type = "png",
   caption = "Save logistic prediction plot",
@@ -683,8 +720,8 @@ download_handler(
 )
 
 download_handler(
-  id = "dlp_logistic", 
-  fun = download_handler_plot, 
+  id = "dlp_logistic",
+  fun = download_handler_plot,
   fn = function() paste0(input$dataset, "_", input$logit_plots, "_logit"),
   type = "png",
   caption = "Save logistic plot",

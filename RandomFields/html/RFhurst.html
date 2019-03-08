@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Hurst coefficient</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RFhurst {RandomFields}"><tr><td>RFhurst {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Hurst coefficient</h2>
+
+<h3>Description</h3>
+
+<p>The function estimates the Hurst coefficient of a process
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RFhurst(x, y = NULL, z = NULL, data, sort = TRUE,
+ block.sequ = unique(round(exp(seq(log(min(3000, dimen[1]/5)),
+ log(dimen[1]),
+ len = min(100, dimen[1]))))),
+ fft.m = c(1, min(1000, (fft.len - 1)/10)),
+ fft.max.length = Inf, method = c("dfa", "fft", "var"),
+ mode = if (interactive ()) c("plot", "interactive") else "nographics", 
+ pch = 16, cex = 0.2, cex.main = 0.85,
+ printlevel = RFoptions()$basic$printlevel, height = 3.5,
+ ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>vector of x coordinates, or object of class <code><a href="../../sp/html/GridTopology-class.html">GridTopology</a></code> or <code><a href="../../raster/html/raster.html">raster</a></code>; for more options see <a href="RFsimulateAdvanced.html">RFsimulateAdvanced</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>y,z</code></td>
+<td>
+<p>optional vectors of y (z) coordinates, which should not be given if <code>x</code> is a matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>the data</p>
+</td></tr>
+</table>
+
+
+
+
+<table summary="R argblock">
+<tr valign="top"><td><code>sort</code></td>
+<td>
+<p>logical. If <code>TRUE</code> then the coordinates are permuted
+such that the largest grid length is in <code>x</code>-direction; this is
+of interest for algorithms that slice higher dimensional fields
+into one-dimensional sections.
+</p>
+</td></tr>
+<tr valign="top"><td><code>block.sequ</code></td>
+<td>
+<p>ascending sequences of block lengths for which the
+detrended fluctuation analysis and the variance method are
+performed.</p>
+</td></tr>
+<tr valign="top"><td><code>fft.m</code></td>
+<td>
+<p>vector of 2 integers; lower and upper endpoint of
+indices for the frequency which are used in the calculation of the
+regression line for the periodogram near the origin.</p>
+</td></tr>
+<tr valign="top"><td><code>fft.max.length</code></td>
+<td>
+<p>if the number of points in <code>x</code>-direction is
+larger than <code>fft.max.length</code> then the segments of length
+<code>fft.max.length</code> are considered, shifted by
+<code>fft.max.length/2</code> (WOSA-estimator).</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>list of implemented methods to calculate the Hurst parameter; see Details</p>
+</td></tr>
+<tr valign="top"><td><code>mode</code></td>
+<td>
+<p>character. A vector with components
+<code>'nographics'</code>, <code>'plot'</code> or <code>'interactive'</code>: 
+</p>
+
+<dl>
+<dt><code>'nographics'</code></dt><dd><p>no graphical output</p>
+</dd>
+<dt><code>'plot'</code></dt><dd><p>the regression line is plotted</p>
+</dd>
+<dt><code>'interactive'</code></dt><dd><p>the regression domain can be chosen
+interactively</p>
+</dd>
+</dl>
+
+<p>Usually only one mode is given. Two modes may make sense
+in the combination c(&quot;plot&quot;, &quot;interactive&quot;) in which case all the
+results are plotted first, and then the interactive mode is called. 
+In the interactive mode, the regression domain is chosen by
+two mouse clicks with the left
+mouse; a right mouse click leaves the plot.
+</p>
+</td></tr>
+<tr valign="top"><td><code>pch</code></td>
+<td>
+<p>vector or scalar; sign by which data are plotted.</p>
+</td></tr>
+<tr valign="top"><td><code>cex</code></td>
+<td>
+<p>vector or scalar; size of <code>pch</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>cex.main</code></td>
+<td>
+<p>font size for title in regression plot;
+only used if mode includes <code>'plot'</code>
+or <code>'interactive'</code></p>
+</td></tr>
+<tr valign="top"><td><code>printlevel</code></td>
+<td>
+<p>integer. If <code>printlevel</code> is 0 or 1
+nothing is printed. 
+If <code>printlevel=2</code> warnings and the regression results
+are given. If <code>printlevel&gt;2</code> tracing information is given.
+</p>
+</td></tr>
+<tr valign="top"><td><code>height</code></td>
+<td>
+<p>height of the graphics window</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>graphical arguments</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function is still in development. Several functionalities do
+not exist - see the code itself for the current stage.
+</p>
+<p>The function calculates the Hurst coefficient by various methods:
+</p>
+
+<ul>
+<li><p> detrended fluctuation analysis (dfa)
+</p>
+</li>
+<li><p> aggregated variation (var)
+</p>
+</li>
+<li><p> periodogram or WOSA estimator (fft)
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>The function returns a list with elements
+<code>dfa</code>, <code>varmeth</code>, <code>fft</code> corresponding to
+the three methods given in the Details.
+</p>
+<p>Each of the elements is itself a list that contains the
+following elements.
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>the x-coordinates used for the regression fit</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>the y-coordinates used for the regression fit</p>
+</td></tr>
+<tr valign="top"><td><code>regr</code></td>
+<td>
+<p>the coefficients of the <code><a href="../../stats/html/lm.html">lm</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>sm</code></td>
+<td>
+<p>smoothed curve through the (x,y) points</p>
+</td></tr>
+<tr valign="top"><td><code>x.u</code></td>
+<td>
+<p><code>NULL</code> or the restricted x-coordinates given
+by the user in the interactive plot</p>
+</td></tr>
+<tr valign="top"><td><code>y.u</code></td>
+<td>
+<p><code>NULL</code> or y-coordinates according to <code>x.u</code></p>
+</td></tr>
+<tr valign="top"><td><code>regr.u</code></td>
+<td>
+<p><code>NULL</code> or the coefficients of 
+<code><a href="../../stats/html/lm.html">lm</a></code> for <code>x.u</code> and <code>y.u</code></p>
+</td></tr>
+<tr valign="top"><td><code>H</code></td>
+<td>
+<p>the Hurst coefficient</p>
+</td></tr>
+<tr valign="top"><td><code>H.u</code></td>
+<td>
+<p><code>NULL</code> or the Hurst coefficient corresponding to the
+user's regression line</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+
+
+
+<p>detrended fluctuation analysis
+</p>
+
+<ul>
+<li><p> Peng, C.K., Buldyrev, S.V., Havlin, S., Simons, M., Stanley,
+H.E. and Goldberger, A.L. (1994)
+Mosaic organization of DNA nucleotides
+<em>Phys. Rev. E</em> <b>49</b>, 1685-1689
+</p>
+</li></ul>
+
+<p>aggregated variation
+</p>
+
+<ul>
+<li><p> Taqqu, M.S. and Teverovsky, V. (1998)
+On estimating the intensity of long range dependence in finite and
+infinite variance time series. In: Adler, R.J., Feldman, R.E., and
+Taqqu, M.S. <em>A Practical Guide to Heavy Tails, Statistical
+Techniques an Applications.</em> Boston: Birkhaeuser
+</p>
+</li>
+<li>
+<p>Taqqu, M.S. and Teverovsky, V. and Willinger, W. (1995)
+Estimators for long-range dependence: an empirical study.
+<em>Fractals</em> <b>3</b>, 785-798
+</p>
+</li></ul>
+
+<p>periodogram
+</p>
+
+<ul>
+<li><p> Percival, D.B. and Walden, A.T. (1993)
+<em>Spectral Analysis for Physical Applications: Multitaper and
+Conventional Univariate Techniques</em>, Cambridge: Cambridge
+University Press.
+</p>
+</li>
+<li><p> Welch, P.D. (1967) The use of Fast Fourier Transform for
+the estimation of power spectra: a method based on time averaging
+over short, modified periodograms <em>IEEE Trans. Audio
+Electroacoustics</em> <b>15</b>, 70-73. 
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>, <code><a href="RFfractaldim.html">RFfractaldim</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+
+x &lt;- runif(1000)
+h &lt;- RFhurst(1:length(x), data=x)
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

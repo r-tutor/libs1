@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Local-Global Distinguisher Family Covariance Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for RMlgd {RandomFields}"><tr><td>RMlgd {RandomFields}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Local-Global Distinguisher Family Covariance Model</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="RMlgd.html">RMlgd</a></code> is a stationary isotropic covariance model, which is valid only for dimensions 
+<i>d =1,2</i>.
+The corresponding covariance function only depends on the distance <i>r &ge; 0</i> between
+two points and is given by
+</p>
+<p style="text-align: center;"><i>C(r) =1 - &beta;^(-1)(&alpha; + &beta;)r^(&alpha;) 1_{[0,1]}(r) + &alpha;^(-1)(&alpha; + &beta;)r^(-&beta;) 1_{r&gt;1}(r) </i></p>
+
+<p>where <i>&beta; &gt;0</i> and <i>0 &lt; &alpha; &le; (3-d)/2</i>,
+with <i>d</i> denoting the dimension of the random field.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+RMlgd(alpha, beta, var, scale, Aniso, proj)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>argument whose range depends on the dimension of the random field: <i>0&lt; &alpha; &le; (3-d)/2</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>beta</code></td>
+<td>
+<p>positive number</p>
+</td></tr>
+<tr valign="top"><td><code>var,scale,Aniso,proj</code></td>
+<td>
+<p>optional arguments; same meaning for any
+<code><a href="RMmodel.html">RMmodel</a></code>. If not passed, the above
+covariance function remains unmodified.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The model is only valid for dimension <i>d=1,2</i>.
+</p>
+<p>This model admits simulating random fields where fractal dimension
+<em>D</em> of the Gaussian sample and Hurst coefficient <em>H</em>
+can be chosen independently (compare also <code><a href="RMgencauchy.html">RMgencauchy</a></code>):
+</p>
+<p>Here, the random field has fractal dimension </p>
+<p style="text-align: center;"><i>D = d+1
+ - &alpha;/2</i></p>
+<p> and Hurst coefficient </p>
+<p style="text-align: center;"><i>H = 1-&beta;/2</i></p>
+<p> for <i>0&lt; &beta; &le; 1</i>.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code><a href="RMlgd.html">RMlgd</a></code> returns an object of class
+<code><a href="RMmodel.html">RMmodel</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Schlather, <a href="mailto:schlather@math.uni-mannheim.de">schlather@math.uni-mannheim.de</a>, <a href="http://ms.math.uni-mannheim.de">http://ms.math.uni-mannheim.de</a></p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> Gneiting, T. and Schlather, M. (2004)
+Stochastic models which separate fractal dimension and Hurst effect.
+<em>SIAM review</em> <b>46</b>, 269&ndash;282.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="RMmodel.html">RMmodel</a></code>,
+<code><a href="RFsimulate.html">RFsimulate</a></code>,
+<code><a href="RFfit.html">RFfit</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RFoptions(seed=0) ## *ANY* simulation will have the random seed 0; set
+##                   RFoptions(seed=NA) to make them all random again
+
+model &lt;- RMlgd(alpha=0.7, beta=4, scale=0.5)
+x &lt;- seq(0, 10, 0.02)
+plot(model)
+plot(RFsimulate(model, x=x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RandomFields</em> version 3.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>
