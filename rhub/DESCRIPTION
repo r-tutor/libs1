@@ -1,23 +1,33 @@
 Package: rhub
 Title: Connect to 'R-hub'
-Version: 1.0.2
-Author: Gábor Csárdi
-Maintainer: Gábor Csárdi <csardi.gabor@gmail.com>
-Description: Run 'R CMD check' on any of the 'R-hub' architectures, from
-    the command line. The current architectures include 'Windows', 'macOS',
-    'Solaris' and various 'Linux' distributions.
+Version: 1.1.0
+Authors@R: c(
+    person("Gábor", "Csárdi",, "csardi.gabor@gmail.com", role = c("aut", "cre")),
+    person("Maëlle", "Salmon", role = "aut", 
+          email = "maelle.salmon@yahoo.se",
+          comment = c(ORCID = "0000-0002-2815-0399")),
+    person("R Consortium", role = c("fnd")))
+Description: Run 'R CMD check' on any of the 'R-hub' (<https://builder.r-hub.io/>)
+    architectures, from the command line. The current architectures include
+    'Windows', 'macOS', 'Solaris' and various 'Linux' distributions.
 License: MIT + file LICENSE
 LazyData: true
-URL: https://github.com/r-hub/rhub#readme
+URL: https://github.com/r-hub/rhub, https://r-hub.github.io/rhub/
 BugReports: https://github.com/r-hub/rhub/issues
-RoxygenNote: 6.0.1.9000
-Imports: assertthat, callr, clisymbols, crayon, desc, httr, jsonlite,
-        parsedate, prettyunits, R6, rappdirs, rcmdcheck (>= 1.2.1),
-        rematch, utils, whoami, withr
-Suggests: covr, testthat
+RoxygenNote: 6.1.1
+Imports: assertthat, callr, cli, crayon, desc, digest, httr, jsonlite,
+        parsedate, pillar, prettyunits, processx, R6, rappdirs,
+        rcmdcheck (>= 1.2.1), rematch, tibble, utils, uuid, whoami,
+        withr
+Suggests: covr, testthat, knitr, rmarkdown
 Encoding: UTF-8
+VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2017-11-01 08:09:44 UTC; gaborcsardi
+Packaged: 2019-03-25 21:48:57 UTC; gaborcsardi
+Author: Gábor Csárdi [aut, cre],
+  Maëlle Salmon [aut] (<https://orcid.org/0000-0002-2815-0399>),
+  R Consortium [fnd]
+Maintainer: Gábor Csárdi <csardi.gabor@gmail.com>
 Repository: CRAN
-Date/Publication: 2017-11-02 13:00:29 UTC
-Built: R 3.5.0; ; 2018-06-22 12:16:05 UTC; windows
+Date/Publication: 2019-03-25 22:10:13 UTC
+Built: R 3.5.3; ; 2019-03-28 17:37:21 UTC; windows

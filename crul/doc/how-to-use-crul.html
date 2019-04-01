@@ -254,9 +254,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type="text/css">
 .main-container {
@@ -287,8 +285,6 @@ summary {
 </style>
 
 
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -363,6 +359,15 @@ $(document).ready(function () {
 
 
 
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
 
 <div class="fluid-row" id="header">
 
@@ -397,7 +402,7 @@ $(document).ready(function () {
   # check to see if request failed or succeeded
   # - if succeeds this will return nothing and proceeds to next step
   res$raise_for_status()
-  # parse response to plain text (JSON in this case) - most likely you&#39;ll 
+  # parse response to plain text (JSON in this case) - most likely you'll 
   # want UTF-8 encoding
   txt &lt;- res$parse(&quot;UTF-8&quot;)
   # parse the JSON to an R list
@@ -415,18 +420,15 @@ $(document).ready(function () {
 #&gt; $headers$`Accept-Encoding`
 #&gt; [1] &quot;gzip, deflate&quot;
 #&gt; 
-#&gt; $headers$Connection
-#&gt; [1] &quot;close&quot;
-#&gt; 
 #&gt; $headers$Host
 #&gt; [1] &quot;httpbin.org&quot;
 #&gt; 
 #&gt; $headers$`User-Agent`
-#&gt; [1] &quot;libcurl/7.54.0 r-curl/3.2 crul/0.6.2.9336&quot;
+#&gt; [1] &quot;libcurl/7.54.0 r-curl/3.3 crul/0.7.4&quot;
 #&gt; 
 #&gt; 
 #&gt; $origin
-#&gt; [1] &quot;24.21.229.59&quot;
+#&gt; [1] &quot;65.197.146.18, 65.197.146.18&quot;
 #&gt; 
 #&gt; $url
 #&gt; [1] &quot;https://httpbin.org/get&quot;</code></pre>
@@ -473,7 +475,7 @@ $(document).ready(function () {
 #&gt; named list()
 #&gt; 
 #&gt; $message$`total-results`
-#&gt; [1] 102127038
+#&gt; [1] 103966337
 #&gt; 
 #&gt; $message$items
 #&gt; list()
@@ -506,7 +508,7 @@ make_request2(&quot;https://api.crossref.org/works?rows=0&quot;, timeout_ms = 1)
 #&gt; named list()
 #&gt; 
 #&gt; $message$`total-results`
-#&gt; [1] 102127038
+#&gt; [1] 103966680
 #&gt; 
 #&gt; $message$items
 #&gt; list()

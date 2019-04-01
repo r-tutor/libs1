@@ -254,9 +254,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type="text/css">
 .main-container {
@@ -287,8 +285,6 @@ summary {
 </style>
 
 
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -363,6 +359,15 @@ $(document).ready(function () {
 
 
 
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
 
 <div class="fluid-row" id="header">
 
@@ -382,11 +387,11 @@ $(document).ready(function () {
 <div id="importing-crul" class="section level2">
 <h2>Importing crul</h2>
 <p>In most cases you’ll only need to import one thing from <code>crul</code>: <code>HttpClient</code>. Add crul to <code>Imports</code> in your <code>DESCRIPTION</code> file, and ad an entry like <code>@importFrom crul HttpClient</code> somewhere in your package documentation, for example:</p>
-<pre class="r"><code>#&#39; Some function
-#&#39; 
-#&#39; @export
-#&#39; @importFrom crul HttpClient
-#&#39; ...</code></pre>
+<pre class="r"><code>#' Some function
+#' 
+#' @export
+#' @importFrom crul HttpClient
+#' ...</code></pre>
 </div>
 <div id="http-request-function" class="section level2">
 <h2>HTTP request function</h2>

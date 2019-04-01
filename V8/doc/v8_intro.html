@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2019-02-07" />
+<meta name="date" content="2019-03-16" />
 
 <title>Introduction to V8 for R</title>
 
@@ -430,7 +430,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Introduction to V8 for R</h1>
-<h4 class="date"><em>2019-02-07</em></h4>
+<h4 class="date"><em>2019-03-16</em></h4>
 
 </div>
 
@@ -447,7 +447,7 @@ $(document).ready(function () {
 <p>A major advantage over the other foreign language interfaces is that V8 requires no compilers, external executables or other run-time dependencies. The entire engine is contained within a 6MB package (2MB zipped) and works on all major platforms.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># Create some JSON</span></a>
 <a class="sourceLine" id="cb3-2" title="2"><span class="kw">cat</span>(ct<span class="op">$</span><span class="kw">eval</span>(<span class="st">&quot;JSON.stringify({x:Math.random()})&quot;</span>))</a></code></pre></div>
-<pre><code>{&quot;x&quot;:0.14880326273380118}</code></pre>
+<pre><code>{&quot;x&quot;:0.0804910418226028}</code></pre>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># Simple closure</span></a>
 <a class="sourceLine" id="cb5-2" title="2">ct<span class="op">$</span><span class="kw">eval</span>(<span class="st">&quot;(function(x){return x+1;})(123)&quot;</span>)</a></code></pre></div>
 <pre><code>[1] &quot;124&quot;</code></pre>
