@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: ISO 3166 Country Codes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ISO_3166 {ISOcodes}"><tr><td>ISO_3166 {ISOcodes}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>ISO 3166 Country Codes</h2>
+
+<h3>Description</h3>
+
+<p>International Organization for Standardization (ISO) codes for the
+representation of names of countries and their subdivisions.  Consists
+of three parts.  Part 1: Country codes, defines codes for country and
+dependent area names.  Part 2: Country subdivision code, defines codes
+for the principal subdivisions of a country or dependent area.   Part
+3: Code for formerly used names of countries, defines codes for
+superseded ISO 3166-1 codes.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ISO_3166_1
+ISO_3166_2
+ISO_3166_3
+</pre>
+
+
+<h3>Format</h3>
+
+<p><code>ISO_3166_1</code> is a character frame with variables <code>Alpha_2</code>,
+<code>Alpha_3</code>, and <code>Numeric</code> (giving the two-letter,
+three-letter and three-digit numeric country codes) and <code>Name</code>,
+<code>Official_name</code>, and <code>Common_name</code> (giving the respective
+names).
+</p>
+<p><code>ISO_3166_2</code> is a character frame with variables <code>Code</code>,
+<code>Type</code>, <code>Name</code>, and <code>Parent</code>, giving the code, type and
+name of the subdivision, and a parent subdivision in case this is
+different from the country.
+</p>
+<p><code>ISO_3166_3</code> is a character frame with variables <code>Alpha_4</code>
+(the 4-letter code of the retired country), <code>Alpha_3</code>,
+<code>Numeric</code>, and <code>Name</code> (the original 3166-1 code elements of
+the country), and <code>Date_withdrawn</code> and <code>Comment</code>.
+</p>
+
+
+<h3>Source</h3>
+
+<p>Converted from JSON files provided by Debian's <span class="pkg">iso-codes</span> package
+(<a href="https://salsa.debian.org/iso-codes-team/iso-codes">https://salsa.debian.org/iso-codes-team/iso-codes</a>).
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://en.wikipedia.org/wiki/ISO_3166">http://en.wikipedia.org/wiki/ISO_3166</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>ISOcodes</em> version 2019.04.22 <a href="00Index.html">Index</a>]</div>
+</body></html>

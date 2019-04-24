@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert Socrata human-readable column name to field name</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for fieldName {RSocrata}"><tr><td>fieldName {RSocrata}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert Socrata human-readable column name to field name</h2>
+
+<h3>Description</h3>
+
+<p>Convert Socrata human-readable column name,
+as it might appear in the first row of data,
+to field name as it might appear in the HTTP header;
+that is, lower case, periods replaced with underscores#'
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+fieldName(humanName)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>humanName</code></td>
+<td>
+<p>- a Socrata human-readable column name</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Socrata field name
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hugh J. Devlin, Ph. D. <a href="mailto:Hugh.Devlin@cityofchicago.org">Hugh.Devlin@cityofchicago.org</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+fieldName("Number.of.Stations") # number_of_stations
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RSocrata</em> version 1.7.6-3 <a href="00Index.html">Index</a>]</div>
+</body></html>
