@@ -1,3 +1,10 @@
+# rversions 2.0.0
+
+## Breaking change
+
+* `r_versions()` and all other functions now parse the date, so the date
+  column is a POSIXt, not a character (#13).
+
 # rversions 1.1.0
 
 * All function outputs now also have a column with version nickname(s).
