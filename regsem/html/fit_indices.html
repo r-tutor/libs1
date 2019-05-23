@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Calculates the fit indices</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for fit_indices {regsem}"><tr><td>fit_indices {regsem}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Calculates the fit indices</h2>
+
+<h3>Description</h3>
+
+<p>Calculates the fit indices
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+fit_indices(model, CV = F, CovMat = NULL, data = NULL,
+  n.obs = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>model</code></td>
+<td>
+<p>regsem model object.</p>
+</td></tr>
+<tr valign="top"><td><code>CV</code></td>
+<td>
+<p>cross-validation. Note that this requires splitting the dataset
+into a training and test set prior to running the model. The
+model should be run on the training set, with the test set
+held out and then passed to CovMat=.</p>
+</td></tr>
+<tr valign="top"><td><code>CovMat</code></td>
+<td>
+<p>If CV=T then test covariance matrix must be supplied. Note
+That this should be done before running the lavaan model and should
+not overlap with the data or covariance matrix used to run the model.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>supply the dataset?</p>
+</td></tr>
+<tr valign="top"><td><code>n.obs</code></td>
+<td>
+<p>Number of observations in the test set for CV.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+fit_indices()
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>regsem</em> version 1.3.9 <a href="00Index.html">Index</a>]</div>
+</body></html>

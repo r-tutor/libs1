@@ -17,7 +17,7 @@ additional files needed in order to render and display the document.
 <h3>Usage</h3>
 
 <pre>
-find_external_resources(input_file, encoding = getOption("encoding"))
+find_external_resources(input_file, encoding = "UTF-8")
 </pre>
 
 
@@ -53,8 +53,8 @@ documents are also returned. To specify resources in YAML, use the
 title: My Document
 author: My Name
 resource_files:
- - data/mydata.csv
- - images/figure.png
+  - data/mydata.csv
+  - images/figure.png
 ---</pre>
 <p>Each item in the <code>resource_files</code> list can refer to:
 </p>
@@ -99,5 +99,5 @@ from the document</p>
 </dl>
 
 
-<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 1.12 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 1.13 <a href="00Index.html">Index</a>]</div>
 </body></html>

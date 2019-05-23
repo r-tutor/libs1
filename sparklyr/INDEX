@@ -40,6 +40,9 @@ ft_normalizer           Feature Transformation - Normalizer
                         (Transformer)
 ft_one_hot_encoder      Feature Transformation - OneHotEncoder
                         (Transformer)
+ft_one_hot_encoder_estimator
+                        Feature Transformation - OneHotEncoderEstimator
+                        (Estimator)
 ft_pca                  Feature Transformation - PCA (Estimator)
 ft_polynomial_expansion
                         Feature Transformation - PolynomialExpansion
@@ -88,8 +91,7 @@ ml_corr                 Compute correlation matrix
 ml_decision_tree_classifier
                         Spark ML - Decision Trees
 ml_default_stop_words   Default stop words
-ml_evaluate             Spark ML - Evaluate prediction frames with
-                        evaluators
+ml_evaluate             Evaluate the Model on a Validation Set
 ml_evaluator            Spark ML - Evaluators
 ml_feature_importances
                         Spark ML - Feature Importance for Tree Models
@@ -155,6 +157,7 @@ sdf_checkpoint          Checkpoint a Spark DataFrame
 sdf_coalesce            Coalesces a Spark DataFrame
 sdf_collect             Collect a Spark DataFrame into R.
 sdf_copy_to             Copy an Object into Spark
+sdf_crosstab            Cross Tabulation
 sdf_debug_string        Debug Info for Spark DataFrame
 sdf_describe            Compute summary statistics for columns of a
                         data frame
@@ -163,12 +166,12 @@ sdf_is_streaming        Spark DataFrame is Streaming
 sdf_last_index          Returns the last index of a Spark DataFrame
 sdf_len                 Create DataFrame for Length
 sdf_num_partitions      Gets number of partitions of a Spark DataFrame
-sdf_partition           Partition a Spark Dataframe
 sdf_persist             Persist a Spark DataFrame
 sdf_pivot               Pivot a Spark DataFrame
 sdf_project             Project features onto principal components
 sdf_quantile            Compute (Approximate) Quantiles with a Spark
                         DataFrame
+sdf_random_split        Partition a Spark Dataframe
 sdf_read_column         Read a Column from a Spark DataFrame
 sdf_register            Register a Spark DataFrame
 sdf_repartition         Repartition a Spark DataFrame
@@ -208,6 +211,7 @@ spark_default_compilation_spec
 spark_dependency        Define a Spark dependency
 spark_dependency_fallback
                         Fallback to Spark Dependency
+spark_extension         Create Spark Extension
 spark_home_set          Set the SPARK_HOME environment variable
 spark_jobj              Retrieve a Spark JVM Object Reference
 spark_jobj-class        spark_jobj class

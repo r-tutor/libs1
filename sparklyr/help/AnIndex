@@ -55,6 +55,7 @@ ft_min_max_scaler	ft_min_max_scaler
 ft_ngram	ft_ngram
 ft_normalizer	ft_normalizer
 ft_one_hot_encoder	ft_one_hot_encoder
+ft_one_hot_encoder_estimator	ft_one_hot_encoder_estimator
 ft_pca	ft_pca
 ft_polynomial_expansion	ft_polynomial_expansion
 ft_quantile_discretizer	ft_quantile_discretizer
@@ -142,6 +143,13 @@ ml_decision_tree_regressor	ml_decision_tree
 ml_default_stop_words	ml_default_stop_words
 ml_describe_topics	ml_lda
 ml_evaluate	ml_evaluate
+ml_evaluate.ml_evaluator	ml_evaluate
+ml_evaluate.ml_generalized_linear_regression_model	ml_evaluate
+ml_evaluate.ml_linear_regression_model	ml_evaluate
+ml_evaluate.ml_logistic_regression_model	ml_evaluate
+ml_evaluate.ml_model_generalized_linear_regression	ml_evaluate
+ml_evaluate.ml_model_linear_regression	ml_evaluate
+ml_evaluate.ml_model_logistic_regression	ml_evaluate
 ml_evaluator	ml_evaluator
 ml_feature_importances	ml_feature_importances
 ml_find_synonyms	ft_word2vec
@@ -242,6 +250,7 @@ sdf_checkpoint	sdf_checkpoint
 sdf_coalesce	sdf_coalesce
 sdf_collect	sdf_collect
 sdf_copy_to	sdf_copy_to
+sdf_crosstab	sdf_crosstab
 sdf_debug_string	sdf_debug_string
 sdf_describe	sdf_describe
 sdf_dim	sdf_dim
@@ -257,12 +266,13 @@ sdf_load_table	sdf-saveload
 sdf_ncol	sdf_dim
 sdf_nrow	sdf_dim
 sdf_num_partitions	sdf_num_partitions
-sdf_partition	sdf_partition
+sdf_partition	sdf_random_split
 sdf_persist	sdf_persist
 sdf_pivot	sdf_pivot
 sdf_predict	sdf-transform-methods
 sdf_project	sdf_project
 sdf_quantile	sdf_quantile
+sdf_random_split	sdf_random_split
 sdf_read_column	sdf_read_column
 sdf_register	sdf_register
 sdf_repartition	sdf_repartition
@@ -307,6 +317,7 @@ spark_dependency	spark_dependency
 spark_dependency_fallback	spark_dependency_fallback
 spark_disconnect	spark-connections
 spark_disconnect_all	spark-connections
+spark_extension	spark_extension
 spark_get_checkpoint_dir	checkpoint_directory
 spark_get_java	spark_get_java
 spark_home_dir	spark_home_dir

@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Function to performed exploratory mediation with continuous...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for xmed {regsem}"><tr><td>xmed {regsem}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Function to performed exploratory mediation with continuous and categorical variables</h2>
+
+<h3>Description</h3>
+
+<p>Function to performed exploratory mediation with continuous and categorical variables
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+xmed(data, iv, mediators, dv, covariates = NULL, type = "lasso",
+  nfolds = 10, epsilon = 0.001, seed = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>Name of the dataset</p>
+</td></tr>
+<tr valign="top"><td><code>iv</code></td>
+<td>
+<p>Name of independent variable</p>
+</td></tr>
+<tr valign="top"><td><code>mediators</code></td>
+<td>
+<p>Name of mediators</p>
+</td></tr>
+<tr valign="top"><td><code>dv</code></td>
+<td>
+<p>Name of dependent variable</p>
+</td></tr>
+<tr valign="top"><td><code>covariates</code></td>
+<td>
+<p>Name of covariates to be included in model.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>What type of penalty. Options include lasso, ridge, and enet.</p>
+</td></tr>
+<tr valign="top"><td><code>nfolds</code></td>
+<td>
+<p>Number of cross-validation folds.</p>
+</td></tr>
+<tr valign="top"><td><code>epsilon</code></td>
+<td>
+<p>Threshold for determining whether effect is 0 or not.</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>Set seed to control CV results</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# example
+library(ISLR)
+College1 = College[which(College$Private=="Yes"),]
+Data = data.frame(scale(College1[c("Grad.Rate","Accept","Outstate","Room.Board","Books","Expend")]))
+Data$Grad.Rate &lt;- ifelse(Data$Grad.Rate &gt; 0,1,0)
+Data$Grad.Rate &lt;- as.factor(Data$Grad.Rate)
+#lavaan model with all mediators
+model1 &lt;-
+ ' # direct effect (c_prime)
+Grad.Rate ~ c_prime*Accept
+# mediators
+Outstate ~ a1*Accept
+Room.Board ~ a2*Accept
+Books ~ a3*Accept
+Expend ~ a6*Accept
+Grad.Rate ~ b1*Outstate + b2*Room.Board + b3*Books + b6*Expend
+# indirect effects (a*b)
+a1b1 := a1*b1
+a2b2 := a2*b2
+a3b3 := a3*b3
+a6b6 := a6*b6
+# total effect (c)
+c := c_prime + (a1*b1) + (a2*b2) + (a3*b3) + (a6*b6)
+'
+#p-value approach using delta method standard errors
+fit.delta = sem(model1,data=Data,fixed.x=TRUE,ordered="Grad.Rate")
+summary(fit.delta)
+
+#xmed()
+
+iv &lt;- "Accept"
+dv &lt;- "Grad.Rate"
+mediators &lt;- c("Outstate","Room.Board","Books","Expend")
+
+out &lt;- xmed(Data,iv,mediators,dv)
+out
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>regsem</em> version 1.3.9 <a href="00Index.html">Index</a>]</div>
+</body></html>

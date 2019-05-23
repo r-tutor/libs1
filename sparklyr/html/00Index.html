@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;sparklyr&rsquo; version 1.0.0</h2>
+</div><h2>Documentation for package &lsquo;sparklyr&rsquo; version 1.0.1</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 </ul>
@@ -161,6 +161,8 @@
 <td>Feature Transformation - Normalizer (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_one_hot_encoder.html">ft_one_hot_encoder</a></td>
 <td>Feature Transformation - OneHotEncoder (Transformer)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_one_hot_encoder_estimator.html">ft_one_hot_encoder_estimator</a></td>
+<td>Feature Transformation - OneHotEncoderEstimator (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_pca.html">ft_pca</a></td>
 <td>Feature Transformation - PCA (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_polynomial_expansion.html">ft_polynomial_expansion</a></td>
@@ -332,7 +334,21 @@
 <tr><td style="width: 25%;"><a href="ml_lda.html">ml_describe_topics</a></td>
 <td>Spark ML - Latent Dirichlet Allocation</td></tr>
 <tr><td style="width: 25%;"><a href="ml_evaluate.html">ml_evaluate</a></td>
-<td>Spark ML - Evaluate prediction frames with evaluators</td></tr>
+<td>Evaluate the Model on a Validation Set</td></tr>
+<tr><td style="width: 25%;"><a href="ml_evaluate.html">ml_evaluate.ml_evaluator</a></td>
+<td>Evaluate the Model on a Validation Set</td></tr>
+<tr><td style="width: 25%;"><a href="ml_evaluate.html">ml_evaluate.ml_generalized_linear_regression_model</a></td>
+<td>Evaluate the Model on a Validation Set</td></tr>
+<tr><td style="width: 25%;"><a href="ml_evaluate.html">ml_evaluate.ml_linear_regression_model</a></td>
+<td>Evaluate the Model on a Validation Set</td></tr>
+<tr><td style="width: 25%;"><a href="ml_evaluate.html">ml_evaluate.ml_logistic_regression_model</a></td>
+<td>Evaluate the Model on a Validation Set</td></tr>
+<tr><td style="width: 25%;"><a href="ml_evaluate.html">ml_evaluate.ml_model_generalized_linear_regression</a></td>
+<td>Evaluate the Model on a Validation Set</td></tr>
+<tr><td style="width: 25%;"><a href="ml_evaluate.html">ml_evaluate.ml_model_linear_regression</a></td>
+<td>Evaluate the Model on a Validation Set</td></tr>
+<tr><td style="width: 25%;"><a href="ml_evaluate.html">ml_evaluate.ml_model_logistic_regression</a></td>
+<td>Evaluate the Model on a Validation Set</td></tr>
 <tr><td style="width: 25%;"><a href="ml_evaluator.html">ml_evaluator</a></td>
 <td>Spark ML - Evaluators</td></tr>
 <tr><td style="width: 25%;"><a href="ml_feature_importances.html">ml_feature_importances</a></td>
@@ -512,6 +528,8 @@
 <td>Collect a Spark DataFrame into R.</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_copy_to.html">sdf_copy_to</a></td>
 <td>Copy an Object into Spark</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_crosstab.html">sdf_crosstab</a></td>
+<td>Cross Tabulation</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_debug_string.html">sdf_debug_string</a></td>
 <td>Debug Info for Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_describe.html">sdf_describe</a></td>
@@ -540,7 +558,7 @@
 <td>Support for Dimension Operations</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_num_partitions.html">sdf_num_partitions</a></td>
 <td>Gets number of partitions of a Spark DataFrame</td></tr>
-<tr><td style="width: 25%;"><a href="sdf_partition.html">sdf_partition</a></td>
+<tr><td style="width: 25%;"><a href="sdf_random_split.html">sdf_partition</a></td>
 <td>Partition a Spark Dataframe</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_persist.html">sdf_persist</a></td>
 <td>Persist a Spark DataFrame</td></tr>
@@ -552,6 +570,8 @@
 <td>Project features onto principal components</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_quantile.html">sdf_quantile</a></td>
 <td>Compute (Approximate) Quantiles with a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_random_split.html">sdf_random_split</a></td>
+<td>Partition a Spark Dataframe</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_read_column.html">sdf_read_column</a></td>
 <td>Read a Column from a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_register.html">sdf_register</a></td>
@@ -630,6 +650,8 @@
 <td>Manage Spark Connections</td></tr>
 <tr><td style="width: 25%;"><a href="spark-connections.html">spark_disconnect_all</a></td>
 <td>Manage Spark Connections</td></tr>
+<tr><td style="width: 25%;"><a href="spark_extension.html">spark_extension</a></td>
+<td>Create Spark Extension</td></tr>
 <tr><td style="width: 25%;"><a href="checkpoint_directory.html">spark_get_checkpoint_dir</a></td>
 <td>Set/Get Spark checkpoint directory</td></tr>
 <tr><td style="width: 25%;"><a href="spark_home_set.html">spark_home_set</a></td>

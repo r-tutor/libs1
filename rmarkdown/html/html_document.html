@@ -90,7 +90,7 @@ the <span class="pkg">tibble</span> package to print a summary of the data frame
 method creates a paginated HTML table (note that this method is only valid
 for formats that produce HTML). In addition
 to the named methods you can also pass an arbitrary function to be used
-for printing data frames. You can disable the df_print behavior entirely
+for printing data frames. You can disable the <code>df_print</code> behavior entirely
 by setting the option <code>rmarkdown.df_print</code> to <code>FALSE</code>.</p>
 </td></tr>
 <tr valign="top"><td><code>code_folding</code></td>
@@ -110,8 +110,8 @@ a link that can be used by readers to download the code.</p>
 <tr valign="top"><td><code>smart</code></td>
 <td>
 <p>Produce typographically correct output, converting straight
-quotes to curly quotes, &mdash; to em-dashes, &ndash; to en-dashes, and ... to
-ellipses.</p>
+quotes to curly quotes, <code>---</code> to em-dashes, <code>--</code> to en-dashes, and
+<code>...</code> to ellipses.</p>
 </td></tr>
 <tr valign="top"><td><code>self_contained</code></td>
 <td>
@@ -221,16 +221,16 @@ be included at the top of the document.
 <code>right</code> fields (to define menu items for the left and right of the navbar
 respectively). Menu items include <code>title</code> and <code>href</code> fields. For example:
 </p>
-<pre> title: "My Website"
- type: default
- left:
-   - text: "Home"
-     href: index.html
-   - text: "Other"
-     href: other.html
- right:
-   - text: GitHub
-     href: https://github.com</pre>
+<pre>title: "My Website"
+type: default
+left:
+  - text: "Home"
+    href: index.html
+  - text: "Other"
+    href: other.html
+right:
+  - text: GitHub
+    href: https://github.com</pre>
 <p>The <code>type</code> field is optional and can take the value &quot;default&quot; or &quot;inverse&quot; (which
 provides a different color scheme for the navigation bar).
 </p>
@@ -270,18 +270,18 @@ attribute to headers within a document. This will cause all sub-headers of
 the header with the <code>.tabset</code> attribute to appear within tabs rather
 than as standalone sections. For example:
 </p>
-<pre> ## Quarterly Results {.tabset}
+<pre>## Quarterly Results {.tabset}
 
- ### By Product
+### By Product
 
- ### By Region </pre>
+### By Region </pre>
 <p>You can also specify two additional attributes to control the appearance and
 behavior of the tabs. The <code>.tabset-fade</code> attributes causes the tabs to
 fade in and out when switching. The <code>.tabset-pills</code> attribute causes
 the visual appearance of the tabs to be &quot;pill&quot; rather than traditional tabs.
 For example:
 </p>
-<pre> ## Quarterly Results {.tabset .tabset-fade .tabset-pills} </pre>
+<pre>## Quarterly Results {.tabset .tabset-fade .tabset-pills}</pre>
 
 
 <h3>Templates</h3>
@@ -337,5 +337,5 @@ render("input.Rmd", html_document(toc = TRUE))
 ## End(Not run)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 1.12 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 1.13 <a href="00Index.html">Index</a>]</div>
 </body></html>

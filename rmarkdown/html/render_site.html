@@ -17,18 +17,16 @@
 
 <pre>
 render_site(input = ".", output_format = "all",
-  envir = parent.frame(), quiet = FALSE,
-  encoding = getOption("encoding"))
+  envir = parent.frame(), quiet = FALSE, encoding = "UTF-8")
 
 clean_site(input = ".", preview = FALSE, quiet = FALSE,
-  encoding = getOption("encoding"))
+  encoding = "UTF-8")
 
-site_generator(input = ".", output_format = NULL,
-  encoding = getOption("encoding"))
+site_generator(input = ".", output_format = NULL, encoding = "UTF-8")
 
-site_config(input = ".", encoding = getOption("encoding"))
+site_config(input = ".", encoding = "UTF-8")
 
-default_site_generator(input, encoding = getOption("encoding"), ...)
+default_site_generator(input, encoding = "UTF-8", ...)
 </pre>
 
 
@@ -252,5 +250,5 @@ they should open to preview the website.
 example of a site generation function.
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 1.12 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rmarkdown</em> version 1.13 <a href="00Index.html">Index</a>]</div>
 </body></html>

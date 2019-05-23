@@ -1,3 +1,14 @@
+rticles 0.8
+---------------------------------------------------------------------
+
+- Added the Taylor & Francis journal template (@dleutnant, #218).
+
+- The top-level option `biblio-files` in the YAML frontmatter was changed to `bibliography` in the `elsevier_article()` template (@JohannesFriedrich, #222).
+
+- Added header option `correspongdingauthors` to configure multiple corresponding authors for Copernicus Publications (@nuest, #221).
+
+- Updated the template for MDPI to 02/2019 (@dleutnant, #203).
+
 rticles 0.7
 ---------------------------------------------------------------------
 
@@ -11,7 +22,7 @@ rticles 0.7
 
 - Added an argument `pandoc_args` to `ieee_article()` so that users can pass custom Pandoc arguments. This also makes it work with `bookdown::pdf_book()` (thanks, @espinielli, #206).
 
-- The `base_format` argument has been removed from `peerj_article()` (#127) and `copernicus_article()` (#172). This argument was originally added mainly for supporting `bookdown::pdf_book()`, but you should really pass these formats to the `base_format` argument of `bookdown::pdf_book` instead of the other way around.
+- The `base_format` argument has been removed from `peerj_article()` (#127) and `copernicus_article()` (#172). This argument was originally added mainly for supporting `bookdown::pdf_book()`, but you should really pass these formats to the `base_format` argument of `bookdown::pdf_book` instead of the other way around. See https://bookdown.org/yihui/rmarkdown/rticles-bookdown.html.
 
 - For output formats `acm_article()`, `acs_article()`, `ams_article()`, `mnras_article()`, the csl file should be specified as a top-level option in the YAML header of the document (this has been done in the R Markdown templates). It is no longer specified automatically by the output format functions.
 
