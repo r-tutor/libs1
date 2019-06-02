@@ -1,4 +1,19 @@
-# seriation 1.2-3 (02/x05/2018)
+# seriation 1.2-5 (05/30/2019)
+
+## Bugfixes
+* Fixed compilation warnings in Fortran code.
+
+
+# seriation 1.2-4 (05/29/2019)
+
+## New features
+* bertinplot: panel colors can now be specified in highlight and as shading.function.
+
+## Bugfixes
+* bertinplot: fix white squares when frame = TRUE (by Dirk Seidensticker).
+* seriation method "BEA" has now a slight code improvement (suggested by  RichardKav)
+
+# seriation 1.2-3 (02/05/2018)
 
 ## Bugfixes
 * seriation method "BEA" is now not longer masked by "BEA_TSP". 
