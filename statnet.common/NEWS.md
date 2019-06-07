@@ -1,3 +1,17 @@
+# statnet.common 4.3.0
+
+## New utilities
+
+* `EVL()`, a family of functions like `NVL()`, that treat any object of length 0 as `NULL`.
+
+* `once()`, a `purrr`-style adverb that wraps a function to only evaluate the first time it's called with a given configuration of arguments.
+
+* `persistEval()` and `persistEvalQ()` to retry evaluating a given expression a specified number of times.
+
+## Bug fixes
+
+* In `forkTimeout()`, don't collect a process twice. Thanks to Tomas Kalibera for suggesting the fix.
+
 # statnet.common 4.2.0
 
 ## New utilities
