@@ -1,3 +1,8 @@
+# seriation 1.2-7 (06/07/2019)
+
+## Bugfixes
+* Added missing void * to init.c
+
 # seriation 1.2-6 (06/03/2019)
 
 ## Bugfixes
