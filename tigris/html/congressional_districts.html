@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Download a congressional districts shapefile for the 114th...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for congressional_districts {tigris}"><tr><td>congressional_districts {tigris}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Download a congressional districts shapefile for the 114th Congress into R</h2>
+
+<h3>Description</h3>
+
+<p>Description from the US Census Bureau (see link for source):
+The 2017 TIGER/Line Shapefiles contain the 115th Congressional Districts. All congressional districts
+appearing in the 2017 TIGER/Line Shapefiles reflect the information provided to the Census Bureau by
+the states by May 1, 2016. The 115th Congressional District shapefile contains the areas in effect from
+January 2017 to 2019.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+congressional_districts(cb = FALSE, resolution = "500k", year = NULL,
+  ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>cb</code></td>
+<td>
+<p>If cb is set to TRUE, download a generalized (1:500k)
+cartographic boundary file.  Defaults to FALSE (the most detailed
+TIGER/Line file).</p>
+</td></tr>
+<tr valign="top"><td><code>resolution</code></td>
+<td>
+<p>The resolution of the cartographic boundary file (if cb == TRUE).
+Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).</p>
+</td></tr>
+<tr valign="top"><td><code>year</code></td>
+<td>
+<p>the data year (defaults to 2017).  To get boundaries for the 115th congress, set <code>year = 2017</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to be passed to the underlying 'load_tiger' function, which is not exported.
+Options include <code>class</code>, which can be set to <code>"sp"</code> (the default) or <code>"sf"</code> to
+request sp or sf class objects, and <code>refresh</code>, which specifies whether
+or not to re-download shapefiles (defaults to <code>FALSE</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Congressional districts are the 435 areas from which people are elected to the U.S. House of
+Representatives and the five areas with nonvoting delegates from state equivalents. After the
+apportionment of congressional seats among the states based on decennial census population counts,
+each state is responsible for establishing the boundaries of the congressional districts for the purpose of
+electing representatives. Each congressional district is to be as equal in population to all other
+congressional districts in a state as practicable.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2017/TGRSHP2017_TechDoc.pdf">http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2017/TGRSHP2017_TechDoc.pdf</a>
+</p>
+<p>Other legislative district functions: <code><a href="state_legislative_districts.html">state_legislative_districts</a></code>,
+<code><a href="voting_districts.html">voting_districts</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(tigris)
+library(leaflet)
+
+cd114 &lt;- congressional_districts(cb = TRUE, resolution = '20m')
+
+leaflet(cd114) %&gt;%
+   addTiles() %&gt;%
+   addPolygons()
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tigris</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

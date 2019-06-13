@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Download a combined statistical areas shapefile into R</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for combined_statistical_areas {tigris}"><tr><td>combined_statistical_areas {tigris}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Download a combined statistical areas shapefile into R</h2>
+
+<h3>Description</h3>
+
+<p>Combined statistical areas are &quot;two or more adjacent CBSAs that have significant
+employment interchanges.&quot;  In turn, CSAs are composed of multiple metropolitan and/or micropolitan areas, and should
+not be compared with individual core-based statistical areas.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+combined_statistical_areas(cb = FALSE, resolution = "500k",
+  year = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>cb</code></td>
+<td>
+<p>If cb is set to TRUE, download a generalized (1:500k)
+cartographic boundary file.  Defaults to FALSE (the most detailed
+TIGER/Line file).</p>
+</td></tr>
+<tr valign="top"><td><code>resolution</code></td>
+<td>
+<p>The resolution of the cartographic boundary file (if cb == TRUE).
+Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).</p>
+</td></tr>
+<tr valign="top"><td><code>year</code></td>
+<td>
+<p>the data year (defaults to 2017).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to be passed to the underlying 'load_tiger' function, which is not exported.
+Options include <code>class</code>, which can be set to <code>"sp"</code> (the default) or <code>"sf"</code> to
+request sp or sf class objects, and <code>refresh</code>, which specifies whether or
+not to re-download shapefiles (defaults to <code>FALSE</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf">http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf</a>
+</p>
+<p>Other metro area functions: <code><a href="core_based_statistical_areas.html">core_based_statistical_areas</a></code>,
+<code><a href="metro_divisions.html">metro_divisions</a></code>, <code><a href="new_england.html">new_england</a></code>,
+<code><a href="urban_areas.html">urban_areas</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>tigris</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

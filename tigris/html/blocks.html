@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Download a Census block shapefile into R</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for blocks {tigris}"><tr><td>blocks {tigris}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Download a Census block shapefile into R</h2>
+
+<h3>Description</h3>
+
+<p>Description from the US Census Bureau (see link for source): Census blocks are statistical areas
+bounded on all sides by visible features, such as streets, roads,
+streams, and railroad tracks, and by non-visible boundaries such as city, town, township, and county
+limits, and short line-of-sight extensions of streets and roads. Generally, census blocks are small in area;
+for example, a block in a city. Census blocks in suburban and rural areas may be large, irregular and
+bounded by a variety of features, such as roads, streams, and/or transmission line rights-of-way. In
+remote areas census blocks may encompass hundreds of square miles. Census blocks cover all territory
+in the United States, Puerto Rico, and the Island areas. Blocks do not cross the boundaries of any entity
+for which the Census Bureau tabulates data.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+blocks(state, county = NULL, year = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>state</code></td>
+<td>
+<p>The two-digit FIPS code (string) of the state you want. Can also
+be state name or state abbreviation.</p>
+</td></tr>
+<tr valign="top"><td><code>county</code></td>
+<td>
+<p>The three-digit FIPS code (string) of the county you'd like to
+subset for, or a vector of FIPS codes if you desire multiple counties.
+Can also be a county name or vector of names.</p>
+</td></tr>
+<tr valign="top"><td><code>year</code></td>
+<td>
+<p>The year for which you'd like to download data (defaults to 2017).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to be passed to the underlying 'load_tiger' function, which is not exported.
+Options include <code>class</code>, which can be set to <code>"sp"</code> (the default) or <code>"sf"</code> to
+request sp or sf class objects, and <code>refresh</code>, which specifies whether or
+not to re-download shapefiles (defaults to <code>FALSE</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function will download an entire block shapefile for a selected state
+into R, and optionally subset by county. <strong>A warning:</strong> Census block
+shapefiles are often very large, especially for large states - for example, the
+block file for Texas is 462MB zipped!  If you have a slow or unreliable internet
+connection, or insufficient memory, this may prove burdensome given that you
+have to first download by state and then subset.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf">http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf</a>
+</p>
+<p>Other general area functions: <code><a href="block_groups.html">block_groups</a></code>,
+<code><a href="counties.html">counties</a></code>,
+<code><a href="county_subdivisions.html">county_subdivisions</a></code>, <code><a href="places.html">places</a></code>,
+<code><a href="pumas.html">pumas</a></code>, <code><a href="school_districts.html">school_districts</a></code>,
+<code><a href="states.html">states</a></code>, <code><a href="tracts.html">tracts</a></code>,
+<code><a href="zctas.html">zctas</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# Simple example using Rose Island, American Samoa
+# Be careful with Census blocks for states!
+
+library(tigris)
+library(leaflet)
+
+rose_island &lt;- blocks(state = "AS", county = "Rose Island")
+
+leaflet(rose_island) %&gt;%
+  addTiles() %&gt;%
+  addPolygons()
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tigris</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Download a US regions cartographic boundary shapefile into R</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for regions {tigris}"><tr><td>regions {tigris}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Download a US regions cartographic boundary shapefile into R</h2>
+
+<h3>Description</h3>
+
+<p>Download a US regions cartographic boundary shapefile into R
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+regions(resolution = "500k", year = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>resolution</code></td>
+<td>
+<p>The resolution of the cartographic boundary file.
+Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).</p>
+</td></tr>
+<tr valign="top"><td><code>year</code></td>
+<td>
+<p>the data year (defaults to 2017).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to be passed to the underlying 'load_tiger' function, which is not exported.
+Options include <code>class</code>, which can be set to <code>"sp"</code> (the default) or <code>"sf"</code> to
+request sp or sf class objects, and <code>refresh</code>, which specifies whether or
+not to re-download shapefiles (defaults to <code>FALSE</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p>Other national cartographic boundary functions: <code><a href="divisions.html">divisions</a></code>,
+<code><a href="nation.html">nation</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(tigris)
+library(leaflet)
+
+us_regions &lt;- regions(resolution = '20m')
+
+leaflet(us_regions) %&gt;%
+   addTiles() %&gt;%
+   addPolygons()
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tigris</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

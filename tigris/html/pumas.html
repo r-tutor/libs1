@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Download a Public Use Microdata Area (PUMA) shapefile into R</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for pumas {tigris}"><tr><td>pumas {tigris}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Download a Public Use Microdata Area (PUMA) shapefile into R</h2>
+
+<h3>Description</h3>
+
+<p>Public use microdata areas (PUMAs) are decennial census areas that have been
+defined for the tabulation and dissemination of Public Use Microdata Sample
+(PUMS) data, American Community Survey (ACS) data, and ACS period estimates.
+For the 2010 Census, the State Data Centers (SDCs) in each state, the
+District of Columbia, and the Commonwealth of Puerto Rico were given the
+opportunity to delineate PUMAs within their state or
+statistically equivalent entity. All PUMAs must nest within states and have
+a minimum population threshold of 100,000 persons. 2010 PUMAs were built on
+census tracts and cover the entirety of the United States, Puerto Rico,
+Guam, and the U.S. Virgin Islands. Because they do not meet the minimum
+population requirement, the Commonwealth of the Northern Mariana Islands
+and American Samoa do not contain any 2010 PUMAs.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+pumas(state, cb = FALSE, year = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>state</code></td>
+<td>
+<p>The two-digit FIPS code (string) of the state you want. Can also
+be state name or state abbreviation.</p>
+</td></tr>
+<tr valign="top"><td><code>cb</code></td>
+<td>
+<p>If cb is set to TRUE, download a generalized (1:500k)
+states file.  Defaults to FALSE (the most detailed TIGER/Line file)</p>
+</td></tr>
+<tr valign="top"><td><code>year</code></td>
+<td>
+<p>the data year (defaults to 2017).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to be passed to the underlying 'load_tiger' function, which is not exported.
+Options include <code>class</code>, which can be set to <code>"sp"</code> (the default) or <code>"sf"</code> to
+request sp or sf class objects, and <code>refresh</code>, which specifies whether or
+not to re-download shapefiles (defaults to <code>FALSE</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://www.census.gov/geo/reference/puma.html">http://www.census.gov/geo/reference/puma.html</a>
+</p>
+<p>Other general area functions: <code><a href="block_groups.html">block_groups</a></code>,
+<code><a href="blocks.html">blocks</a></code>, <code><a href="counties.html">counties</a></code>,
+<code><a href="county_subdivisions.html">county_subdivisions</a></code>, <code><a href="places.html">places</a></code>,
+<code><a href="school_districts.html">school_districts</a></code>, <code><a href="states.html">states</a></code>,
+<code><a href="tracts.html">tracts</a></code>, <code><a href="zctas.html">zctas</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(tigris)
+library(sp)
+
+us_states &lt;- unique(fips_codes$state)[1:51]
+
+continental_states &lt;- us_states[!us_states %in% c("AK", "HI")]
+pumas_list &lt;- lapply(continental_states, function(x) {
+  pumas(state = x, cb = TRUE)
+  })
+
+us_pumas &lt;- rbind_tigris(pumas_list)
+
+plot(us_pumas)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tigris</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

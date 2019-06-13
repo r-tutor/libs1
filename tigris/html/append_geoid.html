@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Retrieve GEOID from the Census Geocoder by address</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for append_geoid {tigris}"><tr><td>append_geoid {tigris}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Retrieve GEOID from the Census Geocoder by address</h2>
+
+<h3>Description</h3>
+
+<p>Returns GEOID for 2010 geographies.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+append_geoid(address, geoid_type = "block")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>address</code></td>
+<td>
+<p>A tibble/data frame with (at a minimum, others can be present)
+either character columns street, city, and state OR numeric columns lat and
+lon. Lat/lon columns take priority.</p>
+</td></tr>
+<tr valign="top"><td><code>geoid_type</code></td>
+<td>
+<p>GEOID level to return, <code>c('county', 'tract', 'block group', 'block')</code>.
+Defaults to block.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>the original tibble with GEOIDs appended as a new column called
+<code>geoid</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Josie Kressner, <a href="mailto:josie@transportfoundry.com">josie@transportfoundry.com</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+airports &lt;- dplyr::data_frame(
+  street = "700 Catalina Dr", city = "Daytona Beach", state = "FL"
+)
+append_geoid(airports, 'tract')
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tigris</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

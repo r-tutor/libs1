@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Download an area water shapefile into R</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for area_water {tigris}"><tr><td>area_water {tigris}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Download an area water shapefile into R</h2>
+
+<h3>Description</h3>
+
+<p>From the US Census Bureau: &quot;The area hydrography shapefile contains the geometry
+and attributes of both perennial and intermittent
+area hydrography features, including ponds, lakes, oceans, swamps, glaciers, and the area covered by
+large streams represented as double-line drainage.&quot;
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+area_water(state, county, year = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>state</code></td>
+<td>
+<p>The two-digit FIPS code of the state of the county you'd like to
+download the water features for.  Can also be state name or abbreviation
+(case-insensitive).</p>
+</td></tr>
+<tr valign="top"><td><code>county</code></td>
+<td>
+<p>The three-digit FIPS code of the county you'd like the water
+features for.  Can also be a county name.</p>
+</td></tr>
+<tr valign="top"><td><code>year</code></td>
+<td>
+<p>the data year (defaults to 2017).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to be passed to the underlying 'load_tiger' function, which is not exported.
+Options include <code>class</code>, which can be set to <code>"sp"</code> (the default) or <code>"sf"</code> to
+request sp or sf class objects, and <code>refresh</code>, which specifies whether or
+not to re-download shapefiles (defaults to <code>FALSE</code>).).</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf">http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf</a>
+</p>
+<p>Other water functions: <code><a href="coastline.html">coastline</a></code>,
+<code><a href="linear_water.html">linear_water</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(tigris)
+library(sp)
+
+dallas_water &lt;- area_water("TX", "Dallas")
+
+plot(dallas_water)
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tigris</em> version 0.8.2 <a href="00Index.html">Index</a>]</div>
+</body></html>
