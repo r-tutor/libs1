@@ -115,6 +115,7 @@ inaug_freq <- inaug_words %>%
 inaug_freq
 
 ## ------------------------------------------------------------------------
+library(broom)
 models <- inaug_freq %>%
   group_by(word) %>%
   filter(sum(n) > 50) %>%

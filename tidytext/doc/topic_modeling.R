@@ -77,11 +77,11 @@ library(ggplot2)
 theme_set(theme_bw())
 
 top_terms %>%
-  mutate(term = reorder(term, beta)) %>%
+  mutate(term = reorder_within(term, beta, topic)) %>%
   ggplot(aes(term, beta)) +
   geom_bar(stat = "identity") +
-  facet_wrap(~ topic, scales = "free") +
-  theme(axis.text.x = element_text(size = 15, angle = 90, hjust = 1))
+  scale_x_reordered() +
+  facet_wrap(~ topic, scales = "free_x")
 
 ## ----chapters_lda_gamma_raw-----------------------------------------------------------------------
 chapters_lda_gamma <- tidy(chapters_lda, matrix = "gamma")

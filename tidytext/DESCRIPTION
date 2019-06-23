@@ -1,7 +1,7 @@
 Package: tidytext
 Type: Package
 Title: Text Mining using 'dplyr', 'ggplot2', and Other Tidy Tools
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: c(person("Gabriela", "De Queiroz", role = c("ctb"),
              email = "gabidequeiroz@gmail.com"),
              person("Emil", "Hvitfeldt", role = c("ctb"),
@@ -11,6 +11,8 @@ Authors@R: c(person("Gabriela", "De Queiroz", role = c("ctb"),
              comment = c(ORCID = "0000-0001-5196-609X")),
              person("Kanishka", "Misra", role = c("ctb"),
              email = "kmisra@purdue.edu"),
+             person("Tim", "Mastny", role = c("ctb"),
+             email = "tim.mastny@gmail.com"),
              person("Jeff", "Erickson", role = c("ctb"),
              email = "jeff@erick.so"),
              person("David", "Robinson", role = c("aut"),
@@ -25,24 +27,25 @@ Encoding: UTF-8
 LazyData: TRUE
 URL: http://github.com/juliasilge/tidytext
 BugReports: http://github.com/juliasilge/tidytext/issues
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Depends: R (>= 2.10)
-Imports: rlang, dplyr, stringr, hunspell, broom, Matrix, tokenizers,
+Imports: rlang, dplyr, stringr, hunspell, generics, Matrix, tokenizers,
         janeaustenr, purrr (>= 0.1.1), methods, stopwords
 Suggests: readr, tidyr, XML, tm, quanteda, knitr, rmarkdown, ggplot2,
         reshape2, wordcloud, topicmodels, NLP, scales, gutenbergr,
-        testthat, mallet, stm, data.table
+        testthat, vdiffr, mallet, stm, data.table, broom, textdata
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2018-10-16 23:45:06 UTC; juliasilge
+Packaged: 2019-06-13 23:16:09 UTC; juliasilge
 Author: Gabriela De Queiroz [ctb],
   Emil Hvitfeldt [ctb],
   Os Keyes [ctb] (<https://orcid.org/0000-0001-5196-609X>),
   Kanishka Misra [ctb],
+  Tim Mastny [ctb],
   Jeff Erickson [ctb],
   David Robinson [aut],
   Julia Silge [aut, cre] (<https://orcid.org/0000-0002-3671-836X>)
 Maintainer: Julia Silge <julia.silge@gmail.com>
 Repository: CRAN
-Date/Publication: 2018-10-17 05:30:03 UTC
-Built: R 3.5.1; ; 2018-10-18 22:55:02 UTC; windows
+Date/Publication: 2019-06-14 04:50:03 UTC
+Built: R 3.6.0; ; 2019-06-20 20:27:54 UTC; windows

@@ -35,12 +35,12 @@ cleaned_books %>%
   count(word, sort = TRUE) 
 
 ## ------------------------------------------------------------------------
-nrcjoy <- get_sentiments("nrc") %>%
-  filter(sentiment == "joy")
+positive <- get_sentiments("bing") %>%
+  filter(sentiment == "positive")
 
 tidy_books %>%
   filter(book == "Emma") %>%
-  semi_join(nrcjoy) %>%
+  semi_join(positive) %>%
   count(word, sort = TRUE)
 
 ## ------------------------------------------------------------------------
@@ -95,7 +95,7 @@ tidy_books %>%
                    max.words = 100)
 
 ## ------------------------------------------------------------------------
-PandP_sentences <- data_frame(text = prideprejudice) %>% 
+PandP_sentences <- tibble(text = prideprejudice) %>% 
   unnest_tokens(sentence, text, token = "sentences")
 
 ## ------------------------------------------------------------------------

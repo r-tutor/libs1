@@ -12,17 +12,17 @@
 
 <meta name="author" content="Julia Silge and David Robinson" />
 
-<meta name="date" content="2018-10-16" />
+<meta name="date" content="2019-06-13" />
 
 <title>Term Frequency and Inverse Document Frequency (tf-idf) Using Tidy Data Principles</title>
 
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
+<style type="text/css" data-origin="pandoc">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -35,13 +35,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -83,7 +81,29 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -271,6 +291,9 @@ code > span.al { color: #ff0000; font-weight: bold; }
 code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
+
+
+
 </head>
 
 <body>
@@ -279,8 +302,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Term Frequency and Inverse Document Frequency (tf-idf) Using Tidy Data Principles</h1>
-<h4 class="author"><em>Julia Silge and David Robinson</em></h4>
-<h4 class="date"><em>2018-10-16</em></h4>
+<h4 class="author">Julia Silge and David Robinson</h4>
+<h4 class="date">2019-06-13</h4>
 
 
 
@@ -312,7 +335,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ##  8 Pride &amp; Prejudice the    4331 122204
 ##  9 Emma              of     4291 160996
 ## 10 Pride &amp; Prejudice to     4162 122204
-## # ... with 40,369 more rows</code></pre>
+## # … with 40,369 more rows</code></pre>
 <p>The usual suspects are here, “the”, “and”, “to”, and so forth. Let’s look at the distribution of <code>n/total</code> for each novel, the number of times a word appears in a novel divided by the total number of terms (words) in that novel. This is exactly what term frequency is.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">library</span>(ggplot2)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">ggplot</span>(book_words, <span class="kw">aes</span>(n<span class="op">/</span>total, <span class="dt">fill =</span> book)) <span class="op">+</span></a>
@@ -337,7 +360,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ##  8 Pride &amp; Prejudice the    4331 122204 0.0354     0      0
 ##  9 Emma              of     4291 160996 0.0267     0      0
 ## 10 Pride &amp; Prejudice to     4162 122204 0.0341     0      0
-## # ... with 40,369 more rows</code></pre>
+## # … with 40,369 more rows</code></pre>
 <p>Notice that idf and thus tf-idf are zero for these extremely common words. These are all words that appear in all six of Jane Austen’s novels, so the idf term (which will then be the natural log of 1) is zero. The inverse document frequency (and thus tf-idf) is very low (near zero) for words that occur in many of the documents in a collection; this is how this approach decreases the weight for common words. The inverse document frequency will be a higher number for words that occur in fewer of the documents in the collection. Let’s look at terms with high tf-idf in Jane Austen’s works.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">book_words <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>total) <span class="op">%&gt;%</span></a>
@@ -355,7 +378,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ##  8 Emma                weston      389 0.00242  1.79 0.00433
 ##  9 Pride &amp; Prejudice   bennet      294 0.00241  1.79 0.00431
 ## 10 Persuasion          wentworth   191 0.00228  1.79 0.00409
-## # ... with 40,369 more rows</code></pre>
+## # … with 40,369 more rows</code></pre>
 <p>Here we see all proper nouns, names that are in fact important in these novels. None of them occur in all of novels, and they are important, characteristic words for each text. Some of the values for idf are the same for different terms because there are 6 documents in this corpus and we are seeing the numerical value for <span class="math inline">\(\ln(6/1)\)</span>, <span class="math inline">\(\ln(6/2)\)</span>, etc. Let’s look specifically at <em>Pride and Prejudice</em>.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">book_words <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(book <span class="op">==</span><span class="st"> &quot;Pride &amp; Prejudice&quot;</span>) <span class="op">%&gt;%</span></a>
@@ -374,7 +397,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ##  8 Pride &amp; Prejudice lizzy        95 0.000777 1.79  0.00139
 ##  9 Pride &amp; Prejudice longbourn    88 0.000720 1.79  0.00129
 ## 10 Pride &amp; Prejudice gardiner     84 0.000687 1.79  0.00123
-## # ... with 6,528 more rows</code></pre>
+## # … with 6,528 more rows</code></pre>
 <p>These words are, as measured by tf-idf, the most important to <em>Pride and Prejudice</em> and most readers would likely agree.</p>
 
 
