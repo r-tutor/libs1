@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Simple async client</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Async {crul}"><tr><td>Async {crul}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Simple async client</h2>
+
+<h3>Description</h3>
+
+<p>A client to work with many URLs, but all with the same HTTP method
+</p>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>urls</code></td>
+<td>
+<p>(character) one or more URLs (required)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><strong>Methods</strong>
+</p>
+
+<dl>
+<dt><code>get(path, query, disk, stream, ...)</code></dt><dd>
+<p>make async GET requests for all URLs
+</p>
+</dd>
+<dt><code>post(path, query, body, encode, disk, stream, ...)</code></dt><dd>
+<p>make async POST requests for all URLs
+</p>
+</dd>
+<dt><code>put(path, query, body, encode, disk, stream, ...)</code></dt><dd>
+<p>make async PUT requests for all URLs
+</p>
+</dd>
+<dt><code>patch(path, query, body, encode, disk, stream, ...)</code></dt><dd>
+<p>make async PATCH requests for all URLs
+</p>
+</dd>
+<dt><code>delete(path, query, body, encode, disk, stream, ...)</code></dt><dd>
+<p>make async DELETE requests for all URLs
+</p>
+</dd>
+<dt><code>head(path, ...)</code></dt><dd>
+<p>make async HEAD requests for all URLs
+</p>
+</dd>
+<dt><code>verb(verb, ...)</code></dt><dd>
+<p>make async requests with an arbitrary HTTP verb
+</p>
+</dd>
+</dl>
+
+<p>See <code><a href="HttpClient.html">HttpClient()</a></code> for information on parameters.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a list, with objects of class <code><a href="HttpResponse.html">HttpResponse()</a></code>.
+Responses are returned in the order they are passed in. We print the
+first 10.
+</p>
+
+
+<h3>Failure behavior</h3>
+
+<p>HTTP requests mostly fail in ways that you are probably familiar with,
+including when there's a 400 response (the URL not found), and when the
+server made a mistake (a 500 series HTTP status code).
+</p>
+<p>But requests can fail sometimes where there is no HTTP status code, and
+no agreed upon way to handle it other than to just fail immediately.
+</p>
+<p>When a request fails when using synchronous requests (see <a href="HttpClient.html">HttpClient</a>)
+you get an error message that stops your code progression
+immediately saying for example:
+</p>
+
+<ul>
+<li><p> &quot;Could not resolve host: https://foo.com&quot;
+</p>
+</li>
+<li><p> &quot;Failed to connect to foo.com&quot;
+</p>
+</li>
+<li><p> &quot;Resolving timed out after 10 milliseconds&quot;
+</p>
+</li></ul>
+
+<p>However, for async requests we don't want to fail immediately because
+that would stop the subsequent requests from occurring. Thus, when
+we find that a request fails for one of the reasons above we
+give back a <a href="HttpResponse.html">HttpResponse</a> object just like any other response, and:
+</p>
+
+<ul>
+<li><p> capture the error message and put it in the <code>content</code> slot of the
+response object (thus calls to <code>content</code> and <code>parse()</code> work correctly)
+</p>
+</li>
+<li><p> give back a <code>0</code> HTTP status code. we handle this specially when testing
+whether the request was successful or not with e.g., the <code>success()</code>
+method
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p>Other async: <code><a href="AsyncVaried.html">AsyncVaried</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+cc &lt;- Async$new(
+  urls = c(
+    'https://httpbin.org/',
+    'https://httpbin.org/get?a=5',
+    'https://httpbin.org/get?foo=bar'
+  )
+)
+cc
+(res &lt;- cc$get())
+res[[1]]
+res[[1]]$url
+res[[1]]$success()
+res[[1]]$status_http()
+res[[1]]$response_headers
+res[[1]]$method
+res[[1]]$content
+res[[1]]$parse("UTF-8")
+lapply(res, function(z) z$parse("UTF-8"))
+
+# curl options/headers with async
+urls = c(
+ 'https://httpbin.org/',
+ 'https://httpbin.org/get?a=5',
+ 'https://httpbin.org/get?foo=bar'
+)
+cc &lt;- Async$new(urls = urls, 
+  opts = list(verbose = TRUE),
+  headers = list(foo = "bar")
+)
+cc
+(res &lt;- cc$get())
+
+# using auth with async
+dd &lt;- Async$new(
+  urls = rep('https://httpbin.org/basic-auth/user/passwd', 3),
+  auth = auth(user = "foo", pwd = "passwd"),
+  opts = list(verbose = TRUE)
+)
+dd
+res &lt;- dd$get()
+res
+vapply(res, function(z) z$status_code, double(1))
+vapply(res, function(z) z$success(), logical(1))
+lapply(res, function(z) z$parse("UTF-8"))
+
+# failure behavior
+## e.g. when a URL doesn't exist, a timeout, etc.
+urls &lt;- c("http://stuffthings.gvb", "https://foo.com", 
+  "https://httpbin.org/get")
+conn &lt;- Async$new(urls = urls)
+res &lt;- conn$get()
+res[[1]]$parse("UTF-8") # a failure
+res[[2]]$parse("UTF-8") # a failure
+res[[3]]$parse("UTF-8") # a success
+
+# use arbitrary http verb
+cc &lt;- Async$new(
+  urls = c(
+    'https://httpbin.org/',
+    'https://httpbin.org/get?a=5',
+    'https://httpbin.org/get?foo=bar'
+  )
+)
+method &lt;- 'get'
+(res &lt;- cc$verb(method))
+lapply(res, function(z) z$parse("UTF-8"))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>crul</em> version 0.8.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

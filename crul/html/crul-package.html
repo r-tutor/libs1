@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: *HTTP R client*</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for crul-package {crul}"><tr><td>crul-package {crul}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2><strong>HTTP R client</strong></h2>
+
+<h3>Description</h3>
+
+<p><strong>HTTP R client</strong>
+</p>
+
+
+<h3>Package API</h3>
+
+
+<ul>
+<li> <p><code><a href="HttpClient.html">HttpClient()</a></code> - create a connection client, set all
+your http options, make http requests
+</p>
+</li>
+<li> <p><code><a href="HttpResponse.html">HttpResponse()</a></code> - mostly for internal use, handles
+http responses
+</p>
+</li>
+<li> <p><code><a href="Paginator.html">Paginator()</a></code> - auto-paginate through requests
+</p>
+</li>
+<li> <p><code><a href="Async.html">Async()</a></code> - asynchronous requests
+</p>
+</li>
+<li> <p><code><a href="AsyncVaried.html">AsyncVaried()</a></code> - varied asynchronous requests
+</p>
+</li>
+<li> <p><code><a href="HttpRequest.html">HttpRequest()</a></code> - generate an HTTP request, mostly for
+use in building requests to be used in <code>Async</code> or <code>AsyncVaried</code>
+</p>
+</li>
+<li> <p><code><a href="mock.html">mock()</a></code> - Turn on/off mocking, via <code>webmockr</code>
+</p>
+</li>
+<li> <p><code><a href="auth.html">auth()</a></code> - Simple authentication helper
+</p>
+</li>
+<li> <p><code><a href="proxies.html">proxy()</a></code> - Proxy helper
+</p>
+</li>
+<li> <p><code><a href="upload.html">upload()</a></code> - File upload helper
+</p>
+</li>
+<li><p> set curl options globally: <code><a href="crul-options.html">set_auth()</a></code>, <code><a href="crul-options.html">set_headers()</a></code>,
+<code><a href="crul-options.html">set_opts()</a></code>, <code><a href="crul-options.html">set_proxy()</a></code>, and <code><a href="crul-options.html">crul_settings()</a></code>
+</p>
+</li></ul>
+
+
+
+<h3>HTTP verbs (or HTTP request methods)</h3>
+
+<p>See <a href="verb-GET.html">verb-GET</a>, <a href="verb-POST.html">verb-POST</a>, <a href="verb-PUT.html">verb-PUT</a>, <a href="verb-PATCH.html">verb-PATCH</a>, <a href="verb-DELETE.html">verb-DELETE</a>,
+<a href="verb-HEAD.html">verb-HEAD</a> for details.
+</p>
+
+<ul>
+<li> <p><a href="HttpClient.html">HttpClient</a> is the main interface for making HTTP requests,
+and includes methods for each HTTP verb
+</p>
+</li>
+<li> <p><a href="HttpRequest.html">HttpRequest</a> allows you to prepare a HTTP payload for use with
+<a href="AsyncVaried.html">AsyncVaried</a>, which provides asynchronous requests for varied
+HTTP methods
+</p>
+</li>
+<li> <p><a href="Async.html">Async</a> provides asynchronous requests for a single HTTP method
+at a time
+</p>
+</li>
+<li><p> the <code>verb()</code> method can be used on all the above to request
+a specific HTTP verb
+</p>
+</li></ul>
+
+
+
+<h3>HTTP conditions</h3>
+
+<p>We use <code>fauxpas</code> if you have it installed for handling HTTP
+conditions but if it's not installed we use <span class="pkg">httpcode</span>
+</p>
+
+
+<h3>Mocking</h3>
+
+<p>Mocking HTTP requests is supported via the <span class="pkg">webmockr</span>
+package. See <a href="mock.html">mock</a> for guidance, and
+<a href="https://ropenscilabs.github.io/http-testing-book/">https://ropenscilabs.github.io/http-testing-book/</a>
+</p>
+
+
+<h3>Caching</h3>
+
+<p>Caching HTTP requests is supported via the <span class="pkg">vcr</span>
+package. See <a href="https://ropenscilabs.github.io/http-testing-book/">https://ropenscilabs.github.io/http-testing-book/</a>
+</p>
+
+
+<h3>Links</h3>
+
+<p>Source code: <a href="https://github.com/ropensci/crul">https://github.com/ropensci/crul</a>
+</p>
+<p>Bug reports/feature requests: <a href="https://github.com/ropensci/crul/issues">https://github.com/ropensci/crul/issues</a>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Scott Chamberlain <a href="mailto:myrmecocystus@gmail.com">myrmecocystus@gmail.com</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>crul</em> version 0.8.0 <a href="00Index.html">Index</a>]</div>
+</body></html>
