@@ -1,6 +1,6 @@
 Package: testthat
 Title: Unit Testing for R
-Version: 2.1.1
+Version: 2.1.1.9000
 Authors@R: c(
     person("Hadley", "Wickham", , "hadley@rstudio.com", c("aut", "cre")),
     person("RStudio", role = c("cph", "fnd")),
@@ -20,6 +20,7 @@ Suggests: covr, curl (>= 0.9.5), devtools, knitr, rmarkdown, usethis,
         vctrs (>= 0.1.0), xml2
 VignetteBuilder: knitr
 Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 Collate: 'auto-test.R' 'capture-condition.R' 'capture-output.R'
         'colour-text.R' 'compare.R' 'compare-character.R'
@@ -41,13 +42,21 @@ Collate: 'auto-test.R' 'capture-condition.R' 'capture-output.R'
         'test-compiled-code.R' 'test-directory.R' 'test-example.R'
         'test-files.R' 'test-path.R' 'test-that.R' 'traceback.R'
         'try-again.R' 'utils-io.R' 'utils.R' 'watcher.R'
+RemoteType: github
+RemoteHost: api.github.com
+RemoteRepo: testthat
+RemoteUsername: r-lib
+RemoteRef: master
+RemoteSha: 5a49f6ccf2cca0d650b9fba56078d653ccbf78c8
+GithubRepo: testthat
+GithubUsername: r-lib
+GithubRef: master
+GithubSHA1: 5a49f6ccf2cca0d650b9fba56078d653ccbf78c8
 NeedsCompilation: yes
-Packaged: 2019-04-23 15:10:28 UTC; hadley
+Packaged: 2019-06-26 15:05:17 UTC; Aubur
 Author: Hadley Wickham [aut, cre],
   RStudio [cph, fnd],
   R Core team [ctb] (Implementation of utils::recover())
 Maintainer: Hadley Wickham <hadley@rstudio.com>
-Repository: CRAN
-Date/Publication: 2019-04-23 22:40:03 UTC
-Built: R 3.5.3; x86_64-w64-mingw32; 2019-04-24 03:43:30 UTC; windows
+Built: R 3.6.0; x86_64-w64-mingw32; 2019-06-26 15:05:19 UTC; windows
 Archs: i386, x64
