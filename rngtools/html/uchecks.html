@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Checking RNG Differences in Unit Tests</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for checkRNG {rngtools}"><tr><td>checkRNG {rngtools}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Checking RNG Differences in Unit Tests</h2>
+
+<h3>Description</h3>
+
+<p><code>checkRNG</code> checks if two objects have the same RNG
+settings and should be used in unit tests, e.g., with the <span class="pkg">RUnit</span>
+package.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+checkRNG(x, y = getRNG(), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, y</code></td>
+<td>
+<p>objects from which RNG settings are extracted.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>extra arguments passed to <code><a href="../../RUnit/html/checkTrue.html">checkTrue</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+#--- checkRNG ---
+
+# check for differences in RNG
+set.seed(123)
+checkRNG(123)
+try( checkRNG(123, 123) )
+try( checkRNG(123, 1:3) )
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rngtools</em> version 1.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

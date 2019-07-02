@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Run JavaScript in a V8 context</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for V8 {V8}"><tr><td>V8 {V8}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Run JavaScript in a V8 context</h2>
+
+<h3>Description</h3>
+
+<p>The <code><a href="V8.html">v8</a></code> function (formerly called <code>new_context</code>) creates a
+new V8 <em>context</em>. A context provides an execution environment that allows
+separate, unrelated, JavaScript code to run in a single instance of V8, like a
+tab in a browser.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+v8(global = "global", console = TRUE, typed_arrays = TRUE)
+
+engine_info()
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>global</code></td>
+<td>
+<p>character vector indicating name(s) of the global environment. Use NULL for no name.</p>
+</td></tr>
+<tr valign="top"><td><code>console</code></td>
+<td>
+<p>expose <code>console</code> API (<code>console.log</code>, <code>console.warn</code>, <code>console.error</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>typed_arrays</code></td>
+<td>
+<p>used to enable support for typed arrays in legacy libv8. This is enabled by default
+in recent versions of libv8.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>V8 contexts cannot be serialized but creating a new contexts and sourcing code
+is very cheap. You can run as many parallel v8 contexts as you want. R packages
+that use V8 can use a separate V8 context for each object or function call.
+</p>
+<p>The <code>ct$eval</code> method evaluates a string of raw code in the same way
+as <code>eval</code> would do in JavaScript. It returns a string with console output.
+The <code>ct$get</code>, <code>ct$assign</code> and <code>ct$call</code> functions
+on the other hand automatically convert arguments and return value from/to JSON,
+unless an argument has been wrapped in <code>JS()</code>, see examples.
+The <code>ct$validate</code> function is used to test if a piece of code is valid
+JavaScript syntax within the context, and always returns TRUE or FALSE.
+</p>
+<p>JSON is used for all data interchange between R and JavaScript. Therefore you can
+(and should) only exchange data types that have a sensible JSON representation.
+All arguments and objects are automatically converted according to the mapping
+described in <a href="http://arxiv.org/abs/1403.2805">Ooms (2014)</a>, and implemented
+by the jsonlite package in <code><a href="../../RJSONIO/html/fromJSON.html">fromJSON</a></code> and <code><a href="../../RJSONIO/html/toJSON.html">toJSON</a></code>.
+</p>
+<p>The name of the global object (i.e. <code>global</code> in node and <code>window</code>
+in browsers) can be set with the global argument. A context always have a global
+scope, even when no name is set. When a context is initiated with <code>global = NULL</code>,
+the global environment can be reached by evaluating <code>this</code> in the global scope,
+for example: <code>ct$eval("Object.keys(this)")</code>.
+</p>
+
+
+<h3>Methods</h3>
+
+
+<dl>
+<dt><code>console()</code></dt><dd><p> starts an interactive console</p>
+</dd>
+<dt><code>eval(src)</code></dt><dd><p> evaluates a string with JavaScript source code</p>
+</dd>
+<dt><code>validate(src)</code></dt><dd><p> test if a string of JavaScript code is syntactically valid</p>
+</dd>
+<dt><code>source(file)</code></dt><dd><p> evaluates a file with JavaScript code</p>
+</dd>
+<dt><code>get(name, ...)</code></dt><dd><p> convert a JavaScript to R via JSON. Optional arguments (<code>...</code>) are passed to <a href="../../jsonlite/html/fromJSON.html">fromJSON</a> to set JSON coercion options.</p>
+</dd>
+<dt><code>assign(name, value)</code></dt><dd><p> copy an R object to JavaScript via JSON</p>
+</dd>
+<dt><code>call(fun, ...)</code></dt><dd><p> call a JavaScript function with arguments <code>...</code>. Arguments which are not wrapped in <code>JS()</code> automatically get converted to JSON</p>
+</dd>
+<dt><code>reset()</code></dt><dd><p> resets the context (removes all objects)</p>
+</dd>
+</dl>
+
+
+
+<h3>References</h3>
+
+<p>A Mapping Between JSON Data and R Objects (Ooms, 2014): <a href="http://arxiv.org/abs/1403.2805">http://arxiv.org/abs/1403.2805</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Create a new context
+ctx &lt;- v8();
+
+# Evaluate some code
+ctx$eval("var foo = 123")
+ctx$eval("var bar = 456")
+ctx$eval("foo+bar")
+
+# Functions and closures
+ctx$eval("JSON.stringify({x:Math.random()})")
+ctx$eval("(function(x){return x+1;})(123)")
+
+# Objects (via JSON only)
+ctx$assign("mydata", mtcars)
+ctx$get("mydata")
+ctx$get("mydata", simplifyVector = FALSE)
+
+# Assign JavaScript
+ctx$assign("foo", JS("function(x){return x*x}"))
+ctx$assign("bar", JS("foo(9)"))
+ctx$get("bar")
+
+# Validate script without evaluating
+ctx$validate("function foo(x){2*x}") #TRUE
+ctx$validate("foo = function(x){2*x}") #TRUE
+ctx$validate("function(x){2*x}") #FALSE
+
+# Use a JavaScript library
+ctx$source(system.file("js/underscore.js", package="V8"))
+ctx$call("_.filter", mtcars, JS("function(x){return x.mpg &lt; 15}"))
+
+# Example from underscore manual
+ctx$eval("_.templateSettings = {interpolate: /\\{\\{(.+?)\\}\\}/g}")
+ctx$eval("var template = _.template('Hello {{ name }}!')")
+ctx$call("template", list(name = "Mustache"))
+
+# Call anonymous function
+ctx$call("function(x, y){return x * y}", 123, 3)
+
+## Not run: CoffeeScript
+ct2 &lt;- v8()
+ct2$source("http://coffeescript.org/v1/browser-compiler/coffee-script.js")
+jscode &lt;- ct2$call("CoffeeScript.compile", "square = (x) -&gt; x * x", list(bare = TRUE))
+ct2$eval(jscode)
+ct2$call("square", 9)
+
+# Interactive console
+ct3 &lt;- v8()
+ct3$console()
+//this is JavaScript
+var test = [1,2,3]
+JSON.stringify(test)
+exit
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>V8</em> version 2.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

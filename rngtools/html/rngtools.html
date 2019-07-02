@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Utility functions for working with Random Number Generators</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rngtools {rngtools}"><tr><td>rngtools {rngtools}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Utility functions for working with Random Number Generators</h2>
+
+<h3>Description</h3>
+
+<p>This package contains a set of functions for working with
+Random Number Generators (RNGs). In particular, it defines a generic
+S4 framework for getting/setting the current RNG, or RNG data
+that are embedded into objects for reproducibility.
+</p>
+
+
+<h3>Details</h3>
+
+<p>Notably, convenient default methods greatly facilitate the way current
+RNG settings can be changed.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+showRNG()
+s &lt;- getRNG()
+RNGstr(s)
+RNGtype(s)
+
+# get what would be the RNG seed after set.seed
+s &lt;- nextRNG(1234)
+showRNG(s)
+showRNG( nextRNG(1234, ndraw=10) )
+
+# change of RNG kind
+showRNG()
+k &lt;- RNGkind()
+k[2L] &lt;- 'Ahrens'
+try( RNGkind(k) )
+setRNG(k)
+showRNG()
+# set encoded kind 
+setRNG(501L)
+showRNG()
+
+# use as set seed
+setRNG(1234)
+showRNG()
+r &lt;- getRNG()
+
+# extract embedded RNG specifications
+runif(10)
+setRNG(list(1, rng=1234))
+rng.equal(r)
+
+# restore default RNG (e.g., after errors)
+RNGrecovery()
+showRNG()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rngtools</em> version 1.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

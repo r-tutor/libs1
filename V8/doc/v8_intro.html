@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2019-04-13" />
+<meta name="date" content="2019-07-02" />
 
 <title>Introduction to V8 for R</title>
 
@@ -435,7 +435,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Introduction to V8 for R</h1>
-<h4 class="date">2019-04-13</h4>
+<h4 class="date">2019-07-02</h4>
 
 </div>
 
@@ -452,7 +452,7 @@ $(document).ready(function () {
 <p>A major advantage over the other foreign language interfaces is that V8 requires no compilers, external executables or other run-time dependencies. The entire engine is contained within a 6MB package (2MB zipped) and works on all major platforms.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># Create some JSON</span></a>
 <a class="sourceLine" id="cb3-2" title="2"><span class="kw">cat</span>(ct<span class="op">$</span><span class="kw">eval</span>(<span class="st">&quot;JSON.stringify({x:Math.random()})&quot;</span>))</a></code></pre></div>
-<pre><code>{&quot;x&quot;:0.6008937566121584}</code></pre>
+<pre><code>{&quot;x&quot;:0.5516174892965686}</code></pre>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># Simple closure</span></a>
 <a class="sourceLine" id="cb5-2" title="2">ct<span class="op">$</span><span class="kw">eval</span>(<span class="st">&quot;(function(x){return x+1;})(123)&quot;</span>)</a></code></pre></div>
 <pre><code>[1] &quot;124&quot;</code></pre>
@@ -541,7 +541,7 @@ Camaro Z28          13.3   8  350 245 3.73 3.840 15.41  0  0    3    4</code></p
 <p>Evaluating invalid JavaScript code results in a SyntaxError:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co"># A common typo</span></a>
 <a class="sourceLine" id="cb17-2" title="2">ct<span class="op">$</span><span class="kw">eval</span>(<span class="st">&#39;var foo &lt;- 123;&#39;</span>)</a></code></pre></div>
-<pre><code>Error in context_eval(join(src), private$context): SyntaxError: Unexpected token &lt;</code></pre>
+<pre><code>Error in context_eval(join(src), private$context): SyntaxError: Unexpected token &#39;&lt;&#39;</code></pre>
 <p>JavaScript runtime exceptions are automatically propagated into R errors:</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="co"># Runtime errors</span></a>
 <a class="sourceLine" id="cb19-2" title="2">ct<span class="op">$</span><span class="kw">eval</span>(<span class="st">&quot;123 + doesnotexit&quot;</span>)</a></code></pre></div>
