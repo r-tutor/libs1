@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;raster&rsquo; version 2.9-5</h2>
+</div><h2>Documentation for package &lsquo;raster&rsquo; version 2.9-22</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 <li><a href="../doc/index.html">User guides, package vignettes and other documentation.</a></li>
@@ -206,6 +206,8 @@
 <td>Get cell, row, or column number</td></tr>
 <tr><td style="width: 25%;"><a href="cellFrom.html">cellFromRowColCombine</a></td>
 <td>Get cell, row, or column number</td></tr>
+<tr><td style="width: 25%;"><a href="cellFrom.html">cellFromRowColCombine-method</a></td>
+<td>Get cell, row, or column number</td></tr>
 <tr><td style="width: 25%;"><a href="cellFrom.html">cellFromXY</a></td>
 <td>Get cell, row, or column number</td></tr>
 <tr><td style="width: 25%;"><a href="cellFrom.html">cellFromXY-method</a></td>
@@ -260,11 +262,17 @@
 <td>Contour plot</td></tr>
 <tr><td style="width: 25%;"><a href="contour.html">contour-method</a></td>
 <td>Contour plot</td></tr>
+<tr><td style="width: 25%;"><a href="xyFromCell.html">coordinates</a></td>
+<td>Coordinates from a row, column or cell number</td></tr>
+<tr><td style="width: 25%;"><a href="xyFromCell.html">coordinates-method</a></td>
+<td>Coordinates from a row, column or cell number</td></tr>
 <tr><td style="width: 25%;"><a href="corLocal.html">corLocal</a></td>
 <td>Local correlation coefficient</td></tr>
 <tr><td style="width: 25%;"><a href="corLocal.html">corLocal-method</a></td>
 <td>Local correlation coefficient</td></tr>
 <tr><td style="width: 25%;"><a href="isLonLat.html">couldBeLonLat</a></td>
+<td>Is this longitude/latitude data?</td></tr>
+<tr><td style="width: 25%;"><a href="isLonLat.html">couldBeLonLat-method</a></td>
 <td>Is this longitude/latitude data?</td></tr>
 <tr><td style="width: 25%;"><a href="cover.html">cover</a></td>
 <td>Replace NA values with values of other layers</td></tr>
@@ -459,6 +467,8 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="datasource.html">hasValues</a></td>
 <td>Are values in memory and/or on disk?</td></tr>
+<tr><td style="width: 25%;"><a href="datasource.html">hasValues-method</a></td>
+<td>Are values in memory and/or on disk?</td></tr>
 <tr><td style="width: 25%;"><a href="hdrFiles.html">hdr</a></td>
 <td>Header files</td></tr>
 <tr><td style="width: 25%;"><a href="headtail.html">head</a></td>
@@ -481,7 +491,9 @@
 <tr><td style="width: 25%;"><a href="image.html">image-method</a></td>
 <td>Image</td></tr>
 <tr><td style="width: 25%;"><a href="init.html">init</a></td>
-<td>Intitialize a Raster object with values</td></tr>
+<td>Initialize a Raster object with values</td></tr>
+<tr><td style="width: 25%;"><a href="init.html">init-method</a></td>
+<td>Initialize a Raster object with values</td></tr>
 <tr><td style="width: 25%;"><a href="datasource.html">inMemory</a></td>
 <td>Are values in memory and/or on disk?</td></tr>
 <tr><td style="width: 25%;"><a href="interpolate.html">interpolate</a></td>
@@ -698,7 +710,7 @@
 <td>Red-Green-Blue plot of a multi-layered Raster object</td></tr>
 <tr><td style="width: 25%;"><a href="plotRGB.html">plotRGB-method</a></td>
 <td>Red-Green-Blue plot of a multi-layered Raster object</td></tr>
-<tr><td style="width: 25%;"><a href="pointdistance.html">pointDistance</a></td>
+<tr><td style="width: 25%;"><a href="pointDistance.html">pointDistance</a></td>
 <td>Distance between points</td></tr>
 <tr><td style="width: 25%;"><a href="predict.html">predict</a></td>
 <td>Spatial model predictions</td></tr>
@@ -768,6 +780,8 @@
 <td>Raster to polygons conversion</td></tr>
 <tr><td style="width: 25%;"><a href="factor.html">ratify</a></td>
 <td>Factors</td></tr>
+<tr><td style="width: 25%;"><a href="factor.html">ratify-method</a></td>
+<td>Factors</td></tr>
 <tr><td style="width: 25%;"><a href="Rcpp-classes.html">Rcpp_SpExtent-class</a></td>
 <td>Rcpp classes</td></tr>
 <tr><td style="width: 25%;"><a href="Rcpp-classes.html">Rcpp_SpPoly-class</a></td>
@@ -803,6 +817,8 @@
 <tr><td style="width: 25%;"><a href="resolution.html">res-method</a></td>
 <td>Resolution</td></tr>
 <tr><td style="width: 25%;"><a href="resolution.html">res&lt;-</a></td>
+<td>Resolution</td></tr>
+<tr><td style="width: 25%;"><a href="resolution.html">res&lt;--method</a></td>
 <td>Resolution</td></tr>
 <tr><td style="width: 25%;"><a href="resample.html">resample</a></td>
 <td>Resample a Raster object</td></tr>
@@ -935,9 +951,11 @@
 <td>Select cell values from a multi-layer Raster* object</td></tr>
 <tr><td style="width: 25%;"><a href="strech.html">stretch</a></td>
 <td>Stretch</td></tr>
-<tr><td style="width: 25%;"><a href="substitute.html">subs</a></td>
+<tr><td style="width: 25%;"><a href="strech.html">stretch-method</a></td>
+<td>Stretch</td></tr>
+<tr><td style="width: 25%;"><a href="subs.html">subs</a></td>
 <td>Substitute values in a Raster* object</td></tr>
-<tr><td style="width: 25%;"><a href="substitute.html">subs-method</a></td>
+<tr><td style="width: 25%;"><a href="subs.html">subs-method</a></td>
 <td>Substitute values in a Raster* object</td></tr>
 <tr><td style="width: 25%;"><a href="subset.html">subset</a></td>
 <td>Subset layers in a Raster* object</td></tr>

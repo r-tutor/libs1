@@ -1,3 +1,14 @@
+rticles 0.9
+---------------------------------------------------------------------
+
+- Added support for Keywords in IEEE Trans template (@espinielli, #227).
+
+- Updated Statistics in Medicine template to its latest version (@ellessenne, #231).
+
+- Update Copernicus Publications template to version 5.3 (@nuest, #228).
+
+- Use csl file for citations in output format `elsevier_article()` (@nuest, #233)
+
 rticles 0.8
 ---------------------------------------------------------------------
 

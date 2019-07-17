@@ -14,6 +14,8 @@ cpp_object_initializer	rstan-internal
 cxxdso-class	rstan-internal
 dim.stanfit	stanfit2array-method
 dimnames.stanfit	stanfit2array-method
+ess_bulk	Rhat
+ess_tail	Rhat
 expose_stan_functions	expose_stan_functions
 extract	stanfit-method-extract
 extract,stanfit-method	stanfit-method-extract
@@ -63,6 +65,8 @@ get_stancode,stanmodel-method	stanmodel-class
 get_stanmodel	stanfit-class
 get_stanmodel,stanfit-method	stanfit-class
 get_stream	expose_stan_functions
+gqs	stanmodel-method-gqs
+gqs,stanmodel-method	stanmodel-method-gqs
 grab_cxxfun,cxxdso-method	rstan-internal
 grad_log_prob	stanfit-method-logprob
 grad_log_prob,ANY-method	rstan-internal
@@ -86,10 +90,14 @@ OUT	rstan-internal
 pairs.stanfit	stanfit-method-pairs
 plot,stanfit,missing-method	stanfit-method-plot
 plot,stanfit-method	stanfit-method-plot
+plot.sbc	sbc
+print.sbc	sbc
+print.simsummary	monitor
 print.stanfit	print.stanfit
 quietgg	stan_plot
 read_rdump	read_rdump
 read_stan_csv	stan_csv
+Rhat	Rhat
 RNG	rstan-internal
 rstan	rstan
 rstan-internal	rstan-internal
@@ -100,6 +108,7 @@ rstan_gg_options	stan_plot_options
 rstan_options	rstan_options
 sampling	stanmodel-method-sampling
 sampling,stanmodel-method	stanmodel-method-sampling
+sbc	sbc
 set_cppo	set_cppo
 sflist2stanfit	sflist2stanfit
 show,cxxdso-method	rstan-internal
@@ -134,3 +143,4 @@ unconstrain_pars,ANY-method	rstan-internal
 unconstrain_pars,stanfit-method	stanfit-method-logprob
 vb	stanmodel-method-vb
 vb,stanmodel-method	stanmodel-method-vb
+[.simsummary	monitor
