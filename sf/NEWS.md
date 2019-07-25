@@ -1,3 +1,13 @@
+# version 0.7-7
+
+* `plot()` handles `POSIXct` values in legend
+
+* constructor functions like `st_linestring()` check and break on `NA` coordinates; #1101
+
+# version 0.7-6
+
+* have examples of `st_write` write only to the temporary R session directory
+
 # version 0.7-5
 
 * `as(x, "Spatial")` now gives a proper error message on empty geometries; #1093

@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Statistical combination of p-values</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for combine {SCMA}"><tr><td>combine {SCMA}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Statistical combination of p-values</h2>
+
+<h3>Description</h3>
+
+<p>Calculates a general p-value by statistically combining the p-values of a number of independent studies, to determine whether a general significant result is obtained.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+combine(method, pvalues = read.table(file.choose(new = FALSE)))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>method</code></td>
+<td>
+
+<p>Indicates which combining function should be used: &quot;x&quot; (multiplicative) or &quot;+&quot; (additive)
+</p>
+</td></tr>
+<tr valign="top"><td><code>pvalues</code></td>
+<td>
+
+<p>File in which the p-values can be found. Default: a window pops up in which the appropriate file can be selected.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When using the default 'pvalues' argument, a window will pop up to ask in what file the pvalues can be found. This text file containing the pvalues should consist of 1 column with all the obtained pvalues.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Isis Bulte
+</p>
+
+
+<h3>References</h3>
+
+<p>Bulte, I., &amp; Onghena, P. (2008). An R package for single-case randomization tests. Behavior Research Methods, 40, 467-478.
+</p>
+<p>Bulte, I., &amp; Onghena, P. (2009). Randomization tests for multiple baseline designs: An extension of the SCRT-R package. Behavior Research Methods, 41, 477-485.
+</p>
+<p>http://ppw.kuleuven.be/cmes/SCRT-R.html
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(P)
+combine(method="+",pvalues=P)</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SCMA</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

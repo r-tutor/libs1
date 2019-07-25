@@ -29,7 +29,7 @@ starts = file.choose(new = FALSE), assignments = file.choose(new = FALSE))</pre>
 <tr valign="top"><td><code>statistic</code></td>
 <td>
 <p>Test statistic. For alternation designs, multiple-baseline designs and AB phase designs, there are 3 built-in possibilities: <code>"A-B"</code>, <code>"B-A"</code>, and <code>"|A-B|"</code>, which stand for the (absolute value of the) difference between condition means. 
-For phase designs with more than 2 phases, 6 more built-in options are available: <code>"PA-PB"</code>, <code>"PB-PA"</code>, and <code>"|PA-PB|"</code> refer to the (absolute value of the) difference between the means of phase means, and <code>"AA-BB"</code>, <code>"BB-AA"</code> and <code>"|AA-BB|"</code> represent the (absolute value of the) difference between the sums of phase means.
+For phase designs with more than 2 phases, 3 more built-in options are available: <code>"PA-PB"</code>, <code>"PB-PA"</code>, and <code>"|PA-PB|"</code> refer to the (absolute value of the) difference between the means of phase means.
 Additionally, it is possible to specify a custom test statistic using the variable identifiers <code>"A"</code> and <code>"B"</code> (or in the case of phase deisgns with more than 2 phases, <code>"A1"</code>, <code>"B1"</code>, <code>"A2"</code>, <code>"B2"</code>, <code>"A"</code> and <code>"B"</code>) and any of the basic R functions. For example, <code>"abs(mean(A) - mean(B))"</code> can be used as a test statistic and it will be the same as using <code>"|A-B|"</code>.</p>
 </td></tr>
 <tr valign="top"><td><code>save</code></td>
@@ -65,6 +65,8 @@ For multiple-baseline designs it should consist of these two columns for EACH un
 </p>
 <p>For user specified designs, when using the default <code>assignments</code> argument, second a window pops up in which is asked in what file all the possible assignments can be found. In this file, each row should contain the sequence of conditions in one possible assignment, separated by a tab. There should be one row for every possible assignment. The rows and columns should not be labeled.
 </p>
+<p>Missing data should be indicated as <code>NA</code>. When there is missing data, randomization distribution is generated as usual, but instead of randomly reshuffling numerical scores only, the missing data markers (<code>NA</code>) are also included in the reshuffling. For test statistic calculations, missing data are omitted.
+</p>
 <p>When choosing to save the randomization distribution to a file, next a window will pop up (for multiple baseline designs this is the third pop-up window, for all other designs it is the second window) to ask where to save it. This location can be an existing file, as well as a new file that can be created by giving a file name and the extension .txt. In this latter case a confirmation is required (&quot;The file does not exist yet. Create the file?&quot;). 
 </p>
 
@@ -74,6 +76,8 @@ For multiple-baseline designs it should consist of these two columns for EACH un
 <p>Bulte, I., &amp; Onghena, P. (2008). An R package for single-case randomization tests. Behavior Research Methods, 40, 467-478.
 </p>
 <p>Bulte, I., &amp; Onghena, P. (2009). Randomization tests for multiple baseline designs: An extension of the SCRT-R package. Behavior Research Methods, 41, 477-485.
+</p>
+<p>Edgington, E.S., &amp; Onghena, P. (2007). Randomization Tests (4th ed.). Boca Raton, FL: Chapman &amp; Hall/CRC.
 </p>
 <p><a href="http://ppw.kuleuven.be/home/english/research/mesrg">http://ppw.kuleuven.be/home/english/research/mesrg</a>
 </p>
@@ -94,9 +98,9 @@ For multiple-baseline designs it should consist of these two columns for EACH un
 
 <pre>
 data(ABAB)
-distribution.systematic(design = "ABAB", statistic = "AA-BB", 
+distribution.systematic(design = "ABAB", statistic = "PA-PB", 
 save = "no", limit = 4, data = ABAB)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SCRT</em> version 1.2.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SCRT</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
 </body></html>
