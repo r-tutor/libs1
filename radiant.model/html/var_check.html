@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Check if main effects for all interaction effects are...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for var_check {radiant.model}"><tr><td>var_check {radiant.model}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Check if main effects for all interaction effects are included in the model</h2>
+
+<h3>Description</h3>
+
+<p>Check if main effects for all interaction effects are included in the model
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+var_check(ev, cn, intv = c())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>ev</code></td>
+<td>
+<p>List of explanatory variables provided to <code><a href="regress.html">regress</a></code> or <code><a href="logistic.html">logistic</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>cn</code></td>
+<td>
+<p>Column names for all explanatory variables in the dataset</p>
+</td></tr>
+<tr valign="top"><td><code>intv</code></td>
+<td>
+<p>Interaction terms specified</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If ':' is used to select a range evar is updated. See <a href="https://radiant-rstats.github.io/docs/model/regress.html">https://radiant-rstats.github.io/docs/model/regress.html</a> for an example in Radiant
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>vars</code> is a vector of right-hand side variables, possibly with interactions, <code>iv</code> is the list of explanatory variables, and <code>intv</code> are interaction terms
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+var_check("a:d", c("a","b","c","d"))
+var_check(c("a", "b"), c("a", "b"), "a:c")
+var_check(c("a", "b"), c("a", "b"), "a:c")
+var_check(c("a", "b"), c("a", "b"), c("a:c", "I(b^2)"))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.model</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

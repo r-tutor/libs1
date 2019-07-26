@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot method for the nb function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plot.nb {radiant.model}"><tr><td>plot.nb {radiant.model}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot method for the nb function</h2>
+
+<h3>Description</h3>
+
+<p>Plot method for the nb function
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'nb'
+plot(x, plots = "correlations", lev = "All levels",
+  nrobs = 1000, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Return value from <code><a href="nb.html">nb</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>plots</code></td>
+<td>
+<p>Plots to produce for the specified model. Use &quot;&quot; to avoid showing any plots. Use &quot;vimp&quot; for variable importance or &quot;correlations&quot; to examine conditional independence</p>
+</td></tr>
+<tr valign="top"><td><code>lev</code></td>
+<td>
+<p>The level(s) in the response variable used as the basis for plots (defaults to &quot;All levels&quot;)</p>
+</td></tr>
+<tr valign="top"><td><code>nrobs</code></td>
+<td>
+<p>Number of data points to show in scatter plots (-1 for all)</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed to or from other methods</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/model/nb.html">https://radiant-rstats.github.io/docs/model/nb.html</a> for an example in Radiant
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="nb.html">nb</a></code> to generate results
+</p>
+<p><code><a href="summary.nb.html">summary.nb</a></code> to summarize results
+</p>
+<p><code><a href="predict.nb.html">predict.nb</a></code> for prediction
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+result &lt;- nb(titanic, "survived", c("pclass", "sex"))
+plot(result)
+result &lt;- nb(titanic, "pclass", c("sex", "age"))
+plot(result)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.model</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

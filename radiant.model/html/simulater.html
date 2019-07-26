@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Simulate data for decision analysis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for simulater {radiant.model}"><tr><td>simulater {radiant.model}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Simulate data for decision analysis</h2>
+
+<h3>Description</h3>
+
+<p>Simulate data for decision analysis
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+simulater(const = "", lnorm = "", norm = "", unif = "",
+  discrete = "", binom = "", pois = "", sequ = "", grid = "",
+  data = NULL, form = "", funcs = "", seed = NULL,
+  nexact = FALSE, ncorr = NULL, name = "", nr = 1000,
+  dataset = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>const</code></td>
+<td>
+<p>A character vector listing the constants to include in the analysis (e.g., c(&quot;cost = 3&quot;, &quot;size = 4&quot;))</p>
+</td></tr>
+<tr valign="top"><td><code>lnorm</code></td>
+<td>
+<p>A character vector listing the log-normally distributed random variables to include in the analysis (e.g., &quot;demand 2000 1000&quot; where the first number is the log-mean and the second is the log-standard deviation)</p>
+</td></tr>
+<tr valign="top"><td><code>norm</code></td>
+<td>
+<p>A character vector listing the normally distributed random variables to include in the analysis (e.g., &quot;demand 2000 1000&quot; where the first number is the mean and the second is the standard deviation)</p>
+</td></tr>
+<tr valign="top"><td><code>unif</code></td>
+<td>
+<p>A character vector listing the uniformly distributed random variables to include in the analysis (e.g., &quot;demand 0 1&quot; where the first number is the minimum value and the second is the maximum value)</p>
+</td></tr>
+<tr valign="top"><td><code>discrete</code></td>
+<td>
+<p>A character vector listing the random variables with a discrete distribution to include in the analysis (e.g., &quot;price 5 8 .3 .7&quot; where the first set of numbers are the values and the second set the probabilities</p>
+</td></tr>
+<tr valign="top"><td><code>binom</code></td>
+<td>
+<p>A character vector listing the random variables with a binomial distribution to include in the analysis (e.g., &quot;crash 100 .01&quot;) where the first number is the number of trials and the second is the probability of success)</p>
+</td></tr>
+<tr valign="top"><td><code>pois</code></td>
+<td>
+<p>A character vector listing the random variables with a poisson distribution to include in the analysis (e.g., &quot;demand 10&quot;) where the number is the lambda value (i.e., the average number of events or the event rate)</p>
+</td></tr>
+<tr valign="top"><td><code>sequ</code></td>
+<td>
+<p>A character vector listing the start and end for a sequence to include in the analysis (e.g., &quot;trend 1 100 1&quot;). The number of 'steps' is determined by the number of simulations</p>
+</td></tr>
+<tr valign="top"><td><code>grid</code></td>
+<td>
+<p>A character vector listing the start, end, and step for a set of sequences to include in the analysis (e.g., &quot;trend 1 100 1&quot;). The number of rows in the expanded will over ride the number of simulations</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>Dataset to be used in the calculations</p>
+</td></tr>
+<tr valign="top"><td><code>form</code></td>
+<td>
+<p>A character vector with the formula to evaluate (e.g., &quot;profit = demand * (price - cost)&quot;)</p>
+</td></tr>
+<tr valign="top"><td><code>funcs</code></td>
+<td>
+<p>A named list of user defined functions to apply to variables generated as part of the simulation</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>Optional seed used in simulation</p>
+</td></tr>
+<tr valign="top"><td><code>nexact</code></td>
+<td>
+<p>Logical to indicate if normally distributed random variables should be simulated to the exact specified values</p>
+</td></tr>
+<tr valign="top"><td><code>ncorr</code></td>
+<td>
+<p>A string of correlations used for normally distributed random variables. The number of values should be equal to one or to the number of combinations of variables simulated</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>Deprecated argument</p>
+</td></tr>
+<tr valign="top"><td><code>nr</code></td>
+<td>
+<p>Number of simulations</p>
+</td></tr>
+<tr valign="top"><td><code>dataset</code></td>
+<td>
+<p>Data list from previous simulation. Used by repeater function</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/model/simulater.html">https://radiant-rstats.github.io/docs/model/simulater.html</a> for an example in Radiant
+</p>
+
+
+<h3>Value</h3>
+
+<p>A data.frame with the simulated data
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="summary.simulater.html">summary.simulater</a></code> to summarize results
+</p>
+<p><code><a href="plot.simulater.html">plot.simulater</a></code> to plot results
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+simulater(
+  const = "cost 3",
+  norm = "demand 2000 1000",
+  discrete = "price 5 8 .3 .7",
+  form = "profit = demand * (price - cost)",
+  seed = 1234
+) %&gt;% str()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.model</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

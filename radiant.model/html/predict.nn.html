@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Predict method for the nn function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for predict.nn {radiant.model}"><tr><td>predict.nn {radiant.model}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Predict method for the nn function</h2>
+
+<h3>Description</h3>
+
+<p>Predict method for the nn function
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'nn'
+predict(object, pred_data = NULL, pred_cmd = "",
+  dec = 3, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>Return value from <code><a href="nn.html">nn</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>pred_data</code></td>
+<td>
+<p>Provide the dataframe to generate predictions (e.g., diamonds). The dataset must contain all columns used in the estimation</p>
+</td></tr>
+<tr valign="top"><td><code>pred_cmd</code></td>
+<td>
+<p>Generate predictions using a command. For example, &lsquo;pclass = levels(pclass)' would produce predictions for the different levels of factor 'pclass'. To add another variable, create a vector of prediction strings, (e.g., c(&rsquo;pclass = levels(pclass)', 'age = seq(0,100,20)')</p>
+</td></tr>
+<tr valign="top"><td><code>dec</code></td>
+<td>
+<p>Number of decimals to show</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed to or from other methods</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/model/nn.html">https://radiant-rstats.github.io/docs/model/nn.html</a> for an example in Radiant
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="nn.html">nn</a></code> to generate the result
+</p>
+<p><code><a href="summary.nn.html">summary.nn</a></code> to summarize results
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+result &lt;- nn(titanic, "survived", c("pclass", "sex"), lev = "Yes")
+predict(result, pred_cmd = "pclass = levels(pclass)")
+result &lt;- nn(diamonds, "price", "carat:color", type = "regression")
+predict(result, pred_cmd = "carat = 1:3")
+predict(result, pred_data = diamonds) %&gt;% head()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.model</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Store predicted values generated in model functions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for store.model.predict {radiant.model}"><tr><td>store.model.predict {radiant.model}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Store predicted values generated in model functions</h2>
+
+<h3>Description</h3>
+
+<p>Store predicted values generated in model functions
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'model.predict'
+store(dataset, object, name = "prediction", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dataset</code></td>
+<td>
+<p>Dataset to add predictions to</p>
+</td></tr>
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>Return value from model function</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>Variable name(s) assigned to predicted values</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/model/regress.html">https://radiant-rstats.github.io/docs/model/regress.html</a> for an example in Radiant
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+regress(diamonds, rvar = "price", evar = c("carat", "cut")) %&gt;%
+  predict(pred_data = diamonds) %&gt;%
+  store(diamonds, ., name = c("pred", "pred_low", "pred_high")) %&gt;%
+  head()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.model</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

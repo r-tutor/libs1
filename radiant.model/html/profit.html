@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Calculate Profit based on cost:margin ratio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for profit {radiant.model}"><tr><td>profit {radiant.model}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Calculate Profit based on cost:margin ratio</h2>
+
+<h3>Description</h3>
+
+<p>Calculate Profit based on cost:margin ratio
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+profit(pred, rvar, lev, cost = 1, margin = 2)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>pred</code></td>
+<td>
+<p>Prediction or predictor</p>
+</td></tr>
+<tr valign="top"><td><code>rvar</code></td>
+<td>
+<p>Response variable</p>
+</td></tr>
+<tr valign="top"><td><code>lev</code></td>
+<td>
+<p>The level in the response variable defined as success</p>
+</td></tr>
+<tr valign="top"><td><code>cost</code></td>
+<td>
+<p>Cost per treatment (e.g., mailing costs)</p>
+</td></tr>
+<tr valign="top"><td><code>margin</code></td>
+<td>
+<p>Margin, or benefit, per 'success' (e.g., customer purchase). A cost:margin ratio of 1:2 implies
+the cost of False Positive are equivalent to the benefits of a True Positive</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>profit
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+profit(runif(20000), dvd$buy, "yes", cost = 1, margin = 2)
+profit(ifelse(dvd$buy == "yes", 1, 0), dvd$buy, "yes", cost = 1, margin = 20)
+profit(ifelse(dvd$buy == "yes", 1, 0), dvd$buy)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.model</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

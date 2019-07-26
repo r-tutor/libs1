@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Neural Networks</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for nn {radiant.model}"><tr><td>nn {radiant.model}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Neural Networks</h2>
+
+<h3>Description</h3>
+
+<p>Neural Networks
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+nn(dataset, rvar, evar, type = "classification", lev = "", size = 1,
+  decay = 0.5, wts = "None", seed = NA, check = "standardize",
+  data_filter = "")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dataset</code></td>
+<td>
+<p>Dataset</p>
+</td></tr>
+<tr valign="top"><td><code>rvar</code></td>
+<td>
+<p>The response variable in the model</p>
+</td></tr>
+<tr valign="top"><td><code>evar</code></td>
+<td>
+<p>Explanatory variables in the model</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>Model type (i.e., &quot;classification&quot; or &quot;regression&quot;)</p>
+</td></tr>
+<tr valign="top"><td><code>lev</code></td>
+<td>
+<p>The level in the response variable defined as _success_</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>Number of units (nodes) in the hidden layer</p>
+</td></tr>
+<tr valign="top"><td><code>decay</code></td>
+<td>
+<p>Parameter decay</p>
+</td></tr>
+<tr valign="top"><td><code>wts</code></td>
+<td>
+<p>Weights to use in estimation</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>Random seed to use as the starting point</p>
+</td></tr>
+<tr valign="top"><td><code>check</code></td>
+<td>
+<p>Optional estimation parameters (&quot;standardize&quot; is the default)</p>
+</td></tr>
+<tr valign="top"><td><code>data_filter</code></td>
+<td>
+<p>Expression entered in, e.g., Data &gt; View to filter the dataset in Radiant. The expression should be a string (e.g., &quot;price &gt; 10000&quot;)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/model/nn.html">https://radiant-rstats.github.io/docs/model/nn.html</a> for an example in Radiant
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with all variables defined in nn as an object of class nn
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="summary.nn.html">summary.nn</a></code> to summarize results
+</p>
+<p><code><a href="plot.nn.html">plot.nn</a></code> to plot results
+</p>
+<p><code><a href="predict.nn.html">predict.nn</a></code> for prediction
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+nn(titanic, "survived", c("pclass", "sex"), lev = "Yes") %&gt;% summary()
+nn(titanic, "survived", c("pclass", "sex")) %&gt;% str()
+nn(diamonds, "price", c("carat", "clarity"), type = "regression") %&gt;% summary()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.model</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

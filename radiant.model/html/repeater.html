@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Repeated simulation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for repeater {radiant.model}"><tr><td>repeater {radiant.model}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Repeated simulation</h2>
+
+<h3>Description</h3>
+
+<p>Repeated simulation
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+repeater(dataset, nr = 12, vars = "", grid = "", sum_vars = "",
+  byvar = "sim", fun = "sum", form = "", seed = NULL, name = "")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dataset</code></td>
+<td>
+<p>Return value from the simulater function</p>
+</td></tr>
+<tr valign="top"><td><code>nr</code></td>
+<td>
+<p>Number times to repeat the simulation</p>
+</td></tr>
+<tr valign="top"><td><code>vars</code></td>
+<td>
+<p>Variables to use in repeated simulation</p>
+</td></tr>
+<tr valign="top"><td><code>grid</code></td>
+<td>
+<p>Character vector of expressions to use in grid search for constants</p>
+</td></tr>
+<tr valign="top"><td><code>sum_vars</code></td>
+<td>
+<p>(Numeric) variables to summaries</p>
+</td></tr>
+<tr valign="top"><td><code>byvar</code></td>
+<td>
+<p>Variable(s) to group data by before summarizing</p>
+</td></tr>
+<tr valign="top"><td><code>fun</code></td>
+<td>
+<p>Functions to use for summarizing</p>
+</td></tr>
+<tr valign="top"><td><code>form</code></td>
+<td>
+<p>A character vector with the formula to apply to the summarized data</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>Seed for the repeated simulation</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>Deprecated argument</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="summary.repeater.html">summary.repeater</a></code> to summarize results from repeated simulation
+</p>
+<p><code><a href="plot.repeater.html">plot.repeater</a></code> to plot results from repeated simulation
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+simdat &lt;- simulater(
+  const = c("var_cost 5","fixed_cost 1000"),
+  norm = "E 0 100;",
+  discrete = "price 6 8 .3 .7;",
+  form = c(
+    "demand = 1000 - 50*price + E",
+    "profit = demand*(price-var_cost) - fixed_cost",
+    "profit_small = profit &lt; 100"
+  ),
+  seed = 1234
+)
+
+repdat &lt;- repeater(
+  simdat,
+  nr = 12,
+  vars = c("E","price"),
+  sum_vars = "profit",
+  byvar = "sim",
+  form = "profit_365 = profit &lt; 36500",
+  seed = 1234,
+)
+
+head(repdat)
+summary(repdat)
+plot(repdat)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.model</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

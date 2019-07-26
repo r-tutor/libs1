@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Predict method for the regress function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for predict.regress {radiant.model}"><tr><td>predict.regress {radiant.model}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Predict method for the regress function</h2>
+
+<h3>Description</h3>
+
+<p>Predict method for the regress function
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'regress'
+predict(object, pred_data = NULL, pred_cmd = "",
+  conf_lev = 0.95, se = TRUE, interval = "confidence", dec = 3,
+  ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>Return value from <code><a href="regress.html">regress</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>pred_data</code></td>
+<td>
+<p>Provide the dataframe to generate predictions (e.g., diamonds). The dataset must contain all columns used in the estimation</p>
+</td></tr>
+<tr valign="top"><td><code>pred_cmd</code></td>
+<td>
+<p>Command used to generate data for prediction</p>
+</td></tr>
+<tr valign="top"><td><code>conf_lev</code></td>
+<td>
+<p>Confidence level used to estimate confidence intervals (.95 is the default)</p>
+</td></tr>
+<tr valign="top"><td><code>se</code></td>
+<td>
+<p>Logical that indicates if prediction standard errors should be calculated (default = FALSE)</p>
+</td></tr>
+<tr valign="top"><td><code>interval</code></td>
+<td>
+<p>Type of interval calculation (&quot;confidence&quot; or &quot;prediction&quot;). Set to &quot;none&quot; if se is FALSE</p>
+</td></tr>
+<tr valign="top"><td><code>dec</code></td>
+<td>
+<p>Number of decimals to show</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed to or from other methods</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/model/regress.html">https://radiant-rstats.github.io/docs/model/regress.html</a> for an example in Radiant
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="regress.html">regress</a></code> to generate the result
+</p>
+<p><code><a href="summary.regress.html">summary.regress</a></code> to summarize results
+</p>
+<p><code><a href="plot.regress.html">plot.regress</a></code> to plot results
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+result &lt;- regress(diamonds, "price", c("carat", "clarity"))
+predict(result, pred_cmd = "carat = 1:10")
+predict(result, pred_cmd = "clarity = levels(clarity)")
+result &lt;- regress(diamonds, "price", c("carat", "clarity"), int = "carat:clarity")
+predict(result, pred_data = diamonds) %&gt;% head()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.model</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

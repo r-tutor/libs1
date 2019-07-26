@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Cross-validation for Classification and Regression Trees</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cv.crtree {radiant.model}"><tr><td>cv.crtree {radiant.model}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Cross-validation for Classification and Regression Trees</h2>
+
+<h3>Description</h3>
+
+<p>Cross-validation for Classification and Regression Trees
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cv.crtree(object, K = 5, repeats = 1, cp, pcp = seq(0, 0.01,
+  length.out = 11), seed = 1234, trace = TRUE, fun, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>Object of type &quot;rpart&quot; or &quot;crtree&quot; to use as a starting point for cross validation</p>
+</td></tr>
+<tr valign="top"><td><code>K</code></td>
+<td>
+<p>Number of cross validation passes to use</p>
+</td></tr>
+<tr valign="top"><td><code>repeats</code></td>
+<td>
+<p>Number of times to repeat the K cross-validation steps</p>
+</td></tr>
+<tr valign="top"><td><code>cp</code></td>
+<td>
+<p>Complexity parameter used when building the (e.g., 0.0001)</p>
+</td></tr>
+<tr valign="top"><td><code>pcp</code></td>
+<td>
+<p>Complexity parameter to use for pruning</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>Random seed to use as the starting point</p>
+</td></tr>
+<tr valign="top"><td><code>trace</code></td>
+<td>
+<p>Print progress</p>
+</td></tr>
+<tr valign="top"><td><code>fun</code></td>
+<td>
+<p>Function to use for model evaluation (e.g., auc for classification or RMSE for regression)</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments to be passed to 'fun'</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/model/crtree.html">https://radiant-rstats.github.io/docs/model/crtree.html</a> for an example in Radiant
+</p>
+
+
+<h3>Value</h3>
+
+<p>A data.frame sorted by the mean, sd, min, and max of the performance metric
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="crtree.html">crtree</a></code> to generate an initial model that can be passed to cv.crtree
+</p>
+<p><code><a href="Rsq.html">Rsq</a></code> to calculate an R-squared measure for a regression
+</p>
+<p><code><a href="RMSE.html">RMSE</a></code> to calculate the Root Mean Squared Error for a regression
+</p>
+<p><code><a href="MAE.html">MAE</a></code> to calculate the Mean Absolute Error for a regression
+</p>
+<p><code><a href="auc.html">auc</a></code> to calculate the area under the ROC curve for classification
+</p>
+<p><code><a href="profit.html">profit</a></code> to calculate profits for classification at a cost/margin threshold
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+result &lt;- crtree(dvd, "buy", c("coupon", "purch", "last"))
+cv.crtree(result, cp = 0.0001, pcp = seq(0, 0.01, length.out = 11))
+cv.crtree(result, cp = 0.0001, pcp = c(0, 0.001, 0.002), fun = profit, cost = 1, margin = 5)
+result &lt;- crtree(diamonds, "price", c("carat", "color", "clarity"), type = "regression", cp = 0.001)
+cv.crtree(result, cp = 0.001, pcp = seq(0, 0.01, length.out = 11), fun = MAE)
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.model</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

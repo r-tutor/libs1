@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot method for the confusion matrix</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plot.confusion {radiant.model}"><tr><td>plot.confusion {radiant.model}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot method for the confusion matrix</h2>
+
+<h3>Description</h3>
+
+<p>Plot method for the confusion matrix
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'confusion'
+plot(x, vars = c("kappa", "index", "ROME", "AUC"),
+  scale_y = TRUE, size = 13, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Return value from <code><a href="confusion.html">confusion</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>vars</code></td>
+<td>
+<p>Measures to plot, i.e., one or more of &quot;TP&quot;, &quot;FP&quot;, &quot;TN&quot;, &quot;FN&quot;, &quot;total&quot;, &quot;TPR&quot;, &quot;TNR&quot;, &quot;precision&quot;, &quot;accuracy&quot;, &quot;kappa&quot;, &quot;profit&quot;, &quot;index&quot;, &quot;ROME&quot;, &quot;contact&quot;, &quot;AUC&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>scale_y</code></td>
+<td>
+<p>Free scale in faceted plot of the confusion matrix (TRUE or FALSE)</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>Font size used</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed to or from other methods</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/model/evalbin.html">https://radiant-rstats.github.io/docs/model/evalbin.html</a> for an example in Radiant
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="confusion.html">confusion</a></code> to generate results
+</p>
+<p><code><a href="summary.confusion.html">summary.confusion</a></code> to summarize results
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data.frame(buy = dvd$buy, pred1 = runif(20000), pred2 = ifelse(dvd$buy == "yes", 1, 0)) %&gt;%
+  confusion(c("pred1", "pred2"), "buy") %&gt;%
+  plot()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.model</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

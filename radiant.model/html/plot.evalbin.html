@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot method for the evalbin function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plot.evalbin {radiant.model}"><tr><td>plot.evalbin {radiant.model}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot method for the evalbin function</h2>
+
+<h3>Description</h3>
+
+<p>Plot method for the evalbin function
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'evalbin'
+plot(x, plots = c("lift", "gains"), size = 13,
+  shiny = FALSE, custom = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Return value from <code><a href="evalbin.html">evalbin</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>plots</code></td>
+<td>
+<p>Plots to return</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>Font size used</p>
+</td></tr>
+<tr valign="top"><td><code>shiny</code></td>
+<td>
+<p>Did the function call originate inside a shiny app</p>
+</td></tr>
+<tr valign="top"><td><code>custom</code></td>
+<td>
+<p>Logical (TRUE, FALSE) to indicate if ggplot object (or list of ggplot objects) should be returned. This option can be used to customize plots (e.g., add a title, change x and y labels, etc.). See examples and <a href="http://docs.ggplot2.org">http://docs.ggplot2.org</a> for options.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed to or from other methods</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/model/evalbin.html">https://radiant-rstats.github.io/docs/model/evalbin.html</a> for an example in Radiant
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="evalbin.html">evalbin</a></code> to generate results
+</p>
+<p><code><a href="summary.evalbin.html">summary.evalbin</a></code> to summarize results
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data.frame(buy = dvd$buy, pred1 = runif(20000), pred2 = ifelse(dvd$buy == "yes", 1, 0)) %&gt;%
+  evalbin(c("pred1", "pred2"), "buy") %&gt;%
+  plot()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.model</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -33,7 +33,7 @@ the vocabulary used here.
 <pre>
 expect_type(object, type)
 
-expect_s3_class(object, class)
+expect_s3_class(object, class, exact = FALSE)
 
 expect_s4_class(object, class)
 </pre>
@@ -56,6 +56,12 @@ within a function or for loop. See <a href="quasi_label.html">quasi_label</a> fo
 <tr valign="top"><td><code>class</code></td>
 <td>
 <p>character vector of class names</p>
+</td></tr>
+<tr valign="top"><td><code>exact</code></td>
+<td>
+<p>If <code>FALSE</code>, the default, checks that <code>object</code> inherits
+from <code>class</code>. If <code>TRUE</code>, checks that object has a class that's identical
+to <code>class</code>.</p>
 </td></tr>
 </table>
 
@@ -92,5 +98,5 @@ expect_s3_class(x$y, "factor")
 expect_type(x$y, "integer")
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>testthat</em> version 2.1.1.9000 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>testthat</em> version 2.2.1 <a href="00Index.html">Index</a>]</div>
 </body></html>

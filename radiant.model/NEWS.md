@@ -1,3 +1,21 @@
+# radiant.model 1.0.0
+
+* Keyboard shortcut (Enter) when defining variable in Model > Simulate
+* Allow series of type ts and date in models and prediction
+* Autocompletion for functions in Model > Simulate
+* Require shinyAce 0.4.0
+
+# radiant.model 0.9.9.3
+
+* Don't use simulation variables when their type is not selected
+* Provide auto-completion for variables and relevant functions in the Simulate > Functions input
+* Keyboard shortcuts for add a defined variable (i.e., press enter after adding the last input value) 
+
+# radiant.model 0.9.9.2
+
+* Fix for variable definition in _Model > Simulate_ where names of discrete random variables were not properly 'fixed'
+* Fix for variable selection in _Model > Decision analysis > Sensitivity_
+
 # radiant.model 0.9.9.0
 
 * Allow any variable in the prediction dataset to be used to customize a prediction when using _Predict > Data & Command_
@@ -8,7 +26,7 @@
 * Fix for `cv.nn` when weights are used in estimation
 * Improve documentation for cross-validation of `nn` and `crtree` models (i.e., `cv.nn` and `cv.crtree`)
 * Fixes for breaking changes in dplyr 0.8.0
-* Fix to download tables from _Model > Evaluate classificiation_
+* Fix to download tables from _Model > Evaluate classification_
 * Use an expandable `shinyAce` input for the formula and function inputs in _Model > Simulate_
 * Fixes for repeated simulation with grid-search
 * Use `test` instead of `validation` 
@@ -45,7 +63,7 @@
 
 ## Major changes
 
-* Various changes to the code to accomodate the use of `shiny::makeReactiveBinding`. The advantage is that the code generated for _Report > Rmd_ and _Report > R_ will no longer have to use `r_data` to store and access data. This means that code generated and used in the Radiant browser interface will be directly usable without the browser interface as well.
+* Various changes to the code to accommodate the use of `shiny::makeReactiveBinding`. The advantage is that the code generated for _Report > Rmd_ and _Report > R_ will no longer have to use `r_data` to store and access data. This means that code generated and used in the Radiant browser interface will be directly usable without the browser interface as well.
 * Improved documentation and examples
 
 # radiant.model 0.9.2.3

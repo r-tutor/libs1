@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Print simulation summary</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sim_summary {radiant.model}"><tr><td>sim_summary {radiant.model}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Print simulation summary</h2>
+
+<h3>Description</h3>
+
+<p>Print simulation summary
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sim_summary(dataset, dc = get_class(dataset), fun = "", dec = 4)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dataset</code></td>
+<td>
+<p>Simulated data</p>
+</td></tr>
+<tr valign="top"><td><code>dc</code></td>
+<td>
+<p>Variable classes</p>
+</td></tr>
+<tr valign="top"><td><code>fun</code></td>
+<td>
+<p>Summary function to apply</p>
+</td></tr>
+<tr valign="top"><td><code>dec</code></td>
+<td>
+<p>Number of decimals to show</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="simulater.html">simulater</a></code> to run a simulation
+</p>
+<p><code><a href="repeater.html">repeater</a></code> to run a repeated simulation
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+simulater(
+  const = "cost 3",
+  norm = "demand 2000 1000",
+  discrete = "price 5 8 .3 .7",
+  form = c("profit = demand * (price - cost)", "profit5K = profit &gt; 5000"),
+  seed = 1234
+) %&gt;% sim_summary()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.model</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

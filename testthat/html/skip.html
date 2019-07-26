@@ -38,9 +38,11 @@ skip_on_appveyor()
 
 skip_on_ci()
 
+skip_on_covr()
+
 skip_on_bioc()
 
-skip_if_translated()
+skip_if_translated(msgid = "'%s' not found")
 </pre>
 
 
@@ -73,6 +75,12 @@ skip_if_translated()
 <p>Character vector of system names. Supported values are
 <code>"windows"</code>, <code>"mac"</code>, <code>"linux"</code> and <code>"solaris"</code>.</p>
 </td></tr>
+<tr valign="top"><td><code>msgid</code></td>
+<td>
+<p>R message identifier used to check for translation: the default
+uses a message included in most translation packs. See the complete list in
+<a href="https://github.com/wch/r-source/blob/master/src/library/base/po/R-base.pot">R-base.pot</a>.</p>
+</td></tr>
 </table>
 
 
@@ -97,14 +105,17 @@ using <code><a href="../../curl/html/nslookup.html">curl::nslookup()</a></code>.
 <p><code>skip_on_cran()</code> skips tests on CRAN, using the <code>NOT_CRAN</code>
 environment variable set by devtools.
 </p>
-<p><code>skip_on_travis()</code> skips tests on travis by inspecting the
+<p><code>skip_on_travis()</code> skips tests on Travis CI by inspecting the
 <code>TRAVIS</code> environment variable.
 </p>
-<p><code>skip_on_appveyor()</code> skips tests on appveyor by inspecting the
+<p><code>skip_on_appveyor()</code> skips tests on AppVeyor by inspecting the
 <code>APPVEYOR</code> environment variable.
 </p>
-<p>#' <code>skip_on_ci()</code> skips tests on continuous integration systems by inspecting
+<p><code>skip_on_ci()</code> skips tests on continuous integration systems by inspecting
 the <code>CI</code> environment variable.
+</p>
+<p><code>skip_on_covr()</code> skips tests when covr is running by inspecting the
+<code>R_COVR</code> environment variable
 </p>
 <p><code>skip_on_bioc()</code> skips tests on Bioconductor by inspecting the
 <code>BBS_HOME</code> environment variable.
@@ -131,5 +142,5 @@ test_that("skip example", {
 })
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>testthat</em> version 2.1.1.9000 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>testthat</em> version 2.2.1 <a href="00Index.html">Index</a>]</div>
 </body></html>

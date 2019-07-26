@@ -11,7 +11,8 @@
 
 <p>These helper functions make it easier to test the examples in a package.
 Each example counts as one test, and it succeeds if the code runs without
-an error.
+an error. Generally, this is redundant with R CMD check, and is not
+recommended in routine practice.
 </p>
 
 
@@ -20,9 +21,9 @@ an error.
 <pre>
 test_examples(path = "../..")
 
-test_example(path)
+test_rd(rd, title = attr(rd, "Rdfile"))
 
-test_rd(rd)
+test_example(path, title = path)
 </pre>
 
 
@@ -39,7 +40,11 @@ directory for tests is <code>tests/testthat</code>.</p>
 <td>
 <p>A parsed Rd object, obtained from <code><a href="../../tools/html/Rd_db.html">tools::Rd_db()</a></code> or otherwise.</p>
 </td></tr>
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p>Test title to use</p>
+</td></tr>
 </table>
 
-<hr /><div style="text-align: center;">[Package <em>testthat</em> version 2.1.1.9000 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>testthat</em> version 2.2.1 <a href="00Index.html">Index</a>]</div>
 </body></html>

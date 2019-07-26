@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a decision tree</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dtree {radiant.model}"><tr><td>dtree {radiant.model}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a decision tree</h2>
+
+<h3>Description</h3>
+
+<p>Create a decision tree
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dtree(yl, opt = "max", base = character(0))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>yl</code></td>
+<td>
+<p>A yaml string or a list (e.g., from yaml::yaml.load_file())</p>
+</td></tr>
+<tr valign="top"><td><code>opt</code></td>
+<td>
+<p>Find the maximum (&quot;max&quot;) or minimum (&quot;min&quot;) value for each decision node</p>
+</td></tr>
+<tr valign="top"><td><code>base</code></td>
+<td>
+<p>List of variable definitions from a base tree used when calling a sub-tree</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <a href="https://radiant-rstats.github.io/docs/model/dtree.html">https://radiant-rstats.github.io/docs/model/dtree.html</a> for an example in Radiant
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with the initial tree and the calculated tree
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="summary.dtree.html">summary.dtree</a></code> to summarize results
+</p>
+<p><code><a href="plot.dtree.html">plot.dtree</a></code> to plot results
+</p>
+<p><code><a href="sensitivity.dtree.html">sensitivity.dtree</a></code> to plot results
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+yaml::as.yaml(movie_contract) %&gt;% cat()
+dtree(movie_contract, opt = "max") %&gt;% summary(output = TRUE)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>radiant.model</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>
