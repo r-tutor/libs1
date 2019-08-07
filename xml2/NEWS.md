@@ -1,3 +1,50 @@
+# xml2 1.2.1
+
+## New Features
+
+* xml2 now has a pkgdown site! <http://xml2.r-lib.org> (@jayhesselberth, #211).
+
+* Windows: upgrade to libxml2 2.9.8
+
+* print methods now match the type of document, e.g. `read_html()` prints as
+  "{html_document}" rather than "{xml_document}" (#227)
+
+## Bugfixes and Miscellaneous features
+
+* Generic xml2 error are now forwarded as R errors. Previously these errors
+  were output to stderr, so could not be suppressed (#209).
+
+* Fix for ICU 59+ defaulting to use char16_t, which is only available in C++11 (#231)
+
+* No longer uses the C connections API
+
+* Better error message when trying to run `download_xml()` without the curl
+  package installed (#262)
+
+* xml2 classes are now registered for use with S4 by calling `setOldClass()` (#248)
+
+* Nodes with nested data type definition entities now work without crashing (#241)
+
+* Test failure fixed due to behavior change with relative paths in libxml2
+  2.9.9 (#245).
+
+* `read_xml()` now has a better error message when given zero length character
+  inputs (#212).
+
+* `read_xml()` and `read_html()` now automatically check if the response
+  succeeded before trying to read from a HTTP response (#255).
+
+* `xml_root()` can now create root nodes with namespaces (#239)
+
+* `xml_set_attr()` no longer crashes if you try to set the same namespace on
+  the same node multiple times (#253).
+
+* `xml_set_attr()` now recycles the values if needed (#221)
+
+* `xml_structure()` gains a `file` argument, to support writing to a file
+  rather than the console (#244).
+
+
 # xml2 1.2.0
 
 ## Breaking changes
