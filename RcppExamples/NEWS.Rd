@@ -1,13 +1,27 @@
 \name{NEWS}
 \title{News for Package \pkg{RcppExamples}}
+\newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppexamples/pull/#1}{##1}}
+\newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppexamples/issues/#1}{##1}}
+
+\section{Changes in RcppExamples version 0.1.9 (2019-08-24)}{
+  \itemize{
+    \item Extended \code{DateExample} to use more new Rcpp features
+    \item Do not print \code{DataFrame} result twice (Xikun Han in \ghpr{3})
+    \item Missing parenthesis added in man page (Chris Muir in \ghpr{5})
+    \item Rewrote \code{StringVectorExample} slightly to not run afould the
+    \code{-Wnoexcept-type} warning for C++17-related name mangling changes
+    \item Updated \code{NAMESPACE} and \code{RcppExports.cpp} to add registration
+    \item Removed the no-longer-needed \code{#define} for new Datetime vectors
+  }
+}
 
 \section{Changes in RcppExamples version 0.1.8 (2016-11-24)}{
   \itemize{
-    \item Updated DateExample to show vector addition available under
+    \item Updated \code{DateExample} to show vector addition available under
     Rcpp 0.12.8 when the (currently still phased in and optional) new
-    Date(time) classes are used via the define in src/Makevars{,.win};
+    Date(time) classes are used via the define in \code{src/Makevars{,.win}};
     with fallback code for older versions 
-    \item Other minor edits to DESCRIPTION and README.md
+    \item Other minor edits to \code{DESCRIPTION} and \code{README.md}
   }
 }
 

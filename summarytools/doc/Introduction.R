@@ -57,6 +57,19 @@ library(magrittr)
 iris %>% descr(stats = "common") %>% tb()
 iris$Species %>% freq(cumul = FALSE, report.nas = FALSE) %>% tb()
 
+## ---- results='markup'---------------------------------------------------
+grouped_freqs <- stby(data = tobacco$smoker, 
+                      INDICES = tobacco$gender, 
+                      FUN = freq, cumul = FALSE, report.nas = FALSE)
+grouped_freqs %>% tb()
+grouped_freqs %>% tb(order = 2)
+
+grouped_descr <- stby(data = exams, 
+                      INDICES = exams$gender, 
+                      FUN = descr, stats = "common")
+grouped_descr %>% tb()
+grouped_descr %>% tb(order = 2)
+
 ## ------------------------------------------------------------------------
 (iris_stats_by_species <- stby(data = iris, 
                                INDICES = iris$Species, 
@@ -83,6 +96,11 @@ print(BMI_by_age, headings = FALSE)
 #  stby(list(x = tobacco$smoker, y = tobacco$diseased), tobacco$gender, ctable)
 #  # or equivalently
 #  with(tobacco, stby(list(x = smoker, y = diseased), gender, ctable))
+
+## ------------------------------------------------------------------------
+library(dplyr)
+tobacco$gender <- forcats::fct_explicit_na(tobacco$gender)
+tobacco %>% group_by(gender) %>% descr(stats = "fivenum")
 
 ## ---- eval=FALSE, tidy=FALSE---------------------------------------------
 #      knitr::opts_chunk$set(echo = TRUE, results = 'asis')

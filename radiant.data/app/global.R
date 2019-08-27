@@ -6,11 +6,27 @@ suppressWarnings(
   )
 )
 
+# options(shiny.trace = TRUE)
+# options(radiant.autosave = c(1, 5))
+
 ## set volumes if sf_volumes was preset (e.g., on a server) or
 ## we are running in Rstudio or if we are running locally
 if (isTRUE(getOption("radiant.sf_volumes", "") != "") ||
+    isTRUE(getOption("radiant.shinyFiles", FALSE)) ||
     isTRUE(Sys.getenv("RSTUDIO") != "") ||
     isTRUE(Sys.getenv("SHINY_PORT") == "")) {
+
+  if (isTRUE(getOption("radiant.sf_volumes", "") != "")) {
+    sf_volumes <- getOption("radiant.sf_volumes")
+    if (length(names(sf_volumes)) == 0) {
+      warning("\nOption radiant.sf_volumes should be a named vector set in .Rprofile\n\n")
+      options(radiant.sf_volumes = "")
+    } else if (any(sapply(sf_volumes, function(x) !dir.exists(x)))) {
+      warning("\nOne or more directories listed in option radiant.sf_volumes do not exists. Please fix the option in .Rprofile and restart radiant.\n\n")
+      options(radiant.sf_volumes = "")
+    }
+    rm(sf_volumes)
+  }
 
   if (isTRUE(getOption("radiant.sf_volumes", "") == "")) {
     sf_volumes <- c(Home = radiant.data::find_home())
@@ -93,12 +109,17 @@ init_data <- function(env = r_data) {
   ## that needs to be reactive
   r_info <- reactiveValues()
 
-  df_names <- getOption("radiant.init.data", default = c("diamonds", "titanic"))
+  strip_ext <- function(x) sub(paste0("\\.", tools::file_ext(x), "$"), "", x)
+  datasetlist <- c()
+  df_names <- getOption("radiant.init.data")
+  if (length(df_names) == 0) df_names <- c("diamonds", "titanic")
   for (dn in df_names) {
     if (file.exists(dn)) {
       df <- load(dn) %>% get()
-      dn <- basename(dn) %>%
-        {gsub(paste0(".", tools::file_ext(.)), "", ., fixed = TRUE)}
+      if (!inherits(df, "data.frame")) next  # only keep data.frames
+      dn_path <- dn
+      dn <- basename(dn) %>% strip_ext()
+      r_info[[paste0(dn, "_lcmd")]] <- glue::glue('{dn} <- load("{dn_path}") %>% get()\nregister("{dn}")')
     } else {
       df <- data(list = dn, package = "radiant.data", envir = environment()) %>% get()
       r_info[[paste0(dn, "_lcmd")]] <- glue::glue('{dn} <- data({dn}, package = "radiant.data", envir = environment()) %>% get()\nregister("{dn}")')
@@ -108,8 +129,9 @@ init_data <- function(env = r_data) {
       makeReactiveBinding(dn, env = env)
     }
     r_info[[paste0(dn, "_descr")]] <- attr(df, "description")
+    datasetlist <- c(datasetlist, dn)
   }
-  r_info[["datasetlist"]] <- basename(df_names)
+  r_info[["datasetlist"]] <- datasetlist
   r_info[["url"]] <- NULL
   r_info
 }
@@ -285,8 +307,8 @@ help_menu <- function(hlp) {
 }
 
 ## copy-right text
-options(radiant.help.cc = "&copy; Vincent Nijs (2018) <a rel='license' href='http://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank'><img alt='Creative Commons License' style='border-width:0' src ='imgs/by-nc-sa.png' /></a></br>")
-options(radiant.help.cc.sa = "&copy; Vincent Nijs (2018) <a rel='license' href='http://creativecommons.org/licenses/by-sa/4.0/' target='_blank'><img alt='Creative Commons License' style='border-width:0' src ='imgs/by-sa.png' /></a></br>")
+options(radiant.help.cc = "&copy; Vincent Nijs (2019) <a rel='license' href='http://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank'><img alt='Creative Commons License' style='border-width:0' src ='imgs/by-nc-sa.png' /></a></br>")
+options(radiant.help.cc.sa = "&copy; Vincent Nijs (2019) <a rel='license' href='http://creativecommons.org/licenses/by-sa/4.0/' target='_blank'><img alt='Creative Commons License' style='border-width:0' src ='imgs/by-sa.png' /></a></br>")
 
 #####################################
 ## url processing to share results
@@ -351,12 +373,18 @@ rm(tmp, radiant.versions)
 
 navbar_proj <- function(navbar) {
   pdir <- radiant.data::find_project(mess = FALSE)
-  options(radiant.project_dir = if (radiant.data::is_empty(pdir)) NULL else pdir)
-  proj <- if (radiant.data::is_empty(pdir)) {
-    "Project: (None)"
+  if (radiant.data::is_empty(pdir)) {
+    if (getOption("radiant.shinyFiles", FALSE) && !radiant.data::is_empty(getOption("radiant.sf_volumes", ""))) {
+      proj <- paste0("Base dir: ", names(getOption("radiant.sf_volumes"))[1])
+    } else {
+      proj <- "Project: (None)"
+    }
+    options(radiant.project_dir = NULL)
   } else {
-    paste0("Project: ", basename(pdir)) %>%
+    proj <- paste0("Project: ", basename(pdir)) %>%
       {if(nchar(.) > 35) paste0(strtrim(., 31), " ...") else .}
+    options(radiant.project_dir = pdir)
+    options(radiant.launch_dir = pdir)
   }
   proj <- tags$span(class = "nav navbar-brand navbar-right", proj)
   ## based on: https://stackoverflow.com/a/40755608/1974918
@@ -369,6 +397,9 @@ navbar_proj <- function(navbar) {
 }
 
 if (getOption("radiant.shinyFiles", FALSE)) {
+  if (!radiant.data::is_empty(getOption("radiant.sf_volumes", "")) && radiant.data::is_empty(getOption("radiant.project_dir"))) {
+    options(radiant.launch_dir = getOption("radiant.sf_volumes")[1])
+  }
   if (radiant.data::is_empty(getOption("radiant.launch_dir"))) {
     if (radiant.data::is_empty(getOption("radiant.project_dir"))) {
       options(radiant.launch_dir = radiant.data::find_home())
@@ -380,6 +411,8 @@ if (getOption("radiant.shinyFiles", FALSE)) {
 
   if (radiant.data::is_empty(getOption("radiant.project_dir"))) {
     options(radiant.project_dir = getOption("radiant.launch_dir"))
+  } else {
+    options(radiant.launch_dir = getOption("radiant.project_dir"))
   }
 
   dbdir <- try(radiant.data::find_dropbox(), silent = TRUE)
@@ -509,7 +542,7 @@ onStop(function() {
     clean_up_list <- c(
       "r_sessions", "help_menu", "make_url_patterns", "import_fs",
       "init_data", "navbar_proj", "knit_print.data.frame", "withMathJax",
-      "Dropbox", "sf_volumes"
+      "Dropbox", "s"
     )
     suppressWarnings(
       suppressMessages({
