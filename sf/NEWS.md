@@ -1,8 +1,32 @@
+# version 0.8-0
+
+* fix tests for PROJ 6.2.0 not accepting +units=
+
+* fixes for tidyr 1.0-0 release; attempt to port `nest.sf` and `unnest.sf`; #1068, #1145
+
+* `gdal_utils` better closes connections after use; #1143
+
+* `st_write` gains a `drivers` options, to limit the drivers attempted; #1142
+
+* rather than replacing, `st_write` and `write_sf` append to an existing layer if `update=TRUE`; #1126
+
+* improve plotting of `POSIXct` and `Date` attributes (`Date` requiring classInt >= 0.4-2)
+
+* `NULL` geometries read by GDAL are returned as empty geometries; #1119
+
+* `gdal_utils('rasterize', ...)` accepts non-existing destinations, defined by e.g. resolution and extent options (see #1116 for an example), and overwrites if needed (see #1136 for an example)
+
+* add Dan Baston as contributor; #1120 and many others
+
+* in addition to `NULL`, `st_sfc()` also converts `NA` values into empty geometries; #1114.
+
+* `st_join` is a generic
+
 # version 0.7-7
 
 * `plot()` handles `POSIXct` values in legend
 
-* constructor functions like `st_linestring()` check and break on `NA` coordinates; #1101
+* constructor functions like `st_linestring()` check and break on `NA` coordinates; #1101, #1102
 
 # version 0.7-6
 

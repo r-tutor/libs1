@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -86,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -160,48 +160,9 @@ summary {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = false;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -452,9 +413,9 @@ div.tocify {
 <h2>sf: objects with simple features</h2>
 <p>As we usually do not work with geometries of single simple features, but with datasets consisting of sets of features with attributes, the two are put together in <code>sf</code> (simple feature) objects. The following command reads the <code>nc</code> dataset from a file that is contained in the <code>sf</code> package:</p>
 <pre class="r"><code>library(sf)
-## Linking to GEOS 3.7.0, GDAL 2.4.0, PROJ 5.2.0
+## Linking to GEOS 3.7.1, GDAL 2.4.2, PROJ 5.2.0
 nc &lt;- st_read(system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;))
-## Reading layer `nc' from data source `/tmp/RtmpQSH8M5/Rinst6b003832667f/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/RtmpFPGfdm/Rinst78c928a5fbec/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -496,13 +457,13 @@ nc &lt;- st_read(system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;))
 ## [31] st_crs                st_crs&lt;-              st_difference        
 ## [34] st_geometry           st_geometry&lt;-         st_interpolate_aw    
 ## [37] st_intersection       st_intersects         st_is                
-## [40] st_line_merge         st_nearest_points     st_node              
-## [43] st_normalize          st_point_on_surface   st_polygonize        
-## [46] st_precision          st_segmentize         st_set_precision     
-## [49] st_simplify           st_snap               st_sym_difference    
-## [52] st_transform          st_triangulate        st_union             
-## [55] st_voronoi            st_wrap_dateline      st_write             
-## [58] st_zm                
+## [40] st_join               st_line_merge         st_nearest_points    
+## [43] st_node               st_normalize          st_point_on_surface  
+## [46] st_polygonize         st_precision          st_segmentize        
+## [49] st_set_precision      st_simplify           st_snap              
+## [52] st_sym_difference     st_transform          st_triangulate       
+## [55] st_union              st_voronoi            st_wrap_dateline     
+## [58] st_write              st_zm                
 ## see '?methods' for accessing help and source code</code></pre>
 <p>It is also possible to create <code>data.frame</code> objects with geometry list-columns that are not of class <code>sf</code>, e.g. by</p>
 <pre class="r"><code>nc.no_sf &lt;- as.data.frame(nc)
@@ -562,19 +523,20 @@ plot(nc[w,1], col = 2:7)</code></pre>
 ##  [7] format                identify              initialize           
 ## [10] print                 rep                   show                 
 ## [13] slotsFromS3           st_area               st_as_binary         
-## [16] st_as_grob            st_as_text            st_bbox              
-## [19] st_boundary           st_buffer             st_cast              
-## [22] st_centroid           st_collection_extract st_convex_hull       
-## [25] st_coordinates        st_crop               st_crs               
-## [28] st_crs&lt;-              st_difference         st_geometry          
-## [31] st_intersection       st_intersects         st_is                
-## [34] st_line_merge         st_nearest_points     st_node              
-## [37] st_normalize          st_point_on_surface   st_polygonize        
-## [40] st_precision          st_segmentize         st_set_precision     
-## [43] st_simplify           st_snap               st_sym_difference    
-## [46] st_transform          st_triangulate        st_union             
-## [49] st_voronoi            st_wrap_dateline      st_write             
-## [52] st_zm                 str                   summary              
+## [16] st_as_grob            st_as_sf              st_as_text           
+## [19] st_bbox               st_boundary           st_buffer            
+## [22] st_cast               st_centroid           st_collection_extract
+## [25] st_convex_hull        st_coordinates        st_crop              
+## [28] st_crs                st_crs&lt;-              st_difference        
+## [31] st_geometry           st_intersection       st_intersects        
+## [34] st_is                 st_line_merge         st_nearest_points    
+## [37] st_node               st_normalize          st_point_on_surface  
+## [40] st_polygonize         st_precision          st_segmentize        
+## [43] st_set_precision      st_simplify           st_snap              
+## [46] st_sym_difference     st_transform          st_triangulate       
+## [49] st_union              st_voronoi            st_wrap_dateline     
+## [52] st_write              st_zm                 str                  
+## [55] summary              
 ## see '?methods' for accessing help and source code</code></pre>
 <p>Coordinate reference systems (<code>st_crs</code> and <code>st_transform</code>) are discussed in the section on <a href="#crs">coordinate reference systems</a>. <code>st_as_wkb</code> and <code>st_as_text</code> convert geometry list-columns into well-known-binary or well-known-text, explained <a href="#wkb">below</a>. <code>st_bbox</code> retrieves the coordinate bounding box.</p>
 <p>Attributes include</p>
@@ -723,7 +685,7 @@ st_as_sfc(structure(list(st_as_binary(x)), class = &quot;WKB&quot;))[[1]]
 <p>As we’ve seen above, reading spatial data from an external file can be done by</p>
 <pre class="r"><code>filename &lt;- system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;)
 nc &lt;- st_read(filename)
-## Reading layer `nc' from data source `/tmp/RtmpQSH8M5/Rinst6b003832667f/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/RtmpFPGfdm/Rinst78c928a5fbec/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -735,16 +697,12 @@ nc &lt;- st_read(filename)
 <p>Writing takes place in the same fashion, using <code>st_write</code>:</p>
 <pre class="r"><code>st_write(nc, &quot;nc.shp&quot;)
 ## Writing layer `nc' to data source `nc.shp' using driver `ESRI Shapefile'
-## features:       100
-## fields:         14
-## geometry type:  Multi Polygon</code></pre>
+## Writing 100 features with 14 fields and geometry type Multi Polygon.</code></pre>
 <p>If we repeat this, we get an error message that the file already exists, and we can overwrite by</p>
 <pre class="r"><code>st_write(nc, &quot;nc.shp&quot;, delete_layer = TRUE)
 ## Deleting layer `nc' using driver `ESRI Shapefile'
 ## Writing layer `nc' to data source `nc.shp' using driver `ESRI Shapefile'
-## features:       100
-## fields:         14
-## geometry type:  Multi Polygon</code></pre>
+## Writing 100 features with 14 fields and geometry type Multi Polygon.</code></pre>
 <p>or its quiet alternative that does this by default,</p>
 <pre class="r"><code>write_sf(nc, &quot;nc.shp&quot;) # silently overwrites</code></pre>
 <div id="driver-specific-options" class="section level3">
@@ -862,7 +820,7 @@ st_geometry(nc.web_mercator)[[4]][[2]][[1]][1:3,]
 methods(st_as_sf)
 ## [1] st_as_sf.Spatial*    st_as_sf.data.frame* st_as_sf.lpp*       
 ## [4] st_as_sf.map*        st_as_sf.ppp*        st_as_sf.psp*       
-## [7] st_as_sf.sf*        
+## [7] st_as_sf.sf*         st_as_sf.sfc*       
 ## see '?methods' for accessing help and source code
 methods(st_as_sfc)
 ##  [1] st_as_sfc.SpatialLines*       st_as_sfc.SpatialMultiPoints*
@@ -1011,7 +969,7 @@ units::set_units(a, ha) # result in hectares
         CNTY_ID = &quot;identity&quot;, NAME = &quot;identity&quot;, FIPS = &quot;identity&quot;, FIPSNO = &quot;identity&quot;,
         CRESS_ID = &quot;identity&quot;, BIR74 = &quot;aggregate&quot;, SID74 = &quot;aggregate&quot;, NWBIR74 = &quot;aggregate&quot;,
         BIR79 = &quot;aggregate&quot;, SID79 = &quot;aggregate&quot;, NWBIR79 = &quot;aggregate&quot;))
-## Reading layer `nc' from data source `/tmp/RtmpQSH8M5/Rinst6b003832667f/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/RtmpFPGfdm/Rinst78c928a5fbec/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## Attribute-geometry relationship: 0 constant, 8 aggregate, 6 identity
 ## geometry type:  MULTIPOLYGON
@@ -1091,6 +1049,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

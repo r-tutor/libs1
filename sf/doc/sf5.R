@@ -1,6 +1,7 @@
 ## ----echo=FALSE, include=FALSE-------------------------------------------
 knitr::opts_chunk$set(collapse = TRUE)
-mostly_off = Sys.getenv("USER") == "edzer"
+tmap_fixed = utils::packageVersion("tmap") >= "2.3-1"
+user_edzer_or_travis = Sys.getenv("USER") %in% c("travis", "edzer")
 
 ## ------------------------------------------------------------------------
 library(sf)
@@ -87,7 +88,7 @@ ggplot() +
   facet_wrap(~VAR, ncol = 1) +
   scale_y_continuous(breaks = 34:36)
 
-## ----eval=mostly_off-----------------------------------------------------
+## ----eval=user_edzer_or_travis-------------------------------------------
 library(mapview)
 mapview(nc["BIR74"], col.regions = sf.colors(10))
 
@@ -95,11 +96,11 @@ mapview(nc["BIR74"], col.regions = sf.colors(10))
 library(tmap)
 qtm(nc)
 
-## ----eval=mostly_off-----------------------------------------------------
+## ----eval=tmap_fixed-----------------------------------------------------
 tmap_mode("view")
 tm_shape(nc) + tm_fill("BIR74", palette = sf.colors(5))
 
-## ----eval=mostly_off-----------------------------------------------------
+## ----eval=tmap_fixed-----------------------------------------------------
 ttm()
 last_map()
 

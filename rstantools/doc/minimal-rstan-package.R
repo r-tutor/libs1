@@ -1,22 +1,25 @@
 params <-
 list(EVAL = TRUE)
 
-## ---- SETTINGS-knitr, include=FALSE--------------------------------------
+## ----SETTINGS-knitr, include=FALSE---------------------------------------
 stopifnot(require(knitr))
 opts_chunk$set(
   comment=NA,
-  eval = params$EVAL
+  eval = if (isTRUE(exists("params"))) params$EVAL else FALSE
 )
-
-## ---- eval=FALSE---------------------------------------------------------
-#  library("rstantools")
-#  rstan_package_skeleton(path = 'rstanlm')
-
-## ---- echo=FALSE,warning=FALSE-------------------------------------------
-library("rstantools")
 td <- tempdir()
 PATH <- file.path(td, "rstanlm")
-rstan_package_skeleton(path = PATH, rstudio=FALSE, open=FALSE)
+if(dir.exists(PATH)) {
+  unlink(PATH, recursive = TRUE, force = TRUE)
+}
+
+## ----rstan_create_package, eval=FALSE------------------------------------
+#  library("rstantools")
+#  rstan_create_package(path = 'rstanlm')
+
+## ----rstan_create_package-eval, echo=FALSE,warning=FALSE-----------------
+library("rstantools")
+rstan_create_package(path = PATH, rstudio=FALSE, open=FALSE)
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  setwd("rstanlm")
@@ -58,11 +61,12 @@ parameters {
 }
 model {
   // ... priors, etc.
-  
+
   y ~ normal(intercept + beta * x, sigma);
 }
 "
-cat(stan_prog, file = file.path(PATH, "src", "stan_files", "lm.stan"))
+cat(stan_prog, file = file.path(PATH, "inst", "stan", "lm.stan"))
+rstan_config(PATH)
 
 ## ------------------------------------------------------------------------
 # Save this file as `R/lm_stan.R`
@@ -81,6 +85,7 @@ lm_stan <- function(x, y, ...) {
   return(out)
 }
 
+
 ## ---- include=FALSE------------------------------------------------------
 Rcode <- "
 #' Bayesian linear regression with Stan
@@ -90,8 +95,8 @@ Rcode <- "
 #' @param y Numberic vector of output values.
 #' @param ... Arguments passed to `rstan::sampling`.
 #' @return An object of class `stanfit` returned by `rstan::sampling`
-lm_stan <- function(x, y) {
-  out <- rstan::sampling(stanmodels$lm, data=list(x=x, y=y, N=length(y)))
+lm_stan <- function(x, y, ...) {
+  out <- rstan::sampling(stanmodels$lm, data=list(x=x, y=y, N=length(y)), ...)
   return(out)
 }
 "
@@ -104,24 +109,31 @@ cat(Rcode, file = file.path(PATH, "R", "lm_stan.R"))
 cat(readLines(file.path(PATH, "R", "rstanlm-package.R")), sep = "\n")
 
 ## ---- eval=FALSE---------------------------------------------------------
-#  roxygen2::roxygenise(clean=TRUE)
+#  pkgbuild::compile_dll() # see note below
+#  roxygen2::roxygenize()
+
+## ---- include=FALSE------------------------------------------------------
+pkgbuild::compile_dll(PATH) # required for newer versions of roxygen2
 
 ## ---- echo=FALSE---------------------------------------------------------
-roxygen2::roxygenise(PATH, clean=TRUE)
+roxygen2::roxygenize(PATH)
 
 ## ----eval=FALSE----------------------------------------------------------
-#  devtools::install(local=FALSE)
+#  # using ../rstanlm because already inside the rstanlm directory
+#  install.packages("../rstanlm", repos = NULL, type = "source")
 
-## ----echo=FALSE, results="hide"------------------------------------------
-devtools::load_all(PATH, recompile=TRUE)
+## ----echo=FALSE----------------------------------------------------------
+install.packages(PATH, repos = NULL, type = "source")
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  library("rstanlm")
 
 ## ------------------------------------------------------------------------
-fit <- lm_stan(y = rnorm(10), x = rnorm(10), iter = 500)
+fit <- lm_stan(y = rnorm(10), x = rnorm(10), 
+               # arguments passed to sampling
+               iter = 2000, refresh = 500)
 print(fit)
 
 ## ---- echo=FALSE---------------------------------------------------------
-unlink(PATH, recursive = TRUE)
+unlink(PATH, recursive = TRUE, force = TRUE)
 

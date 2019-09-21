@@ -47,7 +47,7 @@ keywords:
   - keywords
   - here
 
-# Paper size for the document, values of letterpaper and a4paper
+# Paper size for the document, values of letter and a4
 papersize: letter
 
 # Font size of the document, values of 9pt (default), 10pt, 11pt and 12pt
@@ -75,7 +75,7 @@ skip_final_break: true
 bibliography: pinp
 
 # Optional: Enable a 'Draft' watermark on the document
-watermark: true
+#watermark: true
 
 # Customize footer, eg by referencing the vignette
 footer_contents: "YourPackage Vignette"
@@ -132,8 +132,9 @@ We support several options via the YAML header
   your package, which is placed in the bottom-right footer on odd
   pages;
 - Setting a free-form author field used on the inside footer;
-- Optional _Draft_ watermarking;
-- Line of custom text in subtitle (`date_subtitle`) suitable to give publication info of the draft, e.g. journal name in a post-print.
+- Optional _Draft_ watermark to be added to each page;
+- Line of custom text in subtitle (`date_subtitle`) suitable to give publication info of 
+the draft, e.g. journal name in a post-print. 
 
 
 
@@ -222,8 +223,9 @@ their preference.
 
 To allow an equation to span both columns, options are to use the
 `\begin{figure*}...\end{figure*}` environment mentioned above for
-figures, or to use the `\begin{widetext}...\end{widetext}` environment
-as shown in equation \ref{eqn:example} below.
+figures. The `\begin{widetext}...\end{widetext}` environment as shown
+in equation \ref{eqn:example} below is deprecated, but \LaTeX commands
+`\onecolumn` and `\twocolumn` work fine.
 
 Please note that this option may run into problems with floats and
 footnotes, as mentioned in the [cuted package
