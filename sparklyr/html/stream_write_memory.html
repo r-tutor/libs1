@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Write Memory Stream</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stream_write_memory {sparklyr}"><tr><td>stream_write_memory {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Write Memory Stream</h2>
+
+<h3>Description</h3>
+
+<p>Writes a Spark dataframe stream into a memory stream.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stream_write_memory(x, name = random_string("sparklyr_tmp_"),
+  mode = c("append", "complete", "update"),
+  trigger = stream_trigger_interval(),
+  checkpoint = file.path("checkpoints", name, random_string("")),
+  options = list(), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A Spark DataFrame or dplyr operation</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>The name to assign to the newly generated stream.</p>
+</td></tr>
+<tr valign="top"><td><code>mode</code></td>
+<td>
+<p>Specifies how data is written to a streaming sink. Valid values are
+<code>"append"</code>, <code>"complete"</code> or <code>"update"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>trigger</code></td>
+<td>
+<p>The trigger for the stream query, defaults to micro-batches runnnig
+every 5 seconds. See <code><a href="stream_trigger_interval.html">stream_trigger_interval</a></code> and
+<code><a href="stream_trigger_continuous.html">stream_trigger_continuous</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>checkpoint</code></td>
+<td>
+<p>The location where the system will write all the checkpoint
+information to guarantee end-to-end fault-tolerance.</p>
+</td></tr>
+<tr valign="top"><td><code>options</code></td>
+<td>
+<p>A list of strings with additional options.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments; currently unused.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p>Other Spark stream serialization: <code><a href="stream_read_csv.html">stream_read_csv</a></code>,
+<code><a href="stream_read_json.html">stream_read_json</a></code>,
+<code><a href="stream_read_kafka.html">stream_read_kafka</a></code>,
+<code><a href="stream_read_orc.html">stream_read_orc</a></code>,
+<code><a href="stream_read_parquet.html">stream_read_parquet</a></code>,
+<code><a href="stream_read_scoket.html">stream_read_scoket</a></code>,
+<code><a href="stream_read_text.html">stream_read_text</a></code>,
+<code><a href="stream_write_console.html">stream_write_console</a></code>,
+<code><a href="stream_write_csv.html">stream_write_csv</a></code>,
+<code><a href="stream_write_json.html">stream_write_json</a></code>,
+<code><a href="stream_write_kafka.html">stream_write_kafka</a></code>,
+<code><a href="stream_write_orc.html">stream_write_orc</a></code>,
+<code><a href="stream_write_parquet.html">stream_write_parquet</a></code>,
+<code><a href="stream_write_text.html">stream_write_text</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+sc &lt;- spark_connect(master = "local")
+
+dir.create("csv-in")
+write.csv(iris, "csv-in/data.csv", row.names = FALSE)
+
+csv_path &lt;- file.path("file://", getwd(), "csv-in")
+
+stream &lt;- stream_read_csv(sc, csv_path) %&gt;% stream_write_memory("csv-out")
+
+stream_stop(stream)
+
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

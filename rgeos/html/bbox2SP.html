@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Converts a bounding box into a SpatialPolygons object.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bbox2SP {rgeos}"><tr><td>bbox2SP {rgeos}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Converts a bounding box into a SpatialPolygons object.</h2>
+
+<h3>Description</h3>
+
+<p>Converts a bounding box into a SpatialPolygons object.</p>
+
+
+<h3>Usage</h3>
+
+<pre>bbox2SP(n,s,w,e,bbox=NA,proj4string=CRS("+init=epsg:4326"))</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>the top north latitude</p>
+</td></tr>
+<tr valign="top"><td><code>s</code></td>
+<td>
+<p>the bottom south latitude</p>
+</td></tr>
+<tr valign="top"><td><code>w</code></td>
+<td>
+<p>the most western longitude</p>
+</td></tr>
+<tr valign="top"><td><code>e</code></td>
+<td>
+<p>the most eastern longitude</p>
+</td></tr>
+<tr valign="top"><td><code>bbox</code></td>
+<td>
+<p>a bounding box 2 x 2 matrix as produced by  <code><a href="../../sp/html/bbox.html">bbox</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>proj4string</code></td>
+<td>
+<p>a coordinate reference system as defined in  <code><a href="../../sp/html/CRS.html">CRS</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function converts a set of coordinates limiting a bounding box into a SpatialPolygons. It can be used for instance to clip a subset of a larger spatial object (e.g. using <code><a href="gIntersection.html">gIntersection</a></code>)
+</p>
+
+
+<h3>Value</h3>
+
+ 
+<p>An object of <code><a href="../../sp/html/SpatialPolygons.html">SpatialPolygons</a></code> class.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+library(sp)
+run &lt;- FALSE
+if (require(rgdal, quietly=TRUE)) run &lt;- TRUE
+if (run) {
+cities &lt;- readOGR(dsn=system.file("vectors", package = "rgdal")[1], layer="cities")
+n&lt;-75
+s&lt;-30
+w&lt;--40
+e&lt;-32
+myPoly&lt;-bbox2SP(n,s,e,w)
+}
+if (run) {
+plot(cities)
+plot(myPoly,border="red",add=TRUE)
+}
+if (run) {
+bb&lt;-bbox(cities)
+myPoly&lt;-bbox2SP(bbox=bb,proj4string=CRS(proj4string(cities)))
+plot(myPoly,add=TRUE,border="blue")
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rgeos</em> version 0.5-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

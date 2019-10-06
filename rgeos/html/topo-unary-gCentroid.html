@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Centroid of Geometry</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gCentroid {rgeos}"><tr><td>gCentroid {rgeos}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Centroid of Geometry</h2>
+
+<h3>Description</h3>
+
+<p>Function calculates the centroid of the given geometry.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gCentroid(spgeom, byid=FALSE, id = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>spgeom</code></td>
+<td>
+<p>sp object as defined in package sp</p>
+</td></tr>
+<tr valign="top"><td><code>byid</code></td>
+<td>
+<p>Logical determining if the function should be applied across subgeometries (TRUE) or the entire object (FALSE)</p>
+</td></tr>
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>Character vector defining id labels for the resulting geometries, if unspecified returned geometries will be labeled based on their parent geometries' labels.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Returns a SpatialPoints object of the centroid(s) for spgeom.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Roger Bivand &amp; Colin Rundel</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="topo-unary-gBoundary.html">gBoundary</a></code>
+<code><a href="topo-unary-gConvexHull.html">gConvexHull</a></code>
+<code><a href="topo-unary-gEnvelope.html">gEnvelope</a></code>
+<code><a href="topo-unary-gPointOnSurface.html">gPointOnSurface</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+x = readWKT(paste("GEOMETRYCOLLECTION(POLYGON((0 0,10 0,10 10,0 10,0 0)),",
+ "POLYGON((15 0,25 15,35 0,15 0)))"))
+
+# Centroids of both the square and circle independently
+c1 = gCentroid(x,byid=TRUE) 
+# Centroid of square and circle together
+c2 = gCentroid(x)
+
+plot(x)
+plot(c1,col='red',add=TRUE)
+plot(c2,col='blue',add=TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rgeos</em> version 0.5-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

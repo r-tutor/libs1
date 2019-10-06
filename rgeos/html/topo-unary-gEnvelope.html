@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Envelope of Geometry</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gEnvelope {rgeos}"><tr><td>gEnvelope {rgeos}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Envelope of Geometry</h2>
+
+<h3>Description</h3>
+
+<p>Function calculates the rectangular bounding box for the given geometry</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gEnvelope(spgeom, byid=FALSE, id = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>spgeom</code></td>
+<td>
+<p>sp object as defined in package sp</p>
+</td></tr>
+<tr valign="top"><td><code>byid</code></td>
+<td>
+<p>Logical determining if the function should be applied across subgeometries (TRUE) or the entire object (FALSE)</p>
+</td></tr>
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>Character vector defining id labels for the resulting geometries, if unspecified returned geometries will be labeled based on their parent geometries' labels.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Returns the rectangular bounding box as a SpatialPolygons object. If spgeom is a degenerate case (horizontal/vertical line, single point) then the function may return an object with lower dimension (SpatialLines or SpatialPoints) or an invalid polygon.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Roger Bivand &amp; Colin Rundel</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="topo-unary-gBoundary.html">gBoundary</a></code>
+<code><a href="topo-unary-gCentroid.html">gCentroid</a></code>
+<code><a href="topo-unary-gConvexHull.html">gConvexHull</a></code>
+<code><a href="topo-unary-gPointOnSurface.html">gPointOnSurface</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x = readWKT(paste("POLYGON((0 40,10 50,0 60,40 60,40 100,50 90,60 100,60",
+ "60,100 60,90 50,100 40,60 40,60 0,50 10,40 0,40 40,0 40))"))
+env = gEnvelope(x)
+
+plot(x,col='blue',border='blue')
+plot(env,add=TRUE)
+
+#Degenerate Cases
+gEnvelope(readWKT("POINT(1 1)")) #returns SpatialPoints
+gEnvelope(readWKT("LINESTRING(1 1,1 2)")) #invalid polygon
+gEnvelope(readWKT("LINESTRING(1 1,2 1)")) #invalid polygon
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rgeos</em> version 0.5-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

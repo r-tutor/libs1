@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Compile Scala sources into a Java Archive</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for spark_compile {sparklyr}"><tr><td>spark_compile {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Compile Scala sources into a Java Archive</h2>
+
+<h3>Description</h3>
+
+<p>Given a set of <code>scala</code> source files, compile them
+into a Java Archive (<code>jar</code>).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+spark_compile(jar_name, spark_home = NULL, filter = NULL,
+  scalac = NULL, jar = NULL, jar_dep = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>spark_home</code></td>
+<td>
+<p>The path to the Spark sources to be used
+alongside compilation.</p>
+</td></tr>
+<tr valign="top"><td><code>filter</code></td>
+<td>
+<p>An optional function, used to filter out discovered <code>scala</code>
+files during compilation. This can be used to ensure that e.g. certain files
+are only compiled with certain versions of Spark, and so on.</p>
+</td></tr>
+<tr valign="top"><td><code>scalac</code></td>
+<td>
+<p>The path to the <code>scalac</code> program to be used, for
+compilation of <code>scala</code> files.</p>
+</td></tr>
+<tr valign="top"><td><code>jar</code></td>
+<td>
+<p>The path to the <code>jar</code> program to be used, for
+generating of the resulting <code>jar</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>jar_dep</code></td>
+<td>
+<p>An optional list of additional <code>jar</code> dependencies.</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>The name to assign to the target <code>jar</code>.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

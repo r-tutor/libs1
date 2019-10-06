@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Reactive spark reader</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for reactiveSpark {sparklyr}"><tr><td>reactiveSpark {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Reactive spark reader</h2>
+
+<h3>Description</h3>
+
+<p>Given a spark object, returns a reactive data source for the contents
+of the spark object. This function is most useful to read Spark streams.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+reactiveSpark(x, intervalMillis = 1000, session = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An object coercable to a Spark DataFrame.</p>
+</td></tr>
+<tr valign="top"><td><code>intervalMillis</code></td>
+<td>
+<p>Approximate number of milliseconds to wait to retrieve
+updated data frame. This can be a numeric value, or a function that returns
+a numeric value.</p>
+</td></tr>
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The user session to associate this file reader with, or NULL if
+none. If non-null, the reader will automatically stop when the session ends.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

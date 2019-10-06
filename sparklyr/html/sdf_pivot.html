@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Pivot a Spark DataFrame</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sdf_pivot {sparklyr}"><tr><td>sdf_pivot {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Pivot a Spark DataFrame</h2>
+
+<h3>Description</h3>
+
+<p>Construct a pivot table over a Spark Dataframe, using a syntax similar to
+that from <code>reshape2::dcast</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sdf_pivot(x, formula, fun.aggregate = "count")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code>spark_connection</code>, <code>ml_pipeline</code>, or a <code>tbl_spark</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>formula</code></td>
+<td>
+<p>A two-sided <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> formula of the form <code>x_1 + x_2 + ... ~ y_1</code>.
+The left-hand side of the formula indicates which variables are used for grouping,
+and the right-hand side indicates which variable is used for pivoting. Currently,
+only a single pivot column is supported.</p>
+</td></tr>
+<tr valign="top"><td><code>fun.aggregate</code></td>
+<td>
+<p>How should the grouped dataset be aggregated? Can be
+a length-one character vector, giving the name of a Spark aggregation function
+to be called; a named <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> list mapping column names to an aggregation method,
+or an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function that is invoked on the grouped dataset.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(sparklyr)
+library(dplyr)
+
+sc &lt;- spark_connect(master = "local")
+iris_tbl &lt;- sdf_copy_to(sc, iris, name = "iris_tbl", overwrite = TRUE)
+
+# aggregating by mean
+iris_tbl %&gt;%
+  mutate(Petal_Width = ifelse(Petal_Width &gt; 1.5, "High", "Low" )) %&gt;%
+  sdf_pivot(Petal_Width ~ Species,
+            fun.aggregate = list(Petal_Length = "mean"))
+
+# aggregating all observations in a list
+iris_tbl %&gt;%
+  mutate(Petal_Width = ifelse(Petal_Width &gt; 1.5, "High", "Low" )) %&gt;%
+  sdf_pivot(Petal_Width ~ Species,
+            fun.aggregate = list(Petal_Length = "collect_list"))
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

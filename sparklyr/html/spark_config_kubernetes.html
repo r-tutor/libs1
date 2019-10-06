@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Kubernetes Configuration</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for spark_config_kubernetes {sparklyr}"><tr><td>spark_config_kubernetes {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Kubernetes Configuration</h2>
+
+<h3>Description</h3>
+
+<p>Convenience function to initialize a Kubernetes configuration instead
+of <code>spark_config()</code>, exposes common properties to set in Kubernetes
+clusters.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+spark_config_kubernetes(master, version = "2.3.2",
+  image = "spark:sparklyr", driver = random_string("sparklyr-"),
+  account = "spark", jars = "local:///opt/sparklyr", forward = TRUE,
+  executors = NULL, conf = NULL, timeout = 120, ports = c(8880,
+  8881, 4040), fix_config = identical(.Platform$OS.type, "windows"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>master</code></td>
+<td>
+<p>Kubernetes url to connect to, found by running <code>kubectl cluster-info</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>version</code></td>
+<td>
+<p>The version of Spark being used.</p>
+</td></tr>
+<tr valign="top"><td><code>image</code></td>
+<td>
+<p>Container image to use to launch Spark and sparklyr. Also known
+as <code>spark.kubernetes.container.image</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>driver</code></td>
+<td>
+<p>Name of the driver pod. If not set, the driver pod name is set
+to &quot;sparklyr&quot; suffixed by id to avoid name conflicts. Also known as
+<code>spark.kubernetes.driver.pod.name</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>account</code></td>
+<td>
+<p>Service account that is used when running the driver pod. The driver
+pod uses this service account when requesting executor pods from the API
+server. Also known as <code>spark.kubernetes.authenticate.driver.serviceAccountName</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>jars</code></td>
+<td>
+<p>Path to the sparklyr jars; either, a local path inside the container
+image with the sparklyr jars copied when the image was created or, a path
+accesible by the container where the sparklyr jars were copied. You can find
+a path to the sparklyr jars by running <code>system.file("java/", package = "sparklyr")</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>forward</code></td>
+<td>
+<p>Should ports used in sparklyr be forwarded automatically through Kubernetes?
+Default to <code>TRUE</code> which runs <code>kubectl port-forward</code> and <code>pkill kubectl</code>
+on disconnection.</p>
+</td></tr>
+<tr valign="top"><td><code>executors</code></td>
+<td>
+<p>Number of executors to request while connecting.</p>
+</td></tr>
+<tr valign="top"><td><code>conf</code></td>
+<td>
+<p>A named list of additional entries to add to <code>sparklyr.shell.conf</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>timeout</code></td>
+<td>
+<p>Total seconds to wait before giving up on connection.</p>
+</td></tr>
+<tr valign="top"><td><code>ports</code></td>
+<td>
+<p>Ports to forward using kubectl.</p>
+</td></tr>
+<tr valign="top"><td><code>fix_config</code></td>
+<td>
+<p>Should the spark-defaults.conf get fixed? <code>TRUE</code> for Windows.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional parameters, currently not in use.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

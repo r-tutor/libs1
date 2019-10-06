@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Read a CSV file into a Spark DataFrame</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for spark_read_csv {sparklyr}"><tr><td>spark_read_csv {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read a CSV file into a Spark DataFrame</h2>
+
+<h3>Description</h3>
+
+<p>Read a tabular data file into a Spark DataFrame.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+spark_read_csv(sc, name = NULL, path = name, header = TRUE,
+  columns = NULL, infer_schema = is.null(columns), delimiter = ",",
+  quote = "\"", escape = "\\", charset = "UTF-8",
+  null_value = NULL, options = list(), repartition = 0,
+  memory = TRUE, overwrite = TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>sc</code></td>
+<td>
+<p>A <code>spark_connection</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>The name to assign to the newly generated table.</p>
+</td></tr>
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>The path to the file. Needs to be accessible from the cluster.
+Supports the <span class="samp">"hdfs://"</span>, <span class="samp">"s3a://"</span> and <span class="samp">"file://"</span> protocols.</p>
+</td></tr>
+<tr valign="top"><td><code>header</code></td>
+<td>
+<p>Boolean; should the first row of data be used as a header?
+Defaults to <code>TRUE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>columns</code></td>
+<td>
+<p>A vector of column names or a named vector of column types.</p>
+</td></tr>
+<tr valign="top"><td><code>infer_schema</code></td>
+<td>
+<p>Boolean; should column types be automatically inferred?
+Requires one extra pass over the data. Defaults to <code>is.null(columns)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>delimiter</code></td>
+<td>
+<p>The character used to delimit each column. Defaults to <span class="samp">','</span>.</p>
+</td></tr>
+<tr valign="top"><td><code>quote</code></td>
+<td>
+<p>The character used as a quote. Defaults to <span class="samp">'"'</span>.</p>
+</td></tr>
+<tr valign="top"><td><code>escape</code></td>
+<td>
+<p>The character used to escape other characters. Defaults to <span class="samp">'\'</span>.</p>
+</td></tr>
+<tr valign="top"><td><code>charset</code></td>
+<td>
+<p>The character set. Defaults to <span class="samp">"UTF-8"</span>.</p>
+</td></tr>
+<tr valign="top"><td><code>null_value</code></td>
+<td>
+<p>The character to use for null, or missing, values. Defaults to <code>NULL</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>options</code></td>
+<td>
+<p>A list of strings with additional options.</p>
+</td></tr>
+<tr valign="top"><td><code>repartition</code></td>
+<td>
+<p>The number of partitions used to distribute the
+generated table. Use 0 (the default) to avoid partitioning.</p>
+</td></tr>
+<tr valign="top"><td><code>memory</code></td>
+<td>
+<p>Boolean; should the data be loaded eagerly into memory? (That
+is, should the table be cached?)</p>
+</td></tr>
+<tr valign="top"><td><code>overwrite</code></td>
+<td>
+<p>Boolean; overwrite the table with the given name if it
+already exists?</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments; currently unused.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>You can read data from HDFS (<code>hdfs://</code>), S3 (<code>s3a://</code>),
+as well as the local file system (<code>file://</code>).
+</p>
+<p>If you are reading from a secure S3 bucket be sure to set the following in your spark-defaults.conf
+<code>spark.hadoop.fs.s3a.access.key</code>, <code>spark.hadoop.fs.s3a.secret.key</code> or any of the methods outlined in the aws-sdk
+documentation <a href="http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html">Working with AWS credentials</a>
+In order to work with the newer <code>s3a://</code> protocol also set the values for <code>spark.hadoop.fs.s3a.impl</code> and <code>spark.hadoop.fs.s3a.endpoint </code>.
+In addition, to support v4 of the S3 api be sure to pass the <code>-Dcom.amazonaws.services.s3.enableV4</code> driver options
+for the config key <code>spark.driver.extraJavaOptions </code>
+For instructions on how to configure <code>s3n://</code> check the hadoop documentation:
+<a href="https://hadoop.apache.org/docs/stable/hadoop-aws/tools/hadoop-aws/index.html#Authentication_properties">s3n authentication properties</a>
+</p>
+<p>When <code>header</code> is <code>FALSE</code>, the column names are generated with a
+<code>V</code> prefix; e.g. <code>V1, V2, ...</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other Spark serialization routines: <code><a href="spark_load_table.html">spark_load_table</a></code>,
+<code><a href="spark_read_jdbc.html">spark_read_jdbc</a></code>,
+<code><a href="spark_read_json.html">spark_read_json</a></code>,
+<code><a href="spark_read_libsvm.html">spark_read_libsvm</a></code>,
+<code><a href="spark_read_orc.html">spark_read_orc</a></code>,
+<code><a href="spark_read_parquet.html">spark_read_parquet</a></code>,
+<code><a href="spark_read_source.html">spark_read_source</a></code>,
+<code><a href="spark_read_table.html">spark_read_table</a></code>,
+<code><a href="spark_read_text.html">spark_read_text</a></code>,
+<code><a href="spark_save_table.html">spark_save_table</a></code>,
+<code><a href="spark_write_csv.html">spark_write_csv</a></code>,
+<code><a href="spark_write_jdbc.html">spark_write_jdbc</a></code>,
+<code><a href="spark_write_json.html">spark_write_json</a></code>,
+<code><a href="spark_write_orc.html">spark_write_orc</a></code>,
+<code><a href="spark_write_parquet.html">spark_write_parquet</a></code>,
+<code><a href="spark_write_source.html">spark_write_source</a></code>,
+<code><a href="spark_write_table.html">spark_write_table</a></code>,
+<code><a href="spark_write_text.html">spark_write_text</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

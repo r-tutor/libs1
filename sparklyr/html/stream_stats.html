@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Stream Statistics</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stream_stats {sparklyr}"><tr><td>stream_stats {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Stream Statistics</h2>
+
+<h3>Description</h3>
+
+<p>Collects streaming statistics, usually, to be used with <code>stream_render()</code>
+to render streaming statistics.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stream_stats(stream, stats = list())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>stream</code></td>
+<td>
+<p>The stream to collect statistics from.</p>
+</td></tr>
+<tr valign="top"><td><code>stats</code></td>
+<td>
+<p>An optional stats object generated using <code>stream_stats()</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A stats object containing streaming statistics that can be passed
+back to the <code>stats</code> parameter to continue aggregating streaming stats.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+sc &lt;- spark_connect(master = "local")
+sdf_len(sc, 10) %&gt;%
+  spark_write_parquet(path = "parquet-in")
+
+stream &lt;- stream_read_parquet(sc, "parquet-in") %&gt;%
+ stream_write_parquet("parquet-out")
+
+stream_stats(stream)
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

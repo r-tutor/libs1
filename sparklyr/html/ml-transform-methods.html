@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Spark ML - Transform, fit, and predict methods (ml_...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ml-transform-methods {sparklyr}"><tr><td>ml-transform-methods {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Spark ML &ndash; Transform, fit, and predict methods (ml_ interface)</h2>
+
+<h3>Description</h3>
+
+<p>Methods for transformation, fit, and prediction. These are mirrors of the corresponding <a href="sdf-transform-methods.html">sdf-transform-methods</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+is_ml_transformer(x)
+
+is_ml_estimator(x)
+
+ml_fit(x, dataset, ...)
+
+ml_transform(x, dataset, ...)
+
+ml_fit_and_transform(x, dataset, ...)
+
+ml_predict(x, dataset, ...)
+
+## S3 method for class 'ml_model_classification'
+ml_predict(x, dataset,
+  probability_prefix = "probability_", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code>ml_estimator</code>, <code>ml_transformer</code> (or a list thereof), or <code>ml_model</code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>dataset</code></td>
+<td>
+<p>A <code>tbl_spark</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments; currently unused.</p>
+</td></tr>
+<tr valign="top"><td><code>probability_prefix</code></td>
+<td>
+<p>String used to prepend the class probability output columns.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These methods are
+</p>
+
+
+<h3>Value</h3>
+
+<p>When <code>x</code> is an estimator, <code>ml_fit()</code> returns a transformer whereas <code>ml_fit_and_transform()</code> returns a transformed dataset. When <code>x</code> is a transformer, <code>ml_transform()</code> and <code>ml_predict()</code> return a transformed dataset. When <code>ml_predict()</code> is called on a <code>ml_model</code> object, additional columns (e.g. probabilities in case of classification models) are appended to the transformed output for the user's convenience.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

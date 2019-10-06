@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Area of Geometry</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gArea {rgeos}"><tr><td>gArea {rgeos}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Area of Geometry</h2>
+
+<h3>Description</h3>
+
+<p>Calculates the area of the given geometry.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gArea(spgeom, byid=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>spgeom</code></td>
+<td>
+<p>sp object as defined in package sp</p>
+</td></tr>
+<tr valign="top"><td><code>byid</code></td>
+<td>
+<p>Logical determining if the function should be applied across subgeometries (TRUE) or the entire object (FALSE)</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns the area of the geometry in the units of the current projection. By definition non-[MULTI]POLYGON geometries have an area of 0. The area of a POLYGON is the area of its shell less the area of any holes. Note that this value may be different from the <code>area</code> slot of the <code>Polygons</code> class as this value does not subtract the area of any holes in the geometry.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Roger Bivand &amp; Colin Rundel</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="misc-gLength.html">gLength</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+	gArea(readWKT("POINT(1 1)"))
+	gArea(readWKT("LINESTRING(0 0,1 1,2 2)"))
+	gArea(readWKT("LINEARRING(0 0,3 0,3 3,0 3,0 0)"))
+	
+	
+	p1 = readWKT("POLYGON((0 0,3 0,3 3,0 3,0 0))")
+	p2 = readWKT("POLYGON((0 0,3 0,3 3,0 3,0 0),(1 1,2 1,2 2,1 2,1 1))")
+	
+	gArea(p1)
+	p1@polygons[[1]]@area
+	
+	gArea(p2)
+	p2@polygons[[1]]@area
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rgeos</em> version 0.5-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

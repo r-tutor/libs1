@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Runtime configuration interface for the Spark Session</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for spark_session_config {sparklyr}"><tr><td>spark_session_config {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Runtime configuration interface for the Spark Session</h2>
+
+<h3>Description</h3>
+
+<p>Retrieves or sets runtime configuration entries for the Spark Session
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+spark_session_config(sc, config = TRUE, value = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>sc</code></td>
+<td>
+<p>A <code>spark_connection</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>config</code></td>
+<td>
+<p>The configuration entry name(s) (e.g., <code>"spark.sql.shuffle.partitions"</code>).
+Defaults to <code>NULL</code> to retrieve all configuration entries.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>The configuration value to be set. Defaults to <code>NULL</code> to retrieve
+configuration entries.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

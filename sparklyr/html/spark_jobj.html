@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Retrieve a Spark JVM Object Reference</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for spark_jobj {sparklyr}"><tr><td>spark_jobj {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Retrieve a Spark JVM Object Reference</h2>
+
+<h3>Description</h3>
+
+<p>This S3 generic is used for accessing the underlying Java Virtual Machine
+(JVM) Spark objects associated with <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> objects. These objects act as
+references to Spark objects living in the JVM. Methods on these objects
+can be called with the <code><a href="invoke.html">invoke</a></code> family of functions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+spark_jobj(x, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> object containing, or wrapping, a <code>spark_jobj</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments; currently unused.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="invoke.html">invoke</a></code>, for calling methods on Java object references.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

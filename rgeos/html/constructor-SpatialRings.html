@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: create SpatialRings or SpatialRingsDataFrame</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for SpatialRings {rgeos}"><tr><td>SpatialRings {rgeos}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> create SpatialRings or SpatialRingsDataFrame</h2>
+
+<h3>Description</h3>
+
+<p> create objects of class <code>SpatialRings</code> or <code>SpatialRingsDataFrame</code> </p>
+
+
+<h3>Usage</h3>
+
+<pre> 
+Ring(coords,ID=as.character(NA))
+SpatialRings(RingList, proj4string=CRS(as.character(NA)))
+SpatialRingsDataFrame(sr, data, match.ID = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>coords</code></td>
+<td>
+<p>2-column numeric matrix with coordinates; first point (row) should
+equal last coordinates (row); if the hole argument is not given, the status of the polygon as a hole or an island will be taken from the ring direction, with clockwise meaning island, and counter-clockwise meaning hole</p>
+</td></tr>
+<tr valign="top"><td><code>ID</code></td>
+<td>
+<p>character vector of length one with identifier</p>
+</td></tr>
+<tr valign="top"><td><code>RingList</code></td>
+<td>
+<p> list with objects of class <a href="class-Ring.html">Ring-class</a></p>
+</td></tr>
+<tr valign="top"><td><code>proj4string</code></td>
+<td>
+<p>Object of class <code>"CRS"</code> holding a valid proj4 string</p>
+</td></tr>
+<tr valign="top"><td><code>sr</code></td>
+<td>
+<p> object of class <a href="class-SpatialRings.html">SpatialRings-class</a></p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p> object of class <code>data.frame</code>; the number of rows in <code>data</code>
+should equal the number of <code>Lines</code> elements in <code>sl</code></p>
+</td></tr>
+<tr valign="top"><td><code>match.ID</code></td>
+<td>
+<p>logical: (default TRUE): match SpatialLines member Lines ID slot values with data frame row names, and re-order the data frame rows if necessary</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>Ring</code> returns object of class <code>Ring</code>
+<code>SpatialRings</code> returns object of class <code>SpatialRings</code>
+<code>SpatialRingsDataFrame</code> returns object of class <code>SpatialRingsDataFrame</code>
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><a href="class-Ring.html">Ring-class</a> <a href="class-SpatialRings.html">SpatialRings-class</a> <a href="class-SpatialRingsDataFrame.html">SpatialRingsDataFrame-class</a>  </p>
+
+<hr /><div style="text-align: center;">[Package <em>rgeos</em> version 0.5-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

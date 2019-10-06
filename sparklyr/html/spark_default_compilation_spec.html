@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Default Compilation Specification for Spark Extensions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for spark_default_compilation_spec {sparklyr}"><tr><td>spark_default_compilation_spec {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Default Compilation Specification for Spark Extensions</h2>
+
+<h3>Description</h3>
+
+<p>This is the default compilation specification used for
+Spark extensions, when used with <code><a href="compile_package_jars.html">compile_package_jars</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+spark_default_compilation_spec(pkg = infer_active_package_name(),
+  locations = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>pkg</code></td>
+<td>
+<p>The package containing Spark extensions to be compiled.</p>
+</td></tr>
+<tr valign="top"><td><code>locations</code></td>
+<td>
+<p>Additional locations to scan. By default, the
+directories <code>/opt/scala</code> and <code>/usr/local/scala</code> will
+be scanned.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

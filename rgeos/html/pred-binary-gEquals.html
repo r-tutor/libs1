@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Geometry Relationships - Equality</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gEquals {rgeos}"><tr><td>gEquals {rgeos}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Geometry Relationships - Equality</h2>
+
+<h3>Description</h3>
+
+<p>Function for testing equivalence of the given geometries</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+	gEquals(spgeom1, spgeom2 = NULL, byid = FALSE, returnDense=TRUE,
+ checkValidity=FALSE)
+	gEqualsExact(spgeom1, spgeom2 = NULL, tol=0.0, byid = FALSE,
+ returnDense=TRUE, checkValidity=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>spgeom1, spgeom2</code></td>
+<td>
+<p>sp objects as defined in package sp. If spgeom2 is NULL then spgeom1 is compared to itself.</p>
+</td></tr>
+<tr valign="top"><td><code>byid</code></td>
+<td>
+<p>Logical vector determining if the function should be applied across ids (TRUE) or the entire object (FALSE) for spgeom1 and spgeom2</p>
+</td></tr>
+<tr valign="top"><td><code>tol</code></td>
+<td>
+<p>Numerical value of tolerance to use when assessing equivalence</p>
+</td></tr>
+<tr valign="top"><td><code>returnDense</code></td>
+<td>
+<p>default TRUE, if false returns a list of the length of spgeom1 of integer vectors listing the <code>1:length(spgeom2)</code> indices which would be TRUE in the dense logical matrix representation; useful when the sizes of the byid=TRUE returned matrix is very large and it is sparse; essential when the returned matrix would be too large</p>
+</td></tr>
+<tr valign="top"><td><code>checkValidity</code></td>
+<td>
+<p>default FALSE; error meesages from GEOS do not say clearly which object fails if a topology exception is encountered. If this argument is TRUE, <code>gIsValid</code> is run on each in turn in an environment in which object names are available. If objects are invalid, this is reported and those affected are named</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>gEquals</code> returns TRUE if geometries are &quot;spatially equivalent&quot; which requires that <code>spgeom1</code> is within <code>spgeom2</code> and <code>spgeom2</code> is within <code>spgeom1</code>, this ignores ordering of points within the geometries. Note that it is possible for geometries with different coordinates to be &quot;spatially equivalent&quot;.
+</p>
+<p><code>gEqualsExact</code> returns TRUE if geometries are &quot;exactly equivalent&quot; which requires that <code>spgeom1</code> and <code>spgeom1</code> are &quot;spatially equivalent&quot; and that their constituent points are in the same order.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Error messages from GEOS, in particular topology exceptions, report 0-based object order, so geom 0 is spgeom1, and geom 1 is spgeom2.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Roger Bivand &amp; Colin Rundel</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="pred-binary-gContains.html">gContains</a></code>
+<code><a href="pred-binary-gContains.html">gContainsProperly</a></code>
+<code><a href="pred-binary-gContains.html">gCovers</a></code>
+<code><a href="pred-binary-gContains.html">gCoveredBy</a></code>
+<code><a href="pred-binary-gCrosses.html">gCrosses</a></code>
+<code><a href="pred-binary-gIntersects.html">gDisjoint</a></code>
+<code><a href="pred-binary-gEquals.html">gEqualsExact</a></code>
+<code><a href="pred-binary-gIntersects.html">gIntersects</a></code>
+<code><a href="pred-binary-gCrosses.html">gOverlaps</a></code>
+<code><a href="pred-binary-gRelate.html">gRelate</a></code>
+<code><a href="pred-binary-gTouches.html">gTouches</a></code>
+<code><a href="pred-binary-gContains.html">gWithin</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+# p1 and p2 are spatially identical but not exactly identical due to point ordering
+p1=readWKT("POLYGON((0 0,1 0,1 1,0 1,0 0))")
+p2=readWKT("POLYGON((1 1,0 1,0 0,1 0,1 1))")
+p3=readWKT("POLYGON((0.01 0.01,1.01 0.01,1.01 1.01,0.01 1.01,0.01 0.01))")
+
+gEquals(p1,p2)
+gEquals(p1,p3)
+gEqualsExact(p1,p2)
+gEqualsExact(p1,p3,tol=0)
+gEqualsExact(p1,p3,tol=0.1)
+
+# pt1 and p2t are spatially identical but not exactly identical due to point ordering
+pt1 = readWKT("MULTIPOINT(1 1,2 2,3 3)")
+pt2 = readWKT("MULTIPOINT(3 3,2 2,1 1)")
+pt3 = readWKT("MULTIPOINT(1.01 1.01,2.01 2.01,3.01 3.01)")
+
+gEquals(pt1,pt2)
+gEquals(pt1,pt3)
+gEqualsExact(pt1,pt2)
+gEqualsExact(pt1,pt3,tol=0)
+gEqualsExact(pt1,pt3,tol=0.1)
+
+
+# l2 contains a point that l1 does not
+l1 = readWKT("LINESTRING (10 10, 20 20)")
+l2 = readWKT("LINESTRING (10 10, 15 15,20 20)")
+gEquals(l1,l2)
+gEqualsExact(l1,l2)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rgeos</em> version 0.5-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

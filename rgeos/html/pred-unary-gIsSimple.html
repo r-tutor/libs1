@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is Geometry Simple?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gIsSimple {rgeos}"><tr><td>gIsSimple {rgeos}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is Geometry Simple?</h2>
+
+<h3>Description</h3>
+
+<p>Function tests if the given geometry is simple</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gIsSimple(spgeom, byid = FALSE) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>spgeom</code></td>
+<td>
+<p>sp object as defined in package sp</p>
+</td></tr>
+<tr valign="top"><td><code>byid</code></td>
+<td>
+<p>Logical determining if the function should be applied across subgeometries (TRUE) or the entire object (FALSE)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Simplicity is used in reference to 0 and 1-dimensional geometries ([MULTI]POINT and [MULTI]LINESTRING) whereas Validity (<code><a href="pred-unary-gIsValid.html">gIsValid</a></code>) is used in reference to 2-dimensional geometries ([MULTI]POLYGON). 
+</p>
+<p>A POINT is always simple.
+</p>
+<p>A MULTIPOINT is simple if no two points are identical.
+</p>
+<p>A LINESTRING is simple if it does not pass through the same point twice (self intersection) except at the end points, in which case it is a ring (<code><a href="pred-unary-gIsRing.html">gIsRing</a></code>).
+</p>
+<p>A MULTILINESTRING is simple if all of its subgeometries are simple and none of the subgeometries intersect except at end points.
+</p>
+<p>A [MULTI]POLYGON is simple by definition.
+</p>
+<p>Many of the functions in rgeos expect simple/valid geometries and may exhibit unpredictable behavior if given an invalid geometry. Checking of validity/simplicity can be computationally expensive for complex geometries and so is not done by default, any new geometries should be checked.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns TRUE if the given geometry does not contain anomalous points, such as self intersection or self tangency.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Roger Bivand &amp; Colin Rundel</p>
+
+
+<h3>References</h3>
+
+<p>Validity Details:
+<a href="http://postgis.net/docs/manual-2.0/using_postgis_dbmanagement.html#OGC_Validity">http://postgis.net/docs/manual-2.0/using_postgis_dbmanagement.html#OGC_Validity</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="pred-unary-gIsEmpty.html">gIsEmpty</a></code>
+<code><a href="pred-unary-gIsRing.html">gIsRing</a></code>
+<code><a href="pred-unary-gIsValid.html">gIsValid</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# MULTIPOINT examples
+gIsSimple(readWKT("MULTIPOINT(1 1,2 2,3 3)"))
+gIsSimple(readWKT("MULTIPOINT(1 1,2 2,1 1)"))
+
+# LINESTRING examples
+l1 = readWKT("LINESTRING(0 5,3 4,2 3,5 2)")
+l2 = readWKT("LINESTRING(0 5,4 2,5 4,0 1)")
+l3 = readWKT("LINESTRING(3 5,0 4,0 2,2 0,5 1,4 4,4 5,3 5)")
+l4 = readWKT("LINESTRING(3 5,0 4,4 3,5 2,3 0,1 2,4 5,3 5)")
+
+par(mfrow=c(2,2))
+plot(l1);title(paste("Simple:",gIsSimple(l1)))
+plot(l2);title(paste("Simple:",gIsSimple(l2)))
+plot(l3);title(paste("Simple:",gIsSimple(l3)))
+plot(l4);title(paste("Simple:",gIsSimple(l4)))
+
+# MULTILINESTRING examples
+ml1 = readWKT("MULTILINESTRING((0 5,1 2,5 0),(3 5,5 4,4 1))")
+ml2 = readWKT("MULTILINESTRING((0 5,1 2,5 0),(0 5,5 4,4 1))")
+ml3 = readWKT("MULTILINESTRING((0 5,1 2,5 0),(3 5,5 4,2 0))")
+
+par(mfrow=c(1,3))
+plot(ml1);title(paste("Simple:",gIsSimple(ml1)))
+plot(ml2);title(paste("Simple:",gIsSimple(ml2)))
+plot(ml3);title(paste("Simple:",gIsSimple(ml3)))	
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rgeos</em> version 0.5-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

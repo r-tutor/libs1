@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Spark ML - Evaluators</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ml_evaluator {sparklyr}"><tr><td>ml_evaluator {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Spark ML - Evaluators</h2>
+
+<h3>Description</h3>
+
+<p>A set of functions to calculate performance metrics for prediction models. Also see the Spark ML Documentation <a href="https://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.evaluation.package">https://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.evaluation.package</a>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ml_binary_classification_evaluator(x, label_col = "label",
+  raw_prediction_col = "rawPrediction", metric_name = "areaUnderROC",
+  uid = random_string("binary_classification_evaluator_"), ...)
+
+ml_binary_classification_eval(x, label_col = "label",
+  prediction_col = "prediction", metric_name = "areaUnderROC")
+
+ml_multiclass_classification_evaluator(x, label_col = "label",
+  prediction_col = "prediction", metric_name = "f1",
+  uid = random_string("multiclass_classification_evaluator_"), ...)
+
+ml_classification_eval(x, label_col = "label",
+  prediction_col = "prediction", metric_name = "f1")
+
+ml_regression_evaluator(x, label_col = "label",
+  prediction_col = "prediction", metric_name = "rmse",
+  uid = random_string("regression_evaluator_"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code>spark_connection</code> object or a <code>tbl_spark</code> containing label and prediction columns. The latter should be the output of <code><a href="sdf-transform-methods.html">sdf_predict</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>label_col</code></td>
+<td>
+<p>Name of column string specifying which column contains the true labels or values.</p>
+</td></tr>
+<tr valign="top"><td><code>raw_prediction_col</code></td>
+<td>
+<p>Raw prediction (a.k.a. confidence) column name.</p>
+</td></tr>
+<tr valign="top"><td><code>metric_name</code></td>
+<td>
+<p>The performance metric. See details.</p>
+</td></tr>
+<tr valign="top"><td><code>uid</code></td>
+<td>
+<p>A character string used to uniquely identify the ML estimator.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments; currently unused.</p>
+</td></tr>
+<tr valign="top"><td><code>prediction_col</code></td>
+<td>
+<p>Name of the column that contains the predicted
+label or value NOT the scored probability. Column should be of type
+<code>Double</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The following metrics are supported
+</p>
+
+<ul>
+<li><p> Binary Classification: <code>areaUnderROC</code> (default) or <code>areaUnderPR</code> (not available in Spark 2.X.)
+</p>
+</li>
+<li><p> Multiclass Classification: <code>f1</code> (default), <code>precision</code>, <code>recall</code>, <code>weightedPrecision</code>, <code>weightedRecall</code> or <code>accuracy</code>; for Spark 2.X: <code>f1</code> (default), <code>weightedPrecision</code>, <code>weightedRecall</code> or <code>accuracy</code>.
+</p>
+</li>
+<li><p> Regression: <code>rmse</code> (root mean squared error, default),
+<code>mse</code> (mean squared error), <code>r2</code>, or <code>mae</code> (mean absolute error.)
+</p>
+</li></ul>
+
+<p><code>ml_binary_classification_eval()</code> is an alias for <code>ml_binary_classification_evaluator()</code> for backwards compatibility.
+</p>
+<p><code>ml_classification_eval()</code> is an alias for <code>ml_multiclass_classification_evaluator()</code> for backwards compatibility.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The calculated performance metric
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+sc &lt;- spark_connect(master = "local")
+mtcars_tbl &lt;- sdf_copy_to(sc, mtcars, name = "mtcars_tbl", overwrite = TRUE)
+
+partitions &lt;- mtcars_tbl %&gt;%
+  sdf_random_split(training = 0.7, test = 0.3, seed = 1111)
+
+mtcars_training &lt;- partitions$training
+mtcars_test &lt;- partitions$test
+
+# for multiclass classification
+rf_model &lt;- mtcars_training %&gt;%
+  ml_random_forest(cyl ~ ., type = "classification")
+
+pred &lt;- ml_predict(rf_model, mtcars_test)
+
+ml_multiclass_classification_evaluator(pred)
+
+# for regression
+rf_model &lt;- mtcars_training %&gt;%
+  ml_random_forest(cyl ~ ., type = "regression")
+
+pred &lt;- ml_predict(rf_model, mtcars_test)
+
+ml_regression_evaluator(pred, label_col = "cyl")
+
+# for binary classification
+rf_model &lt;- mtcars_training %&gt;%
+  ml_random_forest(am ~ gear + carb, type = "classification")
+
+pred &lt;- ml_predict(rf_model, mtcars_test)
+
+ml_binary_classification_evaluator(pred)
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

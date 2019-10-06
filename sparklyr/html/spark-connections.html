@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Manage Spark Connections</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for spark-connections {sparklyr}"><tr><td>spark-connections {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Manage Spark Connections</h2>
+
+<h3>Description</h3>
+
+<p>These routines allow you to manage your connections to Spark.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+spark_connect(master, spark_home = Sys.getenv("SPARK_HOME"),
+  method = c("shell", "livy", "databricks", "test", "qubole"),
+  app_name = "sparklyr", version = NULL, config = spark_config(),
+  extensions = sparklyr::registered_extensions(), ...)
+
+spark_connection_is_open(sc)
+
+spark_disconnect(sc, ...)
+
+spark_disconnect_all()
+
+spark_submit(master, file, spark_home = Sys.getenv("SPARK_HOME"),
+  app_name = "sparklyr", version = NULL, config = spark_config(),
+  extensions = sparklyr::registered_extensions(), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>master</code></td>
+<td>
+<p>Spark cluster url to connect to. Use <code>"local"</code> to
+connect to a local instance of Spark installed via
+<code><a href="spark_install.html">spark_install</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>spark_home</code></td>
+<td>
+<p>The path to a Spark installation. Defaults to the path
+provided by the <code>SPARK_HOME</code> environment variable. If
+<code>SPARK_HOME</code> is defined, it will always be used unless the
+<code>version</code> parameter is specified to force the use of a locally
+installed version.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>The method used to connect to Spark. Default connection method
+is <code>"shell"</code> to connect using spark-submit, use <code>"livy"</code> to
+perform remote connections using HTTP, or <code>"databricks"</code> when using a
+Databricks clusters.</p>
+</td></tr>
+<tr valign="top"><td><code>app_name</code></td>
+<td>
+<p>The application name to be used while running in the Spark
+cluster.</p>
+</td></tr>
+<tr valign="top"><td><code>version</code></td>
+<td>
+<p>The version of Spark to use. Required for <code>"local"</code> Spark
+connections, optional otherwise.</p>
+</td></tr>
+<tr valign="top"><td><code>config</code></td>
+<td>
+<p>Custom configuration for the generated Spark connection. See
+<code><a href="spark_config.html">spark_config</a></code> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>extensions</code></td>
+<td>
+<p>Extension packages to enable for this connection. By
+default, all packages enabled through the use of
+<code><a href="register_extension.html">sparklyr::register_extension</a></code> will be passed here.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments; currently unused.</p>
+</td></tr>
+<tr valign="top"><td><code>sc</code></td>
+<td>
+<p>A <code>spark_connection</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>Path to R source file to submit for batch execution.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When using <code>method = "livy"</code>, it is recommended to specify <code>version</code>
+parameter to improve performance by using precompiled code rather than uploading
+sources. By default, jars are downloaded from GitHub but the path to the correct
+<code>sparklyr</code> JAR can also be specified through the <code>livy.jars</code> setting.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+sc &lt;- spark_connect(master = "spark://HOST:PORT")
+connection_is_open(sc)
+
+spark_disconnect(sc)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

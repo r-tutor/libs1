@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Render Stream</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stream_render {sparklyr}"><tr><td>stream_render {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Render Stream</h2>
+
+<h3>Description</h3>
+
+<p>Collects streaming statistics to render the stream as an 'htmlwidget'.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stream_render(stream = NULL, collect = 10, stats = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>stream</code></td>
+<td>
+<p>The stream to render</p>
+</td></tr>
+<tr valign="top"><td><code>collect</code></td>
+<td>
+<p>The interval in seconds to collect data before rendering the
+'htmlwidget'.</p>
+</td></tr>
+<tr valign="top"><td><code>stats</code></td>
+<td>
+<p>Optional stream statistics collected using <code>stream_stats()</code>,
+when specified, <code>stream</code> should be omitted.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional optional arguments.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(sparklyr)
+sc &lt;- spark_connect(master = "local")
+
+dir.create("iris-in")
+write.csv(iris, "iris-in/iris.csv", row.names = FALSE)
+
+stream &lt;- stream_read_csv(sc, "iris-in/") %&gt;%
+  stream_write_csv("iris-out/")
+
+stream_render(stream)
+stream_stop(stream)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

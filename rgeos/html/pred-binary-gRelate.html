@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Geometry Relationships - Intersection Matrix Pattern (DE-9IM)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gRelate {rgeos}"><tr><td>gRelate {rgeos}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Geometry Relationships - Intersection Matrix Pattern (DE-9IM)</h2>
+
+<h3>Description</h3>
+
+<p>Determines the relationships between two geometries by comparing the intersection of Interior, Boundary and Exterior  of both geometries to each other. The results are summarized by the Dimensionally Extended 9-Intersection Matrix or DE-9IM.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+	gRelate(spgeom1, spgeom2 = NULL, pattern = NULL, byid = FALSE,
+ checkValidity=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>spgeom1, spgeom2</code></td>
+<td>
+<p>sp objects as defined in package sp. If spgeom2 is NULL then spgeom1 is compared to itself.</p>
+</td></tr>
+<tr valign="top"><td><code>byid</code></td>
+<td>
+<p>Logical vector determining if the function should be applied across ids (TRUE) or the entire object (FALSE) for spgeom1 and spgeom2</p>
+</td></tr>
+<tr valign="top"><td><code>pattern</code></td>
+<td>
+<p>Character string containing intersection matrix pattern to match against DE-9IM for given geometries. Wild card <code>*</code> or <code>*</code> characters allowed.</p>
+</td></tr>
+<tr valign="top"><td><code>checkValidity</code></td>
+<td>
+<p>default FALSE; error meesages from GEOS do not say clearly which object fails if a topology exception is encountered. If this argument is TRUE, <code>gIsValid</code> is run on each in turn in an environment in which object names are available. If objects are invalid, this is reported and those affected are named</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Each geometry is decomposed into an interior, a boundary, and an exterior region, all the resulting geometries are then tested by intersection against one another resulting in 9 total comparisons. These comparisons are summarized by the dimensions of the intersection region, as such intersection at point(s) is labeled <code>0</code>, at linestring(s) is labeled <code>1</code>, at polygons(s) is labeled <code>2</code>, and if they do not intersect labeled <code>F</code>.
+</p>
+<p>If a pattern is specified then limited matching with wildcards is possible, <code>*</code> matches any character whereas <code>T</code> matches any non-<code>F</code> character.
+</p>
+<p>See references for additional details.
+</p>
+
+
+<h3>Value</h3>
+
+<p>By default returns a 9 character string that represents the DE-9IM.
+</p>
+<p>If <code>pattern</code> returns TRUE if the pattern matches the DE-9IM.</p>
+
+
+<h3>Note</h3>
+
+<p>Error messages from GEOS, in particular topology exceptions, report 0-based object order, so geom 0 is spgeom1, and geom 1 is spgeom2.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Roger Bivand &amp; Colin Rundel</p>
+
+
+<h3>References</h3>
+
+<p>Documentation of Intersection Matrix Patterns:
+<a href="http://docs.geotools.org/stable/userguide/library/jts/dim9.html">http://docs.geotools.org/stable/userguide/library/jts/dim9.html</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="pred-binary-gContains.html">gContains</a></code>
+<code><a href="pred-binary-gContains.html">gContainsProperly</a></code>
+<code><a href="pred-binary-gContains.html">gCovers</a></code>
+<code><a href="pred-binary-gContains.html">gCoveredBy</a></code>
+<code><a href="pred-binary-gCrosses.html">gCrosses</a></code>
+<code><a href="pred-binary-gIntersects.html">gDisjoint</a></code>
+<code><a href="pred-binary-gEquals.html">gEquals</a></code>
+<code><a href="pred-binary-gEquals.html">gEqualsExact</a></code>
+<code><a href="pred-binary-gIntersects.html">gIntersects</a></code>
+<code><a href="pred-binary-gCrosses.html">gOverlaps</a></code>
+<code><a href="pred-binary-gTouches.html">gTouches</a></code>
+<code><a href="pred-binary-gContains.html">gWithin</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+	x = readWKT("POLYGON((1 0,0 1,1 2,2 1,1 0))")
+	x.inter = x
+	x.bound = gBoundary(x)
+	
+	y = readWKT("POLYGON((2 0,1 1,2 2,3 1,2 0))")
+	y.inter = y
+	y.bound = gBoundary(y)
+	
+	
+	xy.inter = gIntersection(x,y)
+	xy.inter.bound = gBoundary(xy.inter)
+	
+	xy.union = gUnion(x,y)
+	bbox = gBuffer(gEnvelope(xy.union),width=0.5,joinStyle='mitre',mitreLimit=3)
+
+	x.exter = gDifference(bbox,x)
+	y.exter = gDifference(bbox,y)
+
+	# geometry decomposition
+	par(mfrow=c(2,3))
+	plot(bbox,border='grey');plot(x,col="black",add=TRUE);title("Interior",ylab = "Polygon X")
+	plot(bbox,border='grey');plot(x.bound,col="black",add=TRUE);title("Boundary")
+	plot(bbox,border='grey');plot(x.exter,col="black",pbg='white',add=TRUE);title("Exterior")
+	plot(bbox,border='grey');plot(y,col="black",add=TRUE);title(ylab = "Polygon Y")
+	plot(bbox,border='grey');plot(y.bound,col="black",add=TRUE)
+	plot(bbox,border='grey');plot(y.exter,col="black",pbg='white',add=TRUE)
+	
+	
+	
+	defaultplot = function() {
+		plot(bbox,border='grey')
+		plot(x,add=TRUE,col='red1',border="red3")
+		plot(y,add=TRUE,col='blue1',border="blue3")		
+		plot(xy.inter,add=TRUE,col='orange1',border="orange3")
+	}
+	
+	# Dimensionally Extended 9-Intersection Matrix
+	pat = gRelate(x,y)
+	patchars = strsplit(pat,"")[[1]]
+	
+	par(mfrow=c(3,3))
+	defaultplot(); plot(gIntersection(x.inter,y.inter),add=TRUE,col='black')
+	title(paste("dim:",patchars[1]))
+	defaultplot(); plot(gIntersection(x.bound,y.inter),add=TRUE,col='black',lwd=2)
+	title(paste("dim:",patchars[2]))
+	defaultplot(); plot(gIntersection(x.exter,y.inter),add=TRUE,col='black')
+	title(paste("dim:",patchars[3]))
+	
+	defaultplot(); plot(gIntersection(x.inter,y.bound),add=TRUE,col='black',lwd=2)
+	title(paste("dim:",patchars[4]))
+	defaultplot(); plot(gIntersection(x.bound,y.bound),add=TRUE,col='black',pch=16)
+	title(paste("dim:",patchars[5]))
+	defaultplot(); plot(gIntersection(x.exter,y.bound),add=TRUE,col='black',lwd=2)
+	title(paste("dim:",patchars[6]))
+	
+	defaultplot(); plot(gIntersection(x.inter,y.exter),add=TRUE,col='black')
+	title(paste("dim:",patchars[7]))
+	defaultplot(); plot(gIntersection(x.bound,y.exter),add=TRUE,col='black',lwd=2)
+	title(paste("dim:",patchars[8]))
+	defaultplot(); plot(gIntersection(x.exter,y.exter),add=TRUE,col='black')
+	title(paste("dim:",patchars[9]))
+	
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rgeos</em> version 0.5-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

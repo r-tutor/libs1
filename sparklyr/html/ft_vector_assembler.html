@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Feature Transformation - VectorAssembler (Transformer)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ft_vector_assembler {sparklyr}"><tr><td>ft_vector_assembler {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Feature Transformation &ndash; VectorAssembler (Transformer)</h2>
+
+<h3>Description</h3>
+
+<p>Combine multiple vectors into a single row-vector; that is,
+where each row element of the newly generated column is a
+vector formed by concatenating each row element from the
+specified input columns.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ft_vector_assembler(x, input_cols = NULL, output_col = NULL,
+  uid = random_string("vector_assembler_"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code>spark_connection</code>, <code>ml_pipeline</code>, or a <code>tbl_spark</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>input_cols</code></td>
+<td>
+<p>The names of the input columns</p>
+</td></tr>
+<tr valign="top"><td><code>output_col</code></td>
+<td>
+<p>The name of the output column.</p>
+</td></tr>
+<tr valign="top"><td><code>uid</code></td>
+<td>
+<p>A character string used to uniquely identify the feature transformer.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments; currently unused.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The object returned depends on the class of <code>x</code>.
+</p>
+
+<ul>
+<li> <p><code>spark_connection</code>: When <code>x</code> is a <code>spark_connection</code>, the function returns a <code>ml_transformer</code>,
+a <code>ml_estimator</code>, or one of their subclasses. The object contains a pointer to
+a Spark <code>Transformer</code> or <code>Estimator</code> object and can be used to compose
+<code>Pipeline</code> objects.
+</p>
+</li>
+<li> <p><code>ml_pipeline</code>: When <code>x</code> is a <code>ml_pipeline</code>, the function returns a <code>ml_pipeline</code> with
+the transformer or estimator appended to the pipeline.
+</p>
+</li>
+<li> <p><code>tbl_spark</code>: When <code>x</code> is a <code>tbl_spark</code>, a transformer is constructed then
+immediately applied to the input <code>tbl_spark</code>, returning a <code>tbl_spark</code>
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p>See <a href="http://spark.apache.org/docs/latest/ml-features.html">http://spark.apache.org/docs/latest/ml-features.html</a> for
+more information on the set of transformations available for DataFrame
+columns in Spark.
+</p>
+<p>Other feature transformers: <code><a href="ft_binarizer.html">ft_binarizer</a></code>,
+<code><a href="ft_bucketizer.html">ft_bucketizer</a></code>,
+<code><a href="ft_chisq_selector.html">ft_chisq_selector</a></code>,
+<code><a href="ft_count_vectorizer.html">ft_count_vectorizer</a></code>, <code><a href="ft_dct.html">ft_dct</a></code>,
+<code><a href="ft_elementwise_product.html">ft_elementwise_product</a></code>,
+<code><a href="ft_feature_hasher.html">ft_feature_hasher</a></code>,
+<code><a href="ft_hashing_tf.html">ft_hashing_tf</a></code>, <code><a href="ft_idf.html">ft_idf</a></code>,
+<code><a href="ft_imputer.html">ft_imputer</a></code>,
+<code><a href="ft_index_to_string.html">ft_index_to_string</a></code>,
+<code><a href="ft_interaction.html">ft_interaction</a></code>, <code><a href="ft_lsh.html">ft_lsh</a></code>,
+<code><a href="ft_max_abs_scaler.html">ft_max_abs_scaler</a></code>,
+<code><a href="ft_min_max_scaler.html">ft_min_max_scaler</a></code>, <code><a href="ft_ngram.html">ft_ngram</a></code>,
+<code><a href="ft_normalizer.html">ft_normalizer</a></code>,
+<code><a href="ft_one_hot_encoder_estimator.html">ft_one_hot_encoder_estimator</a></code>,
+<code><a href="ft_one_hot_encoder.html">ft_one_hot_encoder</a></code>, <code><a href="ft_pca.html">ft_pca</a></code>,
+<code><a href="ft_polynomial_expansion.html">ft_polynomial_expansion</a></code>,
+<code><a href="ft_quantile_discretizer.html">ft_quantile_discretizer</a></code>,
+<code><a href="ft_r_formula.html">ft_r_formula</a></code>,
+<code><a href="ft_regex_tokenizer.html">ft_regex_tokenizer</a></code>,
+<code><a href="sql-transformer.html">ft_sql_transformer</a></code>,
+<code><a href="ft_standard_scaler.html">ft_standard_scaler</a></code>,
+<code><a href="ft_stop_words_remover.html">ft_stop_words_remover</a></code>,
+<code><a href="ft_string_indexer.html">ft_string_indexer</a></code>,
+<code><a href="ft_tokenizer.html">ft_tokenizer</a></code>,
+<code><a href="ft_vector_indexer.html">ft_vector_indexer</a></code>,
+<code><a href="ft_vector_slicer.html">ft_vector_slicer</a></code>, <code><a href="ft_word2vec.html">ft_word2vec</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

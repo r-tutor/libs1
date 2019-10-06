@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Spark ML - Generalized Linear Regression</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ml_generalized_linear_regression {sparklyr}"><tr><td>ml_generalized_linear_regression {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Spark ML &ndash; Generalized Linear Regression</h2>
+
+<h3>Description</h3>
+
+<p>Perform regression using Generalized Linear Model (GLM).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ml_generalized_linear_regression(x, formula = NULL,
+  family = "gaussian", link = NULL, fit_intercept = TRUE,
+  offset_col = NULL, link_power = NULL, link_prediction_col = NULL,
+  reg_param = 0, max_iter = 25, weight_col = NULL, solver = "irls",
+  tol = 1e-06, variance_power = 0, features_col = "features",
+  label_col = "label", prediction_col = "prediction",
+  uid = random_string("generalized_linear_regression_"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A <code>spark_connection</code>, <code>ml_pipeline</code>, or a <code>tbl_spark</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>formula</code></td>
+<td>
+<p>Used when <code>x</code> is a <code>tbl_spark</code>. R formula as a character string or a formula. This is used to transform the input dataframe before fitting, see <a href="ft_r_formula.html">ft_r_formula</a> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>family</code></td>
+<td>
+<p>Name of family which is a description of the error distribution to be used in the model. Supported options: &quot;gaussian&quot;, &quot;binomial&quot;, &quot;poisson&quot;, &quot;gamma&quot; and &quot;tweedie&quot;. Default is &quot;gaussian&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>link</code></td>
+<td>
+<p>Name of link function which provides the relationship between the linear predictor and the mean of the distribution function. See for supported link functions.</p>
+</td></tr>
+<tr valign="top"><td><code>fit_intercept</code></td>
+<td>
+<p>Boolean; should the model be fit with an intercept term?</p>
+</td></tr>
+<tr valign="top"><td><code>offset_col</code></td>
+<td>
+<p>Offset column name. If this is not set, we treat all instance offsets as 0.0. The feature specified as offset has a constant coefficient of 1.0.</p>
+</td></tr>
+<tr valign="top"><td><code>link_power</code></td>
+<td>
+<p>Index in the power link function. Only applicable to the Tweedie family. Note that link power 0, 1, -1 or 0.5 corresponds to the Log, Identity, Inverse or Sqrt link, respectively. When not set, this value defaults to 1 - variancePower, which matches the R &quot;statmod&quot; package.</p>
+</td></tr>
+<tr valign="top"><td><code>link_prediction_col</code></td>
+<td>
+<p>Link prediction (linear predictor) column name. Default is not set, which means we do not output link prediction.</p>
+</td></tr>
+<tr valign="top"><td><code>reg_param</code></td>
+<td>
+<p>Regularization parameter (aka lambda)</p>
+</td></tr>
+<tr valign="top"><td><code>max_iter</code></td>
+<td>
+<p>The maximum number of iterations to use.</p>
+</td></tr>
+<tr valign="top"><td><code>weight_col</code></td>
+<td>
+<p>The name of the column to use as weights for the model fit.</p>
+</td></tr>
+<tr valign="top"><td><code>solver</code></td>
+<td>
+<p>Solver algorithm for optimization.</p>
+</td></tr>
+<tr valign="top"><td><code>tol</code></td>
+<td>
+<p>Param for the convergence tolerance for iterative algorithms.</p>
+</td></tr>
+<tr valign="top"><td><code>variance_power</code></td>
+<td>
+<p>Power in the variance function of the Tweedie distribution which provides the relationship between the variance and mean of the distribution. Only applicable to the Tweedie family. (see <a href="https://en.wikipedia.org/wiki/Tweedie_distribution">Tweedie Distribution (Wikipedia)</a>) Supported values: 0 and [1, Inf). Note that variance power 0, 1, or 2 corresponds to the Gaussian, Poisson or Gamma family, respectively.</p>
+</td></tr>
+<tr valign="top"><td><code>features_col</code></td>
+<td>
+<p>Features column name, as a length-one character vector. The column should be single vector column of numeric values. Usually this column is output by <code><a href="ft_r_formula.html">ft_r_formula</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>label_col</code></td>
+<td>
+<p>Label column name. The column should be a numeric column. Usually this column is output by <code><a href="ft_r_formula.html">ft_r_formula</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>prediction_col</code></td>
+<td>
+<p>Prediction column name.</p>
+</td></tr>
+<tr valign="top"><td><code>uid</code></td>
+<td>
+<p>A character string used to uniquely identify the ML estimator.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Optional arguments; see Details.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When <code>x</code> is a <code>tbl_spark</code> and <code>formula</code> (alternatively, <code>response</code> and <code>features</code>) is specified, the function returns a <code>ml_model</code> object wrapping a <code>ml_pipeline_model</code> which contains data pre-processing transformers, the ML predictor, and, for classification models, a post-processing transformer that converts predictions into class labels. For classification, an optional argument <code>predicted_label_col</code> (defaults to <code>"predicted_label"</code>) can be used to specify the name of the predicted label column. In addition to the fitted <code>ml_pipeline_model</code>, <code>ml_model</code> objects also contain a <code>ml_pipeline</code> object where the ML predictor stage is an estimator ready to be fit against data. This is utilized by <code><a href="ml-persistence.html">ml_save</a></code> with <code>type = "pipeline"</code> to faciliate model refresh workflows.
+</p>
+<p>Valid link functions for each family is listed below. The first link function of each family is the default one.
+</p>
+
+<ul>
+<li><p> gaussian: &quot;identity&quot;, &quot;log&quot;, &quot;inverse&quot;
+</p>
+</li>
+<li><p> binomial: &quot;logit&quot;, &quot;probit&quot;, &quot;loglog&quot;
+</p>
+</li>
+<li><p> poisson: &quot;log&quot;, &quot;identity&quot;, &quot;sqrt&quot;
+</p>
+</li>
+<li><p> gamma: &quot;inverse&quot;, &quot;identity&quot;, &quot;log&quot;
+</p>
+</li>
+<li><p> tweedie: power link function specified through <code>link_power</code>. The default link power in the tweedie family is <code>1 - variance_power</code>.
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>The object returned depends on the class of <code>x</code>.
+</p>
+
+<ul>
+<li> <p><code>spark_connection</code>: When <code>x</code> is a <code>spark_connection</code>, the function returns an instance of a <code>ml_estimator</code> object. The object contains a pointer to
+a Spark <code>Predictor</code> object and can be used to compose
+<code>Pipeline</code> objects.
+</p>
+</li>
+<li> <p><code>ml_pipeline</code>: When <code>x</code> is a <code>ml_pipeline</code>, the function returns a <code>ml_pipeline</code> with
+the predictor appended to the pipeline.
+</p>
+</li>
+<li> <p><code>tbl_spark</code>: When <code>x</code> is a <code>tbl_spark</code>, a predictor is constructed then
+immediately fit with the input <code>tbl_spark</code>, returning a prediction model.
+</p>
+</li>
+<li> <p><code>tbl_spark</code>, with <code>formula</code>: specified When <code>formula</code>
+is specified, the input <code>tbl_spark</code> is first transformed using a
+<code>RFormula</code> transformer before being fit by
+the predictor. The object returned in this case is a <code>ml_model</code> which is a
+wrapper of a <code>ml_pipeline_model</code>.
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p>See <a href="http://spark.apache.org/docs/latest/ml-classification-regression.html">http://spark.apache.org/docs/latest/ml-classification-regression.html</a> for
+more information on the set of supervised learning algorithms.
+</p>
+<p>Other ml algorithms: <code><a href="ml_aft_survival_regression.html">ml_aft_survival_regression</a></code>,
+<code><a href="ml_decision_tree.html">ml_decision_tree_classifier</a></code>,
+<code><a href="ml_gradient_boosted_trees.html">ml_gbt_classifier</a></code>,
+<code><a href="ml_isotonic_regression.html">ml_isotonic_regression</a></code>,
+<code><a href="ml_linear_regression.html">ml_linear_regression</a></code>,
+<code><a href="ml_linear_svc.html">ml_linear_svc</a></code>,
+<code><a href="ml_logistic_regression.html">ml_logistic_regression</a></code>,
+<code><a href="ml_multilayer_perceptron_classifier.html">ml_multilayer_perceptron_classifier</a></code>,
+<code><a href="ml_naive_bayes.html">ml_naive_bayes</a></code>,
+<code><a href="ml_one_vs_rest.html">ml_one_vs_rest</a></code>,
+<code><a href="ml_random_forest.html">ml_random_forest_classifier</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(sparklyr)
+
+sc &lt;- spark_connect(master = "local")
+mtcars_tbl &lt;- sdf_copy_to(sc, mtcars, name = "mtcars_tbl", overwrite = TRUE)
+
+partitions &lt;- mtcars_tbl %&gt;%
+  sdf_random_split(training = 0.7, test = 0.3, seed = 1111)
+
+mtcars_training &lt;- partitions$training
+mtcars_test &lt;- partitions$test
+
+# Specify the grid
+family &lt;- c("gaussian", "gamma", "poisson")
+link &lt;- c("identity", "log")
+family_link &lt;- expand.grid(family = family, link = link, stringsAsFactors = FALSE)
+family_link &lt;- data.frame(family_link, rmse = 0)
+
+# Train the models
+for (i in 1:nrow(family_link)) {
+  glm_model &lt;- mtcars_training %&gt;%
+    ml_generalized_linear_regression(mpg ~ .,
+      family = family_link[i, 1],
+      link = family_link[i, 2]
+    )
+
+  pred &lt;- ml_predict(glm_model, mtcars_test)
+  family_link[i, 3] &lt;- ml_regression_evaluator(pred, label_col = "mpg")
+}
+
+family_link
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

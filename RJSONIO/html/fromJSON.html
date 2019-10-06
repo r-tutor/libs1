@@ -1,0 +1,358 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert JSON content to R objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for fromJSON {RJSONIO}"><tr><td>fromJSON {RJSONIO}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert JSON content to R objects</h2>
+
+<h3>Description</h3>
+
+<p>This function and its methods read content in JSON format
+and de-serializes it into R objects.
+JSON content is made up of logicals, integers, real numbers, strings,
+arrays of these and associative arrays/hash tables using <code>key:
+    value</code> pairs.
+These map very naturally to R data types (logical, integer, numeric,
+character,  and named lists).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+fromJSON(content, handler = NULL,
+          default.size = 100, depth = 150L, allowComments = TRUE,
+           asText = isContent(content), data = NULL,
+            maxChar = c(0L, nchar(content)), simplify = Strict,
+             nullValue = NULL, simplifyWithNames = TRUE,
+              encoding = NA_character_, stringFun = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>content</code></td>
+<td>
+<p>the JSON content. This can be the name of a file
+or the content itself as a character string.
+We will add support for connections in the near future.
+</p>
+</td></tr>
+<tr valign="top"><td><code>handler</code></td>
+<td>
+<p>an R object that is responsible for processing
+each individual token/element within the JSON content.
+By default, this is <code>NULL</code> and we use the fast libjson parsing approach.
+Unless you want to customize the processing of the nodes in the tree, use
+<code>NULL</code>.
+This can be an R function, a list of functions with class
+<code>"JSONParserHandler"</code> having  <code>update</code> and <code>value</code>
+elements, or the address of a native (C) routine.
+In the case of the latter, the <code>data</code> parameter can be used
+to specify an object that is passed to the C routine each time it
+is called.  This will commonly be an <code>externalptr</code> object.
+</p>
+</td></tr>
+<tr valign="top"><td><code>default.size</code></td>
+<td>
+<p>a number giving the default buffer size to use for
+arrays and objects in an effort to avoid reallocating each time we
+add a new element.</p>
+</td></tr>
+<tr valign="top"><td><code>depth</code></td>
+<td>
+<p>the maximum number of nested JSON levels, i.e. arrays and
+objects within arrays and objects. </p>
+</td></tr>
+<tr valign="top"><td><code>allowComments</code></td>
+<td>
+<p>a logical value indicating whether to allow
+C-style comments within the JSON content or to raise an error if
+they are encountered.</p>
+</td></tr>
+<tr valign="top"><td><code>asText</code></td>
+<td>
+<p>a logical value indicating whether the value of the <code>content</code>
+argument should be treated as the JSON content, i.e. read directly
+rather than considered the name of a file.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>a value that is only used when the value of
+<code>handler</code> is a native (C) routine.
+In this case, the value is passed in each call to that C routine
+by the JSON tokenizer.
+</p>
+</td></tr>
+<tr valign="top"><td><code>maxChar</code></td>
+<td>
+<p>an integer vector of length 2 giving the start and end
+offsets in the character string to be processed. This allows the
+caller to specify a subset of the string to process without explicitly
+having to make a copy of the substring. </p>
+</td></tr>
+<tr valign="top"><td><code>simplify</code></td>
+<td>
+<p>either a logical value or a number, e.g. the value of the variable <code>Strict</code> (the
+default).  This  controls whether we attempt to
+collapse collections/arrays of homogeneous scalar elements to R
+vectors.
+If this is <code>FALSE</code>, no effort to combine scalars is made and they
+remain as separate list elements.
+If this is <code>TRUE</code>, then logicals, numbers and strings are
+collapsed to their common types in the same manner as <code>c</code>.
+The value  <code>Strict</code> does attempt to collapse collections of
+scalars but only if they are all of the same type, i.e. all strings,
+all numbers or all logicals.
+If we want to collapse numbers, but not logicals or characters,
+we can use <code>StrictNumeric</code>. Similarly, to collapse
+logicals but not numeric or character collections, we use
+<code>StrictLogical</code>. And, to collapse only character collections,
+we use <code>StrictCharacter</code>. If we want to collapse two types
+but not a third, we add the two values, e.g.
+<code>StrictLogical + StrictNumeric</code>, or
+pass them as a vector <code>c(StrictLogical, StrictNumeric)</code>.
+<code>Strict</code> is merely the combination of all 3 of the individual
+strict variables.
+
+Currently this is only implemented when the caller does not provide
+a handler and in the C code.
+</p>
+</td></tr>
+<tr valign="top"><td><code>nullValue</code></td>
+<td>
+<p>an R value that is used when we encounter
+a JSON <code>null</code> value in the JSON content.
+This can be used to map <code>null</code> to something more R-like
+such as <code>NA</code>.  This can be an arbitrary R object.
+</p>
+</td></tr>
+<tr valign="top"><td><code>simplifyWithNames</code></td>
+<td>
+<p> a logical value that controls whether we
+attempt to collapse collections if the elements have names in the JSON
+content, i.e. a dictionary/associative array.  If this is
+<code>TRUE</code>, then we consider collapsing according to the value of
+<code>simplify</code>.  If this is <code>FALSE</code>, if the collection has
+names, we do not attempt to simplify.
+</p>
+</td></tr>
+<tr valign="top"><td><code>encoding</code></td>
+<td>
+<p>the encoding for the content. This is used to ensure
+the encoding of any resulting strings/character vectors have this
+encoding.
+The default for this value is to use the same encoding as the input content.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional parameters for methods.</p>
+</td></tr>
+<tr valign="top"><td><code>stringFun</code></td>
+<td>
+<p>an R function or a compiled routine (by address or name).
+The purpose of this is to process every string as it is encountered in the 
+JSON content and to either convert return it as-is, or to convert it to 
+a suitable R value.  This, for example, might convert strings of the form
+&quot;/new Date(2313213)/&quot; or &quot;/Date(12312312)/&quot;.  
+The result is placed in the 
+R object being generated from the JSON content where the original string would appear.
+So this allows us to handle strings with a special meaning.
+</p>
+<p>If this is an R function, it is passed a single argument - the value of the string - and it can return that or
+any other R object, presumably derived from that original string. 
+If a compiled routine is specified, it can be one of two types. 
+Both take a simple C string.  
+The default type returns a <code>SEXP</code>, i.e. an R object.
+If the class of <code>stringFun</code> is either <code>AsIs</code> or <code>NativeStringRoutine</code>,
+then that routine must return a C string, i.e. a char *. This will
+then be converted to an R character vector of length 1, using the
+default encoding given by <code>encoding</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An R object created by mapping the JSON content
+to its R equivalent.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Duncan Temple Lang &lt;duncan@wald.ucdavis.edu</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.json.org">http://www.json.org</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="toJSON.html">toJSON</a></code>
+the non-exported collector function
+<code>{RJSONIO:::basicJSONHandler}</code>.  
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+  fromJSON(I(toJSON(1:10)))
+
+  fromJSON(I(toJSON(1:10 + .5)))
+
+  fromJSON(I(toJSON(c(TRUE, FALSE, FALSE, TRUE))))
+
+  x = fromJSON('{"ok":true,"id":"x123","rev":"1-1794908527"}')
+
+
+   # Reading from a connection. It is a text connection so we could
+   # just read the text directly, but this could be a dynamic connection.
+  m = matrix(1:27, 9, 3)
+  txt = toJSON(m)
+  con = textConnection(txt)
+  identical(m, fromJSON(con)) # not true! fromJSON() returns just a list.
+
+    # Use a connection and move the cursor ahead to skip over some lines.
+  f = system.file("sampleData", "obj1.json", package = "RJSONIO")
+  con = file(f, "r")
+  readLines(con, 1)
+  fromJSON(con)
+  close(con)
+
+
+  f = system.file("sampleData", "embedded.json", package = "RJSONIO")
+  con = file(f, "r")
+  readLines(con, 1)  # eat the first line
+  fromJSON(con, maxNumLines = 4)
+  close(con)
+
+## Not run: 
+if(require(rjson)) {
+    # We see an approximately a factor of 3.9 speed up when we use
+    # this approach that mixes C-level tokenization and an R callback
+    # function to gather the results into objects.
+    
+  f = system.file("sampleData", "usaPolygons.as", package = "RJSONIO")
+  t1 = system.time(a &lt;- RJSONIO:::fromJSON(f))
+  t2 = system.time(b &lt;- fromJSON(paste(readLines(f), collapse = "\n")))
+}
+
+## End(Not run)
+    # Use a C routine
+  fromJSON(I("[1, 2, 3, 4]"),
+           getNativeSymbolInfo("R_json_testNativeCallback", "RJSONIO"))
+
+    # Use a C routine that populates an R integer vector with the
+    # elements read from the JSON array. Note that we must ensure
+    # that the array is big enough.
+  fromJSON(I("[1, 2, 3, 4]"),
+           getNativeSymbolInfo("R_json_IntegerArrayCallback", PACKAGE = "RJSONIO"),
+           data = rep(1L, 5))
+
+  x = fromJSON(I("[1.1, 2.2, 3.3, 4.4]"),
+               getNativeSymbolInfo("R_json_RealArrayCallback", PACKAGE = "RJSONIO"),
+                data = rep(1, 5))
+  length(x) = 4
+
+
+    # This illustrates a "specialized" handler which knows what it is
+    #  expecting and pre-allocates the answer
+    # This then populates the answer with the values.
+    # The speed improvement is 1.8 versus "infinity"!
+
+  x = rnorm(1000000)
+  str = toJSON(x, digits = 6)
+  
+  fromJSON(I(str),
+           getNativeSymbolInfo("R_json_RealArrayCallback", PACKAGE = "RJSONIO"),
+           data = numeric(length(x)))
+
+
+    # This is another example of very fast reading of specific JSON.
+  x = matrix(rnorm(1000000), 1000, 1000)
+  str = toJSON(x, digits = 6)
+  
+  v = fromJSON(I(str),
+           getNativeSymbolInfo("R_json_RealArrayCallback", PACKAGE = "RJSONIO"),
+           data = matrix(0, 1000, 1000))
+
+
+    # nulls and NAs
+  fromJSON("{ 'abc': 1, 'def': 23, 'xyz': null, 'ooo': 4}", nullValue = NA)
+  fromJSON("{ 'abc': 1, 'def': 23, 'xyz': null, 'ooo': 4}", nullValue =  NULL) # default
+
+  fromJSON("[1, 2, 3, null, 4]", nullValue = NA)
+  fromJSON("[1, 2, 3, null, 4]", nullValue = NULL)
+
+
+   # we can supply a complex object for null if we ever should need to.
+  fromJSON('[ 1, 2, null]', nullValue = list(a = 1, b = 1:10))[[3]]
+
+
+  # Using StrictNumeric, etc.
+  x = list(sub1 = list(a = 1:10, b = 100, c = 1000),
+           sub2 = list(animal1 = "ape", animal2 = "bear", animal3 = "cat"),
+           sub3 = rep(c(TRUE, FALSE), 3))
+  js = toJSON(x)
+
+  fromJSON(js)
+    # leave character strings uncollapsed
+  fromJSON(js, simplify = StrictNumeric + StrictLogical)
+  fromJSON(js, simplify = c(StrictNumeric, StrictLogical))
+
+
+  fromJSON(js, simplifyWithNames = FALSE)
+  fromJSON(js, simplifyWithNames = TRUE)
+
+#######
+#  stringFun
+txt = '{ "magnitude": 3.8, 
+         "longitude": -125.012, 
+         "latitude": 40.382,
+         "date":  "new Date(1335515917000)", 
+         "when": "/Date(1335515917000)/", 
+         "country": "USA", 
+         "verified": true
+       }'
+
+convertJSONDate = 
+function(x)
+{
+   if(grepl("/?(new )?Date\\(", x)) {
+      val = gsub(".*Date\\(([0-9]+)\\).*", "\1", x)
+      structure(as.numeric(val)/1000, class = c("POSIXct", "POSIXt"))
+   } else
+      x
+}
+
+fromJSON(txt, stringFun = convertJSONDate)
+
+ #  A C routine for converting dates
+jtxt = '[ 1, "/new Date(12312313)", "/Date(12312313)"]'
+ans = fromJSON(jtxt)
+ans = fromJSON(jtxt, stringFun = "R_json_dateStringOp")
+
+ # A C routine that returns a char * - leaves strings as is
+c = fromJSON(jtxt, stringFun = I("dummyStringOperation"))
+c = fromJSON(jtxt, stringFun = I(getNativeSymbolInfo("dummyStringOperation")))
+c = fromJSON(jtxt, stringFun =
+                     I(getNativeSymbolInfo("dummyStringOperation")$address))
+
+  # I() or class = "NativeStringRoutine".
+c = fromJSON(jtxt, stringFun =
+                      structure("dummyStringOperation",
+                                class = "NativeStringRoutine"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RJSONIO</em> version 1.3-1.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

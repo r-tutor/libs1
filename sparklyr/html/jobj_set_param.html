@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Parameter Setting for JVM Objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for jobj_set_param {sparklyr}"><tr><td>jobj_set_param {sparklyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Parameter Setting for JVM Objects</h2>
+
+<h3>Description</h3>
+
+<p>Sets a parameter value for a pipeline stage object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+jobj_set_param(jobj, setter, value, min_version = NULL, default = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>jobj</code></td>
+<td>
+<p>A pipeline stage jobj.</p>
+</td></tr>
+<tr valign="top"><td><code>setter</code></td>
+<td>
+<p>The name of the setter method as a string.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>The value to be set.</p>
+</td></tr>
+<tr valign="top"><td><code>min_version</code></td>
+<td>
+<p>The minimum required Spark version for this parameter to be valid.</p>
+</td></tr>
+<tr valign="top"><td><code>default</code></td>
+<td>
+<p>The default value of the parameter, to be used together with 'min_version'.
+An error is thrown if the user's Spark version is older than 'min_version' and 'value'
+differs from 'default'.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+</body></html>
