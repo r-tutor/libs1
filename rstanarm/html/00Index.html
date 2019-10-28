@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;rstanarm&rsquo; version 2.18.2</h2>
+</div><h2>Documentation for package &lsquo;rstanarm&rsquo; version 2.19.2</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 <li><a href="../doc/index.html">User guides, package vignettes and other documentation.</a></li>
@@ -53,7 +53,7 @@
 
 <table width="100%">
 <tr><td style="width: 25%;"><a href="adapt_delta.html">adapt_delta</a></td>
-<td>Target average acceptance probability</td></tr>
+<td>'adapt_delta': Target average acceptance probability</td></tr>
 <tr><td style="width: 25%;"><a href="as.matrix.stanreg.html">as.array.stanreg</a></td>
 <td>Extract the posterior sample</td></tr>
 <tr><td style="width: 25%;"><a href="as.matrix.stanreg.html">as.data.frame.stanreg</a></td>
@@ -72,9 +72,9 @@
 
 <table width="100%">
 <tr><td style="width: 25%;"><a href="bayes_R2.stanreg.html">bayes_R2</a></td>
-<td>Compute a Bayesian version of R-squared for regression models</td></tr>
+<td>Compute a Bayesian version of R-squared or LOO-adjusted R-squared for regression models.</td></tr>
 <tr><td style="width: 25%;"><a href="bayes_R2.stanreg.html">bayes_R2.stanreg</a></td>
-<td>Compute a Bayesian version of R-squared for regression models</td></tr>
+<td>Compute a Bayesian version of R-squared or LOO-adjusted R-squared for regression models.</td></tr>
 <tr><td style="width: 25%;"><a href="rstanarm-datasets.html">bball1970</a></td>
 <td>Datasets for rstanarm examples</td></tr>
 <tr><td style="width: 25%;"><a href="rstanarm-datasets.html">bball2006</a></td>
@@ -145,8 +145,10 @@
 <h2><a name="K">-- K --</a></h2>
 
 <table width="100%">
-<tr><td style="width: 25%;"><a href="loo.stanreg.html">kfold</a></td>
-<td>Information criteria and cross-validation</td></tr>
+<tr><td style="width: 25%;"><a href="kfold.stanreg.html">kfold</a></td>
+<td>K-fold cross-validation</td></tr>
+<tr><td style="width: 25%;"><a href="kfold.stanreg.html">kfold.stanreg</a></td>
+<td>K-fold cross-validation</td></tr>
 <tr><td style="width: 25%;"><a href="rstanarm-datasets.html">kidiq</a></td>
 <td>Datasets for rstanarm examples</td></tr>
 </table>
@@ -176,6 +178,12 @@
 <td>Information criteria and cross-validation</td></tr>
 <tr><td style="width: 25%;"><a href="loo.stanreg.html">loo.stanreg</a></td>
 <td>Information criteria and cross-validation</td></tr>
+<tr><td style="width: 25%;"><a href="loo.stanreg.html">loo_compare</a></td>
+<td>Information criteria and cross-validation</td></tr>
+<tr><td style="width: 25%;"><a href="loo.stanreg.html">loo_compare.stanreg</a></td>
+<td>Information criteria and cross-validation</td></tr>
+<tr><td style="width: 25%;"><a href="loo.stanreg.html">loo_compare.stanreg_list</a></td>
+<td>Information criteria and cross-validation</td></tr>
 <tr><td style="width: 25%;"><a href="loo_predict.stanreg.html">loo_linpred</a></td>
 <td>Compute weighted expectations using LOO</td></tr>
 <tr><td style="width: 25%;"><a href="loo_predict.stanreg.html">loo_linpred.stanreg</a></td>
@@ -192,6 +200,10 @@
 <td>Compute weighted expectations using LOO</td></tr>
 <tr><td style="width: 25%;"><a href="loo_predict.stanreg.html">loo_predictive_interval.stanreg</a></td>
 <td>Compute weighted expectations using LOO</td></tr>
+<tr><td style="width: 25%;"><a href="bayes_R2.stanreg.html">loo_R2</a></td>
+<td>Compute a Bayesian version of R-squared or LOO-adjusted R-squared for regression models.</td></tr>
+<tr><td style="width: 25%;"><a href="bayes_R2.stanreg.html">loo_R2.stanreg</a></td>
+<td>Compute a Bayesian version of R-squared or LOO-adjusted R-squared for regression models.</td></tr>
 </table>
 
 <h2><a name="M">-- M --</a></h2>
@@ -212,10 +224,16 @@
 <td>Methods for stanmvreg objects</td></tr>
 <tr><td style="width: 25%;"><a href="stanreg-methods.html">ngrps.stanreg</a></td>
 <td>Methods for stanreg objects</td></tr>
+<tr><td style="width: 25%;"><a href="stanreg-methods.html">nobs.stanmvreg</a></td>
+<td>Methods for stanreg objects</td></tr>
 <tr><td style="width: 25%;"><a href="stanreg-methods.html">nobs.stanreg</a></td>
 <td>Methods for stanreg objects</td></tr>
 <tr><td style="width: 25%;"><a href="priors.html">normal</a></td>
 <td>Prior distributions and options</td></tr>
+<tr><td style="width: 25%;"><a href="stanreg-methods.html">nsamples</a></td>
+<td>Methods for stanreg objects</td></tr>
+<tr><td style="width: 25%;"><a href="stanreg-methods.html">nsamples.stanreg</a></td>
+<td>Methods for stanreg objects</td></tr>
 </table>
 
 <h2><a name="P">-- P --</a></h2>
@@ -287,6 +305,8 @@
 <td>Print method for stanreg objects</td></tr>
 <tr><td style="width: 25%;"><a href="print.stanreg.html">print.stanreg</a></td>
 <td>Print method for stanreg objects</td></tr>
+<tr><td style="width: 25%;"><a href="stanreg_list.html">print.stanreg_list</a></td>
+<td>Create lists of fitted model objects, combine them, or append new models to existing lists of models.</td></tr>
 <tr><td style="width: 25%;"><a href="summary.stanreg.html">print.summary.stanmvreg</a></td>
 <td>Summary method for stanreg objects</td></tr>
 <tr><td style="width: 25%;"><a href="summary.stanreg.html">print.summary.stanreg</a></td>
@@ -353,17 +373,17 @@
 <tr><td style="width: 25%;"><a href="stanreg-methods.html">sigma.stanreg</a></td>
 <td>Methods for stanreg objects</td></tr>
 <tr><td style="width: 25%;"><a href="stanreg_list.html">stanjm_list</a></td>
-<td>Create a list of fitted model objects</td></tr>
+<td>Create lists of fitted model objects, combine them, or append new models to existing lists of models.</td></tr>
 <tr><td style="width: 25%;"><a href="stanmvreg-methods.html">stanmvreg-methods</a></td>
 <td>Methods for stanmvreg objects</td></tr>
 <tr><td style="width: 25%;"><a href="stanreg_list.html">stanmvreg_list</a></td>
-<td>Create a list of fitted model objects</td></tr>
+<td>Create lists of fitted model objects, combine them, or append new models to existing lists of models.</td></tr>
 <tr><td style="width: 25%;"><a href="stanreg-methods.html">stanreg-methods</a></td>
 <td>Methods for stanreg objects</td></tr>
 <tr><td style="width: 25%;"><a href="stanreg-objects.html">stanreg-objects</a></td>
 <td>Fitted model objects</td></tr>
 <tr><td style="width: 25%;"><a href="stanreg_list.html">stanreg_list</a></td>
-<td>Create a list of fitted model objects</td></tr>
+<td>Create lists of fitted model objects, combine them, or append new models to existing lists of models.</td></tr>
 <tr><td style="width: 25%;"><a href="stan_lm.html">stan_aov</a></td>
 <td>Bayesian regularized linear models via Stan</td></tr>
 <tr><td style="width: 25%;"><a href="stan_betareg.html">stan_betareg</a></td>

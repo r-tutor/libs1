@@ -252,11 +252,14 @@ conn$add(df, &quot;books&quot;)
 </code></pre>
 
 <pre><code>#&gt; $responseHeader
+#&gt; $responseHeader$rf
+#&gt; [1] 1
+#&gt; 
 #&gt; $responseHeader$status
 #&gt; [1] 0
 #&gt; 
 #&gt; $responseHeader$QTime
-#&gt; [1] 36
+#&gt; [1] 319
 </code></pre>
 
 <h3>list</h3>
@@ -266,11 +269,14 @@ conn$add(ss, &quot;books&quot;)
 </code></pre>
 
 <pre><code>#&gt; $responseHeader
+#&gt; $responseHeader$rf
+#&gt; [1] 1
+#&gt; 
 #&gt; $responseHeader$status
 #&gt; [1] 0
 #&gt; 
 #&gt; $responseHeader$QTime
-#&gt; [1] 37
+#&gt; [1] 47
 </code></pre>
 
 <h2>Delete documents</h2>
@@ -286,11 +292,14 @@ conn$add(docs, &quot;gettingstarted&quot;)
 </code></pre>
 
 <pre><code>#&gt; $responseHeader
+#&gt; $responseHeader$rf
+#&gt; [1] 1
+#&gt; 
 #&gt; $responseHeader$status
 #&gt; [1] 0
 #&gt; 
 #&gt; $responseHeader$QTime
-#&gt; [1] 42
+#&gt; [1] 206
 </code></pre>
 
 <p>And the documents are now in your Solr database</p>
@@ -298,12 +307,12 @@ conn$add(docs, &quot;gettingstarted&quot;)
 <pre><code class="r">conn$search(name = &quot;gettingstarted&quot;, params = list(q = &quot;*:*&quot;, rows = 3))
 </code></pre>
 
-<pre><code>#&gt; # A tibble: 3 x 4
-#&gt;   id    title   title_str `_version_`
-#&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;           &lt;dbl&gt;
-#&gt; 1 10    adfadsf adfadsf       1.62e18
-#&gt; 2 12    though  though        1.62e18
-#&gt; 3 14    animals animals       1.62e18
+<pre><code>#&gt; # A tibble: 3 x 3
+#&gt;   id    title   `_version_`
+#&gt;   &lt;chr&gt; &lt;chr&gt;         &lt;dbl&gt;
+#&gt; 1 10    adfadsf     1.65e18
+#&gt; 2 12    though      1.65e18
+#&gt; 3 14    animals     1.65e18
 </code></pre>
 
 <p>Now delete those documents just added</p>
@@ -312,11 +321,14 @@ conn$add(docs, &quot;gettingstarted&quot;)
 </code></pre>
 
 <pre><code>#&gt; $responseHeader
+#&gt; $responseHeader$rf
+#&gt; [1] 1
+#&gt; 
 #&gt; $responseHeader$status
 #&gt; [1] 0
 #&gt; 
 #&gt; $responseHeader$QTime
-#&gt; [1] 19
+#&gt; [1] 151
 </code></pre>
 
 <p>And now they are gone</p>
@@ -324,12 +336,12 @@ conn$add(docs, &quot;gettingstarted&quot;)
 <pre><code class="r">conn$search(&quot;gettingstarted&quot;, params = list(q = &quot;*:*&quot;, rows = 4))
 </code></pre>
 
-<pre><code>#&gt; # A tibble: 3 x 4
-#&gt;   id    title   title_str `_version_`
-#&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;           &lt;dbl&gt;
-#&gt; 1 10    adfadsf adfadsf       1.62e18
-#&gt; 2 12    though  though        1.62e18
-#&gt; 3 14    animals animals       1.62e18
+<pre><code>#&gt; # A tibble: 3 x 3
+#&gt;   id    title   `_version_`
+#&gt;   &lt;chr&gt; &lt;chr&gt;         &lt;dbl&gt;
+#&gt; 1 10    adfadsf     1.65e18
+#&gt; 2 12    though      1.65e18
+#&gt; 3 14    animals     1.65e18
 </code></pre>
 
 <h3>By query</h3>
@@ -340,11 +352,14 @@ conn$add(docs, &quot;gettingstarted&quot;)
 </code></pre>
 
 <pre><code>#&gt; $responseHeader
+#&gt; $responseHeader$rf
+#&gt; [1] 1
+#&gt; 
 #&gt; $responseHeader$status
 #&gt; [1] 0
 #&gt; 
 #&gt; $responseHeader$QTime
-#&gt; [1] 33
+#&gt; [1] 40
 </code></pre>
 
 <p>And the documents are now in your Solr database</p>
@@ -352,14 +367,14 @@ conn$add(docs, &quot;gettingstarted&quot;)
 <pre><code class="r">conn$search(&quot;gettingstarted&quot;, params = list(q = &quot;*:*&quot;, rows = 5))
 </code></pre>
 
-<pre><code>#&gt; # A tibble: 5 x 7
-#&gt;   id    title   title_str `_version_` price name  name_str
-#&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;           &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   
-#&gt; 1 10    adfadsf adfadsf       1.62e18    NA &lt;NA&gt;  &lt;NA&gt;    
-#&gt; 2 12    though  though        1.62e18    NA &lt;NA&gt;  &lt;NA&gt;    
-#&gt; 3 14    animals animals       1.62e18    NA &lt;NA&gt;  &lt;NA&gt;    
-#&gt; 4 1     &lt;NA&gt;    &lt;NA&gt;          1.62e18   100 brown brown   
-#&gt; 5 2     &lt;NA&gt;    &lt;NA&gt;          1.62e18   500 blue  blue
+<pre><code>#&gt; # A tibble: 5 x 5
+#&gt;   id    title   `_version_` price name 
+#&gt;   &lt;chr&gt; &lt;chr&gt;         &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;
+#&gt; 1 10    adfadsf     1.65e18    NA &lt;NA&gt; 
+#&gt; 2 12    though      1.65e18    NA &lt;NA&gt; 
+#&gt; 3 14    animals     1.65e18    NA &lt;NA&gt; 
+#&gt; 4 1     &lt;NA&gt;        1.65e18   100 brown
+#&gt; 5 2     &lt;NA&gt;        1.65e18   500 blue
 </code></pre>
 
 <p>Now delete those documents just added</p>
@@ -368,11 +383,14 @@ conn$add(docs, &quot;gettingstarted&quot;)
 </code></pre>
 
 <pre><code>#&gt; $responseHeader
+#&gt; $responseHeader$rf
+#&gt; [1] 1
+#&gt; 
 #&gt; $responseHeader$status
 #&gt; [1] 0
 #&gt; 
 #&gt; $responseHeader$QTime
-#&gt; [1] 26
+#&gt; [1] 74
 </code></pre>
 
 <p>And now they are gone</p>
@@ -380,13 +398,13 @@ conn$add(docs, &quot;gettingstarted&quot;)
 <pre><code class="r">conn$search(&quot;gettingstarted&quot;, params = list(q = &quot;*:*&quot;, rows = 5))
 </code></pre>
 
-<pre><code>#&gt; # A tibble: 4 x 7
-#&gt;   id    title   title_str `_version_` price name  name_str
-#&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;           &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   
-#&gt; 1 10    adfadsf adfadsf       1.62e18    NA &lt;NA&gt;  &lt;NA&gt;    
-#&gt; 2 12    though  though        1.62e18    NA &lt;NA&gt;  &lt;NA&gt;    
-#&gt; 3 14    animals animals       1.62e18    NA &lt;NA&gt;  &lt;NA&gt;    
-#&gt; 4 1     &lt;NA&gt;    &lt;NA&gt;          1.62e18   100 brown brown
+<pre><code>#&gt; # A tibble: 4 x 5
+#&gt;   id    title   `_version_` price name 
+#&gt;   &lt;chr&gt; &lt;chr&gt;         &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;
+#&gt; 1 10    adfadsf     1.65e18    NA &lt;NA&gt; 
+#&gt; 2 12    though      1.65e18    NA &lt;NA&gt; 
+#&gt; 3 14    animals     1.65e18    NA &lt;NA&gt; 
+#&gt; 4 1     &lt;NA&gt;        1.65e18   100 brown
 </code></pre>
 
 <h2>Update documents from files</h2>
@@ -408,11 +426,14 @@ conn$update_json(file, &quot;books&quot;)
 </code></pre>
 
 <pre><code>#&gt; $responseHeader
+#&gt; $responseHeader$rf
+#&gt; [1] 1
+#&gt; 
 #&gt; $responseHeader$status
 #&gt; [1] 0
 #&gt; 
 #&gt; $responseHeader$QTime
-#&gt; [1] 59
+#&gt; [1] 61
 </code></pre>
 
 <h3>Add and delete in the same file</h3>
@@ -424,11 +445,14 @@ conn$add(ss, &quot;books&quot;)
 </code></pre>
 
 <pre><code>#&gt; $responseHeader
+#&gt; $responseHeader$rf
+#&gt; [1] 1
+#&gt; 
 #&gt; $responseHeader$status
 #&gt; [1] 0
 #&gt; 
 #&gt; $responseHeader$QTime
-#&gt; [1] 57
+#&gt; [1] 43
 </code></pre>
 
 <p>Now add a new document, and delete the one we just made</p>
@@ -461,11 +485,14 @@ cat(readLines(file), sep = &quot;\n&quot;)
 </code></pre>
 
 <pre><code>#&gt; $responseHeader
+#&gt; $responseHeader$rf
+#&gt; [1] 1
+#&gt; 
 #&gt; $responseHeader$status
 #&gt; [1] 0
 #&gt; 
 #&gt; $responseHeader$QTime
-#&gt; [1] 30
+#&gt; [1] 95
 </code></pre>
 
 <h3>Notes</h3>

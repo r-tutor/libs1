@@ -34,7 +34,8 @@ get_y	get_y
 get_z	get_y
 hs	priors
 hs_plus	priors
-kfold	loo.stanreg
+kfold	kfold.stanreg
+kfold.stanreg	kfold.stanreg
 kidiq	rstanarm-datasets
 laplace	priors
 lasso	priors
@@ -47,6 +48,9 @@ log_lik.stanmvreg	log_lik.stanreg
 log_lik.stanreg	log_lik.stanreg
 loo	loo.stanreg
 loo.stanreg	loo.stanreg
+loo_compare	loo.stanreg
+loo_compare.stanreg	loo.stanreg
+loo_compare.stanreg_list	loo.stanreg
 loo_linpred	loo_predict.stanreg
 loo_linpred.stanreg	loo_predict.stanreg
 loo_model_weights	loo.stanreg
@@ -55,6 +59,8 @@ loo_predict	loo_predict.stanreg
 loo_predict.stanreg	loo_predict.stanreg
 loo_predictive_interval	loo_predict.stanreg
 loo_predictive_interval.stanreg	loo_predict.stanreg
+loo_R2	bayes_R2.stanreg
+loo_R2.stanreg	bayes_R2.stanreg
 model.frame.stanmvreg	model.frame.stanmvreg
 model.frame.stanreg	model.frame.stanreg
 model.matrix.stanreg	model.matrix.stanreg
@@ -63,8 +69,11 @@ neg_binomial_2	neg_binomial_2
 ngrps	stanreg-methods
 ngrps.stanmvreg	stanmvreg-methods
 ngrps.stanreg	stanreg-methods
+nobs.stanmvreg	stanreg-methods
 nobs.stanreg	stanreg-methods
 normal	priors
+nsamples	stanreg-methods
+nsamples.stanreg	stanreg-methods
 pairs.stanreg	pairs.stanreg
 pairs_condition	pairs.stanreg
 pairs_style_np	pairs.stanreg
@@ -96,10 +105,9 @@ predictive_error.stanreg	predictive_error.stanreg
 predictive_interval	predictive_interval.stanreg
 predictive_interval.ppd	predictive_interval.stanreg
 predictive_interval.stanreg	predictive_interval.stanreg
-print.compare_rstanarm_loos	print.kfold
-print.kfold	print.kfold
 print.stanmvreg	print.stanreg
 print.stanreg	print.stanreg
+print.stanreg_list	stanreg_list
 print.summary.stanmvreg	summary.stanreg
 print.summary.stanreg	summary.stanreg
 print.survfit.stanjm	print.survfit.stanjm

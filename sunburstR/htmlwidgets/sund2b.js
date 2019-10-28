@@ -69,7 +69,7 @@ HTMLWidgets.widget({
 
         d3.select(el).datum(x.data)
           .transition()
-          .call(sunburst);
+          .call(sunburst.advanced);
 
 
         // set up a container for tasks to perform after completion
