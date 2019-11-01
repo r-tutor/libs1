@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Build an error message from a main issue and bullet messages</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cnd_message {rlang}"><tr><td>cnd_message {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Build an error message from a main issue and bullet messages</h2>
+
+<h3>Description</h3>
+
+<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>
+<p><code>cnd_message()</code> assembles an error message from two components:
+</p>
+
+<ul>
+<li><p> The <code>cnd_issue()</code> generic. Methods should return a single line.
+</p>
+</li>
+<li><p> The <code>cnd_bullets()</code> generic. Methods should return a named vector
+of lines. These lines are automatically prefixed with a bullet by
+<code>cnd_message()</code> (see the section on error statements).
+</p>
+</li></ul>
+
+<p><code>cnd_message()</code> is automatically called by the <code>conditionMessage()</code>
+for rlang errors so that errors thrown with <code><a href="abort.html">abort()</a></code> only need to
+implement <code>cnd_issue()</code> and <code>cnd_bullets()</code>. It can also be called
+in custom <code>conditionMessage()</code> methods.
+</p>
+<p>Note that if you pass a named character vector to <code><a href="abort.html">abort()</a></code>, you
+get the same formatting behaviour as <code>cnd_message()</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cnd_message(cnd)
+
+cnd_issue(cnd, ...)
+
+cnd_bullets(cnd, ...)
+
+format_bullets(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>cnd</code></td>
+<td>
+<p>A condition object.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A named character vector of messages. Elements named as
+<code>x</code> or <code>i</code> are prefixed with the corresponding bullet.</p>
+</td></tr>
+</table>
+
+
+<h3>Error statements</h3>
+
+<p>This experimental infrastructure is based on the idea that
+sentences in error messages are best kept short and simple. From
+this point of view, the best way to present the information is as a
+bullet list of simple sentences containing a single clause.
+<code>cnd_message()</code> helps following this structure by building an error
+message from two parts: the <strong>issue</strong> and the <strong>bullets</strong>.
+</p>
+<p><code>cnd_issue()</code> is the generic for the main error message. It should
+be as generic as possible, but since it is a generic it is easy to
+override by error subclasses.
+</p>
+<p>The <code>cnd_bullets()</code> methods should return a character vector of
+sentences. These are automatically prefixed with bullets by
+<code>cnd_message()</code>, according to the following scheme:
+</p>
+
+<ul>
+<li><p> Elements named <code>"i"</code> are prefixed with a blue &quot;info&quot; symbol.
+</p>
+</li>
+<li><p> Elements named <code>"x"</code> are prefixed with a red &quot;cross&quot; symbol.
+</p>
+</li>
+<li><p> Unnamed elements are prefixed with a &quot;*&quot; symbol.
+</p>
+</li></ul>
+
+<p>While you are free to lay out the bullets in the order that you
+like, &quot;x&quot; bullets should usually precede &quot;i&quot; bullets.
+</p>
+
+
+<h3>Overriding <code>cnd_bullets()</code></h3>
+
+<p>Sometimes the generation of an error message depends on the state
+of the type checking. In that case, it can be tricky to lazily
+generate error messages with <code>cnd_bullets()</code>: you can either
+overspecify your error class hierarchies with one class per state,
+or replicate the type-checking control flow within the
+<code>cnd_bullets()</code> method. None of these options are ideal.
+</p>
+<p>A better option is to define a <code>cnd_bullets</code> field in your error
+object. This should be a function (or a lambda-formula which will
+be passed to <code><a href="as_function.html">as_function()</a></code>) with the same signature as
+<code>cnd_bullets()</code> methods. This function overrides the
+<code>cnd_bullets()</code> generic and can generate an error message tailored
+to the state in which the error was constructed.
+</p>
+<p>Note that as a rule, <code>cnd_issue()</code> should be a general thematic
+issues that does not depend on state. For this reason, it isn't
+possible to define an overriding method in the condition object.
+</p>
+
+
+<h3>Life cycle</h3>
+
+<p>This infrastructure is experimental. In particular, the output of
+<code>cnd_message()</code> is likely to change in the future and you shouldn't
+test it verbatim in a way that makes R CMD check fail. Instead, use
+<code><a href="../../testthat/html/verify_output.html">testthat::verify_output()</a></code> to monitor the output without causing
+CRAN check failures when it changes.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

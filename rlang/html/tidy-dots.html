@@ -1,16 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Collect dots tidily</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Collect dots as lists</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
 <table width="100%" summary="page for tidy-dots {rlang}"><tr><td>tidy-dots {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Collect dots tidily</h2>
+<h2>Collect dots as lists</h2>
 
 <h3>Description</h3>
 
-<p><code>list2()</code> is equivalent to <code>list(...)</code> but provides tidy
-dots semantics:
+<p><code>list2()</code> is equivalent to <code>list(...)</code> with a few additional
+features:
 </p>
 
 <ul>
@@ -21,13 +21,14 @@ dots semantics:
 <li><p> You can unquote names by using the <a href="quasiquotation.html">unquote</a>
 operator <code>!!</code> on the left-hand side of <code>:=</code>.
 </p>
+</li>
+<li><p> Trailing commas are ignored, making it easier to copy and paste
+arguments.
+</p>
 </li></ul>
 
-<p>We call quasiquotation support in dots <strong>tidy dots</strong> semantics and
-functions taking dots with <code>list2()</code> tidy dots functions.
-Quasiquotation is an alternative to <code>do.call()</code> idioms and gives
-the users of your functions an uniform syntax to supply a variable
-number of arguments or a variable name.
+<p>For lack of a better name, these features are collectively called
+&quot;tidy dots&quot;.
 </p>
 <p><code>dots_list()</code> is a lower-level version of <code>list2()</code> that offers
 additional parameters for dots capture.
@@ -84,31 +85,10 @@ This ensures assignments are explicit.</p>
 </table>
 
 
-<h3>Details</h3>
-
-<p>Note that while all tidy eval <a href="quotation.html">quoting functions</a> have
-tidy dots semantics, not all tidy dots functions are quoting
-functions. <code>list2()</code> is for standard functions, not quoting
-functions.
-</p>
-
-
 <h3>Value</h3>
 
 <p>A list of arguments. This list is always named: unnamed
 arguments are named with the empty string <code>""</code>.
-</p>
-
-
-<h3>Life cycle</h3>
-
-<p>One difference of <code>dots_list()</code> with <code>list2()</code> is that it always
-allocates a vector of names even if no names were supplied. In this
-case, the names are all empty <code>""</code>. This is for consistency with
-<code><a href="quotation.html">enquos()</a></code> and <code><a href="quotation.html">enexprs()</a></code> but can be quite costly when long lists
-are spliced in the results. For this reason we plan to parameterise
-this behaviour with a <code>.named</code> argument and possibly change the
-default. <code>list2()</code> does not have this issue.
 </p>
 
 
@@ -191,5 +171,5 @@ my_list(a &lt;- 1)
 my_list({ a &lt;- 1 })
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.1 <a href="00Index.html">Index</a>]</div>
 </body></html>

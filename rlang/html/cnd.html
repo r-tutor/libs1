@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
-<table width="100%" summary="page for cnd {rlang}"><tr><td>cnd {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+<table width="100%" summary="page for error_cnd {rlang}"><tr><td>error_cnd {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
 <h2>Create a condition object</h2>
 
@@ -18,10 +18,10 @@ also be used for passing messages to pre-established handlers.
 <h3>Usage</h3>
 
 <pre>
-cnd(.subclass, ..., message = "")
-
 error_cnd(.subclass = NULL, ..., message = "", trace = NULL,
   parent = NULL)
+
+cnd(.subclass, ..., message = "")
 
 warning_cnd(.subclass = NULL, ..., message = "")
 
@@ -100,5 +100,5 @@ err &lt;- error_cnd("foo", message = "I am an error")
 try(cnd_signal(err))
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.1 <a href="00Index.html">Index</a>]</div>
 </body></html>

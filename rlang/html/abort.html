@@ -34,8 +34,8 @@ to create custom interrupt condition objects.
 <h3>Usage</h3>
 
 <pre>
-abort(message, .subclass = NULL, ..., trace = NULL, call = NULL,
-  parent = NULL, msg, type)
+abort(message = "", .subclass = NULL, ..., trace = NULL,
+  call = NULL, parent = NULL, msg, type)
 
 warn(message, .subclass = NULL, ..., call = NULL, msg, type)
 
@@ -52,7 +52,11 @@ interrupt()
 <table summary="R argblock">
 <tr valign="top"><td><code>message</code></td>
 <td>
-<p>The message to display.</p>
+<p>The message to display.
+</p>
+<p>Experimental: Can also be a named character vector, in which case
+the message is assembled as a list of bullets. See
+<code><a href="cnd_message.html">cnd_message()</a></code> to learn how names control the bulleted output.</p>
 </td></tr>
 <tr valign="top"><td><code>.subclass</code></td>
 <td>
@@ -95,7 +99,7 @@ simplified backtrace of the last error by calling <code><a href="last_error.html
 and a full backtrace with <code>summary(last_error())</code>.
 </p>
 <p>You can also display a backtrace with the error message by setting
-the option <code>rlang_backtrace_on_error</code>. It supports the following
+the option <code><a href="rlang_backtrace_on_error.html">rlang_backtrace_on_error</a></code>. It supports the following
 values:
 </p>
 
@@ -170,8 +174,8 @@ abort("Something bad happened", "somepkg_bad_error")
 tryCatch(
   somepkg_function(),
   somepkg_bad_error = function(err) {
-    warn(err$message) # Demote the error to a warning
-    NA                # Return an alternative value
+    warn(conditionMessage(err)) # Demote the error to a warning
+    NA                          # Return an alternative value
   }
 )
 
@@ -211,5 +215,5 @@ summary(last_error())
 }
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.1 <a href="00Index.html">Index</a>]</div>
 </body></html>

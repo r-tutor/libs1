@@ -25,9 +25,13 @@ x %|% y
 <h3>Arguments</h3>
 
 <table summary="R argblock">
-<tr valign="top"><td><code>x, y</code></td>
+<tr valign="top"><td><code>x</code></td>
 <td>
-<p><code>y</code> for elements of <code>x</code> that are NA; otherwise, <code>x</code>.</p>
+<p>The original values.</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>The replacement values. Must be of length 1 or the same length as <code>x</code>.</p>
 </td></tr>
 </table>
 
@@ -42,7 +46,8 @@ x %|% y
 
 <pre>
 c("a", "b", NA, "c") %|% "default"
+c(1L, NA, 3L, NA, NA) %|% (6L:10L)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.1 <a href="00Index.html">Index</a>]</div>
 </body></html>
