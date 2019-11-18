@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Obtain a weights matrix</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for getWmat {qgraph}"><tr><td>getWmat {qgraph}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Obtain a weights matrix
+</h2>
+
+<h3>Description</h3>
+
+<p>This function extracts a weights matrix from various kinds of objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'matrix'
+getWmat(x,nNodes,labels, directed = TRUE,...)
+## S3 method for class 'data.frame'
+getWmat(x,nNodes,labels, directed = TRUE,...)
+## S3 method for class 'igraph'
+getWmat(x,labels,...)
+## S3 method for class 'qgraph'
+getWmat(x,directed,...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+
+<p>An input object
+</p>
+</td></tr>
+<tr valign="top"><td><code>nNodes</code></td>
+<td>
+
+<p>Number of Nodes
+</p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+
+<p>A vector specifying the labels of each node
+</p>
+</td></tr>
+<tr valign="top"><td><code>directed</code></td>
+<td>
+
+<p>Logical indicating if the graph should be directed
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Ignored
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A weights matrix
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Sacha Epskamp &lt;mail@sachaepskamp.com&gt;
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>qgraph</em> version 1.6.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

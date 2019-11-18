@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Highlight shortest pathways in a network</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for pathways {qgraph}"><tr><td>pathways {qgraph}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Highlight shortest pathways in a network
+</h2>
+
+<h3>Description</h3>
+
+<p>This function highlights the shortest paths between nodes in a network made by <code><a href="qgraph.html">qgraph</a></code>. Based on Isvoranu et al. (2016).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+pathways(graph, from, to, fading = 0.25, lty = 3)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>graph</code></td>
+<td>
+
+<p>Output from <code><a href="qgraph.html">qgraph</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>from</code></td>
+<td>
+
+<p>A vector indicating the first set of nodes between which pathways should be highlighted. Can be numeric or characters corresponding to node labels.
+</p>
+</td></tr>
+<tr valign="top"><td><code>to</code></td>
+<td>
+
+<p>A vector indicating the second set of nodes between which pathways should be highlighted. Can be numeric or characters corresponding to node labels.
+</p>
+</td></tr>
+<tr valign="top"><td><code>fading</code></td>
+<td>
+
+<p>The fading of the edges that are not part of shortest paths between 'from' and 'to'.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lty</code></td>
+<td>
+
+<p>The line type of the edges that are not part of shortest paths between 'from' and 'to'. 
+</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Sacha Epskamp \&amp; Adela M. Isvoranu
+</p>
+
+
+<h3>References</h3>
+
+<p>Isvoranu, A. M., van Borkulo, C. D., Boyette, L. L., Wigman, J. T., Vinkers, C. H., Borsboom, D., &amp; Group Investigators. (2016). A Network Approach to Psychosis: Pathways Between Childhood Trauma and Psychotic Symptoms. Schizophrenia bulletin, sbw055.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="qgraph.html">qgraph</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library("qgraph")
+library("psych")
+data(bfi)
+
+# Compute correlations:
+CorMat &lt;- cor_auto(bfi[,1:25])
+
+# Compute graph with tuning = 0 (BIC):
+BICgraph &lt;- qgraph(CorMat, graph = "glasso", sampleSize = nrow(bfi),
+                   tuning = 0, layout = "spring", title = "BIC", details = TRUE)
+
+# All paths between Agreeableness and Neuroticism:
+pathways(BICgraph, 
+         from = c("A1","A2","A3","A4","A5"), 
+         to = c("N1","N2","N3","N4","N5"))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>qgraph</em> version 1.6.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

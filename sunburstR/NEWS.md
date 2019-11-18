@@ -1,4 +1,9 @@
-# sunburstR 2.1.1
+# sunburstR 2.1.3
+
+* add breadcrumb customization to d2b; (see [issue 92](https://github.com/timelyportfolio/sunburstR/issues/92))
+* add argument to allow user to change root label (see [issue 96](https://github.com/timelyportfolio/sunburstR/issues/96))
+
+# sunburstR 2.1.2
 
 * add tooltip customization to d2b; (see [issue 92](https://github.com/timelyportfolio/sunburstR/issues/92))
 

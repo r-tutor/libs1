@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot method for &quot;qgraph&quot;</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plot.qgraph {qgraph}"><tr><td>plot.qgraph {qgraph}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Plot method for &quot;qgraph&quot;
+</h2>
+
+<h3>Description</h3>
+
+<p>Plots an object created by <code><a href="qgraph.html">qgraph</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'qgraph'
+plot(x, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+
+<p>A &quot;qgraph&quot; object
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Not used
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If the result of <code><a href="qgraph.html">qgraph</a></code> is stored, such as <code>Graph &lt;- qgraph(...)</code>, the plot can be recreated in two ways. <code>qgraph(Graph, ...))</code> reruns <code>qgraph</code> with the same arguments used in the origina call except those restated in the dots. For example <code>qgraph(Graph, shape = "square")</code> will recreate the same plot but now use square nodes instead of circular. <code>plot(Graph)</code> will NOT rerun <code>qgraph</code> but simply plot the qgraph object. This means that now specific graph attributes can be changed before plotting.
+</p>
+<p>More specific, <code>qgraph(Graph)</code> will base the new plot on the <code>Arguments</code> element of the <code>qgraph</code> object and <code>plot(qgraph)</code> will base the new plot on the <code>graphAttributes</code> element of qgraph.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Sacha Epskamp (mail@sachaepskamp.com)
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>qgraph</em> version 1.6.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

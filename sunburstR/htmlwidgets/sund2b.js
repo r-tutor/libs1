@@ -67,6 +67,10 @@ HTMLWidgets.widget({
           return d[x.options.valueField || "size"];
         });
 
+        if(x.options.hasOwnProperty("rootLabel") && x.options.rootLabel !== null) {
+          x.data.root.label = x.options.rootLabel;
+        }
+
         d3.select(el).datum(x.data)
           .transition()
           .call(sunburst.advanced);

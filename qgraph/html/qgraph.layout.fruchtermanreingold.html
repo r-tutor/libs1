@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: qgraph.layout.fruchtermanreingold</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for qgraph.layout.fruchtermanreingold {qgraph}"><tr><td>qgraph.layout.fruchtermanreingold {qgraph}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>qgraph.layout.fruchtermanreingold</h2>
+
+<h3>Description</h3>
+
+<p>This is a wrapper for the function that returns the x and y coordinates of the graph based on the Fruchterman 
+Reingold algorithm (Fruchterman &amp; Reingold, 1991), which was ported from the SNA package (Butts, 2010).
+This function is used in <code><a href="qgraph.html">qgraph</a></code> and is not designed to be used separately. See details for
+using constraints in this layout.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+qgraph.layout.fruchtermanreingold(edgelist, weights=NULL, vcount=NULL,
+	niter=NULL, max.delta=NULL, area=NULL, cool.exp=NULL, repulse.rad=NULL,
+	init=NULL, groups=NULL, rotation=NULL, layout.control=0.5, constraints=NULL, 
+	round = TRUE, digits = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>edgelist</code></td>
+<td>
+<p>A matrix with on each row the nodes at the start and the node at the end of each edge.</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>A vector containing the edge weights.</p>
+</td></tr>
+<tr valign="top"><td><code>vcount</code></td>
+<td>
+<p>The number of nodes.</p>
+</td></tr>
+<tr valign="top"><td><code>niter</code></td>
+<td>
+<p>Number of iterations, default is 500.</p>
+</td></tr>
+<tr valign="top"><td><code>max.delta</code></td>
+<td>
+<p>Maximum displacement, default is equal to the number of nodes.</p>
+</td></tr>
+<tr valign="top"><td><code>area</code></td>
+<td>
+<p>The area of the plot, default is the square of the number of nodes.</p>
+</td></tr>
+<tr valign="top"><td><code>cool.exp</code></td>
+<td>
+<p>Cooling exponent, default is 1.5.</p>
+</td></tr>
+<tr valign="top"><td><code>repulse.rad</code></td>
+<td>
+<p>Repulse radius, defaults to the cube of the number of nodes.</p>
+</td></tr>
+<tr valign="top"><td><code>init</code></td>
+<td>
+<p>Matrix with two columns and a row for each node containing the initial X and Y positions.</p>
+</td></tr>
+<tr valign="top"><td><code>groups</code></td>
+<td>
+<p>See <code><a href="qgraph.html">qgraph</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>rotation</code></td>
+<td>
+<p>See <code><a href="qgraph.html">qgraph</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>layout.control</code></td>
+<td>
+<p>See <code><a href="qgraph.html">qgraph</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>constraints</code></td>
+<td>
+<p>A constraints matrix with two columns and a row for each node containing a NA if the node is free or a fixed value for one of the coordinates.</p>
+</td></tr>
+<tr valign="top"><td><code>round</code></td>
+<td>
+<p>Logical indicating if the initial input should be rounded</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>Number of digits to round initial input and displacement in the algorithm to. Defaults to 5. This helps prevent floating point disrepancies between different operating systems.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>All arguments for this function can be passed from <code><a href="qgraph.html">qgraph</a></code> to this function by using the 'layout.par' argument, 
+which must be a list containing the arguments. This can be used to constrain the layout in two ways:
+</p>
+
+
+<h3>Hard constraints</h3>
+
+<p>By using the 'constraints' argument the X and Y positions of each node can be fixed to a certain value. The 'constraint'
+argument must be given a matrix with two columns and a row for each node. An NA means that that coordinate for that
+node is free, and a value means it is fixed to that value.</p>
+
+
+<h3>Soft constraints</h3>
+
+<p>Soft constraining can be done by varying the 'max.delta' argument. This can be a single number, but also a 
+vector containing the maximum displacement per step for each node. The default value is the number of nodes,
+so by setting this to a lower value for some nodes the node won't move so much. Use this in combination with
+the 'init' argument to make sure nodes don't move too much from their initial setup. This can be useful when
+adding a new node to an existing network and if you don't want the network to completely change.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Sacha Epskamp (mail@sachaepskamp.com)
+</p>
+
+
+<h3>References</h3>
+
+<p>Sacha Epskamp, Angelique O. J. Cramer, Lourens J.
+Waldorp, Verena D. Schmittmann, Denny Borsboom (2012).
+qgraph: Network Visualizations of Relationships in
+Psychometric Data. Journal of Statistical Software,
+48(4), 1-18. URL http://www.jstatsoft.org/v48/i04/.
+</p>
+<p>Carter T. Butts &lt;buttsc@uci.edu&gt; (2010). sna: Tools for Social Network Analysis. R package version 2.2-0. http://CRAN.R-project.org/package=sna
+</p>
+<p>Fruchterman, T. &amp; Reingold, E. (1991). Graph drawing by force-directed placement. Software - Pract. Exp. 21, 1129?1164.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="qgraph.html">qgraph</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# This example makes a multipage PDF that contains images
+# Of a building network using soft constraints.
+
+# Each step one node is added with one edge. The max.delta
+# decreases the longer nodes are present in the network.
+
+pdf("Soft Constraints.pdf",width=10,height=5)
+
+adj=adjO=matrix(0,nrow=3,ncol=3)
+adj[upper.tri(adj)]=1
+Q=qgraph(adj,vsize=3,height=5,width=10,layout="spring",
+	esize=1,filetype='',directed=T)
+cons=Q$layout
+for (i in 1:20)
+{
+	x=nrow(adj)
+	adjN=matrix(0,nrow=x+1,ncol=x+1)
+	adjN[1:x,1:x]=adj
+	consN=matrix(NA,nrow=x+1,ncol=2)
+	consN[1:x,]=cons[1:x,]
+	layout.par=list(init=rbind(cons,c(0,0)),
+	max.delta=10/(x+1):1,area=10^2,repulse.rad=10^3)
+	y=sample(c(x,sample(1:(x),1)),1)
+	adjN[y,x+1]=1
+	Q=qgraph(adjN,Q,layout="spring",layout.par=layout.par)
+	cons=Q$layout
+	adj=adjN
+} 
+dev.off()
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>qgraph</em> version 1.6.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

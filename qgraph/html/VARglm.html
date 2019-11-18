@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Computes a vector autoregressive lag-1 model using GLM</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for VARglm {qgraph}"><tr><td>VARglm {qgraph}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Computes a vector autoregressive lag-1 model using GLM
+</h2>
+
+<h3>Description</h3>
+
+<p>This function computes a VAR model using glm.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+VARglm(x, family, vars, adjacency, icfun = BIC, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+
+<p>A data frame
+</p>
+</td></tr>
+<tr valign="top"><td><code>family</code></td>
+<td>
+
+<p>The family to be used. Defaults to <code>gaussian</code> if data is continuous or <code>binomial</code> if data is binary
+</p>
+</td></tr>
+<tr valign="top"><td><code>vars</code></td>
+<td>
+
+<p>Vector of variables to predict. If missing all variables are predicted.
+</p>
+</td></tr>
+<tr valign="top"><td><code>adjacency</code></td>
+<td>
+
+<p>Adjacency matrix. If missing full network is estimated
+</p>
+</td></tr>
+<tr valign="top"><td><code>icfun</code></td>
+<td>
+
+<p>Information criterium function to be included in the output
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Arguments used in the <code>icfun</code>
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A list containing:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>graph</code></td>
+<td>
+<p>The estimated graph</p>
+</td></tr>
+<tr valign="top"><td><code>IC</code></td>
+<td>
+<p>The information criterium</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Sacha Epskamp &lt;mail@sachaepskamp.com
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>qgraph</em> version 1.6.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

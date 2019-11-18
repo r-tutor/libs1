@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Computes the mutual information between nodes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for mutualInformation {qgraph}"><tr><td>mutualInformation {qgraph}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Computes the mutual information between nodes
+</h2>
+
+<h3>Description</h3>
+
+<p>Computes the mutual information from one node to all other nodes, or between sets of nodes.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mutualInformation(ggm, from, to = "all", covMat)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>ggm</code></td>
+<td>
+
+<p>Partial correlation network. Can be missing if 'covMat' is supplied.
+</p>
+</td></tr>
+<tr valign="top"><td><code>from</code></td>
+<td>
+
+<p>Integer vector corresponding to one set of nodes. Defaults to all nodes.
+</p>
+</td></tr>
+<tr valign="top"><td><code>to</code></td>
+<td>
+
+<p>Integer vector corresponding to another set of nodes, or <code>'all'</code> to compute the mutual information of each node to all other nodes.
+</p>
+</td></tr>
+<tr valign="top"><td><code>covMat</code></td>
+<td>
+
+<p>Variance-covariance matrix. Can be missing if 'ggm' is supplied.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Sacha Epskamp
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>qgraph</em> version 1.6.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

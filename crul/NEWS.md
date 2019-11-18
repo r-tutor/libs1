@@ -1,3 +1,20 @@
+crul 0.9.0
+==========
+
+### NEW FEATURES
+
+* `HttpResponse` response object gains new methods for checking response content types, includes: `raise_for_ct`, `raise_for_ct_html`, `raise_for_ct_json`, `raise_for_ct_xml`. these behave similarly to `raise_for_status`, and can behave as a warning or raise an error through stop (#119) (#120)
+
+### MINOR IMPROVEMENTS
+
+* fix to prep_body internal function to handle various body inputs; now avoids warning about `as.character.form_file` when both httr and crul are loaded (#112)
+* finish off "Failing with fauxpas" section of the "API package best practices" vignette (#121)
+
+### BUG FIXES
+
+* the `head()` verb on `HttpClient` was no capturing `auth` when set on initialization (#122)
+
+
 crul 0.8.4
 ==========
 

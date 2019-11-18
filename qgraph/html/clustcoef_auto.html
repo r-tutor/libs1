@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Local clustering coefficients.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for clustcoef_auto {qgraph}"><tr><td>clustcoef_auto {qgraph}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Local clustering coefficients.
+</h2>
+
+<h3>Description</h3>
+
+<p>Compute local clustering coefficients, both signed and unsigned and both for weighted and for unweighted networks.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+clustcoef_auto(x, thresholdWS = 0, thresholdON = 0)
+clustWS(x, thresholdWS=0)
+clustZhang(x)
+clustOnnela(x, thresholdON=0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An undirected graph. Can be a <code>qgraph</code> object, an <code>igraph</code> object, an adjacency matrix, a weight matrix and an edgelist, or a weighted edgelist.</p>
+</td></tr>
+<tr valign="top"><td><code>thresholdWS</code></td>
+<td>
+
+<p>The threshold used to binarize a weighted network <code>x</code> to compute the binary clustering coefficients <code>clustWS</code> and <code>signed_clustWS</code>. Edges with weights lower than <code>thresholdWS</code> in absolute value are zeroed. For unweighted networks, <code>thresholdWS = 0</code> is the suggested value.
+</p>
+</td></tr>
+<tr valign="top"><td><code>thresholdON</code></td>
+<td>
+
+<p>In the computation of Onnela's clustering coefficient <code>clustOnnela</code>, edge of weights lower than <code>thresholdON</code> in absolute value are excluded. The value <code>thresholdON = 0</code> (i.e., no edge is excluded) is generally suggested also for weighted networks.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>clustWS</code> computes the clustering coefficient for unweighted networks introduced by Watts &amp; Strogatz (1998) and the corresponding signed version (Costantini &amp; Perugini, in press).
+<code>ClustZhang</code> computes the clustering coefficient for weighted networks introduced by Zhang &amp; Horvath (2005) and the corresponding signed version (Costantini &amp; Perugini, in press).
+<code>clustOnnela</code> computes the clustering coefficient for weighted networks introduced by Onnela et al. (2005) and the corresponding signed version (Costantini &amp; Perugini, in press).
+<code>clustering_auto</code> automatically recognizes the kind of the input network <code>x</code> (weighted vs. unweighted, signed vs. unsigned) and computes a subset of indices according to the kind of the network: signed indices are not computed for unsigned networks and weighted indices are not computed for unweighted networks. However the unsigned indices are computed for signed networks, by considering the absolute value of the weights, and the unweighted indices are computed for weighted networks, after a binarization according to the parameter <code>thresholdWS</code>. <code>clustering_auto</code> computes also the weighted clustering coefficient by Barrat et al. (2004), relying on function <code><a href="../../igraph/html/transitivity.html">transitivity</a></code> from package <code><a href="../../igraph/html/igraph.html">igraph</a></code>.
+For the computation of the local clustering coefficient, a node must have at least two neighbors: for nodes with less than two neighbors <code>NaN</code> is returned.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A dataframe that includes one or more of the following indices.
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>clustWS</code></td>
+<td>
+<p>The Watts &amp; Strogatz's (1998) unweighted clustering coefficient</p>
+</td></tr>
+<tr valign="top"><td><code>signed_clustWS</code></td>
+<td>
+<p>The signed version of the Watts &amp; Strogatz's clustering coefficient</p>
+</td></tr>
+<tr valign="top"><td><code>clustZhang</code></td>
+<td>
+<p>The Zhang &amp; Horvath's (2005) weighted clustering coefficient</p>
+</td></tr>
+<tr valign="top"><td><code>signed_clustZhang</code></td>
+<td>
+<p>The signed version of the Zhang &amp; Horvath's (2005) clustering coefficient</p>
+</td></tr>
+<tr valign="top"><td><code>clustOnnela</code></td>
+<td>
+<p>The Onnela et al.'s (2005) clustering coefficient</p>
+</td></tr>
+<tr valign="top"><td><code>signed_clustOnnela</code></td>
+<td>
+<p>The signed version of the Onnela et al.'s (2005) clustering coefficient</p>
+</td></tr>
+<tr valign="top"><td><code>clustBarrat</code></td>
+<td>
+<p>The Barrat et al.'s (2004) weighted clustering coefficient</p>
+</td></tr>
+</table>
+
+
+<h3>Warning</h3>
+
+<p>The function requires an undirected network. To convert a directed network to undirected use for instance function <code><a href="../../base/html/lower.tri.html">upper.tri</a></code> (see examples).
+</p>
+
+
+<h3>Note</h3>
+
+<p>Part of the code has been adapted from package <code>WGCNA</code> (Langfelder &amp; Horvath, 2008).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Giulio Costantini (giulio.costantini@unimib.it), Sacha Epskamp (mail@sachaepskamp.com)
+</p>
+
+
+<h3>References</h3>
+
+<p>Barrat, A., Barthelemy, M., Pastor-Satorras, R., &amp; Vespignani, A. (2004). The architecture of complex weighted networks. In Proc. Natl. Acad. Sci. USA 101 (pp. 3747-3752).
+</p>
+<p>Costantini, G., Perugini, M. (in press), Generalization of Clustering Coefficients to Signed Correlation Networks
+</p>
+<p>Langfelder, P., &amp; Horvath, S. (2008). WGCNA: an R package for weighted correlation network analysis. BMC Bioinformatics, 9, 559.
+</p>
+<p>Onnela, J. P., Saramaki, J., Kertesz, J., &amp; Kaski, K. (2005). Intensity and coherence of motifs in weighted complex networks. Physical Review E, 71(6), 065103.
+</p>
+<p>Watts, D. J., &amp; Strogatz, S. H. (1998). Collective dynamics of &quot;small-world&quot; networks. Nature, 393(6684), 440-442.
+</p>
+<p>Zhang, B., &amp; Horvath, S. (2005). A general framework for weighted gene co-expression network analysis. Statistical Applications in Genetics and Molecular Biology, 4(1).
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="centrality_auto.html">centrality_auto</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+set.seed(1)
+# generate a random (directed) network:
+net_ig &lt;- igraph::erdos.renyi.game(n=8, p.or.m=.4, type="gnp", directed=TRUE) 
+
+# convert it to an adjacency matrix:
+net &lt;- as.matrix(igraph:::get.adjacency(net_ig, type="both")) 
+
+# convert it to a signed and weighted network:
+net &lt;- net*matrix(rnorm(ncol(net)^2), ncol=ncol(net)) 
+
+# make it undirected:
+net[upper.tri(net)] &lt;- t(net)[upper.tri(net)] 
+clustcoef_auto(net)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>qgraph</em> version 1.6.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

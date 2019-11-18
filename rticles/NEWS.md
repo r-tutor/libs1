@@ -1,3 +1,8 @@
+rticles 0.12
+---------------------------------------------------------------------
+
+- Updated the `pnas_article()` document class from the PNAS website https://www.pnas.org/page/authors/latex (#21).
+
 rticles 0.11
 ---------------------------------------------------------------------
 

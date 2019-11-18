@@ -28,14 +28,27 @@ embed_png("selectorgadget-5.png")
 
 ## ------------------------------------------------------------------------
 library(rvest)
-html <- read_html("http://www.imdb.com/title/tt1490017/")
-cast <- html_nodes(html, "#titleCast .itemprop")
+lego_url <- "http://www.imdb.com/title/tt1490017/"
+html <- read_html(lego_url)
+cast <- html_nodes(html, ".primary_photo+ td a")
 length(cast)
 cast[1:2]
 
 ## ------------------------------------------------------------------------
-cast <- html_nodes(html, "#titleCast span.itemprop")
-length(cast)
+html_text(cast, trim = TRUE)
 
-html_text(cast)
+## ------------------------------------------------------------------------
+cast_attrs <- html_attrs(cast)
+
+length(cast_attrs)
+cast_attrs[1:2]
+
+## ------------------------------------------------------------------------
+cast_rel_urls <- html_attr(cast, "href")
+length(cast_rel_urls)
+cast_rel_urls[1:2]
+
+cast_abs_urls <- html_attr(cast, "href") %>% 
+  url_absolute(lego_url)
+cast_abs_urls[1:2]
 

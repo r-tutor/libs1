@@ -19,7 +19,7 @@
 spark_connect(master, spark_home = Sys.getenv("SPARK_HOME"),
   method = c("shell", "livy", "databricks", "test", "qubole"),
   app_name = "sparklyr", version = NULL, config = spark_config(),
-  extensions = sparklyr::registered_extensions(), ...)
+  extensions = sparklyr::registered_extensions(), packages = NULL, ...)
 
 spark_connection_is_open(sc)
 
@@ -74,9 +74,18 @@ connections, optional otherwise.</p>
 </td></tr>
 <tr valign="top"><td><code>extensions</code></td>
 <td>
-<p>Extension packages to enable for this connection. By
+<p>Extension R packages to enable for this connection. By
 default, all packages enabled through the use of
 <code><a href="register_extension.html">sparklyr::register_extension</a></code> will be passed here.</p>
+</td></tr>
+<tr valign="top"><td><code>packages</code></td>
+<td>
+<p>A list of Spark packages to load. For example, <code>"delta"</code> or
+<code>"kafka"</code> to enable Delta Lake or Kafka. Also supports full versions like
+<code>"io.delta:delta-core_2.11:0.4.0"</code>. This is similar to adding packages into the
+<code>sparklyr.shell.packages</code> configuration option. Notice that the <code>version</code>
+parameter is used to choose the correect package, otherwise assumes the latest version
+is being used.</p>
 </td></tr>
 <tr valign="top"><td><code>...</code></td>
 <td>
@@ -113,5 +122,5 @@ spark_disconnect(sc)
 
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.4 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>sparklyr</em> version 1.0.5 <a href="00Index.html">Index</a>]</div>
 </body></html>
