@@ -1,0 +1,309 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Visualize Recursive Partitioning and Regression Trees (rpart...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for visTree {visNetwork}"><tr><td>visTree {visNetwork}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Visualize Recursive Partitioning and Regression Trees (rpart object)</h2>
+
+<h3>Description</h3>
+
+<p>Visualize Recursive Partitioning and Regression Trees <code>rpart</code>. Have a look to <a href="visTreeEditor.html">visTreeEditor</a> to edity and get back network, or to <a href="visNetwork-treeModule.html">visTreeModuleServer</a> to use custom tree module in R
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+visTree(
+  object,
+  data = NULL,
+  tooltipColumns = if (!is.null(data)) {     1:ncol(data) } else {     NULL },
+  main = "",
+  submain = "",
+  footer = "",
+  direction = "UD",
+  fallenLeaves = FALSE,
+  rules = TRUE,
+  simplifyRules = TRUE,
+  shapeVar = "dot",
+  shapeY = "square",
+  colorVar = NULL,
+  colorY = NULL,
+  colorEdges = "#8181F7",
+  nodesFontSize = 16,
+  edgesFontSize = 14,
+  edgesFontAlign = "horizontal",
+  legend = TRUE,
+  legendNodesSize = 22,
+  legendFontSize = 16,
+  legendWidth = 0.1,
+  legendNcol = 1,
+  legendPosition = "left",
+  nodesPopSize = FALSE,
+  minNodeSize = 15,
+  maxNodeSize = 30,
+  highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0), hover =
+    FALSE, algorithm = "hierarchical"),
+  collapse = list(enabled = TRUE, fit = TRUE, resetHighlight = TRUE, clusterOptions =
+    list(fixed = TRUE, physics = FALSE)),
+  updateShape = TRUE,
+  tooltipDelay = 500,
+  digits = 3,
+  height = "600px",
+  width = "100%",
+  export = TRUE
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p><code>rpart</code>, rpart object</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p><code>data.frame</code>, adding mini-graphics in tooltips using <code>sparkline</code> and <code>tooltipColumns</code> ?</p>
+</td></tr>
+<tr valign="top"><td><code>tooltipColumns</code></td>
+<td>
+<p><code>numeric</code>, indice of columns used in tooltip. All by default.
+So, we add boxplot / pie focus on sub-population vs all population using <code>sparkline</code> package. <code>NULL</code> to disable.</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>Title. See <a href="visNetwork.html">visNetwork</a></p>
+</td></tr>
+<tr valign="top"><td><code>submain</code></td>
+<td>
+<p>Subtitle. See <a href="visNetwork.html">visNetwork</a></p>
+</td></tr>
+<tr valign="top"><td><code>footer</code></td>
+<td>
+<p>Footer. See <a href="visNetwork.html">visNetwork</a></p>
+</td></tr>
+<tr valign="top"><td><code>direction</code></td>
+<td>
+<p><code>character</code>, The direction of the hierarchical layout.
+The available options are: UD, DU, LR, RL. To simplify:
+up-down, down-up, left-right, right-left. Default UD. See <a href="visHierarchicalLayout.html">visHierarchicalLayout</a></p>
+</td></tr>
+<tr valign="top"><td><code>fallenLeaves</code></td>
+<td>
+<p><code>boolean</code> leaf nodes at the bottom of the graph ? Default to FALSE</p>
+</td></tr>
+<tr valign="top"><td><code>rules</code></td>
+<td>
+<p><code>boolean</code>, add rules in tooltips ? Default to TRUE</p>
+</td></tr>
+<tr valign="top"><td><code>simplifyRules</code></td>
+<td>
+<p><code>boolean</code>, simplify rules writing</p>
+</td></tr>
+<tr valign="top"><td><code>shapeVar</code></td>
+<td>
+<p><code>character</code>, shape for variables nodes See <a href="visNodes.html">visNodes</a></p>
+</td></tr>
+<tr valign="top"><td><code>shapeY</code></td>
+<td>
+<p><code>character</code>, shape for terminal nodes See <a href="visNodes.html">visNodes</a></p>
+</td></tr>
+<tr valign="top"><td><code>colorVar</code></td>
+<td>
+<p><code>character</code>, colors to use or <code>data.frame</code> To set color of variables. 2 columns :
+</p>
+
+<ul>
+<li><p>&quot;variable&quot; : names of variables
+</p>
+</li>
+<li><p>&quot;color&quot; : colors (in hexa). See examples
+</p>
+</li></ul>
+</td></tr>
+<tr valign="top"><td><code>colorY</code></td>
+<td>
+<p>if classification tree : <code>character</code> colors to use or <code>data.frame</code> 2 columns :
+</p>
+
+<ul>
+<li><p>&quot;modality&quot; : levels of Y
+</p>
+</li>
+<li><p>&quot;color&quot; : colors (in hexa)
+</p>
+</li></ul>
+
+<p>if regression tree : <code>character</code>, 2 colors (min and max, in hexa)</p>
+</td></tr>
+<tr valign="top"><td><code>colorEdges</code></td>
+<td>
+<p><code>character</code>, color of edges, in hexa. Default to #8181F7</p>
+</td></tr>
+<tr valign="top"><td><code>nodesFontSize</code></td>
+<td>
+<p><code>numeric</code>, size of labels of nodes. Default to 16</p>
+</td></tr>
+<tr valign="top"><td><code>edgesFontSize</code></td>
+<td>
+<p><code>numeric</code>, size of labels of edges Default to 14</p>
+</td></tr>
+<tr valign="top"><td><code>edgesFontAlign</code></td>
+<td>
+<p><code>character</code>, for edges only. Default tp 'horizontal'. Possible options: 'horizontal' (Default),'top','middle','bottom'. See <a href="visEdges.html">visEdges</a></p>
+</td></tr>
+<tr valign="top"><td><code>legend</code></td>
+<td>
+<p><code>boolean</code>, add legend ? Default TRUE. <a href="visLegend.html">visLegend</a></p>
+</td></tr>
+<tr valign="top"><td><code>legendNodesSize</code></td>
+<td>
+<p><code>numeric</code>, size of nodes in legend. Default to 22</p>
+</td></tr>
+<tr valign="top"><td><code>legendFontSize</code></td>
+<td>
+<p><code>numeric</code>, size of labels of nodes in legend. Default to 16</p>
+</td></tr>
+<tr valign="top"><td><code>legendWidth</code></td>
+<td>
+<p><code>numeric</code>, legend width, between 0 and 1. Default 0.1</p>
+</td></tr>
+<tr valign="top"><td><code>legendNcol</code></td>
+<td>
+<p><code>numeric</code>, number of columns in legend. Default 1</p>
+</td></tr>
+<tr valign="top"><td><code>legendPosition</code></td>
+<td>
+<p><code>character</code>, one of &quot;left&quot; (Default) or &quot;right&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>nodesPopSize</code></td>
+<td>
+<p><code>boolean</code>, nodes sizes depends on population ? Default to FALSE</p>
+</td></tr>
+<tr valign="top"><td><code>minNodeSize</code></td>
+<td>
+<p><code>numeric</code>, in case of <code>nodesPopSize</code>, minimum size of a node. Defaut to 15. Else, nodes size is minNodeSize + maxNodeSize / 2</p>
+</td></tr>
+<tr valign="top"><td><code>maxNodeSize</code></td>
+<td>
+<p><code>numeric</code>, in case of <code>nodesPopSize</code>, maximum size of a node. Defaut to 30. Else, nodes size is minNodeSize + maxNodeSize / 2</p>
+</td></tr>
+<tr valign="top"><td><code>highlightNearest</code></td>
+<td>
+<p><code>list</code>, Highlight nearest nodes. See <a href="visOptions.html">visOptions</a></p>
+</td></tr>
+<tr valign="top"><td><code>collapse</code></td>
+<td>
+<p><code>list</code>, collapse or not using double click on a node ? See <a href="visOptions.html">visOptions</a></p>
+</td></tr>
+<tr valign="top"><td><code>updateShape</code></td>
+<td>
+<p><code>boolean</code>, in case of collapse, udpate cluster node shape as terminal node ? Default to TRUE</p>
+</td></tr>
+<tr valign="top"><td><code>tooltipDelay</code></td>
+<td>
+<p><code>numeric</code>, delay for tooltips in millisecond. Default 500</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p><code>numeric</code>, number of digits. Default to 3</p>
+</td></tr>
+<tr valign="top"><td><code>height</code></td>
+<td>
+<p><code>character</code>, default to &quot;600px&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p><code>character</code>, default to &quot;100%&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>export</code></td>
+<td>
+<p><code>boolean</code>, add export button. Default to TRUE</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a visNetwork object
+</p>
+
+
+<h3>References</h3>
+
+<p>See online documentation <a href="http://datastorm-open.github.io/visNetwork/">http://datastorm-open.github.io/visNetwork/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="visTreeEditor.html">visTreeEditor</a>, <a href="visNetwork-treeModule.html">visTreeModuleServer</a>, <a href="visNetworkEditor.html">visNetworkEditor</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## Not run: 
+
+library(rpart)
+
+# Basic classification tree
+res &lt;- rpart(Species~., data=iris)
+visTree(res, data = iris, main = "Iris classification Tree")
+
+# Basic regression tree
+res &lt;- rpart(Petal.Length~., data=iris)
+visTree(res, edgesFontSize = 14, nodesFontSize = 16)
+
+# Complex tree
+data("solder")
+res &lt;- rpart(Opening~., data = solder, control = rpart.control(cp = 0.00005))
+visTree(res, data = solder, nodesPopSize = TRUE, minNodeSize = 10, 
+  maxNodeSize = 30, height = "800px")
+
+# ----- Options
+res &lt;- rpart(Opening~., data = solder, control = rpart.control(cp = 0.005))
+
+# fallen leaves + align edges label &amp; size
+visTree(res, fallenLeaves = TRUE, height = "500px", 
+ edgesFontAlign = "middle", edgesFontSize = 20)
+
+# disable rules in tooltip, and render tooltip faster
+# enable hover highlight
+visTree(res, rules = FALSE, tooltipDelay = 0, 
+ highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0), 
+ hover = TRUE, algorithm = "hierarchical"))
+
+# Change color with data.frame
+colorVar &lt;- data.frame(variable = names(solder), 
+ color = c("#339933", "#b30000","#4747d1","#88cc00", "#9900ff","#247856"))
+ 
+colorY &lt;- data.frame(modality = unique(solder$Opening), 
+ color = c("#AA00AA", "#CDAD15", "#213478"))
+
+visTree(res, colorEdges = "#000099", colorVar = colorVar, colorY = colorY)
+
+# Change color with vector
+visTree(res, colorEdges = "#000099", 
+    colorVar = substring(rainbow(6), 1, 7), 
+    colorY = c("blue", "green", "orange"))
+    
+    
+ # Use visNetwork functions to add more options
+visTree(res) 
+    visOptions(highlightNearest = TRUE)
+
+
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>visNetwork</em> version 2.0.9 <a href="00Index.html">Index</a>]</div>
+</body></html>

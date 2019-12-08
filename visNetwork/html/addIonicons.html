@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Use Ionicons in visNetwork 'graph'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for addIonicons {visNetwork}"><tr><td>addIonicons {visNetwork}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Use Ionicons in visNetwork <code>graph</code></h2>
+
+<h3>Description</h3>
+
+<p>Add <a href="http://ionicons.com/">Ionicons</a> for styling
+our <code>graph</code> with beautiful, professional icons.
+See <a href="http://ionicons.com/cheatsheet.html">Cheatsheet</a> to get CSS content code.
+Can also use <a href="addFontAwesome.html">addFontAwesome</a>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+addIonicons(graph, name = "ionicons")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>graph</code></td>
+<td>
+<p>: a visNetwork object</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>: name of dependency</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>graph</code> htmlwidget with Ionicons dependencies attached.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+nodes &lt;- data.frame(id = 1:3, group = c("B", "A", "B"))
+edges &lt;- data.frame(from = c(1,2), to = c(2,3))
+
+visNetwork(nodes, edges) %&gt;%
+  visGroups(groupname = "A", shape = "icon", 
+   icon = list(face ='Ionicons', code = "f101", size = 75)) %&gt;%
+  visGroups(groupname = "B", shape = "icon", 
+   icon = list(face ='Ionicons', code = "f100", color = "red")) %&gt;%
+  addIonicons()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>visNetwork</em> version 2.0.9 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Search algorithm in graphical models using marginal...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bdgraph.mpl {BDgraph}"><tr><td>bdgraph.mpl {BDgraph}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>	Search algorithm in graphical models using marginal pseudo-likehlihood </h2>
+
+<h3>Description</h3>
+
+<p>This function consists of several sampling algorithms for Bayesian model determination in undirected graphical models based on mariginal pseudo-likelihood. 
+To speed up the computations, the birth-death MCMC sampling algorithms are implemented in parallel using <span class="pkg">OpenMP</span> in <code>C++</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bdgraph.mpl( data, n = NULL, method = "ggm", transfer = TRUE, 
+             algorithm = "bdmcmc", iter = 5000, burnin = iter / 2, 
+             g.prior = 0.5, g.start = "empty", 
+             jump = NULL, alpha = 0.5, save = FALSE, 
+             print = 1000, cores = NULL, operator = "or" )
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+
+<p>There are two options: (1) an (<i>n \times p</i>) <code>matrix</code> or a <code>data.frame</code> corresponding to the data, 
+(2) an (<i>p \times p</i>) covariance matrix as <i>S=X'X</i> which <i>X</i> is the data matrix 
+(<i>n</i> is the sample size and <i>p</i> is the number of variables). 
+It also could be an object of class <code>"sim"</code>, from function <code><a href="bdgraph.sim.html">bdgraph.sim</a></code>.
+The input matrix is automatically identified by checking the symmetry.
+</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>The number of observations. It is needed if the <code>"data"</code> is a covariance matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+
+<p>A character with two options <code>"ggm"</code> (default), <code>"dgm"</code> and <code>"dgm-binary"</code>. 
+Option <code>"ggm"</code> is for Gaussian graphical models based on Gaussianity assumption.
+Option <code>"dgm"</code> is for discrete graphical models for the data that are discrete.
+Option <code>"dgm-binary"</code> is for discrete graphical models for the data that are binary.
+</p>
+</td></tr>
+<tr valign="top"><td><code>transfer</code></td>
+<td>
+<p> For only discrete data which <code>method = "dgm"</code> or <code>method = "dgm-binary"</code>. </p>
+</td></tr>
+<tr valign="top"><td><code>algorithm</code></td>
+<td>
+
+<p>A character with two options <code>"bdmcmc"</code> (default) and <code>"rjmcmc"</code>. 
+Option <code>"bdmcmc"</code> is based on birth-death MCMC algorithm.
+Option <code>"rjmcmc"</code> is based on reverible jump MCMC algorithm.
+Option <code>"hc"</code>     is based on hill-climbing algorithm; this algorithm is only for discrete data which <code>method = "dgm"</code> or <code>method = "dgm-binary"</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>iter</code></td>
+<td>
+<p>   The number of iteration for the sampling algorithm. </p>
+</td></tr>
+<tr valign="top"><td><code>burnin</code></td>
+<td>
+<p> The number of burn-in iteration for the sampling algorithm. </p>
+</td></tr>
+<tr valign="top"><td><code>g.prior</code></td>
+<td>
+
+<p>For determining the prior distribution of each edge in the graph. 
+There are two options: a single value between <i>0</i> and <i>1</i> (e.g. <i>0.5</i> as a noninformative prior) 
+or an (<i>p \times p</i>) matrix with elements between <i>0</i> and <i>1</i>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>g.start</code></td>
+<td>
+
+<p>Corresponds to a starting point of the graph. It could be an (<i>p \times p</i>) matrix, <code>"empty"</code> (default), or <code>"full"</code>. 
+Option <code>"empty"</code> means the initial graph is an empty graph and <code>"full"</code> means a full graph. 
+It also could be an object with <code>S3</code> class <code>"bdgraph"</code> of <code>R</code> package <code><a href="BDgraph.html">BDgraph</a></code> or the class <code>"ssgraph"</code> of <code>R</code> package <code><a href="../../ssgraph/html/ssgraph.html">ssgraph</a></code>; 
+this option can be used to run the sampling algorithm from the last objects of previous run (see examples).     
+</p>
+</td></tr> 
+<tr valign="top"><td><code>jump</code></td>
+<td>
+
+<p>It is only for the BDMCMC algorithm (<code>algorithm = "bdmcmc"</code>).
+It is for simultaneously updating multiple links at the same time to update graph in the BDMCMC algorithm.
+</p>
+</td></tr>	
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p> Value of the hyper parameter of Dirichlet, which is a prior distribution. </p>
+</td></tr>
+<tr valign="top"><td><code>save</code></td>
+<td>
+
+<p>Logical: if FALSE (default), the adjacency matrices are NOT saved. 
+If TRUE, the adjacency matrices after burn-in are saved.
+</p>
+</td></tr>
+<tr valign="top"><td><code>print</code></td>
+<td>
+<p> Value to see the number of iteration for the MCMC algorithm. </p>
+</td></tr>
+<tr valign="top"><td><code>cores</code></td>
+<td>
+<p> The number of cores to use for parallel execution. 
+The case <code>cores="all"</code> means all CPU cores to use for parallel execution. 
+
+</p>
+</td></tr>	
+<tr valign="top"><td><code>operator</code></td>
+<td>
+<p> A character with two options <code>"or"</code> (default) and <code>"and"</code>. It is for hill-climbing algorithm. </p>
+</td></tr>	   	
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object with <code>S3</code> class <code>"bdgraph"</code> is returned:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>p_links</code></td>
+<td>
+<p> An upper triangular matrix which corresponds the estimated posterior probabilities of all possible links. </p>
+</td></tr>
+</table>
+<p>For the case &quot;save = TRUE&quot; is returned:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>sample_graphs</code></td>
+<td>
+<p> A vector of strings which includes the adjacency matrices of visited graphs after burn-in.</p>
+</td></tr>
+<tr valign="top"><td><code>graph_weights</code></td>
+<td>
+<p> A vector which includes the waiting times of visited graphs after burn-in. </p>
+</td></tr>
+<tr valign="top"><td><code>all_graphs</code></td>
+<td>
+<p>A vector which includes the identity of the adjacency matrices for all iterations after burn-in. 
+It is needed for monitoring the convergence of the BD-MCMC algorithm.</p>
+</td></tr>
+<tr valign="top"><td><code>all_weights</code></td>
+<td>
+<p>A vector which includes the waiting times for all iterations after burn-in. It is needed for monitoring the convergence of the BD-MCMC algorithm.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p> Reza Mohammadi <a href="mailto:a.mohammadi@uva.nl">a.mohammadi@uva.nl</a>, Adrian Dobra, and Johan Pensar </p>
+
+
+<h3>References</h3>
+
+<p>Dobra, A. and Mohammadi, R. (2018). Loglinear Model Selection and Human Mobility, <em>Annals of Applied Statistics</em>, 12(2):815-845
+</p>
+<p>Mohammadi, A. and Wit, E. C. (2015). Bayesian Structure Learning in Sparse Gaussian Graphical Models, <em>Bayesian Analysis</em>, 10(1):109-138
+</p>
+<p>Mohammadi, A. and Dobra, A. (2017). The <code>R</code> Package <span class="pkg">BDgraph</span> for Bayesian Structure Learning in Graphical Models, <em>ISBA Bulletin</em>, 24(4):11-16
+</p>
+<p>Pensar, J. et al (2017) Marginal pseudo-likelihood learning of discrete Markov network structures, <em>Bayesian Analysis</em>, 12(4):1195-215
+</p>
+<p>Mohammadi, R. and Wit, E. C. (2019). <span class="pkg">BDgraph</span>: An <code>R</code> Package for Bayesian Structure Learning in Graphical Models, <em>Journal of Statistical Software</em>, 89(3):1-30 
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="bdgraph.html">bdgraph</a></code>, <code><a href="bdgraph.sim.html">bdgraph.sim</a></code>, <code><a href="summary.bdgraph.html">summary.bdgraph</a></code>, <code><a href="compare.html">compare</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Generating multivariate normal data from a 'random' graph
+data.sim &lt;- bdgraph.sim( n = 70, p = 5, size = 7, vis = TRUE )
+   
+bdgraph.obj &lt;- bdgraph.mpl( data = data.sim, iter = 500 )
+  
+summary( bdgraph.obj )
+   
+# To compare the result with true graph
+compare( data.sim, bdgraph.obj, main = c( "Target", "BDgraph" ) )
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>BDgraph</em> version 2.62 <a href="00Index.html">Index</a>]</div>
+</body></html>

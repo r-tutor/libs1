@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bayesian Structure Learning in Graphical Models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for BDgraph-package {BDgraph}"><tr><td>BDgraph-package {BDgraph}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Bayesian Structure Learning in Graphical Models </h2>
+
+<h3>Description</h3>
+
+<p>The <code>R</code> package <span class="pkg">BDgraph</span> provides statistical tools for Bayesian structure learning in undirected graphical models for continuous, discrete, and mixed data. The package is implemented the recent improvements in the Bayesian graphical models literature, including Mohammadi and Wit (2015), Mohammadi et al. (2017), Dobra and Mohammadi (2018), and Letac et al. (2018). The computationally intensive tasks of the package are implemented in parallel using <span class="pkg">OpenMP</span> in <code>C++</code> and interfaced with <code>R</code>, to speed up the computations. Besides, the package contains several functions for simulation and visualization, as well as several multivariate datasets taken from the literature.
+</p>
+
+
+<h3>How to cite this package</h3>
+
+<p>To cite <span class="pkg">BDgraph</span> in publications use:
+</p>
+<pre>
+Mohammadi, R. and Wit, E. C. (2019). BDgraph: An R Package for Bayesian 
+Structure Learning in Graphical Models, Journal of Statistical Software, 
+89(3):1-30. doi:10.18637/jss.v089.i03
+</pre>
+
+
+<h3>Author(s)</h3>
+
+<p>Reza Mohammadi <br />
+Amsterdam Business School <br />
+University of Amsterdam
+</p>
+<p>Maintainer: Reza Mohammadi <a href="mailto:a.mohammadi@uva.nl">a.mohammadi@uva.nl</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Mohammadi, R. and Wit, E. C. (2019). <span class="pkg">BDgraph</span>: An <code>R</code> Package for Bayesian Structure Learning in Graphical Models, <em>Journal of Statistical Software</em>, 89(3):1-30. 
+</p>
+<p>Mohammadi, A. and Wit, E. C. (2015). Bayesian Structure Learning in Sparse Gaussian Graphical Models, <em>Bayesian Analysis</em>, 10(1):109-138
+</p>
+<p>Mohammadi, A., et al (2017). Bayesian modelling of Dupuytren disease by using Gaussian copula graphical models, <em>Journal of the Royal Statistical Society: Series C</em>, 66(3):629-645 
+</p>
+<p>Letac, G., Massam, H. and Mohammadi, R. (2018). The Ratio of Normalizing Constants for Bayesian Graphical Gaussian Model Selection, <em>arXiv preprint arXiv:1706.04416v2</em> 
+</p>
+<p>Dobra, A. and Mohammadi, R. (2018). Loglinear Model Selection and Human Mobility, <em>Annals of Applied Statistics</em>, 12(2):815-845
+</p>
+<p>Dobra, A. and Lenkoski, A. (2011). Copula Gaussian graphical models and their application to modeling functional disability data, <em>The Annals of Applied Statistics</em>, 5(2A):969-93
+</p>
+<p>Dobra, A., et al. (2011). Bayesian inference for general Gaussian graphical models with application to multivariate lattice data. <em>Journal of the American Statistical Association</em>, 106(496):1418-33
+</p>
+<p>Mohammadi, A. and Dobra, A. (2017). The <code>R</code> Package <span class="pkg">BDgraph</span> for Bayesian Structure Learning in Graphical Models, <em>ISBA Bulletin</em>, 24(4):11-16
+</p>
+<p>Lenkoski, A. (2013). A direct sampler for G-Wishart variates, <em>Stat</em>, 2(1):119-28
+</p>
+<p>Pensar, J. et al (2017) Marginal pseudo-likelihood learning of discrete Markov network structures, <em>Bayesian Analysis</em>, 12(4):1195-215
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="bdgraph.html">bdgraph</a></code>, <code><a href="bdgraph.mpl.html">bdgraph.mpl</a></code>, <code><a href="bdgraph.sim.html">bdgraph.sim</a></code>, <code><a href="compare.html">compare</a></code>, <code><a href="rgwish.html">rgwish</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library( BDgraph )
+
+# Generating multivariate normal data from a 'random' graph
+data.sim &lt;- bdgraph.sim( n = 70, p = 6, size = 7, vis = TRUE )
+
+# Running algorithm based on GGMs
+bdgraph.obj &lt;- bdgraph( data = data.sim, iter = 5000 )
+
+summary( bdgraph.obj )
+
+# To compare the result with true graph
+compare( data.sim, bdgraph.obj, main = c( "Target", "BDgraph" ), vis = TRUE )
+
+# Running algorithm based on GGMs and marginal pseudo-likelihood
+bdgraph.obj_mpl &lt;- bdgraph.mpl( data = data.sim, iter = 5000 )
+
+summary( bdgraph.obj_mpl )
+
+# To compare the results of both algorithms with true graph
+compare( data.sim, bdgraph.obj, bdgraph.obj_mpl, 
+         main = c( "Target", "BDgraph", "BDgraph_mpl" ), vis = TRUE )
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>BDgraph</em> version 2.62 <a href="00Index.html">Index</a>]</div>
+</body></html>

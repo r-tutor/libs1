@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Function to update the information of nodes, with shiny only.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for visUpdateNodes {visNetwork}"><tr><td>visUpdateNodes {visNetwork}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Function to update the information of nodes, with shiny only.</h2>
+
+<h3>Description</h3>
+
+<p>Function to update the information of nodes, with shiny only. You can also use this function passing new nodes.
+The link is based on id.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+visUpdateNodes(graph, nodes, updateOptions = TRUE, legend = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>graph</code></td>
+<td>
+<p>: a <code><a href="visNetwork-shiny.html">visNetworkProxy</a></code>  object</p>
+</td></tr>
+<tr valign="top"><td><code>nodes</code></td>
+<td>
+<p>: data.frame with the information of nodes. Needed at least column &quot;id&quot;. See <a href="visNodes.html">visNodes</a> 
+</p>
+
+<ul>
+<li><p>&quot;id&quot; : id of the node, needed in the definition of edges and for update nodes
+</p>
+</li>
+<li><p>&quot;label&quot; : label of the node
+</p>
+</li>
+<li><p>&quot;group&quot; : group of the node. Groups can be configure with <a href="visGroups.html">visGroups</a>
+</p>
+</li>
+<li><p>&quot;value&quot; : size of the node
+</p>
+</li>
+<li><p>&quot;title&quot; : tooltip of the node
+</p>
+</li>
+<li><p>...
+</p>
+</li></ul>
+</td></tr>
+<tr valign="top"><td><code>updateOptions</code></td>
+<td>
+<p>: Boolean. Update options (nodesIdSelection &amp; selectedBy) if needed ? Default to TRUE.</p>
+</td></tr>
+<tr valign="top"><td><code>legend</code></td>
+<td>
+<p>: Boolean. Update nodes on legend ? Default to FALSE</p>
+</td></tr>
+</table>
+
+
+<h3>References</h3>
+
+<p>See online documentation <a href="http://datastorm-open.github.io/visNetwork/">http://datastorm-open.github.io/visNetwork/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="visNodes.html">visNodes</a> for nodes options, <a href="visEdges.html">visEdges</a> for edges options, <a href="visGroups.html">visGroups</a> for groups options, 
+<a href="visLegend.html">visLegend</a> for adding legend, <a href="visOptions.html">visOptions</a> for custom option, <a href="visLayout.html">visLayout</a> &amp; <a href="visHierarchicalLayout.html">visHierarchicalLayout</a> for layout, 
+<a href="visPhysics.html">visPhysics</a> for control physics, <a href="visInteraction.html">visInteraction</a> for interaction, <a href="visNetwork-shiny.html">visNetworkProxy</a> &amp; <a href="visFocus.html">visFocus</a> &amp; <a href="visFit.html">visFit</a> for animation within shiny,
+<a href="visDocumentation.html">visDocumentation</a>, <a href="visEvents.html">visEvents</a>, <a href="visConfigure.html">visConfigure</a> ...
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+# have a look to : 
+shiny::runApp(system.file("shiny", package = "visNetwork"))
+
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>visNetwork</em> version 2.0.9 <a href="00Index.html">Index</a>]</div>
+</body></html>

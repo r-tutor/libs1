@@ -50,13 +50,20 @@ Fisk                    The Fisk Distribution
 Foldnorm                The Folded-Normal Distribution
 Frank                   Frank's Bivariate Distribution
 Frechet                 The Frechet Distribution
-Genabinom               Generally-Altered Binomial Distribution
-Genapois                Generally-Altered Poisson Distribution
+Gaitbinom.mlm           Generally-Altered, -Inflated and -Truncated
+                        Binomial Distribution (GAIT-binom-MLM-MLM)
+Gaitnbinom.mix          Generally-Altered, -Inflated and -Truncated
+                        Negative Binomial Distribution (GAIT-NB-NB-NB
+                        mixture)
+Gaitnbinom.mlm          Generally-Altered, -Inflated and -Truncated
+                        Negative Binomial Distribution
+                        (GAIT-NB-MLM-MLM)
+Gaitpois.mix            Generally-Altered, -Inflated and -Truncated
+                        Poisson Distribution (GAIT-Pois-Pois-Pois
+                        mixture)
+Gaitpois.mlm            Generally-Altered, -Inflated and -Truncated
+                        Poisson Distribution (GAIT-Pois-MLM-MLM)
 GenbetaII               The Generalized Beta II Distribution
-Genibinom               Generally-Inflated Binomial Distribution
-Genipois                Generally-Inflated Poisson Distribution
-Gentbinom               Generally-Truncated-Binomial Distribution
-Gentpois                Generally-Truncated Poisson Distribution
 Gompertz                The Gompertz Distribution
 Gumbel-II               The Gumbel-II Distribution
 Huggins89.t1            Table 1 of Huggins (1989)
@@ -101,6 +108,7 @@ Posnorm                 The Positive-Normal Distribution
 Pospois                 Positive-Poisson Distribution
 Qvar                    Quasi-variances Preprocessing Function
 R2latvar                R-squared for Latent Variable Models
+Rank                    Rank
 Rayleigh                The Rayleigh Distribution
 Rcim                    Mark the Baseline of Row and Column on a Matrix
                         data
@@ -136,10 +144,13 @@ Zibinom                 Zero-Inflated Binomial Distribution
 Zigeom                  Zero-Inflated Geometric Distribution
 Zinegbin                Zero-Inflated Negative Binomial Distribution
 Zipf                    The Zipf Distribution
+Zipfmb                  The Zipf-Mandelbrot Distribution
 Zipois                  Zero-Inflated Poisson Distribution
 Zoabeta                 The Zero/One-Inflated Beta Distribution
 acat                    Ordinal Regression with Adjacent Categories
                         Probabilities
+add1.vglm               Add or Drop All Possible Single Terms to/from a
+                        Model
 alaplace1               Asymmetric Laplace Distribution Family
                         Functions
 amlbinomial             Binomial Logistic Regression by Asymmetric
@@ -296,46 +307,58 @@ formulavlm              Model Formulae and Term Names for VGLMs
 frechet                 Frechet Distribution Family Function
 freund61                Freund's (1961) Bivariate Extension of the
                         Exponential Distribution
-gamma1                  1-parameter Gamma Distribution
-gamma2                  2-parameter Gamma Distribution
-gammaR                  2-parameter Gamma Distribution
+gabinomial.mlm          Generally-Altered Binomial Regression Family
+                        Function (multinomial logit model based;
+                        GA-binom-MLM)
+gamma1                  1-parameter Gamma Regression Family Function
+gamma2                  2-parameter Gamma Regression Family Function
+gammaR                  2-parameter Gamma Regression Family Function
 gammahyperbola          Gamma Hyperbola Bivariate Distribution
 garma                   GARMA (Generalized Autoregressive
                         Moving-Average) Models
-genapoisson             Generally-Altered Poisson Distribution Family
-                        Function
+gatnbinomial.mix        Generally-Altered and -Truncated Negative
+                        Binomial Regression Family Function (GAT-NB-NB
+                        Mixture Variant)
+gatnbinomial.mlm        Generally-Altered and -Truncated Negative
+                        Binomial Regression Family Function (GAT-NB-MLM
+                        Variant)
+gatpoisson.mix          Generally-Altered and -Truncated Poisson
+                        Regression Family Function (GAT-Pois-Pois
+                        Mixture Variant)
+gatpoisson.mlm          Generally-Altered and -Truncated Poisson
+                        Regression Family Function (GAT-Pois-MLM
+                        Variant)
 genbetaII               Generalized Beta Distribution of the Second
                         Kind
 gengamma.stacy          Generalized Gamma distribution family function
 gengammaUC              The Generalized Gamma Distribution
-genipoisson             Generally-Inflated Poisson Distribution Family
-                        Function
 genpoisson              Generalized Poisson distribution
 genray                  The Generalized Rayleigh Distribution
 genrayleigh             Generalized Rayleigh Distribution Family
-                        Function
-gentbinomial            Generally-Truncated Binomial Distribution
-                        Family Function
-gentpoisson             Generally-Truncated Poisson Distribution Family
                         Function
 geometric               Geometric (Truncated and Untruncated)
                         Distributions
 get.smart               Retrieve One Component of ".smart.prediction"
 get.smart.prediction    Retrieves ".smart.prediction"
-gev                     Generalized Extreme Value Distribution Family
+gev                     Generalized Extreme Value Regression Family
                         Function
 gevUC                   The Generalized Extreme Value Distribution
 gew                     General Electric and Westinghouse Data
-gompertz                Gompertz Distribution Family Function
+gipoisson.mlm           Generally-Inflated Poisson Distribution Family
+                        Function
+gompertz                Gompertz Regression Family Function
 gordlink                Gamma-Ordinal Link Function
-gpd                     Generalized Pareto Distribution Family Function
+gpd                     Generalized Pareto Distribution Regression
+                        Family Function
 gpdUC                   The Generalized Pareto Distribution
 grain.us                Grain Prices Data in USA
 grc                     Row-Column Interaction Models including
                         Goodman's RC Association Model and
                         Unconstrained Quadratic Ordination
-gumbel                  Gumbel Distribution Family Function
-gumbelII                Gumbel-II Distribution Family Function
+gtbinomial              Generally-Truncated Binomial Distribution
+                        Family Function
+gumbel                  Gumbel Regression Family Function
+gumbelII                Gumbel-II Regression Family Function
 guplot                  Gumbel Plot
 has.interceptvlm        Has a Fitted VGLM Got an Intercept Term?
 hatvalues               Hat Values and Regression Deletion Diagnostics
@@ -348,7 +371,7 @@ huber2                  Huber's Least Favourable Distribution Family
                         Function
 hunua                   Hunua Ranges Data
 hyperg                  Hypergeometric Family Function
-hypersecant             Hyperbolic Secant Distribution Family Function
+hypersecant             Hyperbolic Secant Regression Family Function
 hzeta                   Haight's Zeta Family Function
 iam                     Index from Array to Matrix
 identitylink            Identity Link Function
@@ -362,13 +385,13 @@ is.parallel             Parallelism Constraint Matrices
 is.smart                Test For a Smart Object
 is.zero                 Zero Constraint Matrices
 kendall.tau             Kendall's Tau Statistic
-kumar                   Kumaraswamy Distribution Family Function
+kumar                   Kumaraswamy Regression Family Function
 lakeO                   Annual catches on Lake Otamangakau from October
                         1974 to October 1989
 lambertW                The Lambert W Function
-laplace                 Laplace Distribution
+laplace                 Laplace Regression Family Function
 latvar                  Latent Variables
-leipnik                 Leipnik Distribution Family Function
+leipnik                 Leipnik Regression Family Function
 lerch                   Lerch Phi Function
 leukemia                Acute Myelogenous Leukemia Survival Data
 levy                    Levy Distribution Family Function
@@ -412,11 +435,11 @@ lvplot                  Latent Variable Plot
 lvplot.qrrvglm          Latent Variable Plot for QO models
 lvplot.rrvglm           Latent Variable Plot for RR-VGLMs
 machinists              Machinists Accidents
-makeham                 Makeham Distribution Family Function
+makeham                 Makeham Regression Family Function
 margeff                 Marginal Effects for Several Categorical
                         Response Models
 marital.nz              New Zealand Marital Data
-maxwell                 Maxwell Distribution Family Function
+maxwell                 Maxwell Regression Family Function
 mccullagh89             McCullagh (1989) Distribution Family Function
 melbmaxtemp             Melbourne Daily Maximum Temperatures
 meplot                  Mean Excess Plot
@@ -431,7 +454,7 @@ model.matrixvlm         Construct the Design Matrix of a VLM Object
 moffset                 Matrix Offset
 multilogitlink          Multi-logit Link Function
 multinomial             Multinomial Logit Model
-nakagami                Nakagami Distribution Family Function
+nakagami                Nakagami Regression Family Function
 nbcanlink               Negative Binomial Canonical Link Function
 nbordlink               Negative Binomial-Ordinal Link Function
 negbinomial             Negative Binomial Distribution Family Function
@@ -509,7 +532,7 @@ qrrvglm.control         Control Function for QRR-VGLMs (CQO)
 qtplot.gumbel           Quantile Plot for Gumbel Regression
 qtplot.lmscreg          Quantile Plot for LMS Quantile Regression
 qvar                    Quasi-variances Extraction Function
-rayleigh                Rayleigh Distribution Family Function
+rayleigh                Rayleigh Regression Family Function
 rcqo                    Constrained Quadratic Ordination
 rdiric                  The Dirichlet distribution
 rec.exp1                Upper Record Values from a 1-parameter
@@ -522,6 +545,8 @@ rhobitlink              Rhobit Link Function
 riceff                  Rice Distribution Family Function
 rigff                   Reciprocal Inverse Gaussian distribution
 rlplot.gevff            Return Level Plot for GEV Fits
+rootogram4              Rootograms (S4 generic) for Assessing Goodness
+                        of Fit of Probability Models
 rrar                    Nested Reduced-rank Autoregressive Models for
                         Multiple Time Series
 rrvglm                  Fitting Reduced-Rank Vector Generalized Linear
@@ -555,6 +580,7 @@ smart.expression        S Expression for Smart Functions
 smart.mode.is           Determine What Mode the Smart Prediction is In
 smartpred               Smart Prediction
 sratio                  Ordinal Regression with Stopping Ratios
+step4                   Choose a model by AIC in a Stepwise Algorithm
 studentt                Student t Distribution
 summarypvgam            Summarizing Penalized Vector Generalized
                         Additive Model Fits

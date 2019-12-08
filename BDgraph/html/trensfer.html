@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: transfer for discrete data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for transfer {BDgraph}"><tr><td>transfer {BDgraph}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> transfer for discrete data </h2>
+
+<h3>Description</h3>
+
+<p> Transfers discrete data, by counting the duplicated rows.  </p>
+
+
+<h3>Usage</h3>
+
+<pre> transfer( r_data ) </pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>r_data</code></td>
+<td>
+<p> An (<i>n x p</i>) <code>matrix</code> or a <code>data.frame</code> corresponding to the data (<i>n</i> is the sample size and <i>p</i> is the number of variables). </p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p> An (<i>n \times p+1</i>) matrix of transferred data, in which the last column is the frequency of duplicated rows.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Reza Mohammadi <a href="mailto:a.mohammadi@uva.nl">a.mohammadi@uva.nl</a> and Adrian Dobra </p>
+
+
+<h3>References</h3>
+
+<p>Mohammadi, A. and Dobra, A. (2017). The <code>R</code> Package <span class="pkg">BDgraph</span> for Bayesian Structure Learning in Graphical Models, <em>ISBA Bulletin</em>, 24(4):11-16
+</p>
+<p>Dobra, A. and Mohammadi, R. (2018). Loglinear Model Selection and Human Mobility, <em>Annals of Applied Statistics</em>, 12(2):815-845
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="bdgraph.mpl.html">bdgraph.mpl</a></code>, <code><a href="bdgraph.sim.html">bdgraph.sim</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Generating multivariate binary data from a 'random' graph
+data.sim &lt;- bdgraph.sim( n = 12, p = 4, size = 4, type = "discrete", cut = 2 )
+r_data   &lt;- data.sim $ data
+r_data
+   
+# Transfer the data
+transfer( r_data )
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>BDgraph</em> version 2.62 <a href="00Index.html">Index</a>]</div>
+</body></html>

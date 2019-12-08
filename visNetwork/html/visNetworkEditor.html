@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Visualize, customize and get back a 'visNetwork' object. Need...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for visNetworkEditor {visNetwork}"><tr><td>visNetworkEditor {visNetwork}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Visualize, customize and get back a <code>visNetwork</code> object. Need shiny package</h2>
+
+<h3>Description</h3>
+
+<p>Visualize, customize and get back a <code>visNetwork</code> object. Need shiny package
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+visNetworkEditor(object, filter = NULL, showButton = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>: a <code>visNetwork</code> object</p>
+</td></tr>
+<tr valign="top"><td><code>filter</code></td>
+<td>
+<p>: see <a href="visConfigure.html">visConfigure</a></p>
+</td></tr>
+<tr valign="top"><td><code>showButton</code></td>
+<td>
+<p>: see <a href="visConfigure.html">visConfigure</a></p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a <code>visNetwork</code> object
+</p>
+
+
+<h3>References</h3>
+
+<p>See online documentation <a href="http://datastorm-open.github.io/visNetwork/">http://datastorm-open.github.io/visNetwork/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="visConfigure.html">visConfigure</a>, <a href="visTree.html">visTree</a>, <a href="visNetworkEditor-module.html">visNetworkEditorServer</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## Not run: 
+
+nodes &lt;- data.frame(id = 1:3, label = paste("Node", 1:3))
+edges &lt;- data.frame(from = c(1,2), to = c(1,3), label = paste("Edge", 1:2))
+network &lt;- visNetwork(nodes, edges)
+
+custom_network &lt;- visNetworkEditor(object = network)
+custom_network
+
+custom_network &lt;- visNetworkEditor(object = network, filter = "nodes,edges")
+custom_network
+
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>visNetwork</em> version 2.0.9 <a href="00Index.html">Index</a>]</div>
+</body></html>
