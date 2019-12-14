@@ -4,6 +4,8 @@ C_erlang                Returns the probability to wait in queue
                         because all servers are busy
 CheckInput              Generic S3 method to check the params of a
                         queueing model (or network)
+CheckInput.i_BnD        Checks the input params of a generic Birth and
+                        Death process model
 CheckInput.i_CJN        Check the input params of a Closed Jackson
                         Network
 CheckInput.i_MCCN       Check the input params of a MultiClass Closed
@@ -40,6 +42,8 @@ Engset                  Returns the probability that all servers are
                         busy
 Inputs                  Returns the input parameters of a queueing
                         model (or network)
+Inputs.o_BnD            Returns the input parameters of a generic Birth
+                        and Death process model
 Inputs.o_CJN            Returns the input params of a Closed Jackson
                         Network
 Inputs.o_MCCN           Returns the input params of a MultiClass Closed
@@ -72,6 +76,8 @@ Inputs.o_OJN            Returns the input params of an Open Jackson
                         Network
 L                       Returns the mean number of customers in a
                         queueing model (or network)
+L.o_BnD                 Returns the mean number of customers in the
+                        generic Birth and Death process model
 L.o_CJN                 Returns the mean number of customers of a
                         Closed Jackson Network
 L.o_MCCN                Returns the mean number of customers of a
@@ -196,6 +202,8 @@ Lqq.o_MMInf             Returns the mean number of customers in queue
 Lqq.o_MMInfKK           Returns the mean number of customers in queue
                         when there is queue in the M/M/Infinite/K/K
                         queueing model
+NewInput.BnD            Define the inputs of a new generic Birth and
+                        Death process model
 NewInput.CJN            Define the inputs of a Closed Jackson Network
 NewInput.MCCN           Define the inputs of a MultiClass Closed
                         Network
@@ -222,6 +230,8 @@ NewInput.MMInfKK        Define the inputs of a new M/M/Infinite/K/K
 NewInput.OJN            Define the inputs of an Open Jackson Network
 Pn                      Returns the probabilities of a queueing model
                         (or network)
+Pn.o_BnD                Returns the probabilities of a generic Birth
+                        and Death process model
 Pn.o_MM1                Returns the probabilities of a M/M/1 queueing
                         model
 Pn.o_MM1K               Returns the probabilities of a M/M/1/K queueing
@@ -246,6 +256,8 @@ Pn.o_OJN                Returns vector of the probabilities of each
                         node (server) of an Open Jackson Network
 QueueingModel           Generic S3 method to build a queueing model (or
                         network)
+QueueingModel.i_BnD     Builds a a generic Birth and Death process
+                        model
 QueueingModel.i_CJN     Builds one Closed Jackson Network
 QueueingModel.i_MCCN    Builds one MultiClass Closed Network
 QueueingModel.i_MCMN    Builds one MultiClass Mixed Network
@@ -308,6 +320,7 @@ ROk.o_MCON              Reports a vector with each node (server) use of
 ROk.o_OJN               Reports a vector with each node (server) use of
                         an Open Jackson Network
 Report                  Reports the results of a queueing model
+Report.o_BnD            Reports the results of a M/M/1 queueing model
 Report.o_CJN            Reports the results of a Closed Jackson Network
 Report.o_MCCN           Reports the results of a MultiClass Closed
                         Network
@@ -594,6 +607,8 @@ Wqq.o_MMInf             Returns the mean time spend in queue when there
                         is queue in the M/M/Infinite queueing model
 Wqq.o_MMInfKK           Returns the mean time spend in queue when there
                         is queue in the M/M/Infinite/K/K queueing model
+print.summary.o_BnD     Summary of the results of a generic Birth and
+                        Death process model
 print.summary.o_CJN     Summary of the results of a Closed Jackson
                         Network
 print.summary.o_MCCN    Summary of the results of a MultiClass Closed
@@ -625,6 +640,8 @@ print.summary.o_MMInfKK
                         queueing model
 print.summary.o_OJN     Reports the results of an Open Jackson Network
 queueing-package        Analysis of Queueing Networks and Models.
+summary.o_BnD           Summary of the results of a generic Birth and
+                        Death process model
 summary.o_CJN           Summary of the results of a Closed Jackson
                         Network
 summary.o_MCCN          Summary of the results of a MultiClass Closed

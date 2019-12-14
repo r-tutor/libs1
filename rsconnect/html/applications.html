@@ -44,21 +44,37 @@ multiple servers.</p>
 <table summary="Rd table">
 <tr>
  <td style="text-align: left;">
-<code>name</code> </td><td style="text-align: left;"> Name of application </td>
+<code>id</code>         </td><td style="text-align: left;"> Application unique id </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-<code>url</code> </td><td style="text-align: left;"> URL where application can be accessed</td>
+<code>name</code>       </td><td style="text-align: left;"> Name of application </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-<code>config_url</code> </td><td style="text-align: left;"> URL where application can be configured</td>
+<code>url</code>        </td><td style="text-align: left;"> URL where application can be accessed </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-<code>status</code> </td><td style="text-align: left;"> Current status of application. Valid values are
-<code>pending</code>, <code>deploying</code>, <code>running</code>, <code>terminating</code>, and
-<code>terminated</code>.
+
+<code>status</code>     </td><td style="text-align: left;"> Current status of application. Valid values are <code>pending</code>,
+<code>deploying</code>, <code>running</code>, <code>terminating</code>, and <code>terminated</code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code>size</code>       </td><td style="text-align: left;"> Instance size (small, medium, large, etc.) (on
+ShinyApps.io) </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code>instances</code>  </td><td style="text-align: left;"> Number of instances (on ShinyApps.io) </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code>config_url</code> </td><td style="text-align: left;"> URL where application can be configured </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
 </td>
 </tr>
 
@@ -99,5 +115,5 @@ View(applications())
 ## End(Not run)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rsconnect</em> version 0.8.15 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rsconnect</em> version 0.8.16 <a href="00Index.html">Index</a>]</div>
 </body></html>

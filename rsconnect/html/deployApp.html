@@ -26,7 +26,7 @@ deployApp(appDir = getwd(), appFiles = NULL, appFileManifest = NULL,
   logLevel = c("normal", "quiet", "verbose"), lint = TRUE,
   metadata = list(),
   forceUpdate = getOption("rsconnect.force.update.apps", FALSE),
-  python = NULL)
+  python = NULL, on.failure = NULL)
 </pre>
 
 
@@ -102,7 +102,8 @@ multiple servers.</p>
 <td>
 <p>If <code>TRUE</code> (the default) then the application is uploaded from
 the local system prior to deployment. If <code>FALSE</code> then it is re-deployed
-using the last version that was uploaded.</p>
+using the last version that was uploaded. <code>FALSE</code> is only supported on
+shinyapps.io; <code>TRUE</code> is required on RStudio Connect.</p>
 </td></tr>
 <tr valign="top"><td><code>recordDir</code></td>
 <td>
@@ -113,7 +114,8 @@ in which case record will be written to the location specified with <code>appDir
 <td>
 <p>If true, the system's default web browser will be
 launched automatically after the app is started. Defaults to <code>TRUE</code> in
-interactive sessions only.</p>
+interactive sessions only. If a function is passed, it will be called
+after the app is started, with the app URL as a paramter.</p>
 </td></tr>
 <tr valign="top"><td><code>logLevel</code></td>
 <td>
@@ -142,8 +144,14 @@ asking. If <code>FALSE</code>, ask to update. If unset, defaults to the value of
 <td>
 <p>Full path to a python binary for use by <code>reticulate</code>.
 Required if <code>reticulate</code> is a dependency of the app being deployed.
-The specified python binary will be invoked to determine its version
-and to list the python packages installed in the environment.</p>
+If python = NULL, and RETICULATE_PYTHON is set in the environment, its
+value will be used. The specified python binary will be invoked to determine
+its version and to list the python packages installed in the environment.</p>
+</td></tr>
+<tr valign="top"><td><code>on.failure</code></td>
+<td>
+<p>Function to be called if the deployment fails. If a
+deployment log URL is available, it's passed as a parameter.</p>
 </td></tr>
 </table>
 
@@ -185,5 +193,5 @@ deployApp(launch.browser = FALSE)
 ## End(Not run)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rsconnect</em> version 0.8.15 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rsconnect</em> version 0.8.16 <a href="00Index.html">Index</a>]</div>
 </body></html>
