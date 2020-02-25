@@ -3,6 +3,8 @@ import(parallel)
 importFrom("stats", "integrate", "na.omit", "pchisq", "rbeta",
 	   "rlnorm", "rnorm", "runif", "uniroot")
 importFrom("utils", "count.fields", "read.delim")
+importFrom(Rcpp, evalCpp)
+importFrom(lifecycle, deprecate_soft)
 exportClassPattern("^rpf.+")
 exportMethods(rpf.logprob)
 exportMethods(rpf.prob)

@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Add a numeric input to a manipulateWidget gadget</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for mwNumeric {manipulateWidget}"><tr><td>mwNumeric {manipulateWidget}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Add a numeric input to a manipulateWidget gadget</h2>
+
+<h3>Description</h3>
+
+<p>Add a numeric input to a manipulateWidget gadget
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mwNumeric(value, label = NULL, ..., .display = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>Initial value of the numeric input.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Display label for the control. If <code>NULL</code>, the name of the corresponding
+variable is used.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Other arguments passed to function<code><a href="../../shiny/html/numericInput.html">numericInput</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>.display</code></td>
+<td>
+<p>expression that evaluates to TRUE or FALSE, indicating when
+the input control should be shown/hidden.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A function that will generate the input control.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other controls: 
+<code><a href="mwCheckboxGroup.html">mwCheckboxGroup</a>()</code>,
+<code><a href="mwCheckbox.html">mwCheckbox</a>()</code>,
+<code><a href="mwDateRange.html">mwDateRange</a>()</code>,
+<code><a href="mwDate.html">mwDate</a>()</code>,
+<code><a href="mwGroup.html">mwGroup</a>()</code>,
+<code><a href="mwPassword.html">mwPassword</a>()</code>,
+<code><a href="mwRadio.html">mwRadio</a>()</code>,
+<code><a href="mwSelectize.html">mwSelectize</a>()</code>,
+<code><a href="mwSelect.html">mwSelect</a>()</code>,
+<code><a href="mwSharedValue.html">mwSharedValue</a>()</code>,
+<code><a href="mwSlider.html">mwSlider</a>()</code>,
+<code><a href="mwText.html">mwText</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+if (require(plotly)) {
+  manipulateWidget({
+      plot_ly(data.frame(x = 1:10, y = rnorm(10, mean, sd)), x=~x, y=~y,
+              type = "scatter", mode = "markers")
+    },
+    mean = mwNumeric(0),
+    sd = mwNumeric(1, min = 0, step = 0.1)
+  )
+}
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>manipulateWidget</em> version 0.10.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -7,6 +7,7 @@ MAINTAINER "edzerpebesma" edzer.pebesma@uni-muenster.de
 RUN apt-get update && apt-get install -y software-properties-common
 RUN add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
 RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu bionic-cran35/  " >> /etc/apt/sources.list
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
 
@@ -31,6 +32,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; apt-get -y update \
 	subversion \
 	valgrind \
 	vim \
+	tk-dev \
 	wget
 
 RUN apt-get install -y \
@@ -49,7 +51,7 @@ RUN apt-get install -y \
 
 RUN locale-gen en_US.UTF-8
 
-ENV PROJ_VERSION=6.2.0
+ENV PROJ_VERSION=6.3.0
 ENV LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
 RUN wget http://download.osgeo.org/proj/proj-${PROJ_VERSION}.tar.gz \
@@ -73,8 +75,8 @@ RUN cd /usr/local/share/proj \
 
 # GDAL:
 
-ENV GDAL_VERSION 3.0.1
-ENV GDAL_VERSION_NAME 3.0.1
+ENV GDAL_VERSION 3.0.3
+ENV GDAL_VERSION_NAME 3.0.3
 
 RUN wget http://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION_NAME}.tar.gz \
   && tar -xf gdal-${GDAL_VERSION_NAME}.tar.gz \
@@ -96,7 +98,7 @@ RUN wget http://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION_NAME
 
 # GEOS:
 #ENV GEOS_VERSION 3.6.2
-ENV GEOS_VERSION 3.7.2
+ENV GEOS_VERSION 3.8.0
 #
 RUN wget http://download.osgeo.org/geos/geos-${GEOS_VERSION}.tar.bz2 \
   && bzip2 -d geos-*bz2 \
@@ -140,12 +142,12 @@ RUN Rscript -e 'install.packages("rgdal", repos="http://R-Forge.R-project.org")'
 # after rgdal:
 RUN Rscript -e 'install.packages(c("tmaptools", "tmap"))'
 
-RUN R CMD check --no-build-vignettes --no-manual --as-cran sf_*.tar.gz 
-RUN R CMD check --no-build-vignettes --no-manual --as-cran lwgeom_*.tar.gz 
+#RUN R CMD check --no-build-vignettes --no-manual --as-cran sf_*.tar.gz 
+#RUN R CMD check --no-build-vignettes --no-manual --as-cran lwgeom_*.tar.gz 
 
-RUN Rscript -e 'install.packages("starsdata", repos="http://gis-bigdata.uni-muenster.de/pebesma/")'
-RUN Rscript -e 'install.packages(c("PCICt", "RNetCDF", "future.apply", "ggforce", "ggthemes", "gstat", "ncmeta", "pbapply", "plm", "spacetime", "xts", "zoo"))'
-RUN Rscript -e 'install.packages(c("tidync"))'
-RUN R CMD check --no-build-vignettes --no-manual --as-cran stars_*.tar.gz 
+#RUN Rscript -e 'install.packages("starsdata", repos="http://gis-bigdata.uni-muenster.de/pebesma/")'
+#RUN Rscript -e 'install.packages(c("PCICt", "RNetCDF", "future.apply", "ggforce", "ggthemes", "gstat", "ncmeta", "pbapply", "plm", "spacetime", "xts", "zoo"))'
+#RUN Rscript -e 'install.packages(c("tidync", "ncdfgeom"))'
+#RUN R CMD check --no-build-vignettes --no-manual --as-cran stars_*.tar.gz 
 
 CMD ["/bin/bash"]

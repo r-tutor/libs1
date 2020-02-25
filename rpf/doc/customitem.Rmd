@@ -350,9 +350,9 @@ parameters, and does not currently have a multidimensional
 version.
 
 ```
-rpf.lmp <- function(k=1, multidimensional=FALSE) {
-  if(!(k%%1==0)){
-    stop("k must be an integer >= 0")
+rpf.lmp <- function(q=1, multidimensional=FALSE) {
+  if(!(q%%1==0)){
+    stop("q must be an integer >= 0")
   }
   if(multidimensional){
       stop("Multidimensional LMP model is not yet supported")
@@ -363,7 +363,7 @@ rpf.lmp <- function(k=1, multidimensional=FALSE) {
   m <- new("rpf.1dim.lmp",
            outcomes=2,
            factors=1)
-  m@spec <- c(id, 2, m@factors, k)
+  m@spec <- c(id, 2, m@factors, q)
   m
 }
 ```
@@ -445,7 +445,7 @@ Fire up R and begin testing.
 ```{r, message=FALSE}
 library(rpf)
 
-lmp.item<-rpf.lmp(k=2) # create item w/ 5th order polynomial
+lmp.item<-rpf.lmp(q=2) # create item w/ 5th order polynomial
 par<-c(.69,.71,-.5,-8.48,.52,-3.32) # item parameters
 theta<-seq(-3,3,.1) # grid for latent trait
 
@@ -517,6 +517,3 @@ Forthcoming.
 ### Generating documentation
 
 Forthcoming.
-
-
-

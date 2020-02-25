@@ -9,9 +9,19 @@ Rmpfr-package	Rmpfr-package
 %*%,mpfrMatrix,mpfrMatrix-method	mpfrMatrix-class
 .bigq2mpfr	gmp-conversions
 .bigz2mpfr	gmp-conversions
+.getPrec	mpfr-utils
 .mpfr.is.whole	utils
 .mpfr2bigz	gmp-conversions
+.mpfr2exp	mpfr-utils
 .mpfr2list	mpfr-utils
+.mpfr2str	formatMpfr
+.mpfr_erange	mpfr-utils
+.mpfr_erange_is_int	mpfr-utils
+.mpfr_erange_kinds	mpfr-utils
+.mpfr_erange_set	mpfr-utils
+.mpfr_formatinfo	mpfr-utils
+.mpfr_maxPrec	mpfr-utils
+.mpfr_minPrec	mpfr-utils
 abs,mpfr-method	mpfr-class
 Ai	Bessel_mpfr
 all.equal,ANY,mpfr-method	mpfr-class
@@ -114,6 +124,7 @@ crossprod,mpfrMatrix,mpfr-method	mpfrMatrix-class
 crossprod,mpfrMatrix,mpfrMatrix-method	mpfrMatrix-class
 dbinom	distr-etc
 determinant.mpfrMatrix	mpfrMatrix-utils
+dgamma	distr-etc
 diag,mpfrMatrix-method	mpfrMatrix-class
 diag<-,mpfrMatrix-method	mpfrMatrix-class
 diff.mpfr	utils
@@ -138,6 +149,7 @@ getD	mpfr-utils
 getPrec	mpfr-utils
 hjkMpfr	hjkMpfr
 hypot	mpfr-class
+igamma	igamma
 Im,mpfr-method	mpfr-class
 integrateR	integrateR
 is.finite,mpfr-method	mpfr-class
@@ -258,7 +270,9 @@ tcrossprod,mpfr,mpfrMatrix-method	mpfrMatrix-class
 tcrossprod,mpfrMatrix,mpfr-method	mpfrMatrix-class
 tcrossprod,mpfrMatrix,mpfrMatrix-method	mpfrMatrix-class
 toNum	mpfr-utils
-unique,mpfr,missing-method	mpfr-class
+unique,mpfr,ANY-method	mpfr-class
+unique,mpfr-method	mpfr-class
+unique.mpfr	mpfr-class
 unirootR	unirootR
 which.max,mpfr-method	mpfr-class
 which.min,mpfr-method	mpfr-class

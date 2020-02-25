@@ -1,6 +1,10 @@
-# qvcalc 1.0.2
+# qvcalc 1.0.3
 
 * (To do) Add an aesthetic for `ggplot`, as alternative to `plot.qv()`
+
+# qvcalc 1.0.2
+
+* Added an explicit method for "survreg" objects.
 
 # qvcalc 1.0.1
 

@@ -1,4 +1,4 @@
-## ---- cache=FALSE, include=FALSE-----------------------------------------
+## ---- cache=FALSE, include=FALSE----------------------------------------------
 library(knitr)
 library(rpf)
 library(ggplot2)
@@ -6,12 +6,12 @@ library(reshape2)
 library(gridExtra)
 opts_chunk$set(echo=FALSE)
 
-## ----echo=TRUE-----------------------------------------------------------
+## ----echo=TRUE----------------------------------------------------------------
 small <- structure(list(param = structure(c(1, 1, 0, 0, -0.5789195, -2.412259,  -1.3471789, 1, 1, 0, 0, 1.0983234, -2.0991327, -2.9482965, 1,  1, 0, 0, 0.4078264, -0.9824549, -1.5905594, 1, 1, 0, 0, -1.0650001,  -0.2100243, -3.2034577), .Dim = c(7L, 4L), .Dimnames = list(NULL,      c("X2", "X6", "X7", "X10"))), mean = 0, cov = structure(9.8238066, .Dim = c(1L,  1L))), .Names = c("param", "mean", "cov"))
 small$spec <- list()
 small$spec[1:4] <- rpf.nrm(outcomes=4, T.c= lower.tri(diag(3),TRUE) * -1)
 
-## ----fig.height=5--------------------------------------------------------
+## ----fig.height=5-------------------------------------------------------------
 width <- 5
 small$icc <- list()
 small$iif <- list()
@@ -40,10 +40,10 @@ for (ix in 1:length(small$spec)) {
   }
 do.call(grid.arrange, c(small$icc, ncol=2))
 
-## ----fig.height=5--------------------------------------------------------
+## ----fig.height=5-------------------------------------------------------------
 do.call(grid.arrange, c(small$iif, ncol=2))
 
-## ----fig.height=2.5------------------------------------------------------
+## ----fig.height=2.5-----------------------------------------------------------
 tcc.plot <- ggplot(tcc, aes(theta, score)) + geom_line() +
   ggtitle("Test Characteristic Curve") + xlim(-width, width)
 tic.plot <- ggplot(tic, aes(theta, info)) + geom_line() +

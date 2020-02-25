@@ -1,4 +1,4 @@
-## ---- cache=FALSE, include=FALSE-----------------------------------------
+## ---- cache=FALSE, include=FALSE----------------------------------------------
 library(knitr)
 library(rpf)
 library(ggplot2)
@@ -6,7 +6,7 @@ library(reshape2)
 library(gridExtra)
 opts_chunk$set(echo=TRUE)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 spec <- list()
 spec[1:6] <- rpf.grm(factors=2)
 gen.param <- sapply(spec, rpf.rparam)
@@ -23,10 +23,10 @@ grp <- list(spec=tspec, param=gen.param[-2,], mean=c(0), cov=diag(1), data=resp)
 
 ChenThissen1997(grp)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 (got <- SitemFit(grp))
 
-## ---- echo=FALSE,fig.height=2.5------------------------------------------
+## ---- echo=FALSE,fig.height=2.5-----------------------------------------------
 SSplot <- function(sout, itemName, showSampleSize=TRUE) {
     s1 <- sout[[itemName]]
     obs <- s1$orig.observed
@@ -57,17 +57,17 @@ SSplot(got, "i4")
 SSplot(got, "i5")
 SSplot(got, "i6")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 (got <- sumScoreEAP(grp))
 
-## ---- echo=FALSE,fig.height=2.5------------------------------------------
+## ---- echo=FALSE,fig.height=2.5-----------------------------------------------
 got <- sumScoreEAPTest(grp)
 df <- data.frame(score=as.numeric(rownames(got$tbl)),
             expected=got$tbl[,'p'] * got$n, observed=got$observed)
 df <- melt(df, id="score", variable.name="source", value.name="n")
 ggplot(df, aes(x=score, y=n, color=source)) + geom_line()
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
   data(science)
   spec <- list()
   spec[1:25] <- rpf.nrm(outcomes=3, T.c = lower.tri(diag(2),TRUE) * -1)

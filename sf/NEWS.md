@@ -1,3 +1,35 @@
+# version 0.8-1
+
+* conditional to PROJ >= 6.0.0: replace `+init=epsg:XXXX ...` strings with the `XXXX` EPSG integer, to work around a bug in PROJ; see https://github.com/OSGeo/PROJ/pull/1875 and links therein. If there is a `...`, raise a warning that this is now ignored. 
+
+* `st_as_sf.map` no longer requires `maptools` and `sp`; drop dependency on maptools.
+
+* conversion between `spatstat` classes `owin`, `ppp` and `psp` and `sf` classes no longer use `maptools`; #1204
+
+* `gdal_utils` processes open options `-oo` and `-doo` properly; https://github.com/ITSLeeds/geofabric/issues/12
+
+* `st_sample` directly interfaces `spatstat` sampling methods, e.g. `type = "Thomas"` calls `spatstat::rThomas` after converting input arguments (window) and converts returned `ppp` object to `sf`'s `POINT` geometries; #1204 with help from Ege Rubak and Jakub Nowosad
+
+* `sf_project` gains an option `keep = TRUE` to return `Inf` values for points not projectable; #1228
+
+* support `vctrs` methods for geometry list columns; this makes `unnest` work again (#1172); #1196 by Lionel Henry
+
+* `st_as_sf.pq_geometry` converts binary geom columns from RPostgres::dbGetQuery; #1195
+
+* `st_cast` can convert `MULTICURVE` to `MULTILINESTRING`; #1194
+
+* `st_read` gains a parameter `wkt_filter` for spatially filtering the features to be read; #1192
+
+* `st_area()` and `st_length()` handle `+to_meter` argument in PROJ strings; #1170
+
+* add `st_filter` generic for filtering on spatial features only; #1148
+
+* a new UBSAN error in `wkb_read` was resolved; #1154, #1152
+
+* new method `st_shift_longitude` to re-center data for a Pacific view. #1218
+
+* output of `st_as_text()` with `MULTIPOINT` now has nested parentheses around points. E.g., `MULTIPOINT ((0 0), (1 1))` instead of `MULTIPOINT (0 0, 1 1)`; #1219, #1221
+
 # version 0.8-0
 
 * fix tests for PROJ 6.2.0 not accepting +units=
@@ -70,7 +102,7 @@
 
 * `c.sfc` now ignores the type (class) of empty `sfc` objects when choosing the result type; #985, #982
 
-* rename the default value for `distance` to `"Eucledian"`, rather than  `"distance"` in `st_distance`
+* rename the default value for `distance` to `"Euclidean"`, rather than  `"distance"` in `st_distance`
 
 # version 0.7-3
 

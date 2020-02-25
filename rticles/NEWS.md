@@ -1,3 +1,16 @@
+rticles 0.14
+---------------------------------------------------------------------
+
+- Added custom author ordering for the IEEE template (thanks, @DunLug, #263).
+
+- Added a multi-line authoring option in the IEEE template (thanks, @DunLug, #264).
+
+- Added the `citation_sorting` YAML option to change the biblatex's sorting option in `ieee_article()` output (thanks, @DunLug, #265).
+
+- `mnras.cls` was removed from this package because it exists on CTAN.
+
+- Added Oxford University Press (OUP) template (thanks, @dmkaplan2000, #271).
+
 rticles 0.13
 ---------------------------------------------------------------------
 

@@ -268,7 +268,7 @@ div.tocify {
 <p>Features are represented by records in an <code>sf</code> object, and have feature attributes (all non-geometry fields) and feature geometry. Since <code>sf</code> objects are a subclass of <code>data.frame</code> or <code>tbl_df</code>, operations on feature attributes work identical to how they work on <code>data.frame</code>s, e.g.</p>
 <pre class="r"><code>library(sf)
 nc &lt;- st_read(system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;))
-## Reading layer `nc' from data source `/tmp/RtmpFPGfdm/Rinst78c928a5fbec/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/RtmpNfOWz4/Rinst4e3d3dd7aabd/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -282,11 +282,11 @@ nc[1,]
 ## dimension:      XY
 ## bbox:           xmin: 1193283 ymin: 913341.9 xmax: 1340555 ymax: 1044158
 ## epsg (SRID):    2264
-## proj4string:    +proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.2192024384 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
-##    AREA PERIMETER CNTY_ CNTY_ID NAME  FIPS FIPSNO CRESS_ID BIR74 SID74
-## 1 0.114     1.442  1825    1825 Ashe 37009  37009        5  1091     1
-##   NWBIR74 BIR79 SID79 NWBIR79                       geometry
-## 1      10  1364     0      19 MULTIPOLYGON (((1270814 913...</code></pre>
+## proj4string:    +proj=lcc +lat_0=33.75 +lon_0=-79 +lat_1=36.1666666666667 +lat_2=34.3333333333333 +x_0=609601.219202438 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
+##    AREA PERIMETER CNTY_ CNTY_ID NAME  FIPS FIPSNO CRESS_ID BIR74 SID74 NWBIR74
+## 1 0.114     1.442  1825    1825 Ashe 37009  37009        5  1091     1      10
+##   BIR79 SID79 NWBIR79                       geometry
+## 1  1364     0      19 MULTIPOLYGON (((1270814 913...</code></pre>
 <p>prints the first record.</p>
 <p>Many of the tidyverse/dplyr verbs have methods for <code>sf</code> objects. This means that given that both <code>sf</code> and <code>dplyr</code> are loaded, manipulations such as selecting a single attribute will return an <code>sf</code> object:</p>
 <pre class="r"><code>library(dplyr)
@@ -296,7 +296,7 @@ nc %&gt;% select(NWBIR74) %&gt;% head(2)
 ## dimension:      XY
 ## bbox:           xmin: 1193283 ymin: 913341.9 xmax: 1441003 ymax: 1044158
 ## epsg (SRID):    2264
-## proj4string:    +proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.2192024384 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
+## proj4string:    +proj=lcc +lat_0=33.75 +lon_0=-79 +lat_1=36.1666666666667 +lat_2=34.3333333333333 +x_0=609601.219202438 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
 ##   NWBIR74                       geometry
 ## 1      10 MULTIPOLYGON (((1270814 913...
 ## 2      10 MULTIPOLYGON (((1340555 959...</code></pre>
@@ -314,7 +314,7 @@ nc %&gt;% select(NWBIR74) %&gt;% head(2)
 ## dimension:      XY
 ## bbox:           xmin: 1193283 ymin: 913341.9 xmax: 1340555 ymax: 1044158
 ## epsg (SRID):    2264
-## proj4string:    +proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.2192024384 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
+## proj4string:    +proj=lcc +lat_0=33.75 +lon_0=-79 +lat_1=36.1666666666667 +lat_2=34.3333333333333 +x_0=609601.219202438 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
 ##   NWBIR74                       geometry
 ## 1      10 MULTIPOLYGON (((1270814 913...</code></pre>
 <p>and use the <code>drop</code> argument to drop geometries:</p>
@@ -332,17 +332,17 @@ nc[Ashe,]
 ## dimension:      XY
 ## bbox:           xmin: 1142157 ymin: 823092 xmax: 1448920 ymax: 1044158
 ## epsg (SRID):    2264
-## proj4string:    +proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.2192024384 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
-##     AREA PERIMETER CNTY_ CNTY_ID      NAME  FIPS FIPSNO CRESS_ID BIR74
-## 1  0.114     1.442  1825    1825      Ashe 37009  37009        5  1091
-## 2  0.061     1.231  1827    1827 Alleghany 37005  37005        3   487
-## 18 0.199     1.984  1874    1874    Wilkes 37193  37193       97  3146
-## 19 0.081     1.288  1880    1880   Watauga 37189  37189       95  1323
-##    SID74 NWBIR74 BIR79 SID79 NWBIR79                       geometry
-## 1      1      10  1364     0      19 MULTIPOLYGON (((1270814 913...
-## 2      0      10   542     3      12 MULTIPOLYGON (((1340555 959...
-## 18     4     200  3725     7     222 MULTIPOLYGON (((1402677 837...
-## 19     1      17  1775     1      33 MULTIPOLYGON (((1171158 868...</code></pre>
+## proj4string:    +proj=lcc +lat_0=33.75 +lon_0=-79 +lat_1=36.1666666666667 +lat_2=34.3333333333333 +x_0=609601.219202438 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
+##     AREA PERIMETER CNTY_ CNTY_ID      NAME  FIPS FIPSNO CRESS_ID BIR74 SID74
+## 1  0.114     1.442  1825    1825      Ashe 37009  37009        5  1091     1
+## 2  0.061     1.231  1827    1827 Alleghany 37005  37005        3   487     0
+## 18 0.199     1.984  1874    1874    Wilkes 37193  37193       97  3146     4
+## 19 0.081     1.288  1880    1880   Watauga 37189  37189       95  1323     1
+##    NWBIR74 BIR79 SID79 NWBIR79                       geometry
+## 1       10  1364     0      19 MULTIPOLYGON (((1270814 913...
+## 2       10   542     3      12 MULTIPOLYGON (((1340555 959...
+## 18     200  3725     7     222 MULTIPOLYGON (((1402677 837...
+## 19      17  1775     1      33 MULTIPOLYGON (((1171158 868...</code></pre>
 <p>we see that in the result set <code>Ashe</code> is included, as the default value for argument <code>op</code> in <code>[.sf</code> is <code>st_intersects</code>, and <code>Ashe</code> intersects with itself. We could exclude self-intersection by using predicate <code>st_touches</code> (overlapping features don’t touch):</p>
 <pre class="r"><code>Ashe = nc[nc$NAME == &quot;Ashe&quot;,]
 nc[Ashe, op = st_touches]
@@ -351,15 +351,15 @@ nc[Ashe, op = st_touches]
 ## dimension:      XY
 ## bbox:           xmin: 1142157 ymin: 823092 xmax: 1448920 ymax: 1035641
 ## epsg (SRID):    2264
-## proj4string:    +proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.2192024384 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
-##     AREA PERIMETER CNTY_ CNTY_ID      NAME  FIPS FIPSNO CRESS_ID BIR74
-## 2  0.061     1.231  1827    1827 Alleghany 37005  37005        3   487
-## 18 0.199     1.984  1874    1874    Wilkes 37193  37193       97  3146
-## 19 0.081     1.288  1880    1880   Watauga 37189  37189       95  1323
-##    SID74 NWBIR74 BIR79 SID79 NWBIR79                       geometry
-## 2      0      10   542     3      12 MULTIPOLYGON (((1340555 959...
-## 18     4     200  3725     7     222 MULTIPOLYGON (((1402677 837...
-## 19     1      17  1775     1      33 MULTIPOLYGON (((1171158 868...</code></pre>
+## proj4string:    +proj=lcc +lat_0=33.75 +lon_0=-79 +lat_1=36.1666666666667 +lat_2=34.3333333333333 +x_0=609601.219202438 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
+##     AREA PERIMETER CNTY_ CNTY_ID      NAME  FIPS FIPSNO CRESS_ID BIR74 SID74
+## 2  0.061     1.231  1827    1827 Alleghany 37005  37005        3   487     0
+## 18 0.199     1.984  1874    1874    Wilkes 37193  37193       97  3146     4
+## 19 0.081     1.288  1880    1880   Watauga 37189  37189       95  1323     1
+##    NWBIR74 BIR79 SID79 NWBIR79                       geometry
+## 2       10   542     3      12 MULTIPOLYGON (((1340555 959...
+## 18     200  3725     7     222 MULTIPOLYGON (((1402677 837...
+## 19      17  1775     1      33 MULTIPOLYGON (((1171158 868...</code></pre>
 <p>using <code>dplyr</code>, we can do the same by calling the predicate directly:</p>
 <pre class="r"><code>nc %&gt;% filter(lengths(st_touches(., Ashe)) &gt; 0)
 ## Simple feature collection with 3 features and 14 fields
@@ -367,15 +367,15 @@ nc[Ashe, op = st_touches]
 ## dimension:      XY
 ## bbox:           xmin: 1142157 ymin: 823092 xmax: 1448920 ymax: 1035641
 ## epsg (SRID):    2264
-## proj4string:    +proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.2192024384 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
-##    AREA PERIMETER CNTY_ CNTY_ID      NAME  FIPS FIPSNO CRESS_ID BIR74
-## 1 0.061     1.231  1827    1827 Alleghany 37005  37005        3   487
-## 2 0.199     1.984  1874    1874    Wilkes 37193  37193       97  3146
-## 3 0.081     1.288  1880    1880   Watauga 37189  37189       95  1323
-##   SID74 NWBIR74 BIR79 SID79 NWBIR79                       geometry
-## 1     0      10   542     3      12 MULTIPOLYGON (((1340555 959...
-## 2     4     200  3725     7     222 MULTIPOLYGON (((1402677 837...
-## 3     1      17  1775     1      33 MULTIPOLYGON (((1171158 868...</code></pre>
+## proj4string:    +proj=lcc +lat_0=33.75 +lon_0=-79 +lat_1=36.1666666666667 +lat_2=34.3333333333333 +x_0=609601.219202438 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
+##    AREA PERIMETER CNTY_ CNTY_ID      NAME  FIPS FIPSNO CRESS_ID BIR74 SID74
+## 1 0.061     1.231  1827    1827 Alleghany 37005  37005        3   487     0
+## 2 0.199     1.984  1874    1874    Wilkes 37193  37193       97  3146     4
+## 3 0.081     1.288  1880    1880   Watauga 37189  37189       95  1323     1
+##   NWBIR74 BIR79 SID79 NWBIR79                       geometry
+## 1      10   542     3      12 MULTIPOLYGON (((1340555 959...
+## 2     200  3725     7     222 MULTIPOLYGON (((1402677 837...
+## 3      17  1775     1      33 MULTIPOLYGON (((1171158 868...</code></pre>
 </div>
 <div id="aggregating-or-summarizing-feature-sets" class="section level2">
 <h2>Aggregating or summarizing feature sets</h2>
@@ -387,9 +387,9 @@ nc[Ashe, op = st_touches]
 ## dimension:      XY
 ## bbox:           xmin: 406262.2 ymin: 48374.87 xmax: 3052887 ymax: 1044158
 ## epsg (SRID):    2264
-## proj4string:    +proj=lcc +lat_1=36.16666666666666 +lat_2=34.33333333333334 +lat_0=33.75 +lon_0=-79 +x_0=609601.2192024384 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
+## proj4string:    +proj=lcc +lat_0=33.75 +lon_0=-79 +lat_1=36.1666666666667 +lat_2=34.3333333333333 +x_0=609601.219202438 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs
 ##         frac74                       geometry
-## 1 0.0020406588 MULTIPOLYGON (((2739147 314...
+## 1 0.0020406588 MULTIPOLYGON (((2314396 161...
 ## 2 0.0009922276 POLYGON ((1402677 837742.5,...
 plot(a[2], col = c(grey(.8), grey(.5)))
 plot(st_geometry(Ashe), border = '#ff8888', add = TRUE, lwd = 2)</code></pre>

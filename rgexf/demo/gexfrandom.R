@@ -39,15 +39,12 @@ pause()
 size <- runif(n,max=100)
 color <- terrain.colors(n)
 color <- color[order(runif(n))][1:n]
-color <- cbind(t(col2rgb(color)),1)
 
 color2 <- heat.colors(n)
 color2 <- color2[order(runif(n))][1:n]
-color2 <- cbind(t(col2rgb(color2)),1)
 
 color3 <- topo.colors(n)
 color3<- color3[order(runif(n))][1:n]
-color3 <- cbind(t(col2rgb(color3)),1)
 
 pause()
 
@@ -59,7 +56,9 @@ for (i in 2:n) {
   pos[i,2] <- pos[i-1,2] + sin(2*pi*(i-1)/n)
 }
 
-pos <- pos/(max(pos)-min(pos))
+pos[,2] <- pos[,2] - mean(pos[,2])
+
+pos <- pos/(max(pos)-min(pos))*500
 pos2 <- pos
 pos2[,1] <- pos2[,1] + max(pos2[,1])-min(pos[,1])
 pos3 <- pos
@@ -68,15 +67,15 @@ pos3[,1] <- pos3[,1] + max(pos2[,1])-min(pos[,1])
 pause()
 
 # Plotting
-graph <- write.gexf(
+graph <- gexf(
   rbind(vertex1,vertex2,vertex3), 
   rbind(edges1, edges2,edges3), 
   nodesVizAtt=list(
     size=c(size,size,size),
-    color=rbind(color,color2,color3),
-    position=rbind(pos,pos2,pos3))
-  )
+    color=c(color,color2,color3),
+    position=rbind(pos,pos2,pos3)),
+  vers="1.2")
 
 pause()
 
-plot(graph)
+plot(graph, edgeWidthFactor=2)

@@ -2,20 +2,38 @@ Package: rgexf
 Type: Package
 Encoding: UTF-8
 Title: Build, Import and Export GEXF Graph Files
-Version: 0.15.3
-Date: 2015-03-24
-Author: George Vega Yon <gvegayon@caltech.edu> [aut], Jorge Fábrega Lacoa <jorge.fabrega@uai.cl> [ctb], Joshua B. Kunst <jbkunst@gmail.com> [ctb]
-Maintainer: George Vega Yon <gvegayon@caltech.edu>
-Description: Create, read and write GEXF (Graph Exchange XML Format) graph files (used in Gephi and others). Using the XML package, it allows the user to easily build/read graph files including attributes, GEXF viz attributes (such as color, size, and position), network dynamics (for both edges and nodes) and edge weighting. Users can build/handle graphs element-by-element or massively through data-frames, visualize the graph on a web browser through "sigmajs" (a javascript library) and interact with the igraph package.
-URL: http://bitbucket.org/gvegayon/rgexf, http://www.ggvega.com
-Depends: XML, Rook, igraph
-License: GPL (>= 3)
+Version: 0.16.0
+Date: 2020-02-10
+Authors@R: c(
+  person("George", "Vega Yon", email="g.vegayon@gmail.com", role=c("aut", "cre"),
+  comment = structure("0000-0002-3171-0844", .Names = "ORCID")),
+  person("Jorge", "Fábrega Lacoa", role=c("ctb")),
+  person("Joshua", "Kunst", role=c("ctb")),
+  person("Raphaël", "Velt", role=c("cph"), comment="gexf-js library"),
+  person(family="Gephi Consortium", role=c("cph"), comment="GEXF language"))
+Description: Create, read and write 'GEXF' (Graph Exchange 'XML' Format) graph
+    files (used in 'Gephi' and others). Using the 'XML' package, it allows the user to
+    easily build/read graph files including attributes, 'GEXF' visual attributes (such
+    as color, size, and position), network dynamics (for both edges and nodes) and
+    edge weighting. Users can build/handle graphs element-by-element or massively
+    through data-frames, visualize the graph on a web browser through 'gexf-js' (a
+    'javascript' library) and interact with the 'igraph' package.
+URL: https://gvegayon.github.io/rgexf
+BugReports: http://github.com/gvegayon/rgexf/issues
+Imports: XML, igraph, grDevices, utils, servr
+License: MIT + file LICENSE
 LazyLoad: yes
-Packaged: 2015-03-24 15:40:34 UTC; george
-NeedsCompilation: yes
-X-CRAN-History: Archived on 2014-12-22 as maintainer address
-        <george.vega@nodoschile.org> bounced.
+RoxygenNote: 7.0.2
+Suggests: knitr, rmarkdown, testthat, covr
+VignetteBuilder: knitr
+NeedsCompilation: no
+Packaged: 2020-02-13 22:56:03 UTC; george
+Author: George Vega Yon [aut, cre] (<https://orcid.org/0000-0002-3171-0844>),
+  Jorge Fábrega Lacoa [ctb],
+  Joshua Kunst [ctb],
+  Raphaël Velt [cph] (gexf-js library),
+  Gephi Consortium [cph] (GEXF language)
+Maintainer: George Vega Yon <g.vegayon@gmail.com>
 Repository: CRAN
-Date/Publication: 2015-03-24 18:27:01
-Built: R 3.5.0; x86_64-w64-mingw32; 2018-06-22 10:06:03 UTC; windows
-Archs: i386, x64
+Date/Publication: 2020-02-17 06:00:02 UTC
+Built: R 3.6.2; ; 2020-02-22 05:29:49 UTC; windows

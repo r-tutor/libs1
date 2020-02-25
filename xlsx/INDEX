@@ -1,15 +1,10 @@
-+.CellStyle             CellStyle construction.
-Alignment               Create an Alignment object.
-Border                  Create an Border object.
 Cell                    Functions to manipulate cells.
 CellBlock               Create and style a block of cells.
-CellProtection          Create a CellProtection object.
 CellStyle               Functions to manipulate cells.
+CellStyle-plus          CellStyle construction.
 Comment                 Functions to manipulate cell comments.
-DataFormat              Create an DataFormat object.
-Fill                    Create an Fill object.
-Font                    Create a Font object.
-NamedRanges             Functions to manipulate named ranges.
+NamedRanges             Functions to manipulate (contiguous) named
+                        ranges.
 OtherEffects            Functions to do various spreadsheets effects.
 POI_constants           Constants used in the project.
 Picture                 Functions to manipulate images in a
@@ -21,8 +16,14 @@ Workbook                Functions to manipulate Excel 2007 workbooks.
 addDataFrame            Add a 'data.frame' to a sheet.
 addHyperlink            Add a hyperlink to a cell.
 forceFormulaRefresh     Force Refresh Pivot Tables and Formulae
+is.Alignment            Create an Alignment object.
+is.Border               Create an Border object.
+is.CellProtection       Create a CellProtection object.
+is.DataFormat           Create an DataFormat object.
+is.Fill                 Create an Fill object.
+is.Font                 Create a Font object.
 read.xlsx               Read the contents of a worksheet into an R
-                        data.frame
+                        'data.frame'.
 readColumns             Read a contiguous set of columns from sheet
                         into an R data.frame
 readRows                Read a contiguous set of rows into an R matrix

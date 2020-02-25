@@ -1,0 +1,327 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Add Controls to Interactive Plots</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for manipulateWidget {manipulateWidget}"><tr><td>manipulateWidget {manipulateWidget}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Add Controls to Interactive Plots</h2>
+
+<h3>Description</h3>
+
+<p>This function permits to add controls to an interactive plot created with
+packages like <code>dygraphs</code>, <code>highcharter</code> or <code>plotly</code> in order
+to change the input data or the parameters of the plot.
+</p>
+<p>Technically, the function starts a shiny gadget. The R session is bloqued
+until the user clicks on &quot;cancel&quot; or &quot;done&quot;. If he clicks on &quot;done&quot;, then the
+the function returns the last displayed plot so the user can modify it and/or
+save it.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+manipulateWidget(
+  .expr,
+  ...,
+  .updateBtn = FALSE,
+  .saveBtn = TRUE,
+  .exportBtn = FALSE,
+  .exportType = c("html2canvas", "webshot"),
+  .updateBtnInit = FALSE,
+  .viewer = c("pane", "window", "browser"),
+  .compare = NULL,
+  .compareOpts = compareOptions(),
+  .showCompare = TRUE,
+  .return = function(widget, envs) {     widget },
+  .width = NULL,
+  .height = NULL,
+  .runApp = TRUE
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.expr</code></td>
+<td>
+<p>expression to evaluate that returns an interactive plot of class
+<code>htmlwidget</code>. This expression is re-evaluated each time a control is
+modified.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>One or more named control arguments created with functions
+<code><a href="mwSlider.html">mwSlider</a></code>, <code><a href="mwText.html">mwText</a></code>, etc. The name of each control
+is the name of the variable the controls modifies in the expression. One
+can also create a group of inputs by passing a list of such control
+arguments. for instance <code>mygroup = list(txt = mwText(""), nb =
+mwNumeric(0))</code> creates a group of inputs named mygroup with two inputs
+named &quot;txt&quot; and &quot;nb&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>.updateBtn</code></td>
+<td>
+<p>Should an update button be added to the controls ? If
+<code>TRUE</code>, then the graphic is updated only when the user clicks on the
+update button.</p>
+</td></tr>
+<tr valign="top"><td><code>.saveBtn</code></td>
+<td>
+<p>Should an save button be added to the controls ? For saving output as html. Does not work in RStudio Viewer</p>
+</td></tr>
+<tr valign="top"><td><code>.exportBtn</code></td>
+<td>
+<p>Should an export button be added to the controls ? For saving output as png. Does not work in RStudio Viewer</p>
+</td></tr>
+<tr valign="top"><td><code>.exportType</code></td>
+<td>
+<p><code>.exportBtn</code>, using <code>html2canvas</code> (default) and keeping current zoom, ... or using <code>webshot</code></p>
+</td></tr>
+<tr valign="top"><td><code>.updateBtnInit</code></td>
+<td>
+<p>In case of update button. Do you want to render graphics on init ?</p>
+</td></tr>
+<tr valign="top"><td><code>.viewer</code></td>
+<td>
+<p>Controls where the gadget should be displayed. <code>"pane"</code>
+corresponds to the Rstudio viewer, <code>"window"</code> to a dialog window, and
+<code>"browser"</code> to an external web browser.</p>
+</td></tr>
+<tr valign="top"><td><code>.compare</code></td>
+<td>
+<p>Sometimes one wants to compare the same chart but with two
+different sets of parameters. This is the purpose of this argument. It can
+be a character vector of input names or a named list whose names are the
+names of the inputs that should vary between the two charts. Each element
+of the list must be a vector or a list of length equal to the number of
+charts with the initial values of the corresponding parameter for each
+chart. It can also be <code>NULL</code>. In this case, the parameter is
+initialized with the default value for the two charts.</p>
+</td></tr>
+<tr valign="top"><td><code>.compareOpts</code></td>
+<td>
+<p>List of options created <code><a href="compareOptions.html">compareOptions</a></code>.
+These options indicate the number of charts to create and their disposition.</p>
+</td></tr>
+<tr valign="top"><td><code>.showCompare</code></td>
+<td>
+<p><code>logical</code>. In case of <code>.compare</code>. Show windows selection on menu ?</p>
+</td></tr>
+<tr valign="top"><td><code>.return</code></td>
+<td>
+<p>A function that can be used to modify the output of
+<code>manipulateWidget</code>. It must take two parameters: the first one is the
+final widget, the second one is a list of environments containing the input
+values of each individual widget. The length of this list is one if .compare
+is null, two or more if it has been defined.</p>
+</td></tr>
+<tr valign="top"><td><code>.width</code></td>
+<td>
+<p>Width of the UI. Used only on Rmarkdown documents with option
+<code>runtime: shiny</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.height</code></td>
+<td>
+<p>Height of the UI. Used only on Rmarkdown documents with option
+<code>runtime: shiny</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.runApp</code></td>
+<td>
+<p>(advanced usage) If true, a shiny gadget is started. If false,
+the function returns a <code><a href="MWController-class.html">MWController</a></code> object. This object can be
+used to check with command line instructions the behavior of the application.
+(See help page of <code><a href="MWController-class.html">MWController</a></code>). Notice that this parameter is
+always false in a non-interactive session (for instance when running tests of
+a package).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The result of the expression evaluated with the last values of the controls.
+It should be an object of class <code>htmlWidget</code>.
+</p>
+
+
+<h3>Advanced Usage</h3>
+
+<p>The &quot;normal&quot; use of the function is to provide an expression that always
+return an <code>htmlwidget</code>. In such case, every time the user changes the
+value of an input, the current widget is destroyed and a new one is created
+and rendered.
+</p>
+<p>Some packages provide functions to update a widget that has already been
+rendered. This is the case for instance for package <code>leaflet</code> with the
+function <code><a href="../../leaflet/html/leafletProxy.html">leafletProxy</a></code>. To use such functions,
+<code>manipulateWidget</code> evaluates the parameter <code>.expr</code> with four extra
+variables:
+</p>
+
+<ul>
+<li><p><code>.initial</code>:
+<code>TRUE</code> if the expression is evaluated for the first time and then
+the widget has not been rendered yet, <code>FALSE</code> if the widget has
+already been rendered.
+
+</p>
+</li>
+<li><p><code>.session</code>:
+A shiny session object.
+
+</p>
+</li>
+<li><p><code>.output</code>:
+ID of the output in the shiny interface.
+
+</p>
+</li>
+<li><p><code>.id</code>:
+Id of the chart. It can be used in comparison mode to make further
+customization without the need to create additional input controls.
+
+</p>
+</li></ul>
+
+<p>You can take a look at the last example to see how to use these two
+variables to update a leaflet widget.
+</p>
+
+
+<h3>Modify the returned widget</h3>
+
+<p>In some specific situations, a developer may want to use
+<code>manipulateWidget</code> in a function that waits the user to click on the
+&quot;Done&quot; button and modifies the widget returned by <code>manipulateWidget</code>.
+In such situation, parameter <code>.return</code> should be used so that
+<code>manipulateWidget</code> is the last function called. Indeed, if other code
+is present after, the custom function will act very weird in a Rmarkdown
+document with &quot;runtime: shiny&quot;.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (require(dygraphs)) {
+
+  mydata &lt;- data.frame(year = 2000+1:100, value = rnorm(100))
+  manipulateWidget(dygraph(mydata[range[1]:range[2] - 2000, ], main = title),
+                   range = mwSlider(2001, 2100, c(2001, 2100)),
+                   title = mwText("Fictive time series"))
+
+}
+
+# Comparison mode
+if (require(dygraphs)) {
+
+  mydata &lt;- data.frame(
+    year = 2000+1:100,
+    series1 = rnorm(100),
+    series2 = rnorm(100),
+    series3 = rnorm(100)
+  )
+
+  manipulateWidget(
+    dygraph(mydata[range[1]:range[2] - 2000, c("year", series)], main = title),
+    range = mwSlider(2001, 2100, c(2001, 2100)),
+    series = mwSelect(c("series1", "series2", "series3")),
+    title = mwText("Fictive time series"),
+    .compare = c("title", "series")
+  )
+
+  # Setting different initial values for each chart
+  manipulateWidget(
+    dygraph(mydata[range[1]:range[2] - 2000, c("year", series)], main = title),
+    range = mwSlider(2001, 2100, c(2001, 2100)),
+    series = mwSelect(c("series1", "series2", "series3")),
+    title = mwText(),
+    .compare = list(
+      title = list("First chart", "Second chart"),
+      series = NULL
+    )
+  )
+}
+
+# Grouping inputs
+if (require(dygraphs)) {
+
+  mydata &lt;- data.frame(year = 2000+1:100, value = rnorm(100))
+  manipulateWidget(dygraph(mydata[range[1]:range[2] - 2000, ],
+                           main = title, xlab = xlab, ylab = ylab),
+                   range = mwSlider(2001, 2100, c(2001, 2100)),
+                   "Graphical parameters" = mwGroup(
+                      title = mwText("Fictive time series"),
+                      xlab = mwText("X axis label"),
+                      ylab = mwText("Y axis label")
+                   )
+                  )
+
+}
+
+# Example of conditional input controls
+#
+# In this example, we plot a x series against a y series. User can choose to
+# use points or lines. If he chooses lines, then an additional input is displayed
+# to let him control the width of the lines.
+if (require("plotly")) {
+
+  dt &lt;- data.frame (
+    x = sort(runif(100)),
+    y = rnorm(100)
+  )
+
+  myPlot &lt;- function(type, lwd) {
+    if (type == "points") {
+      plot_ly(dt, x= ~x, y = ~y, type = "scatter", mode = "markers")
+    } else {
+      plot_ly(dt, x= ~x, y = ~y, type = "scatter", mode = "lines", line = list(width = lwd))
+    }
+  }
+
+  manipulateWidget(
+    myPlot(type, lwd),
+    type = mwSelect(c("points", "lines"), "points"),
+    lwd = mwSlider(1, 10, 1, .display = type == "lines")
+  )
+
+}
+
+# Advanced Usage
+#
+# .expr is evaluated with extra variables .initial, .outputId and .session
+# that can be used to update an already rendered widget instead of replacing
+# it each time an input value is modified.
+#
+# Here we generate a UI that permits to change color and size of arbitrary
+# points on a map generated with leaflet.
+
+if (require(leaflet)) {
+  lon &lt;- rnorm(10, sd = 20)
+  lat &lt;- rnorm(10, sd = 20)
+
+  myMapFun &lt;- function(radius, color, initial, session, output) {
+    if (initial) {
+      # Widget has not been rendered
+      map &lt;- leaflet() %&gt;% addTiles()
+    } else {
+      # widget has already been rendered
+      map &lt;- leafletProxy(output, session) %&gt;% clearMarkers()
+    }
+
+    map %&gt;% addCircleMarkers(lon, lat, radius = radius, color = color)
+  }
+
+  manipulateWidget(myMapFun(radius, color, .initial, .session, .output),
+                   radius = mwSlider(5, 30, 10),
+                   color = mwSelect(c("red", "blue", "green")))
+
+}
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>manipulateWidget</em> version 0.10.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

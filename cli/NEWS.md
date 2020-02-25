@@ -1,4 +1,14 @@
 
+# cli 2.0.1
+
+* Symbols (`symbol$*`) are now correctly printed in RStudio on Windows (#124).
+
+* The default theme for `cli_code()` output looks better now, especially
+  in RStudio (#123).
+
+* Remove spurious newline after a `cli_process_start()` was cleared
+  manually, and also at the end of the function.
+
 # cli 2.0.0
 
 ## Semantic command line interface tools

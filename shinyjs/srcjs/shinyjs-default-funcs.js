@@ -1,4 +1,4 @@
-// shinyjs 1.0 by Dean Attali
+// shinyjs 1.0.1.9000 by Dean Attali
 // Perform common JavaScript operations in Shiny apps using plain R code
 
 shinyjs = function() {
@@ -20,7 +20,7 @@ shinyjs = function() {
   // get an element by id using JQuery (escape chars that have special
   // selector meaning)
   var _jqid = function(id) {
-    return $("#" + id.replace( /(:|\.|\[|\]|,)/g, "\\$1" ));
+    return $("#" + id.replace( /(:|\.|\[|\]|,|\s)/g, "\\$1" ));
   };
 
   // listen to DOM changes and whenever there are new nodes added, let all
@@ -48,9 +48,11 @@ shinyjs = function() {
   var _getContainer = function(els) {
     return $.map(els, function(el) {
       el = $(el);
-      var inputContainer = el.closest(".shiny-input-container");
-      if (inputContainer.length > 0) {
-        el = inputContainer;
+      if (el.hasClass("shiny-bound-input")) {
+        var inputContainer = el.closest(".shiny-input-container");
+        if (inputContainer.length > 0) {
+          el = inputContainer;
+        }
       }
       return el;
     });
@@ -233,7 +235,7 @@ shinyjs = function() {
 
       // enable/disable the container as well as all individual inputs inside
       // (this is needed for grouped inputs such as radio and checkbox groups)
-      var toadd = $el.find("input, button, textarea");
+      var toadd = $el.find("input, button, textarea, select");
       $el = $($el.toArray().concat(toadd.toArray()));
       $el.attr('disabled', (method == "disable"));
       $el.prop('disabled', (method == "disable"));
@@ -402,28 +404,34 @@ shinyjs = function() {
     // just created. If so, find out what events were registered to it and the
     // shiny event handlers for it, and attach them
     _mutationSubscribers.push(function(node) {
-      $node = $(node);
-      $.each(_oneventData, function(id) {
-        var elementData = null;
-        if ($node.attr("id") == id) {
-          elementData = _oneventData[id];
-        } else if ($node.find("#" + id).length > 0) {
-          elementData = _oneventData[id];
-        }
-        if (elementData !== null) {
-          $.each(elementData, function(event, eventData) {
-            $.each(eventData, function(idx, shinyInputId) {
-              _oneventAttach({
-                event : event,
-                id : id,
-                shinyInputId : shinyInputId,
-                add : true
-              });
-            });
-          });
-        }
+      // check the top node
+      var $node = $(node);
+      var id = $node.attr("id");
+      _eventsAttachById(id);
+      // check all descendants
+      $node.find("*").each(function() {
+        var id = $(this).attr("id");
+        _eventsAttachById(id);
       });
     });
+  };
+
+  // Attach all events registered for a given id (if any)
+  var _eventsAttachById = function(id) {
+    var elementData = _oneventData[id];
+    if (elementData !== null) {
+      $.each(elementData, function(event, eventDatas) {
+        $.each(eventDatas, function(idx, eventData) {
+          _oneventAttach({
+            event        : event,
+            id           : id,
+            shinyInputId : eventData.shinyInputId,
+            add          : true,
+            customProps  : eventData.customProps
+          });
+        });
+      });
+    }
   };
 
   // attach an event listener to a DOM element that will trigger a call to Shiny
@@ -445,9 +453,10 @@ shinyjs = function() {
 
       el[params.event](function(event) {
         // Store a subset of the event properties (many are non-serializeable)
-        var props = ['altKey', 'button', 'buttons', 'clientX', 'clienty',
+        var props = ['altKey', 'button', 'buttons', 'clientX', 'clientY',
           'ctrlKey', 'pageX', 'pageY', 'screenX', 'screenY', 'shiftKey',
-          'which', 'charCode', 'key', 'keyCode'];
+          'which', 'charCode', 'key', 'keyCode', 'offsetX', 'offsetY'];
+        props = props.concat(params.customProps);
         var eventSimple = {};
         $.each(props, function(idx, prop) {
           if (prop in event) {
@@ -698,7 +707,8 @@ shinyjs = function() {
         event        : null,
         id           : null,
         shinyInputId : null,
-        add          : false
+        add          : false,
+        customProps  : []
       }
       params = shinyjs.getParams(params, defaultParams);
 
@@ -714,7 +724,10 @@ shinyjs = function() {
         if (!(params.event in elementData) || !params.add) {
           elementData[params.event] = [];
         }
-        elementData[params.event].push(params.shinyInputId);
+        elementData[params.event].push({
+          "shinyInputId" : params.shinyInputId,
+          "customProps"  : params.customProps
+        });
       }
       // if the element does exist, add the event handler
       else {
@@ -791,7 +804,7 @@ shinyjs = function() {
 
       var $el = _getElements(params);
       if ($el === null) return;
-      $el.click();
+      $el[0].click();
     }
   };
 }();

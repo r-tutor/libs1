@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Add a manipulateWidget to a shiny application</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for mwModule {manipulateWidget}"><tr><td>mwModule {manipulateWidget}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Add a manipulateWidget to a shiny application</h2>
+
+<h3>Description</h3>
+
+<p>These two functions can be used to include a manipulateWidget object in a shiny application.
+<code>mwModuleUI</code> must be used in the UI to generate the required HTML elements and add
+javascript and css dependencies. <code>mwModule</code> must be called once in the server function
+of the application.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mwModule(id, controller, fillPage = FALSE, ...)
+
+mwModuleUI(
+  id,
+  border = TRUE,
+  okBtn = FALSE,
+  saveBtn = TRUE,
+  exportBtn = TRUE,
+  margin = 0,
+  width = "100%",
+  height = 400,
+  header = NULL,
+  footer = NULL
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>A unique string that identifies the module</p>
+</td></tr>
+<tr valign="top"><td><code>controller</code></td>
+<td>
+<p>Object of class <code><a href="MWController-class.html">MWController</a></code> returned by
+<code><a href="manipulateWidget.html">manipulateWidget</a></code> when parameter <code>.runApp</code> is
+<code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>fillPage</code></td>
+<td>
+<p>: <code>logical</code>. Render in a fillPage or not ? Defaut to FALSE</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>named arguments containing reactive values. They can be used to send data from
+the main shiny application to the module.</p>
+</td></tr>
+<tr valign="top"><td><code>border</code></td>
+<td>
+<p>Should a border be added to the module ?</p>
+</td></tr>
+<tr valign="top"><td><code>okBtn</code></td>
+<td>
+<p>Should the UI contain the OK button ?</p>
+</td></tr>
+<tr valign="top"><td><code>saveBtn</code></td>
+<td>
+<p>Should the UI contain the save button ? For saving output as html</p>
+</td></tr>
+<tr valign="top"><td><code>exportBtn</code></td>
+<td>
+<p>Should an export button be added to the controls ? For saving output as png</p>
+</td></tr>
+<tr valign="top"><td><code>margin</code></td>
+<td>
+<p>Margin to apply around the module UI. Should be one two or four valid css
+units.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>Width of the module UI.</p>
+</td></tr>
+<tr valign="top"><td><code>height</code></td>
+<td>
+<p>Height of the module UI.</p>
+</td></tr>
+<tr valign="top"><td><code>header</code></td>
+<td>
+<p>Tag or list of tags to display as a common header above all tabPanels.</p>
+</td></tr>
+<tr valign="top"><td><code>footer</code></td>
+<td>
+<p>Tag or list of tags to display as a common footer below all tabPanels</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>mwModuleUI</code> returns the required HTML elements for the module. mwModule is only
+used for its side effects.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive() &amp; require("dygraphs")) {
+  require("shiny")
+  ui &lt;- fillPage(
+  fillRow(
+    flex = c(NA, 1),
+    div(
+      textInput("title", label = "Title", value = "glop"),
+      selectInput("series", "series", choices = c("series1", "series2", "series3"))
+    ),
+    mwModuleUI("ui", height = "100%")
+  ))
+
+  server &lt;- function(input, output, session) {
+    mydata &lt;- data.frame(
+      year = 2000+1:100,
+      series1 = rnorm(100),
+      series2 = rnorm(100),
+      series3 = rnorm(100)
+    )
+
+    c &lt;- manipulateWidget(
+      {
+        dygraph(mydata[range[1]:range[2] - 2000, c("year", series)], main = title)
+      },
+      range = mwSlider(2001, 2100, c(2001, 2050)),
+      series = mwSharedValue(),
+      title = mwSharedValue(), .runApp = FALSE,
+      .compare = "range"
+    )
+    #
+    mwModule("ui", c, title = reactive(input$title), series = reactive(input$series))
+  }
+
+  shinyApp(ui, server)
+
+
+}
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>manipulateWidget</em> version 0.10.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

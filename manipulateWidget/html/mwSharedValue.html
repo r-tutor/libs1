@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Shared Value</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for mwSharedValue {manipulateWidget}"><tr><td>mwSharedValue {manipulateWidget}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Shared Value</h2>
+
+<h3>Description</h3>
+
+<p>This function creates a virtual input that can be used to store a dynamic
+shared variable that is accessible in inputs as well as in output.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mwSharedValue(expr = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>expr</code></td>
+<td>
+<p>Expression used to compute the value of the input.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An Input object of type &quot;sharedValue&quot;.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other controls: 
+<code><a href="mwCheckboxGroup.html">mwCheckboxGroup</a>()</code>,
+<code><a href="mwCheckbox.html">mwCheckbox</a>()</code>,
+<code><a href="mwDateRange.html">mwDateRange</a>()</code>,
+<code><a href="mwDate.html">mwDate</a>()</code>,
+<code><a href="mwGroup.html">mwGroup</a>()</code>,
+<code><a href="mwNumeric.html">mwNumeric</a>()</code>,
+<code><a href="mwPassword.html">mwPassword</a>()</code>,
+<code><a href="mwRadio.html">mwRadio</a>()</code>,
+<code><a href="mwSelectize.html">mwSelectize</a>()</code>,
+<code><a href="mwSelect.html">mwSelect</a>()</code>,
+<code><a href="mwSlider.html">mwSlider</a>()</code>,
+<code><a href="mwText.html">mwText</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+if (require(plotly)) {
+  # Plot the characteristics of a car and compare with the average values for
+  # cars with same number of cylinders.
+  # The shared variable 'subsetCars' is used to avoid subsetting multiple times
+  # the data: this value is updated only when input 'cylinders' changes.
+  colMax &lt;- apply(mtcars, 2, max)
+
+  plotCar &lt;- function(cardata, carName) {
+    carValues &lt;- unlist(cardata[carName, ])
+    carValuesRel &lt;- carValues / colMax
+
+    avgValues &lt;- round(colMeans(cardata), 2)
+    avgValuesRel &lt;- avgValues / colMax
+
+    plot_ly() %&gt;%
+      add_bars(x = names(cardata), y = carValuesRel, text = carValues,
+               hoverinfo = c("x+text"), name = carName) %&gt;%
+      add_bars(x = names(cardata), y = avgValuesRel, text = avgValues,
+               hoverinfo = c("x+text"), name = "average") %&gt;%
+      layout(barmode = 'group')
+  }
+
+  c &lt;- manipulateWidget(
+    plotCar(subsetCars, car),
+    cylinders = mwSelect(c("4", "6", "8")),
+    subsetCars = mwSharedValue(subset(mtcars, cylinders == cyl)),
+    car = mwSelect(choices = row.names(subsetCars))
+  )
+}
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>manipulateWidget</em> version 0.10.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

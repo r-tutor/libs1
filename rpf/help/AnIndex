@@ -1,4 +1,3 @@
-An introduction-package	rpf.introduction
 $,rpf.base-method	rpf.base-class
 $<-,rpf.base-method	rpf.base-class
 An introduction	rpf.introduction
@@ -8,8 +7,10 @@ chen.thissen.1997	ChenThissen1997
 ChenThissen1997	ChenThissen1997
 Class rpf.1dim	rpf.1dim-class
 Class rpf.1dim.drm	rpf.1dim.drm-class
+Class rpf.1dim.gpcmp	rpf.1dim.gpcmp-class
 Class rpf.1dim.graded	rpf.1dim.graded-class
 Class rpf.1dim.grm	rpf.1dim.grm-class
+Class rpf.1dim.grmp	rpf.1dim.grmp-class
 Class rpf.1dim.lmp	rpf.1dim.lmp-class
 Class rpf.base	rpf.base-class
 Class rpf.mdim	rpf.mdim-class
@@ -43,8 +44,10 @@ read.flexmirt	read.flexmirt
 rpf.1dim-class	rpf.1dim-class
 rpf.1dim.drm-class	rpf.1dim.drm-class
 rpf.1dim.fit	rpf.1dim.fit
+rpf.1dim.gpcmp-class	rpf.1dim.gpcmp-class
 rpf.1dim.graded-class	rpf.1dim.graded-class
 rpf.1dim.grm-class	rpf.1dim.grm-class
+rpf.1dim.grmp-class	rpf.1dim.grmp-class
 rpf.1dim.lmp-class	rpf.1dim.lmp-class
 rpf.1dim.moment	rpf.1dim.moment
 rpf.1dim.residual	rpf.1dim.residual
@@ -57,7 +60,9 @@ rpf.drm	rpf.drm
 rpf.dTheta	rpf.dTheta
 rpf.dTheta,rpf.base,numeric,matrix,numeric-method	rpf.dTheta
 rpf.dTheta,rpf.base,numeric,numeric,numeric-method	rpf.dTheta
+rpf.gpcmp	rpf.gpcmp
 rpf.grm	rpf.grm
+rpf.grmp	rpf.grmp
 rpf.id_of	rpf.id_of
 rpf.info	rpf.info
 rpf.lmp	rpf.lmp
@@ -106,21 +111,18 @@ rpf.rescale	rpf.rescale
 rpf.rescale,rpf.base,numeric,numeric,matrix-method	rpf.rescale
 rpf.rparam	rpf.rparam
 rpf.rparam,rpf.1dim.drm-method	rpf.rparam
+rpf.rparam,rpf.1dim.gpcmp-method	rpf.rparam
 rpf.rparam,rpf.1dim.graded-method	rpf.rparam
+rpf.rparam,rpf.1dim.grmp-method	rpf.rparam
 rpf.rparam,rpf.1dim.lmp-method	rpf.rparam
 rpf.rparam,rpf.mdim.drm-method	rpf.rparam
 rpf.rparam,rpf.mdim.graded-method	rpf.rparam
 rpf.rparam,rpf.mdim.mcm-method	rpf.rparam
 rpf.rparam,rpf.mdim.nrm-method	rpf.rparam
 rpf.sample	rpf.sample
-rpf_dLL_wrapper	rpf.dLL
-rpf_dTheta_wrapper	rpf.dTheta
-rpf_logprob_wrapper	rpf.logprob
 rpf_numParam_wrapper	rpf.numParam
 rpf_numSpec_wrapper	rpf.numSpec
 rpf_paramInfo_wrapper	rpf.paramInfo
-rpf_prob_wrapper	rpf.prob
-rpf_rescale_wrapper	rpf.rescale
 science	science
 sfif	science
 sfpf	science
@@ -135,3 +137,8 @@ tabulateRows	tabulateRows
 toFactorLoading	toFactorLoading
 toFactorThreshold	toFactorThreshold
 write.flexmirt	write.flexmirt
+_rpf_dLL	rpf.dLL
+_rpf_dTheta	rpf.dTheta
+_rpf_logprob	rpf.logprob
+_rpf_prob	rpf.prob
+_rpf_rescale	rpf.rescale

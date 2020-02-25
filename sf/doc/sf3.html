@@ -282,7 +282,7 @@ div.tocify {
 <pre class="r"><code>library(sf)
 suppressPackageStartupMessages(library(dplyr))
 st_point(c(1,1)) %&gt;% st_cast(&quot;MULTIPOINT&quot;)
-## MULTIPOINT (1 1)
+## MULTIPOINT ((1 1))
 st_multipoint(rbind(c(1,1))) %&gt;% st_cast(&quot;POINT&quot;)
 ## Warning in st_cast.MULTIPOINT(., &quot;POINT&quot;): point from first coordinate only
 ## POINT (1 1)
@@ -404,8 +404,8 @@ p * rot(pi)
 ncg = st_geometry(nc)
 plot(ncg, border = 'grey')
 cntrd = st_centroid(ncg)
-## Warning in st_centroid.sfc(ncg): st_centroid does not give correct
-## centroids for longitude/latitude data
+## Warning in st_centroid.sfc(ncg): st_centroid does not give correct centroids for
+## longitude/latitude data
 ncg2 = (ncg - cntrd) * rot(pi/2) * .75 + cntrd
 plot(ncg2, add = TRUE)
 plot(cntrd, col = 'red', add = TRUE, cex = .5)</code></pre>
@@ -447,8 +447,8 @@ all.equal(s1, s2)
 <h3>Coordinate reference system transformations</h3>
 <p>If we change the coordinate reference system from one non-missing value into another non-missing value, the crs is is changed without modifying any coordinates, but a warning is issued that this did not reproject values:</p>
 <pre class="r"><code>s3 &lt;- s1 %&gt;% st_set_crs(4326) %&gt;% st_set_crs(3857)
-## Warning: st_crs&lt;- : replacing crs does not reproject data; use st_transform
-## for that</code></pre>
+## Warning: st_crs&lt;- : replacing crs does not reproject data; use st_transform for
+## that</code></pre>
 <p>A cleaner way to do this that better expresses intention and does not generate this warning is to first wipe the CRS by assigning it a missing value, and then setting it to the intended value.</p>
 <pre class="r"><code>s3 &lt;- s1  %&gt;% st_set_crs(NA) %&gt;% st_set_crs(3857)</code></pre>
 <p>To carry out a coordinate conversion or transformation, we use <code>st_transform</code></p>
@@ -459,7 +459,7 @@ s3
 ## dimension:      XY
 ## bbox:           xmin: 0 ymin: 111325.1 xmax: 1224514 ymax: 1345708
 ## epsg (SRID):    3857
-## proj4string:    +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs
+## proj4string:    +proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs
 ##    a                geometry
 ## 1 15      POINT (0 111325.1)
 ## 2 16 POINT (1224514 1345708)</code></pre>

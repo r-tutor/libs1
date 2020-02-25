@@ -1,3 +1,13 @@
+3.0.1
+ - Fix build for old versions of R using old compilers that do not default to C++11
+
+3.0
+ - Internal rewrite of object serialization to prepare for wasm
+ - Automatically convert raw vectors to/from Uint8Array in eval/get/assign
+ - Experimental wasm API + test
+ - Fix callback API crashes in V8 7.9+ (Jan Marvin, #70, #71, #75)
+ - Build with -DV8_ENABLE_CHECKS to get better error messages
+
 2.3
  - Fix for removed API in libv8 version 7.7
 

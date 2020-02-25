@@ -1,5 +1,9 @@
 cv_regsem               The main function that runs multiple penalty
                         values.
+det_range               Determine the initial range for stability
+                        selection
+det_range_par           Determine the initial range for stability
+                        selection, parallel version
 efaModel                Generates an EFA model to be used by lavaan and
                         regsem Function created by Florian Scharf for
                         the paper Should regularization replace simple
@@ -13,6 +17,7 @@ multi_optim             Multiple starts for Regularized Structural
 parse_parameters        Takes either a vector of parameter ids or a
                         vector of named parameters and returns a vector
                         of parameter ids
+pen_mod                 Penalized model syntax.
 plot.cvregsem           Plot function for cv_regsem
 rcpp_RAMmult            Take RAM matrices, multiplies, and returns
                         Implied Covariance matrix.
@@ -23,6 +28,9 @@ rcpp_quasi_calc         Compute quasi Hessian
 regsem                  Regularized Structural Equation Modeling. Tests
                         a single penalty. For testing multiple
                         penalties, see cv_regsem().
+stabsel                 Stability selection
+stabsel_par             Stability selection, parallelized version
+stabsel_thr             Tuning the probability threshold.
 summary.cvregsem        print information about cvregsem object
 summary.regsem          Summary results from regsem.
 xmed                    Function to performed exploratory mediation
