@@ -1,3 +1,17 @@
+# xml2 1.2.5
+
+* Fix compilation issue on macOS versions after High Sierra when not using homebrew supplied libxml2
+
+# xml2 1.2.4
+
+* Fix potential dangling pointer with internal `asXmlChar()` function (@michaelquinn32, #287).
+
+* `as_xml_document()` now handles cases with text nodes trailing normal nodes (#274).
+
+* `xml_add_child()` can now create nodes with a `par` attribute. These previously errored due to partial name matching of the `parent` function in the internal `create_node()` function. (@jennybc, #285)
+
+* `libxml2_version()` now returns a semantic version rather than alphanumeric version, so "2.9.10" > "2.9.9" (#277)
+
 # xml2 1.2.2
 
 * Export S4 classes with documentation, so they can be used in other packages

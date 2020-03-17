@@ -1,27 +1,27 @@
-## ----echo = FALSE--------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
 knitr::opts_chunk$set(fig.width = 7, fig.height = 7, message = FALSE, warning = FALSE,
                       eval = requireNamespace("tm", quietly = TRUE) && requireNamespace("quanteda", quietly = TRUE) && requireNamespace("topicmodels", quietly = TRUE))
 library(ggplot2)
 theme_set(theme_bw())
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(tm)
 data("AssociatedPress", package = "topicmodels")
 AssociatedPress
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(dplyr)
 library(tidytext)
 
 ap_td <- tidy(AssociatedPress)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ap_sentiments <- ap_td %>%
   inner_join(get_sentiments("bing"), by = c(term = "word"))
 
 ap_sentiments
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(tidyr)
 
 ap_sentiments %>%
@@ -30,7 +30,7 @@ ap_sentiments %>%
   mutate(sentiment = positive - negative) %>%
   arrange(sentiment)
 
-## ----fig.width = 7, fig.height = 5---------------------------------------
+## ----fig.width = 7, fig.height = 5--------------------------------------------
 library(ggplot2)
 
 ap_sentiments %>%
@@ -43,7 +43,7 @@ ap_sentiments %>%
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   ylab("Contribution to sentiment")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(methods)
 
 data("data_corpus_inaugural", package = "quanteda")
@@ -53,7 +53,7 @@ d
 
 tidy(d)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ap_td
 
 # cast into a Document-Term Matrix
@@ -75,18 +75,18 @@ m <- ap_td %>%
 class(m)
 dim(m)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 reut21578 <- system.file("texts", "crude", package = "tm")
 reuters <- VCorpus(DirSource(reut21578),
                    readerControl = list(reader = readReut21578XMLasPlain))
 
 reuters
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 reuters_td <- tidy(reuters)
 reuters_td
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(quanteda)
 
 data("data_corpus_inaugural")
@@ -96,14 +96,14 @@ data_corpus_inaugural
 inaug_td <- tidy(data_corpus_inaugural)
 inaug_td
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 inaug_words <- inaug_td %>%
   unnest_tokens(word, text) %>%
   anti_join(stop_words)
 
 inaug_words
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 inaug_freq <- inaug_words %>%
   count(Year, word) %>%
   complete(Year, word, fill = list(n = 0)) %>%
@@ -114,7 +114,7 @@ inaug_freq <- inaug_words %>%
 
 inaug_freq
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(broom)
 models <- inaug_freq %>%
   group_by(word) %>%
@@ -130,7 +130,7 @@ models %>%
   filter(term == "Year") %>%
   arrange(desc(abs(estimate)))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(ggplot2)
 
 models %>%
@@ -143,7 +143,7 @@ models %>%
   xlab("Estimated change over time") +
   ylab("Adjusted p-value")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(scales)
 
 models %>%

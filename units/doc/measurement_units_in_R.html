@@ -394,16 +394,16 @@ conv_unit(10, &quot;cm_per_sec&quot;, &quot;km_per_day&quot;)
 ## [1] 8.64</code></pre>
 <p>but uses for instance <code>kph</code> instead of <code>km_per_hour</code>, and then <code>m3_per_hr</code> for flow – unit names seem to come from convention rather than systematic composition. Object <code>conv_unit_options</code> contains all 173 supported units, categorized by the physical dimension they describe:</p>
 <pre class="r"><code>names(conv_unit_options)
-##  [1] &quot;acceleration&quot; &quot;angle&quot;        &quot;area&quot;         &quot;coordinate&quot;  
-##  [5] &quot;count&quot;        &quot;duration&quot;     &quot;energy&quot;       &quot;file_size&quot;   
-##  [9] &quot;flow&quot;         &quot;length&quot;       &quot;mass&quot;         &quot;power&quot;       
-## [13] &quot;pressure&quot;     &quot;speed&quot;        &quot;temperature&quot;  &quot;volume&quot;
+##  [1] &quot;acceleration&quot; &quot;angle&quot;        &quot;area&quot;         &quot;coordinate&quot;   &quot;count&quot;       
+##  [6] &quot;duration&quot;     &quot;energy&quot;       &quot;file_size&quot;    &quot;flow&quot;         &quot;length&quot;      
+## [11] &quot;mass&quot;         &quot;power&quot;        &quot;pressure&quot;     &quot;speed&quot;        &quot;temperature&quot; 
+## [16] &quot;volume&quot;
 conv_unit_options$volume
-##  [1] &quot;ul&quot;        &quot;ml&quot;        &quot;dl&quot;        &quot;l&quot;         &quot;cm3&quot;      
-##  [6] &quot;dm3&quot;       &quot;m3&quot;        &quot;km3&quot;       &quot;us_tsp&quot;    &quot;us_tbsp&quot;  
-## [11] &quot;us_oz&quot;     &quot;us_cup&quot;    &quot;us_pint&quot;   &quot;us_quart&quot;  &quot;us_gal&quot;   
-## [16] &quot;inch3&quot;     &quot;ft3&quot;       &quot;mi3&quot;       &quot;imp_tsp&quot;   &quot;imp_tbsp&quot; 
-## [21] &quot;imp_oz&quot;    &quot;imp_cup&quot;   &quot;imp_pint&quot;  &quot;imp_quart&quot; &quot;imp_gal&quot;</code></pre>
+##  [1] &quot;ul&quot;        &quot;ml&quot;        &quot;dl&quot;        &quot;l&quot;         &quot;cm3&quot;       &quot;dm3&quot;      
+##  [7] &quot;m3&quot;        &quot;km3&quot;       &quot;us_tsp&quot;    &quot;us_tbsp&quot;   &quot;us_oz&quot;     &quot;us_cup&quot;   
+## [13] &quot;us_pint&quot;   &quot;us_quart&quot;  &quot;us_gal&quot;    &quot;inch3&quot;     &quot;ft3&quot;       &quot;mi3&quot;      
+## [19] &quot;imp_tsp&quot;   &quot;imp_tbsp&quot;  &quot;imp_oz&quot;    &quot;imp_cup&quot;   &quot;imp_pint&quot;  &quot;imp_quart&quot;
+## [25] &quot;imp_gal&quot;</code></pre>
 <p>Function <code>conv_dim</code> allows for the conversion of units in products or ratios, e.g.</p>
 <pre class="r"><code>conv_dim(x = 100, x_unit = &quot;m&quot;, trans = 3, trans_unit = &quot;ft_per_sec&quot;, y_unit = &quot;min&quot;)
 ## [1] 1.822689</code></pre>
@@ -469,12 +469,7 @@ ud.are.convertible(m100_a, dm100_b)
 ## udunits system database from /usr/share/xml/udunits
 x = set_units(1:5, m/s)
 str(x)
-## Object of class units:
-##  int [1:5] 1 2 3 4 5
-##  - attr(*, &quot;units&quot;)=List of 2
-##   ..$ numerator  : chr &quot;m&quot;
-##   ..$ denominator: chr &quot;s&quot;
-##   ..- attr(*, &quot;class&quot;)= chr &quot;symbolic_units&quot;</code></pre>
+##  Units: [m/s] int [1:5] 1 2 3 4 5</code></pre>
 <p>represents speed values in <code>m/s</code>. The units <code>m</code> and <code>s</code> are retrieved from the <code>ud_units</code> database, which is part of <a href="https://cran.r-project.org/package=units">units</a>, and was derived from the xml units database that is part of udunits2 C library.</p>
 <p>Units can be used in arbitrary R expressions like</p>
 <pre class="r"><code>set_units(1:3, m/s^2)

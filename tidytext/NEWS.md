@@ -1,3 +1,9 @@
+# tidytext 0.2.3
+
+* Wrapper tokenization functions for n-grams, characters, sentences, tweets, and more, thanks to @ColinFay (#137).
+* Simplify get_sentiments() thanks to @jennybc (#151).
+* Fix flaky tests for corpus tidiers.
+
 # tidytext 0.2.2
 
 * Access NRC lexicon via textdata package

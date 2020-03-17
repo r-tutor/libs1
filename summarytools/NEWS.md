@@ -1,10 +1,22 @@
+# summarytools 0.9.6 (2020-03-01)
+
+ - In ctable():
+   + added Odds Ratio and Risk Ratio (aka Relative Risk) 
+     statistics with 95% C.I.'s
+   + Fixed issue with chi-square statistic not reporting
+     appropriate values
+   + Fixed html alignment of statistics below the table
+     (now centering based on table width as it should)
+ - in dfSummary(), fixed an issue arising when a very
+   large range of numeric values exists in a column
+
 # summarytools 0.9.5 (2020-02-10)
 
  - Eliminated automatic check for X11 capabilities as it caused problems on some
    systems; the user can instead set global option `st_options(use.x11 = FALSE)`
    if encountering problems
  - To simplify installation on Unix-like systems (including Mac OS), the
-   `RCurl::base64Encode()` function that created ascii-encoded graphs in
+   `RCurl::base64Encode()` function used to create ascii-encoded graphs in
    *html* documents isn't used anymore; `base64enc::base64encode()` is used instead
  - When saving outputs to *.Rmd* documents; 'plain.ascii' is now automatically set
    to FALSE and 'style' is automatically set to "rmarkdown", in accordance with

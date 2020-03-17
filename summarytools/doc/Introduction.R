@@ -7,7 +7,8 @@ library(magrittr)
 st_options(plain.ascii = FALSE,
            style = "rmarkdown",
            footnote = NA,
-           subtitle.emphasis = FALSE)
+           subtitle.emphasis = FALSE,
+           lang = "en")
 
 ## ---- echo=FALSE--------------------------------------------------------------
 st_css()
@@ -67,8 +68,10 @@ with(tobacco,
 
 ## -----------------------------------------------------------------------------
 library(magrittr)
-tobacco %$%  # The %$% operator replaces with(tobacco, ...)
-  ctable(gender, smoker, chisq = TRUE, headings = FALSE) %>%
+tobacco %$%  # Acts like with(tobacco, ...)
+  ctable(smoker, diseased,
+         chisq = TRUE, OR = TRUE, RR = TRUE,
+         headings = FALSE) %>%
   print(method = "render")
 
 ## -----------------------------------------------------------------------------

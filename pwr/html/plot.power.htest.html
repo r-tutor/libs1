@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot diagram of sample size vs. test power</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plot.power.htest {pwr}"><tr><td>plot.power.htest {pwr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot diagram of sample size vs. test power</h2>
+
+<h3>Description</h3>
+
+<p>Plot a diagram to illustrate the relationship of sample size and test power for a given set of parameters.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'power.htest'
+plot(x, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>object of class power.htest usually created by one of the power calculation functions, e.g., pwr.t.test()</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Arguments to be passed to <code>ggplot</code> including xlab and ylab</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Power calculations for the following tests are supported: t-test (pwr.t.test(), pwr.t2n.test()), chi squared test (pwr.chisq.test()), one-way ANOVA (pwr.anova.test(), standard normal distribution (pwr.norm.test()), Pearson correlation (pwr.r.test()), proportions (pwr.p.test(), pwr.2p.test(), pwr.2p2n.test()))
+</p>
+
+
+<h3>Value</h3>
+
+<p>These functions are invoked for their side effect of drawing on the active graphics device.
+</p>
+
+
+<h3>Note</h3>
+
+<p>By default it attempts to use the plotting tools of <a href="https://cran.r-project.org/package=ggplot2/">ggplot2</a> and <a href="https://cran.r-project.org/package=scales">scales</a>.  If they are not installed, it will use the basic R plotting tools.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Stephan Weibelzahl &lt;weibelzahl@pfh.de&gt;</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="pwr.t.test.html">pwr.t.test</a></code>, <code><a href="pwr.p.test.html">pwr.p.test</a></code>, <code><a href="pwr.2p.test.html">pwr.2p.test</a></code>,
+<code><a href="pwr.2p2n.test.html">pwr.2p2n.test</a></code>, <code><a href="pwr.r.test.html">pwr.r.test</a></code>, <code><a href="pwr.chisq.test.html">pwr.chisq.test</a></code>,
+<code><a href="pwr.anova.test.html">pwr.anova.test</a></code>, <code><a href="pwr.t2n.test.html">pwr.t2n.test</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## Two-sample t-test
+p.t.two &lt;- pwr.t.test(d=0.3, power=0.8, type="two.sample", alternative="two.sided")
+plot(p.t.two)
+plot(p.t.two, xlab="sample size per group")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>pwr</em> version 1.3-0 <a href="00Index.html">Index</a>]</div>
+</body></html>

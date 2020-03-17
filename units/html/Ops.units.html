@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: S3 Ops Group Generic Functions for units objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Ops.units {units}"><tr><td>Ops.units {units}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>S3 Ops Group Generic Functions for units objects</h2>
+
+<h3>Description</h3>
+
+<p>Ops functions for units objects, including comparison, product and divide, add, subtract
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'units'
+Ops(e1, e2)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>e1</code></td>
+<td>
+<p>object of class <code>units</code>, 
+or something that can be coerced to it by <code>as_units(e1)</code></p>
+</td></tr>
+<tr valign="top"><td><code>e2</code></td>
+<td>
+<p>object of class <code>units</code>, 
+or something that can be coerced to it by <code>as_units(e2)</code>,
+or in case of power a number (integer n or 1/n)</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>object of class <code>units</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+a &lt;- set_units(1:3, m/s)
+b &lt;- set_units(1:3, m/s)
+a + b
+a * b
+a / b
+a &lt;- as_units("kg m-3")
+b &lt;- set_units(1, kg/m/m/m)
+a + b
+a = set_units(1:5, m)
+a %/% a
+a %/% set_units(2)
+set_units(1:5, m^2) %/% set_units(2, m)
+a %% a
+a %% set_units(2 )
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>units</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

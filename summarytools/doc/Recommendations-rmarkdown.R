@@ -2,6 +2,7 @@
 library(knitr)
 opts_chunk$set(comment=NA, prompt=FALSE, cache=FALSE, echo=TRUE, results='asis')
 library(summarytools)
+st_options(lang = "en")
 
 ## ---- echo=FALSE--------------------------------------------------------------
 st_options(bootstrap.css     = FALSE,       # Already part of the theme so no need for it

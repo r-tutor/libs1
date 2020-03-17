@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Conventional effects size</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cohen.ES {pwr}"><tr><td>cohen.ES {pwr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Conventional effects size</h2>
+
+<h3>Description</h3>
+
+<p>Give the conventional effect size (small, medium, large)
+for the tests available in this package
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cohen.ES(test = c("p", "t", "r", "anov", "chisq", "f2"),
+    size = c("small", "medium", "large"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>test</code></td>
+<td>
+<p>The statistical test of interest</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>The ES : small, medium of large? </p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The corresponding effect size
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Stephane CHAMPELY</p>
+
+
+<h3>References</h3>
+
+<p>Cohen, J. (1988). Statistical power analysis for the
+behavioral sciences (2nd ed.). Hillsdale,NJ: Lawrence Erlbaum.</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## medium effect size for the correlation test
+cohen.ES(test="r", size="medium")
+
+## sample size for a medium size effect in the two-sided correlation test
+## using the conventional power of 0.80
+pwr.r.test(r=cohen.ES(test="r",size="medium")$effect.size,
+  power=0.80, sig.level=0.05, alternative="two.sided")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>pwr</em> version 1.3-0 <a href="00Index.html">Index</a>]</div>
+</body></html>
