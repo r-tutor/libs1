@@ -12,7 +12,7 @@ You can find the information on unit sales in each of the sample stores in the *
 
 <p align="center"><img src="figures_basics/single_mean_summary.png"></p>
 
-The first two blocks of output show basic information about the test (e.g.,. the null and alternative hypothesis) and summary statistics (e.g., mean, standard deviation). The final row of output shows the following:
+The first two blocks of output show basic information about the test (e.g.,. the null and alternative hypothesis) and summary statistics (e.g., mean, standard deviation, standard error, margin or error, etc.). The final row of output shows the following:
 
 * `diff` is the difference between the sample mean (1953.393) and the comparison value (1750)
 * `se` is the standard error (i.e., the standard deviation of the sampling distribution of `diff`)
@@ -63,4 +63,20 @@ If a plot was created it can be customized using `ggplot2` commands (e.g., `plot
 
 ### R-functions
 
-For an overview of related R-functions used by Radiant to evaluate means see <a href = "https://radiant-rstats.github.io/radiant.basics/reference/index.html#section-basics-means" target="_blank">_Basics > Means_</a>
+For an overview of related R-functions used by Radiant to evaluate means see <a href = "https://radiant-rstats.github.io/radiant.basics/reference/index.html#section-basics-means" target="_blank">_Basics > Means_</a>.
+
+The key function from the `stats` package used in the `single_mean` tool is `t.test`.
+
+### Video Tutorials
+
+Copy-and-paste the full command below into the RStudio console (i.e., the bottom-left window) and press return to gain access to all materials used in the hypothesis testing module of the <a href="https://www.youtube.com/playlist?list=PLNhtaetb48EdKRIY7MewCyvb_1x7dV3xw" target="_blank">Radiant Tutorial Series</a>:
+
+<pre>usethis::use_course("https://www.dropbox.com/sh/0xvhyolgcvox685/AADSppNSIocrJS-BqZXhD1Kna?dl=1")</pre>
+
+<a href="https://youtu.be/QV1qA5RPzlY" target="_blank">Single Mean Hypothesis Test</a>
+
+* This video shows how to test a hypothesis about a single sample mean versus a population mean
+* Topics List:
+    - Calculate summary statistics for a sample
+    - Setup a hypothesis test for a single mean in Radiant
+    - Use the p.value, confidence interval, or critical value to evaluate the hypothesis test

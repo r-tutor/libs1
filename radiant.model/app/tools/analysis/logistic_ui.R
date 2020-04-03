@@ -16,7 +16,8 @@ logit_sum_check <- c(
 logit_plots <- c(
   "None" = "none", "Distribution" = "dist",
   "Correlations" = "correlations", "Scatter" = "scatter",
-  "Model fit" = "fit", "Coefficient (OR) plot" = "coef"
+  "Model fit" = "fit", "Coefficient (OR) plot" = "coef",
+  "Influential observations" = "influence"
 )
 
 ## list of function arguments
@@ -273,31 +274,16 @@ output$ui_logit_store_res_name <- renderUI({
   textInput("logit_store_res_name", "Store residuals:", "", placeholder = "Provide variable name")
 })
 
-observe({
-  ## dep on most inputs
-  input$data_filter
-  input$show_filter
-  sapply(r_drop(names(logit_args)), function(x) input[[paste0("logit_", x)]])
-
-  ## notify user when the model needs to be updated
-  ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
-  if (pressed(input$logit_run)) {
-    if (is.null(input$logit_evar)) {
-      updateTabsetPanel(session, "tabs_logistic ", selected = "Summary")
-      updateActionButton(session, "logit_run", "Estimate model", icon = icon("play"))
-    } else if (isTRUE(attr(logit_inputs, "observable")$.invalidated)) {
-      updateActionButton(session, "logit_run", "Re-estimate model", icon = icon("refresh", class = "fa-spin"))
-    } else {
-      updateActionButton(session, "logit_run", "Estimate model", icon = icon("play"))
-    }
-  }
-})
+## add a spinning refresh icon if the model needs to be (re)estimated
+run_refresh(logit_args, "logit", tabs = "tabs_logistic", label = "Estimate model", relabel = "Re-estimate model")
 
 output$ui_logistic <- renderUI({
   req(input$dataset)
   tagList(
-    wellPanel(
-      actionButton("logit_run", "Estimate model", width = "100%", icon = icon("play"), class = "btn-success")
+    conditionalPanel(condition = "input.tabs_logistic == 'Summary'",
+      wellPanel(
+        actionButton("logit_run", "Estimate model", width = "100%", icon = icon("play"), class = "btn-success")
+      )
     ),
     wellPanel(
       conditionalPanel(
@@ -384,8 +370,8 @@ output$ui_logistic <- renderUI({
       ),
       # Using && to check that input.logit_sum_check is not null (must be &&)
       conditionalPanel(
-        condition = "(input.tabs_logistic == 'Summary' && input.logit_sum_check != undefined && input.logit_sum_check.indexOf('confint') >= 0) |
-                     (input.tabs_logistic == 'Predict' && input.logit_predict != 'none') |
+        condition = "(input.tabs_logistic == 'Summary' && input.logit_sum_check != undefined && (input.logit_sum_check.indexOf('confint') >= 0 || input.logit_sum_check.indexOf('odds') >= 0)) ||
+                     (input.tabs_logistic == 'Predict' && input.logit_predict != 'none') ||
                      (input.tabs_logistic == 'Plot' && input.logit_plots == 'coef')",
         sliderInput(
           "logit_conf_lev", "Confidence level:", min = 0.80,
@@ -500,10 +486,11 @@ logit_available <- reactive({
 .logistic <- eventReactive(input$logit_run, {
   req(input$logit_lev)
   req(input$logit_wts == "None" || available(input$logit_wts))
-  withProgress(
-    message = "Estimating model", value = 1,
-    do.call(logistic, logit_inputs())
-  )
+  withProgress(message = "Estimating model", value = 1, {
+    lgi <- logit_inputs()
+    lgi$envir <- r_data
+    do.call(logistic, lgi)
+  })
 })
 
 .summary_logistic <- reactive({
@@ -524,7 +511,10 @@ logit_available <- reactive({
   }
 
   withProgress(message = "Generating predictions", value = 1, {
-    do.call(predict, c(list(object = .logistic()), logit_pred_inputs()))
+    lgi <- logit_pred_inputs()
+    lgi$object <- .logistic()
+    lgi$envir <- r_data
+    do.call(predict, lgi)
   })
 })
 
@@ -540,17 +530,6 @@ logit_available <- reactive({
     !is_empty(input$logit_predict, "none")
   )
 
-  # if (not_pressed(input$logit_run)) return(invisible())
-  # if (logit_available() != "available") return(logit_available())
-  # req(input$logit_pred_plot, available(input$logit_xvar))
-  # if (is_empty(input$logit_predict, "none")) return(invisible())
-  # if ((input$logit_predict == "data" || input$logit_predict == "datacmd") && is_empty(input$logit_pred_data)) {
-  #   return(invisible())
-  # }
-  # if (input$logit_predict == "cmd" && is_empty(input$logit_pred_cmd)) {
-  #   return(invisible())
-  # }
-
   withProgress(message = "Generating prediction plot", value = 1, {
     do.call(plot, c(list(x = .predict_logistic()), logit_pred_plot_inputs()))
   })
@@ -559,11 +538,9 @@ logit_available <- reactive({
 .plot_logistic <- reactive({
   if (not_pressed(input$logit_run)) {
     return("** Press the Estimate button to estimate the model **")
-  }
-  if (is_empty(input$logit_plots, "none")) {
+  } else if (is_empty(input$logit_plots, "none")) {
     return("Please select a logistic regression plot from the drop-down menu")
-  }
-  if (logit_available() != "available") {
+  } else if (logit_available() != "available") {
     return(logit_available())
   }
 

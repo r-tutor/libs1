@@ -1,6 +1,6 @@
 > Estimate a classification or regression tree
 
-To estimate a model select the model type (i.e., Classification or Regression), Response variable, and one or more Explanatory variables. Press the `Estimate` button or `CTRL-enter` (`CMD-enter` on mac) to generate results. 
+To create a tree model, first select the type (i.e., Classification or Regression), response variable, and one or more explanatory variables. Press the `Estimate model` button or `CTRL-enter` (`CMD-enter` on mac) to generate results. 
 
 ### Report > Rmd
 
@@ -13,3 +13,5 @@ It is not currently possible to add a title or caption directly to a `Tree` plot
 ### R-functions
 
 For an overview of related R-functions used by Radiant to estimate classification and regression trees see <a href = "https://radiant-rstats.github.io/radiant.model/reference/index.html#section-model-classification-and-regression-trees" target="_blank">_Model > Classification and regression trees_</a>
+
+The key function from the `rpart` package used in the `crtree` tool is `rpart`.

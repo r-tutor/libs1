@@ -312,8 +312,7 @@ mls &lt;- st_multilinestring(list(rbind(c(2,2),c(1,3)), rbind(c(0,0),c(1,1),c(2,
 ## geometry type:  GEOMETRY
 ## dimension:      XY
 ## bbox:           xmin: 0 ymin: 0 xmax: 2 ymax: 3
-## epsg (SRID):    NA
-## proj4string:    NA
+## CRS:            NA
 ## LINESTRING (0 0, 1 1, 2 1)
 ## MULTILINESTRING ((2 2, 1 3), (0 0, 1 1, 2 1))
 st_cast(sfc, &quot;MULTILINESTRING&quot;)
@@ -321,8 +320,7 @@ st_cast(sfc, &quot;MULTILINESTRING&quot;)
 ## geometry type:  MULTILINESTRING
 ## dimension:      XY
 ## bbox:           xmin: 0 ymin: 0 xmax: 2 ymax: 3
-## epsg (SRID):    NA
-## proj4string:    NA
+## CRS:            NA
 ## MULTILINESTRING ((0 0, 1 1, 2 1))
 ## MULTILINESTRING ((2 2, 1 3), (0 0, 1 1, 2 1))
 sf &lt;- st_sf(a = 5:4, geom = sfc)
@@ -331,8 +329,7 @@ st_cast(sf, &quot;MULTILINESTRING&quot;)
 ## geometry type:  MULTILINESTRING
 ## dimension:      XY
 ## bbox:           xmin: 0 ymin: 0 xmax: 2 ymax: 3
-## epsg (SRID):    NA
-## proj4string:    NA
+## CRS:            NA
 ##   a                           geom
 ## 1 5 MULTILINESTRING ((0 0, 1 1,...
 ## 2 4 MULTILINESTRING ((2 2, 1 3)...</code></pre>
@@ -350,8 +347,7 @@ mls2 &lt;- st_multilinestring(list(rbind(c(4,4),c(4,3)), rbind(c(2,2),c(2,1),c(3
 ## geometry type:  GEOMETRY
 ## dimension:      XY
 ## bbox:           xmin: 0 ymin: 0 xmax: 4 ymax: 4
-## epsg (SRID):    NA
-## proj4string:    NA
+## CRS:            NA
 ## LINESTRING (0 0, 1 1, 2 1)
 ## MULTILINESTRING ((2 2, 1 3), (0 0, 1 1, 2 1))
 ## MULTILINESTRING ((4 4, 4 3), (2 2, 2 1, 3 1))
@@ -368,8 +364,7 @@ gc3 &lt;- st_geometrycollection(list(st_multilinestring(list(rbind(c(4,4),c(4,3)
 ## geometry type:  GEOMETRYCOLLECTION
 ## dimension:      XY
 ## bbox:           xmin: 0 ymin: 0 xmax: 4 ymax: 4
-## epsg (SRID):    NA
-## proj4string:    NA
+## CRS:            NA
 ## GEOMETRYCOLLECTION (LINESTRING (0 0, 1 1, 2 1))
 ## GEOMETRYCOLLECTION (MULTILINESTRING ((2 2, 1 3)...
 ## GEOMETRYCOLLECTION (MULTILINESTRING ((4 4, 4 3)...
@@ -425,20 +420,38 @@ s1 = s
 st_crs(s1) &lt;- 4326
 st_crs(s1)
 ## Coordinate Reference System:
-##   EPSG: 4326 
-##   proj4string: &quot;+proj=longlat +datum=WGS84 +no_defs&quot;
+##   User input: EPSG:4326 
+##   wkt:
+## GEOGCRS[&quot;WGS 84&quot;,
+##     DATUM[&quot;World Geodetic System 1984&quot;,
+##         ELLIPSOID[&quot;WGS 84&quot;,6378137,298.257223563,
+##             LENGTHUNIT[&quot;metre&quot;,1]]],
+##     PRIMEM[&quot;Greenwich&quot;,0,
+##         ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##     CS[ellipsoidal,2],
+##         AXIS[&quot;geodetic latitude (Lat)&quot;,north,
+##             ORDER[1],
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##         AXIS[&quot;geodetic longitude (Lon)&quot;,east,
+##             ORDER[2],
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##     USAGE[
+##         SCOPE[&quot;unknown&quot;],
+##         AREA[&quot;World&quot;],
+##         BBOX[-90,-180,90,180]],
+##     ID[&quot;EPSG&quot;,4326]]
 s2 = s
 st_crs(s2) &lt;- &quot;+proj=longlat +datum=WGS84&quot;
 all.equal(s1, s2)
-## [1] TRUE</code></pre>
+## [1] &quot;Component \&quot;geometry\&quot;: Attributes: &lt; Component \&quot;crs\&quot;: Component \&quot;input\&quot;: 1 string mismatch &gt;&quot;
+## [2] &quot;Component \&quot;geometry\&quot;: Attributes: &lt; Component \&quot;crs\&quot;: Component \&quot;wkt\&quot;: 1 string mismatch &gt;&quot;</code></pre>
 <p>an alternative, more pipe-friendly version of <code>st_crs&lt;-</code> is</p>
 <pre class="r"><code>s1 %&gt;% st_set_crs(4326)
 ## Simple feature collection with 2 features and 1 field
 ## geometry type:  POINT
 ## dimension:      XY
 ## bbox:           xmin: 0 ymin: 1 xmax: 11 ymax: 12
-## epsg (SRID):    4326
-## proj4string:    +proj=longlat +datum=WGS84 +no_defs
+## geographic CRS: WGS 84
 ##    a      geometry
 ## 1 15   POINT (0 1)
 ## 2 16 POINT (11 12)</code></pre>
@@ -458,8 +471,7 @@ s3
 ## geometry type:  POINT
 ## dimension:      XY
 ## bbox:           xmin: 0 ymin: 111325.1 xmax: 1224514 ymax: 1345708
-## epsg (SRID):    3857
-## proj4string:    +proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs
+## projected CRS:  WGS 84 / Pseudo-Mercator
 ##    a                geometry
 ## 1 15      POINT (0 111325.1)
 ## 2 16 POINT (1224514 1345708)</code></pre>

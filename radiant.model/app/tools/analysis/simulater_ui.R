@@ -60,6 +60,8 @@ rep_inputs <- reactive({
   for (i in r_drop(names(rep_args)))
     rep_args[[i]] <- input[[paste0("rep_", i)]]
 
+  if (is_empty(input$rep_fun)) rep_args$fun <- "none"
+
   rep_args
 })
 
@@ -67,7 +69,7 @@ rep_sum_args <- as.list(if (exists("summary.repeater")) {
   formals(summary.repeater)
 } else {
   formals(radiant.model:::summary.repeater)
-} )
+})
 
 ## list of function inputs selected by user
 rep_sum_inputs <- reactive({
@@ -81,7 +83,7 @@ rep_plot_args <- as.list(if (exists("plot.repeater")) {
   formals(plot.repeater)
 } else {
   formals(radiant.model:::plot.repeater)
-} )
+})
 
 ## list of function inputs selected by user
 rep_plot_inputs <- reactive({
@@ -135,12 +137,13 @@ output$ui_sim_data <- renderUI({
   selectizeInput(
     inputId = "sim_data", label = "Input data for calculations:",
     choices = choices,
-    selected = state_single("sim_data", choices),
+    selected = state_single("sim_data", choices, isolate(input$sim_data)),
     multiple = FALSE
   )
 })
 
 sim_vars <- reactive({
+  input$sim_run
   if (is_empty(input$sim_name)) {
     character(0)
   } else {
@@ -153,11 +156,10 @@ sim_vars <- reactive({
 })
 
 output$ui_rep_vars <- renderUI({
-
   vars <- sim_vars()
   req(vars)
-
   form <- input$sim_form %>% sim_cleaner()
+
   if (!is_empty(form)) {
     s <- gsub(" ", "", form) %>% sim_splitter("=")
     svars <- c()
@@ -181,7 +183,6 @@ output$ui_rep_vars <- renderUI({
 output$ui_rep_sum_vars <- renderUI({
   vars <- sim_vars()
   req(!is_empty(vars))
-
   selectizeInput(
     "rep_sum_vars", label = "Output variables:",
     choices = vars, multiple = TRUE,
@@ -210,7 +211,7 @@ output$ui_rep_grid_vars <- renderUI({
 })
 
 output$ui_rep_byvar <- renderUI({
-  vars <- c("Simulation" = "sim", "Repeat" = "rep")
+  vars <- c("Simulation" = ".sim", "Repeat" = ".rep")
   selectizeInput(
     "rep_byvar", label = "Group by:", choices = vars,
     selected = state_single("rep_byvar", vars), multiple = FALSE,
@@ -221,15 +222,19 @@ output$ui_rep_byvar <- renderUI({
 output$ui_rep_fun <- renderUI({
   choices <- list(
     "sum" = "sum", "mean" = "mean", "median" = "median",
-    "min" = "min", "max" = "max", "first" = "first",
-    "last" = "last", "none" = "none"
+    "min" = "min", "max" = "max", "sd" = "sd", "var" = "var",
+    "sdprop" = "sdprop", "varprop" = "varprop",
+    "p01" = "p01", "p025" = "p025", "p05" = "p05", "p10" = "p10",
+    "p25" = "p25", "p75" = "p75", "p90" = "p90", "p95" = "p95",
+    "p975" = "p975", "p99" = "p99",
+    "first" = "first", "last" = "last"
   )
-
-  selectInput(
-    "rep_fun", "Apply function:",
+  selectizeInput(
+    inputId = "rep_fun", label = "Apply function:",
     choices = choices,
-    selected = state_single("rep_fun", choices, "sum"),
-    multiple = FALSE
+    selected = state_multiple("rep_fun", choices, isolate(input$rep_fun)),
+    multiple = TRUE,
+    options = list(placeholder = "None", plugins = list("remove_button"))
   )
 })
 
@@ -342,7 +347,7 @@ observeEvent(c(input$sim_grid, input$sim_types), {
 })
 
 observeEvent(c(input$rep_grid, input$rep_byvar), {
-  if (isTRUE(input$rep_byvar == "rep") && !is_empty(input$rep_grid)) {
+  if (isTRUE(input$rep_byvar %in% c(".rep", "rep")) && !is_empty(input$rep_grid)) {
     updateNumericInput(session = session, "rep_nr", value = NA)
   } else {
     val <- ifelse(is_empty(r_state$rep_nr), 12, r_state$rep_nr)
@@ -389,39 +394,11 @@ observeEvent(input$sim_grid_del, {
   var_remover("sim_grid")
 })
 
-observe({
-  ## dep on most inputs
-  input$sim_types
-  ret <- sapply(names(sim_args), function(x) input[[paste0("sim_", x)]])
-  ## notify user when the simulation needs to be updated
-  ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
-  if (pressed(input$sim_run)) {
-    if(is_empty(input$sim_types)) {
-      updateActionButton(session, "sim_run", "Run simulation", icon = icon("play"))
-    } else if (isTRUE(attr(sim_inputs, "observable")$.invalidated)) {
-      updateActionButton(session, "sim_run", "Re-run simulation", icon = icon("refresh", class = "fa-spin"))
-    } else {
-      updateActionButton(session, "sim_run", "Run simulation", icon = icon("play"))
-    }
-  }
-})
+## add a spinning refresh icon if the simulation needs to be (re)run
+run_refresh(sim_args, "sim", init = "types", label = "Run simulation", relabel = "Re-run simulation", data = FALSE)
 
-observe({
-  ## dep on most inputs
-  ret <- sapply(names(rep_args), function(x) input[[paste0("rep_", x)]])
-  ## notify user when the repeated simulation needs to be updated
-  ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
-  if (pressed(input$rep_run)) {
-    # if(is_empty(input$rep_vars) || is_empty(input$rep_sum_vars)) {
-    if(is_empty(input$rep_sum_vars)) {
-      updateActionButton(session, "rep_run", "Repeat simulation", icon = icon("play"))
-    } else if (isTRUE(attr(rep_inputs, "observable")$.invalidated)) {
-      updateActionButton(session, "rep_run", "Repeat simulation", icon = icon("refresh", class = "fa-spin"))
-    } else {
-      updateActionButton(session, "rep_run", "Repeat simulation", icon = icon("play"))
-    }
-  }
-})
+## add a spinning refresh icon if the repeated simulation needs to be (re)run
+run_refresh(rep_args, "rep", init = "sum_vars", label = "Repeat simulation", data = FALSE)
 
 output$ui_simulater <- renderUI({
   tagList(
@@ -597,7 +574,7 @@ output$ui_simulater <- renderUI({
       wellPanel(
         uiOutput("ui_rep_byvar"),
         conditionalPanel(
-          condition = "input.rep_byvar == 'rep'",
+          condition = "input.rep_byvar == '.rep'",
           HTML("<label>Grid search: <i id='rep_grid_add' title='Add variable' href='#' class='action-button fa fa-plus-circle'></i>
                 <i id='rep_grid_del' title='Remove variable' href='#' class='action-button fa fa-minus-circle'></i></label>"),
           with(tags, table(
@@ -667,6 +644,7 @@ output$simulater <- renderUI({
         mode = "r",
         theme = getOption("radiant.ace_theme", default = "tomorrow"),
         wordWrap = TRUE,
+        debounce = 0,
         height = "120px",
         value = state_init("sim_form", "") %>% fix_smart(),
         placeholder = "Use formulas to perform calculations on simulated variables\n(e.g., demand = 5 * price). Press the Run simulation button\nto run the simulation. Click the ? icon on the bottom left\nof your screen for help and examples",
@@ -686,6 +664,7 @@ output$simulater <- renderUI({
           mode = "r",
           theme = getOption("radiant.ace_theme", default = "tomorrow"),
           wordWrap = TRUE,
+          debounce = 0,
           height = "120px",
           value = state_init("sim_funcs", "") %>% fix_smart(),
           placeholder = "Create your own R functions (e.g., add = function(x, y) {x + y}).\nCall these functions from the 'formula' input and press the Run\nsimulation button to run the simulation. Click the ? icon on the\nbottom left of your screen for help and examples",
@@ -718,9 +697,10 @@ output$simulater <- renderUI({
         mode = "r",
         theme = getOption("radiant.ace_theme", default = "tomorrow"),
         wordWrap = TRUE,
+        debounce = 0,
         height = "120px",
         value = state_init("rep_form", "") %>% fix_smart(),
-        placeholder = "Press the Repeat button to repeat the simulation specified in the Simulate tab.\nUse formulas to perform additional calculations on the repeated simulation data.\nClick the ? icon on the bottom left of your screen for help and examples",
+        placeholder = "Press the Repeat simulation button to repeat the simulation specified in the\nSimulate tab. Use formulas to perform additional calculations on the repeated\nsimulation data. Click the ? icon on the bottom left of your screen for help\nand examples",
         vimKeyBinding = getOption("radiant.ace_vim.keys", default = FALSE),
         tabSize = getOption("radiant.ace_tabSize", 2),
         useSoftTabs = getOption("radiant.ace_useSoftTabs", TRUE),
@@ -737,6 +717,7 @@ output$simulater <- renderUI({
           mode = "r",
           theme = getOption("radiant.ace_theme", default = "tomorrow"),
           wordWrap = TRUE,
+          debounce = 0,
           height = "120px",
           value = state_init("rep_funcs", "") %>% fix_smart(),
           placeholder = "Create your own R functions (e.g., add = function(x, y) {x + y}).\nCall these functions from the 'formula' input and press the Run\nsimulation button to run the simulation. Click the ? icon on the\nbottom left of your screen for help and examples",
@@ -810,6 +791,7 @@ observe({
   withProgress(message = "Running simulation", value = 0.5, {
     inp <- sim_inputs()
     inp$name <- fixed
+    inp$envir <- r_data
     sim <- do.call(simulater, inp)
     if (is.data.frame(sim)) {
       r_data[[fixed]] <- sim
@@ -852,14 +834,18 @@ sim_plot_height <- function() {
 .repeater <- eventReactive(input$rep_run, {
   fixed <- fix_names(input$rep_name)
   updateTextInput(session, "rep_name", value = fixed)
-  inp <- rep_inputs()
-  inp$name <- fixed
-  rep <- do.call(repeater, inp)
-  if (is.data.frame(rep)) {
-    r_data[[fixed]] <- rep
-    register(fixed)
-  }
-  rep
+
+  withProgress(message = "Repeated simulation", value = 0.5, {
+    inp <- rep_inputs()
+    inp$name <- fixed
+    inp$envir <- r_data
+    rep <- do.call(repeater, inp)
+    if (is.data.frame(rep)) {
+      r_data[[fixed]] <- rep
+      register(fixed)
+    }
+    rep
+  })
 })
 
 .summary_repeat <- eventReactive({c(input$rep_run, input$rep_dec)}, {
@@ -867,7 +853,7 @@ sim_plot_height <- function() {
     "** Press the Repeat simulation button **"
   } else if (length(input$rep_sum_vars) == 0) {
     "Select at least one Output variable"
-  } else if (input$rep_byvar == "sim" && is_empty(input$rep_nr)) {
+  } else if (input$rep_byvar == ".sim" && is_empty(input$rep_nr)) {
     "Please specify the number of repetitions in '# reps'"
   } else {
     summary(.repeater(), dec = input$rep_dec)
@@ -892,7 +878,7 @@ rep_plot_height <- function() {
 .plot_repeat <- eventReactive(input$rep_run, {
   req(input$rep_show_plots)
   req(length(input$rep_sum_vars) > 0)
-  if (input$rep_byvar == "sim" && is_empty(input$rep_nr)) {
+  if (input$rep_byvar == ".sim" && is_empty(input$rep_nr)) {
     return(invisible())
   } # else if (input$rep_byvar == "rep" && is_empty(input$rep_grid)) {
     # return(invisible())
@@ -900,9 +886,10 @@ rep_plot_height <- function() {
   object <- .repeater()
   if (is.null(object)) return(invisible())
   withProgress(message = "Generating repeated simulation plots", value = 1, {
-    rep_plot_inputs() %>%
-      {.$shiny <- TRUE; .} %>%
-      {do.call(plot, c(list(x = object), .))}
+    inp <- rep_plot_inputs()
+    inp$shiny <- TRUE
+    inp$x <- object
+    do.call(plot, inp)
   })
 })
 
@@ -1002,7 +989,7 @@ observeEvent(input$repeater_report, {
 
   if (!is_empty(inp$seed)) inp$seed <- as_numeric(inp$seed)
   if (!is_empty(inp$nr)) inp$nr <- as_numeric(inp$nr)
-  if (input$rep_byvar == "sim") inp$grid <- NULL
+  if (input$rep_byvar == ".sim") inp$grid <- NULL
 
   if (!is_empty(inp[["form"]])) {
     inp[["form"]] <- strsplit(inp[["form"]], ";")[[1]]

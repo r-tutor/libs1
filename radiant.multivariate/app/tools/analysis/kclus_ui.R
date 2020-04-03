@@ -3,7 +3,7 @@
 ###############################################################
 
 km_plots <- c("None" = "none", "Density" = "density", "Bar" = "bar", "Scatter" = "scatter")
-km_algorithm <- c("K-means" = "mean", "K-medians" = "median")
+km_algorithm <- c("K-means" = "kmeans", "K-proto" = "kproto")
 
 # list of function arguments
 km_args <- as.list(formals(kclus))
@@ -18,25 +18,26 @@ km_inputs <- reactive({
 })
 
 output$ui_km_vars <- renderUI({
-
-  ## are there any two-level vars
-  dum <- two_level_vars()
-  if (length(dum) > 0) {
-    isVars <- .get_class() %in% c("integer", "numeric", "factor")
-    isFct <- {.get_class() == "factor"} %>%
-      {names(.[.])} %>%
-      base::setdiff(., dum)
-    vars <- varnames()[isVars] %>% .[!. %in% isFct]
-  } else {
-    isVars <- .get_class() %in% c("integer", "numeric")
-    vars <- varnames()[isVars]
-  }
-
+  sel <- .get_class() %in% c("integer", "numeric", "factor")
+  vars <- varnames()[sel]
   selectInput(
     inputId = "km_vars", label = "Variables:", choices = vars,
     selected = state_multiple("km_vars", vars, input$hc_vars),
     multiple = TRUE, size = min(8, length(vars)), selectize = FALSE
   )
+})
+
+output$ui_km_lambda <- renderUI({
+  numericInput(
+    "km_lambda", "Lambda:", min = 0,
+    value = state_init("km_lambda", NA)
+  )
+})
+
+observeEvent(input$km_fun, {
+  if (input$km_fun == "kmeans") {
+    updateNumericInput(session = session, inputId = "km_lambda", value = NA)
+  }
 })
 
 observeEvent(input$dataset, {
@@ -48,40 +49,29 @@ output$ui_km_store_name <- renderUI({
   textInput("km_store_name", NULL, "", placeholder = "Provide variable name")
 })
 
-observe({
-  ## dep on most inputs
-  input$data_filter
-  input$show_filter
-  sapply(r_drop(names(km_args)), function(x) input[[paste0("km_", x)]])
-
-  ## notify user when the model needs to be updated
-  ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
-  if (pressed(input$km_run)) {
-    if (is.null(input$km_vars)) {
-      updateTabsetPanel(session, "tabs_kclus ", selected = "Summary")
-      updateActionButton(session, "km_run", "Estimate model", icon = icon("play"))
-    } else if (isTRUE(attr(km_inputs, "observable")$.invalidated)) {
-      updateActionButton(session, "km_run", "Re-estimate model", icon = icon("refresh", class = "fa-spin"))
-    } else {
-      updateActionButton(session, "km_run", "Estimate model", icon = icon("play"))
-    }
-  }
-})
+## add a spinning refresh icon if the tabel needs to be (re)calculated
+run_refresh(km_args, "km", init = "vars", tabs = "tabs_kclus", label = "Estimate model", relabel = "Re-estimate model")
 
 output$ui_kclus <- renderUI({
   req(input$dataset)
   tagList(
-    wellPanel(
-      actionButton("km_run", "Estimate model", width = "100%", icon = icon("play"), class = "btn-success")
+    conditionalPanel(condition = "input.tabs_kclus == 'Summary'",
+      wellPanel(
+        actionButton("km_run", "Estimate model", width = "100%", icon = icon("play"), class = "btn-success")
+      )
     ),
     wellPanel(
       conditionalPanel(
         condition = "input.tabs_kclus == 'Summary'",
         selectInput(
           "km_fun", label = "Algorithm:", choices = km_algorithm,
-          selected = state_single("km_fun", km_algorithm, "mean"), multiple = FALSE
+          selected = state_single("km_fun", km_algorithm, "kmeans"), multiple = FALSE
         ),
         uiOutput("ui_km_vars"),
+        conditionalPanel(
+          condition = "input.km_fun == 'kproto'",
+          uiOutput("ui_km_lambda")
+        ),
         checkboxInput("km_standardize", "Standardize", state_init("km_standardize", TRUE)),
         checkboxInput(
           inputId = "km_hc_init", label = "Initial centers from HC",
@@ -192,10 +182,11 @@ output$kclus <- renderUI({
 })
 
 .kclus <- eventReactive(input$km_run, {
-  withProgress(
-    message = "Estimating cluster solution", value = 1,
-    do.call(kclus, km_inputs())
-  )
+  withProgress(message = "Estimating cluster solution", value = 1, {
+    kmi <- km_inputs()
+    kmi$envir <- r_data
+    do.call(kclus, kmi)
+  })
 })
 
 .summary_kclus <- reactive({
@@ -234,8 +225,11 @@ observeEvent(input$kclus_report, {
     xcmd <- ""
   }
 
+  kmi <- km_inputs()
+  if (input$km_fun == "kmeans") kmi$lambda <- NULL
+
   update_report(
-    inp_main = clean_args(km_inputs(), km_args),
+    inp_main = clean_args(kmi, km_args),
     fun_name = "kclus",
     inp_out = inp_out,
     outputs = outputs,

@@ -27,7 +27,6 @@ as_mdy_hms              Convert input in
                         date-time
 as_numeric              Convert variable to numeric avoiding potential
                         issues with factors
-as_tibble               Exporting as_tibble from tibble
 as_ymd                  Convert input in year-month-day format to date
 as_ymd_hm               Convert input in year-month-day-hour-minute
                         format to date-time
@@ -76,10 +75,6 @@ get_data                Select variables and filter data
 get_summary             Create data.frame summary
 ggplotly                Work around to avoid (harmless) messages from
                         ggplotly
-glance                  Exporting glance from broom
-glue                    Exporting glue from glue
-glue_collapse           Exporting glue_collapse from glue
-glue_data               Exporting glue_data from glue
 indexr                  Find index corrected for missing values and
                         filters
 install_webshot         Install webshot and phantomjs
@@ -90,14 +85,17 @@ is_not                  Convenience function for is.null or is.na
 is_string               Is input a string?
 iterms                  Create a vector of interaction terms for linear
                         and logistic regression
-knit_print              Exporting knit_print from knitr
-kurtosi                 Exporting kurtosi from psych
 launch                  Launch radiant apps
 level_list              Generate list of levels and unique values
 ln                      Natural log
 load_clip               Load data through clipboard on Windows or macOS
 make_train              Generate a variable used to selected a training
                         sample
+make_vec                Convert a string of numbers into a vector
+me                      Margin of error
+meprop                  Margin of error for proportion
+modal                   Calculate the mode (modal value) and return a
+                        label
 month                   Add ordered argument to lubridate::month
 mutate_ext              Add transformed variables to a data frame with
                         the option to include a custom variable name
@@ -110,8 +108,6 @@ parse_path              Parse file path into useful components
 pfun                    Summarize a set of numeric vectors per row
 pivotr                  Create a pivot table
 plot.pivotr             Plot method for the pivotr function
-print.gtable            Print/draw method for grobs produced by
-                        gridExtra
 prop                    Calculate proportion
 publishers              Comic publishers
 qscatter                Create a qscatter plot similar to Stata
@@ -121,6 +117,8 @@ radiant.data            radiant.data
 radiant.data-deprecated
                         Deprecated function(s) in the radiant.data
                         package
+radiant.data_url        Start radiant.data app but do not open a
+                        browser
 radiant.data_viewer     Launch the radiant.data app in the Rstudio
                         viewer
 radiant.data_window     Launch the radiant.data app in an Rstudio
@@ -133,7 +131,6 @@ render.datatables       Method to render DT tables
 render.plotly           Method to render plotly plots
 round_df                Round doubles in a data.frame to a specified
                         number of decimal places
-rownames_to_column      Exporting rownames_to_column from tibble
 save_clip               Save data to clipboard on Windows or macOS
 sdpop                   Standard deviation for the population
 sdprop                  Standard deviation for proportion
@@ -145,7 +142,6 @@ set_attr                Alias used to add an attribute
 show_duplicated         Show all rows with duplicated values (not just
                         the first or last)
 sig_stars               Add stars based on p.values
-skew                    Exporting skew from psych
 square                  Calculate square of a variable
 sshh                    Hide warnings and messages and return invisible
 sshhr                   Hide warnings and messages and return result
@@ -162,8 +158,6 @@ summary.explore         Summary method for the explore function
 summary.pivotr          Summary method for pivotr
 superheroes             Super heroes
 table2data              Create data.frame from a table
-tibble                  Exporting tibble from tibble
-tidy                    Exporting tidy from broom
 titanic                 Survival data for the Titanic
 to_fct                  Convert characters to factors
 varpop                  Variance for the population
@@ -175,4 +169,5 @@ wday                    Add ordered argument to lubridate::wday
 weighted.sd             Weighted standard deviation
 which.pmax              Index of the maximum per row
 which.pmin              Index of the minimum per row
-xtile                   Create quantiles
+xtile                   Split a numeric variable into a number of bins
+                        and return a vector of bin numbers

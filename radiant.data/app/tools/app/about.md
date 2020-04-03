@@ -17,6 +17,14 @@ Radiant is an open-source platform-independent browser-based interface for busin
 
 <iframe width="640" height="375" src="https://www.youtube.com/embed/7L3hDpLw53I" frameborder="0" allowfullscreen></iframe>
 
+
+#### Playlists
+
+There are two youtube playlists with video tutorials. The first provides a general introduction to key features in Radiant. The second covers topics relevant in a course on business analytics (i.e., Probability, Decision Analysis, Hypothesis Testing, Linear Regression, and Simulation).
+
+* <a href="https://www.youtube.com/playlist?list=PLNhtaetb48EedDmWPUqytnQv-qxmCGtxi" target="_blank">Introduction to Radiant</a>
+* <a href="https://www.youtube.com/playlist?list=PLNhtaetb48EdKRIY7MewCyvb_1x7dV3xw" target="_blank">Radiant Tutorial Series</a>
+
 #### Explore
 
 Radiant is interactive. Results update immediately when inputs are changed (i.e., no separate dialog boxes) and/or when a button is pressed (e.g., `Estimate` in _Model > Estimate > Logistic regression (GLM)_). This facilitates rapid exploration and understanding of the data.
@@ -173,4 +181,4 @@ The documentation, images, and videos for the `radiant.data` package are license
 
 If you are interested in using any of the radiant packages please email me at radiant@rady.ucsd.edu
 
-&copy; Vincent Nijs (2018) <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="https://radiant-rstats.github.io/docs/images/by-sa.png" /></a>
+&copy; Vincent Nijs (2019) <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="https://radiant-rstats.github.io/docs/images/by-sa.png" /></a>

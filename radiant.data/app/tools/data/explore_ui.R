@@ -32,8 +32,9 @@ expl_sum_inputs <- reactive({
 
 ## UI-elements for explore
 output$ui_expl_vars <- renderUI({
-  isNum <- .get_class() %in% c("integer", "numeric", "ts", "factor", "logical")
-  vars <- varnames()[isNum]
+  # isNum <- .get_class() %in% c("integer", "numeric", "ts", "factor", "logical")
+  # vars <- varnames()[isNum]
+  vars <- varnames()
   req(available(vars))
   selectInput(
     "expl_vars", label = "Numeric variable(s):", choices = vars,
@@ -106,7 +107,7 @@ output$ui_expl_top <- renderUI({
   selectizeInput(
     "expl_top", label = "Column header:",
     choices = top_var,
-    selected = state_single("expl_top", top_var, top_var[1]),
+    selected = state_single("expl_top", top_var, isolate(input$expl_top)),
     multiple = FALSE
   )
 })
@@ -122,24 +123,8 @@ output$ui_expl_run <- renderUI({
   actionButton("expl_run", "Create table", width = "100%", icon = icon("play"), class = "btn-success")
 })
 
-observe({
-  ## dep on most inputs
-  input$data_filter
-  input$show_filter
-  # dep on most inputs
-  sapply(r_drop(names(expl_args)), function(x) input[[paste0("expl_", x)]])
-
-  ## notify user when the plot needed to be updated
-  ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
-  if (pressed(input$expl_run) && !is.null(input$expl_vars)) {
-    if (isTRUE(attr(expl_inputs, "observable")$.invalidated)) {
-      ## added fa-spin class based on https://stackoverflow.com/a/47165104/1974918
-      updateActionButton(session, "expl_run", "Update table", icon = icon("refresh", class = "fa-spin"))
-    } else {
-      updateActionButton(session, "expl_run", "Create table", icon = icon("play"))
-    }
-  }
-})
+## add a spinning refresh icon if the tabel needs to be (re)calculated
+run_refresh(expl_args, "expl", init = "vars", label = "Create table", relabel = "Update table")
 
 output$ui_Explore <- renderUI({
   tagList(
@@ -172,7 +157,9 @@ output$ui_Explore <- renderUI({
   if (not_available(input$expl_vars) || is.null(input$expl_top)) return()
   if (!is_empty(input$expl_byvar) && not_available(input$expl_byvar)) return()
   if (available(input$expl_byvar) && any(input$expl_byvar %in% input$expl_vars)) return()
-  sshhr(do.call(explore, expl_inputs()))
+  expli <- expl_inputs()
+  expli$envir <- r_data
+  sshhr(do.call(explore, expli))
 })
 
 observeEvent(input$explore_search_columns, {
@@ -302,7 +289,7 @@ observeEvent(input$explore_report, {
   inp_main <- clean_args(expl_inputs(), expl_args)
   if (ts$tabsort != "") inp_main <- c(inp_main, tabsort = ts$tabsort)
   if (ts$tabfilt != "") inp_main <- c(inp_main, tabfilt = ts$tabfilt)
-  inp_main <- c(inp_main, nr = ts$nr)
+  inp_main <- c(inp_main, nr = Inf)
   inp_out <- list(clean_args(expl_sum_inputs(), expl_sum_args[-1]))
 
   update_report(

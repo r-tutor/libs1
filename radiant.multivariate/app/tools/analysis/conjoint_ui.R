@@ -167,24 +167,8 @@ observeEvent(input$dataset, {
   updateSelectInput(session = session, inputId = "ca_plots", selected = "none")
 })
 
-observe({
-  ## dep on most inputs
-  input$data_filter
-  input$show_filter
-  sapply(r_drop(names(ca_args)), function(x) input[[paste0("ca_", x)]])
-  ## notify user when the model needs to be updated
-  ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
-  if (pressed(input$ca_run)) {
-    if (is.null(input$ca_evar)) {
-      updateTabsetPanel(session, "tabs_conjoint ", selected = "Summary")
-      updateActionButton(session, "ca_run", "Estimate model", icon = icon("play"))
-    } else if (isTRUE(attr(ca_inputs, "observable")$.invalidated)) {
-      updateActionButton(session, "ca_run", "Re-estimate model", icon = icon("refresh", class = "fa-spin"))
-    } else {
-      updateActionButton(session, "ca_run", "Estimate model", icon = icon("play"))
-    }
-  }
-})
+## add a spinning refresh icon if the tabel needs to be (re)calculated
+run_refresh(ca_args, "ca", init = "evar", tabs = "tabs_conjoint", label = "Estimate model", relabel = "Re-estimate model")
 
 output$ui_ca_store <- renderUI({
   req(input$ca_by != "none")
@@ -242,8 +226,10 @@ output$ui_ca_pred_data <- renderUI({
 output$ui_conjoint <- renderUI({
   req(input$dataset)
   tagList(
-    wellPanel(
-      actionButton("ca_run", "Estimate model", width = "100%", icon = icon("play"), class = "btn-success")
+    conditionalPanel(condition = "input.tabs_conjoint == 'Summary'",
+      wellPanel(
+        actionButton("ca_run", "Estimate model", width = "100%", icon = icon("play"), class = "btn-success")
+      )
     ),
     wellPanel(
       conditionalPanel(
@@ -421,16 +407,19 @@ output$conjoint <- renderUI({
 
 .conjoint <- eventReactive(input$ca_run, {
   req(available(input$ca_rvar), available(input$ca_evar))
-  withProgress(
-    message = "Estimating model", value = 1,
-    do.call(conjoint, ca_inputs())
-  )
+  withProgress(message = "Estimating model", value = 1, {
+    cai <- ca_inputs()
+    cai$envir <- r_data
+    do.call(conjoint, cai)
+  })
 })
 
 .summary_conjoint <- reactive({
   if (not_pressed(input$ca_run)) return("** Press the Estimate button to estimate the model **")
   if (ca_available() != "available") return(ca_available())
-  do.call(summary, c(list(object = .conjoint()), ca_sum_inputs()))
+  cai <- ca_sum_inputs()
+  cai$object <- .conjoint()
+  do.call(summary, cai)
 })
 
 .predict_conjoint <- reactive({
@@ -445,7 +434,10 @@ output$conjoint <- renderUI({
   }
 
   withProgress(message = "Generating predictions", value = 1, {
-    do.call(predict, c(list(object = .conjoint()), ca_pred_inputs()))
+    cai <- ca_pred_inputs()
+    cai$object <- .conjoint()
+    cai$envir <- r_data
+    do.call(predict, cai)
   })
 })
 
@@ -552,7 +544,7 @@ observeEvent(input$conjoint_report, {
 
     if (input$ca_pred_plot && !is_empty(input$ca_xvar)) {
       inp_out[[3 + figs]] <- clean_args(ca_pred_plot_inputs(), ca_pred_plot_args[-1])
-      inp_out[[3 + figs]]$result <- pred_name
+      inp_out[[3 + figs]]$result <- pred_args$pred_name
       outputs <- c(outputs, "plot")
       figs <- TRUE
     }

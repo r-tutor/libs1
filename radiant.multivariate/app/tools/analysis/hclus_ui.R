@@ -4,8 +4,10 @@ hc_method <- list(
 )
 
 hc_distance <- c(
-  "Squared euclidean" = "sq.euclidian", "Euclidian" = "euclidean",
-  "Maximum" = "maximum", "Manhattan" = "manhattan", "Canberra" = "canberra", "Binary" = "binary", "Minkowski" = "minkowski"
+  "Squared euclidean" = "sq.euclidian", "Binary" = "binary",
+  "Canberra" = "canberra", "Euclidian" = "euclidean",
+  "Gower" = "gower", "Manhattan" = "manhattan",
+  "Maximum" = "maximum", "Minkowski" = "minkowski"
 )
 
 hc_plots <- c("Scree" = "scree", "Change" = "change", "Dendrogram" = "dendro")
@@ -28,8 +30,9 @@ hc_inputs <- reactive({
 ###############################################################
 
 output$ui_hc_vars <- renderUI({
-  isNum <- "numeric" == .get_class() | "integer" == .get_class()
-  vars <- varnames()[isNum]
+  vars <- varnames()
+  toSelect <- .get_class() %in% c("numeric", "integer", "date", "factor")
+  vars <- vars[toSelect]
   selectInput(
     inputId = "hc_vars", label = "Variables:", choices = vars,
     selected = state_multiple("hc_vars", vars),
@@ -53,22 +56,13 @@ observeEvent(c(input$hc_vars, input$hc_labels != "none"), {
   }
 })
 
-observe({
-  ## dep on most inputs
-  input$data_filter
-  input$show_filter
-  sapply(r_drop(names(hc_args)), function(x) input[[paste0("hc_", x)]])
-
-  ## notify user when the model needs to be updated
-  ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
-  if (pressed(input$hc_run)) {
-    if (isTRUE(attr(hc_inputs, "observable")$.invalidated)) {
-      updateActionButton(session, "hc_run", "Re-estimate model", icon = icon("refresh", class = "fa-spin"))
-    } else {
-      updateActionButton(session, "hc_run", "Estimate model", icon = icon("play"))
-    }
-  }
+output$ui_hc_store_name <- renderUI({
+  req(input$dataset)
+  textInput("hc_store_name", NULL, "", placeholder = "Provide variable name")
 })
+
+## add a spinning refresh icon if the tabel needs to be (re)calculated
+run_refresh(hc_args, "hc", init = "vars", label = "Estimate model", relabel = "Re-estimate model")
 
 output$ui_hclus <- renderUI({
   req(input$dataset)
@@ -110,6 +104,20 @@ output$ui_hclus <- renderUI({
         ), width = "100%"
       )),
       checkboxInput("hc_standardize", "Standardize", state_init("hc_standardize", TRUE))
+    ),
+    wellPanel(
+      conditionalPanel(
+        condition = "input.hc_vars != null",
+        numericInput(
+          "hc_nr_clus", "Number of clusters:", min = 2,
+          value = state_init("hc_nr_clus", 2)
+        ),
+        HTML("<label>Store cluster membership:</label>"),
+        tags$table(
+          tags$td(uiOutput("ui_hc_store_name")),
+          tags$td(actionButton("hc_store", "Store", icon = icon("plus")), style = "padding-top:5px;")
+        )
+      )
     ),
     help_and_report(
       modal_title = "Hierarchical cluster analysis",
@@ -169,10 +177,12 @@ output$hclus <- renderUI({
 })
 
 .hclus <- eventReactive(input$hc_run, {
-  withProgress(
-    message = "Estimating cluster solution", value = 1,
-    do.call(hclus, hc_inputs())
-  )
+  req(input$hc_vars)
+  withProgress(message = "Estimating cluster solution", value = 1, {
+    hci <- hc_inputs()
+    hci$envir <- r_data
+    do.call(hclus, hci)
+  })
 })
 
 .summary_hclus <- reactive({
@@ -213,6 +223,16 @@ observeEvent(input$hclus_report, {
     inp_out <- list("", "")
     figs <- FALSE
   }
+
+  if (!is_empty(input$hc_store_name)) {
+    fixed <- fix_names(input$hc_store_name)
+    updateTextInput(session, "hc_store_name", value = fixed)
+    nr_clus <- ifelse(is_empty(input$hc_nr_clus), 2, input$hc_nr_clus)
+    xcmd <- glue('{input$dataset} <- store({input$dataset}, result, nr_clus = {nr_clus}, name = "{fixed}")')
+  } else {
+    xcmd <- ""
+  }
+
   update_report(
     inp_main = clean_args(hc_inputs(), hc_args),
     fun_name = "hclus",
@@ -220,8 +240,24 @@ observeEvent(input$hclus_report, {
     outputs = outputs,
     figs = figs,
     fig.width = hc_plot_width(),
-    fig.height = hc_plot_height()
+    fig.height = hc_plot_height(),
+    xcmd = xcmd
   )
+})
+
+## store cluster membership
+observeEvent(input$hc_store, {
+  req(input$hc_store_name, input$hc_run)
+  fixed <- fix_names(input$hc_store_name)
+  nr_clus <- ifelse(is_empty(input$hc_nr_clus), 2, input$hc_nr_clus)
+  updateTextInput(session, "hc_store_name", value = fixed)
+  robj <- .hclus()
+  if (!is.character(robj)) {
+    withProgress(
+      message = "Storing cluster membership", value = 1,
+      r_data[[input$dataset]] <- store(r_data[[input$dataset]], robj, nr_clus = nr_clus, name = fixed)
+    )
+  }
 })
 
 download_handler(

@@ -1,3 +1,77 @@
+# radiant.model 1.3.9
+
+* Minor adjustments in anticipation of dplyr 1.0.0
+
+# radiant.model 1.3.8
+
+* Fix for cv.rforest when the max of `mtry` exceeds the number of explanatory variables
+* Fix to write.coeff when one or more coefficients have a missing value
+* Use weighted mean and sd in write.coeff function when needed
+* Added flexibility in using constants while defining the spec for other randomly generated variables
+
+# radiant.model 1.3.5
+
+* Adding `OR%` change as a columns in output for _Model > Logistic regression_ and the `write.coeff` function
+* Restrict max number of levels in a "groupable" variable used in _Model > Evaluate classification_ and _Model > Multinomial logistic regression_ to no more than 50
+* Avoid rouding the profit measures in _Model > Evaluate classification_
+
+# radiant.model 1.3.2
+
+* Improvements to cv.gbt to allow previously setup evaluation functions to be used in cross validation for hyper parameter tuning 
+* Random Forest module using the `ranger` package. Includes a `cv.rforest` function for tuning using cross-validation
+* Gradient Boosted Trees module using the `xgboost` package. Includes a `cv.gbt` function for tuning using cross-validation. For convenience, all data.frame-to-matrix-conversion is handled by radiant
+* Partial Dependence Plots for all trees-based estimation modules and for neural networks
+* `onehot` function to make converting a data.frame with categorical variables to a matrix a bit easier
+
+# radiant.model 1.3.0
+
+* Allow specification of multiple summary functions in _Model > Simulate > Repeat_
+* Documentation updates to link to new video tutorials
+* Use `patchwork` for grouping multiple plots together
+* Allow formula input for `logistic` and `regress` functions
+* Adjust correlation plot for NB to accommodate changes in _Basics > Correlation_
+* Fix for repeated simulation (_Model > Simulate > Repeat_) where "Variables to re-simulate" and "Output variables" were not always updated correctly when the set of available variables changed
+
+# radiant.model 1.2.7
+
+* Fix prediction issue when using I(x^2) in a stepwise estimation process and x is removed
+* Fix issue finding .as_int and .as_num when use radiant through shiny server
+
+# radiant.model 1.2.5
+
+* Option to drop the intercept for _Model > Multinomial Logistic Regression_
+* Provide access to the variables in a dataset during simulation and repeated simulation.
+
+# radiant.model 1.2.2
+
+* Various fixes related to stepwise estimation of Multinomial, Logistic, and Linear regression model (e.g., VIF calculation, models with only an intercept, perfect multicollinearity, etc.). 
+
+# radiant.model 1.2.1
+
+* Fix to ensure environment is not attached as an attribute to data frames generated in the _Model > Simulate_ tool 
+
+# radiant.model 1.2.0
+
+* Update action buttons that initiate calculations when one or more relevant inputs are changed. When, for example, a model should be re-estimated, a spinning "refresh" icon will be shown
+* Add option to use a formula for the `regress` function
+* Improved description of standardization process used. Added link to [Gelman 2008](http://www.stat.columbia.edu/~gelman/research/published/standardizing7.pdf) 
+* Added an influence plot that shows standardized residuals and cooks-distance
+
+# radiant.model 1.1.10
+
+* Fix for `nobs` in _Model > Multinomial logistic regression_.
+* Fix for `write.coeff` for use with _Model > Multinomial logistic regression_
+* Fix for decision trees that reference sub-trees. Environment to evaluate the tree is now explicitly provided. This will now also work with (sub) trees loaded from .yaml files
+* Decision analysis now allows basic formulas in all parts of the tree
+* Added confusion matrix and misclassification error for _Model > Multinomial Logistic regression (MNL)_
+* Fix for saving multiple residual series for MNL
+* Added a module for Multinomial Logistic regression (MNL) in the _Model > Estimate_ menu
+* Fix for confusion matrix which couldn't find find the selected dataset in the web-interface
+* Documentation fixes and updates
+* Improved checks for variables that show no variation
+* Numerous small code changes to support enhanced auto-completion, tooltips, and annotations in shinyAce 0.4.1
+* Automatically fix faulty spacing in user input in Model > Decision Analysis
+
 # radiant.model 1.0.0
 
 * Keyboard shortcut (Enter) when defining variable in Model > Simulate
@@ -26,7 +100,7 @@
 * Fix for `cv.nn` when weights are used in estimation
 * Improve documentation for cross-validation of `nn` and `crtree` models (i.e., `cv.nn` and `cv.crtree`)
 * Fixes for breaking changes in dplyr 0.8.0
-* Fix to download tables from _Model > Evaluate classification_
+* Fix to download tables from _Model > Evaluate classificiation_
 * Use an expandable `shinyAce` input for the formula and function inputs in _Model > Simulate_
 * Fixes for repeated simulation with grid-search
 * Use `test` instead of `validation` 
@@ -63,7 +137,7 @@
 
 ## Major changes
 
-* Various changes to the code to accommodate the use of `shiny::makeReactiveBinding`. The advantage is that the code generated for _Report > Rmd_ and _Report > R_ will no longer have to use `r_data` to store and access data. This means that code generated and used in the Radiant browser interface will be directly usable without the browser interface as well.
+* Various changes to the code to accomodate the use of `shiny::makeReactiveBinding`. The advantage is that the code generated for _Report > Rmd_ and _Report > R_ will no longer have to use `r_data` to store and access data. This means that code generated and used in the Radiant browser interface will be directly usable without the browser interface as well.
 * Improved documentation and examples
 
 # radiant.model 0.9.2.3

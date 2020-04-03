@@ -28,7 +28,8 @@ ebin_inputs <- reactive({
 ###############################################################
 output$ui_ebin_rvar <- renderUI({
   withProgress(message = "Acquiring variable information", value = 1, {
-    vars <- two_level_vars()
+    # vars <- two_level_vars()
+    vars <- groupable_vars()
   })
   selectInput(
     inputId = "ebin_rvar", label = "Response variable:", choices = vars,
@@ -38,14 +39,17 @@ output$ui_ebin_rvar <- renderUI({
 
 output$ui_ebin_lev <- renderUI({
   req(available(input$ebin_rvar))
-  levs <- .get_data()[[input$ebin_rvar]] %>%
-    as.factor() %>%
-    levels()
-  selectInput(
-    inputId = "ebin_lev", label = "Choose level:",
-    choices = levs,
-    selected = state_init("ebin_lev")
-  )
+  rvar <- .get_data()[[input$ebin_rvar]]
+  levs <- unique(rvar)
+  if (length(levs) > 50) {
+    HTML("<label>More than 50 levels. Please choose another response variable</label>")
+  } else {
+    selectInput(
+      inputId = "ebin_lev", label = "Choose level:",
+      choices = levs,
+      selected = state_init("ebin_lev")
+    )
+  }
 })
 
 output$ui_ebin_pred <- renderUI({
@@ -65,22 +69,8 @@ output$ui_ebin_train <- renderUI({
   )
 })
 
-observe({
-  ## dep on most inputs
-  input$data_filter
-  input$show_filter
-  sapply(r_drop(names(ebin_args)), function(x) input[[paste0("ebin_", x)]])
-
-  ## notify user when the regression needs to be updated
-  ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
-  if (pressed(input$ebin_run)) {
-    if (isTRUE(attr(ebin_inputs, "observable")$.invalidated)) {
-      updateActionButton(session, "ebin_run", "Re-evaluate models", icon = icon("refresh", class = "fa-spin"))
-    } else {
-      updateActionButton(session, "ebin_run", "Evaluate models", icon = icon("play"))
-    }
-  }
-})
+## add a spinning refresh icon if the model needs to be (re)estimated
+run_refresh(ebin_args, "ebin", init = "pred", label = "Evaluate models", relabel = "Re-evaluate models")
 
 output$ui_evalbin <- renderUI({
   req(input$dataset)
@@ -216,7 +206,9 @@ output$evalbin <- renderUI({
       add_class("evalbin")
   } else {
     withProgress(message = "Evaluating models", value = 1, {
-      do.call(evalbin, ebin_inputs())
+      ebi <- ebin_inputs()
+      ebi$envir <- r_data
+      do.call(evalbin, ebi)
     })
   }
 })
@@ -253,7 +245,11 @@ output$evalbin <- renderUI({
   if (!input$ebin_train %in% c("", "All") && (!input$show_filter || (input$show_filter && is_empty(input$data_filter)))) {
     return("** Filter required. To set a filter go to Data > View and click the filter checkbox **")
   }
-  do.call(confusion, ebin_inputs())
+  withProgress(message = "Evaluating models", value = 1, {
+    ebi <- ebin_inputs()
+    ebi$envir <- r_data
+    do.call(confusion, ebi)
+  })
 })
 
 .summary_confusion <- reactive({
@@ -315,8 +311,13 @@ observeEvent(input$confusion_report, {
     figs <- TRUE
   }
 
+  # qnt might be set in the Evaluate tab but is not needed to calculate
+  # the confusion matrix
+  ebi <- ebin_inputs()
+  ebi$qnt <- NULL
+
   update_report(
-    inp_main = clean_args(ebin_inputs(), ebin_args),
+    inp_main = clean_args(ebi, ebin_args),
     fun_name = "confusion",
     inp_out = inp_out,
     outputs = outputs,
@@ -340,7 +341,6 @@ download_handler(
 )
 
 dl_confusion_tab <- function(path) {
-  print(.confusion())
   dat <- .confusion()$dataset
   if (!is_empty(dat)) write.csv(dat, file = path, row.names = FALSE)
 }

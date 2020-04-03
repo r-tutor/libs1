@@ -8,7 +8,7 @@ We can perform either a one-sided test (i.e., `less than` or `greater than`) or 
 
 A car manufacturer conducted a study by randomly sampling and interviewing 1,000 consumers in a new target market. The goal of the study was to determine if consumers would consider purchasing this brand of car.
 
-Management has already determined that the company will enter this segment. However, if brand preference is lower than 10% additional resources will be committed to advertising and sponsorship in an effort to enhance brand awareness among the target consumers. In the sample, 93 consumers exhibited what the company the company considered strong brand liking.
+Management has already determined that the company will enter this segment. However, if brand preference is lower than 10% additional resources will be committed to advertising and sponsorship in an effort to enhance brand awareness among the target consumers. In the sample, 93 consumers exhibited what the company considered strong brand liking.
 
 You can find information on the responses by survey participants in the **consider.rda** data set. The data set contains two variables, `id` and `consider`.
 
@@ -18,7 +18,7 @@ Choose the `Less than` option from the `Alternative hypothesis` drop-down to det
 
 <p align="center"><img src="figures_basics/single_prop_summary.png"></p>
 
-The first two blocks of output show basic information about the test (e.g.,. the null and alternative hypothesis) and summary statistics (e.g., the proportion of "yes" responses). The final row of output shows the following:
+The first two blocks of output show basic information about the test (e.g.,. the null and alternative hypothesis) and summary statistics (e.g., the proportion of "yes" responses, standard error, margin or error, etc.). The final row of output shows the following:
 
 * `diff` is the difference between the sample proportion (0.093) and the comparison value (0.1)
 * `ns` is the number of _successes_. This is the number we can compare to a binomial-distribution with parameters $n = 1000$ and $p = 0.10$.
@@ -69,4 +69,19 @@ If a plot was created it can be customized using `ggplot2` commands (e.g., `plot
 
 ### R-functions
 
-For an overview of related R-functions used by Radiant to evaluate proportions see <a href = "https://radiant-rstats.github.io/radiant.basics/reference/index.html#section-basics-proportions" target="_blank">_Basics > Proportions_</a>
+For an overview of related R-functions used by Radiant to evaluate proportions see <a href = "https://radiant-rstats.github.io/radiant.basics/reference/index.html#section-basics-proportions" target="_blank">_Basics > Proportions_</a>.
+
+The key functions from the `stats` package used in the `single_prop` tool are `binom.test` and `prop.test`.
+
+### Video Tutorials
+
+Copy-and-paste the full command below into the RStudio console (i.e., the bottom-left window) and press return to gain access to all materials used in the hypothesis testing module of the <a href="https://www.youtube.com/playlist?list=PLNhtaetb48EdKRIY7MewCyvb_1x7dV3xw" target="_blank">Radiant Tutorial Series</a>:
+
+<pre>usethis::use_course("https://www.dropbox.com/sh/0xvhyolgcvox685/AADSppNSIocrJS-BqZXhD1Kna?dl=1")</pre>
+
+<a href="https://youtu.be/tTYvBUCaR3w" target="_blank">Single Proportion Hypothesis Test</a>
+
+* This video shows how to test a hypothesis about a single sample proportion versus a population proportion
+* Topics List:
+    - Setup a hypothesis test for a single proportion in Radiant
+    - Use the p.value, confidence interval, or critical value to evaluate the hypothesis test

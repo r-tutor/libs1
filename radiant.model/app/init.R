@@ -14,6 +14,12 @@ r_url_list[["Logistic regression (GLM)"]] <-
     "Predict" = "model/logistic/predict/",
     "Plot" = "model/logistic/plot/"
   ))
+r_url_list[["Multinomial logistic regression (MNL)"]] <-
+  list("tabs_mnl" = list(
+    "Summary" = "model/mnl/",
+    "Predict" = "model/mnl/predict/",
+    "Plot" = "model/mnl/plot/"
+  ))
 r_url_list[["Naive Bayes"]] <-
   list("tabs_nb" = list(
     "Summary" = "model/nb/",
@@ -31,6 +37,18 @@ r_url_list[["Classification and regression trees"]] <-
     "Summary" = "model/crtree/",
     "Predict" = "model/crtree/predict/",
     "Plot" = "model/crtree/plot/"
+  ))
+r_url_list[["Random Forest"]] <-
+  list("tabs_rf" = list(
+    "Summary" = "model/rf/",
+    "Predict" = "model/rf/predict/",
+    "Plot" = "model/rf/plot/"
+  ))
+r_url_list[["Gradient Boosted Trees"]] <-
+  list("tabs_gbt" = list(
+    "Summary" = "model/gbtf/",
+    "Predict" = "model/gbt/predict/",
+    "Plot" = "model/gbt/plot/"
   ))
 r_url_list[["Evaluate regression"]] <-
   list("tabs_evalreg" = list("Summary" = "model/evalreg/"))
@@ -61,9 +79,13 @@ options(
         "Estimate",
         tabPanel("Linear regression (OLS)", uiOutput("regress")),
         tabPanel("Logistic regression (GLM)", uiOutput("logistic")),
+        tabPanel("Multinomial logistic regression (MNL)", uiOutput("mnl")),
         tabPanel("Naive Bayes", uiOutput("nb")),
         tabPanel("Neural Network", uiOutput("nn")),
+        "----", "Trees",
         tabPanel("Classification and regression trees", uiOutput("crtree")),
+        tabPanel("Random Forest", uiOutput("rf")),
+        tabPanel("Gradient Boosted Trees", uiOutput("gbt")),
         "----", "Evaluate",
         tabPanel("Evaluate regression", uiOutput("evalreg")),
         tabPanel("Evaluate classification", uiOutput("evalbin")),

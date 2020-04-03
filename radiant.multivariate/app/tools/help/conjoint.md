@@ -73,13 +73,15 @@ If profile evaluations are available for multiple respondents and a respondent i
 
 Add code to <a href="https://radiant-rstats.github.io/docs/data/report_rmd.html" target="_blank">_Report > Rmd_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
 
-If a plot was created it can be customized using `ggplot2` commands or with `gridExtra`. See example below and <a href="https://radiant-rstats.github.io/docs/data/visualize.html" target="_blank">_Data > Visualize_</a> for details.
+If a plot was created it can be customized using `ggplot2` commands or with `patchwork`. See example below and <a href="https://radiant-rstats.github.io/docs/data/visualize.html" target="_blank">_Data > Visualize_</a> for details.
 
 ```r
-plot(result, plots = c("pw","iw"), custom = TRUE) %>%
-	gridExtra::grid.arrange(grobs = ., top = "Conjoint Analysis", ncol = 2)
+plot(result, plots = c("pw", "iw"), custom = TRUE) %>%
+   wrap_plots(plot_list, ncol = 2) + plot_annotation(title = "Conjoint Analysis")
 ```
 
 ### R-functions
 
 For an overview of related R-functions used by Radiant to estimate a conjoint model see <a href = "https://radiant-rstats.github.io/radiant.multivariate/reference/index.html#section-multivariate-conjoint" target="_blank">_Multivariate > Conjoint_</a>
+
+The key functions used in the `conjoint` tool are `lm` from the `stats` package and `vif` from the `car` package. 

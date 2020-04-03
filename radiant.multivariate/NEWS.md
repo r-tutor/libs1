@@ -1,5 +1,27 @@
-# radiant.multivariate 0.9.9.1
+# radiant.multivariate 1.3.5.0
 
+* Minor adjustments in anticipation of dplyr 1.0.0
+
+# radiant.multivariate 1.3.2.0
+
+* Allow factor variables in K-clustering using clustMixType::kproto
+
+# radiant.multivariate 1.3.0.0
+
+* Allow factor variables in pre-factor, factor, and attribute based maps. Correlations will be calculated `polycor::hetcor` and factor scores are calculated using `psych::score.irt.poly`.
+* Add option to save cluster membership for hierarchical clustering
+* Add `gower` distance as a distance metric for hierarchical clustering
+* Use `patchwork` for grouping multiple plots together
+* Update action buttons that initiate model estimation when one or more inputs are changed. When a model should be re-estimated, a spinning "refresh" icon will be shown
+
+# radiant.multivariate 1.1.1.0
+
+* Documentation updates (i.e., key functions for each tool)
+* Numerous small code changes to support enhanced auto-completion, tooltips, and annotations in shinyAce 0.4.1
+
+# radiant.multivariate 0.9.9.2
+
+* Label numbers for stored factor scores from factor analysis will now always correspond to the numbers used in the summary output
 * Fix for kmeans bar-plot after dplyr 0.8.1 release
 * Add information on R-squared when storing PW and IW tables for conjoint analysis with individual level data
 * Added option to (not) standardize data for K-clustering or Hierarchical clustering. 

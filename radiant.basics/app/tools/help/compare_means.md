@@ -21,7 +21,7 @@ Suppose we want to test if professors of lower rank earn lower salaries compared
 
 <p align="center"><img src="figures_basics/compare_means_summary.png"></p>
 
-The first two blocks of output show basic information about the test (e.g.,. selected variables and confidence levels) and summary statistics (e.g., mean, standard deviation, etc. per group). The final block of output shows the following:
+The first two blocks of output show basic information about the test (e.g., selected variables and confidence levels) and summary statistics (e.g., mean, standard deviation, margin or error, etc. per group). The final block of output shows the following:
 
 * `Null hyp.` is the null hypothesis and `Alt. hyp.` the alternative hypothesis
 * `diff` is the difference between the sample means for two groups (e.g., 80775.99 - 93876.44 = -13100.45). If the null hypothesis is true we expect this difference to be small (i.e., close to zero)
@@ -37,10 +37,10 @@ Samples   : independent
 Confidence: 0.95 
 Adjustment: None 
 
-      rank        mean   n         sd        se        me
-  AsstProf  80,775.985  67  8,174.113   998.627 1,993.823
- AssocProf  93,876.438  64 13,831.700 1,728.962 3,455.056
-      Prof 126,772.109 266 27,718.675 1,699.541 3,346.322
+      rank        mean   n n_missing         sd        se        me
+  AsstProf  80,775.985  67         0  8,174.113   998.627 1,993.823
+ AssocProf  93,876.438  64         0 13,831.700 1,728.962 3,455.056
+      Prof 126,772.109 266         0 27,718.675 1,699.541 3,346.322
 
  Null hyp.              Alt. hyp.              diff      p.value se       t.value df      0%   95%           
  AsstProf = AssocProf   AsstProf < AssocProf   -13100.45 < .001  1996.639  -6.561 101.286 -Inf  -9785.958 ***
@@ -102,3 +102,19 @@ If a plot was created it can be customized using `ggplot2` commands (e.g., `plot
 ### R-functions
 
 For an overview of related R-functions used by Radiant to evaluate means see <a href = "https://radiant-rstats.github.io/radiant.basics/reference/index.html#section-basics-means" target="_blank">_Basics > Means_</a>
+
+The key function from the `stats` package used in the `compare_means` tool is `t.test`.
+
+### Video Tutorials
+
+Copy-and-paste the full command below into the RStudio console (i.e., the bottom-left window) and press return to gain access to all materials used in the hypothesis testing module of the <a href="https://www.youtube.com/playlist?list=PLNhtaetb48EdKRIY7MewCyvb_1x7dV3xw" target="_blank">Radiant Tutorial Series</a>:
+
+<pre>usethis::use_course("https://www.dropbox.com/sh/0xvhyolgcvox685/AADSppNSIocrJS-BqZXhD1Kna?dl=1")</pre>
+
+<a href="https://youtu.be/cTWk0JADnVg" target="_blank">Compare Means Hypothesis Test</a>
+
+* This video shows how to conduct a compare means hypothesis test
+* Topics List:
+     - Calculate summary statistics by groups
+     - Setup a hypothesis test for compare means in Radiant
+     - Use the p.value and confidence interval to evaluate the hypothesis test

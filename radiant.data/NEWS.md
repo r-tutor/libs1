@@ -1,3 +1,58 @@
+# radiant.data 1.3.4
+
+* Minor adjustments in anticipation of dplyr 1.0.0
+
+# radiant.data 1.3.3
+
+* Function to calculate "mode"
+* Fix for "spread" in Data > Transform with column name includes "."
+
+# radiant.data 1.3.1
+
+* If radiant is not opened from an Rstudio project, use the working directory at launch as the base directory for the application
+
+# radiant.data 1.3.0
+
+* Updated styling of Notebook and HTML reports (cosmo + zenburn)
+* Documentation updates to link to new video tutorials
+* Use `patchwork` for grouping multiple plots together
+* Apply `refactor` to any type in the _Data > Transform_ UI
+* Fix for `weighted.sd` when missing values differ for `x` and weights 
+* Avoid resetting the "Column header" to its default value in _Data > Explore_ when other settings are changed.
+
+# radiant.data 1.2.3
+
+* Fix for _Data > Transform > Spread_ when no variables are selected
+* Set `debounce` to 0 for all shinyAce editors
+
+# radiant.data 1.2.2
+
+* Use `zenburn` for code highlighting in Notebook and HTML report from _Report > Rmd_
+* Clean up "sf_volumes" from the when radiant is stopped
+
+# radiant.data 1.2.0
+
+* Update action buttons that initiate a calculation when one or more relevant inputs are changed. For example, when a model should be re-estimated because the set of explanatory variables was changed by the user, a spinning "refresh" icon will be shown
+
+# radiant.data 1.1.8
+
+* Changed default `quantile` algorithm used in the `xtile` function from number 2 to 7. See the help for `stats::quantile` for details
+* Added `me` and `meprop` functions to calculate the margin of error for a mean and a proportion. Functions are accessible from _Data > Pivot_ and _Data > Explore_
+
+# radiant.data 1.1.6
+
+* Improvements for wrapping generated code to _Report > Rmd_ or _Report > R_
+* _Data > Transform > Training_ now uses the `randomizr` package to allow blocking variables when creating a training variables. 
+
+# radiant.data 1.1.3
+
+* Guard against _using Data > Transform > Reorder/remove levels_ with too many levels (i.e., > 100)
+* Guard against _using Data > Transform > Reorder/remove variables_ with too many variables (i.e., > 100)
+* Fix for DT table callbacks when shiny 1.4 hits CRAN (see https://github.com/rstudio/DT/issues/146#issuecomment-534319155)
+* Tables from _Data > Pivot_ and _Data > Explore_ now have `nr` set to `Inf` by default (i.e., show all rows). The user can change this to the number of desired rows to show (e.g., select 3 rows in a sorted table)
+* Fix for example numbering in the help file for _Data > Transform_
+* Numerous small code changes to support enhanced auto-completion, tooltips, and annotations in shinyAce 0.4.1
+
 # radiant.data 1.0.6
 
 * Fix for `Data > Transform > Change type`

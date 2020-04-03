@@ -40,11 +40,11 @@ MRB <- function(x, env = parent.frame(), init = FALSE) {
   }
 }
 
-saveSession <- function(session = session, timestamp = FALSE) {
+saveSession <- function(session = session, timestamp = FALSE, path = "~/.radiant.sessions") {
   if (!exists("r_sessions")) return()
-
+  if (!dir.exists(path)) dir.create(path)
   isolate({
-  
+
     LiveInputs <- toList(input)
     r_state[names(LiveInputs)] <- LiveInputs
 
@@ -63,9 +63,9 @@ saveSession <- function(session = session, timestamp = FALSE) {
 
     ## saving session information to state file
     if (timestamp) {
-      fn <- paste0(normalizePath("~/.radiant.sessions"), "/r_", r_ssuid, "-", gsub("( |:)", "-", Sys.time()), ".state.rda")
+      fn <- paste0(normalizePath(path), "/r_", r_ssuid, "-", gsub("( |:)", "-", Sys.time()), ".state.rda")
     } else {
-      fn <- paste0(normalizePath("~/.radiant.sessions"), "/r_", r_ssuid, ".state.rda")
+      fn <- paste0(normalizePath(path), "/r_", r_ssuid, ".state.rda")
     }
     save(r_data, r_info, r_state, file = fn)
   })
@@ -236,7 +236,7 @@ clean_args <- function(rep_args, rep_default = list()) {
       next
     }
     if (!is.symbol(rep_default[[i]]) && !is.call(rep_default[[i]]) && all(is_not(rep_default[[i]]))) next
-    if (length(rep_args[[i]]) == length(rep_default[[i]]) && all(rep_args[[i]] == rep_default[[i]])) {
+    if (length(rep_args[[i]]) == length(rep_default[[i]]) && !is.name(rep_default[[i]]) && all(rep_args[[i]] == rep_default[[i]])) {
       rep_args[[i]] <- NULL
     }
   }
@@ -263,11 +263,11 @@ has_duplicates <- function(x) length(unique(x)) < length(x)
 is_date <- function(x) inherits(x, c("Date", "POSIXlt", "POSIXct"))
 
 ## drop elements from .._args variables obtained using formals
-r_drop <- function(x, drop = c("dataset", "data_filter")) x[-which(x %in% drop)]
+r_drop <- function(x, drop = c("dataset", "data_filter", "envir")) x[!x %in% drop]
 
 ## show a few rows of a dataframe
 show_data_snippet <- function(dataset = input$dataset, nshow = 7, title = "", filt = "") {
-  if (is.character(dataset) && length(dataset) == 1) dataset <- get_data(dataset, filt = filt, na.rm = FALSE)
+  if (is.character(dataset) && length(dataset) == 1) dataset <- get_data(dataset, filt = filt, na.rm = FALSE, envir = r_data)
   nr <- nrow(dataset)
   ## avoid slice with variables outside of the df in case a column with the same
   ## name exists
@@ -553,7 +553,7 @@ register_plot_output <- function(
 
     ## when no analysis was conducted (e.g., no variables selected)
     p <- get(rfun_name)()
-    if (is_not(p) || p == "") p <- "Nothing to plot ...\nSelect plots to show or re-run the calculations"
+    if (is_not(p) || is_empty(p)) p <- "Nothing to plot ...\nSelect plots to show or re-run the calculations"
     if (is.character(p)) {
       plot(
         x = 1, type = "n", main = paste0("\n\n\n\n\n\n\n\n", p),
@@ -651,10 +651,11 @@ help_and_report <- function(
 
 ## function to render .md files to html
 inclMD <- function(path) {
-  markdown::markdownToHTML(
-    path, fragment.only = TRUE, options = "",
-    stylesheet = ""
-  )
+  paste(readLines(path, warn = FALSE), collapse = "\n") %>%
+    markdown::markdownToHTML(
+      text = ., fragment.only = TRUE, options = "",
+      stylesheet = ""
+    )
 }
 
 ## function to render .Rmd files to html
@@ -844,31 +845,35 @@ state_multiple <- function(var, vals, init = character(0)) {
 # }
 
 ## autosave option
-## provide a vector in minutes for (1) the save interval and (2) the total duration
-# options(radiant.autosave = c(1, 5))
+## provide a list with (1) the save interval in minutes, (2) the total duration in minutes, and (3) the path to use
+# options(radiant.autosave = list(1, 5, "~/.radiant.sessions"))
+# options(radiant.autosave = list(.1, 1, "~/Desktop/radiant.sessions"))
+# options(radiant.autosave = list(10, 180, "~/Desktop/radiant.sessions"))
 if (length(getOption("radiant.autosave", default = NULL)) > 0) {
   start_time <- Sys.time()
-  interval <- getOption("radiant.autosave")[1] * 60000
-  max_duration <- getOption("radiant.autosave")[2]
-  reactivePoll(
+  interval <- getOption("radiant.autosave")[[1]] * 60000
+  max_duration <- getOption("radiant.autosave")[[2]]
+  autosave_path <- getOption("radiant.autosave")[[3]]
+  autosave_path <- ifelse(length(autosave_path) == 0, "~/.radiant.sessions", autosave_path)
+  autosave_poll <- reactivePoll(
     interval,
     session,
     checkFunc = function() {
       curr_time <- Sys.time()
       diff_time <- difftime(curr_time, start_time, units = "mins")
       if (diff_time < max_duration) {
-        saveSession(session, timestamp = TRUE)
-        options(radiant.autosave = c(interval, max_duration - diff_time))
+        saveSession(session, timestamp = TRUE, autosave_path)
+        options(radiant.autosave = list(interval, max_duration - diff_time, autosave_path))
         message("Radiant state was auto-saved at ", curr_time)
       } else {
         if (length(getOption("radiant.autosave", default = NULL)) > 0) {
           showModal(
             modalDialog(
               title = "Radiant state autosave",
-              span("The autosave feature has been turned off. Time to save and submit your work by clicking
+              span(glue("The autosave feature has been turned off. Time to save and submit your work by clicking
                 on the 'Save' icon in the navigation bar and then on 'Save radiant state file'. To clean the
                 state files that were auto-saved, run the following command from the R(studio) console:
-                unlink('~/.radiant.sessions/*.state.rda', force = TRUE)"),
+                unlink('{autosave_path}/*.state.rda', force = TRUE)")),
               footer = modalButton("OK"),
               size = "s",
               easyClose = TRUE
@@ -882,4 +887,41 @@ if (length(getOption("radiant.autosave", default = NULL)) > 0) {
       return()
     }
   )
+}
+
+## update "run" button when relevant inputs are changed
+run_refresh <- function(
+  args, pre, init = "evar", tabs = "",
+  label = "Estimate model", relabel = label,
+  inputs = NULL, data = TRUE
+) {
+  observe({
+    ## dep on most inputs
+    if (data) {
+      input$data_filter
+      input$show_filter
+    }
+    sapply(r_drop(names(args)), function(x) input[[paste0(pre, "_", x)]])
+
+    ## adding dependence in more inputs
+    if (length(inputs) > 0) {
+      sapply(inputs, function(x) input[[paste0(pre, "_", x)]])
+    }
+
+    run <- isolate(input[[paste0(pre, "_run")]]) %>% pressed()
+    if (is.null(input[[paste0(pre, "_", init)]])) {
+      if (!is_empty(tabs)) {
+        updateTabsetPanel(session, paste0(tabs, " "), selected = "Summary")
+      }
+      updateActionButton(session, paste0(pre, "_run"), label, icon = icon("play"))
+    } else if (run) {
+      updateActionButton(session, paste0(pre, "_run"), relabel, icon = icon("refresh", class = "fa-spin"))
+    } else {
+      updateActionButton(session, paste0(pre, "_run"), label, icon = icon("play"))
+    }
+  })
+
+  observeEvent(input[[paste0(pre, "_run")]], {
+    updateActionButton(session, paste0(pre, "_run"), label, icon = icon("play"))
+  })
 }

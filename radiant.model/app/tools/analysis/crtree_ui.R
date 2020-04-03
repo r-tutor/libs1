@@ -1,4 +1,10 @@
-ctree_plots <- c("None" = "none", "Prune" = "prune", "Tree" = "tree", "Importance" = "imp")
+ctree_plots <- c(
+  "None" = "none", "Prune" = "prune", 
+  "Tree" = "tree", 
+  "Importance" = "imp",
+  "Partial Dependence" = "pdp",
+  "Dashboard" = "dashboard"
+)
 
 ## list of function arguments
 crtree_args <- as.list(formals(crtree))
@@ -152,32 +158,27 @@ output$ui_crtree_store_res_name <- renderUI({
   textInput("crtree_store_res_name", "Store residuals:", "", placeholder = "Provide variable name")
 })
 
-observe({
-  ## dep on most inputs
-  input$data_filter
-  input$show_filter
-  sapply(r_drop(names(crtree_args)), function(x) input[[paste0("crtree_", x)]])
-
-  ## notify user when the model needs to be updated
-  ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
-  if (pressed(input$crtree_run)) {
-    if (is.null(input$crtree_evar)) {
-      updateTabsetPanel(session, "tabs_crtree ", selected = "Summary")
-      updateActionButton(session, "crtee_run", "Estimate model", icon = icon("play"))
-    } else
-    if (isTRUE(attr(crtree_inputs, "observable")$.invalidated)) {
-      updateActionButton(session, "crtree_run", "Re-estimate model", icon = icon("refresh", class = "fa-spin"))
-    } else {
-      updateActionButton(session, "crtree_run", "Estimate model", icon = icon("play"))
-    }
-  }
+output$ui_crtree_nrobs <- renderUI({
+  nrobs <- nrow(.get_data())
+  choices <- c("1,000" = 1000, "5,000" = 5000, "10,000" = 10000, "All" = -1) %>%
+    .[. < nrobs]
+  selectInput(
+    "crtree_nrobs", "Number of data points plotted:",
+    choices = choices,
+    selected = state_single("crtree_nrobs", choices, 1000)
+  )
 })
+
+## add a spinning refresh icon if the model needs to be (re)estimated
+run_refresh(crtree_args, "crtree", tabs = "tabs_crtree", label = "Estimate model", relabel = "Re-estimate model")
 
 output$ui_crtree <- renderUI({
   req(input$dataset)
   tagList(
-    wellPanel(
-      actionButton("crtree_run", "Estimate model", width = "100%", icon = icon("play"), class = "btn-success")
+    conditionalPanel(condition = "input.tabs_crtree == 'Summary'",
+      wellPanel(
+        actionButton("crtree_run", "Estimate model", width = "100%", icon = icon("play"), class = "btn-success")
+      )
     ),
     wellPanel(
       conditionalPanel(
@@ -308,6 +309,10 @@ output$ui_crtree <- renderUI({
           selected = state_single("crtree_plots", ctree_plots, "none")
         ),
         conditionalPanel(
+          condition = "input.crtree_plots == 'dashboard'",
+          uiOutput("ui_crtree_nrobs")
+        ),
+        conditionalPanel(
           condition = "input.crtree_plots == 'tree'",
           tags$table(
             tags$td(
@@ -332,20 +337,30 @@ output$ui_crtree <- renderUI({
   )
 })
 
-crtree_plot_width <- function() 650
-
-crtree_plot_height <- function() {
-  if (crtree_available() == "available") {
-    ret <- .crtree()
-    if (is.list(ret)) {
-      300 + 20 * length(.crtree()$vars)
-    } else {
-      500
-    }
+crtree_plot <- reactive({
+  if (crtree_available() != "available") return()
+  if (is_empty(input$crtree_plots, "none")) return()
+  res <- .crtree()
+  # if (is.character(res)) return()
+  nr_vars <- length(res$evar)
+  if ("dashboard" %in% input$crtree_plots) {
+    plot_height <- 750
+  } else if ("pdp" %in% input$crtree_plots) {
+    plot_height <- max(500, ceiling(nr_vars/2) * 250)
+  } else if ("vimp" %in% input$crtree_plots) {
+    plot_height <- max(300, nr_vars * 50)
   } else {
-    500
+    plot_height <- 500
   }
-}
+
+  list(plot_width = 650, plot_height = plot_height)
+})
+
+crtree_plot_width <- function()
+  crtree_plot() %>% {if (is.list(.)) .$plot_width else 650}
+
+crtree_plot_height <- function()
+  crtree_plot() %>% {if (is.list(.)) .$plot_height else 500}
 
 crtree_pred_plot_height <- function()
   if (input$crtree_pred_plot) 500 else 0
@@ -429,10 +444,11 @@ crtree_available <- reactive({
 
 .crtree <- eventReactive(input$crtree_run, {
   req(input$crtree_evar)
-  withProgress(
-    message = "Estimating model", value = 1,
-    do.call(crtree, crtree_inputs())
-  )
+  withProgress(message = "Estimating model", value = 1, {
+    crti <- crtree_inputs()
+    crti$envir <- r_data
+    do.call(crtree, crti)
+  })
 })
 
 .summary_crtree <- reactive({
@@ -456,8 +472,12 @@ crtree_available <- reactive({
   } else if (input$crtree_predict == "cmd" && is_empty(input$crtree_pred_cmd)) {
     "** Enter prediction commands **"
   } else {
+
     withProgress(message = "Generating predictions", value = 1, {
-      do.call(predict, c(list(object = .crtree()), crtree_pred_inputs()))
+      cri <- crtree_pred_inputs()
+      cri$object <- .crtree()
+      cri$envir <- r_data
+      do.call(predict, cri)
     })
   }
 })
@@ -492,8 +512,10 @@ crtree_available <- reactive({
       "No model results to plot. Specify a model and press the Estimate button"
     } else if (input$crtree_plots == "prune") {
       plot(ret, plots = "prune", shiny = TRUE)
-    } else if (input$crtree_plots == "imp") {
-      plot(ret, plots = "imp", shiny = TRUE)
+    } else if (input$crtree_plots == "dashboard") {
+      plot(ret, plots = input$crtree_plots, nrobs = as_integer(input$crtree_nrobs), shiny = TRUE)
+    } else if (input$crtree_plots %in% c("imp", "pdp", "dashboard")) {
+      plot(ret, plots = input$crtree_plots, shiny = TRUE)
     }
   }
 })

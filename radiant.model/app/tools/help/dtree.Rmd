@@ -1,6 +1,6 @@
 > Create and evaluate a decision tree for decision analysis
 
-To create and evaluate a decision tree first (1) enter the structure of the tree in the input editor or (2) load a tree structure from a file. When you first navigate to the _Model > Decide > Decision analysis_ tab you will see an example tree structure. This structure is based on an [example](https://github.com/gluc/useR15/blob/master/00_data/jennylind.yaml){target="_blank"} by Christoph Glur, the developer of the [data.tree](https://github.com/gluc/data.tree){target="_blank"} library.
+To create and evaluate a decision tree first (1) enter the structure of the tree in the input editor or (2) load a tree structure from a file. When you first navigate to the _Model > Decide > Decision analysis_ tab you will see an example tree structure. This structure is based on an <a href="https://github.com/gluc/useR15/blob/master/00_data/jennylind.yaml" target="_blank">example</a> by Christoph Glur, the developer of the <a href="https://github.com/gluc/data.tree" target="_blank">data.tree</a> library.
 
 To enter a new structure, start by providing a name for the tree and enter a label in the input box next to the `Calculate` button. In the example below the name for the decision tree is entered as follow: `name: Sign contract`. The next step is to indicate the **type** of the first **node**. Options are `type: decision` or `type: chance`. Note that we are skipping `variables` for now but will return to this section below.
 
@@ -14,7 +14,8 @@ After providing the name for the decision `Sign with Movie Company`, the next li
 
 A decision can also be assigned a `cost`. For example, if we decide to sign with the movie studio we may incur a cost of $5,000 for legal support. Assume the contract with the TV network is simpler and does not require legal assistance. Note that using `costs` is optional. In the example we could also subtract \$5,000 from each of the possible box-office payoffs.
 
-If some values in the tree are related or repeated it can be useful to use a `variables` section. Here you can assign labels to values, formulas, and even other (sub)trees. Note that formulas can **only** be used in the `variables` section and nowhere else. In the `Sign contract` example only one variable is created (i.e., `legal fees`). The _Sensitivity_ tab requires that a `variables` section is included in the tree structure. An adapted version of the `Sign contract` example that uses more variables and a formula is shown below.
+If some values in the tree are related or repeated it can be useful to use a `variables` section. Here you can assign labels to values, enter formulas, and even reference other (sub)trees. Note that formulas should only reference entries from the `variables` section and cannot containe any R-commands. In the `Sign contract` example only one variable is created (i.e., `legal fees`). The _Sensitivity_ tab requires that a `variables` section is included in the tree structure. An adapted version of the `Sign contract` example that uses more variables and a formula is shown below.
+
 
 ```yaml
 name: Sign contract
@@ -84,14 +85,81 @@ In the `Sign contract` example it is clear that `Sign with Movie Company` is the
 
 <p align="center"><img src="https://radiant-rstats.github.io/docs/model/figures_model/dtree_sensitivity.png"></p>
 
-## Tutorials
+## Video Tutorials
 
-Tutorial videos are available on Youtube:
+Copy-and-paste the full command below into the RStudio console (i.e., the bottom-left window) and press return to gain access to all materials used in the decision tree module of the <a href="https://www.youtube.com/playlist?list=PLNhtaetb48EdKRIY7MewCyvb_1x7dV3xw" target="_blank">Radiant Tutorial Series</a>:
 
-* <a href = "https://www.youtube.com/watch?v=Wk5Mhd738_k" target = "_blank">Including multiple decision trees in a report</a>
-* <a href = "https://youtu.be/M1r89QjC89Y" target = "_blank">Evaluate sensitivity</a>
+<pre>usethis::use_course("https://www.dropbox.com/sh/bit4p1ffbkb2dgh/AACm1RVy2BxBDiVbjoLiN5_Ea?dl=1")</pre>
 
-The state file for the sensitivity analysis example is available <a href = " https://github.com/radiant-rstats/docs/raw/gh-pages/examples/decision-analysis-sensitivity.state.rda" target = "_blank">here</a>
+<a href="https://youtu.be/plSeVJ7c-Iw" target="_blank">Introduction to Decision Analysis (#1)</a>
+
+* This video walks you through the required steps to construct and solve a basic decision tree by hand
+* Topics List:
+    - Chance nodes vs. decision nodes
+    - Folding back the tree (i.e., start from the right-most nodes and work backwards to the left-most nodes)
+
+<a href="https://youtu.be/dBySH3z2Paw" target="_blank">Using Radiant to Construct a Decision Tree (#2)</a>
+
+* This video demonstrates how to construct a basic decision tree in Radiant
+* Topics List:
+    - Rename a tree file
+    - Construct a tree (following the rules for decision tree input)
+    - Interpret the results (initial tree vs final tree)
+    - Save the decision tree input .yaml file
+
+<a href="https://youtu.be/NlvWCU8UhTc" target="_blank">How to Write Decision Tree Results into a Report (#3)</a>
+
+* This video demonstrates how to construct a basic decision tree in Radiant and add the generated R-code to a report
+* Topics List:
+    - Construct a decision tree and define variables in the decision tree
+    - Add multiple trees to a report
+    - Demo some useful keyboard shortcuts
+    - Save the Radiant state file and the report
+
+<a href="https://youtu.be/c_pCCCn6FEw" target="_blank">Sensitivity Analysis of Decision Tree (#4)</a>
+
+* This video shows two ways to conduct sensitivity analysis of a decision tree in Radiant
+* Topics List:
+    - Quick review of writing decision tree results to a report
+    - Method 1: manually update the value
+    - Method 2: use "variables"
+
+<a href="https://youtu.be/oiwv15bbjzs" target="_blank">How to Debug Decision Tree Input (#5)</a>
+
+* This video demonstrates how to debug decision tree input if you get an error message
+* Topics List:
+    - Colon missing
+    - Indent issue
+    - Probabilities don't sum to 1
+    - Value missing
+
+<a href="https://youtu.be/xuv9zgAcvCQ" target="_blank">Decision Trees with Imperfect Information (#6)</a>
+
+* This video shows how to determine the appropriate (conditional) probabilities to use in a decision tree when the available information is imperfect
+* Topics List:
+    - Imperfect information
+    - Test
+    - Conditional probabilities
+
+<a href="https://youtu.be/cVrYFFX3xN0" target="_blank">Solving a Decision Tree with Imperfect Information (#7)</a>
+
+* This video shows how to use Radiant to construct and solve a decision tree when the available information is imperfect
+* Topics List:
+    - Specify variables
+    - Build a tree with imperfect information
+    - Check the tree
+    - Interpret the decision tree result
+
+<a href="https://youtu.be/Mi-eZEoU9TE" target="_blank">Building a Decision Tree with Sub-trees in Radiant (#8)</a>
+
+* This video shows how to build a decision tree with sub-trees in radiant
+* Topics List:
+    - Create a main tree that references a sub-tree
+    - Specify a sub-tree that references the main tree in the variables section
+
+For the full "Radiant Tutorial Series" see the link below:
+
+<a href="https://www.youtube.com/playlist?list=PLNhtaetb48EdKRIY7MewCyvb_1x7dV3xw" target="_blank">https://www.youtube.com/playlist?list=PLNhtaetb48EdKRIY7MewCyvb_1x7dV3xw</a>
 
 ## Buttons
 
@@ -159,4 +227,6 @@ For additional shortcuts see:
 
 ### R-functions
 
-For an overview of related R-functions used by Radiant for decision analysis see <a href = "https://radiant-rstats.github.io/radiant.model/reference/index.html#section-model-decision-analysis" target="_blank">_Model > Decision analysis_</a>
+For an overview of related R-functions used by Radiant for decision analysis see <a href = "https://radiant-rstats.github.io/radiant.model/reference/index.html#section-model-decision-analysis" target="_blank">_Model > Decision analysis_</a>.
+
+The key elements from the `data.tree` package used in the `dtree` tool are the `as.Node` function and the `Get` and `Do` methods.

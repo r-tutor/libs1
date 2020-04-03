@@ -6,9 +6,9 @@ Use the `Filter data` box to select (or omit) specific sets of rows from the dat
 
 ### Plot-type
 
-Select the plot type you want. For example, with the `diamonds` data loaded select `Distribution` and all (X) variables (use CTRL-a or CMD-a). This will create a histogram for all numeric variables and a bar-plot for all categorical variables in the data set. Density plots can only be used with numeric variables. Scatter plots are used to visualize the relationship between two variables. Select one or more variables to plot on the Y-axis and one or more variables to plot on the X-axis. If one of the variables is categorical (i.e., a {factor}) it should be specified as an X-variable. Information about additional variables can be added through the `Color` or `Size` dropdown. Line plots are similar to scatter plots but they connect-the-dots and are particularly useful for time-series data. Surface plots are similar to `Heat maps` and require 3 input variables: X, Y, and Fill. Bar plots are used to show the relationship between a categorical (or integer) variable (X) and the (mean) value of a numeric variable (Y). If the Y-variable in a bar plot is categorical (i.e., a {factor}) the proportion of occurrence of the first-level in that variable is shown (e.g., if we select `color` from the `diamonds` data as the Y-variable each bar represents the proportion of observations with the value `D`). Box-plots are also used when we have a numeric Y-variable and a categorical X-variable. They are more informative than bar charts but also require a bit more effort to evaluate.
+Select the plot type you want. For example, with the `diamonds` data loaded select `Distribution` and all (X) variables (use CTRL-a or CMD-a). This will create a histogram for all numeric variables and a bar-plot for all categorical variables in the data set. Density plots can only be used with numeric variables. Scatter plots are used to visualize the relationship between two variables. Select one or more variables to plot on the Y-axis and one or more variables to plot on the X-axis. If one of the variables is categorical (i.e., a {factor}) it should be specified as an X-variable. Information about additional variables can be added through the `Color` or `Size` dropdown. Line plots are similar to scatter plots but they connect-the-dots and are particularly useful for time-series data. Surface plots are similar to `Heat maps` and require 3 input variables: X, Y, and Fill. Bar plots are used to show the relationship between a categorical (or integer) variable (X) and the (mean) value of a numeric variable (Y). Box-plots are also used when we have a numeric Y-variable and a categorical X-variable. They are more informative than bar charts but also require a bit more effort to evaluate.
 
-> Note that when a categorical variable (`factor`) is selected as the `Y-variable` in a Bar chart it is converted to a 0-1 (binary) variable where the first level is coded as 1 and all other levels as 0.
+> Note that when a categorical variable (`factor`) is selected as the `Y-variable` in a Bar chart it will be converted to a numeric variable if required for the selected function. If the factor levels are numeric these will be used in all calculations. Since the mean, standard deviation, etc. are not relevant for non-binary categorical variables, these will be converted to 0-1 (binary) variables where the first level is coded as 1 and all other levels as 0. For example, if we select `color` from the `diamonds` data as the Y-variable, and `mean` as the function to apply, then each bar will represent the proportion of observations with the value `D`.
 
 ### Box plots
 
@@ -21,7 +21,7 @@ In sum:
 where Q1 is the 25th percentile and Q3 is the 75th percentile. You may have to read the two bullets above a few times before it sinks in. The plot below should help to explain the structure of the box plot.
 
 <p align="center"><img src="figures/boxplot.png"></p>
-[Source](http://en.wikipedia.org/wiki/File:Boxplot_vs_PDF.svg){target="_blank"}
+<a href="http://en.wikipedia.org/wiki/File:Boxplot_vs_PDF.svg" target="_blank">Source</a>
 
 ### Sub-plots and heat-maps
 
@@ -91,11 +91,11 @@ If you have the `svglite` package installed, the code-chunk header below will pr
 * Display y-axis in \$'s: `+ scale_y_continuous(labels = scales::dollar_format())`
 * Use `,` as a thousand separator for the y-axis: `+ scale_y_continuous(labels = scales::comma)`
 
-For more on how to customize plots for communication see <http://r4ds.had.co.nz/graphics-for-communication.html>{target="_blank"}.
+For more on how to customize plots for communication see <a href="http://r4ds.had.co.nz/graphics-for-communication.html" target="_blank">http://r4ds.had.co.nz/graphics-for-communication.html</a>.
 
-See also the ggplot2 documentation site <http://docs.ggplot2.org>{target="_blank"}.
+See also the ggplot2 documentation site <a href="http://docs.ggplot2.org" target="_blank">http://docs.ggplot2.org</a>.
 
-Suppose we create a set of three bar charts in _Data > Visualize_ using the `Diamond` data. To add a title above the group of plots and impose a one-column layout we could use `gridExtra::grid.arrange` as follows:
+Suppose we create a set of three bar charts in _Data > Visualize_ using the `Diamond` data. To add a title above the group of plots and impose a one-column layout we could use `patchwork` as follows:
 
 ```r
 plot_list <- visualize(
@@ -105,10 +105,10 @@ plot_list <- visualize(
   type = "bar", 
   custom = TRUE
 ) 
-gridExtra::grid.arrange(grobs = plot_list, top = "Three bar plots", ncol = 1)
+wrap_plots(plot_list, ncol = 1) + plot_annotation(title = "Three bar plots")
 ```
 
-See the <a href="https://cran.r-project.org/web/packages/gridExtra/vignettes/arrangeGrob.html">gridExtra vignette</a> for additional information on how to customize groups of plots.
+See the <a href="https://patchwork.data-imaginist.com">patchwork documentation site</a> for additional information on how to customize groups of plots.
 
 ### Making plots interactive in _Report > Rmd_
 
@@ -130,10 +130,10 @@ visualize(diamonds, xvar = c("carat", "clarity", "cut", "color"), custom = TRUE)
 
 For additional information on the `plotly` library see the links below:
 
-* Getting started: <https://plot.ly/r/getting-started/>{target="_blank"}
-* Reference: <https://plot.ly/r/reference/>{target="_blank"}
-* Book: <https://cpsievert.github.io/plotly_book>{target="_blank"}
-* Code: <https://github.com/ropensci/plotly>{target="_blank"}
+* Getting started: <a href="https://plot.ly/r/getting-started/" target="_blank">https://plot.ly/r/getting-started/</a>
+* Reference: <a href="https://plot.ly/r/reference/" target="_blank">https://plot.ly/r/reference/</a>
+* Book: <a href="https://cpsievert.github.io/plotly_book" target="_blank">https://cpsievert.github.io/plotly_book</a>
+* Code: <a href="https://github.com/ropensci/plotly" target="_blank">https://github.com/ropensci/plotly</a>
 
 ### R-functions
 

@@ -45,17 +45,24 @@ For a graphical depiction of the association go to the _Plot_ tab. If we select 
 
 <p align="center"><img src="figures_multivariate/kclus_cross_tabs_plot.png"></p>
 
+## Additional options
+
+* By default, data will be standardized before it is analyzed. To pass data in its raw form to the estimation algorithm, make sure the `Standardize` box is un-checked
+* If the data to use for clustering includes variables of type "factor", the `K-proto` algorithm should be used. If `K-means` is selected, only numerical variables with be retained for analysis. For more information on the `kproto` function and the _clustMixType_ R-package see the <a href="https://journal.r-project.org/archive/2018/RJ-2018-048/RJ-2018-048.pdf" target="_blank">R-journal article</a>
+
 ### Report > Rmd
 
 Add code to <a href="https://radiant-rstats.github.io/docs/data/report_rmd.html" target="_blank">_Report > Rmd_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
 
-If a plot was created it can be customized using `ggplot2` commands or with `gridExtra`. See example below and <a href="https://radiant-rstats.github.io/docs/data/visualize.html" target="_blank">_Data > Visualize_</a> for details.
+If a plot was created it can be customized using `ggplot2` commands or with `patchwork`. See example below and <a href="https://radiant-rstats.github.io/docs/data/visualize.html" target="_blank">_Data > Visualize_</a> for details.
 
 ```r
 plot(result, plots = "bar", custom = TRUE) %>%
-	gridExtra::grid.arrange(grobs = ., top = "K-means Cluster Analysis", ncol = 2)
+  wrap_plots(plot_list, ncol = 2) + plot_annotation(title = "K-means Cluster Analysis")
 ```
 
 ### R-functions
 
-For an overview of related R-functions used by Radiant to conduct cluster analysis see <a href = "https://radiant-rstats.github.io/radiant.multivariate/reference/index.html#section-multivariate-cluster" target="_blank">_Multivariate > Cluster_</a>
+For an overview of related R-functions used by Radiant to conduct cluster analysis see <a href = "https://radiant-rstats.github.io/radiant.multivariate/reference/index.html#section-multivariate-cluster" target="_blank">_Multivariate > Cluster_</a>.
+
+The key function from the `stats` package used in the `kclus` tool is `kmeans`. 

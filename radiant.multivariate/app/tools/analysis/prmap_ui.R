@@ -40,8 +40,11 @@ output$ui_pm_brand <- renderUI({
 })
 
 output$ui_pm_attr <- renderUI({
-  isNum <- "numeric" == .get_class() | "integer" == .get_class()
-  vars <- varnames()[isNum]
+  vars <- varnames()
+  ## can't get valid factor scores with PCA and {factor} variables
+  # toSelect <- .get_class() %in% c("numeric", "integer", "date", "factor")
+  toSelect <- .get_class() %in% c("numeric", "integer", "date")
+  vars <- vars[toSelect]
   selectInput(
     inputId = "pm_attr", label = "Attributes:", choices = vars,
     selected = state_multiple("pm_attr", vars), multiple = TRUE,
@@ -51,9 +54,10 @@ output$ui_pm_attr <- renderUI({
 
 output$ui_pm_pref <- renderUI({
   if (not_available(input$pm_attr)) return()
-  isNum <- "numeric" == .get_class() | "integer" == .get_class()
-  vars <- varnames()[isNum]
-  if (length(vars) > 0) vars <- vars[-which(vars %in% input$pm_attr)]
+  vars <- varnames()
+  toSelect <- .get_class() %in% c("numeric", "integer", "date", "factor")
+  vars <- vars[toSelect]
+  if (length(vars) > 0) vars <- vars[-which(vars %in% c(input$pm_brand, input$pm_attr))]
   selectInput(
     inputId = "pm_pref", label = "Preferences:", choices = vars,
     selected = state_multiple("pm_pref", vars), multiple = TRUE,
@@ -76,32 +80,17 @@ output$ui_pm_store_name <- renderUI({
   textInput("pm_store_name", "Store factor scores:", "", placeholder = "Provide single variable name")
 })
 
-observe({
-  ## dep on most inputs
-  input$data_filter
-  input$show_filter
-  # sapply(r_drop(names(pm_args)), function(x) input[[paste0("pm_", x)]])
-  sapply(names(pm_args), function(x) input[[paste0("pm_", x)]])
-
-  ## notify user when the model needs to be updated
-  ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
-  if (pressed(input$pm_run)) {
-    if (is.null(input$pm_brand) && is.null(input$pm_attr)) {
-      updateTabsetPanel(session, "tabs_prmap", selected = "Summary")
-      updateActionButton(session, "pm_run", "Estimate model", icon = icon("play"))
-    } else if (isTRUE(attr(pm_inputs, "observable")$.invalidated)) {
-      updateActionButton(session, "pm_run", "Re-estimate model", icon = icon("refresh", class = "fa-spin"))
-    } else {
-      updateActionButton(session, "pm_run", "Estimate model", icon = icon("play"))
-    }
-  }
-})
+## add a spinning refresh icon if the factors need to be updated
+run_refresh(pm_args, "pm", init = "attr", tabs = "tabs_prmap", label = "Estimate model", relabel = "Re-estimate model")
 
 output$ui_prmap <- renderUI({
   req(input$dataset)
   tagList(
-    wellPanel(
-      actionButton("pm_run", "Estimate model", width = "100%", icon = icon("play"), class = "btn-success")
+    conditionalPanel(
+      condition = "input.tabs_prmap == 'Summary'",
+      wellPanel(
+        actionButton("pm_run", "Estimate model", width = "100%", icon = icon("play"), class = "btn-success")
+      )
     ),
     wellPanel(
       conditionalPanel(
@@ -114,6 +103,7 @@ output$ui_prmap <- renderUI({
           selected = state_init("pm_nr_dim", 2),
           inline = TRUE
         ),
+        # checkboxInput("pm_hcor", "Adjust for {factor} variables", value = state_init("pm_hcor", FALSE)),
         numericInput(
           "pm_cutoff", label = "Loadings cutoff:", min = 0,
           max = 1, state_init("pm_cutoff", 0), step = .05
@@ -196,7 +186,7 @@ output$prmap <- renderUI({
   } else if (length(input$pm_attr) < 2) {
     "Please select two or more attribute variables"
   } else {
-    brand <- .get_data()[[input$pm_brand]]
+    # brand <- .get_data()[[input$pm_brand]]
     # if (length(unique(brand)) < length(brand)) {
       # "Number of observations and unique IDs for the brand variable do not match.\nPlease choose another brand variable or another dataset.\n\n" %>%
         # suggest_data("retailers")
@@ -207,14 +197,21 @@ output$prmap <- renderUI({
 })
 
 .prmap <- eventReactive(input$pm_run, {
-  withProgress(
-    message = "Generating perceptual map", value = 1,
-    do.call(prmap, pm_inputs())
-  )
+  withProgress(message = "Generating perceptual map", value = 1, {
+    pmi <- pm_inputs()
+    pmi$envir <- r_data
+    do.call(prmap, pmi)
+  })
 })
 
 .summary_prmap <- reactive({
   if (.prmap_available() != "available") return(.prmap_available())
+  validate(
+    need(
+      input$pm_cutoff >= 0 && input$pm_cutoff <= 1,
+      "Provide a correlation cutoff value in the range from 0 to 1"
+    )
+  )
   summary(.prmap(), cutoff = input$pm_cutoff)
 })
 

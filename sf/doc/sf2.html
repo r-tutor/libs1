@@ -277,15 +277,14 @@ div.tocify {
 <pre class="r"><code>library(sf)
 fname &lt;- system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;)
 fname
-## [1] &quot;/tmp/RtmpNfOWz4/Rinst4e3d3dd7aabd/sf/shape/nc.shp&quot;
+## [1] &quot;/tmp/RtmprHOBbV/Rinst6782470e2d96/sf/shape/nc.shp&quot;
 nc &lt;- st_read(fname)
-## Reading layer `nc' from data source `/tmp/RtmpNfOWz4/Rinst4e3d3dd7aabd/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/RtmprHOBbV/Rinst6782470e2d96/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
 ## bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
-## epsg (SRID):    4267
-## proj4string:    +proj=longlat +datum=NAD27 +no_defs</code></pre>
+## geographic CRS: NAD27</code></pre>
 <p>Typical users will use a file name with path for <code>fname</code>, or first set R’s working directory with <code>setwd()</code> and use file name without path.</p>
 <p>We see here that a single argument is used to find both the datasource and the layer. This works when the datasource contains a single layer. In case the number of layers is zero (e.g. a database with no tables), an error message is given. In case there are more layers than one, the first layer is returned, but a message and a warning are given:</p>
 <pre class="r"><code>&gt; st_read(&quot;PG:dbname=postgis&quot;)
@@ -323,13 +322,12 @@ Available layers:
 <p>Alternatively, a user can set the global option <code>stringsAsFactors</code>, and this will have the same effect:</p>
 <pre class="r"><code>options(stringsAsFactors = FALSE)
 st_read(fname)
-## Reading layer `nc' from data source `/tmp/RtmpNfOWz4/Rinst4e3d3dd7aabd/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/RtmprHOBbV/Rinst6782470e2d96/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
 ## bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
-## epsg (SRID):    4267
-## proj4string:    +proj=longlat +datum=NAD27 +no_defs</code></pre>
+## geographic CRS: NAD27</code></pre>
 </div>
 <div id="using-st_write" class="section level3">
 <h3>Using st_write</h3>
@@ -542,8 +540,7 @@ x
 ## geometry type:  LINESTRING
 ## dimension:      XY
 ## bbox:           xmin: 0 ymin: 1 xmax: 8 ymax: 9
-## epsg (SRID):    NA
-## proj4string:    NA
+## CRS:            NA
 ## LINESTRING (0 1, 2 3, 4 5, 6 7, 8 9)</code></pre>
 </div>
 <div id="conversion-to-and-from-well-known-binary" class="section level3">
@@ -567,8 +564,7 @@ st_as_sfc(x)
 ## geometry type:  POINT
 ## dimension:      XY
 ## bbox:           xmin: 0 ymin: 1 xmax: 5 ymax: 6
-## epsg (SRID):    NA
-## proj4string:    NA
+## CRS:            NA
 ## POINT (0 1)
 ## POINT (5 6)</code></pre>
 </div>
@@ -588,8 +584,9 @@ methods(st_as_sfc)
 ##  [9] st_as_sfc.blob*               st_as_sfc.character*         
 ## [11] st_as_sfc.dimensions*         st_as_sfc.factor*            
 ## [13] st_as_sfc.list*               st_as_sfc.map*               
-## [15] st_as_sfc.owin*               st_as_sfc.psp*               
-## [17] st_as_sfc.raw*                st_as_sfc.tess*              
+## [15] st_as_sfc.owin*               st_as_sfc.pq_geometry*       
+## [17] st_as_sfc.psp*                st_as_sfc.raw*               
+## [19] st_as_sfc.tess*              
 ## see '?methods' for accessing help and source code</code></pre>
 <p>An example would be:</p>
 <pre class="r"><code>library(sp)
@@ -609,7 +606,7 @@ as(x, &quot;Spatial&quot;)
 ## [1,]         5         5
 ## [2,]         6         9
 ## Coordinate Reference System (CRS) arguments: +proj=longlat +datum=WGS84
-## +no_defs +ellps=WGS84 +towgs84=0,0,0</code></pre>
+## +no_defs</code></pre>
 </div>
 </div>
 

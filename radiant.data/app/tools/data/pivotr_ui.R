@@ -50,7 +50,6 @@ pvt_plot_inputs <- reactive({
   pvt_plot_args
 })
 
-
 ## UI-elements for pivotr
 output$ui_pvt_cvars <- renderUI({
   withProgress(message = "Acquiring variable information", value = 1, {
@@ -84,8 +83,9 @@ output$ui_pvt_cvars <- renderUI({
 })
 
 output$ui_pvt_nvar <- renderUI({
-  isNum <- .get_class() %in% c("integer", "numeric", "ts", "factor", "logical")
-  vars <- c("None", varnames()[isNum])
+  # isNum <- .get_class() %in% c("integer", "numeric", "ts", "factor", "logical")
+  # vars <- c("None", varnames()[isNum])
+  vars <- c("None", varnames())
 
   if (any(vars %in% input$pvt_cvars)) {
     vars <- base::setdiff(vars, input$pvt_cvars)
@@ -102,19 +102,20 @@ output$ui_pvt_nvar <- renderUI({
 })
 
 output$ui_pvt_fun <- renderUI({
-  req(input$pvt_nvar)
   r_funs <- getOption("radiant.functions")
   selectizeInput(
     "pvt_fun",
     "Apply function:",
     choices = r_funs,
-    selected = state_single("pvt_fun", r_funs, "mean"),
+    selected = state_single("pvt_fun", r_funs, isolate(input$pvt_fun)),
     multiple = FALSE
   )
 })
 
-observeEvent(input$pvt_nvar == "None", {
-  updateSelectInput(session, "pvt_fun", selected = "mean")
+observeEvent(input$pvt_nvar, {
+  if (input$pvt_nvar == "None") {
+    updateSelectInput(session, "pvt_fun", selected = "mean")
+  }
 })
 
 output$ui_pvt_normalize <- renderUI({
@@ -127,7 +128,7 @@ output$ui_pvt_normalize <- renderUI({
 })
 
 observeEvent(input$pvt_cvars, {
- if (length(input$pvt_cvars) == 1) {
+  if (length(input$pvt_cvars) == 1) {
     sel <- ifelse(input$pvt_normalize %in% pvt_normalize[2:3], "None", input$pvt_normalize)
     pvt_normalize <- pvt_normalize[-(2:3)]
   } else {
@@ -160,22 +161,8 @@ output$ui_pvt_run <- renderUI({
   )
 })
 
-observe({
-  ## dep on most inputs
-  input$data_filter
-  input$show_filter
-  sapply(r_drop(names(pvt_args)), function(x) input[[paste0("pvt_", x)]])
-
-  ## notify user when the plot needed to be updated
-  ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
-  if (pressed(input$pvt_run) && !is.null(input$pvt_cvars)) {
-    if (isTRUE(attr(pvt_inputs, "observable")$.invalidated)) {
-      updateActionButton(session, "pvt_run", "Update pivot table", icon = icon("refresh", class = "fa-spin"))
-    } else {
-      updateActionButton(session, "pvt_run", "Create pivot table", icon = icon("play"))
-    }
-  }
-})
+## add a spinning refresh icon if the tabel needs to be (re)calculated
+run_refresh(pvt_args, "pvt", init = "cvars", label = "Create pivot table", relabel = "Update pivot table")
 
 output$ui_Pivotr <- renderUI({
   tagList(
@@ -258,7 +245,7 @@ observeEvent(input$pvt_nvar, {
   if (!is_empty(pvti$nvar, "None")) {
     req(available(pvti$nvar))
   }
-
+  pvti$envir <- r_data
   sshhr(do.call(pivotr, pvti))
 })
 
@@ -477,7 +464,7 @@ observeEvent(input$pivotr_report, {
   if (ts$tabfilt != "") {
     inp_main <- c(inp_main, tabfilt = ts$tabfilt)
   }
-  inp_main <- c(inp_main, nr = ts$nr - 1)
+  inp_main <- c(inp_main, nr = Inf)
 
   ## update Report > Rmd or Report > R
   update_report(

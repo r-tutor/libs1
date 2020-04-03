@@ -22,7 +22,8 @@ reg_plots <- c(
   "Correlations" = "correlations", "Scatter" = "scatter",
   "Dashboard" = "dashboard",
   "Residual vs explanatory" = "resid_pred",
-  "Coefficient plot" = "coef"
+  "Coefficient plot" = "coef",
+  "Influential observations" = "influence"
 )
 
 reg_args <- as.list(formals(regress))
@@ -231,32 +232,17 @@ output$ui_reg_store_res_name <- renderUI({
   textInput("reg_store_res_name", "Store residuals:", "", placeholder = "Provide variable name")
 })
 
-observe({
-  ## dep on most inputs
-  input$data_filter
-  input$show_filter
-  sapply(r_drop(names(reg_args)), function(x) input[[paste0("reg_", x)]])
-
-  ## notify user when the model needs to be updated
-  ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
-  if (pressed(input$reg_run)) {
-    if (is.null(input$reg_evar)) {
-      updateTabsetPanel(session, "tabs_regress ", selected = "Summary")
-      updateActionButton(session, "reg_run", "Estimate model", icon = icon("play"))
-    } else if (isTRUE(attr(reg_inputs, "observable")$.invalidated)) {
-      updateActionButton(session, "reg_run", "Re-estimate model", icon = icon("refresh", class = "fa-spin"))
-    } else {
-      updateActionButton(session, "reg_run", "Estimate model", icon = icon("play"))
-    }
-  }
-})
+## add a spinning refresh icon if the model needs to be (re)estimated
+run_refresh(reg_args, "reg", tabs = "tabs_regress", label = "Estimate model", relabel = "Re-estimate model")
 
 ## data ui and tabs
 output$ui_regress <- renderUI({
   req(input$dataset)
   tagList(
-    wellPanel(
-      actionButton("reg_run", "Estimate model", width = "100%", icon = icon("play"), class = "btn-success")
+    conditionalPanel(condition = "input.tabs_regress == 'Summary'",
+      wellPanel(
+        actionButton("reg_run", "Estimate model", width = "100%", icon = icon("play"), class = "btn-success")
+      )
     ),
     wellPanel(
       conditionalPanel(
@@ -348,8 +334,8 @@ output$ui_regress <- renderUI({
         )
       ),
       conditionalPanel(
-        condition = "(input.tabs_regress == 'Summary' && input.reg_sum_check != undefined && input.reg_sum_check.indexOf('confint') >= 0) |
-                     (input.tabs_regress == 'Predict' && input.reg_predict != 'none') |
+        condition = "(input.tabs_regress == 'Summary' && input.reg_sum_check != undefined && input.reg_sum_check.indexOf('confint') >= 0) ||
+                     (input.tabs_regress == 'Predict' && input.reg_predict != 'none') ||
                      (input.tabs_regress == 'Plot' && input.reg_plots == 'coef')",
         sliderInput(
           "reg_conf_lev", "Confidence level:", min = 0.80,
@@ -381,16 +367,18 @@ reg_plot <- reactive({
   plot_width <- 650
   nrVars <- length(input$reg_evar) + 1
 
-  if (input$reg_plots == "dist") plot_height <- (plot_height / 2) * ceiling(nrVars / 2)
-  if (input$reg_plots == "dashboard") plot_height <- 1.5 * plot_height
-  if (input$reg_plots == "correlations") {
+  if (input$reg_plots == "dist") {
+    plot_height <- (plot_height / 2) * ceiling(nrVars / 2)
+  } else if (input$reg_plots == "dashboard") {
+    plot_height <- 1.5 * plot_height
+  } else if (input$reg_plots == "correlations") {
     plot_height <- 150 * nrVars
     plot_width <- 150 * nrVars
-  }
-  if (input$reg_plots == "coef") plot_height <- 300 + 20 * length(.regress()$model$coefficients)
-  if (input$reg_plots %in% c("scatter", "leverage", "resid_pred")) {
+  } else if (input$reg_plots == "coef") {
+    plot_height <- 300 + 20 * length(.regress()$model$coefficients)
+  } else if (input$reg_plots %in% c("scatter", "resid_pred")) {
     plot_height <- (plot_height / 2) * ceiling((nrVars - 1) / 2)
-  }
+  } 
 
   list(plot_width = plot_width, plot_height = plot_height)
 })
@@ -464,8 +452,10 @@ reg_available <- eventReactive(input$reg_run, {
 })
 
 .regress <- eventReactive(input$reg_run, {
+  regi <- reg_inputs()
+  regi$envir <- r_data
   withProgress(message = "Estimating model", value = 1, {
-    do.call(regress, reg_inputs())
+    do.call(regress, regi)
   })
 })
 
@@ -485,8 +475,12 @@ reg_available <- eventReactive(input$reg_run, {
   if (input$reg_predict == "cmd" && is_empty(input$reg_pred_cmd)) {
     return("** Enter prediction commands **")
   }
+
   withProgress(message = "Generating predictions", value = 1, {
-    do.call(predict, c(list(object = .regress()), reg_pred_inputs()))
+    rpi <- reg_pred_inputs()
+    rpi$object <- .regress()
+    rpi$envir <- r_data
+    do.call(predict, rpi)
   })
 })
 
@@ -502,18 +496,6 @@ reg_available <- eventReactive(input$reg_run, {
     !is_empty(input$reg_predict, "none")
   )
 
-  ## needs more testing ...
-  # if (not_pressed(input$reg_run)) return(invisible())
-  # if (reg_available() != "available") return(reg_available())
-  # req(input$reg_pred_plot, available(input$reg_xvar))
-  # if (is_empty(input$reg_predict, "none")) return(invisible())
-  # if ((input$reg_predict == "data" || input$reg_predict == "datacmd") && is_empty(input$reg_pred_data)) {
-  #   return(invisible())
-  # }
-  # if (input$reg_predict == "cmd" && is_empty(input$reg_pred_cmd)) {
-  #   return(invisible())
-  # }
-
   withProgress(message = "Generating prediction plot", value = 1, {
     do.call(plot, c(list(x = .predict_regress()), reg_pred_plot_inputs()))
   })
@@ -527,10 +509,9 @@ reg_available <- eventReactive(input$reg_run, {
   } else if (reg_available() != "available") {
     return(reg_available())
   }
-
-  if (!input$reg_plots %in% c("coef", "dist")) req(input$reg_nrobs)
+  if (!input$reg_plots %in% c("coef", "dist", "influence")) req(input$reg_nrobs)
   withProgress(message = "Generating plots", value = 1, {
-    if (input$reg_plots %in% c("correlations", "leverage")) {
+    if (input$reg_plots == "correlations") {
       capture_plot(do.call(plot, c(list(x = .regress()), reg_plot_inputs())))
     } else {
       do.call(plot, c(list(x = .regress()), reg_plot_inputs(), shiny = TRUE))

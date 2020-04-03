@@ -234,6 +234,7 @@ output$report_r <- renderUI({
       mode = "r",
       theme = getOption("radiant.ace_theme", default = "tomorrow"),
       wordWrap = TRUE,
+      debounce = 0,
       height = "auto",
       value = state_init("r_edit", r_example) %>% fix_smart(),
       placeholder = "Enter R-code for analysis here and press the Knit report button to run it.\nClick the ? icon on the top left of your screen for more information",
@@ -242,8 +243,8 @@ output$report_r <- renderUI({
       tabSize = getOption("radiant.ace_tabSize", 2),
       useSoftTabs = getOption("radiant.ace_useSoftTabs", TRUE),
       showInvisibles = getOption("radiant.ace_showInvisibles", FALSE),
-      autoComplete = getOption("radiant.ace_autoComplete", "live"),
-      autoCompleters = c("static", "text"),
+      autoComplete = getOption("radiant.ace_autoComplete", "enable"),
+      autoCompleters = c("static", "rlang"),
       autoCompleteList = isolate(radiant_auto_complete())
     ),
     htmlOutput("r_knitted"),
@@ -251,13 +252,17 @@ output$report_r <- renderUI({
   )
 })
 
+radiant_r_annotater <- shinyAce::aceAnnotate("r_edit")
+radiant_r_tooltip <- shinyAce::aceTooltip("r_edit")
+radiant_r_ac <- shinyAce::aceAutocomplete("r_edit")
+
 ## auto completion of available R functions, datasets, and variables
 observe({
   ## don't need to run until report generated
   req(report_r$report > 1)
   shinyAce::updateAceEditor(
     session, "r_edit",
-    autoCompleters = c("static", "text"),
+    autoCompleters = c("static", "rlang"),
     autoCompleteList = radiant_auto_complete()
   )
 })

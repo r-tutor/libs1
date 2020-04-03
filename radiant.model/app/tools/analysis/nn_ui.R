@@ -3,6 +3,7 @@ nn_plots <- c(
   "Network" = "net",
   "Olden" = "olden",
   "Garson" = "garson",
+  "Partial Dependence" = "pdp",
   "Dashboard" = "dashboard"
 )
 
@@ -182,7 +183,7 @@ output$ui_nn_predict_plot <- renderUI({
 output$ui_nn_plots <- renderUI({
   req(input$nn_type)
   if (input$nn_type != "regression") {
-    nn_plots <- nn_plots[-5]
+    nn_plots <- head(nn_plots, -1)
   }
   selectInput(
     "nn_plots", "Plots:", choices = nn_plots,
@@ -201,30 +202,16 @@ output$ui_nn_nrobs <- renderUI({
   )
 })
 
-observe({
-  ## dep on most inputs
-  input$data_filter
-  input$show_filter
-  sapply(r_drop(names(nn_args)), function(x) input[[paste0("nn_", x)]])
-  ## notify user when the model needs to be updated
-  ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
-  if (pressed(input$nn_run)) {
-    if (is.null(input$nn_evar)) {
-      updateTabsetPanel(session, "tabs_nn ", selected = "Summary")
-      updateActionButton(session, "nn_run", "Estimate model", icon = icon("play"))
-    } else if (isTRUE(attr(nn_inputs, "observable")$.invalidated)) {
-      updateActionButton(session, "nn_run", "Re-estimate model", icon = icon("refresh", class = "fa-spin"))
-    } else {
-      updateActionButton(session, "nn_run", "Estimate model", icon = icon("play"))
-    }
-  }
-})
+## add a spinning refresh icon if the model needs to be (re)estimated
+run_refresh(nn_args, "nn", tabs = "tabs_nn", label = "Estimate model", relabel = "Re-estimate model")
 
 output$ui_nn <- renderUI({
   req(input$dataset)
   tagList(
-    wellPanel(
-      actionButton("nn_run", "Estimate model", width = "100%", icon = icon("play"), class = "btn-success")
+    conditionalPanel(condition = "input.tabs_nn == 'Summary'",
+      wellPanel(
+        actionButton("nn_run", "Estimate model", width = "100%", icon = icon("play"), class = "btn-success")
+      )
     ),
     wellPanel(
       conditionalPanel(
@@ -320,12 +307,13 @@ output$ui_nn <- renderUI({
 
 nn_plot <- reactive({
   if (nn_available() != "available") return()
-  # req(input$nn_plots)
   if (is_empty(input$nn_plots, "none")) return()
   res <- .nn()
   if (is.character(res)) return()
   if ("dashboard" %in% input$nn_plots) {
     plot_height <- 750
+  } else if ("pdp" %in% input$nn_plots) {
+    plot_height <- max(500, ceiling(length(res$evar) / 2) * 250)
   } else {
     mlt <- if ("net" %in% input$nn_plots) 45 else 30
     plot_height <- max(500, length(res$model$coefnames) * mlt)
@@ -345,11 +333,6 @@ nn_pred_plot_height <- function()
 ## output is called from the main radiant ui.R
 output$nn <- renderUI({
   register_print_output("summary_nn", ".summary_nn")
-  register_plot_output(
-    "plot_nn_net", ".plot_nn_net",
-    height_fun = "nn_plot_height",
-    width_fun = "nn_plot_width"
-  )
   register_print_output("predict_nn", ".predict_print_nn")
   register_plot_output(
     "predict_plot_nn", ".predict_plot_nn",
@@ -417,9 +400,11 @@ nn_available <- reactive({
 })
 
 .nn <- eventReactive(input$nn_run, {
+  nni <- nn_inputs()
+  nni$envir <- r_data
   withProgress(
     message = "Estimating model", value = 1,
-    do.call(nn, nn_inputs())
+    do.call(nn, nni)
   )
 })
 
@@ -442,7 +427,10 @@ nn_available <- reactive({
   }
 
   withProgress(message = "Generating predictions", value = 1, {
-    do.call(predict, c(list(object = .nn()), nn_pred_inputs()))
+    nni <- nn_pred_inputs()
+    nni$object <- .nn()
+    nni$envir <- r_data
+    do.call(predict, nni)
   })
 })
 

@@ -1,3 +1,28 @@
+# radiant.design 1.3.4.0
+
+* Minor adjustments in anticipation of dplyr 1.0.0
+
+# radiant.design 1.3.0.0
+
+* Allow for missing values in `randomizer` and `sampling` functions
+* Added note that the design factors used as input to calculate a correlation using polycor::hetcor are assumed to be ordinal
+
+# radiant.design 1.2.0.0
+
+* Update action buttons that initiate calculations when one or more relevant inputs are changed. When, for example, an experimental design should be updated, a spinning "refresh" icon will be shown
+* Allow fractions as input for the `Random assignment` tool
+
+# radiant.design 1.1.3.0
+
+* Added `estimable` function that can be used to determine which coefficients could be estimated based on a partial factorial design. Adapted from a function written by Blakeley MsShane at https://github.com/fzettelmeyer/mktg482/blob/master/R/expdesign.R
+* Documentation updates (i.e., key functions for each tool)
+* New `Random assignment` tool based on the `randomizr` package. Uses the `randomizr::block_ra` function for stratified random sampling. See the help file for more information
+* Various enhancements to make _Design > Random sampling_ more flexible. See the updated help file 
+
+# radiant.design 1.1.0.0
+
+* Numerous small code changes to support enhanced auto-completion, tooltips, and annotations in shinyAce 0.4.1
+
 # radiant.design 0.9.9.0
 
 * Checked for issues with upcoming dplyr 0.8.0

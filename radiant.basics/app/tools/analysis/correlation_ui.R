@@ -20,7 +20,7 @@ cor_sum_args <- as.list(if (exists("summary.correlation")) {
   formals(summary.correlation)
 } else {
   formals(radiant.basics::summary.correlation)
-} )
+})
 
 ## list of function inputs selected by user
 cor_sum_inputs <- reactive({
@@ -33,11 +33,8 @@ cor_sum_inputs <- reactive({
 output$ui_cor_vars <- renderUI({
   withProgress(message = "Acquiring variable information", value = 1, {
     vars <- varnames()
-    isChar <- .get_class() %in% c("character", "factor") %>%
-      set_names(vars)
-    tlv <- two_level_vars()
-    if (length(tlv) > 0) isChar[tlv] <- FALSE
-    vars <- vars[!isChar]
+    toSelect <- .get_class() %in% c("numeric", "integer", "date", "factor")
+    vars <- vars[toSelect]
   })
   if (length(vars) == 0) return()
   selectInput(
@@ -55,16 +52,32 @@ output$ui_cor_nrobs <- renderUI({
   choices <- c("1,000" = 1000, "5,000" = 5000, "10,000" = 10000, "All" = -1) %>%
     .[. < nrobs]
   selectInput(
-    "cor_nrobs", "Number of data points plotted:", 
+    "cor_nrobs", "Number of data points plotted:",
     choices = choices,
     selected = state_single("cor_nrobs", choices, 1000)
   )
 })
 
+output$ui_cor_name <- renderUI({
+  req(input$dataset)
+  textInput("cor_name", "Store as data.frame:", "", placeholder = "Provide a name")
+})
+
+## add a spinning refresh icon if correlations need to be (re)calculated
+run_refresh(cor_args, "cor", init = "vars", tabs = "tabs_correlation", label = "Calculate correlation", relabel = "Re-calculate correlations")
+
 output$ui_correlation <- renderUI({
   req(input$dataset)
   tagList(
+    conditionalPanel(
+      condition = "input.tabs_correlation == 'Summary'",
+      wellPanel(
+        actionButton("cor_run", "Calculate correlation", width = "100%", icon = icon("play"), class = "btn-success")
+      )
+    ),
     wellPanel(
+      conditionalPanel(
+        condition = "input.tabs_correlation == 'Summary'",
       uiOutput("ui_cor_vars"),
       selectInput(
         "cor_method", "Method:",
@@ -72,21 +85,36 @@ output$ui_correlation <- renderUI({
         selected = state_single("cor_method", cor_method, "pearson"),
         multiple = FALSE
       ),
-      conditionalPanel(
-        condition = "input.tabs_correlation == 'Summary'",
+        checkboxInput("cor_hcor", "Adjust for {factor} variables", value = state_init("cor_hcor", FALSE)),
+        conditionalPanel(
+          condition = "input.cor_hcor == true",
+          checkboxInput("cor_hcor_se", "Calculate adjusted p.values", value = state_init("cor_hcor_se", FALSE))
+        ),
         numericInput(
           "cor_cutoff", "Correlation cutoff:",
           min = 0, max = 1, step = 0.05,
           value = state_init("cor_cutoff", 0)
         ),
-        checkboxInput(
-          "cor_covar", "Show covariance matrix",
-          value = state_init("cor_covar", FALSE)
-        )
+        conditionalPanel(
+          condition = "input.cor_hcor == false",
+          checkboxInput(
+            "cor_covar", "Show covariance matrix",
+            value = state_init("cor_covar", FALSE)
+          )
+        ),
       ),
       conditionalPanel(
         condition = "input.tabs_correlation == 'Plot'",
         uiOutput("ui_cor_nrobs")
+      )
+    ),
+    conditionalPanel(
+      condition = "input.tabs_correlation == 'Summary'",
+      wellPanel(
+        tags$table(
+          tags$td(uiOutput("ui_cor_name")),
+          tags$td(actionButton("cor_store", "Store", icon = icon("plus")), style = "padding-top:30px;")
+        )
       )
     ),
     help_and_report(
@@ -95,6 +123,14 @@ output$ui_correlation <- renderUI({
       help_file = inclMD(file.path(getOption("radiant.path.basics"), "app/tools/help/correlation.md"))
     )
   )
+})
+
+observeEvent(input$cor_hcor, {
+  if (input$cor_hcor == FALSE) {
+    updateCheckboxInput(session, "cor_hcor_se", value = FALSE)
+  } else {
+    updateCheckboxInput(session, "cor_covar", value = FALSE)
+  }
 })
 
 cor_plot <- reactive({
@@ -151,25 +187,34 @@ cor_available <- reactive({
   "available"
 })
 
-.correlation <- reactive({
+# .correlation <- reactive({
+.correlation <- eventReactive(input$cor_run, {
+  cori <- cor_inputs()
+  cori$envir <- r_data
+  do.call(correlation, cori)
+})
+
+.summary_correlation <- reactive({
+  if (cor_available() != "available") return(cor_available())
+  if (not_pressed(input$cor_run)) return("** Press the Calculate correlation button to generate output **")
   validate(
     need(
       input$cor_cutoff >= 0 && input$cor_cutoff <= 1,
       "Provide a correlation cutoff value in the range from 0 to 1"
     )
   )
-  do.call(correlation, cor_inputs())
-})
-
-.summary_correlation <- reactive({
-  if (cor_available() != "available") return(cor_available())
-  do.call(summary, c(list(object = .correlation()), cor_sum_inputs()))
+  withProgress(message = "Calculating correlations", value = 0.5, {
+    do.call(summary, c(list(object = .correlation()), cor_sum_inputs()))
+  })
 })
 
 .plot_correlation <- reactive({
   if (cor_available() != "available") return(cor_available())
+  if (not_pressed(input$cor_run)) return("** Press the Calculate correlation button to generate output **")
   req(input$cor_nrobs)
-  capture_plot(plot(.correlation(), nrobs = input$cor_nrobs))
+  withProgress(message = "Generating correlation plot", value = 0.5, {
+    capture_plot(plot(.correlation(), nrobs = input$cor_nrobs))
+  })
 })
 
 observeEvent(input$correlation_report, {
@@ -178,18 +223,30 @@ observeEvent(input$correlation_report, {
   nrobs <- ifelse(is_empty(input$cor_nrobs), 1000, as_integer(input$cor_nrobs))
   inp_out[[1]] <- clean_args(cor_sum_inputs(), cor_sum_args[-1])
   inp_out[[2]] <- list(nrobs = nrobs)
+
+  if (!is_empty(input$cor_name)) {
+    dataset <- fix_names(input$cor_name)
+    if (input$cor_name != dataset) {
+      updateTextInput(session, inputId = "cor_name", value = dataset)
+    }
+    xcmd <- paste0(dataset, " <- cor2df(result)\nregister(\"", dataset, "\", descr = result$descr)")
+  } else {
+    xcmd <- ""
+  }
+
   update_report(
     inp_main = clean_args(cor_inputs(), cor_args),
     fun_name = "correlation",
     inp_out = inp_out,
     fig.width = cor_plot_width(),
-    fig.height = cor_plot_height()
+    fig.height = cor_plot_height(),
+    xcmd = xcmd
   )
 })
 
 download_handler(
-  id = "dlp_correlation", 
-  fun = download_handler_plot, 
+  id = "dlp_correlation",
+  fun = download_handler_plot,
   fn = function() paste0(input$dataset, "_correlation"),
   type = "png",
   caption = "Save correlation plot",
@@ -197,3 +254,31 @@ download_handler(
   width = cor_plot_width,
   height = cor_plot_height
 )
+
+observeEvent(input$cor_store, {
+  req(input$cor_name)
+  cmat <- try(.correlation(), silent = TRUE)
+  if (inherits(cmat, "try-error") || is.null(cmat)) return()
+
+  dataset <- fix_names(input$cor_name)
+  updateTextInput(session, inputId = "cor_name", value = dataset)
+  r_data[[dataset]] <- cor2df(cmat)
+  register(dataset, descr = cmat$descr)
+  updateSelectInput(session, "dataset", selected = input$dataset)
+
+  ## See https://shiny.rstudio.com/reference/shiny/latest/modalDialog.html
+  showModal(
+    modalDialog(
+      title = "Data Stored",
+      span(
+        paste0("Dataset '", dataset, "' was successfully added to the
+                datasets dropdown. Add code to Report > Rmd or
+                Report > R to (re)create the results by clicking the
+                report icon on the bottom left of your screen.")
+      ),
+      footer = modalButton("OK"),
+      size = "s",
+      easyClose = TRUE
+    )
+  )
+})

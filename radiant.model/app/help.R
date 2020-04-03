@@ -1,13 +1,16 @@
 help_model <- c(
   "Linear regression (OLS)" = "regress.Rmd",
   "Logistic regression (GLM)" = "logistic.Rmd",
+  "Multinomial logistic regression (MNL)" = "mnl.Rmd",
   "Naive Bayes" = "nb.md",
   "Neural Network" = "nn.md",
   "Classification and regression trees" = "crtree.md",
+  "Random Forest" = "rf.md",
+  "Gradient Boosted Trees" = "gbt.md",
   "Evaluate regression" = "evalreg.md",
   "Evaluate classification" = "evalbin.md",
   "Collaborative filtering" = "crs.md",
-  "Decision analysis" = "dtree.Rmd", 
+  "Decision analysis" = "dtree.Rmd",
   "Simulate" = "simulater.md"
 )
 output$help_model <- reactive(append_help("help_model", file.path(getOption("radiant.path.model"), "app/tools/help/"), Rmd = TRUE))

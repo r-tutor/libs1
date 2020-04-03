@@ -1,6 +1,7 @@
 ## ----echo=FALSE, include=FALSE------------------------------------------------
 knitr::opts_chunk$set(collapse = TRUE)
-tmap_fixed = utils::packageVersion("tmap") >= "2.3-1"
+#tmap_fixed = utils::packageVersion("tmap") >= "2.3-1"
+tmap_fixed = FALSE
 user_edzer_or_travis = Sys.getenv("USER") %in% c("travis", "edzer")
 
 ## -----------------------------------------------------------------------------
@@ -97,10 +98,10 @@ library(tmap)
 qtm(nc)
 
 ## ----eval=tmap_fixed----------------------------------------------------------
-tmap_mode("view")
-tm_shape(nc) + tm_fill("BIR74", palette = sf.colors(5))
+#  tmap_mode("view")
+#  tm_shape(nc) + tm_fill("BIR74", palette = sf.colors(5))
 
 ## ----eval=tmap_fixed----------------------------------------------------------
-ttm()
-last_map()
+#  ttm()
+#  last_map()
 

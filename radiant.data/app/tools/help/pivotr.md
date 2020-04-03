@@ -8,9 +8,23 @@ It is also possible to summarize numerical variables. Select `price` from the `N
 
 <p align="center"><img src="figures/pivotr.png"></p>
 
+Below you will find a brief description of several functions available from the `Apply function` dropdown menu. Most functions, however, will be self-explanatory.
+
+* `n` calculates the number of observations, or rows, in the data or in a group if a `Group by` variable has been selected (`n` uses the `length` function in R)
+* `n_distinct` calculates the number of distinct values
+* `n_missing` calculates the number of missing values
+* `cv` is the coefficient of variation (i.e., mean(x) / sd(x))
+* `sd` and `var` calculate the sample standard deviation and variance for numeric data
+* `me` calculates the margin of error for a numeric variable using a 95% confidence level
+* `prop` calculates a proportion. For a variable with only values 0 or 1 this is equivalent to `mean`. For other numeric variables it captures the occurrence of the maximum value.
+For a `factor` it captures the occurrence of the first level. 
+* `sdprop` and `varprop` calculate the sample standard deviation and variance for a proportion
+* `meprop` calculates the margin of error for a proportion using a 95% confidence level
+* `sdpop` and `varpop` calculate the population standard deviation and variance
+
 You can also create a bar chart based on the generated table (see image above). To download the table in _csv_ format or the plot in _png_ format click the appropriate download icon on the right.
 
-> Note that when a categorical variable (`factor`) is selected from the `Numeric variable` dropdown it is converted to a 0-1 (binary) variable where the first level is coded as 1 and all other levels as 0.
+> Note that when a categorical variable (`factor`) is selected from the `Numeric variable(s)` dropdown menu it will be converted to a numeric variable if required for the selected function(s). If the factor levels are numeric these will be used in all calculations. Since the mean, standard deviation, etc. are not relevant for non-binary categorical variables, these will be converted to 0-1 (binary) variables where the first level is coded as 1 and all other levels as 0.
 
 ### Filter data
 
@@ -22,7 +36,7 @@ The created pivot table can be stored in Radiant by clicking the `Store` button.
 
 ### Report > Rmd
 
-Add code to [_Report > Rmd_]<https://radiant-rstats.github.io/docs/data/report_rmd.html>{target="_blank"} to (re)create the pivot table by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
+Add code to <a href="https://radiant-rstats.github.io/docs/data/report_rmd.html" target="_blank">_Report > Rmd_</a> to (re)create the pivot table by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
 
 If a plot was created it can be customized using `ggplot2` commands (e.g., `plot(result) + labs(title = "Pivot graph")`). See <a href="https://radiant-rstats.github.io/docs/data/visualize.html" target="_blank">_Data > Visualize_</a> for details.
 

@@ -1,4 +1,39 @@
-# radiant.basics 1.0.0
+# radiant.basics 1.3.4.0
+
+* Minor adjustments in anticipation of dplyr 1.0.0
+
+# radiant.basics 1.3.0.0
+
+* Documentation updates to link to new video tutorials
+* Use `patchwork` for grouping multiple plots together
+* Use `polycor::hetcor` to calculate correlations for a mix of numeric and categorical variables
+* Updated correlation plot that accommodates a mix of numeric and categorical variables
+* Fix for sd estimate in `single_prop` and `compare_prop` functions
+* Add dimension labels to all tables in _Basics > Cross-tabs_
+
+# radiant.basics 1.2.0.0
+
+* Update action buttons that initiate calculations when one or more relevant inputs are changed. When, for example, a CLT simulation should be updated, a spinning "refresh" icon will be shown
+* Allow fractions as input for the `Goodness of fit` and `Probability calculator > Discrete` tools
+
+# radiant.basics 1.1.4.0
+
+* Summary statistics provided for _single_mean_, _single_prop_, _compare_means_, and _compare_props_ are now consistent
+* `n_missing` were not show correctly for _compare_means_ and _compare_props_
+
+# radiant.basics 1.1.3.0
+
+* Fix for code generation from the probability calculator when the `distribution` type is set to binomial
+* Fix for input restoration from a state file for the probability calculator. For the _value_ or _probability_ inputs two sided values might be restored when only a one-sided input was previously specified
+
+# radiant.basics 1.1.1.0
+  
+* Documentation updates (i.e., key functions for each tool)
+* Improvements in `goodness` and `prob_dics` to allow fractions in generated code sent to _Report > rmd_ or _Report > R_
+* Improved checks for variables that show no variation
+* Numerous small code changes to support enhanced auto-completion, tooltips, and annotations in shinyAce 0.4.1
+
+# radiant.basics 1.0.0.0
 
 * Flexible adjustment of level of jitter in `plot.correlation`
 * Support for variables of type `ts`

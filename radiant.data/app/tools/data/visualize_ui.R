@@ -268,9 +268,9 @@ output$ui_viz_labs <- renderUI({
 output$ui_viz_colors <- renderUI({
   tagList(
     conditionalPanel(
-      condition = "input.viz_type == 'bar' |
-                   input.viz_type == 'dist' |
-                   input.viz_type == 'box' |
+      condition = "input.viz_type == 'bar' ||
+                   input.viz_type == 'dist' ||
+                   input.viz_type == 'box' ||
                    input.viz_type == 'density'",
       selectInput(
         "viz_fillcol", "Fill color:", choices = colors(),
@@ -278,10 +278,10 @@ output$ui_viz_colors <- renderUI({
       )
     ),
     conditionalPanel(
-      condition = "input.viz_type == 'dist' |
-                   input.viz_type == 'density' |
-                   input.viz_type == 'box' |
-                   input.viz_type == 'scatter' |
+      condition = "input.viz_type == 'dist' ||
+                   input.viz_type == 'density' ||
+                   input.viz_type == 'box' ||
+                   input.viz_type == 'scatter' ||
                    input.viz_type == 'line'",
       selectInput(
         "viz_linecol", "Line color:", choices = colors(),
@@ -289,8 +289,8 @@ output$ui_viz_colors <- renderUI({
       )
     ),
     conditionalPanel(
-      condition = "input.viz_type == 'scatter' |
-                   input.viz_type == 'line' |
+      condition = "input.viz_type == 'scatter' ||
+                   input.viz_type == 'line' ||
                    input.viz_type == 'box'",
       selectInput(
         "viz_pointcol", "Point color:", choices = colors(),
@@ -300,25 +300,11 @@ output$ui_viz_colors <- renderUI({
   )
 })
 
-observe({
-  ## dep on most inputs
-  input$data_filter
-  input$show_filter
-  sapply(r_drop(names(viz_args)), function(x) input[[paste0("viz_", x)]])
-
-  ## labs is a list so must specify explicitly
-  input$viz_labs_title; input$viz_labs_subtitle; input$viz_labs_caption; input$viz_labs_y; input$viz_labs_x
-
-  ## notify user when the plot needed to be updated
-  ## based on https://stackoverflow.com/questions/45478521/listen-to-reactive-invalidation-in-shiny
-  if (pressed(input$viz_run) && !is.null(input$viz_xvar)) {
-    if (isTRUE(attr(viz_inputs, "observable")$.invalidated)) {
-      updateActionButton(session, "viz_run", "Update plot", icon = icon("refresh", class = "fa-spin"))
-    } else {
-      updateActionButton(session, "viz_run", "Create plot", icon = icon("play"))
-    }
-  }
-})
+## add a spinning refresh icon if the tabel needs to be (re)calculated
+run_refresh(
+  viz_args, "viz", init = "xvar", label = "Create plot", relabel = "Update plot",
+  inputs = c("labs_title", "labs_subtitle", "labs_caption", "labs_y", "labs_x")
+)
 
 output$ui_Visualize <- renderUI({
   tagList(
@@ -333,7 +319,7 @@ output$ui_Visualize <- renderUI({
           uiOutput("ui_viz_nrobs")
         ),
         conditionalPanel(
-          condition = "input.viz_type != 'dist' & input.viz_type != 'density'",
+          condition = "input.viz_type != 'dist' && input.viz_type != 'density'",
           uiOutput("ui_viz_yvar"),
           conditionalPanel(
             "input.viz_yvar != undefined && input.viz_yvar != null && input.viz_yvar.length > 1",
@@ -342,7 +328,7 @@ output$ui_Visualize <- renderUI({
         ),
         uiOutput("ui_viz_xvar"),
         conditionalPanel(
-          "input.viz_type == 'dist' | input.viz_type == 'density'",
+          "input.viz_type == 'dist' || input.viz_type == 'density'",
           conditionalPanel(
             "input.viz_xvar != undefined && input.viz_xvar != null && input.viz_xvar.length > 1",
             uiOutput("ui_viz_combx")
@@ -351,15 +337,15 @@ output$ui_Visualize <- renderUI({
         uiOutput("ui_viz_facet_row"),
         uiOutput("ui_viz_facet_col"),
         conditionalPanel(
-          condition = "input.viz_type == 'bar' |
-                       input.viz_type == 'dist' |
-                       input.viz_type == 'density' |
+          condition = "input.viz_type == 'bar' ||
+                       input.viz_type == 'dist' ||
+                       input.viz_type == 'density' ||
                        input.viz_type == 'surface'",
           uiOutput("ui_viz_fill")
         ),
         conditionalPanel(
-          condition = "input.viz_type == 'scatter' |
-                       input.viz_type == 'line' |
+          condition = "input.viz_type == 'scatter' ||
+                       input.viz_type == 'line' ||
                        input.viz_type == 'box'",
           uiOutput("ui_viz_color")
         ),
@@ -368,8 +354,8 @@ output$ui_Visualize <- renderUI({
           uiOutput("ui_viz_size")
         ),
         conditionalPanel(
-          condition = "input.viz_type == 'bar' |
-                       input.viz_type == 'scatter' |
+          condition = "input.viz_type == 'bar' ||
+                       input.viz_type == 'scatter' ||
                        input.viz_type == 'line'",
           selectInput(
             "viz_fun", "Function:", choices =  getOption("radiant.functions"),
@@ -377,9 +363,9 @@ output$ui_Visualize <- renderUI({
           )
         ),
         conditionalPanel(
-          condition = "input.viz_type == 'scatter' |
-                       input.viz_type == 'line' |
-                       input.viz_type == 'surface' |
+          condition = "input.viz_type == 'scatter' ||
+                       input.viz_type == 'line' ||
+                       input.viz_type == 'surface' ||
                        input.viz_type == 'box'",
           uiOutput("ui_viz_check")
         ),
@@ -394,9 +380,9 @@ output$ui_Visualize <- renderUI({
         ),
 
         conditionalPanel(
-          "input.viz_type == 'density' |
-           input.viz_type == 'dist' & (input.viz_axes && input.viz_axes.indexOf('density')) >= 0 |
-           (input.viz_type == 'scatter' & (input.viz_check && input.viz_check.indexOf('loess') >= 0))",
+          "input.viz_type == 'density' ||
+           input.viz_type == 'dist' && (input.viz_axes && input.viz_axes.indexOf('density')) >= 0 ||
+           (input.viz_type == 'scatter' && (input.viz_check && input.viz_check.indexOf('loess') >= 0))",
           sliderInput(
             "viz_smooth", label = "Smooth:",
             value = state_init("viz_smooth", 1),
@@ -525,8 +511,11 @@ output$visualize <- renderPlot({
   }
 
   req(!is.null(input$viz_color) || !is.null(input$viz_fill))
+  vizi <- viz_inputs()
+  vizi$shiny <- TRUE
+  vizi$envir <- r_data
   withProgress(message = "Making plot", value = 1, {
-    do.call(visualize, c(viz_inputs(), shiny = TRUE))
+    do.call(visualize, vizi)
   })
 })
 

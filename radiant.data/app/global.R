@@ -164,13 +164,16 @@ options(radiant.path.data =
 )
 
 ## import required functions and packages
-options(radiant.from.package = TRUE)
 ## if radiant.data is not in search main function from dplyr etc. won't be available
-if (!"package:radiant.data" %in% search()) {
+if (!"package:radiant.data" %in% search() &&
+    # isTRUE(Sys.getenv("SHINY_PORT") == "") &&
+    isTRUE(getOption("radiant.development")) &&
+    getOption("radiant.path.data") == "..") {
   import_fs("radiant.data", libs = c("magrittr", "ggplot2", "lubridate", "tidyr", "dplyr", "broom", "tibble", "glue"))
-  if (getOption("radiant.path.data") == "..") {
-    options(radiant.from.package = FALSE)
-  }
+  options(radiant.from.package = FALSE)
+} else {
+  options(radiant.from.package = TRUE)
+  library(radiant.data)
 }
 
 ## basic options when run on server
@@ -188,12 +191,13 @@ options(dctrl = if (getRversion() > "3.4.4") c("keepNA", "niceNames") else "keep
 options(
   radiant.functions = list(
     "n_obs" = "n_obs", "n_missing" = "n_missing", "n_distinct" = "n_distinct",
-    "mean" = "mean", "median" = "median", "min" = "min", "max" = "max",
-    "sum" = "sum", "var" = "var", "sd" = "sd", "se" = "se", "cv" = "cv",
+    "mean" = "mean", "median" = "median", "modal" = "modal", "min" = "min", "max" = "max",
+    "sum" = "sum", "var" = "var", "sd" = "sd", "se" = "se", "me" = "me", "cv" = "cv",
     "prop" = "prop", "varprop" = "varprop", "sdprop" = "sdprop", "seprop" = "seprop",
-    "varpop" = "varpop", "sdpop" = "sdpop", "1%" = "p01", "2.5%" = "p025", "5%" = "p05",
-    "10%" = "p10", "25%" = "p25", "75%" = "p75", "90%" = "p90", "95%" = "p95",
-    "97.5%" = "p975", "99%" = "p99", "skew" = "skew", "kurtosis" = "kurtosi"
+    "meprop" = "meprop", "varpop" = "varpop", "sdpop" = "sdpop", "1%" = "p01",
+    "2.5%" = "p025", "5%" = "p05", "10%" = "p10", "25%" = "p25", "75%" = "p75",
+    "90%" = "p90", "95%" = "p95", "97.5%" = "p975", "99%" = "p99", "skew" = "skew",
+    "kurtosis" = "kurtosi"
   )
 )
 
@@ -208,14 +212,15 @@ knitr::opts_knit$set(progress = TRUE)
 knitr::opts_chunk$set(
   echo = FALSE,
   comment = NA,
+  # fig.cap = "",
   cache = FALSE,
   message = FALSE,
   warning = FALSE,
   error = TRUE,
   fig.path = normalizePath(tempdir(), winslash = "/"),
+  dpi = 144,
+  screenshot.force = FALSE
   # dev = "svg" ## too slow with big scatter plots on server-side
-  dpi = 144
-  # screenshot.force = FALSE,
 )
 
 ## environment to hold session information
@@ -398,7 +403,17 @@ navbar_proj <- function(navbar) {
 
 if (getOption("radiant.shinyFiles", FALSE)) {
   if (!radiant.data::is_empty(getOption("radiant.sf_volumes", "")) && radiant.data::is_empty(getOption("radiant.project_dir"))) {
-    options(radiant.launch_dir = getOption("radiant.sf_volumes")[1])
+    launch_dir <- getOption("radiant.launch_dir", default = radiant.data::find_home())
+    if (!launch_dir %in% getOption("radiant.sf_volumes", "")) {
+      sf_volumes <- c(setNames(launch_dir, basename(launch_dir)), getOption("radiant.sf_volumes", ""))
+      options(radiant.sf_volumes = sf_volumes)
+      rm(sf_volumes)
+    } else if (!launch_dir == getOption("radiant.sf_volumes", "")[1]) {
+      dir_ind <- which(getOption("radiant.sf_volumes") == launch_dir)[1]
+      options(radiant.sf_volumes = c(getOption("radiant.sf_volumes")[dir_ind], getOption("radiant.sf_volumes")[-dir_ind]))
+      rm(dir_ind)
+    }
+    rm(launch_dir)
   }
   if (radiant.data::is_empty(getOption("radiant.launch_dir"))) {
     if (radiant.data::is_empty(getOption("radiant.project_dir"))) {
@@ -542,7 +557,7 @@ onStop(function() {
     clean_up_list <- c(
       "r_sessions", "help_menu", "make_url_patterns", "import_fs",
       "init_data", "navbar_proj", "knit_print.data.frame", "withMathJax",
-      "Dropbox", "s"
+      "Dropbox", "sf_volumes"
     )
     suppressWarnings(
       suppressMessages({

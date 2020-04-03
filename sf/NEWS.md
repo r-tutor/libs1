@@ -1,6 +1,38 @@
+# version 0.9-0
+
+* see r-spatial blog post: https://www.r-spatial.org/r/2020/03/17/wkt.html
+
+* modify `crs` objects to reflect our post-proj4string world (#1146; #1225): crs objects now contain two fields, `input` with the user input (if any), and `wkt` with a well-known-text  (or WKT2) representation of the coordinate reference system. `crs` objects now have a `$` method to dynamically retrieve the `epsg` (integer) or `proj4string` representation, using e.g. `x$epsg`.
+
+* support for PostGIS 3 using WKT and the new-style `crs` objects; #1234, #1303, #1308 by @etiennebr
+
+* `st_write_db` and `st_read_db` are now defunct. Use `st_write` and `st_read` instead.
+
+* `st_write` now uses `append`, replacing (and deprecating) argument `update`; `st_write` now fails when a layer already exists and `append` has not been set explicitly to `TRUE` (append) or `FALSE` (overwrite); #1266
+
+* `st_proj_info` was renamed into `sf_proj_info`; `sf_proj_info` can now get and set the PROJ data search path and use of CDN; #1277
+
+* adapt to new `dplyr` version; https://github.com/tidyverse/dplyr/issues/4917
+
+* `st_sample` is a generic
+
+* write `stars` rasters with wkt info, rather than proj4strings
+
+* when GEOS >= 3.8.0, `st_make_valid` is provided by `sf` rather than by `lwgeom` #989
+
+* allow for single-sided buffers for linear geometries; #1001
+
+* add `st_reverse` methods to reverse points in a linestring (requires GEOS >= 3.7.0); #1246
+
+* `st_make_grid` returns grid cells or points that intersect with the target geometry, not its bounding box; #1260
+
+* allow for PROJ >= 7; #1254
+
 # version 0.8-1
 
-* conditional to PROJ >= 6.0.0: replace `+init=epsg:XXXX ...` strings with the `XXXX` EPSG integer, to work around a bug in PROJ; see https://github.com/OSGeo/PROJ/pull/1875 and links therein. If there is a `...`, raise a warning that this is now ignored. 
+* `st_as_sf.map` no longer requires `maptools` and `sp`; dropped dependency on maptools.
+
+* work around a bug in 6.0.0 <= PROJ < 6.3.1: replace `+init=epsg:XXXX ...` strings with the `XXXX` EPSG integer, to work around a bug in PROJ; see https://github.com/OSGeo/PROJ/pull/1875 and links therein. If `...` arguments are present, raise a warning that these are ignored now. 
 
 * `st_as_sf.map` no longer requires `maptools` and `sp`; drop dependency on maptools.
 

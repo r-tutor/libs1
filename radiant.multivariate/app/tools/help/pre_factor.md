@@ -26,6 +26,10 @@ At first glance the scree-plot of the Eigenvalues shown below seems to suggest t
 
 The increase in cumulative % explained variance is relatively small going from 2 to 3 factors (i.e., from 82% to 90%). This is confirmed by the fact that the eigenvalue for factor 3 is smaller than 1 (0.44). Again, we choose 2 factors. The first 2 factors capture 82% of the variance in the original data which is excellent.
 
+## Including categorical variables
+
+The pre-factor analysis diagnostics are calculated using Principal Components Analysis (PCA). The correlation matrix used as input for PCA can be calculated for variables of type `numeric`, `integer`, `date`, and `factor`. When variables of type factor are included the `Adjust for categorical variables` box should be checked. When correlations are estimated with adjustment, variables that are of type `factor` will be treated as (ordinal) categorical variables and all other variables will be treated as continuous.
+
 ### Report > Rmd
 
 Add code to <a href="https://radiant-rstats.github.io/docs/data/report_rmd.html" target="_blank">_Report > Rmd_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
@@ -39,4 +43,6 @@ plot(result, plots = "scree", custom = TRUE) +
 
 ### R-functions
 
-For an overview of related R-functions used by Radiant to conduct factor analysis see <a href = "https://radiant-rstats.github.io/radiant.multivariate/reference/index.html#section-multivariate-factor" target="_blank">_Multivariate > Factor_</a>
+For an overview of related R-functions used by Radiant to conduct factor analysis see <a href = "https://radiant-rstats.github.io/radiant.multivariate/reference/index.html#section-multivariate-factor" target="_blank">_Multivariate > Factor_</a>.
+
+The key functions used in the `pre_factor` tool are `cor` from the `stats` package, `eigen` from `base`, and `cortest.bartlett` and `KMO` from the `psych` package. 

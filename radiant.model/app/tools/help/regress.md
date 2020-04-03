@@ -10,9 +10,9 @@ In the _Summary_ tab we can test if two or more variables together add significa
 
 Additional output that requires re-estimation:
 
-* Standardize: Coefficients can be hard to compare if the explanatory variables are measured on different scales. By standardizing the data before estimation we can see which variables move-the-needle most. Note that a one-unit change is now equated to 2 x the standard deviation of the variable
-* Center: Replace all explanatory variables X by X - mean(X). This can be useful when trying to interpret interaction effects
-* Stepwise: A data-mining approach to select the best fitting model
+* Standardize: Coefficients can be hard to compare if the explanatory variables are measured on different scales. By standardizing the response variable and the explanatory variables before estimation we can see which variables move-the-needle most. Radiant standardizes data by replacing the response variable $Y$ by $(Y - mean(Y))/(2 \times sd(Y))$ and replacing all explanatory variables $X$ by $(X - mean(X))/(2 \times sd(X))$. See <a href="http://www.stat.columbia.edu/~gelman/research/published/standardizing7.pdf" target="_blank">Gelman 2008</a> for discussion
+* Center: Replace the response variable Y by Y - mean(Y) and replace all explanatory variables X by X - mean(X). This can be useful when trying to interpret interaction effects
+* Stepwise: A data-mining approach to select the best fitting model. Use with caution!
 * Robust standard errors: When `robust` is selected the coefficient estimates are the same as OLS. However, standard errors are adjusted to account for (minor) heterogeneity and non-normality concerns. 
 
 Additional output that does not require re-estimation:
@@ -29,6 +29,8 @@ If you choose `Command` you must specify at least one variable and value to get 
 * To predict the price of a 1-carat diamond type `carat = 1` and press return
 * To predict the price of diamonds ranging from .5 to 1 carat at steps of size .05 type `carat = seq(.5,.1,.05)` and press return
 * To predict the price of 1,2, or 3 carat diamonds with an ideal cut type `carat = 1:3, cut = "Ideal"` and press return
+
+Once the desired predictions have been generated they can be saved to a CSV file by clicking the download icon on the top right of the screen. To add predictions to the dataset used for estimation, click the `Store` button.
 
 The _Plot_ tab is used to provide basic visualizations of the data as well as diagnostic plots to validate the regression model.
 
@@ -206,14 +208,67 @@ All coefficients in this regression are highly significant.
 
 Add code to <a href="https://radiant-rstats.github.io/docs/data/report_rmd.html" target="_blank">_Report > Rmd_</a> to (re)create the analysis by clicking the <i title="report results" class="fa fa-edit"></i> icon on the bottom left of your screen or by pressing `ALT-enter` on your keyboard. 
 
-If a plot was created it can be customized using `ggplot2` commands or with `gridExtra`. See example below and <a href="https://radiant-rstats.github.io/docs/data/visualize.html" target="_blank">_Data > Visualize_</a> for details.
+If a plot was created it can be customized using `ggplot2` commands or with `patchwork`. See example below and <a href="https://radiant-rstats.github.io/docs/data/visualize.html" target="_blank">_Data > Visualize_</a> for details.
 
 ```r
 result <- regress(diamonds, rvar = "price", evar = c("carat", "clarity", "cut", "color"))
 summary(result)
 plot(result, plots = "scatter", custom = TRUE) %>% 
-  gridExtra::grid.arrange(grobs = ., top = "Scatter plots", ncol = 2)
+  wrap_plots(plot_list, ncol = 2) + plot_annotation(title = "Scatter plots")
 ```
+
+### Video Tutorials
+
+Copy-and-paste the full command below into the RStudio console (i.e., the bottom-left window) and press return to gain access to all materials used in the linear regression module of the <a href="https://www.youtube.com/playlist?list=PLNhtaetb48EdKRIY7MewCyvb_1x7dV3xw" target="_blank">Radiant Tutorial Series</a>:
+
+<pre>usethis::use_course("https://www.dropbox.com/sh/s70cb6i0fin7qq4/AACje2BAivEKDx7WrLrPr5m9a?dl=1")</pre>
+
+<a href="https://youtu.be/xw4pxIcveh4" target="_blank">Data Exploration and Pre-check of Regression (#1)</a>
+
+* This video shows how to use Radiant to explore and visualize data before running a linear regression
+* Topics List:
+    - View data
+    - Visualize data
+
+<a href="https://youtu.be/MepD4N02UO8" target="_blank">Interpretation of Regression Results and Prediction (#2)</a>
+
+* This video explains how to interpret the regression results and calculate the predicted value from a linear regression model
+* Topics List:
+    - Interpret coefficients (numeric and categorical variables)
+    - Interpret R-squared and adjusted R-squared
+    - Interpret F-test result
+    - Predict from a regression model
+
+<a href="https://youtube.com/watch?v=P7SdRlZkGIM" target="_blank">Dealing with Categorical Variables (#3)</a>
+
+* This video shows how to deal with categorical variables in a linear regression model
+* Topics List:
+    - Check the baseline category in Radiant
+    - Change the baseline category
+
+<a href="https://youtu.be/JymPztY9jrc" target="_blank">Adding New Variables into a Regression Model (#4)</a>
+
+* This video demonstrates how to test if adding new variables will lead to a better model with significantly higher explanatory power
+* Topics List:
+    - Set up a hypothesis test for adding new variables in Radiant
+    - Interpret the F-test results
+    - Compare this F-test to the default F-test in regression summary
+
+<a href="https://youtu.be/nLZx84v1PkI" target="_blank">Linear Regression Validation (#5)</a>
+
+* This video demonstrates how to validate a linear regression model 
+* Topics List:
+    - Linearity (scatter plots, same as the one in the pre-check) 
+    - Normality Check (Normal Q-Q plot) 
+    - Multicollinearity (VIF) 
+    - Heteroscedasticity 
+
+<a href="https://youtu.be/byP2YJNqtRc" target="_blank">Log-log Regression (#6)</a>
+
+* This video demonstrates when and how to run a log-log regression 
+* Topics List:
+    - Transform data with skewed distributions by natural log function 
+    - Interpret the coefficients in a log-log regression 
 
 ### Technical notes
 
@@ -318,4 +373,6 @@ So a 1% change in price leads to a $b$% change in sales.
 
 ### R-functions
 
-For an overview of related R-functions used by Radiant to estimate a linear regression model see <a href = "https://radiant-rstats.github.io/radiant.model/reference/index.html#section-model-linear-regression-ols-" target="_blank">_Model > Linear regression (OLS)_</a>
+For an overview of related R-functions used by Radiant to estimate a linear regression model see <a href = "https://radiant-rstats.github.io/radiant.model/reference/index.html#section-model-linear-regression-ols-" target="_blank">_Model > Linear regression (OLS)_</a>.
+
+The key functions used in the `regress` tool are `lm` from the `stats` package and `vif` and `linearHypothesis` from the `car` package. 

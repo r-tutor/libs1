@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;sf&rsquo; version 0.8-1</h2>
+</div><h2>Documentation for package &lsquo;sf&rsquo; version 0.9-0</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 <li><a href="../doc/index.html">User guides, package vignettes and other documentation.</a></li>
@@ -112,6 +112,10 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="tidyverse.html">filter.sf</a></td>
 <td>Tidyverse methods for sf objects (remove .sf suffix!)</td></tr>
+<tr><td style="width: 25%;"><a href="st_bbox.html">format.bbox</a></td>
+<td>Return bounding of a simple feature or simple feature set</td></tr>
+<tr><td style="width: 25%;"><a href="st_crs.html">format.crs</a></td>
+<td>Retrieve coordinate reference system from object</td></tr>
 <tr><td style="width: 25%;"><a href="st.html">format.sfg</a></td>
 <td>Create simple feature from a numeric vector, matrix or list</td></tr>
 <tr><td style="width: 25%;"><a href="tidyverse.html">full_join.sf</a></td>
@@ -312,18 +316,18 @@
 <td>Tidyverse methods for sf objects (remove .sf suffix!)</td></tr>
 <tr><td style="width: 25%;"><a href="sf.html">sf</a></td>
 <td>Create sf object</td></tr>
-<tr><td style="width: 25%;"><a href="sf-deprecated.html">sf-deprecated</a></td>
+<tr><td style="width: 25%;"><a href="sf-defunct.html">sf-defunct</a></td>
 <td>Deprecated functions in 'sf'</td></tr>
 <tr><td style="width: 25%;"><a href="plot.html">sf.colors</a></td>
 <td>plot sf object</td></tr>
 <tr><td style="width: 25%;"><a href="sfc.html">sfc</a></td>
 <td>Create simple feature geometry list column</td></tr>
-<tr><td style="width: 25%;"><a href="st_as_sfc.html">sf_as_sfc.pq_geometry</a></td>
-<td>Convert foreign geometry object to an sfc object</td></tr>
 <tr><td style="width: 25%;"><a href="sf_extSoftVersion.html">sf_extSoftVersion</a></td>
 <td>Provide the external dependencies versions of the libraries linked to sf</td></tr>
 <tr><td style="width: 25%;"><a href="sf_project.html">sf_project</a></td>
 <td>directly transform a set of coordinates</td></tr>
+<tr><td style="width: 25%;"><a href="st_transform.html">sf_proj_info</a></td>
+<td>Transform or convert coordinates of simple feature</td></tr>
 <tr><td style="width: 25%;"><a href="sgbp.html">sgbp</a></td>
 <td>Methods for dealing with sparse geometry binary predicate lists</td></tr>
 <tr><td style="width: 25%;"><a href="tidyverse.html">slice.sf</a></td>
@@ -380,6 +384,8 @@
 <td>Convert foreign geometry object to an sfc object</td></tr>
 <tr><td style="width: 25%;"><a href="st_as_sfc.html">st_as_sfc.map</a></td>
 <td>Convert foreign geometry object to an sfc object</td></tr>
+<tr><td style="width: 25%;"><a href="st_as_sfc.html">st_as_sfc.pq_geometry</a></td>
+<td>Convert foreign geometry object to an sfc object</td></tr>
 <tr><td style="width: 25%;"><a href="st_as_sfc.html">st_as_sfc.raw</a></td>
 <td>Convert foreign geometry object to an sfc object</td></tr>
 <tr><td style="width: 25%;"><a href="st_as_sfc.html">st_as_sfc.SpatialLines</a></td>
@@ -402,6 +408,8 @@
 <td>Return Well-known Text representation of simple feature geometry or coordinate reference system</td></tr>
 <tr><td style="width: 25%;"><a href="st_as_text.html">st_as_text.sfg</a></td>
 <td>Return Well-known Text representation of simple feature geometry or coordinate reference system</td></tr>
+<tr><td style="width: 25%;"><a href="st_crs.html">st_axis_order</a></td>
+<td>Retrieve coordinate reference system from object</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox</a></td>
 <td>Return bounding of a simple feature or simple feature set</td></tr>
 <tr><td style="width: 25%;"><a href="st_bbox.html">st_bbox.CIRCULARSTRING</a></td>
@@ -618,6 +626,8 @@
 <td>Sample points on a linear geometry</td></tr>
 <tr><td style="width: 25%;"><a href="st_make_grid.html">st_make_grid</a></td>
 <td>Create a regular tesselation over the bounding box of an sf or sfc object</td></tr>
+<tr><td style="width: 25%;"><a href="valid.html">st_make_valid</a></td>
+<td>Make an invalid geometry valid</td></tr>
 <tr><td style="width: 25%;"><a href="st.html">st_multilinestring</a></td>
 <td>Create simple feature from a numeric vector, matrix or list</td></tr>
 <tr><td style="width: 25%;"><a href="st.html">st_multipoint</a></td>
@@ -690,21 +700,27 @@
 <td>Get precision</td></tr>
 <tr><td style="width: 25%;"><a href="st_precision.html">st_precision&lt;-</a></td>
 <td>Get precision</td></tr>
-<tr><td style="width: 25%;"><a href="st_transform.html">st_proj_info</a></td>
-<td>Transform or convert coordinates of simple feature</td></tr>
 <tr><td style="width: 25%;"><a href="st_read.html">st_read</a></td>
 <td>Read simple features or layers from file or database</td></tr>
 <tr><td style="width: 25%;"><a href="st_read.html">st_read.character</a></td>
 <td>Read simple features or layers from file or database</td></tr>
 <tr><td style="width: 25%;"><a href="st_read.html">st_read.DBIObject</a></td>
 <td>Read simple features or layers from file or database</td></tr>
-<tr><td style="width: 25%;"><a href="sf-deprecated.html">st_read_db</a></td>
+<tr><td style="width: 25%;"><a href="sf-defunct.html">st_read_db</a></td>
 <td>Deprecated functions in 'sf'</td></tr>
-<tr><td style="width: 25%;"><a href="sf-deprecated.html">st_read_db,</a></td>
+<tr><td style="width: 25%;"><a href="sf-defunct.html">st_read_db,</a></td>
 <td>Deprecated functions in 'sf'</td></tr>
 <tr><td style="width: 25%;"><a href="st_relate.html">st_relate</a></td>
 <td>Compute DE9-IM relation between pairs of geometries, or match it to a given pattern</td></tr>
+<tr><td style="width: 25%;"><a href="geos_unary.html">st_reverse</a></td>
+<td>Geometric unary operations on simple feature geometry sets</td></tr>
 <tr><td style="width: 25%;"><a href="st_sample.html">st_sample</a></td>
+<td>sample points on or in (sets of) spatial features</td></tr>
+<tr><td style="width: 25%;"><a href="st_sample.html">st_sample.sf</a></td>
+<td>sample points on or in (sets of) spatial features</td></tr>
+<tr><td style="width: 25%;"><a href="st_sample.html">st_sample.sfc</a></td>
+<td>sample points on or in (sets of) spatial features</td></tr>
+<tr><td style="width: 25%;"><a href="st_sample.html">st_sample.sfg</a></td>
 <td>sample points on or in (sets of) spatial features</td></tr>
 <tr><td style="width: 25%;"><a href="geos_unary.html">st_segmentize</a></td>
 <td>Geometric unary operations on simple feature geometry sets</td></tr>
@@ -768,7 +784,7 @@
 <td>Write simple features object to file or database</td></tr>
 <tr><td style="width: 25%;"><a href="st_write.html">st_write.sfc</a></td>
 <td>Write simple features object to file or database</td></tr>
-<tr><td style="width: 25%;"><a href="sf-deprecated.html">st_write_db</a></td>
+<tr><td style="width: 25%;"><a href="sf-defunct.html">st_write_db</a></td>
 <td>Deprecated functions in 'sf'</td></tr>
 <tr><td style="width: 25%;"><a href="st_zm.html">st_zm</a></td>
 <td>Drop or add Z and/or M dimensions from feature geometries</td></tr>
@@ -827,6 +843,8 @@
 <td>Summarize simple feature type for tibble</td></tr>
 <tr><td style="width: 25%;"><a href="tidyverse.html">tidyverse</a></td>
 <td>Tidyverse methods for sf objects (remove .sf suffix!)</td></tr>
+<tr><td style="width: 25%;"><a href="transform.sf.html">transform.sf</a></td>
+<td>transform method for sf objects</td></tr>
 <tr><td style="width: 25%;"><a href="tidyverse.html">transmute.sf</a></td>
 <td>Tidyverse methods for sf objects (remove .sf suffix!)</td></tr>
 <tr><td style="width: 25%;"><a href="tibble.html">type_sum.sfc</a></td>
@@ -847,6 +865,8 @@
 <h2><a name="V">-- V --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="valid.html">valid</a></td>
+<td>Make an invalid geometry valid</td></tr>
 <tr><td style="width: 25%;"><a href="vctrs.html">vctrs</a></td>
 <td>vctrs methods for sf objects</td></tr>
 <tr><td style="width: 25%;"><a href="vctrs.html">vec_cast.sfc</a></td>

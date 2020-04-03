@@ -30,15 +30,31 @@ tricks. Column names are not modified.
 refer to columns created earlier in the call. Only columns of length one
 are recycled.
 </p>
+</li>
+<li><p> If a column evaluates to a data frame or tibble, it is nested or spliced.
+See examples.
+</p>
 </li></ul>
 
+<p><code>tibble_row()</code> constructs a data frame that is guaranteed to occupy one row.
+Vector columns are required to have size one, non-vector columns are wrapped
+in a list.
+</p>
 
 
 <h3>Usage</h3>
 
 <pre>
-tibble(..., .rows = NULL, .name_repair = c("check_unique", "unique",
-  "universal", "minimal"))
+tibble(
+  ...,
+  .rows = NULL,
+  .name_repair = c("check_unique", "unique", "universal", "minimal")
+)
+
+tibble_row(
+  ...,
+  .name_repair = c("check_unique", "unique", "universal", "minimal")
+)
 </pre>
 
 
@@ -47,10 +63,16 @@ tibble(..., .rows = NULL, .name_repair = c("check_unique", "unique",
 <table summary="R argblock">
 <tr valign="top"><td><code>...</code></td>
 <td>
-<p>A set of name-value pairs. Arguments are evaluated sequentially,
-so you can refer to previously created elements. These arguments are
-processed with <code><a href="../../rlang/html/quos.html">rlang::quos()</a></code> and support unquote via <code><a href="../../rlang/html/quasiquotation.html">!!</a></code> and
-unquote-splice via <code><a href="../../rlang/html/quasiquotation.html">!!!</a></code>. Use <code>:=</code> to create columns that start with a dot.</p>
+<p>&lt;<code><a href="../../rlang/html/dyn-dots.html">dynamic-dots</a></code>&gt;
+A set of name-value pairs. These arguments are
+processed with <code><a href="../../rlang/html/quos.html">rlang::quos()</a></code> and support unquote via <code><a href="../../rlang/html/nse-force.html">!!</a></code> and
+unquote-splice via <code><a href="../../rlang/html/nse-force.html">!!!</a></code>. Use <code style="white-space: pre;">:=</code> to create columns that start with a dot.
+</p>
+<p>Arguments are evaluated sequentially.
+You can refer to previously created elements directly or using the <a href="../../timetk/html/tidyeval.html">.data</a>
+pronoun.
+An existing <code>.data</code> pronoun, provided e.g. inside <code><a href="../../dplyr/html/mutate.html">dplyr::mutate()</a></code>,
+is not available.</p>
 </td></tr>
 <tr valign="top"><td><code>.rows</code></td>
 <td>
@@ -84,7 +106,8 @@ for names in the style of base R).
 </p>
 </li></ul>
 
-<p>See <a href="name-repair.html">name-repair</a> for more details on these terms and the strategies used
+<p>This argument is passed on as <code>repair</code> to <code><a href="../../vctrs/html/vec_as_names.html">vctrs::vec_as_names()</a></code>.
+See there for more details on these terms and the strategies used
 to enforce them.</p>
 </td></tr>
 </table>
@@ -101,9 +124,10 @@ frame, i.e. it has class <code>data.frame</code>.
 <h3>See Also</h3>
 
 <p>Use <code><a href="as_tibble.html">as_tibble()</a></code> to turn an existing object into a tibble. Use
-<code>enframe()</code> to convert a named vector into tibble. Name repair is detailed
-in <a href="name-repair.html">name-repair</a>. <code><a href="../../rlang/html/list2.html">rlang::list2()</a></code> provides more details on tidy dots
-semantics, i.e. exactly how <a href="../../rlang/html/quasiquotation.html">quasiquotation</a> works for the <code>...</code> argument.
+<code>enframe()</code> to convert a named vector into a tibble. Name repair is
+detailed in <code><a href="../../vctrs/html/vec_as_names.html">vctrs::vec_as_names()</a></code>.
+See <a href="../../rlang/html/nse-force.html">quasiquotation</a> for more details on tidy dots semantics,
+i.e. exactly how  the <code>...</code> argument is processed.
 </p>
 
 
@@ -156,16 +180,18 @@ tibble(x = 1, x = 2, .name_repair = ~ make.names(., unique = TRUE))
 tibble(x = 1, x = 2, .name_repair = ~ c("a", "b"))
 
 # Tibbles can contain columns that are tibbles or matrices
-# if the number of rows is consistent:
+# if the number of rows is compatible. Unnamed tibbled are
+# spliced, i.e. the inner columns are inserted into the
+# tibble under construction.
 tibble(
   a = 1:3,
-  b = tibble(
-    c = 4:6,
-    d = 7:9
+  tibble(
+    b = 4:6,
+    c = 7:9
   ),
-  e = tibble(
-    f = tibble(
-      g = letters[1:3]
+  d = tibble(
+    e = tibble(
+      f = b
     )
   )
 )
@@ -176,7 +202,7 @@ tibble(
 )
 
 # data can not contain POSIXlt columns, or tibbles or matrices
-# with inconsistent number of rows:
+# with incompatible number of rows:
 try(tibble(y = strptime("2000/01/01", "%x")))
 try(tibble(a = 1:3, b = tibble(c = 4:7)))
 
@@ -190,9 +216,12 @@ tibble(x = 1, y = x)
 tibble(x = 1, y = !!x)
 
 # You can splice-unquote a list of quosures and expressions:
-tibble(!!!list(x = rlang::quo(1:10), y = quote(x * 2)))
+tibble(!!! list(x = rlang::quo(1:10), y = quote(x * 2)))
 
+
+# Use tibble_row() to construct a one-row tibble:
+tibble_row(a = 1, lm = lm(Petal.Width ~ Petal.Length + Species, data = iris))
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>tibble</em> version 2.1.3 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>tibble</em> version 3.0.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

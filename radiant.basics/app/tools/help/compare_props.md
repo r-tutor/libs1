@@ -17,7 +17,7 @@ In the `Choose combinations` box select all available entries to conduct pair-wi
 
 <p align="center"><img src="figures_basics/compare_props_summary.png"></p>
 
-The first two blocks of output show basic information about the test (e.g.,. selected variables and confidence levels) and summary statistics (e.g., proportions, standard errors, etc. per group). The final block of output shows the following:
+The first two blocks of output show basic information about the test (e.g.,. selected variables and confidence levels) and summary statistics (e.g., proportions, standard error, margin or error, etc. per group). The final block of output shows the following:
 
 * `Null hyp.` is the null hypothesis and `Alt. hyp.` the alternative hypothesis
 * `diff` is the difference between the sample proportion for two groups (e.g., 0.635 - 0.441 = 0.194). If the null hypothesis is true we expect this difference to be small (i.e., close to zero)
@@ -33,10 +33,10 @@ Level     : Yes in survived
 Confidence: 0.95 
 Adjustment: None 
 
- pclass Yes  No   n     p    se    me
-    1st 179 103 282 0.635 0.029 0.056
-    2nd 115 146 261 0.441 0.031 0.060
-    3rd 131 369 500 0.262 0.020 0.039
+ pclass Yes  No     p   n n_missing    sd    se    me
+    1st 179 103 0.635 282         0 8.086 0.029 0.056
+    2nd 115 146 0.441 261         0 8.021 0.031 0.060
+    3rd 131 369 0.262 500         0 9.832 0.020 0.039
 
  Null hyp.   Alt. hyp.              diff  p.value chisq.value df 2.5%  97.5%    
  1st = 2nd   1st not equal to 2nd   0.194 < .001  20.576      1  0.112 0.277 ***
@@ -101,4 +101,20 @@ If a plot was created it can be customized using `ggplot2` commands (e.g., `plot
 
 ### R-functions
 
-For an overview of related R-functions used by Radiant to evaluate proportions see <a href = "https://radiant-rstats.github.io/radiant.basics/reference/index.html#section-basics-proportions" target="_blank">_Basics > Proportions_</a>
+For an overview of related R-functions used by Radiant to evaluate proportions see <a href = "https://radiant-rstats.github.io/radiant.basics/reference/index.html#section-basics-proportions" target="_blank">_Basics > Proportions_</a>.
+
+The key function from the `stats` package used in the `compare_props` tool is `prop.test`.
+
+### Video Tutorials
+
+Copy-and-paste the full command below into the RStudio console (i.e., the bottom-left window) and press return to gain access to all materials used in the hypothesis testing module of the <a href="https://www.youtube.com/playlist?list=PLNhtaetb48EdKRIY7MewCyvb_1x7dV3xw" target="_blank">Radiant Tutorial Series</a>:
+
+<pre>usethis::use_course("https://www.dropbox.com/sh/0xvhyolgcvox685/AADSppNSIocrJS-BqZXhD1Kna?dl=1")</pre>
+
+<a href="https://youtu.be/ICqSRs4UfLM" target="_blank">Compare Proportions Hypothesis Test</a>
+
+* This video shows how to conduct a compare proportions hypothesis test
+* Topics List:
+    - Setup a hypothesis test for compare means in Radiant
+    - Use the p.value and confidence interval to evaluate the hypothesis test
+

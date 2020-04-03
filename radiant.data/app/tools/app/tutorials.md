@@ -60,11 +60,26 @@ The state file used in the demo is available for download from [GitHub](https://
 
 <iframe width="640" height="375" src="https://www.youtube.com/embed/9fugq5dXNhk" frameborder="0" allowfullscreen></iframe>
 
+## Radiant Tutorial Series
+
+For additional video tutorials see the **Radiant Tutorial Series** playlist linked below that covers:
+
+* Decision Analysis (_Model > Decision analysis_)
+* Probability calculator (_Basics > Probability calculator_)
+* Hypothesis testing:
+    - _Basics > Single mean_
+    - _Basics > Single proportion_
+    - _Basics > Compare proportions_
+    - _Basics > Compare means_
+    - _Basics > Cross-tabs_
+* Linear regression (_Model > Linear regression_)
+* Simulation (_Model > Simulation_)
+
+<a href="https://www.youtube.com/playlist?list=PLNhtaetb48EdKRIY7MewCyvb_1x7dV3xw" target="_blank">https://www.youtube.com/playlist?list=PLNhtaetb48EdKRIY7MewCyvb_1x7dV3xw</a>
+
 <!--
 ## Visualizing data
-
 <iframe width="640" height="375" src="" frameborder="0" allowfullscreen></iframe>
-
 -->
 
 ## License
@@ -76,4 +91,4 @@ The documentation, images, and videos for the `radiant.data` package are license
 
 If you are interested in using any of the radiant packages please email me at radiant@rady.ucsd.edu
 
-&copy; Vincent Nijs (2018) <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="imgs/by-sa.png" /></a>
+&copy; Vincent Nijs (2019) <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="imgs/by-sa.png" /></a>

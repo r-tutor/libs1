@@ -401,7 +401,7 @@ div.tocify {
 </div>
 <div id="how-simple-features-in-r-are-organized" class="section level1">
 <h1>How simple features in R are organized</h1>
-<p>Package <code>sf</code> represents simple features as native R objects. Similar to <a href="http://postgis.net/">PostGIS</a>, all functions and methods in <code>sf</code> that operate on spatial data are prefixed by <code>st_</code>, which refers to <em>spatial and temporal</em>; this makes them easily findable by command-line completion. Simple features are implemented as R native data, using simple data structures (S3 classes, lists, matrix, vector). Typical use involves reading, manipulating and writing of sets of features, with attributes and geometries.</p>
+<p>Package <code>sf</code> represents simple features as native R objects. Similar to <a href="http://postgis.net/">PostGIS</a>, all functions and methods in <code>sf</code> that operate on spatial data are prefixed by <code>st_</code>, which refers to <em>spatial type</em>; this makes them easily findable by command-line completion. Simple features are implemented as R native data, using simple data structures (S3 classes, lists, matrix, vector). Typical use involves reading, manipulating and writing of sets of features, with attributes and geometries.</p>
 <p>As attributes are typically stored in <code>data.frame</code> objects (or the very similar <code>tbl_df</code>), we will also store feature geometries in a <code>data.frame</code> column. Since geometries are not single-valued, they are put in a list-column, a list of length equal to the number of records in the <code>data.frame</code>, with each list element holding the simple feature geometry of that feature. The three classes used to represent simple features are:</p>
 <ul>
 <li><code>sf</code>, the table (<code>data.frame</code>) with feature attributes and feature geometries, which contains</li>
@@ -415,13 +415,12 @@ div.tocify {
 <pre class="r"><code>library(sf)
 ## Linking to GEOS 3.8.0, GDAL 3.0.2, PROJ 6.2.1
 nc &lt;- st_read(system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;))
-## Reading layer `nc' from data source `/tmp/RtmpNfOWz4/Rinst4e3d3dd7aabd/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/RtmprHOBbV/Rinst6782470e2d96/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
 ## bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
-## epsg (SRID):    4267
-## proj4string:    +proj=longlat +datum=NAD27 +no_defs</code></pre>
+## geographic CRS: NAD27</code></pre>
 <p>(Note that users will not use <code>system.file</code> but give a <code>filename</code> directly, and that shapefiles consist of more than one file, all with identical basename, which reside in the same directory.) The short report printed gives the file name, the driver (ESRI Shapefile), mentions that there are 100 features (records, represented as rows) and 14 fields (attributes, represented as columns). This object is of class</p>
 <pre class="r"><code>class(nc)
 ## [1] &quot;sf&quot;         &quot;data.frame&quot;</code></pre>
@@ -458,13 +457,15 @@ nc &lt;- st_read(system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;))
 ## [34] st_filter             st_geometry           st_geometry&lt;-        
 ## [37] st_interpolate_aw     st_intersection       st_intersects        
 ## [40] st_is                 st_join               st_line_merge        
-## [43] st_m_range            st_nearest_points     st_node              
-## [46] st_normalize          st_point_on_surface   st_polygonize        
-## [49] st_precision          st_segmentize         st_set_precision     
-## [52] st_shift_longitude    st_simplify           st_snap              
-## [55] st_sym_difference     st_transform          st_triangulate       
-## [58] st_union              st_voronoi            st_wrap_dateline     
-## [61] st_write              st_z_range            st_zm                
+## [43] st_m_range            st_make_valid         st_nearest_points    
+## [46] st_node               st_normalize          st_point_on_surface  
+## [49] st_polygonize         st_precision          st_reverse           
+## [52] st_sample             st_segmentize         st_set_precision     
+## [55] st_shift_longitude    st_simplify           st_snap              
+## [58] st_sym_difference     st_transform          st_triangulate       
+## [61] st_union              st_voronoi            st_wrap_dateline     
+## [64] st_write              st_z_range            st_zm                
+## [67] transform            
 ## see '?methods' for accessing help and source code</code></pre>
 <p>It is also possible to create <code>data.frame</code> objects with geometry list-columns that are not of class <code>sf</code>, e.g. by</p>
 <pre class="r"><code>nc.no_sf &lt;- as.data.frame(nc)
@@ -485,8 +486,7 @@ class(nc.no_sf)
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
 ## bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
-## epsg (SRID):    4267
-## proj4string:    +proj=longlat +datum=NAD27 +no_defs
+## geographic CRS: NAD27
 ## First 5 geometries:
 ## MULTIPOLYGON (((-81.47276 36.23436, -81.54084 3...
 ## MULTIPOLYGON (((-81.23989 36.36536, -81.24069 3...
@@ -531,14 +531,15 @@ plot(nc[w,1], col = 2:7)</code></pre>
 ## [28] st_crs                st_crs&lt;-              st_difference        
 ## [31] st_geometry           st_intersection       st_intersects        
 ## [34] st_is                 st_line_merge         st_m_range           
-## [37] st_nearest_points     st_node               st_normalize         
-## [40] st_point_on_surface   st_polygonize         st_precision         
-## [43] st_segmentize         st_set_precision      st_shift_longitude   
-## [46] st_simplify           st_snap               st_sym_difference    
-## [49] st_transform          st_triangulate        st_union             
-## [52] st_voronoi            st_wrap_dateline      st_write             
-## [55] st_z_range            st_zm                 str                  
-## [58] summary               vec_cast.sfc          vec_ptype2.sfc       
+## [37] st_make_valid         st_nearest_points     st_node              
+## [40] st_normalize          st_point_on_surface   st_polygonize        
+## [43] st_precision          st_reverse            st_sample            
+## [46] st_segmentize         st_set_precision      st_shift_longitude   
+## [49] st_simplify           st_snap               st_sym_difference    
+## [52] st_transform          st_triangulate        st_union             
+## [55] st_voronoi            st_wrap_dateline      st_write             
+## [58] st_z_range            st_zm                 str                  
+## [61] summary               vec_cast.sfc          vec_ptype2.sfc       
 ## see '?methods' for accessing help and source code</code></pre>
 <p>Coordinate reference systems (<code>st_crs</code> and <code>st_transform</code>) are discussed in the section on <a href="#crs">coordinate reference systems</a>. <code>st_as_wkb</code> and <code>st_as_text</code> convert geometry list-columns into well-known-binary or well-known-text, explained <a href="#wkb">below</a>. <code>st_bbox</code> retrieves the coordinate bounding box.</p>
 <p>Attributes include</p>
@@ -548,8 +549,22 @@ plot(nc[w,1], col = 2:7)</code></pre>
 ## 
 ## $crs
 ## Coordinate Reference System:
-##   EPSG: 4267 
-##   proj4string: &quot;+proj=longlat +datum=NAD27 +no_defs&quot;
+##   User input: NAD27 
+##   wkt:
+## GEOGCRS[&quot;NAD27&quot;,
+##     DATUM[&quot;North American Datum 1927&quot;,
+##         ELLIPSOID[&quot;Clarke 1866&quot;,6378206.4,294.978698213898,
+##             LENGTHUNIT[&quot;metre&quot;,1]]],
+##     PRIMEM[&quot;Greenwich&quot;,0,
+##         ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##     CS[ellipsoidal,2],
+##         AXIS[&quot;latitude&quot;,north,
+##             ORDER[1],
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##         AXIS[&quot;longitude&quot;,east,
+##             ORDER[2],
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##     ID[&quot;EPSG&quot;,4267]]
 ## 
 ## $class
 ## [1] &quot;sfc_MULTIPOLYGON&quot; &quot;sfc&quot;             
@@ -571,8 +586,7 @@ plot(nc[w,1], col = 2:7)</code></pre>
 ## geometry type:  GEOMETRYCOLLECTION
 ## dimension:      XY
 ## bbox:           xmin: 1 ymin: 2 xmax: 2 ymax: 4
-## epsg (SRID):    NA
-## proj4string:    NA
+## CRS:            NA
 ## GEOMETRYCOLLECTION (POINT (1 2))
 ## GEOMETRYCOLLECTION (LINESTRING (1 3, 2 4))
 class(mix)
@@ -584,8 +598,7 @@ class(mix)
 ## geometry type:  GEOMETRY
 ## dimension:      XY
 ## bbox:           xmin: 1 ymin: 2 xmax: 2 ymax: 4
-## epsg (SRID):    NA
-## proj4string:    NA
+## CRS:            NA
 ## POINT (1 2)
 ## LINESTRING (1 3, 2 4)
 class(mix)
@@ -687,13 +700,12 @@ st_as_sfc(structure(list(st_as_binary(x)), class = &quot;WKB&quot;))[[1]]
 <p>As we’ve seen above, reading spatial data from an external file can be done by</p>
 <pre class="r"><code>filename &lt;- system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;)
 nc &lt;- st_read(filename)
-## Reading layer `nc' from data source `/tmp/RtmpNfOWz4/Rinst4e3d3dd7aabd/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/RtmprHOBbV/Rinst6782470e2d96/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
 ## bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
-## epsg (SRID):    4267
-## proj4string:    +proj=longlat +datum=NAD27 +no_defs</code></pre>
+## geographic CRS: NAD27</code></pre>
 <p>we can suppress the output by adding argument <code>quiet=TRUE</code> or by using the otherwise nearly identical but more quiet</p>
 <pre class="r"><code>nc &lt;- read_sf(filename)</code></pre>
 <p>Writing takes place in the same fashion, using <code>st_write</code>:</p>
@@ -832,8 +844,8 @@ methods(st_as_sfc)
 ##  [9] st_as_sfc.character*          st_as_sfc.dimensions*        
 ## [11] st_as_sfc.factor*             st_as_sfc.list*              
 ## [13] st_as_sfc.map*                st_as_sfc.owin*              
-## [15] st_as_sfc.psp*                st_as_sfc.raw*               
-## [17] st_as_sfc.tess*              
+## [15] st_as_sfc.pq_geometry*        st_as_sfc.psp*               
+## [17] st_as_sfc.raw*                st_as_sfc.tess*              
 ## see '?methods' for accessing help and source code
 # anticipate that sp::CRS will expand proj4strings:
 p4s &lt;- &quot;+proj=longlat +datum=NAD27 +no_defs +ellps=clrk66 +nadgrids=@conus,@alaska,@ntv2_0.gsb,@ntv1_can.dat&quot;
@@ -844,15 +856,18 @@ st_crs(nc) &lt;- p4s
 names(nc)[15] = &quot;geometry&quot;
 attr(nc, &quot;sf_column&quot;) = &quot;geometry&quot;
 nc.sp &lt;- as(nc, &quot;Spatial&quot;)
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;): Discarded
+## datum Unknown_based_on_Clarke_1866_ellipsoid in CRS definition
 class(nc.sp)
 ## [1] &quot;SpatialPolygonsDataFrame&quot;
 ## attr(,&quot;package&quot;)
 ## [1] &quot;sp&quot;
 nc2 &lt;- st_as_sf(nc.sp)
 all.equal(nc, nc2)
-## [1] &quot;Attributes: &lt; Component \&quot;class\&quot;: Lengths (4, 2) differ (string compare on first 2) &gt;&quot;                                         
-## [2] &quot;Attributes: &lt; Component \&quot;class\&quot;: 1 string mismatch &gt;&quot;                                                                         
-## [3] &quot;Component \&quot;geometry\&quot;: Attributes: &lt; Component \&quot;crs\&quot;: Component \&quot;epsg\&quot;: 'is.NA' value mismatch: 1 in current 0 in target &gt;&quot;</code></pre>
+## [1] &quot;Attributes: &lt; Component \&quot;class\&quot;: Lengths (4, 2) differ (string compare on first 2) &gt;&quot;           
+## [2] &quot;Attributes: &lt; Component \&quot;class\&quot;: 1 string mismatch &gt;&quot;                                           
+## [3] &quot;Component \&quot;geometry\&quot;: Attributes: &lt; Component \&quot;crs\&quot;: Component \&quot;input\&quot;: 1 string mismatch &gt;&quot;
+## [4] &quot;Component \&quot;geometry\&quot;: Attributes: &lt; Component \&quot;crs\&quot;: Component \&quot;wkt\&quot;: 1 string mismatch &gt;&quot;</code></pre>
 <p>As the <code>Spatial*</code> objects only support <code>MULTILINESTRING</code> and <code>MULTIPOLYGON</code>, <code>LINESTRING</code> and <code>POLYGON</code> geometries are automatically coerced into their <code>MULTI</code> form. When converting <code>Spatial*</code> into <code>sf</code>, if all geometries consist of a single <code>POLYGON</code> (possibly with holes), a <code>POLYGON</code> and otherwise all geometries are returned as <code>MULTIPOLYGON</code>: a mix of <code>POLYGON</code> and <code>MULTIPOLYGON</code> (such as common in shapefiles) is not created. Argument <code>forceMulti=TRUE</code> will override this, and create <code>MULTIPOLYGON</code>s in all cases. For <code>LINES</code> the situation is identical.</p>
 </div>
 <div id="geometrycollection" class="section level2">
@@ -973,14 +988,13 @@ units::set_units(a, ha) # result in hectares
         CNTY_ID = &quot;identity&quot;, NAME = &quot;identity&quot;, FIPS = &quot;identity&quot;, FIPSNO = &quot;identity&quot;,
         CRESS_ID = &quot;identity&quot;, BIR74 = &quot;aggregate&quot;, SID74 = &quot;aggregate&quot;, NWBIR74 = &quot;aggregate&quot;,
         BIR79 = &quot;aggregate&quot;, SID79 = &quot;aggregate&quot;, NWBIR79 = &quot;aggregate&quot;))
-## Reading layer `nc' from data source `/tmp/RtmpNfOWz4/Rinst4e3d3dd7aabd/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/RtmprHOBbV/Rinst6782470e2d96/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## Attribute-geometry relationship: 0 constant, 8 aggregate, 6 identity
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
 ## bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
-## epsg (SRID):    4267
-## proj4string:    +proj=longlat +datum=NAD27 +no_defs
+## geographic CRS: NAD27
 st_agr(nc)
 ##      AREA PERIMETER     CNTY_   CNTY_ID      NAME      FIPS    FIPSNO  CRESS_ID 
 ## aggregate aggregate  identity  identity  identity  identity  identity  identity 
