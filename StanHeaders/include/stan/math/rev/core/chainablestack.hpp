@@ -9,7 +9,7 @@ namespace math {
 class vari;
 class chainable_alloc;
 
-using ChainableStack = AutodiffStackSingleton<vari, chainable_alloc>;
+typedef AutodiffStackSingleton<vari, chainable_alloc> ChainableStack;
 
 }  // namespace math
 }  // namespace stan

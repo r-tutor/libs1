@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Round to Integer Keeping the Sum Fixed</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for roundfixS {sfsmisc}"><tr><td>roundfixS {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Round to Integer Keeping the Sum Fixed</h2>
+
+<h3>Description</h3>
+
+<p>Given a real numbers <i>y_i</i> with the particular property that
+<i>&sum;_i y_i</i> is integer, find <em>integer</em> numbers <i>x_i</i>
+which are close to <i>y_i</i> (<i>
+    |x[i] - y[i]| &lt; 1 for all i</i>), and have identical &ldquo;marginal&rdquo;
+sum, <code>sum(x) == sum(y)</code>.
+</p>
+<p>As I found later, the problem is known as &ldquo;Apportionment Problem&rdquo;
+and it is quite an old problem with several solution methods proposed
+historically, but only in 1982, Balinski and Young proved that there
+is no method that fulfills three natural desiderata.
+</p>
+<p>Note that the (first) three methods currently available here were all
+(re?)-invented by M.Maechler, without any knowledge of the
+litterature.  At the time of writing, I have not even checked to which
+(if any) of the historical methods they match.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+roundfixS(x, method = c("offset-round", "round+fix", "1greedy"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a numeric vector which <b>must</b> sum to an integer</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>character string specifying the algorithm to be used.</p>
+</td></tr>
+</table>
+
+
+
+<h3>Details</h3>
+
+<p>Without hindsight, it may be surprising that all three methods give
+identical results (in all situations and simulations considered),
+notably that the idea of &lsquo;mass shifting&rsquo; employed in the
+iterative <code>"1greedy"</code> algorithm seems equivalent to the much simpler
+idea used in <code>"offset-round"</code>.
+</p>
+<p>I am pretty sure that these algorithms solve the <i>L_p</i>
+optimization problem, <i>min_x ||y - x||_p</i>,
+typically for all <i>p in [1,Inf]</i>
+<em>simultaneously</em>, but have not bothered to find a formal proof.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a numeric vector, say <code>r</code>, of the same length as <code>x</code>, but
+with integer values and fulfulling <code>sum(r) == sum(x)</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, November 2007</p>
+
+
+<h3>References</h3>
+
+<p>Michel Balinski and H. Peyton Young (1982)
+<b>Fair Representation: Meeting the Ideal of One Man, One Vote</b>;
+</p>
+<p><a href="https://en.wikipedia.org/wiki/Apportionment_paradox">https://en.wikipedia.org/wiki/Apportionment_paradox</a>
+</p>
+<p><a href="https://www.ams.org/samplings/feature-column/fcarc-apportionii3">https://www.ams.org/samplings/feature-column/fcarc-apportionii3</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/Round.html">round</a></code> etc
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## trivial example
+kk &lt;- c(0,1,7)
+stopifnot(identical(kk, roundfixS(kk))) # failed at some point
+
+x &lt;- c(-1.4, -1, 0.244, 0.493, 1.222, 1.222, 2, 2, 2.2, 2.444, 3.625, 3.95)
+sum(x) # an integer
+r &lt;- roundfixS(x)
+stopifnot(all.equal(sum(r), sum(x)))
+m &lt;- cbind(x=x, `r2i(x)` = r, resid = x - r, `|res|` = abs(x-r))
+rbind(m, c(colSums(m[,1:2]), 0, sum(abs(m[,"|res|"]))))
+
+chk &lt;- function(y) {
+  cat("sum(y) =", format(S &lt;- sum(y)),"\n")
+  r2  &lt;- roundfixS(y, method="offset")
+  r2. &lt;- roundfixS(y, method="round")
+  r2_ &lt;- roundfixS(y, method="1g")
+  stopifnot(all.equal(sum(r2 ), S),
+            all.equal(sum(r2.), S),
+            all.equal(sum(r2_), S))
+  all(r2 == r2. &amp; r2. == r2_) # TRUE if all give the same result
+}
+
+makeIntSum &lt;- function(y) {
+   n &lt;- length(y)
+   y[n] &lt;- ceiling(y[n]) - (sum(y[-n]) %% 1)
+   y
+}
+set.seed(11)
+y &lt;- makeIntSum(rnorm(100))
+chk(y)
+
+## nastier example:
+set.seed(7)
+y &lt;- makeIntSum(rpois(100, 10) + c(runif(75, min= 0, max=.2),
+                                   runif(25, min=.5, max=.9)))
+chk(y)
+
+## Not run: 
+for(i in 1:1000)
+    stopifnot(chk(makeIntSum(rpois(100, 10) +
+                             c(runif(75, min= 0, max=.2),
+                               runif(25, min=.5, max=.9)))))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

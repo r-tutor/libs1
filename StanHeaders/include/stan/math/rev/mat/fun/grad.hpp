@@ -1,7 +1,6 @@
 #ifndef STAN_MATH_REV_MAT_FUN_GRAD_HPP
 #define STAN_MATH_REV_MAT_FUN_GRAD_HPP
 
-#include <stan/math/rev/meta.hpp>
 #include <stan/math/prim/mat/fun/Eigen.hpp>
 #include <stan/math/rev/mat/fun/Eigen_NumTraits.hpp>
 #include <stan/math/rev/core.hpp>
@@ -25,7 +24,9 @@ namespace math {
 inline void grad(var& v, Eigen::Matrix<var, Eigen::Dynamic, 1>& x,
                  Eigen::VectorXd& g) {
   grad(v.vi_);
-  g = x.adj();
+  g.resize(x.size());
+  for (int i = 0; i < x.size(); ++i)
+    g(i) = x(i).vi_->adj_;
 }
 
 }  // namespace math

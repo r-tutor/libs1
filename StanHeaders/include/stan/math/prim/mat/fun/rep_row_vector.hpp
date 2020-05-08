@@ -9,10 +9,12 @@ namespace stan {
 namespace math {
 
 template <typename T>
-inline Eigen::Matrix<return_type_t<T>, 1, Eigen::Dynamic> rep_row_vector(
-    const T& x, int m) {
+inline Eigen::Matrix<typename boost::math::tools::promote_args<T>::type, 1,
+                     Eigen::Dynamic>
+rep_row_vector(const T& x, int m) {
   check_nonnegative("rep_row_vector", "m", m);
-  return Eigen::Matrix<return_type_t<T>, 1, Eigen::Dynamic>::Constant(m, x);
+  return Eigen::Matrix<typename boost::math::tools::promote_args<T>::type, 1,
+                       Eigen::Dynamic>::Constant(m, x);
 }
 
 }  // namespace math

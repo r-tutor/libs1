@@ -1,7 +1,6 @@
 #ifndef STAN_MATH_PRIM_ARR_FUN_FILL_HPP
 #define STAN_MATH_PRIM_ARR_FUN_FILL_HPP
 
-#include <stan/math/prim/meta.hpp>
 #include <stan/math/prim/scal/fun/fill.hpp>
 #include <vector>
 
@@ -21,9 +20,8 @@ namespace math {
  */
 template <typename T, typename S>
 void fill(std::vector<T>& x, const S& y) {
-  for (typename std::vector<T>::size_type i = 0; i < x.size(); ++i) {
+  for (typename std::vector<T>::size_type i = 0; i < x.size(); ++i)
     fill(x[i], y);
-  }
 }
 
 }  // namespace math

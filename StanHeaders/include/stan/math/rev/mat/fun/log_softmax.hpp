@@ -5,8 +5,6 @@
 #include <stan/math/prim/mat/fun/Eigen.hpp>
 #include <stan/math/prim/mat/fun/log_softmax.hpp>
 #include <stan/math/prim/mat/fun/softmax.hpp>
-#include <stan/math/rev/mat/fun/typedefs.hpp>
-#include <stan/math/prim/mat/fun/typedefs.hpp>
 #include <stan/math/rev/core.hpp>
 #include <cmath>
 #include <vector>
@@ -33,11 +31,10 @@ class log_softmax_elt_vari : public vari {
         idx_(idx) {}
   void chain() {
     for (int m = 0; m < size_; ++m) {
-      if (m == idx_) {
+      if (m == idx_)
         alpha_[m]->adj_ += adj_ * (1 - softmax_alpha_[m]);
-      } else {
+      else
         alpha_[m]->adj_ -= adj_ * softmax_alpha_[m];
-      }
     }
   }
 };
@@ -56,38 +53,55 @@ class log_softmax_elt_vari : public vari {
  */
 inline Eigen::Matrix<var, Eigen::Dynamic, 1> log_softmax(
     const Eigen::Matrix<var, Eigen::Dynamic, 1>& alpha) {
-  const int a_size = alpha.size();
+  using Eigen::Dynamic;
+  using Eigen::Matrix;
 
   check_nonzero_size("log_softmax", "alpha", alpha);
 
   // TODO(carpenter): replace with array alloc
-  vari** alpha_vi_array
-      = reinterpret_cast<vari**>(vari::operator new(sizeof(vari*) * a_size));
-  Eigen::Map<vector_vi>(alpha_vi_array, a_size) = alpha.vi();
+  vari** alpha_vi_array = reinterpret_cast<vari**>(
+      vari::operator new(sizeof(vari*) * alpha.size()));
+  for (int i = 0; i < alpha.size(); ++i)
+    alpha_vi_array[i] = alpha(i).vi_;
 
-  vector_d alpha_d = alpha.val();
+  Matrix<double, Dynamic, 1> alpha_d(alpha.size());
+  for (int i = 0; i < alpha_d.size(); ++i)
+    alpha_d(i) = alpha(i).val();
 
   // fold logic of math::softmax() and math::log_softmax()
   // to save computations
 
-  vector_d diff = (alpha_d.array() - alpha_d.maxCoeff());
-  vector_d softmax_alpha_d = diff.array().exp();
-  double sum = softmax_alpha_d.sum();
-  softmax_alpha_d.array() /= sum;
-  vector_d log_softmax_alpha_d = diff.array() - std::log(sum);
+  Matrix<double, Dynamic, 1> softmax_alpha_d(alpha_d.size());
+  Matrix<double, Dynamic, 1> log_softmax_alpha_d(alpha_d.size());
+
+  double max_v = alpha_d.maxCoeff();
+
+  double sum = 0.0;
+  for (int i = 0; i < alpha_d.size(); ++i) {
+    softmax_alpha_d(i) = std::exp(alpha_d(i) - max_v);
+    sum += softmax_alpha_d(i);
+  }
+
+  for (int i = 0; i < alpha_d.size(); ++i)
+    softmax_alpha_d(i) /= sum;
+  double log_sum = std::log(sum);
+
+  for (int i = 0; i < alpha_d.size(); ++i)
+    log_softmax_alpha_d(i) = (alpha_d(i) - max_v) - log_sum;
 
   // end fold
   // TODO(carpenter): replace with array alloc
-  double* softmax_alpha_d_array
-      = reinterpret_cast<double*>(vari::operator new(sizeof(double) * a_size));
-  Eigen::Map<vector_d>(softmax_alpha_d_array, a_size) = softmax_alpha_d;
+  double* softmax_alpha_d_array = reinterpret_cast<double*>(
+      vari::operator new(sizeof(double) * alpha_d.size()));
 
-  vector_v log_softmax_alpha(a_size);
-  for (int k = 0; k < a_size; ++k) {
+  for (int i = 0; i < alpha_d.size(); ++i)
+    softmax_alpha_d_array[i] = softmax_alpha_d(i);
+
+  Matrix<var, Dynamic, 1> log_softmax_alpha(alpha.size());
+  for (int k = 0; k < log_softmax_alpha.size(); ++k)
     log_softmax_alpha(k) = var(new internal::log_softmax_elt_vari(
-        log_softmax_alpha_d[k], alpha_vi_array, softmax_alpha_d_array, a_size,
-        k));
-  }
+        log_softmax_alpha_d[k], alpha_vi_array, softmax_alpha_d_array,
+        alpha.size(), k));
   return log_softmax_alpha;
 }
 

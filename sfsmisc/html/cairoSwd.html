@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Cairo PDF Graphics Device useful for Sweave</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cairoSwd {sfsmisc}"><tr><td>cairoSwd {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Cairo PDF Graphics Device useful for Sweave</h2>
+
+<h3>Description</h3>
+
+<p>Provides a graphics device for Sweave, based on
+<code><a href="../../grDevices/html/cairo.html">cairo_pdf</a></code>. The advantage of <code>cairoSwd()</code> compared
+to <code><a href="../../grDevices/html/pdf.html">pdf</a>()</code> is its support of Unicode characters.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cairoSwd(name, width, height, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>file name prefix to which &lsquo;<span class="file">.pdf</span>&rsquo; will be appended.</p>
+</td></tr>
+<tr valign="top"><td><code>width, height</code></td>
+<td>
+<p>in inches, see <code><a href="../../grDevices/html/cairo.html">cairo_pdf</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments, passed to <code><a href="../../grDevices/html/cairo.html">cairo_pdf</a>()</code></p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>Sweave devices need to have an argument list as above.
+</p>
+<p>Usage in a Sweave chunk:
+</p>
+<pre>
+&lt;&lt;some-plot, fig=TRUE, grdevice=cairoSwd&gt;&gt;=
+</pre>
+
+
+<h3>Author(s)</h3>
+
+<p>Alain Hauser</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../grDevices/html/pdf.html">pdf</a></code>, <code><a href="../../grDevices/html/cairo.html">cairo_pdf</a></code>, <code><a href="../../utils/html/Sweave.html">Sweave</a></code>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

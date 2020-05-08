@@ -9,18 +9,18 @@
 namespace stan {
 namespace math {
 
-using matrix_fv = Eigen::Matrix<fvar<var>, Eigen::Dynamic, Eigen::Dynamic>;
+typedef Eigen::Matrix<fvar<var>, Eigen::Dynamic, Eigen::Dynamic> matrix_fv;
 
-using matrix_ffv
-    = Eigen::Matrix<fvar<fvar<var>>, Eigen::Dynamic, Eigen::Dynamic>;
+typedef Eigen::Matrix<fvar<fvar<var> >, Eigen::Dynamic, Eigen::Dynamic>
+    matrix_ffv;
 
-using vector_fv = Eigen::Matrix<fvar<var>, Eigen::Dynamic, 1>;
+typedef Eigen::Matrix<fvar<var>, Eigen::Dynamic, 1> vector_fv;
 
-using vector_ffv = Eigen::Matrix<fvar<fvar<var>>, Eigen::Dynamic, 1>;
+typedef Eigen::Matrix<fvar<fvar<var> >, Eigen::Dynamic, 1> vector_ffv;
 
-using row_vector_fv = Eigen::Matrix<fvar<var>, 1, Eigen::Dynamic>;
+typedef Eigen::Matrix<fvar<var>, 1, Eigen::Dynamic> row_vector_fv;
 
-using row_vector_ffv = Eigen::Matrix<fvar<fvar<var>>, 1, Eigen::Dynamic>;
+typedef Eigen::Matrix<fvar<fvar<var> >, 1, Eigen::Dynamic> row_vector_ffv;
 
 }  // namespace math
 }  // namespace stan

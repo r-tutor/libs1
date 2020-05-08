@@ -1,7 +1,6 @@
 #ifndef STAN_MATH_PRIM_SCAL_FUN_LOG2_HPP
 #define STAN_MATH_PRIM_SCAL_FUN_LOG2_HPP
 
-#include <stan/math/prim/meta.hpp>
 #include <stan/math/prim/scal/fun/constants.hpp>
 #include <cmath>
 
@@ -18,11 +17,19 @@ namespace math {
  * @param[in] u argument
  * @return base two logarithm of argument
  */
-template <typename T, typename = require_arithmetic_t<T>>
-inline double log2(T u) {
-  using std::log2;
-  return log2(u);
+inline double log2(double u) {
+  using std::log;
+  return log(u) / LOG_2;
 }
+
+/**
+ * Return the base two logarithm of the specified argument.  This
+ * version is required to disambiguate <code>log2(int)</code>.
+ *
+ * @param[in] u argument
+ * @return base two logarithm of argument
+ */
+inline double log2(int u) { return log2(static_cast<double>(u)); }
 
 /**
  * Return natural logarithm of two.

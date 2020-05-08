@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot Data and Smoother / Fitted Values</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plotDS {sfsmisc}"><tr><td>plotDS {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot Data and Smoother / Fitted Values</h2>
+
+<h3>Description</h3>
+
+<p>For one-dimensional nonparametric regression, plot the data and fitted
+values, typically a smooth function, and optionally use segments to
+visualize the residuals.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+plotDS(x, yd, ys, xlab = "", ylab = "", ylim = rrange(c(yd, ys)),
+       xpd = TRUE, do.seg = TRUE, seg.p = 0.95,
+       segP = list(lty = 2, lwd = 1,   col = 2),
+       linP = list(lty = 1, lwd = 2.5, col = 3),
+       ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, yd, ys</code></td>
+<td>
+<p>numeric vectors all of the same length, representing
+<i>(x_i, y_i)</i> and fitted (smooth) values <i>y^_i</i>.
+<code>x</code> will be sorted increasingly if necessary, and <code>yd</code> and
+<code>ys</code> accordingly.
+</p>
+<p>Alternatively, <code>ys</code> can be an x-y list (as resulting from
+<code><a href="../../grDevices/html/xy.coords.html">xy.coords</a></code>) containing fitted values on a
+finer grid than the observations <code>x</code>.  In that case, the
+observational values <code>x[]</code> <b>must</b> be part of the larger
+set; <code><a href="seqXtend.html">seqXtend</a>()</code> may be applied to construct such a set
+of abscissa values.
+</p>
+</td></tr>
+<tr valign="top"><td><code>xlab, ylab</code></td>
+<td>
+<p>x- and y- axis labels, as in <code><a href="../../graphics/html/plot.default.html">plot.default</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>ylim</code></td>
+<td>
+<p>limits of y-axis to be used; defaults to a <em>robust</em>
+range of the values.</p>
+</td></tr>
+<tr valign="top"><td><code>xpd</code></td>
+<td>
+<p>see <code><a href="../../graphics/html/par.html">par</a>(xpd=.)</code>; by default do allow to draw
+outside the plot region.</p>
+</td></tr>
+<tr valign="top"><td><code>do.seg</code></td>
+<td>
+<p>logical indicating if residual segments should be drawn,
+at <code>x[i]</code>, from <code>yd[i]</code> to <code>ys[i]</code> (approximately,
+see <code>seg.p</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>seg.p</code></td>
+<td>
+<p>segment percentage of segments to be drawn, from
+<code>yd</code> to <code>seg.p*ys + (1-seg.p)*yd</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>segP</code></td>
+<td>
+<p>list with named components <code>lty, lwd, col</code> specifying
+line type, width and color for the residual segments,
+used only when <code>do.seg</code> is true.</p>
+</td></tr>
+<tr valign="top"><td><code>linP</code></td>
+<td>
+<p>list with named components <code>lty, lwd, col</code> specifying
+line type, width and color for &ldquo;smooth curve lines&rdquo;.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed to <code><a href="../../graphics/html/plot.default.html">plot</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>Non-existing components in the lists <code>segP</code> or <code>linP</code>
+will result in the <code><a href="../../graphics/html/par.html">par</a></code> defaults to be used.
+</p>
+<p><code>plotDS()</code> used to be called <code>pl.ds</code> up to November 2007.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, since 1990</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqXtend.html">seqXtend</a>()</code> to construct more smooth <code>ys</code>
+&ldquo;objects&rdquo;.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ data(cars)
+ x &lt;-  cars$speed
+ yd &lt;- cars$dist
+ ys &lt;- lowess(x, yd, f = .3)$y
+ plotDS(x, yd, ys)
+
+ ## More interesting : Version of example(Theoph)
+ data(Theoph)
+ Th4 &lt;- subset(Theoph, Subject == 4)
+ ## just for "checking" purposes -- permute the observations:
+ Th4 &lt;- Th4[sample(nrow(Th4)), ]
+ fm1 &lt;- nls(conc ~ SSfol(Dose, Time, lKe, lKa, lCl), data = Th4)
+
+ ## Simple
+ plotDS(Th4$Time, Th4$conc, fitted(fm1),
+        sub  = "Theophylline data - Subject 4 only",
+        segP = list(lty=1,col=2), las = 1)
+
+ ## Nicer: Draw the smoother not only at x = x[i] (observations):
+ xsm &lt;- unique(sort(c(Th4$Time, seq(0, 25, length = 201))))
+ ysm &lt;- c(predict(fm1, newdata = list(Time = xsm)))
+ plotDS(Th4$Time, Th4$conc, ys = list(x=xsm, y=ysm),
+        sub  = "Theophylline data - Subject 4 only",
+        segP = list(lwd=2), las = 1)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

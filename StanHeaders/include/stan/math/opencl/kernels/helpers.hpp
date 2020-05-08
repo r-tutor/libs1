@@ -11,12 +11,9 @@ namespace opencl_kernels {
 /*
  * Defines helper macros for common matrix indexing operations
  */
-static const std::string indexing_helpers =
+static const char* indexing_helpers =
     R"(
     // Matrix access helpers
-  #ifndef A_batch
-  #define A_batch(i,j,k) A[(k) * cols * rows + (j) * rows + (i)]
-  #endif
   #ifndef A
   #define A(i,j) A[(j) * rows + (i)]
   #endif
@@ -45,10 +42,10 @@ static const std::string indexing_helpers =
 /*
  * Defines a helper macro for kernels with 2D local size
  */
-static const std::string thread_block_helpers =
+static const char* thread_block_helpers =
     R"(
   // The local memory column for each thread block
-  #define THREAD_BLOCK_SIZE_COL (THREAD_BLOCK_SIZE/WORK_PER_THREAD)
+  #define THREAD_BLOCK_SIZE_COL THREAD_BLOCK_SIZE/WORK_PER_THREAD
         )";
 }  // namespace opencl_kernels
 }  // namespace math

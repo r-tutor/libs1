@@ -1,3 +1,37 @@
+# version 0.9-3
+
+* `st_is_valid` is now a generic
+
+* Windows CRAN binaries use GDAL 3.0.4, PROJ 6.3.1 and GEOS 3.8.0, thanks to Jeroen Ooms' rwinlib work; #1275
+
+* `plot.sf` gains an `extent` argument to set the extent (xlim, ylim) of the plot; `extent` must be an object with an `st_bbox()` method, such as an `sf` object; #1193
+
+# version 0.9-2
+
+* `st_axis_order(TRUE)` gives and error if GDAL has version < 2.5.0
+
+* loading PROJ units `link`, `us_in`, `ind_yd`, `ind_ft`, and `ind_ch` into the udunits database is no longer done at package load time, but when function `sf_add_proj_units()` is called.
+
+* fix line sampling for small densities; #1365
+
+* `sf_project` handles `crs` objects when PROJ version is below 6 using proj.4 string representations.
+
+* avoid using `isFALSE` in `st_write()`; #1342
+
+* fix regression in `gdal_utils("translate", ...)`; #1339
+
+# version 0.9-1
+
+* fix an invalid read bug in `st_m_range`; #1332
+
+* `st_crs(4326) == st_crs("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")` returns `TRUE` for GDAL >= 3.0, irrespective authority compliance of axis order; see #1331 and https://github.com/ropensci/scrubr/issues/34
+
+* `sf_project` has a parameter `authority_compliant` to return coordinates in "visualisation order"; when `TRUE` it returns coordinates in authority compliant axis order (e.g. EPSG:4326 latitude longitude); default is `st_axis_order()`.
+
+* fix test for Solaris and certain GDAL/PROJ versions
+
+* fix error reading category table through GDAL; https://github.com/r-spatial/stars/issues/245
+
 # version 0.9-0
 
 * see r-spatial blog post: https://www.r-spatial.org/r/2020/03/17/wkt.html

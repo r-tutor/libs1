@@ -1,7 +1,6 @@
 #ifndef STAN_MATH_REV_MAT_FUN_INITIALIZE_VARIABLE_HPP
 #define STAN_MATH_REV_MAT_FUN_INITIALIZE_VARIABLE_HPP
 
-#include <stan/math/rev/meta.hpp>
 #include <stan/math/prim/mat/fun/Eigen.hpp>
 #include <stan/math/rev/core.hpp>
 #include <vector>
@@ -24,7 +23,8 @@ inline void initialize_variable(var& variable, const var& value) {
 template <int R, int C>
 inline void initialize_variable(Eigen::Matrix<var, R, C>& matrix,
                                 const var& value) {
-  matrix.fill(value);
+  for (int i = 0; i < matrix.size(); ++i)
+    matrix(i) = value;
 }
 
 /**
@@ -32,9 +32,8 @@ inline void initialize_variable(Eigen::Matrix<var, R, C>& matrix,
  */
 template <typename T>
 inline void initialize_variable(std::vector<T>& variables, const var& value) {
-  for (size_t i = 0; i < variables.size(); ++i) {
+  for (size_t i = 0; i < variables.size(); ++i)
     initialize_variable(variables[i], value);
-  }
 }
 
 }  // namespace math

@@ -1,7 +1,7 @@
 #ifndef STAN_MATH_PRIM_SCAL_PROB_SCALED_INV_CHI_SQUARE_LOG_HPP
 #define STAN_MATH_PRIM_SCAL_PROB_SCALED_INV_CHI_SQUARE_LOG_HPP
 
-#include <stan/math/prim/meta.hpp>
+#include <stan/math/prim/scal/meta/return_type.hpp>
 #include <stan/math/prim/scal/prob/scaled_inv_chi_square_lpdf.hpp>
 
 namespace stan {
@@ -31,9 +31,8 @@ namespace math {
  * @tparam T_dof Type of degrees of freedom.
  */
 template <bool propto, typename T_y, typename T_dof, typename T_scale>
-return_type_t<T_y, T_dof, T_scale> scaled_inv_chi_square_log(const T_y& y,
-                                                             const T_dof& nu,
-                                                             const T_scale& s) {
+typename return_type<T_y, T_dof, T_scale>::type scaled_inv_chi_square_log(
+    const T_y& y, const T_dof& nu, const T_scale& s) {
   return scaled_inv_chi_square_lpdf<propto, T_y, T_dof, T_scale>(y, nu, s);
 }
 
@@ -41,8 +40,8 @@ return_type_t<T_y, T_dof, T_scale> scaled_inv_chi_square_log(const T_y& y,
  * @deprecated use <code>scaled_inv_chi_square_lpdf</code>
  */
 template <typename T_y, typename T_dof, typename T_scale>
-inline return_type_t<T_y, T_dof, T_scale> scaled_inv_chi_square_log(
-    const T_y& y, const T_dof& nu, const T_scale& s) {
+inline typename return_type<T_y, T_dof, T_scale>::type
+scaled_inv_chi_square_log(const T_y& y, const T_dof& nu, const T_scale& s) {
   return scaled_inv_chi_square_lpdf<T_y, T_dof, T_scale>(y, nu, s);
 }
 

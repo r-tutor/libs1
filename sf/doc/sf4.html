@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -148,6 +147,7 @@ summary {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -176,6 +176,12 @@ summary {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -268,7 +274,7 @@ div.tocify {
 <p>Features are represented by records in an <code>sf</code> object, and have feature attributes (all non-geometry fields) and feature geometry. Since <code>sf</code> objects are a subclass of <code>data.frame</code> or <code>tbl_df</code>, operations on feature attributes work identical to how they work on <code>data.frame</code>s, e.g.</p>
 <pre class="r"><code>library(sf)
 nc &lt;- st_read(system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;))
-## Reading layer `nc' from data source `/tmp/RtmprHOBbV/Rinst6782470e2d96/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/RtmpZ3WbFm/Rinst47ab32182f6d/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY

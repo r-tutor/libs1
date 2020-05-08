@@ -16,9 +16,8 @@ namespace math {
  * @throw <code>std::invalid_argument</code> if the <code>matrix_cl</code>
  *    is not square
  */
-template <typename T>
 inline void check_square(const char* function, const char* name,
-                         const matrix_cl<T>& y) {
+                         const matrix_cl& y) {
   check_size_match(function, "Expecting a square matrix; rows of ", name,
                    y.rows(), "columns of ", name, y.cols());
 }

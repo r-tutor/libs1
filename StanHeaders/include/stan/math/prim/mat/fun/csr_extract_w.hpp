@@ -2,6 +2,7 @@
 #define STAN_MATH_PRIM_MAT_FUN_CSR_EXTRACT_W_HPP
 
 #include <stan/math/prim/mat/fun/Eigen.hpp>
+#include <Eigen/Sparse>
 
 namespace stan {
 namespace math {
@@ -21,9 +22,8 @@ const Eigen::Matrix<T, Eigen::Dynamic, 1> csr_extract_w(
     const Eigen::SparseMatrix<T, Eigen::RowMajor>& A) {
   Eigen::Matrix<T, Eigen::Dynamic, 1> w(A.nonZeros());
   w.setZero();
-  for (int nze = 0; nze < A.nonZeros(); ++nze) {
+  for (int nze = 0; nze < A.nonZeros(); ++nze)
     w[nze] = *(A.valuePtr() + nze);
-  }
   return w;
 }
 

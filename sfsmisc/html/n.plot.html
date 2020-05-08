@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Name Plot: Names or Numbers instead of Points in Plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for n.plot {sfsmisc}"><tr><td>n.plot {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Name Plot: Names or Numbers instead of Points in Plot</h2>
+
+<h3>Description</h3>
+
+<p>A utility function which basically calls <code><a href="../../graphics/html/plot.default.html">plot</a>(*, type="n")</code>
+and <code><a href="../../graphics/html/text.html">text</a></code>.   To have names or numbers instead of points
+in a plot is useful for identifaction, e.g., in a residual plot, see
+also <code><a href="TA.plot.html">TA.plot</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+n.plot(x, y = NULL, nam = NULL, abbr = n &gt;= 20 || max(nchar(nam))&gt;=8,
+       xlab = NULL, ylab = NULL, log = "",
+       cex = par("cex"), col = par("col"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x,y</code></td>
+<td>
+<p>coordinates at which to plot. If <code>y</code> is missing,
+<code>x</code> is used for both, if it's a <code><a href="../../base/html/data.frame.html">data.frame</a>,
+      <a href="../../base/html/list.html">list</a></code>, 2-column matrix etc &ndash; via <code><a href="../../grDevices/html/xy.coords.html">xy.coords</a></code>;
+formula do <b>not</b> work.</p>
+</td></tr>
+<tr valign="top"><td><code>nam</code></td>
+<td>
+<p>the labels to plot at each (x,y).  Per default, these
+taken from the data <code>x</code> and <code>y</code>;  case numbers <code>1:n</code>
+are taken if no names are available.</p>
+</td></tr>
+<tr valign="top"><td><code>abbr</code></td>
+<td>
+<p>logical indicating if the <code>nam</code> labels should be
+abbreviated &ndash; with a sensible default.</p>
+</td></tr>
+<tr valign="top"><td><code>xlab,ylab</code></td>
+<td>
+<p>labels for the x- and y- axis, the latter being empty
+by default.</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+<p>character specifying if log scaled axes should be used, see
+<code><a href="../../graphics/html/plot.default.html">plot.default</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>cex</code></td>
+<td>
+<p>plotting character expansion, see <code><a href="../../graphics/html/par.html">par</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>col</code></td>
+<td>
+<p>color to use for <code><a href="../../graphics/html/text.html">text</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments to be passed to the <code><a href="../../graphics/html/plot.default.html">plot</a></code> call.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>invisibly, a character vector with the labels used.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, since 1992</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../graphics/html/plot.default.html">plot.default</a></code>, <code><a href="../../graphics/html/text.html">text</a></code>.</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ n.plot(1:20, cumsum(rnorm(20)))
+ data(cars)
+ with(cars, n.plot(speed, dist, cex = 0.8, col = "forest green"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

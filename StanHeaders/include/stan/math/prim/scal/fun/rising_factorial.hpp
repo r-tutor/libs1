@@ -1,7 +1,6 @@
 #ifndef STAN_MATH_PRIM_SCAL_FUN_RISING_FACTORIAL_HPP
 #define STAN_MATH_PRIM_SCAL_FUN_RISING_FACTORIAL_HPP
 
-#include <stan/math/prim/meta.hpp>
 #include <boost/math/special_functions/factorials.hpp>
 #include <stan/math/prim/scal/fun/boost_policy.hpp>
 #include <stan/math/prim/scal/err/check_not_nan.hpp>
@@ -62,7 +61,8 @@ namespace math {
  *
  */
 template <typename T>
-inline return_type_t<T> rising_factorial(const T& x, int n) {
+inline typename boost::math::tools::promote_args<T>::type rising_factorial(
+    const T& x, int n) {
   static const char* function = "rising_factorial";
   check_not_nan(function, "first argument", x);
   check_nonnegative(function, "second argument", n);

@@ -8,20 +8,20 @@
 namespace stan {
 namespace math {
 
-using size_type = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>::Index;
+typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>::Index size_type;
 
-using matrix_fd = Eigen::Matrix<fvar<double>, Eigen::Dynamic, Eigen::Dynamic>;
+typedef Eigen::Matrix<fvar<double>, Eigen::Dynamic, Eigen::Dynamic> matrix_fd;
 
-using matrix_ffd
-    = Eigen::Matrix<fvar<fvar<double> >, Eigen::Dynamic, Eigen::Dynamic>;
+typedef Eigen::Matrix<fvar<fvar<double> >, Eigen::Dynamic, Eigen::Dynamic>
+    matrix_ffd;
 
-using vector_fd = Eigen::Matrix<fvar<double>, Eigen::Dynamic, 1>;
+typedef Eigen::Matrix<fvar<double>, Eigen::Dynamic, 1> vector_fd;
 
-using vector_ffd = Eigen::Matrix<fvar<fvar<double> >, Eigen::Dynamic, 1>;
+typedef Eigen::Matrix<fvar<fvar<double> >, Eigen::Dynamic, 1> vector_ffd;
 
-using row_vector_fd = Eigen::Matrix<fvar<double>, 1, Eigen::Dynamic>;
+typedef Eigen::Matrix<fvar<double>, 1, Eigen::Dynamic> row_vector_fd;
 
-using row_vector_ffd = Eigen::Matrix<fvar<fvar<double> >, 1, Eigen::Dynamic>;
+typedef Eigen::Matrix<fvar<fvar<double> >, 1, Eigen::Dynamic> row_vector_ffd;
 
 }  // namespace math
 }  // namespace stan

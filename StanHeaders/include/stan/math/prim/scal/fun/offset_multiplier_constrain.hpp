@@ -2,10 +2,9 @@
 #define STAN_MATH_PRIM_SCAL_FUN_OFFSET_MULTIPLIER_CONSTRAIN_HPP
 
 #include <boost/math/tools/promotion.hpp>
-#include <stan/math/prim/meta.hpp>
 #include <stan/math/prim/scal/fun/identity_constrain.hpp>
-#include <stan/math/prim/scal/fun/multiply_log.hpp>
-#include <stan/math/prim/scal/fun/fma.hpp>
+#include <stan/math/prim/scal/fun/abs.hpp>
+#include <stan/math/prim/scal/meta/size_of.hpp>
 #include <stan/math/prim/scal/err/check_positive_finite.hpp>
 #include <stan/math/prim/scal/err/check_finite.hpp>
 #include <cmath>
@@ -38,18 +37,16 @@ namespace math {
  * @throw std::domain_error if mu is not finite
  */
 template <typename T, typename M, typename S>
-inline return_type_t<T, M, S> offset_multiplier_constrain(const T& x,
-                                                          const M& mu,
-                                                          const S& sigma) {
+inline typename boost::math::tools::promote_args<T, M, S>::type
+offset_multiplier_constrain(const T& x, const M& mu, const S& sigma) {
   check_finite("offset_multiplier_constrain", "offset", mu);
   if (sigma == 1) {
-    if (mu == 0) {
+    if (mu == 0)
       return identity_constrain(x);
-    }
     return mu + x;
   }
   check_positive_finite("offset_multiplier_constrain", "multiplier", sigma);
-  return fma(sigma, x, mu);
+  return mu + sigma * x;
 }
 
 /**
@@ -79,21 +76,18 @@ inline return_type_t<T, M, S> offset_multiplier_constrain(const T& x,
  * @throw std::domain_error if mu is not finite
  */
 template <typename T, typename M, typename S>
-inline return_type_t<T, M, S> offset_multiplier_constrain(const T& x,
-                                                          const M& mu,
-                                                          const S& sigma,
-                                                          T& lp) {
+inline typename boost::math::tools::promote_args<T, M, S>::type
+offset_multiplier_constrain(const T& x, const M& mu, const S& sigma, T& lp) {
   using std::log;
   check_finite("offset_multiplier_constrain", "offset", mu);
   if (sigma == 1) {
-    if (mu == 0) {
+    if (mu == 0)
       return identity_constrain(x);
-    }
     return mu + x;
   }
   check_positive_finite("offset_multiplier_constrain", "multiplier", sigma);
-  lp += multiply_log(size_of(x), sigma);
-  return fma(sigma, x, mu);
+  lp += size_of(x) * log(sigma);
+  return mu + sigma * x;
 }
 
 }  // namespace math

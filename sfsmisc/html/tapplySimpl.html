@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: More simplification in tapply() result</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for tapplySimpl {sfsmisc}"><tr><td>tapplySimpl {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>More simplification in tapply() result</h2>
+
+<h3>Description</h3>
+
+<p>For the case of more than two categories or indices (in <code>INDEX</code>),
+traditional <code><a href="../../base/html/tapply.html">tapply</a>(*, simplify = TRUE)</code> still returns a
+list when an array may seem more useful and natural.  This is provided
+by <code>tapplySimpl()</code> if the function <code>FUN()</code> is defined such
+as to return a vector of the same length in all cases.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+tapplySimpl(X, INDEX, FUN, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>X</code></td>
+<td>
+<p>an atomic object, typically a vector.  All these arguments
+are as in <code><a href="../../base/html/tapply.html">tapply</a>()</code> and are passed to <code>tapply(..)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>INDEX</code></td>
+<td>
+<p>list of (typically more than one) factors, each of same
+length as <code>X</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>FUN</code></td>
+<td>
+<p>the function to be applied.  For the result to be
+simplifiable, <code>FUN()</code> must return a vector of always the same
+length.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>optional arguments to <code>FUN</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>If the above conditions are satisfied, the list returned from
+<code>r &lt;- tapply(X, INDEX, FUN, ...)</code> is simplified into an
+<code><a href="../../base/html/array.html">array</a></code> of rank <i>1 + \#\{indices\}</i>, i.e.,
+<code>1+length(INDEX)</code>; otherwise, <code>tapplySimpl()</code> returns the list
+<code>r</code>, i.e., the same as <code>tapply()</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, 14 Jun 1993 (for S-plus).</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/tapply.html">tapply</a>(*, simplify=TRUE)</code>.</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  ## Using tapply() would give a list (with dim() of a matrix);
+  ## here we get 3-array:
+
+  data(esoph)
+  with(esoph, {
+       mima &lt;&lt;- tapplySimpl(ncases/ncontrols, list(agegp, alcgp),  range)
+       stopifnot(dim(mima) == c(2, nlevels(agegp), nlevels(alcgp)))
+       })
+  aperm(mima)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

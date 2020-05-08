@@ -1,7 +1,6 @@
 #ifndef STAN_MATH_PRIM_SCAL_META_RETURN_TYPE_HPP
 #define STAN_MATH_PRIM_SCAL_META_RETURN_TYPE_HPP
 
-#include <stan/math/prim/scal/meta/promote_args.hpp>
 #include <stan/math/prim/scal/meta/scalar_type.hpp>
 #include <boost/math/tools/promotion.hpp>
 
@@ -32,17 +31,16 @@ namespace stan {
 
 template <typename T, typename... Types_pack>
 struct return_type {
-  using type = promote_args_t<double, scalar_type_t<T>,
-                              typename return_type<Types_pack...>::type>;
+  typedef typename boost::math::tools::promote_args<
+      double, typename scalar_type<T>::type,
+      typename return_type<Types_pack...>::type>::type type;
 };
 
 template <typename T>
 struct return_type<T> {
-  using type = promote_args_t<double, scalar_type_t<T>>;
+  typedef typename boost::math::tools::promote_args<
+      double, typename scalar_type<T>::type>::type type;
 };
-
-template <typename... Args>
-using return_type_t = typename return_type<Args...>::type;
 
 }  // namespace stan
 #endif

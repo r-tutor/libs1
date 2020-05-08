@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Number of Sign Changes in Sequence</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for nr.sign.chg {sfsmisc}"><tr><td>nr.sign.chg {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Number of Sign Changes in Sequence</h2>
+
+<h3>Description</h3>
+
+<p>Compute the number of sign changes in the sequence <code>y</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+nr.sign.chg(y)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>numeric vector.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>an integer giving the number of sign changes in sequence <code>y</code>.
+Note that going from positive to 0 to positive is <em>not</em> a sign change.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, 17 Feb 1993.</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+(y &lt;- c(1:2,1:-1,0:-2))
+nr.sign.chg(y)## = 1
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

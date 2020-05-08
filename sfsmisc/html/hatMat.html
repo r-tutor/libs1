@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Hat Matrix of a Smoother</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for hatMat {sfsmisc}"><tr><td>hatMat {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Hat Matrix of a Smoother</h2>
+
+<h3>Description</h3>
+
+<p>Compute the hat matrix or smoother matrix, of &lsquo;any&rsquo; (linear) smoother,
+smoothing splines, by default.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+hatMat(x, trace= FALSE,
+       pred.sm = function(x, y, ...)
+                 predict(smooth.spline(x, y, ...), x = x)$y,
+       ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>numeric vector or matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>trace</code></td>
+<td>
+<p>logical indicating if the whole hat matrix, or only its
+trace, i.e. the sum of the diagonal values should be computed.</p>
+</td></tr>
+<tr valign="top"><td><code>pred.sm</code></td>
+<td>
+<p>a function of at least two arguments <code>(x,y)</code>
+which returns fitted values, i.e. <i>y.hat</i>, of length
+compatible to <code>x</code> (and <code>y</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>optionally further arguments to the smoother function
+<code>pred.sm</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The hat matrix <i>H</i> (if <code>trace = FALSE</code> as per default) or
+a number, <i>tr(H)</i>, the <em>trace</em> of <i>H</i>, i.e.,
+<i>sum(i) H[i,i]</i>.
+</p>
+<p>Note that <code>dim(H) == c(n, n)</code> where <code>n &lt;- length(x)</code> also in
+the case where some x values are duplicated (aka <em>ties</em>).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler <a href="mailto:maechler@stat.math.ethz.ch">maechler@stat.math.ethz.ch</a></p>
+
+
+<h3>References</h3>
+
+<p>Hastie and Tibshirani (1990).
+<em>Generalized Additive Models</em>.
+Chapman \&amp; Hall.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/smooth.spline.html">smooth.spline</a></code>, etc.
+Note the demo, <code>demo("hatmat-ex")</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+require(stats) # for smooth.spline() or loess()
+
+x1 &lt;- c(1:4, 7:12)
+H1 &lt;- hatMat(x1, spar = 0.5) # default : smooth.spline()
+
+matplot(x1, H1, type = "l", main = "columns of smoother hat matrix")
+
+## Example 'pred.sm' arguments for hatMat() :
+pspl &lt;-  function(x,y,...) predict(smooth.spline(x,y, ...), x = x)$y
+pksm &lt;-  function(x,y,...) ksmooth(sort(x),y, "normal", x.points=x, ...)$y
+## Rather than ksmooth():
+if(require("lokern"))
+  pksm2 &lt;- function(x,y,...) glkerns(x,y, x.out=x, ...)$est
+
+
+
+
+## Explaining 'trace = TRUE'
+all.equal(sum(diag((hatMat(c(1:4, 7:12), df = 4)))),
+                    hatMat(c(1:4, 7:12), df = 4, trace = TRUE), tol = 1e-12)
+
+## ksmooth() :
+Hk &lt;- hatMat(x1, pr = pksm, bandwidth = 2)
+cat(sprintf("df = %.2f\n", sum(diag(Hk))))
+image(Hk)
+Matrix::printSpMatrix(as(round(Hk, 2), "sparseMatrix"))
+
+##---&gt;  see demo("hatmat-ex")  for more (and larger) examples
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -18,7 +18,7 @@ class VectorBuilderHelper<T1, true, true> {
  public:
   explicit VectorBuilderHelper(size_t n) : x_(n) {}
 
-  using type = std::vector<T1>;
+  typedef std::vector<T1> type;
 
   T1& operator[](size_t i) { return x_[i]; }
 

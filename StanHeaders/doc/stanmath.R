@@ -7,17 +7,17 @@ Sys.setenv(USE_CXX14 = "1")
 set.seed(12345)
 
 ## -----------------------------------------------------------------------------
-Sys.setenv(PKG_CXXFLAGS = paste(StanHeaders:::CxxFlags(as_character = TRUE), 
-                                "-I", system.file("include", package = "RcppParallel", mustWork = TRUE)))
-Sys.setenv(PKG_LIBS = StanHeaders:::LdFlags(as_character = TRUE))
-
-## -----------------------------------------------------------------------------
 x <- optim(rnorm(3), fn = f, gr = g, a = 1:3, method = "BFGS", hessian = TRUE)
 x$par
 x$hessian
 H(x$par, a = 1:3)
 J(x$par, a = 1:3)
 solution(a = 1:3, guess = rnorm(3))
+
+## -----------------------------------------------------------------------------
+StanHeaders_pkg_libs <- system.file(ifelse(.Platform$OS.type == "windows", "libs", "lib"), 
+                                    .Platform$r_arch, package = "StanHeaders")
+Sys.setenv(PKG_LIBS = paste(paste0("-L", shQuote(StanHeaders_pkg_libs)), "-lStanHeaders"))
 
 ## -----------------------------------------------------------------------------
 all.equal(1, Cauchy(rexp(1)), tol = 1e-15)
@@ -29,6 +29,7 @@ all.equal(nonstiff(A, y0), c(0, 0), tol = 1e-5)
 all.equal(   stiff(A, y0), c(0, 0), tol = 1e-8)
 
 ## -----------------------------------------------------------------------------
+Sys.setenv(PKG_CXXFLAGS = "-DSTAN_THREADS")
 Sys.setenv(STAN_NUM_THREADS = 2) # specify -1 to use all available cores
 
 ## -----------------------------------------------------------------------------
@@ -49,13 +50,13 @@ exposeClass("sparselm_stan",
       rename = c(log_prob = "log_prob<>", gradient = "gradient<>"),
       header = c("// [[Rcpp::depends(BH)]]",
                  "// [[Rcpp::depends(RcppEigen)]]",
-                 "// [[Rcpp::depends(RcppParallel)]",
                  "// [[Rcpp::depends(StanHeaders)]]",
                  "// [[Rcpp::plugins(cpp14)]]",
                  paste0("#include <", file.path(getwd(), "sparselm_stan.hpp"), ">")),
       file = tf,
       Rfile = FALSE)
-Sys.setenv(PKG_CXXFLAGS = paste0(Sys.getenv("PKG_CXXFLAGS"), " -I",
+Sys.unsetenv("PKG_CXXFLAGS") # don't specify -DSTAN_THREADS if you are not using them
+Sys.setenv(PKG_CPPFLAGS = paste0("-I",
                                  system.file("include", "src", 
                                              package = "StanHeaders", mustWork = TRUE)))
 sourceCpp(tf)

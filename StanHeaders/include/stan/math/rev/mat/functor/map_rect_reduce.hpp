@@ -1,7 +1,6 @@
 #ifndef STAN_MATH_REV_MAT_FUNCTOR_MAP_RECT_REDUCE_HPP
 #define STAN_MATH_REV_MAT_FUNCTOR_MAP_RECT_REDUCE_HPP
 
-#include <stan/math/rev/meta.hpp>
 #include <stan/math/prim/mat/functor/map_rect_reduce.hpp>
 #include <stan/math/prim/mat/fun/typedefs.hpp>
 #include <stan/math/rev/core/var.hpp>
@@ -41,13 +40,11 @@ struct map_rect_reduce<F, var, var> {
         out(0, i) = fx_v(i).val();
         set_zero_all_adjoints_nested();
         fx_v(i).grad();
-        for (size_type j = 0; j < num_shared_params; ++j) {
+        for (size_type j = 0; j < num_shared_params; ++j)
           out(1 + j, i) = shared_params_v(j).vi_->adj_;
-        }
-        for (size_type j = 0; j < num_job_specific_params; ++j) {
+        for (size_type j = 0; j < num_job_specific_params; ++j)
           out(1 + num_shared_params + j, i)
               = job_specific_params_v(j).vi_->adj_;
-        }
       }
       recover_memory_nested();
     } catch (const std::exception& e) {
@@ -82,9 +79,8 @@ struct map_rect_reduce<F, double, var> {
         out(0, i) = fx_v(i).val();
         set_zero_all_adjoints_nested();
         fx_v(i).grad();
-        for (size_type j = 0; j < num_job_specific_params; ++j) {
+        for (size_type j = 0; j < num_job_specific_params; ++j)
           out(1 + j, i) = job_specific_params_v(j).vi_->adj_;
-        }
       }
       recover_memory_nested();
     } catch (const std::exception& e) {
@@ -119,9 +115,8 @@ struct map_rect_reduce<F, var, double> {
         out(0, i) = fx_v(i).val();
         set_zero_all_adjoints_nested();
         fx_v(i).grad();
-        for (size_type j = 0; j < num_shared_params; ++j) {
+        for (size_type j = 0; j < num_shared_params; ++j)
           out(1 + j, i) = shared_params_v(j).vi_->adj_;
-        }
       }
       recover_memory_nested();
     } catch (const std::exception& e) {

@@ -52,17 +52,18 @@ Frank                   Frank's Bivariate Distribution
 Frechet                 The Frechet Distribution
 Gaitbinom.mlm           Generally-Altered, -Inflated and -Truncated
                         Binomial Distribution (GAIT-binom-MLM-MLM)
+Gaitlog                 Generally-Altered, -Inflated and -Truncated
+                        Logarithmic Distribution
 Gaitnbinom.mix          Generally-Altered, -Inflated and -Truncated
                         Negative Binomial Distribution (GAIT-NB-NB-NB
                         mixture)
 Gaitnbinom.mlm          Generally-Altered, -Inflated and -Truncated
                         Negative Binomial Distribution
                         (GAIT-NB-MLM-MLM)
-Gaitpois.mix            Generally-Altered, -Inflated and -Truncated
-                        Poisson Distribution (GAIT-Pois-Pois-Pois
-                        mixture)
-Gaitpois.mlm            Generally-Altered, -Inflated and -Truncated
-                        Poisson Distribution (GAIT-Pois-MLM-MLM)
+Gaitpois                Generally-Altered, -Inflated and -Truncated
+                        Poisson Distribution
+Gaitzeta                Generally-Altered, -Inflated and -Truncated
+                        Zeta Distribution
 GenbetaII               The Generalized Beta II Distribution
 Gompertz                The Gompertz Distribution
 Gumbel-II               The Gumbel-II Distribution
@@ -132,6 +133,7 @@ Trinorm                 Trivariate Normal Distribution Density and
 Truncpareto             The Truncated Pareto Distribution
 UtilitiesVGAM           Utility Functions for the VGAM Package
 V1                      V1 Flying-Bombs Hits in London
+V2                      V2 Missile Hits in London
 VGAM-package            Vector Generalized Linear and Additive Models
                         and Associated Models
 Yules                   Yule-Simon Distribution
@@ -153,6 +155,8 @@ add1.vglm               Add or Drop All Possible Single Terms to/from a
                         Model
 alaplace1               Asymmetric Laplace Distribution Family
                         Functions
+altered                 Altered, Inflated and Truncated Values in GAIT
+                        Regression
 amlbinomial             Binomial Logistic Regression by Asymmetric
                         Maximum Likelihood Estimation
 amlexponential          Exponential Regression by Asymmetric Maximum
@@ -256,6 +260,7 @@ deermice                Captures of Peromyscus maniculatus (Also Known
                         as Deer Mice).
 deplot.lmscreg          Density Plot for LMS Quantile Regression
 depvar                  Response Variable Extracted
+dextlogF                Extended log-F Distribution
 df.residual             Residual Degrees-of-Freedom
 dgenpois                The Generalized Poisson Distribution
 dgumbel                 The Gumbel Distribution
@@ -274,6 +279,7 @@ double.expbinomial      Double Exponential Binomial Distribution Family
 dsimplex                Simplex Distribution
 ducklings               Relative Frequencies of Serum Proteins in White
                         Pekin Ducklings
+eCDF                    Empirical Cumulative Distribution Function
 enzyme                  Enzyme Data
 erf                     Error Function, and variants
 erlang                  Erlang Distribution
@@ -291,6 +297,7 @@ exponential             Exponential Distribution
 exppois                 The Exponential Poisson Distribution
 exppoisson              Exponential Poisson Distribution Family
                         Function
+extlogF1                Extended log-F Distribution Family Function
 familyname              Family Function Name
 felix                   Felix Distribution Family Function
 fff                     F Distribution Family Function
@@ -299,6 +306,7 @@ finney44                Toxicity trial for insects
 fisherzlink             Fisher's Z Link Function
 fisk                    Fisk Distribution family function
 fittedvlm               Fitted Values of a VLM object
+fix.crossing            Fixing a Quantile Regression having Crossing
 flourbeetle             Mortality of Flour Beetles from Carbon
                         Disulphide
 foldnormal              Folded Normal Distribution Family Function
@@ -310,6 +318,15 @@ freund61                Freund's (1961) Bivariate Extension of the
 gabinomial.mlm          Generally-Altered Binomial Regression Family
                         Function (multinomial logit model based;
                         GA-binom-MLM)
+gaitlog.mix             Generally-Altered, -Inflated and -Truncated
+                        Logarithmic Regression Family Function
+                        (GAIT-Log-Log-Log Mixture Variant)
+gaitpoisson.mix         Generally-Altered, -Inflated and -Truncated
+                        Poisson Regression Family Function
+                        (GAIT-Pois-Pois-Pois Mixture Variant)
+gaitpoisson.mlm         Generally-Altered, -Inflated and -Truncated
+                        Poisson Regression Family Function
+                        (GAIT-Pois-MLM-MLM Variant)
 gamma1                  1-parameter Gamma Regression Family Function
 gamma2                  2-parameter Gamma Regression Family Function
 gammaR                  2-parameter Gamma Regression Family Function
@@ -321,12 +338,6 @@ gatnbinomial.mix        Generally-Altered and -Truncated Negative
                         Mixture Variant)
 gatnbinomial.mlm        Generally-Altered and -Truncated Negative
                         Binomial Regression Family Function (GAT-NB-MLM
-                        Variant)
-gatpoisson.mix          Generally-Altered and -Truncated Poisson
-                        Regression Family Function (GAT-Pois-Pois
-                        Mixture Variant)
-gatpoisson.mlm          Generally-Altered and -Truncated Poisson
-                        Regression Family Function (GAT-Pois-MLM
                         Variant)
 genbetaII               Generalized Beta Distribution of the Second
                         Kind
@@ -344,8 +355,6 @@ gev                     Generalized Extreme Value Regression Family
                         Function
 gevUC                   The Generalized Extreme Value Distribution
 gew                     General Electric and Westinghouse Data
-gipoisson.mlm           Generally-Inflated Poisson Distribution Family
-                        Function
 gompertz                Gompertz Regression Family Function
 gordlink                Gamma-Ordinal Link Function
 gpd                     Generalized Pareto Distribution Regression
@@ -381,6 +390,7 @@ inv.lomax               Inverse Lomax Distribution Family Function
 inv.paralogistic        Inverse Paralogistic Distribution Family
                         Function
 is.buggy                Does the Fitted Object Suffer from a Known Bug?
+is.crossing             Quantile Crossing Detection
 is.parallel             Parallelism Constraint Matrices
 is.smart                Test For a Smart Object
 is.zero                 Zero Constraint Matrices
@@ -579,6 +589,7 @@ sm.ps                   Defining Penalized Spline Smooths in VGAM
 smart.expression        S Expression for Smart Functions
 smart.mode.is           Determine What Mode the Smart Prediction is In
 smartpred               Smart Prediction
+specials                Special Values or Quantities in a Fitted Object
 sratio                  Ordinal Regression with Stopping Ratios
 step4                   Choose a model by AIC in a Stepwise Algorithm
 studentt                Student t Distribution

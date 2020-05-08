@@ -12,7 +12,7 @@
 
 <meta name="author" content="Julia Silge and David Robinson" />
 
-<meta name="date" content="2020-03-03" />
+<meta name="date" content="2020-04-17" />
 
 <title>Converting to and from Document-Term Matrix and Corpus objects</title>
 
@@ -303,7 +303,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Converting to and from Document-Term Matrix and Corpus objects</h1>
 <h4 class="author">Julia Silge and David Robinson</h4>
-<h4 class="date">2020-03-03</h4>
+<h4 class="date">2020-04-17</h4>
 
 
 
@@ -384,7 +384,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb9-4"><a href="#cb9-4"></a>d &lt;-<span class="st"> </span>quanteda<span class="op">::</span><span class="kw">dfm</span>(data_corpus_inaugural, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
 <span id="cb9-5"><a href="#cb9-5"></a></span>
 <span id="cb9-6"><a href="#cb9-6"></a>d</span></code></pre></div>
-<pre><code>## Document-feature matrix of: 58 documents, 9,399 features (91.8% sparse) and 4 docvars.
+<pre><code>## Document-feature matrix of: 58 documents, 9,360 features (91.8% sparse) and 4 docvars.
 ##                  features
 ## docs              fellow-citizens  of the senate and house representatives :
 ##   1789-Washington               1  71 116      1  48     2               2 1
@@ -401,9 +401,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ##   1801-Jefferson      1            0
 ##   1805-Jefferson      7            0
 ##   1809-Madison        0            0
-## [ reached max_ndoc ... 52 more documents, reached max_nfeat ... 9,389 more features ]</code></pre>
+## [ reached max_ndoc ... 52 more documents, reached max_nfeat ... 9,350 more features ]</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">tidy</span>(d)</span></code></pre></div>
-<pre><code>## # A tibble: 44,735 x 3
+<pre><code>## # A tibble: 44,710 x 3
 ##    document        term            count
 ##    &lt;chr&gt;           &lt;chr&gt;           &lt;dbl&gt;
 ##  1 1789-Washington fellow-citizens     1
@@ -416,7 +416,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ##  8 1841-Harrison   fellow-citizens    11
 ##  9 1845-Polk       fellow-citizens     1
 ## 10 1849-Taylor     fellow-citizens     1
-## # … with 44,725 more rows</code></pre>
+## # … with 44,700 more rows</code></pre>
 </div>
 <div id="casting-tidy-text-data-into-a-documenttermmatrix" class="section level3">
 <h3>Casting tidy text data into a DocumentTermMatrix</h3>

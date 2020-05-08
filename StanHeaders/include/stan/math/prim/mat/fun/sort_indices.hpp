@@ -1,8 +1,9 @@
 #ifndef STAN_MATH_PRIM_MAT_FUN_SORT_INDICES_HPP
 #define STAN_MATH_PRIM_MAT_FUN_SORT_INDICES_HPP
 
-#include <stan/math/prim/meta.hpp>
 #include <stan/math/prim/mat/fun/Eigen.hpp>
+#include <stan/math/prim/mat/meta/index_type.hpp>
+#include <stan/math/prim/arr/meta/index_type.hpp>
 #include <algorithm>
 #include <vector>
 
@@ -39,11 +40,10 @@ class index_comparator {
    * @param j Index of second value for comparison
    */
   bool operator()(int i, int j) const {
-    if (ascending) {
+    if (ascending)
       return xs_[i - 1] < xs_[j - 1];
-    } else {
+    else
       return xs_[i - 1] > xs_[j - 1];
-    }
   }
 };
 
@@ -61,13 +61,12 @@ class index_comparator {
  */
 template <bool ascending, typename C>
 std::vector<int> sort_indices(const C& xs) {
-  using idx_t = typename index_type<C>::type;
+  typedef typename index_type<C>::type idx_t;
   idx_t size = xs.size();
   std::vector<int> idxs;
   idxs.resize(size);
-  for (idx_t i = 0; i < size; ++i) {
+  for (idx_t i = 0; i < size; ++i)
     idxs[i] = i + 1;
-  }
   internal::index_comparator<ascending, C> comparator(xs);
   std::sort(idxs.begin(), idxs.end(), comparator);
   return idxs;

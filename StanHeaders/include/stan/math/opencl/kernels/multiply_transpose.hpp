@@ -3,14 +3,12 @@
 #ifdef STAN_OPENCL
 
 #include <stan/math/opencl/kernel_cl.hpp>
-#include <stan/math/opencl/buffer_types.hpp>
-#include <string>
 
 namespace stan {
 namespace math {
 namespace opencl_kernels {
 // \cond
-static const std::string multiply_transpose_kernel_code = STRINGIFY(
+static const char* multiply_transpose_kernel_code = STRINGIFY(
     // \endcond
     /**
      * Matrix multiplication of the form A*A^T on the OpenCL device
@@ -116,7 +114,7 @@ static const std::string multiply_transpose_kernel_code = STRINGIFY(
 /**
  * See the docs for \link kernels/multiply_transpose.hpp add() \endlink
  */
-const kernel_cl<in_buffer, out_buffer, int, int> multiply_transpose(
+const local_range_kernel<cl::Buffer, cl::Buffer, int, int> multiply_transpose(
     "multiply_transpose",
     {thread_block_helpers, multiply_transpose_kernel_code},
     {{"THREAD_BLOCK_SIZE", 32}, {"WORK_PER_THREAD", 4}});

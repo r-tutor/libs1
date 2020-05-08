@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Approximate Critical Values for Kolmogorov-Smirnov's D</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for KSd {sfsmisc}"><tr><td>KSd {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Approximate Critical Values for Kolmogorov-Smirnov's D</h2>
+
+<h3>Description</h3>
+
+<p>Computes the critical value for Kolmogorov-Smirnov's <i>D_n</i>, for
+sample sizes <i>n &gt;= 10</i> and confidence level 95%.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+KSd(n)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>the sample size, <code>n &gt;= 10</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Based on tables values given in the reference below.
+For <i>n &lt;= 80</i> uses interpolations from exact values, elsewhere
+uses asymptotic approximation.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The critical value for D (two-sided) for significance level 0.05 (or
+confidence level 95%).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Kjetil Halvorsen and Martin Maechler</p>
+
+
+<h3>References</h3>
+
+<p>Peter J. Bickel and Kjell A. Doksum (1977),
+<em>Mathematical Statistics: Basic Ideas and Selected Topics</em>.
+Holden Day.
+Section 9.6 and table IX.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Is used from <code><a href="ecdf.ksCI.html">ecdf.ksCI</a></code>.</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+KSd(90)
+KSd(1:9)# now works
+
+op &lt;- par(mfrow=c(2,1))
+  plot(KSd, 10, 150)# nice
+  abline(v = c(75,85), col = "gray")
+  plot(KSd, 79, 81, n = 1001)# *very* tiny discontinuity at 80
+par(op)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

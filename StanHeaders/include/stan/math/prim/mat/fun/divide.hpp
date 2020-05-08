@@ -2,7 +2,6 @@
 #define STAN_MATH_PRIM_MAT_FUN_DIVIDE_HPP
 
 #include <stan/math/prim/mat/fun/Eigen.hpp>
-#include <stan/math/prim/meta.hpp>
 #include <type_traits>
 
 namespace stan {
@@ -16,10 +15,10 @@ namespace math {
  * @param c Scalar.
  * @return Matrix divided by scalar.
  */
-template <int R, int C, typename T1, typename T2,
-          typename = require_all_arithmetic_t<T1, T2>>
-inline Eigen::Matrix<return_type_t<T1, T2>, R, C> divide(
-    const Eigen::Matrix<T1, R, C>& m, T2 c) {
+template <int R, int C, typename T>
+inline typename std::enable_if<std::is_arithmetic<T>::value,
+                               Eigen::Matrix<double, R, C> >::type
+divide(const Eigen::Matrix<double, R, C>& m, T c) {
   return m / c;
 }
 

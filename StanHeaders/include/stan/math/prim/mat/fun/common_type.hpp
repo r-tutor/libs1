@@ -3,6 +3,7 @@
 
 #include <stan/math/prim/arr/fun/common_type.hpp>
 #include <stan/math/prim/mat/fun/Eigen.hpp>
+#include <boost/math/tools/promotion.hpp>
 
 namespace stan {
 namespace math {
@@ -18,7 +19,7 @@ namespace math {
  */
 template <typename T1, typename T2, int R, int C>
 struct common_type<Eigen::Matrix<T1, R, C>, Eigen::Matrix<T2, R, C> > {
-  using type = Eigen::Matrix<typename common_type<T1, T2>::type, R, C>;
+  typedef Eigen::Matrix<typename common_type<T1, T2>::type, R, C> type;
 };
 
 }  // namespace math

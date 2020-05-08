@@ -15,7 +15,7 @@ struct conjunction : std::true_type {};
 
 template <typename T, typename... Ts>
 struct conjunction<T, Ts...>
-    : std::conditional_t<T::value, conjunction<Ts...>, std::false_type> {};
+    : std::conditional<T::value, conjunction<Ts...>, std::false_type>::type {};
 
 }  // namespace math
 }  // namespace stan

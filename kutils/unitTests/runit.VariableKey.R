@@ -5,7 +5,7 @@
 
 ## load packages
 library(RUnit)
-library(kutils)
+#library(kutils)
 
 
 ## set data file paths (for package build)
@@ -590,7 +590,8 @@ test.keyUpdate <- function() {
     ## check long key
     set.seed(1233)
     dat1 <- data.frame(Score = c(1, 2, 3, 42, 4, 2),
-                       Gender = c("M", "M", NA, "F", "F", "F"))
+                       Gender = c("M", "M", NA, "F", "F", "F"),
+                       stringsAsFactors = TRUE)
     ##   setting up key
     key1 <- keyTemplate(dat1, long=TRUE)
     key1[5, "value_new"] <- 10
@@ -599,7 +600,7 @@ test.keyUpdate <- function() {
     ##   modifying data
     dat2 <- data.frame(Score = c(7, 13, NA),
                        Gender = c("other", NA, "F"),
-                       Weight = rnorm(3))
+                       Weight = rnorm(3), stringsAsFactors = TRUE)
     dat2 <- plyr::rbind.fill(dat1, dat2)
     ##   update key
     key2 <- keyUpdate(key1, dat2, append=FALSE)

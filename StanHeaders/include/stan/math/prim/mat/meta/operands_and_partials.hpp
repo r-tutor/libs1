@@ -1,10 +1,11 @@
 #ifndef STAN_MATH_PRIM_MAT_META_OPERANDS_AND_PARTIALS_HPP
 #define STAN_MATH_PRIM_MAT_META_OPERANDS_AND_PARTIALS_HPP
 
-#include <stan/math/prim/mat/fun/Eigen.hpp>
 #include <stan/math/prim/mat/meta/broadcast_array.hpp>
 #include <stan/math/prim/scal/meta/operands_and_partials.hpp>
 #include <stan/math/prim/scal/meta/return_type.hpp>
+
+#include <Eigen/Dense>
 #include <vector>
 
 namespace stan {
@@ -17,7 +18,7 @@ namespace internal {
 template <typename Op, typename ViewElt, int R, int C>
 class ops_partials_edge<ViewElt, Eigen::Matrix<Op, R, C>> {
  public:
-  using partials_t = empty_broadcast_array<ViewElt, Eigen::Matrix<Op, R, C>>;
+  typedef empty_broadcast_array<ViewElt, Eigen::Matrix<Op, R, C>> partials_t;
   partials_t partials_;
   empty_broadcast_array<partials_t, Eigen::Matrix<Op, R, C>> partials_vec_;
   ops_partials_edge() {}
@@ -36,7 +37,7 @@ class ops_partials_edge<ViewElt, Eigen::Matrix<Op, R, C>> {
 template <typename Op, typename ViewElt, int R, int C>
 class ops_partials_edge<ViewElt, std::vector<Eigen::Matrix<Op, R, C>>> {
  public:
-  using partials_t = empty_broadcast_array<ViewElt, Eigen::Matrix<Op, R, C>>;
+  typedef empty_broadcast_array<ViewElt, Eigen::Matrix<Op, R, C>> partials_t;
   empty_broadcast_array<partials_t, Eigen::Matrix<Op, R, C>> partials_vec_;
   ops_partials_edge() {}
   explicit ops_partials_edge(
@@ -55,8 +56,8 @@ class ops_partials_edge<ViewElt, std::vector<Eigen::Matrix<Op, R, C>>> {
 template <typename Op, typename ViewElt>
 class ops_partials_edge<ViewElt, std::vector<std::vector<Op>>> {
  public:
-  using partials_t
-      = empty_broadcast_array<ViewElt, std::vector<std::vector<Op>>>;
+  typedef empty_broadcast_array<ViewElt, std::vector<std::vector<Op>>>
+      partials_t;
   partials_t partials_;
   empty_broadcast_array<partials_t, std::vector<std::vector<Op>>> partials_vec_;
   ops_partials_edge() {}

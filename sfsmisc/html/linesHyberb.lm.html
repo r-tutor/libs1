@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot Confidence or Prediction Hyperbolas around a Regression...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for linesHyperb.lm {sfsmisc}"><tr><td>linesHyperb.lm {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot Confidence or Prediction Hyperbolas around a Regression Line</h2>
+
+<h3>Description</h3>
+
+<p>Add confidence/prediction hyperbolas for <i>y(x_0)</i>
+to a plot with data or regression line.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+linesHyperb.lm(object, c.prob=0.95, confidence=FALSE,
+            k=if (confidence) Inf else 1,
+            col=2, lty=2, do.abline=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>result of <code><a href="../../stats/html/lm.html">lm</a>(.)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>c.prob</code></td>
+<td>
+<p>coverage probability in <i>(0,1)</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>confidence</code></td>
+<td>
+<p>logical; if true, do (small) confidence band, else,
+realistic prediction band for the mean of <code>k</code> observations.</p>
+</td></tr>
+<tr valign="top"><td><code>k</code></td>
+<td>
+<p>integer or <code>Inf</code>; assume <code>k</code> future observations;
+<code>k = Inf</code>  corresponds to confidence intervals (for y).</p>
+</td></tr>
+<tr valign="top"><td><code>col, lty</code></td>
+<td>
+<p>attributes for the <code><a href="../../graphics/html/lines.html">lines</a></code> to be drawn.</p>
+</td></tr>
+<tr valign="top"><td><code>do.abline</code></td>
+<td>
+<p>logical; if true, the regression line is drawn as well.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>With <code><a href="../../stats/html/predict.lm.html">predict.lm</a>(*, interval=)</code> is available,
+this function <code>linesHyperb.lm</code> is only slightly more general for
+its <code>k</code> argument.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, Oct 1995</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/predict.lm.html">predict.lm</a>(*, interval=)</code> optionally computes
+prediction or confidence intervals.</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(swiss)
+      plot(Fertility ~ Education, data = swiss) # the data
+(lmS &lt;- lm(Fertility ~ Education, data = swiss))
+linesHyperb.lm(lmS)
+linesHyperb.lm(lmS, conf=TRUE, col="blue")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

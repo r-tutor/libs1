@@ -3,14 +3,12 @@
 #ifdef STAN_OPENCL
 
 #include <stan/math/opencl/kernel_cl.hpp>
-#include <stan/math/opencl/buffer_types.hpp>
-#include <string>
 
 namespace stan {
 namespace math {
 namespace opencl_kernels {
 // \cond
-static const std::string is_nan_kernel_code = STRINGIFY(
+static const char *is_nan_kernel_code = STRINGIFY(
     // \endcond
     /**
      * Check if the <code>matrix_cl</code> has NaN values
@@ -41,7 +39,7 @@ static const std::string is_nan_kernel_code = STRINGIFY(
 /**
  * See the docs for \link kernels/check_nan.hpp is_nan() \endlink
  */
-const kernel_cl<in_buffer, out_buffer, int, int> check_nan(
+const global_range_kernel<cl::Buffer, cl::Buffer, int, int> check_nan(
     "is_nan", {indexing_helpers, is_nan_kernel_code});
 
 }  // namespace opencl_kernels

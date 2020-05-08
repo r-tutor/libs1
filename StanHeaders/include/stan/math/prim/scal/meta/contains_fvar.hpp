@@ -14,7 +14,8 @@ namespace stan {
  * @tparam T Types to test
  */
 template <typename... T>
-using contains_fvar = math::disjunction<is_fvar<scalar_type_t<T>>...>;
+using contains_fvar
+    = math::disjunction<is_fvar<typename scalar_type<T>::type>...>;
 
 }  // namespace stan
 #endif

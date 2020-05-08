@@ -1,7 +1,6 @@
 #ifndef STAN_MATH_PRIM_SCAL_ERR_CHECK_CONSISTENT_SIZES_HPP
 #define STAN_MATH_PRIM_SCAL_ERR_CHECK_CONSISTENT_SIZES_HPP
 
-#include <stan/math/prim/meta.hpp>
 #include <stan/math/prim/scal/err/check_consistent_size.hpp>
 #include <algorithm>
 

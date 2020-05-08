@@ -1,7 +1,9 @@
 #ifndef STAN_MATH_PRIM_SCAL_ERR_IS_SIZE_MATCH_HPP
 #define STAN_MATH_PRIM_SCAL_ERR_IS_SIZE_MATCH_HPP
 
-#include <stan/math/prim/meta.hpp>
+#include <boost/type_traits/common_type.hpp>
+#include <stan/math/prim/scal/meta/likely.hpp>
+
 namespace stan {
 namespace math {
 

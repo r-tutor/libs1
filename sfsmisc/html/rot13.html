@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Generalized Rot13 Character Translation (Rotation)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rotn {sfsmisc}"><tr><td>rotn {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Generalized Rot13 Character Translation (Rotation)</h2>
+
+<h3>Description</h3>
+
+<p>Compute generalized &lsquo;rot13&rsquo; character translations or
+&ldquo;rotations&rdquo;
+</p>
+<p>In the distant past, considered as poor man's encryption, such
+rotations are way too poor nowadays and provided mainly for didactical
+reasons.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rotn(ch, n = 13)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>ch</code></td>
+<td>
+<p>a <code><a href="../../base/html/character.html">character</a></code> vector; often a string (of length 1).</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>an integer in <i>{1...26}</i>; the default is
+particularly useful.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Note that the default <code>n = 13</code> makes <code>rotn</code> into
+a function that is its own inverse.
+</p>
+<p>Written after having searched for it and found
+<code>seqinr::rot13()</code> which was generalized and rendered more
+transparently to my eyes.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a character as <code>ch</code>, but with each character (which
+belongs to <code><a href="../../base/html/Constants.html">letters</a></code> or <code><a href="../../base/html/Constants.html">LETTERS</a></code>
+&ldquo;rotated&rdquo; by <code>n</code> (positions in the alphabet).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="rot2.html">rot2</a></code>, a completely different rotation (namely in the
+plane aka <i>R^2</i>).
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+rotn(c("ABC", "a","b","c"), 1)
+rotn(c("ABC", "a","b","c"), 2)
+rotn(c("ABC", "a","b","c"), 26) # rotation by 26 does not change much
+
+(ch &lt;- paste("Hello", c("World!", "you too")))
+rotn(ch)
+rotn( rotn(ch ) ) # rotn(*, 13) is its own inverse
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

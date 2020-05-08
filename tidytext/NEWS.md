@@ -1,3 +1,9 @@
+# tidytext 0.2.4
+
+* Update tidying test for new tibble release (inner names for columns)
+* Deprecate SE versions of main functions (have long been replaced by tidy eval semantics)
+* Improve error handling throughout
+
 # tidytext 0.2.3
 
 * Wrapper tokenization functions for n-grams, characters, sentences, tweets, and more, thanks to @ColinFay (#137).

@@ -3,17 +3,12 @@
 
 #include <stan/math/rev/core.hpp>
 #include <stan/math/prim/scal/meta/partials_type.hpp>
-#include <stan/math/rev/scal/meta/is_var.hpp>
-#include <type_traits>
 
 namespace stan {
 
-/**
- * Specialization of partials type returns double if input type is a double.
- */
-template <typename T>
-struct partials_type<T, require_var_t<T>> {
-  using type = typename std::decay_t<T>::Scalar;
+template <>
+struct partials_type<stan::math::var> {
+  typedef double type;
 };
 
 }  // namespace stan

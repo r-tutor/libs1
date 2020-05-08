@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot a profile.nls Object With Profile Traces</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for p.profileTraces {sfsmisc}"><tr><td>p.profileTraces {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot a profile.nls Object With Profile Traces</h2>
+
+<h3>Description</h3>
+
+<p>Displays a series of plots of the profile t function and the likelihood
+profile traces for the parameters in a nonlinear regression model that
+has been fitted with <code><a href="../../stats/html/nls.html">nls</a></code> and profiled with
+<code><a href="../../stats/html/profile.nls.html">profile.nls</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+p.profileTraces(x, cex = 1,
+                subtitle = paste("t-Profiles and traces of ",
+                       deparse(attr(x,"summary")$formula)))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an object of class <code>"profile.nls"</code>, typically resulting from
+<code>profile(<a href="../../stats/html/nls.html">nls</a>(.))</code>, see
+<code><a href="../../stats/html/profile.nls.html">profile.nls</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>cex</code></td>
+<td>
+<p>character expansion, see <code><a href="../../graphics/html/par.html">par</a>(cex =)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>subtitle</code></td>
+<td>
+<p>a subtitle to set for the plot.  The default now
+includes the <code><a href="../../stats/html/nls.html">nls</a>()</code> formula used.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>the <span class="pkg">stats</span>-internal <code>stats:::plot.profile.nls</code> plot
+method just does &ldquo;the diagonals&rdquo;.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Andreas Ruckstuhl, <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> port by Isabelle Flückiger and Marcel Wolbers</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/profile.html">profile</a></code>, and <code><a href="../../stats/html/nls.html">nls</a></code> (which has
+unexported <code>profile</code> and <code>stats:::plot.profile.nls</code> methods).
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+require(stats)
+data(Puromycin)
+Treat &lt;- Puromycin[Puromycin$state == "treated", ]
+fm &lt;- nls(rate ~ T1*conc/(T2+conc), data=Treat,
+          start = list(T1=207,T2=0.06))
+(pr &lt;- profile(fm)) # quite a few things..
+op &lt;- par(mfcol=1:2)
+plot(pr) # -&gt; 2 'standard' plots
+par(op)
+## ours:
+p.profileTraces(pr)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

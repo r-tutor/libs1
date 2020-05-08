@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -148,6 +147,7 @@ summary {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -176,6 +176,12 @@ summary {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -277,9 +283,9 @@ div.tocify {
 <pre class="r"><code>library(sf)
 fname &lt;- system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;)
 fname
-## [1] &quot;/tmp/RtmprHOBbV/Rinst6782470e2d96/sf/shape/nc.shp&quot;
+## [1] &quot;/tmp/RtmpZ3WbFm/Rinst47ab32182f6d/sf/shape/nc.shp&quot;
 nc &lt;- st_read(fname)
-## Reading layer `nc' from data source `/tmp/RtmprHOBbV/Rinst6782470e2d96/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/RtmpZ3WbFm/Rinst47ab32182f6d/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -322,7 +328,7 @@ Available layers:
 <p>Alternatively, a user can set the global option <code>stringsAsFactors</code>, and this will have the same effect:</p>
 <pre class="r"><code>options(stringsAsFactors = FALSE)
 st_read(fname)
-## Reading layer `nc' from data source `/tmp/RtmprHOBbV/Rinst6782470e2d96/sf/shape/nc.shp' using driver `ESRI Shapefile'
+## Reading layer `nc' from data source `/tmp/RtmpZ3WbFm/Rinst47ab32182f6d/sf/shape/nc.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 100 features and 14 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -606,7 +612,7 @@ as(x, &quot;Spatial&quot;)
 ## [1,]         5         5
 ## [2,]         6         9
 ## Coordinate Reference System (CRS) arguments: +proj=longlat +datum=WGS84
-## +no_defs</code></pre>
+## +no_defs +ellps=WGS84 +towgs84=0,0,0</code></pre>
 </div>
 </div>
 

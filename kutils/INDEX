@@ -8,15 +8,12 @@ checkCoercion           Check if values can be safely coerced without
                         introduction of missing values
 colnamesReplace         Replace column names with new names from a
                         named vector
-compareLavaan           Prepare a table to compare fit measures of
-                        confirmatory factor analyses (CFA)
 deduper                 Removes redundant words from beginnings of
                         character strings
 deleteBogusColumns      Remove columns in which the proportion of
                         missing data exceeds a threshold.
 deleteBogusRows         Remove rows in which the proportion of missing
                         data exceeds a threshold.
-detectNested            Discern nesting pattern of SEM coefficients
 dev.create              Create a graphics device
 dir.create.unique       Create a uniquely named directory. Appends
                         number & optionally date to directory name.
@@ -34,6 +31,8 @@ initProject             Create project directories, initialize a git
                         template file in R directory
 is.data.frame.simple    Check if a data frame is a simple collection of
                         columns (no lists or matrices within)
+isNA                    Check if values are R NA symbol or any one of
+                        the na.strings elements
 keyApply                Apply variable key to data frame (generate
                         recoded data frame)
 keyCheck                Check a key for consistency of names, values
@@ -66,8 +65,6 @@ keysPoolCheck           Compares keys from different data sets; finds
                         keys or merging the data sets themselves.
 likert                  Percentage tables for Likert Scale variables
 long2wide               convert a key object from long to wide format
-markupConvert           Convert marked-up semTable structures to latex,
-                        html, or csv
 mergeCheck              First draft of function to diagnose problems in
                         merges and key variables
 mgsub                   apply a vector of replacements, one after the
@@ -79,10 +76,10 @@ natlongsurv             Smoking, Happiness, and other survey responses
 padW0                   Insert 0's in the front of existing digits or
                         characters so that all elements of a vector
                         have the same number of characters.
-peek                    Show variables, one column at a time.
+peek                    Show variables, one at a time, QUICKLY and
+                        EASILY.
 print.keyDiff           Print a keyDiff object
 print.keycheck          Print out the result of mergeCheck function.
-print.kutable           A print method for kutable objects
 print.likert            print method for likert tables
 qualtricsBlockStack     Create meta data frame to align identical
                         questions
@@ -91,7 +88,6 @@ removeMatches           Remove elements if they are in a target vector,
 reverse                 Reverse the levels in a factor
 safeInteger             If a numeric variable has only integer values,
                         then make it an integer.
-semTable                Creates Structural Equation Modeling Tables
 shorten                 Reduce each in a vector of strings to a given
                         length
 starsig                 How many stars would we need for this p value?
@@ -100,7 +96,6 @@ statdatKey              keyFactors: private function that does work for
 stringbreak             Insert "\n" after the k'th character in a
                         string. This IS vectorized, so can receive just
                         one or many character strings in a vector.
-testtable               Test viewer for tex tables
 truncsmart              Cuts a string at a specified linewidth, trying
                         to align cut with a separator
 updatePackages          Update packages, spot new dependencies, and

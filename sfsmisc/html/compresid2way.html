@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot Components + Residuals for Two Factors</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for compresid2way {sfsmisc}"><tr><td>compresid2way {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot Components + Residuals for Two Factors</h2>
+
+<h3>Description</h3>
+
+<p>For an analysis of variance or regression with (at least) two factors:
+Plot components + residuals for two factors according to Tukey's
+&ldquo;forget-it plot&rdquo;. Try it!
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+compresid2way(aov, data=NULL, fac=1:2, label = TRUE, numlabel = FALSE,
+             xlab=NULL, ylab=NULL, main=NULL,
+             col=c(2,3,4,4), lty=c(1,1,2,4), pch=c(1,2))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>aov</code></td>
+<td>
+<p>either an <code><a href="../../stats/html/aov.html">aov</a></code> object with a formula of the form
+
+<code>y ~ a + b</code>, where  <code>a</code>  and  <code>b</code>  are factors,
+or such a formula.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>data frame containing  <code>a</code>  and  <code>b</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>fac</code></td>
+<td>
+<p>the two factors used for plotting.  Either column numbers or
+names for argument <code>data</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>logical indicating if levels of factors should be shown
+in the plot.</p>
+</td></tr>
+<tr valign="top"><td><code>numlabel</code></td>
+<td>
+<p>logical indicating if effects of factors will be shown
+in the plot.</p>
+</td></tr>
+<tr valign="top"><td><code>xlab,ylab,main</code></td>
+<td>
+<p>the usual <code><a href="../../graphics/html/title.html">title</a></code> components, here
+with a non-trivial default constructed from <code>aov</code> and the
+component factors used.</p>
+</td></tr>
+<tr valign="top"><td><code>col,lty,pch</code></td>
+<td>
+<p>colors, line types, plotting characters to be used
+for plotting [1] positive residuals, [2] negative residuals,
+[3] grid, [4] labels.  If <code>pch</code> is sufficiently long, it will be used
+as the list of individual symbols for plotting the y values.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For a two-way analysis of variance, the plot shows the additive
+components of the fits for the two factors by the intersections of a
+grid, along with the residuals.
+The observed values of the target variable are identical to the
+vertical coordinate.
+</p>
+<p>The application of the function has been extended to cover more
+complicated models. The components of the fit for two factors are
+shown as just described, and the residuals are added. The result is a
+&ldquo;component plus residual&rdquo; plot for two factors in one display.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Invisibly, a list with components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>compy</code></td>
+<td>
+<p>data.frame containing the component effects of the two
+factors, and combined effects plus residual</p>
+</td></tr>
+<tr valign="top"><td><code>coef</code></td>
+<td>
+<p>coefficients: Intercept and effects of the factors</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Werner Stahel <a href="mailto:stahel@stat.math.ethz.ch">stahel@stat.math.ethz.ch</a></p>
+
+
+<h3>References</h3>
+
+<p>F. Mosteller and J. W. Tukey (1977)
+<em>Data Analysis and Regression: A Second Course in Statistics</em>.
+Addison-Wesley, Reading, Mass., p. 176.
+</p>
+<p>John W. Tukey (1977)
+<em>Exploratory Data Analysis</em>.
+Addison-Wesley, Reading, Mass., p. 381.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/interaction.plot.html">interaction.plot</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ ## From Venables and Ripley (2002) p.165.
+ N &lt;- c(0,1,0,1,1,1,0,0,0,1,1,0,1,1,0,0,1,0,1,0,1,1,0,0)
+ P &lt;- c(1,1,0,0,0,1,0,1,1,1,0,0,0,1,0,1,1,0,0,1,0,1,1,0)
+ K &lt;- c(1,0,0,1,0,1,1,0,0,1,0,1,0,1,1,0,0,0,1,1,1,0,1,0)
+ yield &lt;- c(49.5,62.8,46.8,57.0,59.8,58.5,55.5,56.0,62.8,55.8,69.5,55.0,
+            62.0,48.8,45.5,44.2,52.0,51.5,49.8,48.8,57.2,59.0,53.2,56.0)
+ npk &lt;- data.frame(block=gl(6,4), N=factor(N), P=factor(P),
+                   K=factor(K), yield=yield)
+ npk.cr &lt;- compresid2way(yield ~ N+P+K, data=npk, fac=c("P","K"))
+
+ ## Fisher's 1926 data on potatoe yield
+ data(potatoes)
+ pot.aov &lt;- aov(yield ~ nitrogen+potash+pos, data=potatoes)
+ compresid2way(pot.aov, pch=as.character(potatoes$pos))
+
+ compresid2way(yield~nitrogen+potash, data=subset(potatoes, pos == 2))
+
+ ## 2 x 3 design :
+ data(warpbreaks)
+ summary(fm1 &lt;- aov(breaks ~ wool + tension, data = warpbreaks))
+ compresid2way(fm1)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

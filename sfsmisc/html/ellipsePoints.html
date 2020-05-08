@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Compute Radially Equispaced Points on Ellipse</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ellipsePoints {sfsmisc}"><tr><td>ellipsePoints {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Compute Radially Equispaced Points on Ellipse</h2>
+
+<h3>Description</h3>
+
+<p>Compute points on (the boundary of) an ellipse which is given by
+elementary geometric parameters.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ellipsePoints(a, b, alpha = 0, loc = c(0, 0), n = 201, keep.ab.order=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>a,b</code></td>
+<td>
+<p>length of half axes in (x,y) direction.  Note that
+<i>(a,b)</i> is equivalent to <i>(b,a)</i> <em>unless</em>
+<code>keep.ab.order=TRUE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>angle (in degrees) giving the orientation of the ellipse,
+i.e., the original (x,y)-axis ellipse is rotated by <code>angle</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>loc</code></td>
+<td>
+<p>center (LOCation) of the ellipse.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of points to generate.</p>
+</td></tr>
+<tr valign="top"><td><code>keep.ab.order</code></td>
+<td>
+<p>logical indicating if <i>(a,b)</i> should be
+considered <em>ordered</em>.  When <code>FALSE</code>, as per default,
+the orientation of the ellipse is solely determined by <code>alpha</code>.
+</p>
+<p>Note that <code>keep.ab.order = TRUE</code> seems a more natural default,
+but <code>FALSE</code> is there for back-compatibility.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A numeric matrix of dimension <code>n x 2</code>, each row containing the
+(x,y) coordinates of a point.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, March 2002.</p>
+
+
+<h3>See Also</h3>
+
+<p>the &lsquo;<span class="file">ellipse</span>&rsquo; package and <code><a href="../../cluster/html/ellipsoidhull.html">ellipsoidhull</a></code>
+and <code><a href="../../cluster/html/ellipsoidPoints.html">ellipsoidPoints</a></code>
+in the &lsquo;<span class="file">cluster</span>&rsquo; package.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Simple Ellipse, centered at (0,0), x-/y- axis parallel:
+ep &lt;- ellipsePoints(5,2)
+str(ep)
+plot(ep, type="n",asp=1) ; polygon(ep, col = 2)
+## (a,b) = (2,5)  is equivalent to (5,2) :
+lines(ellipsePoints(2,5), lwd=2, lty=3)
+## keep.order=TRUE : Now, (2,5) are axes in x- respective y- direction:
+lines(ellipsePoints(2,5, keep.ab.order=TRUE), col="blue")
+
+## rotate by 30 degrees :
+plot(ellipsePoints(5,2, alpha = 30), asp=1)
+abline(h=0,v=0,col="gray")
+abline(a=0,b= tan( 30 *pi/180), col=2, lty = 2)
+abline(a=0,b= tan(120 *pi/180), col=3, lty = 2)
+
+## NB: use x11(type = "Xlib") for the following if you can
+if(dev.interactive(TRUE)) {
+  ## Movie : rotating ellipse  :
+  nTurns &lt;- 4 # #{full 360 deg turns}
+  for(al in 1:(nTurns*360)) {
+      ep &lt;- ellipsePoints(3,6, alpha=al, loc = c(5,2))
+      plot(ep,type="l",xlim=c(-1,11),ylim=c(-4,8),
+	   asp=1, axes = FALSE, xlab="", ylab="")
+  }
+
+  ## Movie : rotating _filled_ ellipse {less nice to look at}
+  for(al in 1:180) {
+      ep &lt;- ellipsePoints(3,6, alpha=al, loc = c(5,2))
+      plot(ep,type="n",xlim=c(-1,11),ylim=c(-4,8),
+	   asp=1, axes = FALSE, xlab="", ylab="")
+      polygon(ep,col=2,border=3,lwd=2.5)
+  }
+}# only if interactive
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

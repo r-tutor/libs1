@@ -1,7 +1,6 @@
 #ifndef STAN_MATH_PRIM_MAT_PROB_MATRIX_NORMAL_PREC_LOG_HPP
 #define STAN_MATH_PRIM_MAT_PROB_MATRIX_NORMAL_PREC_LOG_HPP
 
-#include <stan/math/prim/meta.hpp>
 #include <stan/math/prim/mat/fun/Eigen.hpp>
 #include <stan/math/prim/mat/prob/matrix_normal_prec_lpdf.hpp>
 #include <boost/math/tools/promotion.hpp>
@@ -31,7 +30,8 @@ namespace math {
  */
 template <bool propto, typename T_y, typename T_Mu, typename T_Sigma,
           typename T_D>
-return_type_t<T_y, T_Mu, T_Sigma, T_D> matrix_normal_prec_log(
+typename boost::math::tools::promote_args<T_y, T_Mu, T_Sigma, T_D>::type
+matrix_normal_prec_log(
     const Eigen::Matrix<T_y, Eigen::Dynamic, Eigen::Dynamic>& y,
     const Eigen::Matrix<T_Mu, Eigen::Dynamic, Eigen::Dynamic>& Mu,
     const Eigen::Matrix<T_Sigma, Eigen::Dynamic, Eigen::Dynamic>& Sigma,
@@ -44,7 +44,8 @@ return_type_t<T_y, T_Mu, T_Sigma, T_D> matrix_normal_prec_log(
  * @deprecated use <code>matrix_normal_prec_lpdf</code>
  */
 template <typename T_y, typename T_Mu, typename T_Sigma, typename T_D>
-return_type_t<T_y, T_Mu, T_Sigma, T_D> matrix_normal_prec_log(
+typename boost::math::tools::promote_args<T_y, T_Mu, T_Sigma, T_D>::type
+matrix_normal_prec_log(
     const Eigen::Matrix<T_y, Eigen::Dynamic, Eigen::Dynamic>& y,
     const Eigen::Matrix<T_Mu, Eigen::Dynamic, Eigen::Dynamic>& Mu,
     const Eigen::Matrix<T_Sigma, Eigen::Dynamic, Eigen::Dynamic>& Sigma,

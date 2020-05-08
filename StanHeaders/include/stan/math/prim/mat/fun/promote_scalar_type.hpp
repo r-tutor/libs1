@@ -24,8 +24,9 @@ struct promote_scalar_type<T,
   /**
    * The promoted type.
    */
-  using type = Eigen::Matrix<typename promote_scalar_type<T, S>::type,
-                             Eigen::Dynamic, Eigen::Dynamic>;
+  typedef Eigen::Matrix<typename promote_scalar_type<T, S>::type,
+                        Eigen::Dynamic, Eigen::Dynamic>
+      type;
 };
 
 /**
@@ -41,8 +42,9 @@ struct promote_scalar_type<T, Eigen::Matrix<S, Eigen::Dynamic, 1> > {
   /**
    * The promoted type.
    */
-  using type = Eigen::Matrix<typename promote_scalar_type<T, S>::type,
-                             Eigen::Dynamic, 1>;
+  typedef Eigen::Matrix<typename promote_scalar_type<T, S>::type,
+                        Eigen::Dynamic, 1>
+      type;
 };
 
 /**
@@ -58,8 +60,9 @@ struct promote_scalar_type<T, Eigen::Matrix<S, 1, Eigen::Dynamic> > {
   /**
    * The promoted type.
    */
-  using type = Eigen::Matrix<typename promote_scalar_type<T, S>::type, 1,
-                             Eigen::Dynamic>;
+  typedef Eigen::Matrix<typename promote_scalar_type<T, S>::type, 1,
+                        Eigen::Dynamic>
+      type;
 };
 
 }  // namespace math

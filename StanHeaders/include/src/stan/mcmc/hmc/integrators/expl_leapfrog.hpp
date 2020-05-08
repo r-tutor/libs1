@@ -3,35 +3,37 @@
 
 #include <stan/callbacks/logger.hpp>
 #include <stan/mcmc/hmc/integrators/base_leapfrog.hpp>
-#include <stan/math/prim/mat/fun/Eigen.hpp>
+#include <Eigen/Dense>
 
 namespace stan {
-namespace mcmc {
+  namespace mcmc {
 
-template <class Hamiltonian>
-class expl_leapfrog : public base_leapfrog<Hamiltonian> {
- public:
-  expl_leapfrog() : base_leapfrog<Hamiltonian>() {}
+    template <class Hamiltonian>
+    class expl_leapfrog : public base_leapfrog<Hamiltonian> {
+    public:
+      expl_leapfrog()
+        : base_leapfrog<Hamiltonian>() {}
 
-  void begin_update_p(typename Hamiltonian::PointType& z,
-                      Hamiltonian& hamiltonian, double epsilon,
-                      callbacks::logger& logger) {
-    z.p -= epsilon * hamiltonian.dphi_dq(z, logger);
-  }
+      void begin_update_p(typename Hamiltonian::PointType& z,
+                          Hamiltonian& hamiltonian, double epsilon,
+                          callbacks::logger& logger) {
+        z.p -= epsilon * hamiltonian.dphi_dq(z, logger);
+      }
 
-  void update_q(typename Hamiltonian::PointType& z, Hamiltonian& hamiltonian,
-                double epsilon, callbacks::logger& logger) {
-    z.q += epsilon * hamiltonian.dtau_dp(z);
-    hamiltonian.update_potential_gradient(z, logger);
-  }
-
-  void end_update_p(typename Hamiltonian::PointType& z,
+      void update_q(typename Hamiltonian::PointType& z,
                     Hamiltonian& hamiltonian, double epsilon,
                     callbacks::logger& logger) {
-    z.p -= epsilon * hamiltonian.dphi_dq(z, logger);
-  }
-};
+        z.q += epsilon * hamiltonian.dtau_dp(z);
+        hamiltonian.update_potential_gradient(z, logger);
+      }
 
-}  // namespace mcmc
-}  // namespace stan
+      void end_update_p(typename Hamiltonian::PointType& z,
+                        Hamiltonian& hamiltonian, double epsilon,
+                        callbacks::logger& logger) {
+        z.p -= epsilon * hamiltonian.dphi_dq(z, logger);
+      }
+    };
+
+  }  // mcmc
+}  // stan
 #endif

@@ -1,7 +1,6 @@
 #ifndef STAN_MATH_PRIM_MAT_PROB_INV_WISHART_LOG_HPP
 #define STAN_MATH_PRIM_MAT_PROB_INV_WISHART_LOG_HPP
 
-#include <stan/math/prim/meta.hpp>
 #include <stan/math/prim/mat/fun/Eigen.hpp>
 #include <stan/math/prim/mat/prob/inv_wishart_lpdf.hpp>
 #include <boost/math/tools/promotion.hpp>
@@ -30,7 +29,8 @@ namespace math {
  * @tparam T_scale Type of scale.
  */
 template <bool propto, typename T_y, typename T_dof, typename T_scale>
-return_type_t<T_y, T_dof, T_scale> inv_wishart_log(
+typename boost::math::tools::promote_args<T_y, T_dof, T_scale>::type
+inv_wishart_log(
     const Eigen::Matrix<T_y, Eigen::Dynamic, Eigen::Dynamic>& W,
     const T_dof& nu,
     const Eigen::Matrix<T_scale, Eigen::Dynamic, Eigen::Dynamic>& S) {
@@ -41,7 +41,8 @@ return_type_t<T_y, T_dof, T_scale> inv_wishart_log(
  * @deprecated use <code>inverse_wishart_lpdf</code>
  */
 template <typename T_y, typename T_dof, typename T_scale>
-inline return_type_t<T_y, T_dof, T_scale> inv_wishart_log(
+inline typename boost::math::tools::promote_args<T_y, T_dof, T_scale>::type
+inv_wishart_log(
     const Eigen::Matrix<T_y, Eigen::Dynamic, Eigen::Dynamic>& W,
     const T_dof& nu,
     const Eigen::Matrix<T_scale, Eigen::Dynamic, Eigen::Dynamic>& S) {

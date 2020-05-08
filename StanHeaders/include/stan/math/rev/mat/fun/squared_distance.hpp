@@ -1,12 +1,16 @@
 #ifndef STAN_MATH_REV_MAT_FUN_SQUARED_DISTANCE_HPP
 #define STAN_MATH_REV_MAT_FUN_SQUARED_DISTANCE_HPP
 
-#include <stan/math/rev/meta.hpp>
 #include <stan/math/rev/core.hpp>
+#include <stan/math/rev/scal/fun/sqrt.hpp>
+#include <stan/math/rev/mat/fun/typedefs.hpp>
 #include <stan/math/prim/mat/err/check_vector.hpp>
 #include <stan/math/prim/arr/err/check_matching_sizes.hpp>
 #include <stan/math/prim/mat/fun/Eigen.hpp>
 #include <stan/math/prim/mat/fun/typedefs.hpp>
+#include <stan/math/prim/mat/meta/index_type.hpp>
+#include <stan/math/prim/arr/meta/index_type.hpp>
+#include <stan/math/prim/scal/meta/index_type.hpp>
 #include <vector>
 
 namespace stan {
@@ -24,11 +28,14 @@ class squared_distance_vv_vari : public vari {
   inline static double var_squared_distance(
       const Eigen::Matrix<var, R1, C1>& v1,
       const Eigen::Matrix<var, R2, C2>& v2) {
-    using idx_t = typename index_type<matrix_v>::type;
-
-    return (Eigen::Ref<const vector_v>(v1).val()
-            - Eigen::Ref<const vector_v>(v2).val())
-        .squaredNorm();
+    using Eigen::Matrix;
+    typedef typename index_type<Matrix<var, R1, R2> >::type idx_t;
+    double result = 0;
+    for (idx_t i = 0; i < v1.size(); i++) {
+      double diff = v1(i).vi_->val_ - v2(i).vi_->val_;
+      result += diff * diff;
+    }
+    return result;
   }
 
  public:
@@ -37,18 +44,21 @@ class squared_distance_vv_vari : public vari {
                            const Eigen::Matrix<var, R2, C2>& v2)
       : vari(var_squared_distance(v1, v2)), length_(v1.size()) {
     v1_ = reinterpret_cast<vari**>(
-        ChainableStack::instance_->memalloc_.alloc(length_ * sizeof(vari*)));
+        ChainableStack::instance().memalloc_.alloc(length_ * sizeof(vari*)));
+    for (size_t i = 0; i < length_; i++)
+      v1_[i] = v1(i).vi_;
+
     v2_ = reinterpret_cast<vari**>(
-        ChainableStack::instance_->memalloc_.alloc(length_ * sizeof(vari*)));
-    Eigen::Map<vector_vi>(v1_, length_) = v1.vi();
-    Eigen::Map<vector_vi>(v2_, length_) = v2.vi();
+        ChainableStack::instance().memalloc_.alloc(length_ * sizeof(vari*)));
+    for (size_t i = 0; i < length_; i++)
+      v2_[i] = v2(i).vi_;
   }
   virtual void chain() {
-    Eigen::Map<vector_vi> v1_map(v1_, length_);
-    Eigen::Map<vector_vi> v2_map(v2_, length_);
-    vector_d di = 2 * adj_ * (v1_map.val() - v2_map.val());
-    v1_map.adj() += di;
-    v2_map.adj() -= di;
+    for (size_t i = 0; i < length_; i++) {
+      double di = 2 * adj_ * (v1_[i]->val_ - v2_[i]->val_);
+      v1_[i]->adj_ += di;
+      v2_[i]->adj_ -= di;
+    }
   }
 };
 class squared_distance_vd_vari : public vari {
@@ -61,11 +71,15 @@ class squared_distance_vd_vari : public vari {
   inline static double var_squared_distance(
       const Eigen::Matrix<var, R1, C1>& v1,
       const Eigen::Matrix<double, R2, C2>& v2) {
-    using idx_t = typename index_type<matrix_d>::type;
+    using Eigen::Matrix;
+    typedef typename index_type<Matrix<double, R1, C1> >::type idx_t;
 
-    return (Eigen::Ref<const vector_v>(v1).val()
-            - Eigen::Ref<const vector_d>(v2))
-        .squaredNorm();
+    double result = 0;
+    for (idx_t i = 0; i < v1.size(); i++) {
+      double diff = v1(i).vi_->val_ - v2(i);
+      result += diff * diff;
+    }
+    return result;
   }
 
  public:
@@ -74,16 +88,19 @@ class squared_distance_vd_vari : public vari {
                            const Eigen::Matrix<double, R2, C2>& v2)
       : vari(var_squared_distance(v1, v2)), length_(v1.size()) {
     v1_ = reinterpret_cast<vari**>(
-        ChainableStack::instance_->memalloc_.alloc(length_ * sizeof(vari*)));
+        ChainableStack::instance().memalloc_.alloc(length_ * sizeof(vari*)));
+    for (size_t i = 0; i < length_; i++)
+      v1_[i] = v1(i).vi_;
+
     v2_ = reinterpret_cast<double*>(
-        ChainableStack::instance_->memalloc_.alloc(length_ * sizeof(double)));
-    Eigen::Map<vector_vi>(v1_, length_) = v1.vi();
-    Eigen::Map<vector_d>(v2_, length_) = v2;
+        ChainableStack::instance().memalloc_.alloc(length_ * sizeof(double)));
+    for (size_t i = 0; i < length_; i++)
+      v2_[i] = v2(i);
   }
   virtual void chain() {
-    Eigen::Map<vector_vi> v1_map(v1_, length_);
-    v1_map.adj()
-        += 2 * adj_ * (v1_map.val() - Eigen::Map<vector_d>(v2_, length_));
+    for (size_t i = 0; i < length_; i++) {
+      v1_[i]->adj_ += 2 * adj_ * (v1_[i]->val_ - v2_[i]);
+    }
   }
 };
 }  // namespace internal

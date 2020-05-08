@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Paste Utilities - Concatenate Strings</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for vcat {sfsmisc}"><tr><td>vcat {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Paste Utilities &ndash; Concatenate Strings</h2>
+
+<h3>Description</h3>
+
+<p>Con<b>cat</b>enate vector elements or anything using
+<code><a href="../../base/html/paste.html">paste</a>(*, collapse = .)</code>.
+These are simple short abbreviations I have been using in my own codes
+in many places.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+vcat(vec, sep = " ")
+ccat(...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>vec, ...</code></td>
+<td>
+<p>any vector and other arguments to be pasted to together.</p>
+</td></tr>
+<tr valign="top"><td><code>sep</code></td>
+<td>
+<p>the separator to use, see the <em>Details</em> section.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The functions are really just defined as<br />
+vcat :=  <code>function(vec, sep = " ") paste(vec, collapse = sep)</code>
+</p>
+<p>ccat :=  <code>function(...)            paste(..., collapse = "", sep = "")</code>
+</p>
+
+
+<h3>Value</h3>
+
+<p>a character string (of length 1) with the concatenated arguments.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, early 1990's.</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/paste.html">paste</a></code>, <code><a href="../../base/html/character.html">as.character</a></code>,
+<code><a href="../../base/html/format.html">format</a></code>. <code><a href="../../base/html/cat.html">cat</a>()</code> is really for printing.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ch &lt;- "is"
+ccat("This ", ch, " it: ", 100, "%")
+vv &lt;- c(1,pi, 20.4)
+vcat(vv)
+vcat(vv, sep = ", ")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>
