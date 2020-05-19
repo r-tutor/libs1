@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Factor Scores for Latent Variables</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for fscores {sem}"><tr><td>fscores {sem}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Factor Scores for Latent Variables</h2>
+
+<h3>Description</h3>
+
+<p>Calculate factor scores or factor-score coefficients for the latent variables
+in a structural-equation model.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'sem'
+fscores(model, data=model$data, center=TRUE, scale=FALSE, ...)
+## S3 method for class 'msem'
+fscores(model, data=model$data, center=TRUE, scale=FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>model</code></td>
+<td>
+<p>an object of class <code>"sem"</code> or <code>"msem"</code>, produced by the <code><a href="sem.html">sem</a></code>
+function.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>an optional numeric data frame or matrix containing the observed variables
+in the model; if not <code>NULL</code>, the estimated factor scores are returned; if <code>NULL</code>, the
+factor-score <em>coefficients</em> are returned. The default is the <code>data</code> element of <code>model</code>,
+which is non-<code>NULL</code> if the model was fit to a data set rather than a covariance or moment matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>center</code></td>
+<td>
+<p>if <code>TRUE</code>, the default, the means of the observed variables are
+subtracted prior to computing factor scores. One would normally use this option
+if the model is estimated from a covariance or correlation matrix among the
+observed variables.</p>
+</td></tr>
+<tr valign="top"><td><code>scale</code></td>
+<td>
+<p>if <code>TRUE</code>, the possibly centered variables are divided by their
+root-mean-squares; the default is <code>FALSE</code>.
+One would normally use this option if the model is estimated
+from a correlation matrix among the observed variables. Centering and scaling 
+are performed by the <code><a href="../../base/html/scale.html">scale</a></code> function.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to pass down.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Factor-score coefficients are computed by the &ldquo;regression&rdquo; method as
+<i>C^-1 C*</i>, where <i>C</i> is the model-implied covariance or
+moment matrix among the observed variables and  <i>C*</i> is the matrix
+of model-implied covariances or moments between the observed and latent variables.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Either a matrix of estimated factor scores (if the <code>data</code> argument is
+supplied) or a matrix of factor-score coefficients (otherwise). In the case of an <code>"msem"</code>
+argument, a list of matrices is returned.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>John Fox <a href="mailto:jfox@mcmaster.ca">jfox@mcmaster.ca</a></p>
+
+
+<h3>References</h3>
+
+<p>Bollen, K. A. (1989) 
+<em>Structural Equations With Latent Variables.</em> Wiley.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sem.html">sem</a></code>, <code><a href="../../base/html/scale.html">scale</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+# In the first example, readMoments() and specifyModel() read from the
+# input stream. This example cannot be executed via example() but can be entered
+# at the command prompt. The example is repeated using file input;
+# this example can be executed via example(). 
+	   ## Not run: 
+
+S.wh &lt;- readMoments(names=c('Anomia67','Powerless67','Anomia71',
+                                    'Powerless71','Education','SEI'))
+   11.834                                    
+    6.947    9.364                            
+    6.819    5.091   12.532                    
+    4.783    5.028    7.495    9.986            
+   -3.839   -3.889   -3.841   -3.625   9.610     
+  -21.899  -18.831  -21.748  -18.775  35.522  450.288
+
+# This model in the SAS manual for PROC CALIS
+
+model.wh.1 &lt;- specifyModel()
+    Alienation67   -&gt;  Anomia67,      NA,     1
+    Alienation67   -&gt;  Powerless67,   NA,     0.833
+    Alienation71   -&gt;  Anomia71,      NA,     1
+    Alienation71   -&gt;  Powerless71,   NA,     0.833 
+    SES            -&gt;  Education,     NA,     1     
+    SES            -&gt;  SEI,           lamb,   NA
+    SES            -&gt;  Alienation67,  gam1,   NA
+    Alienation67   -&gt;  Alienation71,  beta,   NA
+    SES            -&gt;  Alienation71,  gam2,   NA
+    Anomia67       &lt;-&gt; Anomia67,      the1,   NA
+    Anomia71       &lt;-&gt; Anomia71,      the1,   NA
+    Powerless67    &lt;-&gt; Powerless67,   the2,   NA
+    Powerless71    &lt;-&gt; Powerless71,   the2,   NA
+    Education      &lt;-&gt; Education,     the3,   NA
+    SEI            &lt;-&gt; SEI,           the4,   NA
+    Anomia67       &lt;-&gt; Anomia71,      the5,   NA
+    Powerless67    &lt;-&gt; Powerless71,   the5,   NA
+    Alienation67   &lt;-&gt; Alienation67,  psi1,   NA
+    Alienation71   &lt;-&gt; Alienation71,  psi2,   NA
+    SES            &lt;-&gt; SES,           phi,    NA
+    
+                        
+sem.wh.1 &lt;- sem(model.wh.1, S.wh, 932)
+
+fscores(sem.wh.1)
+   
+## End(Not run)
+
+# The following example can be executed via example():
+
+etc &lt;- system.file(package="sem", "etc") # path to data and model files
+   
+(S.wh &lt;- readMoments(file=file.path(etc, "S-Wheaton.txt"),
+					names=c('Anomia67','Powerless67','Anomia71',
+                            'Powerless71','Education','SEI')))
+(model.wh.1 &lt;- specifyModel(file=file.path(etc, "model-Wheaton-1.txt")))        
+(sem.wh.1 &lt;- sem(model.wh.1, S.wh, 932))
+fscores(sem.wh.1)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sem</em> version 3.1-11 <a href="00Index.html">Index</a>]</div>
+</body></html>

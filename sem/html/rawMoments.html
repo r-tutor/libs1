@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Compute Raw Moments Matrix</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rawMoments {sem}"><tr><td>rawMoments {sem}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Compute Raw Moments Matrix</h2>
+
+<h3>Description</h3>
+
+<p>Computes the &ldquo;uncorrected&rdquo; sum-of-squares-and-products matrix divided by the
+number of observations.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'formula'
+rawMoments(formula, data, subset, na.action, 
+    contrasts=NULL, ...)
+
+## Default S3 method:
+rawMoments(object, na.rm=FALSE, ...)
+
+cov2raw(cov, mean, N, sd)
+
+## S3 method for class 'rawmoments'
+print(x, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>a one-sided model formula or an object coercible to a
+numeric matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>formula</code></td>
+<td>
+<p>a one-sided model formula specifying the model matrix for
+which raw moments are to be computed; note that a constant is included
+if it is not explicitly suppressed by putting <code>-1</code> in the formula.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>an optional data frame containing the variables in the formula. 
+By default the variables are taken from the environment from which 
+<code>rawMoments</code> is called.</p>
+</td></tr>
+<tr valign="top"><td><code>subset</code></td>
+<td>
+<p>an optional vector specifying a subset of observations to be 
+used in computing moments.</p>
+</td></tr>
+<tr valign="top"><td><code>na.action</code></td>
+<td>
+<p>a function that indicates what should happen when the data 
+contain <code>NA</code>s. The default is set by the <code>na.action</code> option.</p>
+</td></tr>
+<tr valign="top"><td><code>contrasts</code></td>
+<td>
+<p>an optional list. See the <code>contrasts.arg</code> argument of 
+<code><a href="../../stats/html/model.matrix.html">model.matrix.default</a></code></p>
+</td></tr></table>
+<p>.
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p>if <code>TRUE</code>, any data rows with missing data will be removed.</p>
+</td></tr>
+<tr valign="top"><td><code>cov</code></td>
+<td>
+<p>a covariance or correlation matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>mean</code></td>
+<td>
+<p>a vector of means.</p>
+</td></tr>
+<tr valign="top"><td><code>N</code></td>
+<td>
+<p>the number of observations on which the covariances or correlations 
+are based.</p>
+</td></tr>
+<tr valign="top"><td><code>sd</code></td>
+<td>
+<p>an optional vector of standard deviations, to be given if <code>cov</code> is a
+correlation matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an object of class <code>rawmoments</code> to print.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments passed down.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>rawMoments</code> and <code>cov2raw</code> return an object of class <code>rawmoments</code>, 
+which is simply a matrix
+with an attribute <code>"N"</code> that contains the number of observations on
+which the moments are based.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>John Fox <a href="mailto:jfox@mcmaster.ca">jfox@mcmaster.ca</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sem.html">sem</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# the following are all equivalent (with the exception of the name of the intercept):
+
+rawMoments(cbind(1, Kmenta))
+
+rawMoments(~ Q + P + D + F + A, data=Kmenta)
+
+Cov &lt;- with(Kmenta, cov(cbind(Q, P, D, F, A)))
+cov2raw(Cov, colMeans(Kmenta), nrow(Kmenta))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sem</em> version 3.1-11 <a href="00Index.html">Index</a>]</div>
+</body></html>

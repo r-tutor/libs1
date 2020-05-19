@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: RAM Matrix for a Structural-Equation Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ram {sem}"><tr><td>ram {sem}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>RAM Matrix for a Structural-Equation Model</h2>
+
+<h3>Description</h3>
+
+<p>Print the labelled RAM definition matrix for a structural-equation
+model fit by <code>sem</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ram(object, digits=getOption("digits"), startvalues=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>an object of class <code>sem</code> returned by the <code>sem</code> function.</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>number of digits for printed output.</p>
+</td></tr>
+<tr valign="top"><td><code>startvalues</code></td>
+<td>
+<p>if <code>TRUE</code>, start values for parameters are printed;
+otherwise, the parameter estimates are printed; the default is <code>FALSE</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A data frame containing the labelled RAM definition matrix, which is normally
+just printed.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>John Fox <a href="mailto:jfox@mcmaster.ca">jfox@mcmaster.ca</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sem.html">sem</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+# ------------- assumes that Duncan, Haller and Portes peer-influences model
+# -------------     has been fit and is in sem.dhp
+
+    ## Not run: 
+ram(sem.dhp)
+    
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sem</em> version 3.1-11 <a href="00Index.html">Index</a>]</div>
+</body></html>

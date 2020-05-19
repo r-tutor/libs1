@@ -1,0 +1,414 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Draw Path Diagram</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for pathDiagram {sem}"><tr><td>pathDiagram {sem}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Draw Path Diagram</h2>
+
+<h3>Description</h3>
+
+<p><code>pathDiagram</code> creates a description of the path diagram
+for a structural-equation-model or SEM-specification object to be processed by the
+graph-drawing program <em>dot</em>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+pathDiagram(model, ...)
+
+## S3 method for class 'sem'
+pathDiagram(model, file = "pathDiagram", 
+    style = c("ram", "traditional"),
+    output.type = c("html", "graphics", "dot"), graphics.fmt = "pdf", 
+    dot.options = NULL,
+    size = c(8, 8), node.font = c("Helvetica", 14),
+    edge.font = c("Helvetica", 10), digits = 2, 
+    rank.direction = c("LR", "TB"),
+    min.rank = NULL, max.rank = NULL, same.rank = NULL,
+    variables = model$var.names, var.labels, parameters, par.labels,
+    ignore.double = TRUE, ignore.self = FALSE, error.nodes = TRUE,
+    edge.labels = c("names", "values", "both"),  
+    edge.colors = c("black", "black"),
+    edge.weight = c("fixed", "proportional"),
+    node.colors = c("transparent", "transparent", "transparent"),
+    standardize = FALSE, ...)
+
+## S3 method for class 'semmod'
+pathDiagram(model, obs.variables, ...)
+
+math(text, html.only=FALSE, hat=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>model</code></td>
+<td>
+<p>a structural-equation-model or SEM-specification object produced by <code>sem</code>, 
+or, respectively, <code>specifyEquations</code>, <code>specifyModel</code>, or <code>cfa</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments passed down, e.g., from the <code>semmod</code> method to the <code>sem</code> method.</p>
+</td></tr>
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>a file name, by default <code>"pathDiagram"</code>, 
+given <em>without</em> an extension, to which to write the <em>dot</em> description of the
+path diagram if <code>output.type</code> <code>"graphics"</code> or <code>"dot"</code> is selected, and for the
+graphics output file (with appropriate extension) if <code>"graphics"</code> output is selected, in which case
+a &quot;<code>.dot</code>&quot; file and a graphics file of type specified by the <code>graphics.fmt</code> argument (below);
+<code>file</code> may include a path specification.</p>
+</td></tr>
+<tr valign="top"><td><code>style</code></td>
+<td>
+<p><code>"ram"</code> (the default) for a RAM path diagram including self-directed double-headed arrows
+representing variances, including error variances; or <code>"traditional"</code> for a path diagram 
+including nodes representing error variables.</p>
+</td></tr>
+<tr valign="top"><td><code>output.type</code></td>
+<td>
+<p>if <code>"html"</code> (the default), the path diagram will open in the user&quot;s default 
+web browser; if <code>"dot"</code>, a file containing <em>dot</em> commands will be written; if <code>"graphics"</code>,
+both <code>.dot</code> and graphics files will be written.</p>
+</td></tr>
+<tr valign="top"><td><code>graphics.fmt</code></td>
+<td>
+<p>a graphics format recognized by the <em>dot</em> program; the default is <code>"pdf"</code>;
+<code>graphics.fmt</code> is also used for the extension of the graphics file that is created.</p>
+</td></tr>
+<tr valign="top"><td><code>dot.options</code></td>
+<td>
+<p>options to be passed to the <em>dot</em> program, given as a character string.</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>the size of the graph, in inches.</p>
+</td></tr>
+<tr valign="top"><td><code>node.font</code></td>
+<td>
+<p>font name and point-size for printing variable names.</p>
+</td></tr>
+<tr valign="top"><td><code>edge.font</code></td>
+<td>
+<p>font name and point-size for printing arrow names or values.</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>number of digits after the decimal point (default, 2) to which 
+to round parameter estimates.</p>
+</td></tr>
+<tr valign="top"><td><code>rank.direction</code></td>
+<td>
+<p>draw graph left-to-right, <code>"LR"</code>, the default, 
+or top-to-bottom, <code>"TB"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>min.rank</code></td>
+<td>
+<p>a character string listing names of variables to be assigned
+minimum rank (order) in the graph; the names should be separated by commas.</p>
+</td></tr>
+<tr valign="top"><td><code>max.rank</code></td>
+<td>
+<p>a character string listing names of variables to be assigned
+maximum rank in the graph; the names should be separated by commas.</p>
+</td></tr>
+<tr valign="top"><td><code>same.rank</code></td>
+<td>
+<p>a character string or vector of character strings of variables
+to be assigned equivalent rank in the graph; names in each string should be
+separated by commas.</p>
+</td></tr>
+<tr valign="top"><td><code>variables</code></td>
+<td>
+<p>variable names; defaults to the variable names in <code>model</code>.
+If specified, the variable names should be in the same order as in <code>model</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>var.labels</code></td>
+<td>
+<p>a character vector with labels to be used 
+in lieu of (some of) the variables names, for greater flexibility
+in labelling nodes in the graph &mdash; e.g., the labels can be created with the <code>math</code>
+function. The elements of the vector must have names corresponding to variables in the model.</p>
+</td></tr>
+<tr valign="top"><td><code>parameters</code></td>
+<td>
+<p>parameter names; defaults to the parameter names in 
+<code>model</code>. If specified, the parameter names should be in the same order 
+as in <code>model</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>par.labels</code></td>
+<td>
+<p>a character vector with labels to be used 
+in lieu of (some of) the parameter names, for greater flexibility
+in labelling edges in the graph &mdash; e.g., the labels can be created with the <code>math</code>
+function. The elements of the vector must have names corresponding to parameters in the model.</p>
+</td></tr>
+<tr valign="top"><td><code>ignore.double</code></td>
+<td>
+<p>if <code>TRUE</code>, the default, double-headed arrows, representing
+variances and covariances, are not graphed.</p>
+</td></tr>
+<tr valign="top"><td><code>ignore.self</code></td>
+<td>
+<p>if <code>TRUE</code> (the default is <code>FALSE</code>), and <code>ignore.double=FALSE</code>,
+self-directed double-headed arrows representing error variances are suppressed; note that
+if <code>ignore.double=TRUE</code>, <em>all</em> double-headed arrows, including self-directed arrows,
+are suppressed.</p>
+</td></tr>
+<tr valign="top"><td><code>error.nodes</code></td>
+<td>
+<p>if <code>TRUE</code> (the default) and <code>style="traditional"</code>, show the nodes
+representing error variables.</p>
+</td></tr>
+<tr valign="top"><td><code>edge.labels</code></td>
+<td>
+<p><code>"names"</code> to label arrows with parameter names; 
+<code>"values"</code> to label arrows with parameter estimates, or <code>"both"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>edge.colors</code></td>
+<td>
+<p>two-element character vector giving colors of positive
+and negative arrows respectively; the default is <code>c("black", "black")</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>edge.weight</code></td>
+<td>
+<p>if <code>"proportional"</code> (the default is <code>"fixed"</code>), the thickness of
+edges is proportional to the absolute size of the corresponding parameter estimate;
+this is generally sensible only if <code>standardize=TRUE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>node.colors</code></td>
+<td>
+<p>a two- or three-element character vector giving colors of nodes representing
+exogenous, endogenous, and error variables (for traditional path diagrams) consecutively; 
+the default is <code>"transparent"</code> for all three; if a two colors are given, error variables
+are colored as exogenous (the first color.</p>
+</td></tr>
+<tr valign="top"><td><code>standardize</code></td>
+<td>
+<p>if <code>TRUE</code>, display standardized coefficients; default is <code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>obs.variables</code></td>
+<td>
+<p>a character vector with the names of the observed variables in the model.</p>
+</td></tr>
+<tr valign="top"><td><code>text</code></td>
+<td>
+<p>a character string or vector of character strings to be translated into node or edge label symbols.
+If a vector of character strings is supplied, then the elements of the vector should be named with the
+corresponding variable (node) or parameter (edge) name.</p>
+</td></tr>
+<tr valign="top"><td><code>html.only</code></td>
+<td>
+<p>If <code>TRUE</code> (the default is <code>FALSE</code>), the
+character strings in <code>text</code> are to be treated as an HTML character codes, in
+which case the prefix <code>"#"</code> and suffix <code>";"</code> are appended to each. Otherwise, <code>text</code> should
+only contain the names of lowercase or uppercase Greek letters, such as <code>"alpha"</code> or <code>"Alpha"</code>.
+The full set of Greek letters recognized is given in the file <code>Greek.txt</code> in the package's
+<code>etc</code> subdirectory &ndash; or type <code>sem:::Greek</code> at the R command prompt.
+In either case, the symbols may be followed by numeric subscripts in curly braces consisting of numerals 
+(e.g., <code>"beta_{12}"</code>),
+and/or numeric superscripts (e.g., <code>"sigma^{2}"</code>,
+<code>"sigma_{1}^{2}"</code>). Depending upon your OS, subscripts and superscripts may only work properly with HTML output
+from <code>pathDiagram</code>, not with graphics output produced by <em>dot</em>.</p>
+</td></tr>
+<tr valign="top"><td><code>hat</code></td>
+<td>
+<p>If <code>TRUE</code> (the default is <code>FALSE</code>), a hat (circumflex) is placed over the
+symbols in <code>text</code>; this feature doesn't produce a visually appealing result.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>pathDiagram</code> creates a description of the path diagram
+for a structural-equation-model or SEM-specification object to be processed by the
+graph-drawing program <em>dot</em>, which can be called
+automatically; see Koutsofios and North (2002)
+and <a href="http://www.graphviz.org/">http://www.graphviz.org/</a>. To obtain graphics output
+directly, the <em>dot</em> program must be on the system search path. 
+</p>
+<p>Alternatively, <em>HTML</em> output can be created in a web browser without an independent installation
+of <code>dot</code> using facilities in the <span class="pkg">DiagrammeR</span> package.
+</p>
+<p>The <code>math</code> function can be used to create node (variable) and edge (arrow) labels with
+symbols such as Greek letters, subscripts, and superscripts.
+</p>
+<p>The <code>semmod</code> method of <code>pathDiagram</code> sets up a call to the <code>sem</code> method. 
+</p>
+<p>The various
+arguments to <code>pathDiagram</code> can be used to customize the diagram, but if there are too many constraints
+on node placement, <em>dot</em> may fail to produce a graph or may produce a distorted graph. 
+<code>pathDiagram</code> can create both RAM-style diagrams, in which variances are represented as self-directed
+arrows, and traditional path diagrams, in which error variables appear explicitly as nodes. As is conventional,
+latent variables (including error variables) are represented as ellipses and observed variables as 
+rectangles; double-headed arrows represent covariances (and in RAM diagrams, variances) and single-headed
+arrows represent structural coefficients.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>pathDiagram</code> invisibly returns a character vector containing <em>dot</em> commands.
+<code>math</code> returns a character vector containing suitable <code>HTML</code> markup.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>John Fox <a href="mailto:jfox@mcmaster.ca">jfox@mcmaster.ca</a>, Adam Kramer, and Michael Friendly</p>
+
+
+<h3>References</h3>
+
+<p>Koutsofios, E., and North, S. C. (2002)
+Drawing graphs with <em>dot</em>.
+<a href="https://graphviz.org/documentation/">https://graphviz.org/documentation/</a>.    
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sem.html">sem</a></code>, <code><a href="specifyModel.html">specifyEquations</a></code>, <code><a href="specifyModel.html">specifyModel</a></code>, <code><a href="specifyModel.html">cfa</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+	if (interactive()) {
+# The Duncan, Haller, and Portes Peer-Influences Model
+
+R.DHP &lt;- readMoments(diag=FALSE, names=c("ROccAsp", "REdAsp", "FOccAsp", 
+                "FEdAsp", "RParAsp", "RIQ", "RSES", "FSES", "FIQ", "FParAsp"),
+                text="
+    .6247                                                              
+    .3269  .3669                                                        
+    .4216  .3275  .6404                                      
+    .2137  .2742  .1124  .0839                                
+    .4105  .4043  .2903  .2598  .1839                          
+    .3240  .4047  .3054  .2786  .0489  .2220                    
+    .2930  .2407  .4105  .3607  .0186  .1861  .2707              
+    .2995  .2863  .5191  .5007  .0782  .3355  .2302  .2950        
+    .0760  .0702  .2784  .1988  .1147  .1021  .0931 -.0438  .2087  
+")
+
+model.dhp &lt;- specifyModel(text="
+    RParAsp  -&gt; RGenAsp, gam11,  NA
+    RIQ      -&gt; RGenAsp, gam12,  NA
+    RSES     -&gt; RGenAsp, gam13,  NA
+    FSES     -&gt; RGenAsp, gam14,  NA
+    RSES     -&gt; FGenAsp, gam23,  NA
+    FSES     -&gt; FGenAsp, gam24,  NA
+    FIQ      -&gt; FGenAsp, gam25,  NA
+    FParAsp  -&gt; FGenAsp, gam26,  NA
+    FGenAsp  -&gt; RGenAsp, beta12, NA
+    RGenAsp  -&gt; FGenAsp, beta21, NA
+    RGenAsp  -&gt; ROccAsp,  NA,       1
+    RGenAsp  -&gt; REdAsp,  lam21,  NA
+    FGenAsp  -&gt; FOccAsp,  NA,       1
+    FGenAsp  -&gt; FEdAsp,  lam42,  NA
+    RGenAsp &lt;-&gt; RGenAsp, ps11,   NA
+    FGenAsp &lt;-&gt; FGenAsp, ps22,   NA
+    RGenAsp &lt;-&gt; FGenAsp, ps12,   NA
+    ROccAsp &lt;-&gt; ROccAsp, theta1, NA
+    REdAsp  &lt;-&gt; REdAsp,  theta2, NA
+    FOccAsp &lt;-&gt; FOccAsp, theta3, NA
+    FEdAsp  &lt;-&gt; FEdAsp,  theta4, NA
+")
+
+sem.dhp &lt;- sem(model.dhp, R.DHP, 329,
+    fixed.x=c("RParAsp", "RIQ", "RSES", "FSES", "FIQ", "FParAsp"))
+    
+pathDiagram(sem.dhp, min.rank="RIQ, RSES, RParAsp, FParAsp, FSES, FIQ", 
+                     max.rank="ROccAsp, REdAsp, FEdAsp, FOccAsp",
+                     same.rank="RGenAsp, FGenAsp",
+                     edge.labels="values")
+    
+pathDiagram(model.dhp,
+    obs.variables=c("RParAsp", "RIQ", "RSES", "FSES", "FIQ", 
+        "FParAsp", "ROccAsp", "REdAsp", "FOccAsp", "FEdAsp"),
+    style="traditional", 
+    node.colors=c("pink", "lightblue", "lightgreen"),
+    min.rank="RIQ, RSES, RParAsp, FParAsp, FSES, FIQ",
+    max.rank="ROccAsp, REdAsp, FEdAsp, FOccAsp",
+    same.rank="RGenAsp, FGenAsp",
+    var.labels=c(RParAsp="Respondent Parental Aspiration", 
+        RIQ="Respondent IQ",
+        RSES="Respondent SES",
+        FSES="Friend SES",
+        FIQ="Friend IQ",
+        FParAsp="Friend Parental Aspiration",
+        ROccAsp="Respondent Occupational Aspiration",
+        REdAsp="Respondent Educational Aspiration",
+        RGenAsp="Respondent General Aspiration",
+        FOccAsp="Friend Occupational Aspiration",
+        FEdAsp="Friend Educational Aspiration",
+        FGenAsp="Friend General Aspiration",
+        math(c(RGenAsp.error="xi_{1}",
+        FGenAsp.error="xi_{2}",
+        ROccAsp.error="epsilon_{1}",
+        REdAsp.error="epsilon_{2}",
+        FOccAsp.error="epsilon_{3}",
+        FEdAsp.error="epsilon_{4}"))),
+    par.labels=math(c(gam11="gamma_{11}",
+        gam12="gamma_{12}",
+        gam13="gamma_{13}",
+        gam14="gamma_{14}",
+        gam23="gamma_{23}",
+        gam24="gamma_{24}",
+        gam25="gamma_{25}",
+        gam26="gamma_{26}",
+        beta12="beta_{12}",
+        beta21="beta_{21}",
+        lam21="lambda_{21}",
+        lam42="lambda_{42}",
+        ps11="psi_{11}",
+        ps22="psi_{22}",
+        ps12="psi_{12}",
+        theta1="theta_{1}",
+        theta2="theta_{2}",
+        theta3="theta_{3}",
+        theta4="theta_{4}")))
+        
+    # the following example contributed by Michael Friendly:
+    
+union &lt;- readMoments(diag=TRUE,
+    names=c('y1', 'y2', 'y3', 'x1', 'x2'), text="
+14.610
+-5.250  11.017
+-8.057  11.087   31.971
+-0.482   0.677    1.559   1.021
+-18.857  17.861   28.250   7.139  215.662
+")
+
+union.mod &lt;- specifyEquations(covs=c("x1, x2"), text="
+y1 = gam12*x2
+y2 = beta21*y1 + gam22*x2
+y3 = beta31*y1 + beta32*y2 + gam31*x1
+")
+
+union.sem &lt;- sem(union.mod, union, N=173)
+
+dot &lt;- pathDiagram(union.sem, style="traditional",  
+    ignore.double=FALSE, error.nodes=FALSE,
+    edge.labels="values", 
+    min.rank=c("Years", "Age"), 
+    max.rank=c("Sentiment", "Sentiment.error"),
+    same.rank=c("Deference, Deference.error", "Activism, Activism.error"),
+    variables=c("Deference", "Activism", "Sentiment", "Years", "Age"),
+    edge.colors=c("black", "red"),
+    node.colors = c("pink", "lightblue"))
+
+cat(paste(dot, collapse="\n")) # dot commands
+
+    }
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sem</em> version 3.1-11 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Standardized Coefficients for Structural Equation Models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for standardizedCoefficients {sem}"><tr><td>standardizedCoefficients {sem}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Standardized Coefficients for Structural Equation Models</h2>
+
+<h3>Description</h3>
+
+<p>These functions calculate standardized regression coefficients
+for structural equation models. The function <code>stdCoef</code> is
+simply an abbreviation for <code>standardizedCoefficients</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+standardizedCoefficients(object, ...)
+## S3 method for class 'sem'
+standardizedCoefficients(object, 
+    digits = getOption("digits"), oneheaded = TRUE, twoheaded = TRUE, ...)
+## S3 method for class 'msem'
+standardizedCoefficients(object, ...)
+
+stdCoef(...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>an object of class <code>sem</code> or <code>msem</code> returned by the 
+<code><a href="sem.html">sem</a></code> function.</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>number of digits for printed output.</p>
+</td></tr>
+<tr valign="top"><td><code>oneheaded</code></td>
+<td>
+<p>standardize path coefficients? Default is <code>TRUE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>twoheaded</code></td>
+<td>
+<p>standardize variances and covariances? Default is <code>TRUE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to pass down.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns a data frame with the coefficients, labelled 
+both by parameter names and by arrows in the path diagram for the
+model. The <code>msem</code> (multigroup) method computes and prints the
+standardized coefficients for each group; it does not return a useful result.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>John Fox <a href="mailto:jfox@mcmaster.ca">jfox@mcmaster.ca</a> and Adam Kramer</p>
+
+
+<h3>References</h3>
+
+<p>Bollen, K. A. (1989) 
+<em>Structural Equations With Latent Variables.</em> Wiley.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sem.html">sem</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# In the first example, readMoments() and specifyModel() read from the
+# input stream. This example cannot be executed via example() but can be entered
+# at the command prompt. The example is repeated using file input;
+# this example can be executed via example(). 
+    ## Not run: 
+# Duncan, Haller, and Portes peer-influences model
+
+R.DHP &lt;- readMoments(diag=FALSE, names=c("ROccAsp", "REdAsp", "FOccAsp", 
+                "FEdAsp", "RParAsp", "RIQ", "RSES", "FSES", "FIQ", "FParAsp"))
+    .6247     
+    .3269  .3669       
+    .4216  .3275  .6404
+    .2137  .2742  .1124  .0839
+    .4105  .4043  .2903  .2598  .1839
+    .3240  .4047  .3054  .2786  .0489  .2220
+    .2930  .2407  .4105  .3607  .0186  .1861  .2707
+    .2995  .2863  .5191  .5007  .0782  .3355  .2302  .2950
+    .0760  .0702  .2784  .1988  .1147  .1021  .0931 -.0438  .2087
+            
+model.dhp &lt;- specifyModel()
+    RParAsp  -&gt; RGenAsp, gam11,  NA
+    RIQ      -&gt; RGenAsp, gam12,  NA
+    RSES     -&gt; RGenAsp, gam13,  NA
+    FSES     -&gt; RGenAsp, gam14,  NA
+    RSES     -&gt; FGenAsp, gam23,  NA
+    FSES     -&gt; FGenAsp, gam24,  NA
+    FIQ      -&gt; FGenAsp, gam25,  NA
+    FParAsp  -&gt; FGenAsp, gam26,  NA
+    FGenAsp  -&gt; RGenAsp, beta12, NA
+    RGenAsp  -&gt; FGenAsp, beta21, NA
+    RGenAsp  -&gt; ROccAsp,  NA,     1
+    RGenAsp  -&gt; REdAsp,  lam21,  NA
+    FGenAsp  -&gt; FOccAsp,  NA,     1
+    FGenAsp  -&gt; FEdAsp,  lam42,  NA
+    RGenAsp &lt;-&gt; RGenAsp, ps11,   NA
+    FGenAsp &lt;-&gt; FGenAsp, ps22,   NA
+    RGenAsp &lt;-&gt; FGenAsp, ps12,   NA
+    ROccAsp &lt;-&gt; ROccAsp, theta1, NA
+    REdAsp  &lt;-&gt; REdAsp,  theta2, NA
+    FOccAsp &lt;-&gt; FOccAsp, theta3, NA
+    FEdAsp  &lt;-&gt; FEdAsp,  theta4, NA
+
+sem.dhp &lt;- sem(model.dhp, R.DHP, 329,
+    fixed.x=c('RParAsp', 'RIQ', 'RSES', 'FSES', 'FIQ', 'FParAsp'))
+standardizedCoefficients(sem.dhp) 
+	
+## End(Not run)
+# The following example can be executed via example():
+
+etc &lt;- system.file(package="sem", "etc") # path to data and model files
+   
+(R.DHP &lt;- readMoments(file=file.path(etc, "R-DHP.txt"),
+				diag=FALSE, names=c("ROccAsp", "REdAsp", "FOccAsp", 
+                "FEdAsp", "RParAsp", "RIQ", "RSES", "FSES", "FIQ", "FParAsp")))
+(model.dhp &lt;- specifyModel(file=file.path(etc, "model-DHP.txt")))
+(sem.dhp &lt;- sem(model.dhp, R.DHP, 329,
+    fixed.x=c('RParAsp', 'RIQ', 'RSES', 'FSES', 'FIQ', 'FParAsp')))
+standardizedCoefficients(sem.dhp) 
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sem</em> version 3.1-11 <a href="00Index.html">Index</a>]</div>
+</body></html>

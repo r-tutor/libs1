@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: sem Optimizers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for optimizers {sem}"><tr><td>optimizers {sem}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>sem Optimizers</h2>
+
+<h3>Description</h3>
+
+<p>The default optimizer used by <code><a href="sem.html">sem</a></code> is <code>optimizerSem</code>, which employs compiled code and is integrated with
+the <code><a href="objective.functions.html">objectiveML</a></code> and <code><a href="objective.functions.html">objectiveGLS</a></code> objective functions; 
+<code>optimizerSem</code>, written by Zhenghua Nie, is a modified
+version of the standard R <code>nlm</code> optimizer, which was written by Saikat DebRoy, R-core, and Richard H. Jones.
+The other functions call optimizers (<code><a href="../../stats/html/nlm.html">nlm</a></code>, <code><a href="../../stats/html/optim.html">optim</a></code>, or <code><a href="../../stats/html/nlminb.html">nlminb</a></code>), 
+to fit structural equation models, and are called by the <code><a href="sem.html">sem</a></code> function. 
+The user would not normally call these functions directly, but rather supply one of them in the <code>optimizer</code> argument to
+<code>sem</code>. Users may also write them own optimizer functions. <code>msemOptimizerNlm</code> is for fitting multigroup models, and also adapts the <code>nlm</code> code.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+optimizerSem(start, objective=objectiveML,  
+	gradient=TRUE, maxiter, debug, par.size, model.description, warn, ...)
+	
+optimizerMsem(start, objective=msemObjectiveML, gradient=TRUE,
+	maxiter, debug, par.size, model.description, warn=FALSE, ...)
+	
+optimizerNlm(start, objective=objectiveML, gradient=TRUE, 
+	maxiter, debug, par.size, model.description, warn, ...)
+	
+optimizerOptim(start, objective=objectiveML, gradient=TRUE, 
+	maxiter, debug, par.size, model.description, warn, method="CG", ...)
+
+optimizerNlminb(start, objective=objectiveML, gradient=TRUE, maxiter, 
+	debug, par.size, model.description, warn, ...)
+
+msemOptimizerNlm(start, objective=msemObjectiveML, gradient=TRUE,
+		maxiter, debug, par.size, model.description, warn=FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>start</code></td>
+<td>
+<p>a vector of start values for the parameters.</p>
+</td></tr>
+<tr valign="top"><td><code>objective</code></td>
+<td>
+<p>the objective function to be optimized; see <a href="objective.functions.html">objective.functions</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>gradient</code></td>
+<td>
+<p><code>TRUE</code> if an analytic gradient is to be used (if one is available).</p>
+</td></tr>
+<tr valign="top"><td><code>maxiter</code></td>
+<td>
+<p>the maximum number of iterations allowed.</p>
+</td></tr>
+<tr valign="top"><td><code>debug</code></td>
+<td>
+<p><code>TRUE</code> to show the iteration history and other available information about the optimization.</p>
+</td></tr>
+<tr valign="top"><td><code>par.size</code></td>
+<td>
+<p><code>"startvalues"</code> to have the optimizer scale the problem according to the magitudes of the start values (ignored by <code>optimizerNlminb</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>model.description</code></td>
+<td>
+<p>a list with elements describing the structural-equation model (see the code for details).</p>
+</td></tr>
+<tr valign="top"><td><code>warn</code></td>
+<td>
+<p>if <code>FALSE</code>, suppress warnings during the optimization.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>the method to be employed by the <code><a href="../../stats/html/optim.html">optim</a></code> optimizer; the default is <code>"CG"</code> (conjugate-gradient).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional arguments for the <code>nlm</code>, <code>optim</code>, or <code>nlminb</code> optimizer.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"semResult"</code>, with elements:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>convergence</code></td>
+<td>
+<p><code>TRUE</code> if the optimization apparently converged.</p>
+</td></tr>
+<tr valign="top"><td><code>iterations</code></td>
+<td>
+<p>the number of iterations required.</p>
+</td></tr>
+<tr valign="top"><td><code>par</code></td>
+<td>
+<p>the vector of parameter estimates.</p>
+</td></tr>
+<tr valign="top"><td><code>vcov</code></td>
+<td>
+<p>the estimated covariance matrix of the parameter estimates, based on a numeric Hessian; not supplied by <code>optimizerNlminb</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>criterion</code></td>
+<td>
+<p>the optimized value of the objective function.</p>
+</td></tr>
+<tr valign="top"><td><code>C</code></td>
+<td>
+<p>the model-implied covariance or moment matrix at the parameter estimates.</p>
+</td></tr>
+<tr valign="top"><td><code>A</code></td>
+<td>
+<p>the estimated <i>A</i> matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>P</code></td>
+<td>
+<p>the estimated <i>P</i> matrix.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>John Fox <a href="mailto:jfox@mcmaster.ca">jfox@mcmaster.ca</a>, and Zhenghua Nie, in part adapting work by
+Saikat DebRoy, R-core, and Richard H. Jones.</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sem.html">sem</a></code>, <code><a href="objective.functions.html">objective.functions</a></code>, <code><a href="../../stats/html/nlm.html">nlm</a></code>, <code><a href="../../stats/html/optim.html">optim</a></code>, <code><a href="../../stats/html/nlminb.html">nlminb</a></code></p>
+
+<hr /><div style="text-align: center;">[Package <em>sem</em> version 3.1-11 <a href="00Index.html">Index</a>]</div>
+</body></html>

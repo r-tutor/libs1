@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: sem Objective-Function Builders</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for objective.functions {sem}"><tr><td>objective.functions {sem}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+sem Objective-Function Builders
+</h2>
+
+<h3>Description</h3>
+
+<p>These functions return objective functions suitable for use with <code><a href="optimizers.html">optimizers</a></code> called by <code><a href="sem.html">sem</a></code>. The user would not
+normally call these functions directly, but rather supply one of them in the <code>objective</code> argument to
+<code>sem</code>. Users may also write their own objective functions. <code>objectiveML</code> and <code>objectiveML2</code> are for multinormal maximum-likelihood
+estimation; <code>objectiveGLS</code> and <code>objectiveGLS2</code> are for generalized least squares; and <code>objectiveFIML2</code>
+is for so-called &ldquo;full-information maximum-likelihood&rdquo; estimation in the presence of missing data. The FIML estimator
+provides the same estimates as the ML estimator when there is no missing data; it can be slow because it iterates over
+the unique patterns of missing data that occur in the data set.
+<code>objectiveML</code> and <code>objectiveGLS</code> use
+compiled code and are therefore substantially faster. <code>objectiveML2</code> and <code>objectiveGLS2</code> are provided primarily to illustrate
+how to write <code>sem</code> objective functions in R. <code>msemObjectiveML</code> uses compiled code is for fitting multi-group models by 
+multinormal maximum likelihood; <code>msemObjectiveML2</code> is similar but doesn't use compiled code. <code>msemObjectiveGLS</code> uses compiled
+code and is for fitting multi-group models by generalized least squares.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+objectiveML(gradient=TRUE, hessian=FALSE)
+objectiveML2(gradient=TRUE)
+
+objectiveGLS(gradient=FALSE)
+objectiveGLS2(gradient=FALSE)
+
+objectiveFIML(gradient=TRUE, hessian=FALSE)
+objectiveFIML2(gradient=TRUE, hessian=FALSE)
+
+msemObjectiveML(gradient=TRUE)
+msemObjectiveML2(gradient=TRUE)
+
+msemObjectiveGLS(gradient=FALSE)
+
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gradient</code></td>
+<td>
+<p>If <code>TRUE</code>, the object that's returned includes a function for computing an analytic gradient; there is at present no
+analytic gradient available for <code>objectiveFIML</code>, <code>objectiveGLS</code>, <code>objectiveGLS2</code>, or <code>msemObjectiveGL</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>hessian</code></td>
+<td>
+<p>If <code>TRUE</code>, the objected returned includes a function to compute an analytic Hessian; only avaiable for <code>objectiveML</code>
+and not generally recommended.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>These functions return an object of class <code>"semObjective"</code>, with up to two elements:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>objective</code></td>
+<td>
+<p>an objective function.</p>
+</td></tr>
+<tr valign="top"><td><code>gradient</code></td>
+<td>
+<p>a gradient function.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>John Fox <a href="mailto:jfox@mcmaster.ca">jfox@mcmaster.ca</a></p>
+
+
+<h3>References</h3>
+
+<p>See <code><a href="sem.html">sem</a></code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sem.html">sem</a></code>, <code><a href="optimizers.html">optimizers</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sem</em> version 3.1-11 <a href="00Index.html">Index</a>]</div>
+</body></html>

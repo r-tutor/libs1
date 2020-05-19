@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Estimate a Structural Equation Model By Multiple Imputation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for miSem {sem}"><tr><td>miSem {sem}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Estimate a Structural Equation Model By Multiple Imputation
+</h2>
+
+<h3>Description</h3>
+
+<p><code>miSem</code> uses the <code><a href="../../brms/html/mi.html">mi</a></code> function in the <span class="pkg">mi</span> package to generate multiple imputations of missing
+data, fitting the specified model to each completed data set.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+miSem(model, ...)
+
+## S3 method for class 'semmod'
+miSem(model, ..., data, formula = ~., raw=FALSE, 
+        fixed.x=NULL, objective=objectiveML,
+        n.imp=5, n.chains=n.imp, n.iter=30, seed=sample(1e6, 1), mi.args=list(), 
+        show.progress=TRUE)
+    
+## S3 method for class 'semmodList'
+miSem(model, ..., data, formula = ~., group, raw=FALSE, 
+        fixed.x=NULL, objective=msemObjectiveML,
+        n.imp=5, n.chains=n.imp, n.iter=30, seed=sample(1e6, 1), mi.args=list(),
+        show.progress=TRUE)
+
+## S3 method for class 'miSem'
+print(x, ...)
+
+## S3 method for class 'miSem'
+summary(object, digits=max(3, getOption("digits") - 2), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>model</code></td>
+<td>
+
+<p>an SEM model-description object of class <code>semmod</code> or <code>semmodList</code>, created by <code><a href="specifyModel.html">specifyEquations</a></code>
+<code><a href="specifyModel.html">cfa</a></code>, or <code><a href="specifyModel.html">specifyModel</a></code>, in the case of a multi-group model 
+in combination with <code><a href="specifyModel.html">multigroupModel</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>..., formula, raw, fixed.x, objective, group</code></td>
+<td>
+
+<p>arguments to be passed to <code><a href="sem.html">sem</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+
+<p>an R data frame, presumably with some missing data (encoded as <code>NA</code>), containing the data for fitting
+the SEM, possibly along with other variables to use to obtain multiple imputations of missing values. In
+the case of a multi-group model, this must be a <em>single</em> data frame.
+</p>
+</td></tr>
+<tr valign="top"><td><code>n.imp</code></td>
+<td>
+
+<p>number of imputations (default <code>5</code>).
+</p>
+</td></tr>
+<tr valign="top"><td><code>n.chains</code></td>
+<td>
+
+<p>number of Markov chains (default is the number of imputations).
+</p>
+</td></tr>
+<tr valign="top"><td><code>n.iter</code></td>
+<td>
+
+<p>number of iterations for the multiple-imputation process (default <code>30</code>).
+</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+
+<p>seed for the random-number generator (default is an integer sampled from 1 to 1E6); stored in the resulting object.
+</p>
+</td></tr>
+<tr valign="top"><td><code>mi.args</code></td>
+<td>
+
+<p>other arguments to be passed to <code><a href="../../brms/html/mi.html">mi</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>show.progress</code></td>
+<td>
+
+<p>show a text progress bar on the console tracking model fitting to the multiple imputations; this is distinct from
+the progress of the multiple-imputation process, which is controlled by the <code>verbose</code> argument to <code><a href="../../brms/html/mi.html">mi</a></code>
+(and which, although it defaults to <code>TRUE</code>, <em>fails</em> to produce verbose output on Windows system, as of <span class="pkg">mi</span> version
+1.0).
+</p>
+</td></tr>
+<tr valign="top"><td><code>x, object</code></td>
+<td>
+
+<p>an object of class <code>"miSem"</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+
+<p>for printing numbers.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>miSem</code> returns an object of class <code>"miSem"</code> with the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>initial.fit</code></td>
+<td>
+<p>an <code>sem</code> model object produced using <code><a href="objective.functions.html">objectiveFIML</a></code> if <code>raw=TRUE</code>,
+or the objective function given by the <code>objective</code> argument otherwise.</p>
+</td></tr>
+<tr valign="top"><td><code>mi.fits</code></td>
+<td>
+<p>a list of <code>sem</code> model objects, one for each imputed data set.</p>
+</td></tr>
+<tr valign="top"><td><code>imputation</code></td>
+<td>
+<p>the object produced by <code><a href="../../RCurl/html/complete.html">complete</a></code>, containing the completed imputed data sets.</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>the seed used for the random number generator.</p>
+</td></tr>
+<tr valign="top"><td><code>mi.data</code></td>
+<td>
+<p>the object returned by <code><a href="../../brms/html/mi.html">mi</a></code>, containing the multiple imputations, and useful, e.g., for diagnostic checking of the imputation process.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>John Fox <a href="mailto:jfox@mcmaster.ca">jfox@mcmaster.ca</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Yu-Sung Su, Andrew Gelman, Jennifer Hill, Masanao Yajima. (2011). 
+&ldquo;Multiple imputation with diagnostics (mi) in R: Opening windows into the black box.&rdquo; 
+<em>Journal of Statistical Software</em> 45(2).
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sem.html">sem</a></code>, <code><a href="../../brms/html/mi.html">mi</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+    
+mod.cfa.tests &lt;- cfa(raw=TRUE, text="
+verbal: x1, x2, x3
+math: y1, y2, y3
+")
+imps &lt;- miSem(mod.cfa.tests, data=Tests, fixed.x="Intercept", 
+              raw=TRUE, seed=12345)
+summary(imps, digits=3) 
+
+
+# introduce some missing data to the HS.data data set:
+HS &lt;- HS.data[, c(2,7:10,11:15,20:25,26:30)]
+set.seed(12345)
+r &lt;- sample(301, 100, replace=TRUE)
+c &lt;- sample(2:21, 100, replace=TRUE)
+for (i in 1:100) HS[r[i], c[i]] &lt;- NA
+
+mod.hs &lt;- cfa(text="
+spatial: visual, cubes, paper, flags
+verbal: general, paragrap, sentence, wordc, wordm
+memory: wordr, numberr, figurer, object, numberf, figurew
+math: deduct, numeric, problemr, series, arithmet
+")
+
+mod.mg &lt;- multigroupModel(mod.hs, groups=c("Female", "Male")) 
+system.time( # relatively time-consuming!
+  imps.mg &lt;- miSem(mod.mg, data=HS, group="Gender", seed=12345)
+)
+summary(imps.mg, digits=3)
+    
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sem</em> version 3.1-11 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Two-Stage Least Squares</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for tsls {sem}"><tr><td>tsls {sem}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Two-Stage Least Squares</h2>
+
+<h3>Description</h3>
+
+<p>Fits a regression equation, such as an equation in a structural-equation model, by two-stage least squares. This
+is equivalent to direct instrumental-variables estimation when the number of
+instruments is equal to the number of predictors.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'formula'
+tsls(formula, instruments, data, subset, weights, 
+	na.action, contrasts=NULL, ...)
+## Default S3 method:
+tsls(y, X, Z, w, names=NULL, ...)
+
+## S3 method for class 'tsls'
+print(x, ...)
+## S3 method for class 'tsls'
+summary(object, digits=getOption("digits"), ...)
+## S3 method for class 'summary.tsls'
+print(x, ...)
+## S3 method for class 'tsls'
+anova(object, model.2, s2, dfe, ...)
+
+## S3 method for class 'tsls'
+fitted(object, ...)
+## S3 method for class 'tsls'
+residuals(object, ...)
+## S3 method for class 'tsls'
+coef(object, ...)
+## S3 method for class 'tsls'
+vcov(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>formula</code></td>
+<td>
+<p>model formula for structural equation to be estimated; a regression
+constant is implied if not explicitly omitted.</p>
+</td></tr>
+<tr valign="top"><td><code>instruments</code></td>
+<td>
+<p>one-sided model formula specifying instrumental variables.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>an optional data frame containing the variables in the model. 
+By default the variables are taken from the environment from which <code>tsls</code> is
+called.</p>
+</td></tr>
+<tr valign="top"><td><code>subset</code></td>
+<td>
+<p>an optional vector specifying a subset of observations to be used in 
+fitting the model.</p>
+</td></tr>
+<tr valign="top"><td><code>weights, w</code></td>
+<td>
+<p>an optional vector of weights to be used in the fitting process; 
+if specified should be a non-negative numeric vector with one entry for each
+observation, to be used to compute weighted 2SLS estimates.</p>
+</td></tr>
+<tr valign="top"><td><code>na.action</code></td>
+<td>
+<p>a function that indicates what should happen when the 
+data contain <code>NA</code>s. 
+The default is set by the <code>na.action</code> option.</p>
+</td></tr>
+<tr valign="top"><td><code>contrasts</code></td>
+<td>
+<p>an optional list. See the <code>contrasts.arg</code> argument of 
+<code><a href="../../stats/html/model.matrix.html">model.matrix.default</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>Response-variable vector.</p>
+</td></tr>
+<tr valign="top"><td><code>X</code></td>
+<td>
+<p>Matrix of predictors, including a constant (if one is in the model).</p>
+</td></tr>
+<tr valign="top"><td><code>Z</code></td>
+<td>
+<p>Matrix of instrumental variables, including a constant (if one is in the model).</p>
+</td></tr>
+<tr valign="top"><td><code>names</code></td>
+<td>
+<p>optional character vector of names for the columns of the <code>X</code> matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>x, object, model.2</code></td>
+<td>
+<p>objects of class <code>tsls</code> returned by <code>tsls.formula</code> 
+(or of class <code>summary.tsls</code>), for <code>anova</code> 
+containing nested models
+to be compared by an incremental <i>F</i>-test. One model should be nested in the other; the
+order of models is immaterial.</p>
+</td></tr>
+<tr valign="top"><td><code>s2</code></td>
+<td>
+<p>an optional estimate of error variance for the denominator of the <i>F</i>-test. 
+If missing, the error-variance estimate is taken from the larger model.</p>
+</td></tr>
+<tr valign="top"><td><code>dfe</code></td>
+<td>
+<p>optional error degrees of freedom, to be specified when an estimate of error
+variance is given.</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>number of digits for summary output.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to be passed down.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>tsls.formula</code> returns an object of class <code>tsls</code>, with the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of observations.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>number of parameters.</p>
+</td></tr>
+<tr valign="top"><td><code>coefficients</code></td>
+<td>
+<p>parameter estimates.</p>
+</td></tr>
+<tr valign="top"><td><code>V</code></td>
+<td>
+<p>estimated covariance matrix of coefficients.</p>
+</td></tr>
+<tr valign="top"><td><code>s</code></td>
+<td>
+<p>residual standard error.</p>
+</td></tr>
+<tr valign="top"><td><code>residuals</code></td>
+<td>
+<p>vector of residuals.</p>
+</td></tr>
+<tr valign="top"><td><code>response</code></td>
+<td>
+<p>vector of response values.</p>
+</td></tr>
+<tr valign="top"><td><code>X</code></td>
+<td>
+<p>model matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>Z</code></td>
+<td>
+<p>instrumental-variables matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>response.name</code></td>
+<td>
+<p>name of response variable, or expression evaluating to response.</p>
+</td></tr>
+<tr valign="top"><td><code>formula</code></td>
+<td>
+<p>model formula.</p>
+</td></tr>
+<tr valign="top"><td><code>instruments</code></td>
+<td>
+<p>one-sided formula for instrumental variables.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>John Fox <a href="mailto:jfox@mcmaster.ca">jfox@mcmaster.ca</a></p>
+
+
+<h3>References</h3>
+
+    
+<p>Fox, J. (1979)
+Simultaneous equation models and two-stage least-squares.
+In Schuessler, K. F. (ed.)
+<em>Sociological Methodology 1979</em>, Jossey-Bass.
+</p>
+<p>Greene, W. H. (1993)
+<em>Econometric Analysis, Second Edition</em>, Macmillan.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sem.html">sem</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+summary(tsls(Q ~ P + D, ~ D + F + A, data=Kmenta))     # demand equation
+
+summary(tsls(Q ~ P + F + A, ~ D + F + A, data=Kmenta)) # supply equation
+
+anova(tsls(Q ~ P + F + A, ~ D + F + A, data=Kmenta),
+    tsls(Q ~ 1, ~ D + F + A, data=Kmenta))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sem</em> version 3.1-11 <a href="00Index.html">Index</a>]</div>
+</body></html>

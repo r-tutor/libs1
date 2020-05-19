@@ -1,3 +1,6 @@
+## ----setup, include=FALSE-----------------------------------------------------
+knitr::opts_chunk$set(dev.args = list(type = "cairo"))
+
 ## ----message = FALSE, fig.align='center', fig.showtext=TRUE-------------------
 library(showtext)
 ## Loading Google fonts (https://fonts.google.com/)

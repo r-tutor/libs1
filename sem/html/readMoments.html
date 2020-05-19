@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Input a Covariance, Correlation, or Raw Moment Matrix</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for readMoments {sem}"><tr><td>readMoments {sem}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Input a Covariance, Correlation, or Raw Moment Matrix</h2>
+
+<h3>Description</h3>
+
+<p>This functions makes it simpler to input covariance, correlation, and raw-moment 
+matrices to be analyzed by the <code><a href="sem.html">sem</a></code> function. The matrix
+is input in lower-triangular form on as many lines as is convenient, 
+omitting the above-diagonal elements. The
+elements on the diagonal may also optionally be omitted, in which case they
+are taken to be 1.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+readMoments(file="", text, diag=TRUE, 
+    names=as.character(paste("X", 1:n, sep = "")))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>The (quoted) file from which to read the moment matrix,
+including the path to the file if it is not in the current directory. If
+<code>""</code> (the default) and the <code>text</code> argument is absent, 
+then the moment matrix is read from the standard
+input stream, and is terminated by a blank line.</p>
+</td></tr>
+<tr valign="top"><td><code>text</code></td>
+<td>
+<p>The moment matrix given as a character string, as an alternative
+to specifying the <code>file</code> argument or reading the moments from
+the input stream &mdash; e.g., when the session is not interactive and there is no
+standard input.</p>
+</td></tr>
+<tr valign="top"><td><code>diag</code></td>
+<td>
+<p>If <code>TRUE</code> (the default), then the input matrix includes
+diagonal elements.</p>
+</td></tr>
+<tr valign="top"><td><code>names</code></td>
+<td>
+<p>a character vector containing the names of the variables, to
+label the rows and columns of the moment matrix.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns a lower-triangular matrix (i.e., with zeroes above the main diagonal)
+suitable for input to <code>sem</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>John Fox <a href="mailto:jfox@mcmaster.ca">jfox@mcmaster.ca</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sem.html">sem</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+R.DHP &lt;- readMoments(diag=FALSE, names=c("ROccAsp", "REdAsp", "FOccAsp", 
+                "FEdAsp", "RParAsp", "RIQ", "RSES", "FSES", "FIQ", "FParAsp"),
+                text="
+    .6247     
+    .3269  .3669       
+    .4216  .3275  .6404
+    .2137  .2742  .1124  .0839
+    .4105  .4043  .2903  .2598  .1839
+    .3240  .4047  .3054  .2786  .0489  .2220
+    .2930  .2407  .4105  .3607  .0186  .1861  .2707
+    .2995  .2863  .5191  .5007  .0782  .3355  .2302  .2950
+    .0760  .0702  .2784  .1988  .1147  .1021  .0931 -.0438  .2087
+")   
+R.DHP
+
+#the following will work only in an interactive sessions:
+    ## Not run: 
+R.DHP &lt;- readMoments(diag=FALSE, names=c("ROccAsp", "REdAsp", "FOccAsp", 
+                "FEdAsp", "RParAsp", "RIQ", "RSES", "FSES", "FIQ", "FParAsp"))
+    .6247     
+    .3269  .3669       
+    .4216  .3275  .6404
+    .2137  .2742  .1124  .0839
+    .4105  .4043  .2903  .2598  .1839
+    .3240  .4047  .3054  .2786  .0489  .2220
+    .2930  .2407  .4105  .3607  .0186  .1861  .2707
+    .2995  .2863  .5191  .5007  .0782  .3355  .2302  .2950
+    .0760  .0702  .2784  .1988  .1147  .1021  .0931 -.0438  .2087
+    
+R.DHP
+    
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sem</em> version 3.1-11 <a href="00Index.html">Index</a>]</div>
+</body></html>

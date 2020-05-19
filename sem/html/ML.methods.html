@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Methods for sem Objects Fit Using the 'objectiveML',...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ML.methods {sem}"><tr><td>ML.methods {sem}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Methods for sem Objects Fit Using the <code>objectiveML</code>, <code>objectiveGLS</code>, <code>objectiveFIML</code>, <code>msemObjectiveML</code>,
+and <code>msemObjectiveGLS</code> Objective Functions
+</h2>
+
+<h3>Description</h3>
+
+<p>These functions are for objects fit by <code><a href="sem.html">sem</a></code> using the <code><a href="objective.functions.html">objectiveML</a></code> (multivariate-normal full-information maximum-likelihood), <code>link{objectiveFIML}</code> (multivariate-normal full-information maximum-likihood in
+the presence of missing data),
+<code><a href="objective.functions.html">objectiveGLS</a></code> (generalized least squares), and <code><a href="objective.functions.html">msemObjectiveML</a></code> (multigroup multivariate-normal FIML) objective functions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'objectiveML'
+anova(object, model.2, robust=FALSE, ...)
+## S3 method for class 'objectiveFIML'
+anova(object, model.2, ...)
+
+## S3 method for class 'objectiveML'
+logLik(object, ...)
+## S3 method for class 'objectiveFIML'
+logLik(object, saturated=FALSE, 
+    intercept="Intercept", iterlim=1000, ...)
+## S3 method for class 'objectiveML'
+deviance(object, ...)
+## S3 method for class 'objectiveFIML'
+deviance(object, saturated.logLik, ...)
+## S3 method for class 'msemObjectiveML'
+deviance(object, ...) 
+## S3 method for class 'objectiveML'
+AIC(object, ..., k)
+## S3 method for class 'objectiveFIML'
+AIC(object, saturated.logLik, ..., k)
+## S3 method for class 'msemObjectiveML'
+AIC(object, ..., k)
+## S3 method for class 'objectiveML'
+AICc(object, ...)
+## S3 method for class 'objectiveFIML'
+AICc(object, saturated.logLik, ...)
+## S3 method for class 'msemObjectiveML'
+AICc(object, ...)
+## S3 method for class 'objectiveML'
+BIC(object, ...)
+## S3 method for class 'objectiveFIML'
+BIC(object, saturated.logLik, ...)
+## S3 method for class 'msemObjectiveML'
+BIC(object, ...)
+## S3 method for class 'objectiveML'
+CAIC(object, ...)
+## S3 method for class 'objectiveFIML'
+CAIC(object, saturated.logLik, ...)
+
+## S3 method for class 'objectiveML'
+print(x, ...)
+## S3 method for class 'objectiveGLS'
+print(x, ...)
+## S3 method for class 'objectiveFIML'
+print(x, saturated=FALSE, ...)
+## S3 method for class 'msemObjectiveML'
+print(x, ...)
+## S3 method for class 'msemObjectiveGLS'
+print(x, ...)
+
+## S3 method for class 'objectiveML'
+summary(object, digits=getOption("digits"), 
+    conf.level=.90, robust=FALSE, analytic.se=object$t &lt;= 500, 
+    fit.indices=c("GFI", "AGFI", "RMSEA", "NFI", "NNFI", "CFI", "RNI",
+      "IFI", "SRMR", "AIC", "AICc", "BIC", "CAIC"), ...)
+## S3 method for class 'objectiveFIML'
+summary(object, digits=getOption("digits"), conf.level=.90,
+    fit.indices=c("AIC", "AICc", "BIC", "CAIC"),
+    saturated=FALSE, intercept="Intercept", saturated.logLik, ...)
+## S3 method for class 'objectiveGLS'
+summary(object, digits=getOption("digits"), conf.level=.90, 
+    fit.indices=c("GFI", "AGFI", "RMSEA", "NFI", "NNFI", "CFI", "RNI", "IFI", "SRMR"),
+    ...)
+## S3 method for class 'msemObjectiveML'
+summary(object, digits=getOption("digits"), 
+    conf.level=.90, robust=FALSE, 
+    analytic.se=object$t &lt;= 500,
+    fit.indices=c("GFI", "AGFI", "RMSEA", "NFI", "NNFI", "CFI", "RNI", 
+      "IFI", "SRMR", "AIC", "AICc", "BIC"), ...)
+## S3 method for class 'msemObjectiveGLS'
+summary(object, digits=getOption("digits"), 
+    conf.level=.90,
+    fit.indices=c("GFI", "AGFI", "RMSEA", "NFI", "NNFI", 
+      "CFI", "RNI", "IFI", "SRMR"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object, model.2, x</code></td>
+<td>
+<p>an object inheriting from class <code>objectiveML</code>, <code>objectiveGLS</code>, 
+<code>objectiveFIML</code>, <code>msemObjectiveML</code>, or <code>msemObjectiveGLS</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>robust</code></td>
+<td>
+<p>if <code>TRUE</code>, compute robust standard errors or test.</p>
+</td></tr>
+<tr valign="top"><td><code>fit.indices</code></td>
+<td>
+<p>a character vector of &ldquo;fit indices&rdquo; to report; the allowable values are those given in <b>Usage</b>
+above, and vary by the objective function. If the argument isn't given then the fit indices reported are taken
+from the R <code>fit.indices</code> option; if this option isn't set, then only the AIC and BIC are reported for models fit
+with <code>objectiveML</code>, <code>objectiveFIML</code>, or <code>msemObjectiveML</code>, and no fit indices are reported for
+models fit with <code>objectiveGLS</code> or <code>msemObjectiveGLS</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>k, ...</code></td>
+<td>
+<p>ignored.</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>digits to be printed.</p>
+</td></tr>
+<tr valign="top"><td><code>conf.level</code></td>
+<td>
+<p>level for confidence interval for the RMSEA index (default is .9).</p>
+</td></tr>
+<tr valign="top"><td><code>analytic.se</code></td>
+<td>
+<p>use analytic (as opposed to numeric) coefficient standard errors; default is <code>TRUE</code>
+where analytic standard errors are available if there are no more than
+100 parameters in the model and <code>FALSE</code> otherwise.</p>
+</td></tr>
+<tr valign="top"><td><code>saturated</code></td>
+<td>
+<p>if <code>TRUE</code> (the default is <code>FALSE</code>); compute the log-likelihood (and statistics that
+depend on it) for the saturated model when the objective function is FIML in the presence of missing data. 
+This can be computationally costly.</p>
+</td></tr>
+<tr valign="top"><td><code>intercept</code></td>
+<td>
+<p>the name of the intercept regressor in the raw data, to be used in calculating the
+saturated log-likelihood for the FIML estimator; the default is <code>"Intercept"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>saturated.logLik</code></td>
+<td>
+<p>the log-likelihood for the saturated model, as returned by <code>logLik</code>
+with <code>saturated=TRUE</code>; if absent, this will be computed and the computation can be time-consuming.</p>
+</td></tr>
+<tr valign="top"><td><code>iterlim</code></td>
+<td>
+<p>iteration limit used by the <code>nlm</code> optimizer to compute the saturated log-likelihood for
+the FIML estimator with missing data; defaults to <code>1000</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>John Fox <a href="mailto:jfox@mcmaster.ca">jfox@mcmaster.ca</a> and Jarrett Byrnes</p>
+
+
+<h3>References</h3>
+
+<p>See <code><a href="sem.html">sem</a></code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sem.html">sem</a></code>, <code><a href="objective.functions.html">objective.functions</a></code>, <code><a href="modIndices.html">modIndices.objectiveML</a></code> 
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sem</em> version 3.1-11 <a href="00Index.html">Index</a>]</div>
+</body></html>

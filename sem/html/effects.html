@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Total, Direct, and Indirect Effects for Structural Equation...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for effects.sem {sem}"><tr><td>effects.sem {sem}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Total, Direct, and Indirect Effects for Structural Equation Models
+</h2>
+
+<h3>Description</h3>
+
+<p>The <code>sem</code> method for the standard generic function <code>effects</code> computes total, direct, 
+and indirect effects for a fitted structural equation model according to the method described in Fox (1980).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'sem'
+effects(object, ...)
+## S3 method for class 'msem'
+effects(object, ...)
+
+## S3 method for class 'semeffects'
+print(x, digits = getOption("digits"), ...)
+## S3 method for class 'semeffectsList'
+print(x, digits = getOption("digits"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>a fitted structural-equation model object produced by the <code><a href="sem.html">sem</a></code> function.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an object of class <code>semeffects</code> or <code>semeffectsList</code>, produced by <code>effects</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>digits to print.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>not used.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>effect.sem</code> returns an object of class <code>semeffects</code> with <code>Total</code>, <code>Direct</code>, and <code>Indirect</code> elements.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>John Fox <a href="mailto:jfox@mcmaster.ca">jfox@mcmaster.ca</a></p>
+
+
+<h3>References</h3>
+
+<p>Fox, J. (1980)
+Effect analysis in structural equation models: Extensions and simplified methods of computation.
+<em>Sociological Methods and Research</em>
+<b>9</b>, 3&ndash;28.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sem.html">sem</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+    ## Not run: 
+
+# These examples are from Fox (1980)
+
+# In the first pair of examples, readMoments() and specifyModel() read from the
+# input stream. These examples cannot be executed via example() but can be entered
+# at the command prompt. The Blau and Duncan example is repeated using file input;
+# this example can be executed via example(). 
+
+# The recursive Blau and Duncan basic stratification model:
+#  x1 is father's education, x2 father's SES, y3 respondent's education,
+#  y4 SES of respondent's first job, y5 respondent's SES in 1962
+
+R.bd &lt;- readMoments(names=c("x1", "x2", "y3", "y4", "y5"))
+1
+.516 1
+.453 .438 1
+.332 .417 .538 1
+.322 .405 .596 .541 1
+
+mod.bd &lt;- specifyModel()
+y3 &lt;- x1, gam31
+y3 &lt;- x2, gam32
+y4 &lt;- x2, gam42
+y4 &lt;- y3, beta43
+y5 &lt;- x2, gam52
+y5 &lt;- y3, beta53
+y5 &lt;- y4, beta54
+
+sem.bd &lt;- sem(mod.bd, R.bd, N=20700, fixed.x=c("x1", "x2"))
+summary(sem.bd)
+effects(sem.bd)
+
+
+# The nonrecursive Duncan, Haller, and Portes peer-influences model for observed variables:
+
+R.DHP &lt;- readMoments(diag=FALSE, names=c("ROccAsp", "REdAsp", "FOccAsp", 
+"FEdAsp", "RParAsp", "RIQ", "RSES", "FSES", "FIQ", "FParAsp"))
+.6247     
+.3269  .3669       
+.4216  .3275  .6404
+.2137  .2742  .1124  .0839
+.4105  .4043  .2903  .2598  .1839
+.3240  .4047  .3054  .2786  .0489  .2220
+.2930  .2407  .4105  .3607  .0186  .1861  .2707
+.2995  .2863  .5191  .5007  .0782  .3355  .2302  .2950
+.0760  .0702  .2784  .1988  .1147  .1021  .0931 -.0438  .2087
+
+model.dhp &lt;- specifyModel()
+RIQ      -&gt; ROccAsp, gam51,  NA
+RSES     -&gt; ROccAsp, gam52,  NA
+FSES     -&gt; FOccAsp, gam63,  NA
+FIQ      -&gt; FOccAsp, gam64,  NA
+FOccAsp  -&gt; ROccAsp, beta56, NA
+ROccAsp  -&gt; FOccAsp, beta65, NA
+ROccAsp &lt;-&gt; ROccAsp, ps55,   NA
+FOccAsp &lt;-&gt; FOccAsp, ps66,   NA
+ROccAsp &lt;-&gt; FOccAsp, ps56,   NA
+
+
+# Note: The following generates a warning because not all of the variables
+#       in the correlation matrix are used
+sem.dhp &lt;- sem(model.dhp, R.DHP, 329,
+                fixed.x=c('RIQ', 'RSES', 'FSES', 'FIQ'))
+summary(sem.dhp)
+effects(sem.dhp)
+    
+## End(Not run)
+    
+## the following example may be executed via example()
+
+etc &lt;- system.file(package="sem", "etc") # path to data and model files
+
+# The recursive Blau and Duncan basic stratification model:
+#  x1 is father's education, x2 father's SES, y3 respondent's education,
+#  y4 SES of respondent's first job, y5 respondent's SES in 1962
+
+(R.bd &lt;- readMoments(file=file.path(etc, "R-Blau-Duncan.txt"),
+					names=c("x1", "x2", "y3", "y4", "y5")))
+(mod.bd &lt;- specifyModel(file=file.path(etc, "model-Blau-Duncan.txt")))
+sem.bd &lt;- sem(mod.bd, R.bd, N=20700, fixed.x=c("x1", "x2"))
+summary(sem.bd)
+effects(sem.bd)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sem</em> version 3.1-11 <a href="00Index.html">Index</a>]</div>
+</body></html>

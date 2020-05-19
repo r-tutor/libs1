@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bootstrap a Structural Equation Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bootSem {sem}"><tr><td>bootSem {sem}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Bootstrap a Structural Equation Model</h2>
+
+<h3>Description</h3>
+
+<p>Bootstraps a structural equation model in an <code>sem</code> object (as returned by
+the <code><a href="sem.html">sem</a></code> function).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bootSem(model, ...)
+
+## S3 method for class 'sem'
+bootSem(model, R=100, Cov=cov, data=model$data, 
+    max.failures=10, show.progress=TRUE, ...)
+
+## S3 method for class 'msem'
+bootSem(model, R=100, Cov=cov, data=model$data, 
+    max.failures=10, show.progress=TRUE, ...)
+
+## S3 method for class 'bootsem'
+print(x, digits=getOption("digits"), ...)
+
+## S3 method for class 'bootsem'
+summary(object,
+    type=c("perc", "bca", "norm", "basic", "none"), level=0.95, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>model</code></td>
+<td>
+<p>an <code>sem</code> or <code>msem</code> object, produced by the <code>sem</code> function.</p>
+</td></tr>
+<tr valign="top"><td><code>R</code></td>
+<td>
+<p>the number of bootstrap replications; the default is 100, which should
+be enough for computing standard errors, but not confidence intervals
+(except for the normal-theory intervals).</p>
+</td></tr>
+<tr valign="top"><td><code>Cov</code></td>
+<td>
+<p>a function to compute the input covariance or moment matrix; the default is
+<code><a href="../../stats/html/cor.html">cov</a></code>. Use <code><a href="../../stats/html/cor.html">cor</a></code> if the model is fit
+to the correlation matrix. The function <code><a href="../../polycor/html/hetcor.html">hetcor</a></code> in the 
+<code>polycor</code> package will compute product-moment, polychoric, and
+polyserial correlations among mixed continuous and ordinal variables
+(see the first example below for an illustration).</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>in the case of a <code>sem</code> (i.e., single-group) <code>model</code>, a data set in a form suitable for <code>Cov</code>;
+for example, for the default <code>Cov=cov</code>, <code>data</code> may be a numeric data frame or a numeric matrix.
+In the case of an <code>msem</code> (i.e., multi-group) <code>model</code>, a list of data sets (again in the appropriate form),
+one for each group; in this case, bootstrapping is done within each group, treating the groups as strata.
+Note that the original observations are required, not just the covariance 
+matrix of the observed variables in the model. The default is the data set stored in the
+<code>sem</code> object, which will be present only if the model was fit to a data set rather than to
+a covariance or moment matrix, and may not be in a form suitable for <code>Cov</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>max.failures</code></td>
+<td>
+<p>maximum number of consecutive convergence failures before <code>bootSem</code> gives up.</p>
+</td></tr>
+<tr valign="top"><td><code>show.progress</code></td>
+<td>
+<p>display a text progress bar on the console tracing the bootstrap replications.</p>
+</td></tr>
+<tr valign="top"><td><code>x, object</code></td>
+<td>
+<p>an object of class <code>bootsem</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>controls the number of digits to print.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>type of bootstrapped confidence intervals to compute; the
+default is <code>"perc"</code> (percentile); see 
+<code><a href="../../boot/html/boot.ci.html">boot.ci</a></code> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>level</code></td>
+<td>
+<p>level for confidence intervals; default is <code>0.95</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>in <code>bootSem</code>, arguments to be passed to 
+<code><a href="sem.html">sem</a></code>; otherwise ignored.</p>
+</td></tr> 
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>bootSem</code> implements the nonparametric bootstrap, assuming an
+independent random sample. Convergence failures in the bootstrap resamples
+are discarded (and a warning printed); more than <code>max.failures</code> consecutive convergence failures (default, 10)
+result in an error. You can use the <code><a href="../../boot/html/boot.html">boot</a></code> function
+in the <span class="pkg">boot</span> package for more complex sampling schemes and additional options.
+</p>
+<p>Bootstrapping is implemented by resampling the observations in
+<code>data</code>, recalculating the input covariance matrix with <code>Cov</code>,
+and refitting the model with <code><a href="sem.html">sem</a></code>, using the
+parameter estimates from the original sample as start-values.
+</p>
+<p><b>Warning:</b> the bootstrapping process can be very time-consuming.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>bootSem</code> returns an object of class <code>bootsem</code>, which inherits
+from class <code>boot</code>, supported by the <span class="pkg">boot</span> package. The returned
+object contains the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>t0</code></td>
+<td>
+<p>the estimated parameters in the model fit to the original data set.</p>
+</td></tr>
+<tr valign="top"><td><code>t</code></td>
+<td>
+<p>a matrix containing the bootstrapped estimates, one bootstrap
+replication per row.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>the data to which the model was fit.</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>the value of <code>.Random.seed</code> when <code>bootSem</code> was called.</p>
+</td></tr>  
+<tr valign="top"><td><code>statistic</code></td>
+<td>
+<p>the function used to produce the bootstrap replications;
+this is always the local function <code>refit</code> from <code>bootSem</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>sim</code></td>
+<td>
+<p>always set to <code>"ordinary"</code>; see the documentation for the
+<code><a href="../../boot/html/boot.html">boot</a></code> function.</p>
+</td></tr>
+<tr valign="top"><td><code>stype</code></td>
+<td>
+<p>always set to <code>"i"</code>; see the documentation for the
+<code><a href="../../boot/html/boot.html">boot</a></code> function.</p>
+</td></tr>
+<tr valign="top"><td><code>call</code></td>
+<td>
+<p>the call of the <code>bootSem</code> function.</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>a vector of length equal to the number of observations <i>N</i>,
+with entries <i>1/N</i>. For a multi-group model, the weights in group <i>j</i> are <i>1/N_j</i>,
+the inverse of the number of observations in the group.</p>
+</td></tr>
+<tr valign="top"><td><code>strata</code></td>
+<td>
+<p>a vector of length <i>N</i> containing the number of the stratum
+to which each observation belongs; for a single-group model, all entries
+are 1.</p>
+</td></tr> 
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>John Fox <a href="mailto:jfox@mcmaster.ca">jfox@mcmaster.ca</a></p>
+
+
+<h3>References</h3>
+
+<p>Davison, A. C., and Hinkley, D. V. (1997)
+<em>Bootstrap Methods and their Application.</em> Cambridge.
+</p>
+<p>Efron, B., and Tibshirani, R. J. (1993)
+<em>An Introduction to the Bootstrap.</em> Chapman and Hall.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../boot/html/boot.html">boot</a></code>, <code><a href="sem.html">sem</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+    
+
+# A simple confirmatory factor-analysis model using polychoric correlations.
+#  The polycor package is required for the hetcor function.
+
+if (require(polycor)){
+
+# The following function returns correlations computed by hetcor,
+#   and is used for the bootstrapping.
+
+hcor &lt;- function(data) hetcor(data, std.err=FALSE)$correlations
+
+model.cnes &lt;- specifyModel(text="
+F -&gt; MBSA2, lam1
+F -&gt; MBSA7, lam2
+F -&gt; MBSA8, lam3
+F -&gt; MBSA9, lam4
+F &lt;-&gt; F, NA, 1
+MBSA2 &lt;-&gt; MBSA2, the1
+MBSA7 &lt;-&gt; MBSA7, the2
+MBSA8 &lt;-&gt; MBSA8, the3
+MBSA9 &lt;-&gt; MBSA9, the4
+")
+
+R.cnes &lt;- hcor(CNES)
+
+sem.cnes &lt;- sem(model.cnes, R.cnes, N=1529)
+summary(sem.cnes)
+}
+
+#  Note: this can take a minute:
+
+set.seed(12345) # for reproducibility
+
+system.time(boot.cnes &lt;- bootSem(sem.cnes, R=100, Cov=hcor, data=CNES))
+summary(boot.cnes, type="norm")  
+# cf., standard errors to those computed by summary(sem.cnes)
+    
+    
+    ## Not run:   # because of long execution time
+
+# An example bootstrapping a multi-group model
+
+mod.hs &lt;- cfa(text="
+spatial: visual, cubes, paper, flags
+verbal: general, paragrap, sentence, wordc, wordm
+memory: wordr, numberr, figurer, object, numberf, figurew
+math: deduct, numeric, problemr, series, arithmet
+")
+
+mod.mg &lt;- multigroupModel(mod.hs, groups=c("Female", "Male")) 
+
+sem.mg &lt;- sem(mod.mg, data=HS.data, group="Gender",
+              formula = ~ visual + cubes + paper + flags +
+              general + paragrap + sentence + wordc + wordm +
+              wordr + numberr + figurer + object + numberf + figurew +
+              deduct + numeric + problemr + series + arithmet
+              )
+
+# Note: this example can take several minutes or more;
+#       you can decrease R if you just want to see how it works:
+
+set.seed(12345) # for reproducibility
+
+system.time(boot.mg &lt;- bootSem(sem.mg, R=100))
+summary(boot.mg, type="norm")
+# cf., standard errors to those computed by summary(sem.mg)
+    
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sem</em> version 3.1-11 <a href="00Index.html">Index</a>]</div>
+</body></html>
