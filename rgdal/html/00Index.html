@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;rgdal&rsquo; version 1.4-8</h2>
+</div><h2>Documentation for package &lsquo;rgdal&rsquo; version 1.5-8</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 <li><a href="../doc/index.html">User guides, package vignettes and other documentation.</a></li>
@@ -22,6 +22,7 @@
 
 <p style="text-align: center;">
 <a href="#A">A</a>
+<a href="#B">B</a>
 <a href="#C">C</a>
 <a href="#D">D</a>
 <a href="#G">G</a>
@@ -47,10 +48,19 @@
 <td>Read/write between GDAL grid maps and Spatial objects</td></tr>
 </table>
 
+<h2><a name="B">-- B --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="list_coordOps.html">best_instantiable_coordOp</a></td>
+<td>List PROJ 6 coordinate operations</td></tr>
+</table>
+
 <h2><a name="C">-- C --</a></h2>
 
 <table width="100%">
 <tr><td style="width: 25%;"><a href="CRS-class.html">checkCRSArgs</a></td>
+<td>Class "CRS" of coordinate reference system arguments</td></tr>
+<tr><td style="width: 25%;"><a href="CRS-class.html">checkCRSArgs_ng</a></td>
 <td>Class "CRS" of coordinate reference system arguments</td></tr>
 <tr><td style="width: 25%;"><a href="SpatialGDAL-class.html">close.SpatialGDAL</a></td>
 <td>Class "SpatialGDAL"</td></tr>
@@ -66,6 +76,8 @@
 <td>subset methods for "GDALReadOnlyDataset"</td></tr>
 <tr><td style="width: 25%;"><a href="SpatialGDAL-class.html">coerce-method</a></td>
 <td>Class "SpatialGDAL"</td></tr>
+<tr><td style="width: 25%;"><a href="CRS-class.html">compare_CRS</a></td>
+<td>Class "CRS" of coordinate reference system arguments</td></tr>
 <tr><td style="width: 25%;"><a href="SpatialGDAL-class.html">copy.SpatialGDAL</a></td>
 <td>Class "SpatialGDAL"</td></tr>
 <tr><td style="width: 25%;"><a href="GDALDataset-class.html">copyDataset</a></td>
@@ -110,6 +122,8 @@
 <td>Class "GDALDriver": GDAL Driver Object</td></tr>
 <tr><td style="width: 25%;"><a href="readGDAL.html">GDALinfo</a></td>
 <td>Read/write between GDAL grid maps and Spatial objects</td></tr>
+<tr><td style="width: 25%;"><a href="projInfo.html">GDALis3ormore</a></td>
+<td>List PROJ.4 tag information</td></tr>
 <tr><td style="width: 25%;"><a href="GDALMajorObject-class.html">GDALMajorObject-class</a></td>
 <td>Class "GDALMajorObject"</td></tr>
 <tr><td style="width: 25%;"><a href="GDALRasterBand-class.html">GDALRasterBand-class</a></td>
@@ -122,6 +136,8 @@
 <td>Read/write between GDAL grid maps and Spatial objects</td></tr>
 <tr><td style="width: 25%;"><a href="GDALTransientDataset-class.html">GDALTransientDataset-class</a></td>
 <td>Class "GDALTransientDataset"</td></tr>
+<tr><td style="width: 25%;"><a href="projInfo.html">GDAL_OSR_PROJ</a></td>
+<td>List PROJ.4 tag information</td></tr>
 <tr><td style="width: 25%;"><a href="GDALReadOnlyDataset-class.html">getColorTable</a></td>
 <td>Class "GDALReadOnlyDataset"</td></tr>
 <tr><td style="width: 25%;"><a href="GDALDriver-class.html">getCPLConfigOption</a></td>
@@ -160,8 +176,30 @@
 <td>Class "GDALRasterBand"</td></tr>
 <tr><td style="width: 25%;"><a href="GDALRasterBand-class.html">getRasterTable</a></td>
 <td>Class "GDALRasterBand"</td></tr>
+<tr><td style="width: 25%;"><a href="GDALDriver-class.html">get_cached_orig_GDAL_DATA</a></td>
+<td>Class "GDALDriver": GDAL Driver Object</td></tr>
+<tr><td style="width: 25%;"><a href="GDALDriver-class.html">get_cached_orig_PROJ_LIB</a></td>
+<td>Class "GDALDriver": GDAL Driver Object</td></tr>
+<tr><td style="width: 25%;"><a href="GDALDriver-class.html">get_cached_set_GDAL_DATA</a></td>
+<td>Class "GDALDriver": GDAL Driver Object</td></tr>
+<tr><td style="width: 25%;"><a href="GDALDriver-class.html">get_cached_set_PROJ_LIB</a></td>
+<td>Class "GDALDriver": GDAL Driver Object</td></tr>
+<tr><td style="width: 25%;"><a href="spTransform-methods.html">get_enforce_xy</a></td>
+<td>Methods for Function spTransform for map projection and datum transformation in package "rgdal"</td></tr>
+<tr><td style="width: 25%;"><a href="spTransform-methods.html">get_last_coordOp</a></td>
+<td>Methods for Function spTransform for map projection and datum transformation in package "rgdal"</td></tr>
 <tr><td style="width: 25%;"><a href="GDALRasterBand-class.html">get_OVERRIDE_PROJ_DATUM_WITH_TOWGS84</a></td>
 <td>Class "GDALRasterBand"</td></tr>
+<tr><td style="width: 25%;"><a href="showWKT.html">get_P6_datum_hard_fail</a></td>
+<td>Show Well-Known Text spatial reference system metadata</td></tr>
+<tr><td style="width: 25%;"><a href="showWKT.html">get_PROJ6_warnings_count</a></td>
+<td>Show Well-Known Text spatial reference system metadata</td></tr>
+<tr><td style="width: 25%;"><a href="showWKT.html">get_rgdal_show_exportToProj4_warnings</a></td>
+<td>Show Well-Known Text spatial reference system metadata</td></tr>
+<tr><td style="width: 25%;"><a href="showWKT.html">get_thin_PROJ6_warnings</a></td>
+<td>Show Well-Known Text spatial reference system metadata</td></tr>
+<tr><td style="width: 25%;"><a href="spTransform-methods.html">get_transform_wkt_comment</a></td>
+<td>Methods for Function spTransform for map projection and datum transformation in package "rgdal"</td></tr>
 <tr><td style="width: 25%;"><a href="GridsDatums.html">GridsDatums</a></td>
 <td>Grids and Datums PE&amp;RS listing</td></tr>
 </table>
@@ -184,6 +222,8 @@
 <h2><a name="L">-- L --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="list_coordOps.html">list_coordOps</a></td>
+<td>List PROJ 6 coordinate operations</td></tr>
 <tr><td style="width: 25%;"><a href="llgrid.html">llgridlines</a></td>
 <td>Plot long-lat grid over projected data</td></tr>
 </table>
@@ -198,6 +238,8 @@
 <h2><a name="N">-- N --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="projInfo.html">new_proj_and_gdal</a></td>
+<td>List PROJ.4 tag information</td></tr>
 <tr><td style="width: 25%;"><a href="nor2k.html">nor2k</a></td>
 <td>Norwegian peaks over 2000m</td></tr>
 </table>
@@ -222,6 +264,8 @@
 <h2><a name="P">-- P --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="list_coordOps.html">print.coordOps</a></td>
+<td>List PROJ 6 coordinate operations</td></tr>
 <tr><td style="width: 25%;"><a href="CRS-class.html">print.CRS</a></td>
 <td>Class "CRS" of coordinate reference system arguments</td></tr>
 <tr><td style="width: 25%;"><a href="readGDAL.html">print.GDALobj</a></td>
@@ -233,6 +277,8 @@
 <tr><td style="width: 25%;"><a href="project.html">project</a></td>
 <td>Projection of coordinate matrices</td></tr>
 <tr><td style="width: 25%;"><a href="projInfo.html">projInfo</a></td>
+<td>List PROJ.4 tag information</td></tr>
+<tr><td style="width: 25%;"><a href="projInfo.html">PROJis6ormore</a></td>
 <td>List PROJ.4 tag information</td></tr>
 <tr><td style="width: 25%;"><a href="projInfo.html">projNAD</a></td>
 <td>List PROJ.4 tag information</td></tr>
@@ -266,8 +312,18 @@
 <td>Class "GDALDataset"</td></tr>
 <tr><td style="width: 25%;"><a href="GDALDriver-class.html">setCPLConfigOption</a></td>
 <td>Class "GDALDriver": GDAL Driver Object</td></tr>
+<tr><td style="width: 25%;"><a href="spTransform-methods.html">set_enforce_xy</a></td>
+<td>Methods for Function spTransform for map projection and datum transformation in package "rgdal"</td></tr>
 <tr><td style="width: 25%;"><a href="GDALRasterBand-class.html">set_OVERRIDE_PROJ_DATUM_WITH_TOWGS84</a></td>
 <td>Class "GDALRasterBand"</td></tr>
+<tr><td style="width: 25%;"><a href="showWKT.html">set_P6_datum_hard_fail</a></td>
+<td>Show Well-Known Text spatial reference system metadata</td></tr>
+<tr><td style="width: 25%;"><a href="showWKT.html">set_rgdal_show_exportToProj4_warnings</a></td>
+<td>Show Well-Known Text spatial reference system metadata</td></tr>
+<tr><td style="width: 25%;"><a href="showWKT.html">set_thin_PROJ6_warnings</a></td>
+<td>Show Well-Known Text spatial reference system metadata</td></tr>
+<tr><td style="width: 25%;"><a href="spTransform-methods.html">set_transform_wkt_comment</a></td>
+<td>Methods for Function spTransform for map projection and datum transformation in package "rgdal"</td></tr>
 <tr><td style="width: 25%;"><a href="SGDF2PCT.html">SGDF2PCT</a></td>
 <td>Convert RGB three band to single band colour table</td></tr>
 <tr><td style="width: 25%;"><a href="CRS-class.html">show-method</a></td>
@@ -275,6 +331,8 @@
 <tr><td style="width: 25%;"><a href="showWKT.html">showEPSG</a></td>
 <td>Show Well-Known Text spatial reference system metadata</td></tr>
 <tr><td style="width: 25%;"><a href="showWKT.html">showP4</a></td>
+<td>Show Well-Known Text spatial reference system metadata</td></tr>
+<tr><td style="width: 25%;"><a href="showWKT.html">showSRID</a></td>
 <td>Show Well-Known Text spatial reference system metadata</td></tr>
 <tr><td style="width: 25%;"><a href="showWKT.html">showWKT</a></td>
 <td>Show Well-Known Text spatial reference system metadata</td></tr>

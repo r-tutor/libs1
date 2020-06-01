@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2020-03-13" />
+<meta name="date" content="2020-05-29" />
 
 <title>Introduction to V8 for R</title>
 
@@ -1529,7 +1529,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Introduction to V8 for R</h1>
-<h4 class="date">2020-03-13</h4>
+<h4 class="date">2020-05-29</h4>
 
 </div>
 
@@ -1546,7 +1546,7 @@ ct$eval(&quot;foo + bar&quot;)</code></pre>
 <p>A major advantage over the other foreign language interfaces is that V8 requires no compilers, external executables or other run-time dependencies. The entire engine is contained within a 6MB package (2MB zipped) and works on all major platforms.</p>
 <pre class="r"><code># Create some JSON
 cat(ct$eval(&quot;JSON.stringify({x:Math.random()})&quot;))</code></pre>
-<pre><code>{&quot;x&quot;:0.060880831564469995}</code></pre>
+<pre><code>{&quot;x&quot;:0.40122744665637766}</code></pre>
 <pre class="r"><code># Simple closure
 ct$eval(&quot;(function(x){return x+1;})(123)&quot;)</code></pre>
 <pre><code>[1] &quot;124&quot;</code></pre>
@@ -1635,7 +1635,7 @@ print(output)</code></pre>
 <p>Evaluating invalid JavaScript code results in a SyntaxError:</p>
 <pre class="r"><code># A common typo
 ct$eval(&#39;var foo &lt;- 123;&#39;)</code></pre>
-<pre><code>Error in context_eval(join(src), private$context, serialize): c++ exception (unknown reason)</code></pre>
+<pre><code>Error in context_eval(join(src), private$context, serialize): SyntaxError: Unexpected token &#39;&lt;&#39;</code></pre>
 <p>JavaScript runtime exceptions are automatically propagated into R errors:</p>
 <pre class="r"><code># Runtime errors
 ct$eval(&quot;123 + doesnotexit&quot;)</code></pre>
