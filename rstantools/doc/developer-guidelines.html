@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Stan Development Team" />
 
@@ -30,9 +30,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -201,8 +198,12 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
+
+
+
 
 </head>
 
@@ -212,8 +213,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Guidelines for Developers of R Packages Interfacing with Stan</h1>
-<h4 class="author"><em>Stan Development Team</em></h4>
-<h4 class="date"><em>Latest release: September 2019 (First version: November 2016)</em></h4>
+<h4 class="author">Stan Development Team</h4>
+<h4 class="date">Latest release: July 2020 (First version: November 2016)</h4>
 
 
 <div id="TOC">
@@ -255,9 +256,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <h3>Stan code</h3>
 <ul>
 <li><p>All Stan code for estimating models should be included in pre-written static <code>.stan</code> files that are compiled when the package is built (see the Stan programs directory in the <strong>rstanarm</strong> repo for examples). You can also use subdirectories to include code chunks to be used in multiple <code>.stan</code> files (again see the <strong>rstanarm</strong> repo for examples). If you set up your package using <code>rstan_create_package</code> this structure will be created for you. This means that <strong>your package should NOT write a Stan program when the user calls a model fitting function in your package</strong>, but rather use only Stan programs you have written by hand in advance (if you are working on a model for which you don’t think this is possible please let us know). There are several reasons for this.</p></li>
-<li>Pre-compiled Stan programs can be run by users of Windows or Mac OSX without having to install a C++ compiler, which dramatically expands the universe of potential users for your package.</li>
-<li>Pre-compiled Stan programs will run immediately when called, avoiding compilation time.</li>
-<li>CRAN policy permits long installation times but imposes restrictions on the time consumed by examples and unit tests that are much shorter than the time that it takes to compile even a simple Stan program. Thus, it is only possible to adequately test your package if it has pre-compiled Stan programs.</li>
+<li><p>Pre-compiled Stan programs can be run by users of Windows or Mac OSX without having to install a C++ compiler, which dramatically expands the universe of potential users for your package.</p></li>
+<li><p>Pre-compiled Stan programs will run immediately when called, avoiding compilation time.</p></li>
+<li><p>CRAN policy permits long installation times but imposes restrictions on the time consumed by examples and unit tests that are much shorter than the time that it takes to compile even a simple Stan program. Thus, it is only possible to adequately test your package if it has pre-compiled Stan programs.</p></li>
 <li><p>Pre-compiled Stan programs can use custom C++ functions.</p></li>
 </ul>
 <p>To provide flexibility to users, your Stan programs can include branching logic (conditional statements) so that even with a small number of .stan files you can still allow for many different specifications to made by the user (see the .stan files in <strong>rstanarm</strong> for examples).</p>
@@ -288,6 +289,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>– The Stan Development Team</p>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

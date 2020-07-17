@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Download a national rails shapefile into R</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rails {tigris}"><tr><td>rails {tigris}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Download a national rails shapefile into R</h2>
+
+<h3>Description</h3>
+
+<p>National dataset for US railroads, including carlines, streetcars,
+monorails, mass transit, cog rail, incline rail, and trams.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rails(year = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>year</code></td>
+<td>
+<p>the data year (defaults to 2019).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to be passed to the underlying 'load_tiger' function, which is not exported.
+Options include <code>class</code>, which can be set to <code>"sf"</code> (the default) or <code>"sp"</code> to
+request sf or sp class objects, and <code>refresh</code>, which specifies whether or
+not to re-download shapefiles (defaults to <code>FALSE</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf">http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf</a>
+</p>
+<p>Other transportation functions: 
+<code><a href="address_ranges.html">address_ranges</a>()</code>,
+<code><a href="primary_roads.html">primary_roads</a>()</code>,
+<code><a href="primary_secondary_roads.html">primary_secondary_roads</a>()</code>,
+<code><a href="roads.html">roads</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(tigris)
+
+rls &lt;- rails()
+
+plot(rls$geometry)
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tigris</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

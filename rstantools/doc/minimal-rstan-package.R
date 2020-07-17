@@ -1,7 +1,7 @@
 params <-
 list(EVAL = TRUE)
 
-## ----SETTINGS-knitr, include=FALSE---------------------------------------
+## ----SETTINGS-knitr, include=FALSE--------------------------------------------
 stopifnot(require(knitr))
 opts_chunk$set(
   comment=NA,
@@ -13,41 +13,41 @@ if(dir.exists(PATH)) {
   unlink(PATH, recursive = TRUE, force = TRUE)
 }
 
-## ----rstan_create_package, eval=FALSE------------------------------------
+## ----rstan_create_package, eval=FALSE-----------------------------------------
 #  library("rstantools")
 #  rstan_create_package(path = 'rstanlm')
 
-## ----rstan_create_package-eval, echo=FALSE,warning=FALSE-----------------
+## ----rstan_create_package-eval, echo=FALSE,warning=FALSE----------------------
 library("rstantools")
 rstan_create_package(path = PATH, rstudio=FALSE, open=FALSE)
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  setwd("rstanlm")
 #  list.files(all.files = TRUE)
 
-## ---- echo=FALSE---------------------------------------------------------
+## ---- echo=FALSE--------------------------------------------------------------
 list.files(PATH, all.files = TRUE)
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  file.show("DESCRIPTION")
 
-## ---- echo=FALSE---------------------------------------------------------
+## ---- echo=FALSE--------------------------------------------------------------
 DES <- readLines(file.path(PATH, "DESCRIPTION"))
 cat(DES, sep = "\n")
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  file.show("Read-and-delete-me")
 
-## ---- echo=FALSE---------------------------------------------------------
+## ---- echo=FALSE--------------------------------------------------------------
 cat(readLines(file.path(PATH, "Read-and-delete-me")), sep = "\n")
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  file.remove('Read-and-delete-me')
 
-## ---- echo=FALSE---------------------------------------------------------
+## ---- echo=FALSE--------------------------------------------------------------
 file.remove(file.path(PATH, 'Read-and-delete-me'))
 
-## ---- include=FALSE------------------------------------------------------
+## ---- include=FALSE-----------------------------------------------------------
 stan_prog <- "
 data {
   int<lower=1> N;
@@ -68,7 +68,7 @@ model {
 cat(stan_prog, file = file.path(PATH, "inst", "stan", "lm.stan"))
 rstan_config(PATH)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Save this file as `R/lm_stan.R`
 
 #' Bayesian linear regression with Stan
@@ -86,7 +86,7 @@ lm_stan <- function(x, y, ...) {
 }
 
 
-## ---- include=FALSE------------------------------------------------------
+## ---- include=FALSE-----------------------------------------------------------
 Rcode <- "
 #' Bayesian linear regression with Stan
 #'
@@ -102,38 +102,42 @@ lm_stan <- function(x, y, ...) {
 "
 cat(Rcode, file = file.path(PATH, "R", "lm_stan.R"))
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  file.show(file.path("R", "rstanlm-package.R"))
 
-## ---- echo=FALSE---------------------------------------------------------
+## ---- echo=FALSE--------------------------------------------------------------
 cat(readLines(file.path(PATH, "R", "rstanlm-package.R")), sep = "\n")
 
-## ---- eval=FALSE---------------------------------------------------------
-#  pkgbuild::compile_dll() # see note below
+## ---- results = "hide"--------------------------------------------------------
+example(source) # defines the sourceDir() function
+
+## ---- eval = FALSE------------------------------------------------------------
+#  try(roxygen2::roxygenize(load_code = sourceDir), silent = TRUE)
+#  pkgbuild::compile_dll()
 #  roxygen2::roxygenize()
 
-## ---- include=FALSE------------------------------------------------------
-pkgbuild::compile_dll(PATH) # required for newer versions of roxygen2
-
-## ---- echo=FALSE---------------------------------------------------------
+## ---- echo=FALSE--------------------------------------------------------------
+try(roxygen2::roxygenize(PATH, load_code = sourceDir), silent = TRUE)
+rm(lm_stan)
+pkgbuild::compile_dll(PATH)
 roxygen2::roxygenize(PATH)
 
-## ----eval=FALSE----------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  # using ../rstanlm because already inside the rstanlm directory
 #  install.packages("../rstanlm", repos = NULL, type = "source")
 
-## ----echo=FALSE----------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 install.packages(PATH, repos = NULL, type = "source")
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  library("rstanlm")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 fit <- lm_stan(y = rnorm(10), x = rnorm(10), 
                # arguments passed to sampling
                iter = 2000, refresh = 500)
 print(fit)
 
-## ---- echo=FALSE---------------------------------------------------------
+## ---- echo=FALSE--------------------------------------------------------------
 unlink(PATH, recursive = TRUE, force = TRUE)
 

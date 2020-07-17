@@ -1,3 +1,14 @@
+# radiant.data 1.3.9
+
+* Fix for using the `date` function from the lubrdidate package in a filter
+* Removed functionality to convert a colum to type `ts` as this is not supported by dplyr 1.0.0 and vctrs 0.3.1
+* Updated documentation using https://github.com/r-lib/roxygen2/pull/1109
+
+# radiant.data 1.3.6
+
+* Updated styling for formatting for modals (e.g., help pages) that will also allow improved sizing of the (shinyFiles) file browser
+* Fix for `\r` line-endings in _Report > Rmd_ on Windows. Issue was most likely to occur when copy-and-pasting text from PDF into _Report > Rmd_.
+
 # radiant.data 1.3.4
 
 * Minor adjustments in anticipation of dplyr 1.0.0

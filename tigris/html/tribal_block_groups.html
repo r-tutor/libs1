@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Download a Tribal block groups shapefile into R.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for tribal_block_groups {tigris}"><tr><td>tribal_block_groups {tigris}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Download a Tribal block groups shapefile into R.</h2>
+
+<h3>Description</h3>
+
+<p>From the US Census Bureau: &quot;Tribal block groups are subdivisions of a tribal
+census tract. Tribal block groups were defined by federally
+recognized tribal government officials in the Census Bureau's
+Tribal Statistical Areas Program (TSAP) for
+the 2010 Census. If a tribal government declined to participate in TSAP, the Census Bureau delineated
+tribal block groups on the American Indian reservation and/or off-reservation trust land (ORTL). Tribal
+block groups are intended to generally contain between 600 and 3000 persons or between 240 and
+1200 housing units. Many American Indian reservations and ORTLs have less than the minimum
+population thresholds for more than one tribal block group and in those cases one tribal block group was
+delineated that covers the entire American Indian reservation and/or ORTL. Unlike standard block
+groups, the cluster of blocks that comprises each tribal block group will not necessarily begin with the
+same first number of their 4-character census block number,
+but may contain blocks from several different
+standard census block groups.&quot;  For more information, please see the link provided.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+tribal_block_groups(year = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>year</code></td>
+<td>
+<p>the data year (defaults to 2019).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to be passed to the underlying 'load_tiger' function, which is not exported.
+Options include <code>class</code>, which can be set to <code>"sf"</code> (the default) or <code>"sp"</code> to
+request sf or sp class objects, and <code>refresh</code>, which specifies whether or
+not to re-download shapefiles (defaults to <code>FALSE</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><a href="https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf">https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf</a>
+</p>
+<p>Other native/tribal geometries functions: 
+<code><a href="alaska_native_regional_corporations.html">alaska_native_regional_corporations</a>()</code>,
+<code><a href="native_areas.html">native_areas</a>()</code>,
+<code><a href="tribal_census_tracts.html">tribal_census_tracts</a>()</code>,
+<code><a href="tribal_subdivisions_national.html">tribal_subdivisions_national</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(tigris)
+library(leaflet)
+
+trib &lt;- tribal_block_groups()
+leaflet(trib) %&gt;%
+  addProviderTiles("CartoDB.Positron") %&gt;%
+  addPolygons(fillColor = "white",
+              color = "black",
+              weight = 0.5)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tigris</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

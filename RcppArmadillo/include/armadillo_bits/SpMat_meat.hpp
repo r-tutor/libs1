@@ -5206,7 +5206,7 @@ SpMat<eT>::init(const SpMat<eT>& x)
         init_done = true;
         }
       }
-  #elif defined(ARMA_USE_CXX11_MUTEX)
+  #elif (defined(ARMA_USE_CXX11) && !defined(ARMA_DONT_USE_CXX11_MUTEX))
     if(x.sync_state == 1)
       {
       x.cache_mutex.lock();
@@ -6601,10 +6601,6 @@ SpMat<eT>::try_div_value_csc(const uword in_row, const uword in_col, const eT in
  * Insert an element at the given position, and return a reference to it.  
  * The element will be set to 0, unless otherwise specified.
  * If the element already exists, its value will be overwritten.
- *
- * @param in_row Row of new element.
- * @param in_col Column of new element.
- * @param in_val Value to set new element to (default 0).
  */
 template<typename eT>
 inline
@@ -6693,9 +6689,6 @@ SpMat<eT>::insert_element(const uword in_row, const uword in_col, const eT val)
 
 /**
  * Delete an element at the given position.
- *
- * @param in_row Row of element to be deleted.
- * @param in_col Column of element to be deleted.
  */
 template<typename eT>
 inline
@@ -6816,7 +6809,7 @@ SpMat<eT>::sync_cache() const
         }
       }
     }
-  #elif defined(ARMA_USE_CXX11_MUTEX)
+  #elif (defined(ARMA_USE_CXX11) && !defined(ARMA_DONT_USE_CXX11_MUTEX))
     {
     if(sync_state == 0)
       {
@@ -6869,7 +6862,7 @@ SpMat<eT>::sync_csc() const
         sync_csc_simple();
         }
       }
-  #elif defined(ARMA_USE_CXX11_MUTEX)
+  #elif (defined(ARMA_USE_CXX11) && !defined(ARMA_DONT_USE_CXX11_MUTEX))
     if(sync_state == 1)
       {
       cache_mutex.lock();

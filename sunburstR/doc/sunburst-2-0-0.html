@@ -1,21 +1,37 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Kent Russell" />
 
-<meta name="date" content="2019-11-04" />
+<meta name="date" content="2020-07-06" />
 
 <title>Sunburst 2.0.0</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
 <script>(function() {
   // If window.HTMLWidgets is already defined, then use it; otherwise create a
   // new object. This allows preceding code to set options that affect the
@@ -251,13 +267,38 @@
           theseArgs = theseArgs.concat([task.data]);
           task = task.code;
         }
-        var taskFunc = eval("(" + task + ")");
+        var taskFunc = tryEval(task);
         if (typeof(taskFunc) !== "function") {
           throw new Error("Task must be a function! Source:\n" + task);
         }
         taskFunc.apply(target, theseArgs);
       });
     }
+  }
+
+  // Attempt eval() both with and without enclosing in parentheses.
+  // Note that enclosing coerces a function declaration into
+  // an expression that eval() can parse
+  // (otherwise, a SyntaxError is thrown)
+  function tryEval(code) {
+    var result = null;
+    try {
+      result = eval("(" + code + ")");
+    } catch(error) {
+      if (!error instanceof SyntaxError) {
+        throw error;
+      }
+      try {
+        result = eval(code);
+      } catch(e) {
+        if (e instanceof SyntaxError) {
+          throw error;
+        } else {
+          throw e;
+        }
+      }
+    }
+    return result;
   }
 
   function initSizing(el) {
@@ -652,17 +693,56 @@
     invokePostRenderHandlers();
   }
 
-  // Wait until after the document has loaded to render the widgets.
+
+  function has_jQuery3() {
+    if (!window.jQuery) {
+      return false;
+    }
+    var $version = window.jQuery.fn.jquery;
+    var $major_version = parseInt($version.split(".")[0]);
+    return $major_version >= 3;
+  }
+
+  /*
+  / Shiny 1.4 bumped jQuery from 1.x to 3.x which means jQuery's
+  / on-ready handler (i.e., $(fn)) is now asyncronous (i.e., it now
+  / really means $(setTimeout(fn)).
+  / https://jquery.com/upgrade-guide/3.0/#breaking-change-document-ready-handlers-are-now-asynchronous
+  /
+  / Since Shiny uses $() to schedule initShiny, shiny>=1.4 calls initShiny
+  / one tick later than it did before, which means staticRender() is
+  / called renderValue() earlier than (advanced) widget authors might be expecting.
+  / https://github.com/rstudio/shiny/issues/2630
+  /
+  / For a concrete example, leaflet has some methods (e.g., updateBounds)
+  / which reference Shiny methods registered in initShiny (e.g., setInputValue).
+  / Since leaflet is privy to this life-cycle, it knows to use setTimeout() to
+  / delay execution of those methods (until Shiny methods are ready)
+  / https://github.com/rstudio/leaflet/blob/18ec981/javascript/src/index.js#L266-L268
+  /
+  / Ideally widget authors wouldn't need to use this setTimeout() hack that
+  / leaflet uses to call Shiny methods on a staticRender(). In the long run,
+  / the logic initShiny should be broken up so that method registration happens
+  / right away, but binding happens later.
+  */
+  function maybeStaticRenderLater() {
+    if (shinyMode && has_jQuery3()) {
+      window.jQuery(window.HTMLWidgets.staticRender);
+    } else {
+      window.HTMLWidgets.staticRender();
+    }
+  }
+
   if (document.addEventListener) {
     document.addEventListener("DOMContentLoaded", function() {
       document.removeEventListener("DOMContentLoaded", arguments.callee, false);
-      window.HTMLWidgets.staticRender();
+      maybeStaticRenderLater();
     }, false);
   } else if (document.attachEvent) {
     document.attachEvent("onreadystatechange", function() {
       if (document.readyState === "complete") {
         document.detachEvent("onreadystatechange", arguments.callee);
-        window.HTMLWidgets.staticRender();
+        maybeStaticRenderLater();
       }
     });
   }
@@ -750,7 +830,7 @@
       if (o !== null && typeof o === "object" && part in o) {
         if (i == (l - 1)) { // if we are at the end of the line then evalulate
           if (typeof o[part] === "string")
-            o[part] = eval("(" + o[part] + ")");
+            o[part] = tryEval(o[part]);
         } else { // otherwise continue to next embedded object
           o = o[part];
         }
@@ -11592,6 +11672,12 @@ Object.defineProperty(exports, '__esModule', { value: true });
         sunburst.sunburst().size(function(d) {
           return d[x.options.valueField || "size"];
         });
+        if(
+          x.options.hasOwnProperty("showLabels") &&
+          (x.options.showLabels===true || x.options.showLabels===false )
+        ) {
+          sunburst.sunburst().showLabels(x.options.showLabels);
+        }
 
         if(x.options.hasOwnProperty("rootLabel") && x.options.rootLabel !== null) {
           x.data.root.label = x.options.rootLabel;
@@ -11657,9 +11743,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -11669,14 +11755,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -11685,9 +11773,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -11733,7 +11821,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -11754,9 +11842,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -11925,7 +12010,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -11940,7 +12026,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Sunburst 2.0.0</h1>
 <h4 class="author">Kent Russell</h4>
-<h4 class="date">2019-11-04</h4>
+<h4 class="date">2020-07-06</h4>
 
 
 
@@ -11948,22 +12034,21 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="setup-and-data" class="section level2">
 <h2>Setup and Data</h2>
 <p>Let’s get started by loading some packages and making some simple data to use throughout the post.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(sunburstR)</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">packageVersion</span>(<span class="st">&quot;sunburstR&quot;</span>)</a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="co">#&gt; [1] &#39;2.1.3&#39;</span></a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(sunburstR)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">packageVersion</span>(<span class="st">&quot;sunburstR&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">#&gt; [1] &#39;2.1.4&#39;</span></span></code></pre></div>
 <p>Simple data should suffice for these examples.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">library</span>(htmltools)</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="co">#&gt; Warning: package &#39;htmltools&#39; was built under R version 3.4.4</span></a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="kw">library</span>(d3r)</a>
-<a class="sourceLine" id="cb2-4" title="4"></a>
-<a class="sourceLine" id="cb2-5" title="5">dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
-<a class="sourceLine" id="cb2-6" title="6">  <span class="dt">level1 =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>), <span class="dt">each=</span><span class="dv">3</span>),</a>
-<a class="sourceLine" id="cb2-7" title="7">  <span class="dt">level2 =</span> <span class="kw">paste0</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>), <span class="dt">each=</span><span class="dv">3</span>), <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>),</a>
-<a class="sourceLine" id="cb2-8" title="8">  <span class="dt">size =</span> <span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">8</span>,<span class="dv">6</span>),</a>
-<a class="sourceLine" id="cb2-9" title="9">  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb2-10" title="10">)</a>
-<a class="sourceLine" id="cb2-11" title="11"></a>
-<a class="sourceLine" id="cb2-12" title="12">knitr<span class="op">::</span><span class="kw">kable</span>(dat)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(htmltools)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">library</span>(d3r)</span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a>dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb2-5"><a href="#cb2-5"></a>  <span class="dt">level1 =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>), <span class="dt">each=</span><span class="dv">3</span>),</span>
+<span id="cb2-6"><a href="#cb2-6"></a>  <span class="dt">level2 =</span> <span class="kw">paste0</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>), <span class="dt">each=</span><span class="dv">3</span>), <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>),</span>
+<span id="cb2-7"><a href="#cb2-7"></a>  <span class="dt">size =</span> <span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">8</span>,<span class="dv">6</span>),</span>
+<span id="cb2-8"><a href="#cb2-8"></a>  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>)</span>
+<span id="cb2-10"><a href="#cb2-10"></a></span>
+<span id="cb2-11"><a href="#cb2-11"></a>knitr<span class="op">::</span><span class="kw">kable</span>(dat)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -12006,31 +12091,31 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </tbody>
 </table>
 <p><a href="https://github.com/timelyportfolio/d3r"><code>d3r</code></a> will help us build our hierarchy.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">library</span>(d3r)</a>
-<a class="sourceLine" id="cb3-2" title="2">tree &lt;-<span class="st"> </span><span class="kw">d3_nest</span>(dat, <span class="dt">value_cols =</span> <span class="st">&quot;size&quot;</span>)</a>
-<a class="sourceLine" id="cb3-3" title="3">tree</a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="co">#&gt; {&quot;children&quot;:[{&quot;name&quot;:&quot;a&quot;,&quot;children&quot;:[{&quot;name&quot;:&quot;a1&quot;,&quot;size&quot;:10,&quot;colname&quot;:&quot;level2&quot;},{&quot;name&quot;:&quot;a2&quot;,&quot;size&quot;:5,&quot;colname&quot;:&quot;level2&quot;},{&quot;name&quot;:&quot;a3&quot;,&quot;size&quot;:2,&quot;colname&quot;:&quot;level2&quot;}],&quot;colname&quot;:&quot;level1&quot;},{&quot;name&quot;:&quot;b&quot;,&quot;children&quot;:[{&quot;name&quot;:&quot;b1&quot;,&quot;size&quot;:3,&quot;colname&quot;:&quot;level2&quot;},{&quot;name&quot;:&quot;b2&quot;,&quot;size&quot;:8,&quot;colname&quot;:&quot;level2&quot;},{&quot;name&quot;:&quot;b3&quot;,&quot;size&quot;:6,&quot;colname&quot;:&quot;level2&quot;}],&quot;colname&quot;:&quot;level1&quot;}],&quot;name&quot;:&quot;root&quot;}</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">library</span>(d3r)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>tree &lt;-<span class="st"> </span><span class="kw">d3_nest</span>(dat, <span class="dt">value_cols =</span> <span class="st">&quot;size&quot;</span>)</span>
+<span id="cb3-3"><a href="#cb3-3"></a>tree</span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="co">#&gt; {&quot;children&quot;:[{&quot;name&quot;:&quot;a&quot;,&quot;children&quot;:[{&quot;name&quot;:&quot;a1&quot;,&quot;size&quot;:10,&quot;colname&quot;:&quot;level2&quot;},{&quot;name&quot;:&quot;a2&quot;,&quot;size&quot;:5,&quot;colname&quot;:&quot;level2&quot;},{&quot;name&quot;:&quot;a3&quot;,&quot;size&quot;:2,&quot;colname&quot;:&quot;level2&quot;}],&quot;colname&quot;:&quot;level1&quot;},{&quot;name&quot;:&quot;b&quot;,&quot;children&quot;:[{&quot;name&quot;:&quot;b1&quot;,&quot;size&quot;:3,&quot;colname&quot;:&quot;level2&quot;},{&quot;name&quot;:&quot;b2&quot;,&quot;size&quot;:8,&quot;colname&quot;:&quot;level2&quot;},{&quot;name&quot;:&quot;b3&quot;,&quot;size&quot;:6,&quot;colname&quot;:&quot;level2&quot;}],&quot;colname&quot;:&quot;level1&quot;}],&quot;name&quot;:&quot;root&quot;}</span></span></code></pre></div>
 </div>
 <div id="legend-false" class="section level2">
 <h2><code>legend = FALSE</code></h2>
 <p>Often the legend in the sunburst becomes useless with lots of nodes and multiple levels. While a hack could turn it off, I don’t like having to ask users to resort to hacks, so now the argument <code>legend = FALSE</code> will turn it off.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">sb1 &lt;-<span class="st"> </span><span class="kw">sunburst</span>(tree, <span class="dt">width=</span><span class="st">&quot;100%&quot;</span>, <span class="dt">height=</span><span class="dv">400</span>)</a>
-<a class="sourceLine" id="cb4-2" title="2">sb2 &lt;-<span class="st"> </span><span class="kw">sunburst</span>(</a>
-<a class="sourceLine" id="cb4-3" title="3">  tree,</a>
-<a class="sourceLine" id="cb4-4" title="4">  <span class="dt">legend =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb4-5" title="5">  <span class="dt">width =</span> <span class="st">&quot;100%&quot;</span>,</a>
-<a class="sourceLine" id="cb4-6" title="6">  <span class="dt">height =</span> <span class="dv">400</span></a>
-<a class="sourceLine" id="cb4-7" title="7">)</a>
-<a class="sourceLine" id="cb4-8" title="8"></a>
-<a class="sourceLine" id="cb4-9" title="9"><span class="co"># do side-by-side for comparison</span></a>
-<a class="sourceLine" id="cb4-10" title="10"><span class="kw">div</span>(</a>
-<a class="sourceLine" id="cb4-11" title="11">  <span class="dt">style=</span><span class="st">&quot;display: flex; align-items:center;&quot;</span>,</a>
-<a class="sourceLine" id="cb4-12" title="12">  <span class="kw">div</span>(<span class="dt">style=</span><span class="st">&quot;width:50%; border:1px solid #ccc;&quot;</span>, sb1),</a>
-<a class="sourceLine" id="cb4-13" title="13">  <span class="kw">div</span>(<span class="dt">style=</span><span class="st">&quot;width:50%; border:1px solid #ccc;&quot;</span>, sb2)</a>
-<a class="sourceLine" id="cb4-14" title="14">)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>sb1 &lt;-<span class="st"> </span><span class="kw">sunburst</span>(tree, <span class="dt">width=</span><span class="st">&quot;100%&quot;</span>, <span class="dt">height=</span><span class="dv">400</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>sb2 &lt;-<span class="st"> </span><span class="kw">sunburst</span>(</span>
+<span id="cb4-3"><a href="#cb4-3"></a>  tree,</span>
+<span id="cb4-4"><a href="#cb4-4"></a>  <span class="dt">legend =</span> <span class="ot">FALSE</span>,</span>
+<span id="cb4-5"><a href="#cb4-5"></a>  <span class="dt">width =</span> <span class="st">&quot;100%&quot;</span>,</span>
+<span id="cb4-6"><a href="#cb4-6"></a>  <span class="dt">height =</span> <span class="dv">400</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>)</span>
+<span id="cb4-8"><a href="#cb4-8"></a></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="co"># do side-by-side for comparison</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="kw">div</span>(</span>
+<span id="cb4-11"><a href="#cb4-11"></a>  <span class="dt">style=</span><span class="st">&quot;display: flex; align-items:center;&quot;</span>,</span>
+<span id="cb4-12"><a href="#cb4-12"></a>  <span class="kw">div</span>(<span class="dt">style=</span><span class="st">&quot;width:50%; border:1px solid #ccc;&quot;</span>, sb1),</span>
+<span id="cb4-13"><a href="#cb4-13"></a>  <span class="kw">div</span>(<span class="dt">style=</span><span class="st">&quot;width:50%; border:1px solid #ccc;&quot;</span>, sb2)</span>
+<span id="cb4-14"><a href="#cb4-14"></a>)</span></code></pre></div>
 <div style="display: flex; align-items:center;">
 <div style="width:50%; border:1px solid #ccc;">
-<div class="sunburst html-widget" id="htmlwidget-ffe2606d0e567a03c624" style="width:100%;height:400px; position:relative;">
+<div class="sunburst html-widget" id="htmlwidget-32c207b87e080b0b3ce5" style="width:100%;height:400px; position:relative;">
 <div>
 <div class="sunburst-main">
 <div class="sunburst-sequence"></div>
@@ -12044,10 +12129,10 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </div>
 </div>
 </div>
-<script type="application/json" data-for="htmlwidget-ffe2606d0e567a03c624">{"x":{"data":{"children":[{"name":"a","children":[{"name":"a1","size":10,"colname":"level2"},{"name":"a2","size":5,"colname":"level2"},{"name":"a3","size":2,"colname":"level2"}],"colname":"level1"},{"name":"b","children":[{"name":"b1","size":3,"colname":"level2"},{"name":"b2","size":8,"colname":"level2"},{"name":"b3","size":6,"colname":"level2"}],"colname":"level1"}],"name":"root"},"options":{"legendOrder":null,"colors":null,"valueField":"size","percent":true,"count":false,"explanation":null,"breadcrumb":[],"legend":[],"sortFunction":null,"sumNodes":true}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-32c207b87e080b0b3ce5">{"x":{"data":{"children":[{"name":"a","children":[{"name":"a1","size":10,"colname":"level2"},{"name":"a2","size":5,"colname":"level2"},{"name":"a3","size":2,"colname":"level2"}],"colname":"level1"},{"name":"b","children":[{"name":"b1","size":3,"colname":"level2"},{"name":"b2","size":8,"colname":"level2"},{"name":"b3","size":6,"colname":"level2"}],"colname":"level1"}],"name":"root"},"options":{"legendOrder":null,"colors":null,"valueField":"size","percent":true,"count":false,"explanation":null,"breadcrumb":[],"legend":[],"sortFunction":null,"sumNodes":true}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div style="width:50%; border:1px solid #ccc;">
-<div class="sunburst html-widget" id="htmlwidget-a986e356eec87524a777" style="width:100%;height:400px; position:relative;">
+<div class="sunburst html-widget" id="htmlwidget-5424d11f2ee2e273d3c6" style="width:100%;height:400px; position:relative;">
 <div>
 <div class="sunburst-main">
 <div class="sunburst-sequence"></div>
@@ -12061,22 +12146,22 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </div>
 </div>
 </div>
-<script type="application/json" data-for="htmlwidget-a986e356eec87524a777">{"x":{"data":{"children":[{"name":"a","children":[{"name":"a1","size":10,"colname":"level2"},{"name":"a2","size":5,"colname":"level2"},{"name":"a3","size":2,"colname":"level2"}],"colname":"level1"},{"name":"b","children":[{"name":"b1","size":3,"colname":"level2"},{"name":"b2","size":8,"colname":"level2"},{"name":"b3","size":6,"colname":"level2"}],"colname":"level1"}],"name":"root"},"options":{"legendOrder":null,"colors":null,"valueField":"size","percent":true,"count":false,"explanation":null,"breadcrumb":[],"legend":false,"sortFunction":null,"sumNodes":true}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-5424d11f2ee2e273d3c6">{"x":{"data":{"children":[{"name":"a","children":[{"name":"a1","size":10,"colname":"level2"},{"name":"a2","size":5,"colname":"level2"},{"name":"a3","size":2,"colname":"level2"}],"colname":"level1"},{"name":"b","children":[{"name":"b1","size":3,"colname":"level2"},{"name":"b2","size":8,"colname":"level2"},{"name":"b3","size":6,"colname":"level2"}],"colname":"level1"}],"name":"root"},"options":{"legendOrder":null,"colors":null,"valueField":"size","percent":true,"count":false,"explanation":null,"breadcrumb":[],"legend":false,"sortFunction":null,"sumNodes":true}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
 <div id="d2b-sunburst" class="section level2">
 <h2><code>d2b</code> Sunburst</h2>
 <p>Kevin Warne has built an incredible sunburst in <code>d2b</code>, so I just had to add it to <code>sunburstR</code>. I think Kevin’s work definitely deserves a star on <a href="https://github.com/d2bjs">Github</a>, and with only 32, I encourage a quick detour to share the love.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">sb3 &lt;-<span class="st"> </span><span class="kw">sund2b</span>(tree, <span class="dt">width=</span><span class="st">&quot;100%&quot;</span>)</a>
-<a class="sourceLine" id="cb5-2" title="2"></a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="kw">div</span>(</a>
-<a class="sourceLine" id="cb5-4" title="4">  <span class="dt">style=</span><span class="st">&quot;display: flex; align-items:center;&quot;</span>,</a>
-<a class="sourceLine" id="cb5-5" title="5">  sb3</a>
-<a class="sourceLine" id="cb5-6" title="6">)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>sb3 &lt;-<span class="st"> </span><span class="kw">sund2b</span>(tree, <span class="dt">width=</span><span class="st">&quot;100%&quot;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="kw">div</span>(</span>
+<span id="cb5-4"><a href="#cb5-4"></a>  <span class="dt">style=</span><span class="st">&quot;display: flex; align-items:center;&quot;</span>,</span>
+<span id="cb5-5"><a href="#cb5-5"></a>  sb3</span>
+<span id="cb5-6"><a href="#cb5-6"></a>)</span></code></pre></div>
 <div style="display: flex; align-items:center;">
-<div id="htmlwidget-0749179dc084df73ed95" style="width:100%;height:500px;" class="sund2b html-widget"></div>
-<script type="application/json" data-for="htmlwidget-0749179dc084df73ed95">{"x":{"data":{"root":{"children":[{"name":"a","children":[{"name":"a1","size":10,"colname":"level2"},{"name":"a2","size":5,"colname":"level2"},{"name":"a3","size":2,"colname":"level2"}],"colname":"level1"},{"name":"b","children":[{"name":"b1","size":3,"colname":"level2"},{"name":"b2","size":8,"colname":"level2"},{"name":"b3","size":6,"colname":"level2"}],"colname":"level1"}],"name":"root"},"tooltip":null,"breadcrumbs":null},"options":{"colors":null,"valueField":"size","rootLabel":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-5c83ca5ef72396994877" style="width:100%;height:500px;" class="sund2b html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5c83ca5ef72396994877">{"x":{"data":{"root":{"children":[{"name":"a","children":[{"name":"a1","size":10,"colname":"level2"},{"name":"a2","size":5,"colname":"level2"},{"name":"a3","size":2,"colname":"level2"}],"colname":"level1"},{"name":"b","children":[{"name":"b1","size":3,"colname":"level2"},{"name":"b2","size":8,"colname":"level2"},{"name":"b3","size":6,"colname":"level2"}],"colname":"level1"}],"name":"root"},"tooltip":null,"breadcrumbs":null},"options":{"colors":null,"valueField":"size","rootLabel":null,"showLabels":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="sum-nodes" class="section level2">
@@ -12092,6 +12177,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>Feedback and ideas led to these changes and improvements. Please keep them coming.</p>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

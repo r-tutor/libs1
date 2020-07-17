@@ -1,9 +1,13 @@
+%->%                    Infix operator for composing a lambda
+                        expression
 checkpoint_directory    Set/Get Spark checkpoint directory
 compile_package_jars    Compile Scala sources into a Java Archive (jar)
 connection_config       Read configuration values for a connection
 copy_to.spark_connection
                         Copy an R Data Frame to Spark
 download_scalac         Downloads default Scala Compilers
+dplyr_hof               dplyr wrappers for Apache Spark higher order
+                        functions
 ensure                  Enforce Specific Structure for R Objects
 find_scalac             Discover the Scala Compiler
 ft_binarizer            Feature Transformation - Binarizer
@@ -69,8 +73,19 @@ ft_vector_indexer       Feature Transformation - VectorIndexer
 ft_vector_slicer        Feature Transformation - VectorSlicer
                         (Transformer)
 ft_word2vec             Feature Transformation - Word2Vec (Estimator)
+get_spark_sql_catalog_implementation
+                        Retrieve the Spark connection's SQL catalog
+                        implementation property
 hive_context_config     Runtime configuration interface for Hive
+hof_aggregate           Apply Aggregate Function to Array Column
+hof_exists              Determine Whether Some Element Exists in an
+                        Array Column
+hof_filter              Filter Array Column
+hof_transform           Transform Array Column
+hof_zip_with            Combines 2 Array Columns
 invoke                  Invoke a Method on a JVM Object
+list_sparklyr_jars      list all sparklyr-*.jar files that have been
+                        built
 livy_config             Create a Spark Configuration for Livy
 livy_service_start      Start Livy
 ml-params               Spark ML - ML Params
@@ -164,6 +179,7 @@ sdf_describe            Compute summary statistics for columns of a
                         data frame
 sdf_dim                 Support for Dimension Operations
 sdf_drop_duplicates     Remove duplicates from a Spark DataFrame
+sdf_from_avro           Convert column(s) from avro format
 sdf_is_streaming        Spark DataFrame is Streaming
 sdf_last_index          Returns the last index of a Spark DataFrame
 sdf_len                 Create DataFrame for Length
@@ -185,6 +201,7 @@ sdf_separate_column     Separate a Vector Column into Scalar Columns
 sdf_seq                 Create DataFrame for Range
 sdf_sort                Sort a Spark DataFrame
 sdf_sql                 Spark DataFrame from SQL
+sdf_to_avro             Convert column(s) to avro format
 sdf_with_sequential_id
                         Add a Sequential ID Column to a Spark DataFrame
 sdf_with_unique_id      Add a Unique ID Column to a Spark DataFrame
@@ -221,6 +238,9 @@ spark_jobj-class        spark_jobj class
 spark_load_table        Reads from a Spark Table into a Spark
                         DataFrame.
 spark_log               View Entries in the Spark Log
+spark_read              Read file(s) into a Spark DataFrame using a
+                        custom reader
+spark_read_avro         Read Apache Avro data into a Spark DataFrame.
 spark_read_csv          Read a CSV file into a Spark DataFrame
 spark_read_delta        Read from Delta Lake into a Spark DataFrame.
 spark_read_jdbc         Read from JDBC connection into a Spark
@@ -244,6 +264,10 @@ spark_version_from_home
                         Get the Spark Version Associated with a Spark
                         Installation
 spark_web               Open the Spark web interface
+spark_write             Write Spark DataFrame to file using a custom
+                        writer
+spark_write_avro        Serialize a Spark DataFrame into Apache Avro
+                        format
 spark_write_csv         Write a Spark DataFrame to a CSV
 spark_write_delta       Writes a Spark DataFrame into Delta Lake
 spark_write_jdbc        Writes a Spark DataFrame into a JDBC table
@@ -287,3 +311,5 @@ stream_write_text       Write Text Stream
 tbl_cache               Cache a Spark Table
 tbl_change_db           Use specific database
 tbl_uncache             Uncache a Spark Table
+transform_sdf           transform a subset of column(s) in a Spark
+                        Dataframe

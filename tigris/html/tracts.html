@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Download a Census tracts shapefile into R, and optionally...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for tracts {tigris}"><tr><td>tracts {tigris}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Download a Census tracts shapefile into R, and optionally subset by county</h2>
+
+<h3>Description</h3>
+
+<p>Description from the US Census Bureau (see link for source):
+Census Tracts are small, relatively permanent statistical subdivisions of
+a county or equivalent entity that are updated by local participants prior
+to each decennial census as part of the Census Bureau's Participant
+Statistical Areas Program. The Census Bureau delineates census tracts in
+situations where no local participant existed or where state, local, or
+tribal governments declined to participate. The primary purpose of census
+tracts is to provide a stable set of geographic units for the presentation
+of statistical data.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+tracts(state, county = NULL, cb = FALSE, year = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>state</code></td>
+<td>
+<p>The two-digit FIPS code (string) of the state you want. Can also
+be state name or state abbreviation.</p>
+</td></tr>
+<tr valign="top"><td><code>county</code></td>
+<td>
+<p>The three-digit FIPS code (string) of the county you'd like to
+subset for, or a vector of FIPS codes if you desire multiple counties.
+Can also be a county name or vector of names.</p>
+</td></tr>
+<tr valign="top"><td><code>cb</code></td>
+<td>
+<p>If cb is set to TRUE, download a generalized (1:500k)
+tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)</p>
+</td></tr>
+<tr valign="top"><td><code>year</code></td>
+<td>
+<p>defaults to 2019</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to be passed to the underlying 'load_tiger' function, which is not exported.
+Options include <code>class</code>, which can be set to <code>"sf"</code> (the default) or <code>"sp"</code> to
+request sf or sp class objects, and <code>refresh</code>, which specifies whether or
+not to re-download shapefiles (defaults to <code>FALSE</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Census tracts generally have a population size between 1,200 and 8,000 people,
+with an optimum size of 4,000 people. A census tract usually covers a
+contiguous area; however, the spatial size of census tracts varies widely
+depending on the density of settlement.Census tract boundaries are
+delineated with the intention of being maintained over a long time so that
+statistical comparisons can be made from census to census. Census tracts
+occasionally are split due to population growth or merged as a result of
+substantial population decline.
+</p>
+<p>Census tract boundaries generally follow visible and identifiable features.
+They may follow nonvisible legal boundaries, such as minor civil division
+(MCD) or incorporated place boundaries in some states and situations, to
+allow for census-tract-to-governmental-unit relationships where the
+governmental boundaries tend to remain unchanged between censuses.  State and
+county boundaries always are census tract boundaries in the standard census
+geographic hierarchy.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="https://www2.census.gov/geo/pdfs/reference/GARM/Ch10GARM.pdf">https://www2.census.gov/geo/pdfs/reference/GARM/Ch10GARM.pdf</a>
+</p>
+<p>Other general area functions: 
+<code><a href="block_groups.html">block_groups</a>()</code>,
+<code><a href="blocks.html">blocks</a>()</code>,
+<code><a href="counties.html">counties</a>()</code>,
+<code><a href="county_subdivisions.html">county_subdivisions</a>()</code>,
+<code><a href="places.html">places</a>()</code>,
+<code><a href="pumas.html">pumas</a>()</code>,
+<code><a href="school_districts.html">school_districts</a>()</code>,
+<code><a href="states.html">states</a>()</code>,
+<code><a href="zctas.html">zctas</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(tigris)
+library(leaflet)
+
+tarrant &lt;- tracts("TX", "Tarrant", cb = TRUE)
+
+leaflet(tarrant) %&gt;%
+  addTiles() %&gt;%
+  addPolygons(popup = ~NAME)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tigris</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

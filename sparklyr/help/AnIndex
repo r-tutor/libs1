@@ -1,3 +1,4 @@
+%->%	grapes-greater-than-grapes
 %>%	pipe
 augment	reexports
 augment.ml_model_aft_survival_regression	ml_survival_regression_tidiers
@@ -30,6 +31,7 @@ copy_to	copy_to
 copy_to.spark_connection	copy_to.spark_connection
 DBISparkResult-class	DBISparkResult-class
 download_scalac	download_scalac
+dplyr_hof	dplyr_hof
 ensure	ensure
 find_scalac	find_scalac
 ft_binarizer	ft_binarizer
@@ -71,6 +73,7 @@ ft_vector_assembler	ft_vector_assembler
 ft_vector_indexer	ft_vector_indexer
 ft_vector_slicer	ft_vector_slicer
 ft_word2vec	ft_word2vec
+get_spark_sql_catalog_implementation	get_spark_sql_catalog_implementation
 glance	reexports
 glance.ml_model_aft_survival_regression	ml_survival_regression_tidiers
 glance.ml_model_als	ml_als_tidiers
@@ -94,6 +97,11 @@ glance.ml_model_random_forest_classification	ml_tree_tidiers
 glance.ml_model_random_forest_regression	ml_tree_tidiers
 hive_context	spark-api
 hive_context_config	hive_context_config
+hof_aggregate	hof_aggregate
+hof_exists	hof_exists
+hof_filter	hof_filter
+hof_transform	hof_transform
+hof_zip_with	hof_zip_with
 invoke	invoke
 invoke_method	invoke_method
 invoke_new	invoke
@@ -103,6 +111,7 @@ is_ml_transformer	ml-transform-methods
 java_context	spark-api
 jobj_class	jobj_class
 jobj_set_param	jobj_set_param
+list_sparklyr_jars	list_sparklyr_jars
 livy_available_versions	livy_install
 livy_config	livy_config
 livy_home_dir	livy_install
@@ -147,6 +156,8 @@ ml_evaluate.ml_evaluator	ml_evaluate
 ml_evaluate.ml_generalized_linear_regression_model	ml_evaluate
 ml_evaluate.ml_linear_regression_model	ml_evaluate
 ml_evaluate.ml_logistic_regression_model	ml_evaluate
+ml_evaluate.ml_model_classification	ml_evaluate
+ml_evaluate.ml_model_clustering	ml_evaluate
 ml_evaluate.ml_model_generalized_linear_regression	ml_evaluate
 ml_evaluate.ml_model_linear_regression	ml_evaluate
 ml_evaluate.ml_model_logistic_regression	ml_evaluate
@@ -259,6 +270,7 @@ sdf_drop_duplicates	sdf_drop_duplicates
 sdf_fast_bind_cols	sdf_fast_bind_cols
 sdf_fit	sdf-transform-methods
 sdf_fit_and_transform	sdf-transform-methods
+sdf_from_avro	sdf_from_avro
 sdf_import	sdf_copy_to
 sdf_is_streaming	sdf_is_streaming
 sdf_last_index	sdf_last_index
@@ -289,6 +301,7 @@ sdf_separate_column	sdf_separate_column
 sdf_seq	sdf_seq
 sdf_sort	sdf_sort
 sdf_sql	sdf_sql
+sdf_to_avro	sdf_to_avro
 sdf_transform	sdf-transform-methods
 sdf_with_sequential_id	sdf_with_sequential_id
 sdf_with_unique_id	sdf_with_unique_id
@@ -336,6 +349,8 @@ spark_jobj-class	spark_jobj-class
 spark_load_table	spark_load_table
 spark_log	spark_log
 spark_pipeline_stage	spark_pipeline_stage
+spark_read	spark_read
+spark_read_avro	spark_read_avro
 spark_read_csv	spark_read_csv
 spark_read_delta	spark_read_delta
 spark_read_jdbc	spark_read_jdbc
@@ -357,6 +372,8 @@ spark_version	spark_version
 spark_versions	spark_versions
 spark_version_from_home	spark_version_from_home
 spark_web	spark_web
+spark_write	spark_write
+spark_write_avro	spark_write_avro
 spark_write_csv	spark_write_csv
 spark_write_delta	spark_write_delta
 spark_write_jdbc	spark_write_jdbc
@@ -419,4 +436,5 @@ tidy.ml_model_naive_bayes	ml_naive_bayes_tidiers
 tidy.ml_model_pca	ml_pca_tidiers
 tidy.ml_model_random_forest_classification	ml_tree_tidiers
 tidy.ml_model_random_forest_regression	ml_tree_tidiers
+transform_sdf	transform_sdf
 worker_spark_apply_unbundle	worker_spark_apply_unbundle

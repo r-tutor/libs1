@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Download a state legislative districts shapefile into R -...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for state_legislative_districts {tigris}"><tr><td>state_legislative_districts {tigris}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Download a state legislative districts shapefile into R - upper or lower</h2>
+
+<h3>Description</h3>
+
+<p>This function allows you to download boundaries for state legislatures into R.
+Generally, state legislatures are comprised of an &quot;upper&quot; house, which is
+typically referred to as the Senate, and a &quot;lower&quot; house, which is often (but
+not exclusively) referred to as the House.  The exception is Nebraska, which
+has a unicameral state legislature.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+state_legislative_districts(
+  state,
+  house = "upper",
+  cb = FALSE,
+  year = NULL,
+  ...
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>state</code></td>
+<td>
+<p>The two-digit FIPS code (string) of the state. Can also be state
+name or abbreviation (case-insensitive)</p>
+</td></tr>
+<tr valign="top"><td><code>house</code></td>
+<td>
+<p>Specify here whether you want boundaries for the <code>upper</code> or
+<code>lower</code> house.  Defaults to <code>upper</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>cb</code></td>
+<td>
+<p>If cb is set to TRUE, download a generalized (1:500k)
+cartographic boundary file.  Defaults to FALSE (the most detailed
+TIGER/Line file).</p>
+</td></tr>
+<tr valign="top"><td><code>year</code></td>
+<td>
+<p>the data year (defaults to 2017).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to be passed to the underlying 'load_tiger' function, which is not exported.
+Options include <code>class</code>, which can be set to <code>"sf"</code> (the default) or <code>"sp"</code> to
+request sf or sp class objects, and <code>refresh</code>, which specifies whether or
+not to re-download shapefiles (defaults to <code>FALSE</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><a href="https://www.census.gov/programs-surveys/geography/guidance/geo-areas/state-legis-dist.html">https://www.census.gov/programs-surveys/geography/guidance/geo-areas/state-legis-dist.html</a>
+</p>
+<p>Other legislative district functions: 
+<code><a href="congressional_districts.html">congressional_districts</a>()</code>,
+<code><a href="voting_districts.html">voting_districts</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(tigris)
+library(leaflet)
+
+leg &lt;- state_legislative_districts("Maine", "lower", cb = TRUE)
+
+leaflet(leg) %&gt;%
+  addProviderTiles("CartoDB.Positron") %&gt;%
+  addPolygons(fillColor = "white",
+              color = "black",
+              weight = 0.5)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tigris</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

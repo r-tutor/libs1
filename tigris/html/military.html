@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Download the Military Installation National Shapefile into R</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for military {tigris}"><tr><td>military {tigris}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Download the Military Installation National Shapefile into R</h2>
+
+<h3>Description</h3>
+
+<p>Description from the US Census Bureau: &quot;The Census Bureau includes landmarks
+such as military installations in the MAF/TIGER database for
+locating special features and to help enumerators during field operations. The Census Bureau adds
+landmark features to the database on an as-needed basis and does not attempt to ensure that all
+instances of a particular feature are included. For additional information about area landmarks, please
+see Section 3.12, Landmarks (Area and Point).&quot;
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+military(year = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>year</code></td>
+<td>
+<p>the data year (defaults to 2019).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to be passed to the underlying 'load_tiger' function, which is not exported.
+Options include <code>class</code>, which can be set to <code>"sf"</code> (the default) or <code>"sp"</code> to
+request sf or sp class objects, and <code>refresh</code>, which specifies whether or
+not to re-download shapefiles (defaults to <code>FALSE</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This file does not include the three point landmarks identified as military installation features in the
+MAF/TIGER database. These point landmarks are included in the point landmark shapefile.
+Although almost all military installations have assigned 8-character National Standard (GNIS) codes, the
+Census Bureau has not loaded most of this data into the MAF/TIGER database. The 2019 military
+shapefiles contain few values in the ANSICODE field.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc_Ch3.pdf">http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc_Ch3.pdf</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>tigris</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

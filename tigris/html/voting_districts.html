@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Download a voting districts shapefile (2012 TIGER/Line) into...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for voting_districts {tigris}"><tr><td>voting_districts {tigris}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Download a voting districts shapefile (2012 TIGER/Line) into R</h2>
+
+<h3>Description</h3>
+
+<p>This function allows you to download a voting districts boundary file into R.  The voting districts
+shapefile is found in the 2012 TIGER/Line dataset, and has not been updated since then. The Census Bureau (see link
+for source) describes voting districts as follows: &quot; 'Voting district' is the generic name for geographic
+entities such as precincts, wards, and election districts established by state and local governments for
+the purpose of conducting elections. States participating in the Census 2010 Redistricting Data Programs
+as part of Public Law 94-171 (1975) provided the Census Bureau with boundaries, codes, and names
+for their voting districts.&quot;
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+voting_districts(state, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>state</code></td>
+<td>
+<p>The state for which you'd like to retrieve data.  Can be a state name,
+state abbreviation, or FIPS code.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to be passed to the underlying 'load_tiger' function, which is not exported.
+Options include <code>class</code>, which can be set to <code>"sf"</code> (the default) or <code>"sp"</code> to
+request sf or sp class objects, and <code>refresh</code>, which specifies whether or
+not to re-download shapefiles (defaults to <code>FALSE</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p>Other legislative district functions: 
+<code><a href="congressional_districts.html">congressional_districts</a>()</code>,
+<code><a href="state_legislative_districts.html">state_legislative_districts</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: #'
+library(tigris)
+library(sp)
+
+ia &lt;- voting_districts("Iowa")
+
+plot(ia$geometry)
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tigris</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

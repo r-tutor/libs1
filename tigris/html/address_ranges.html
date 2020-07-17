@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Download an address range features shapefile into R</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for address_ranges {tigris}"><tr><td>address_ranges {tigris}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Download an address range features shapefile into R</h2>
+
+<h3>Description</h3>
+
+<p>Download an address range features shapefile into R
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+address_ranges(state, county, year = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>state</code></td>
+<td>
+<p>The two-digit FIPS code of the state of the county you'd like
+to download the roads for. Can also be state name or abbreviation
+(case-insensitive).</p>
+</td></tr>
+<tr valign="top"><td><code>county</code></td>
+<td>
+<p>The three-digit FIPS code of the county you'd like the roads for.
+Can also be a county name.</p>
+</td></tr>
+<tr valign="top"><td><code>year</code></td>
+<td>
+<p>the data year (defaults to 2019).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to be passed to the underlying 'load_tiger' function, which is not exported.
+Options include <code>class</code>, which can be set to <code>"sp"</code> (the default) or <code>"sf"</code> to
+request sp or sf class objects, and <code>refresh</code>, which specifies whether or
+not to re-download shapefiles (defaults to <code>FALSE</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><a href="http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf">http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf</a>
+</p>
+<p>Other transportation functions: 
+<code><a href="primary_roads.html">primary_roads</a>()</code>,
+<code><a href="primary_secondary_roads.html">primary_secondary_roads</a>()</code>,
+<code><a href="rails.html">rails</a>()</code>,
+<code><a href="roads.html">roads</a>()</code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>tigris</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

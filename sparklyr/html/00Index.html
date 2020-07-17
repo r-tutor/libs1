@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;sparklyr&rsquo; version 1.2.0</h2>
+</div><h2>Documentation for package &lsquo;sparklyr&rsquo; version 1.3.1</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 </ul>
@@ -35,6 +35,7 @@
 <a href="#R">R</a>
 <a href="#S">S</a>
 <a href="#T">T</a>
+<a href="#misc">misc</a>
 </p>
 
 
@@ -101,6 +102,8 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="download_scalac.html">download_scalac</a></td>
 <td>Downloads default Scala Compilers</td></tr>
+<tr><td style="width: 25%;"><a href="dplyr_hof.html">dplyr_hof</a></td>
+<td>dplyr wrappers for Apache Spark higher order functions</td></tr>
 </table>
 
 <h2><a name="E">-- E --</a></h2>
@@ -198,6 +201,8 @@
 <h2><a name="G">-- G --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="get_spark_sql_catalog_implementation.html">get_spark_sql_catalog_implementation</a></td>
+<td>Retrieve the Spark connection's SQL catalog implementation property</td></tr>
 <tr><td style="width: 25%;"><a href="ml_survival_regression_tidiers.html">glance.ml_model_aft_survival_regression</a></td>
 <td>Tidying methods for Spark ML Survival Regression</td></tr>
 <tr><td style="width: 25%;"><a href="ml_als_tidiers.html">glance.ml_model_als</a></td>
@@ -247,6 +252,16 @@
 <td>Access the Spark API</td></tr>
 <tr><td style="width: 25%;"><a href="hive_context_config.html">hive_context_config</a></td>
 <td>Runtime configuration interface for Hive</td></tr>
+<tr><td style="width: 25%;"><a href="hof_aggregate.html">hof_aggregate</a></td>
+<td>Apply Aggregate Function to Array Column</td></tr>
+<tr><td style="width: 25%;"><a href="hof_exists.html">hof_exists</a></td>
+<td>Determine Whether Some Element Exists in an Array Column</td></tr>
+<tr><td style="width: 25%;"><a href="hof_filter.html">hof_filter</a></td>
+<td>Filter Array Column</td></tr>
+<tr><td style="width: 25%;"><a href="hof_transform.html">hof_transform</a></td>
+<td>Transform Array Column</td></tr>
+<tr><td style="width: 25%;"><a href="hof_zip_with.html">hof_zip_with</a></td>
+<td>Combines 2 Array Columns</td></tr>
 </table>
 
 <h2><a name="I">-- I --</a></h2>
@@ -274,6 +289,8 @@
 <h2><a name="L">-- L --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="list_sparklyr_jars.html">list_sparklyr_jars</a></td>
+<td>list all sparklyr-*.jar files that have been built</td></tr>
 <tr><td style="width: 25%;"><a href="livy_config.html">livy_config</a></td>
 <td>Create a Spark Configuration for Livy</td></tr>
 <tr><td style="width: 25%;"><a href="livy_service.html">livy_service_start</a></td>
@@ -342,6 +359,10 @@
 <tr><td style="width: 25%;"><a href="ml_evaluate.html">ml_evaluate.ml_linear_regression_model</a></td>
 <td>Evaluate the Model on a Validation Set</td></tr>
 <tr><td style="width: 25%;"><a href="ml_evaluate.html">ml_evaluate.ml_logistic_regression_model</a></td>
+<td>Evaluate the Model on a Validation Set</td></tr>
+<tr><td style="width: 25%;"><a href="ml_evaluate.html">ml_evaluate.ml_model_classification</a></td>
+<td>Evaluate the Model on a Validation Set</td></tr>
+<tr><td style="width: 25%;"><a href="ml_evaluate.html">ml_evaluate.ml_model_clustering</a></td>
 <td>Evaluate the Model on a Validation Set</td></tr>
 <tr><td style="width: 25%;"><a href="ml_evaluate.html">ml_evaluate.ml_model_generalized_linear_regression</a></td>
 <td>Evaluate the Model on a Validation Set</td></tr>
@@ -544,6 +565,8 @@
 <td>Spark ML - Transform, fit, and predict methods (sdf_ interface)</td></tr>
 <tr><td style="width: 25%;"><a href="sdf-transform-methods.html">sdf_fit_and_transform</a></td>
 <td>Spark ML - Transform, fit, and predict methods (sdf_ interface)</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_from_avro.html">sdf_from_avro</a></td>
+<td>Convert column(s) from avro format</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_copy_to.html">sdf_import</a></td>
 <td>Copy an Object into Spark</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_is_streaming.html">sdf_is_streaming</a></td>
@@ -604,6 +627,8 @@
 <td>Sort a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_sql.html">sdf_sql</a></td>
 <td>Spark DataFrame from SQL</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_to_avro.html">sdf_to_avro</a></td>
+<td>Convert column(s) to avro format</td></tr>
 <tr><td style="width: 25%;"><a href="sdf-transform-methods.html">sdf_transform</a></td>
 <td>Spark ML - Transform, fit, and predict methods (sdf_ interface)</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_with_sequential_id.html">sdf_with_sequential_id</a></td>
@@ -670,6 +695,10 @@
 <td>Reads from a Spark Table into a Spark DataFrame.</td></tr>
 <tr><td style="width: 25%;"><a href="spark_log.html">spark_log</a></td>
 <td>View Entries in the Spark Log</td></tr>
+<tr><td style="width: 25%;"><a href="spark_read.html">spark_read</a></td>
+<td>Read file(s) into a Spark DataFrame using a custom reader</td></tr>
+<tr><td style="width: 25%;"><a href="spark_read_avro.html">spark_read_avro</a></td>
+<td>Read Apache Avro data into a Spark DataFrame.</td></tr>
 <tr><td style="width: 25%;"><a href="spark_read_csv.html">spark_read_csv</a></td>
 <td>Read a CSV file into a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="spark_read_delta.html">spark_read_delta</a></td>
@@ -708,6 +737,10 @@
 <td>Get the Spark Version Associated with a Spark Installation</td></tr>
 <tr><td style="width: 25%;"><a href="spark_web.html">spark_web</a></td>
 <td>Open the Spark web interface</td></tr>
+<tr><td style="width: 25%;"><a href="spark_write.html">spark_write</a></td>
+<td>Write Spark DataFrame to file using a custom writer</td></tr>
+<tr><td style="width: 25%;"><a href="spark_write_avro.html">spark_write_avro</a></td>
+<td>Serialize a Spark DataFrame into Apache Avro format</td></tr>
 <tr><td style="width: 25%;"><a href="spark_write_csv.html">spark_write_csv</a></td>
 <td>Write a Spark DataFrame to a CSV</td></tr>
 <tr><td style="width: 25%;"><a href="spark_write_delta.html">spark_write_delta</a></td>
@@ -835,5 +868,14 @@
 <td>Tidying methods for Spark ML tree models</td></tr>
 <tr><td style="width: 25%;"><a href="ml_tree_tidiers.html">tidy.ml_model_random_forest_regression</a></td>
 <td>Tidying methods for Spark ML tree models</td></tr>
+<tr><td style="width: 25%;"><a href="transform_sdf.html">transform_sdf</a></td>
+<td>transform a subset of column(s) in a Spark Dataframe</td></tr>
+</table>
+
+<h2><a name="misc">-- misc --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="grapes-greater-than-grapes.html">%-&gt;%</a></td>
+<td>Infix operator for composing a lambda expression</td></tr>
 </table>
 </body></html>

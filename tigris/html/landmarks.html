@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Download a point or area landmarks shapefile into R</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for landmarks {tigris}"><tr><td>landmarks {tigris}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Download a point or area landmarks shapefile into R</h2>
+
+<h3>Description</h3>
+
+<p>Description from the US Census Bureau:
+&quot;The Census Bureau includes landmarks in the MAF/TIGER database (MTDB) for locating special features
+and to help enumerators during field operations. Some of the more common landmark types include area
+landmarks such as airports, cemeteries, parks, and educational facilities and point landmarks such as
+schools and churches.&quot;
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+landmarks(state, type = "point", year = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>state</code></td>
+<td>
+<p>The state for which you'd like to download the landmarks</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>Whether you would like to download point landmarks (<code>"point"</code>) or area landmarks (<code>"area"</code>). #'                Defaults to <code>"point"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>year</code></td>
+<td>
+<p>the data year (defaults to 2019).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to be passed to the underlying 'load_tiger' function, which is not exported.
+Options include <code>class</code>, which can be set to <code>"sf"</code> (the default) or <code>"sp"</code> to
+request sf or sp class objects, and <code>refresh</code>, which specifies whether or
+not to re-download shapefiles (defaults to <code>FALSE</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The Census Bureau adds landmark features to the database on an as-needed basis and makes no
+attempt to ensure that all instances of a particular feature were included. The absence of a landmark
+such as a hospital or prison does not mean that the living quarters associated with that landmark were
+excluded from the 2010 Census enumeration. The landmarks were not used as the basis for building or
+maintaining the address list used to conduct the 2010 Census.
+</p>
+<p>Area landmark and area water features can overlap; for example, a park or other special land-use feature
+may include a lake or pond. In this case, the polygon covered by the lake or pond belongs to a water
+feature and a park landmark feature. Other kinds of landmarks can overlap as well. Area landmarks can
+contain point landmarks, but these features are not linked in the TIGER/Line Shapefiles.
+</p>
+<p>Landmarks may be identified by a MAF/TIGER feature class code only and may not have a name. Each
+landmark has a unique area landmark identifier (AREAID) or point landmark identifier (POINTID) value.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc_Ch3.pdf">https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc_Ch3.pdf</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>tigris</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>
