@@ -25,7 +25,9 @@ CRSargs	CRS-class
 deleteDataset	GDALDataset-class
 dim,GDALRasterBand-method	GDALRasterBand-class
 dim,GDALReadOnlyDataset-method	GDALReadOnlyDataset-class
+disable_proj_CDN	is_proj_CDN_enabled
 displayDataset	displayDataset
+enable_proj_CDN	is_proj_CDN_enabled
 GDAL.close	GDALReadOnlyDataset-class
 GDAL.open	GDALReadOnlyDataset-class
 GDALcall	wrappers
@@ -69,6 +71,7 @@ get_last_coordOp	spTransform-methods
 get_OVERRIDE_PROJ_DATUM_WITH_TOWGS84	GDALRasterBand-class
 get_P6_datum_hard_fail	showWKT
 get_PROJ6_warnings_count	showWKT
+get_proj_search_paths	is_proj_CDN_enabled
 get_rgdal_show_exportToProj4_warnings	showWKT
 get_thin_PROJ6_warnings	showWKT
 get_transform_wkt_comment	spTransform-methods
@@ -78,6 +81,7 @@ initialize,GDALDriver-method	GDALDriver-class
 initialize,GDALRasterBand-method	GDALRasterBand-class
 initialize,GDALReadOnlyDataset-method	GDALReadOnlyDataset-class
 initialize,GDALTransientDataset-method	GDALTransientDataset-class
+is_proj_CDN_enabled	is_proj_CDN_enabled
 list_coordOps	list_coordOps
 llgridlines	llgrid
 make_EPSG	make_EPSG
@@ -98,6 +102,7 @@ project	project
 projInfo	projInfo
 PROJis6ormore	projInfo
 projNAD	projInfo
+proj_CDN_user_writable_dir	is_proj_CDN_enabled
 putRasterData	GDALDataset-class
 rawTransform	wrappers
 readGDAL	readGDAL
@@ -111,6 +116,7 @@ setCPLConfigOption	GDALDriver-class
 set_enforce_xy	spTransform-methods
 set_OVERRIDE_PROJ_DATUM_WITH_TOWGS84	GDALRasterBand-class
 set_P6_datum_hard_fail	showWKT
+set_proj_search_paths	is_proj_CDN_enabled
 set_rgdal_show_exportToProj4_warnings	showWKT
 set_thin_PROJ6_warnings	showWKT
 set_transform_wkt_comment	spTransform-methods

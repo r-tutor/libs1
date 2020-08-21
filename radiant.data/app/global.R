@@ -37,6 +37,10 @@ if (isTRUE(getOption("radiant.sf_volumes", "") != "") ||
     if (!inherits(Dropbox, "try-error")) {
       sf_volumes <- c(sf_volumes, Dropbox = Dropbox)
     }
+    GoogleDrive <- try(radiant.data::find_gdrive(), silent = TRUE)
+    if (!inherits(GoogleDrive, "try-error")) {
+      sf_volumes <- c(sf_volumes, `Google Drive` = GoogleDrive)
+    }
     sf_volumes <- c(sf_volumes, shinyFiles::getVolumes()())
     options(radiant.sf_volumes = sf_volumes)
   }
@@ -259,7 +263,7 @@ get_zip_info <- function() {
   zip_util <- Sys.getenv("R_ZIPCMD", "zip")
   if (Sys.info()["sysname"] == "Windows") {
     wz <- suppressWarnings(system("where zip", intern = TRUE))
-    if (!grepl("zip", wz)) {
+    if (!isTRUE(grepl("zip", wz))) {
       wz <- suppressWarnings(system("where 7z", intern = TRUE))
       if (isTRUE(grepl("7z", wz))) {
         zip_util <- "7z"

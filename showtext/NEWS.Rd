@@ -1,6 +1,39 @@
 \name{NEWS}
 \title{News for Package "showtext"}
 
+\section{Changes in showtext version 0.9}{
+  \itemize{
+    \item Refactored internal code for cleaner organization of device data
+    \item Fixed the bug that device would not be properly restored by \code{showtext_end()}
+          if \code{showtext_begin()} was called more than once
+    \item \pkg{showtext} can now properly handle multiple graphics devices. For example,
+          the following code gives error in previous versions:
+          \preformatted{
+          library(showtext)
+
+          png("~/1.png")
+          showtext_begin()
+          
+          pdf("~/2.pdf")
+          showtext_begin()
+          showtext_end()
+          dev.off()
+          
+          showtext_end()  # gives error in previous version
+          dev.off()}
+          The situation above is not common in using \pkg{showtext}, but this version
+          has fixed this potential bug
+    \item \pkg{showtext} now supports replaying a recorded plot via \code{recordPlot()}
+          and \code{replayPlot()}, thanks to Carson Sievert
+          (\href{https://github.com/yixuan/showtext/pull/40}{#40},
+          \href{https://github.com/yixuan/showtext/pull/42}{#42})
+    \item As a consequence of the previous point, \pkg{showtext} now works well with
+          the RStudio graphics device
+          (\href{https://github.com/yixuan/showtext/issues/7}{#7},
+          \href{https://github.com/yixuan/showtext/issues/31}{#31})
+  }
+}
+
 \section{Changes in showtext version 0.8-1}{
   \itemize{
     \item Fixed a bug that the C function \code{showtext_cairo_device_bitmap()}

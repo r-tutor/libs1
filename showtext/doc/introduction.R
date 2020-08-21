@@ -11,8 +11,6 @@ font_add_google("Schoolbell", "bell")
 showtext_auto()
 
 set.seed(123)
-## Manually open a graphics device if you run this code in RStudio
-## x11()
 hist(rnorm(1000), breaks = 30, col = "steelblue", border = "white",
      main = "", xlab = "", ylab = "")
 title("Histogram of Normal Random Numbers", family = "bell", cex.main = 2)
