@@ -1,3 +1,29 @@
+# version 0.9-6
+
+* `gdal_utils` print (GDAL-style) progress bar if `quiet = FALSE` (except for `info` and `mdiminfo`)
+
+* fix `CPL_gdal_warper` for multi bands; https://github.com/r-spatial/stars/issues/320
+
+* `sf_proj_search_paths()` retrieves and sets the proj search path (if GDAL > 3.0.3)
+
+* when loading sf, `sf_use_s2` is set to `FALSE` unless environment variable `_SF_USE_S2` equals `true`
+
+* resolve GDAL/PROJ version vulnerabilities in CRS-crs conversion; #1479
+
+* `st_sample` gains an argument, `by_polygon`, to more clevery sample `MULTIPOLYGON` geometries; #1480
+
+* `st_sample` accepts non-integer sample sizes, with a (suppressable) warning and handles values of sizes that would round to zero; #1480
+
+* `gdal_utils` adds utils `mdiminfo` and `mdimtranslate` (requires GDAL >= 3.1)
+
+* `st_union` gains an argument `is_coverage`, which, when set to `TRUE`, leads to much faster unioning in case features form a coverage (polygons don't overlap); #1462 by Don Baston
+
+* fix `gdal_utils("translate")` locking input file; #1452
+
+* `st_make_grid` no longer selects cells intersecting with `x`; #1447
+
+* use `s2::s2_dwithin_matrix` in `st_is_within_distance`; #1367
+
 # version 0.9-5
 
 * Only when package `s2` >= 1.0.1 is available: support for spherical geometry operators (predicates, transformers, measures, nearest point/feature) for geographic coordinates in package `s2` is now by default switched off, and can be switched on by `sf_use_s2(TRUE)`; see https://www.r-spatial.org/r/2020/06/17/s2.html and vignette sf7. It is planned to be switched on by default in sf 1.0-0.

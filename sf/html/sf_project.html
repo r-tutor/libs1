@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: directly transform a set of coordinates</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sf_project {sf}"><tr><td>sf_project {sf}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>directly transform a set of coordinates</h2>
+
+<h3>Description</h3>
+
+<p>directly transform a set of coordinates
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sf_add_proj_units()
+
+sf_project(
+  from,
+  to,
+  pts,
+  keep = FALSE,
+  warn = TRUE,
+  authority_compliant = st_axis_order()
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>from</code></td>
+<td>
+<p>character description of source CRS, or object of class <code>crs</code></p>
+</td></tr>
+<tr valign="top"><td><code>to</code></td>
+<td>
+<p>character description of target CRS, or object of class <code>crs</code></p>
+</td></tr>
+<tr valign="top"><td><code>pts</code></td>
+<td>
+<p>two-column numeric matrix, or object that can be coerced into a matrix</p>
+</td></tr>
+<tr valign="top"><td><code>keep</code></td>
+<td>
+<p>logical value controlling the handling of unprojectable points. If
+'keep' is 'TRUE', then such points will yield 'Inf' or '-Inf' in the
+return value; otherwise an error is reported and nothing is returned.</p>
+</td></tr>
+<tr valign="top"><td><code>warn</code></td>
+<td>
+<p>logical; if <code>TRUE</code>, warn when non-finite values are generated</p>
+</td></tr>
+<tr valign="top"><td><code>authority_compliant</code></td>
+<td>
+<p>logical; <code>TRUE</code> means handle axis order authority compliant (e.g. EPSG:4326 implying x=lat, y=lon), <code>FALSE</code> means use visualisation order (i.e. always x=lon, y=lat)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>sf_add_proj_units</code> loads the PROJ units 'link', 'us_in', 'ind_yd', 'ind_ft', and 'ind_ch' into the udunits database, and returns <code>TRUE</code> invisibly on success.
+</p>
+
+
+<h3>Value</h3>
+
+<p>two-column numeric matrix with transformed/converted coordinates, returning invalid values as <code>Inf</code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sf</em> version 0.9-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

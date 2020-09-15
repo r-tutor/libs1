@@ -791,7 +791,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="sharla-gelfands-discography" class="section level2">
 <h2>Sharla Gelfand’s discography</h2>
-<p>We’ll finish off with the most complex list, from <a href="https://sharla.party/posts/discog-purrr/">Sharla Gelfand’s</a> discography. We’ll start the usual way: putting the list into a single column data frame, and then widening so each component is a column. I also parse the <code>date_added</code> column into a real date-time<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
+<p>We’ll finish off with the most complex list, from <a href="https://sharla.party/post/discog-purrr/">Sharla Gelfand’s</a> discography. We’ll start the usual way: putting the list into a single column data frame, and then widening so each component is a column. I also parse the <code>date_added</code> column into a real date-time<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>discs &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">disc =</span> discog) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb28-2"><a href="#cb28-2"></a><span class="st">  </span><span class="kw">unnest_wider</span>(disc) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb28-3"><a href="#cb28-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">date_added =</span> <span class="kw">as.POSIXct</span>(<span class="kw">strptime</span>(date_added, <span class="st">&quot;%Y-%m-%dT%H:%M:%S&quot;</span>))) </span>
@@ -831,7 +831,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb30-16"><a href="#cb30-16"></a><span class="co">#&gt; #   id...14 &lt;int&gt;, rating &lt;int&gt;</span></span></code></pre></div>
 <p>The problem is that <code>basic_information</code> repeats the <code>id</code> column that’s also stored at the top-level, so we can just drop that:</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>discs <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb31-2"><a href="#cb31-2"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>id) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb31-2"><a href="#cb31-2"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">!</span>id) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb31-3"><a href="#cb31-3"></a><span class="st">  </span><span class="kw">unnest_wider</span>(basic_information)</span>
 <span id="cb31-4"><a href="#cb31-4"></a><span class="co">#&gt; # A tibble: 155 x 14</span></span>
 <span id="cb31-5"><a href="#cb31-5"></a><span class="co">#&gt;   instance_id date_added          labels  year artists     id thumb title</span></span>

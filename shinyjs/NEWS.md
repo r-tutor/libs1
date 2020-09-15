@@ -1,6 +1,17 @@
-# shinyjs 1.1
+# shinyjs 2.0.0 (2020-08-24)
 
-2020-01-12
+- **IMPORTANT CHANGE** Remove commercial license (it only existed because some big companies asked for it, but it ended up being a bigger headache for 99% of the community)
+- **BREAKING CHANGE** When using `extendShinyjs()`, the `functions` parameter must always be provided.
+- **BREAKING CHANGE** When using `extendShinyjs()`, the `script` path parameter now behaves like any other Shiny web resource, which means it cannot be loaded from the local file system. The path must be discoverable by the browser, so it either needs to be a public URL, inside a `www` folder, or available via `addResourcePath()`.
+- New feature: add a `refresh()` function (#205)
+- New feature: add `asis` parameter to `reset()` function, which works like it does in all other functions that support `asis` (#146)
+- Fix bug: `extendShinyjs()` now works with any web URL or any resource path (#201)
+- Fix bug: `reset()` didn't work when a sliderInput was initialized with `value=NULL` (#207)
+- Remove `V8` as a package dependency.
+
+# shinyjs 1.1 (2020-01-12)
+
+This update was 2 years in the making because it required a lot of testing by users to ensure none of these features cause any regression bugs in real apps.
 
 - **BREAKING CHANGE** The `includeShinyjs` parameter in `runcodeUI()` is now deprecated
 - Fix bug: shinyjs functions used inside a module with a `selector` argument instead of an `id` argument didn't work (#175)
@@ -15,9 +26,7 @@
 - Documentation: added documentation about `useShinyjs()` side effects and about including `shinyjs` in packages (#182)
 
 
-# shinyjs 1.0
-
-2018-01-08
+# shinyjs 1.0 (2018-01-08)
 
 - **BREAKING CHANGE** shiny version 1.0.0 is now required
 - **BREAKING CHANGE** All `colourInput`-related functions are now defunct because they are now in the `colourpicker` package
@@ -41,7 +50,7 @@
 - fixed textArea inputs not getting disabled when disabling a parent element
 - add `showElement()`/`hideElement()`/`toggleElement()` and `addCssClass` etc functions as synonyms for functions that are masked by S4 (compromise for #81)
 - fixed broken `runExample("sandbox")` example
-- added a website for shinyjs: http://deanattali.com/shinyjs
+- added a website for shinyjs: https://deanattali.com/shinyjs/
 
 # shinyjs 0.8
 
@@ -264,7 +273,7 @@ be targeted in batch
 
 2015-06-22
 
-- added a demo app using `colourInput` that's available via `runExample` and [on my shiny server](http://daattali.com/shiny/colourInput/)
+- added a demo app using `colourInput` that's available via `runExample` and [on my shiny server](https://daattali.com/shiny/colourInput/)
 - add a transparency option to `colourInput`
 - complete refactor of `colourInput` using a better library that I modified to work well with shiny inputs
 - including multiple `useShinyjs()` or `extendShinyjs()` will not result in duplicated HTML anymore. This can be useful if the UI is including a few external UI pieces and they independently make a call to `useShinyjs()`.

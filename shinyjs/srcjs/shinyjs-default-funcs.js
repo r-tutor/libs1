@@ -1,4 +1,4 @@
-// shinyjs 1.0.1.9000 by Dean Attali
+// shinyjs 2.0.0 by Dean Attali
 // Perform common JavaScript operations in Shiny apps using plain R code
 
 shinyjs = function() {
@@ -322,7 +322,9 @@ shinyjs = function() {
         else if (input.children(".js-range-slider").length > 0) {
           input = input.children(".js-range-slider");
           inputType = "Slider";
-          inputValue = input.attr('data-from');
+          if (typeof input.attr('data-from') !== "undefined") {
+            inputValue = input.attr('data-from');
+          }
           if (typeof input.attr('data-to') !== "undefined") {
             inputValue = inputValue + "," + input.attr('data-to');
           }
@@ -805,6 +807,16 @@ shinyjs = function() {
       var $el = _getElements(params);
       if ($el === null) return;
       $el[0].click();
+    },
+    
+    // refresh the page
+    refresh : function(params) {
+      var defaultParams = {
+        id : null
+      };
+      params = shinyjs.getParams(params, defaultParams);
+      
+      window.location.reload(false);
     }
   };
 }();
@@ -825,7 +837,12 @@ ShinySenderQueue.prototype.send = function(name, value) {
     self.timer = null;
     if (self.queue.length) {
       var msg = self.queue.shift();
-      Shiny.onInputChange(msg.name, msg.value);
+      if (typeof Shiny === 'object' && typeof Shiny.compareVersion === 'function' &&
+          Shiny.compareVersion(Shiny.version, '>=', '1.1.0')) {
+        Shiny.setInputValue(msg.name, msg.value, {priority: "event"});
+      } else {
+        Shiny.onInputChange(msg.name, msg.value);
+      }
       self.timer = setTimeout(go, 0);
     } else {
       self.readyToSend = true;
@@ -833,7 +850,12 @@ ShinySenderQueue.prototype.send = function(name, value) {
   }
   if (this.readyToSend) {
     this.readyToSend = false;
-    Shiny.onInputChange(name, value);
+    if (typeof Shiny === 'object' && typeof Shiny.compareVersion === 'function' &&
+        Shiny.compareVersion(Shiny.version, '>=', '1.1.0')) {
+      Shiny.setInputValue(name, value, {priority: "event"});
+    } else {
+      Shiny.onInputChange(name, value);
+    }
     this.timer = setTimeout(go, 0);
   } else {
     this.queue.push({name: name, value: value});
