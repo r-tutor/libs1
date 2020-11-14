@@ -1,3 +1,23 @@
+rticles 0.17
+---------------------------------------------------------------------
+
+- Fixes `arxiv_article()` template when adding graphics from code chunks (thanks, @Athanasiamo, #332).
+
+- Fixes `ams_article()` template regarding authors insertion (thanks, @ConorIA, #340).
+
+- Update Copernicus Publications template to version 6.0 and sanitize and issue that caused `pdftex` from hanging (thanks, @RLumSK, #331).
+
+- Add `CSLReferences` environment to support new Pandoc 2.11 citation processing (#335).
+
+- Add article template `lipics_article()` for *Leibniz International Proceedings in Informatics* (LIPIcs) (thanks, @nuest, #288).
+
+rticles 0.16
+---------------------------------------------------------------------
+
+- Fixed `ctex_article()` to correctly use the default Pandoc template as intended in the PR #307, which introduced the bug #322 (thanks, @baketbek @cderv #323).
+
+- The minimal version of **knitr** required is 1.30 now.
+
 rticles 0.15
 ---------------------------------------------------------------------
 

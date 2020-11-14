@@ -1,3 +1,14 @@
+# patchwork 1.1.0
+
+* Add `inset_element()` to allow adding plots as insets
+* patchwork now supports `raster` and `nativeRaster` objects
+* Avoid incrementing tag counter when recursing into a nested plot without 
+  additional tags to use (#147)
+* Fix bug that prevented strips turned off with `element_blank()` from working 
+  (#200)
+* Add option to supply a custom sequence of tags to use for auto-tagging (#211, 
+  #63)
+
 # patchwork 1.0.1
 
 * Renaming of `align_plots()` to `align_patches()` to avoid namespace clash

@@ -1,4 +1,47 @@
 
+# cli 2.1.0
+
+* New `cli_vec()` function to allow easier formatting of collapsed
+  vectors. It is now also possible to use styling to set the collapsing
+  parameters (#129).
+
+* New `pluralize()` function to perform pluralization without generating
+  cli output (#155).
+
+* `console_width()` works better now in RStudio, and also in terminals.
+
+* Styling of verbatim text work properly now (#147, @tzakharko).
+
+* Messages (ie. `message` conditions) coming from cli now have the
+  `cliMessage` class, so you can easily suppress them without suppressing
+  other messages (#156).
+
+* cli prints the output to `stderr()` now, if there is an output or
+  message sink. This is to make interactive and non-interactive sessions
+  consistent (#153).
+
+* Pluralization works corrently now if the last alternative is the
+  empty string (#158).
+
+* cli now caches the result of the dark background detection in iTerm on
+  macOS. Reload cli to delete the cache (#131).
+
+* The `is_dynamic_tty()`, `is_ansi_tty()` and `ansi_hide_cursor()` and
+  releted functions now default to the `"auto"` stream, which is
+  automatically selected to be either `stdout()` or `stderr()`.
+  See the manual for details (#144).
+
+* The default theme now quotes file names, paths, email addresses if they
+  don't start or end with an alphanumeric character or a slash. This is
+  to make it easier to spot names that start or end with a space (#167).
+
+* `make_spinner()` clears the line properly now (@tzakharko, #164).
+
+* Semantic cli functions now automatically replace Unicode non-breaking
+  space characters (`\u00a0`) with regular space characters, right before
+  output. They are still used to calculate the line breaks, but not
+  outputted (#161).
+
 # cli 2.0.2
 
 * The status bar now does not simplify multiple spaces by a single space.

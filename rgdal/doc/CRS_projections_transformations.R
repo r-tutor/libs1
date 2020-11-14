@@ -21,7 +21,7 @@ knitr::include_graphics(system.file("misc/meuse.png", package="rgdal"))
 
 ## ---- echo=FALSE--------------------------------------------------------------
 odd_run <- FALSE
-if (PROJis6ormore() && GDALis3ormore()) odd_run <- TRUE
+if (new_proj_and_gdal()) odd_run <- TRUE
 
 ## ---- eval=odd_run------------------------------------------------------------
 ellps <- projInfo("ellps")
@@ -50,7 +50,10 @@ db <- dbConnect(SQLite(), dbname=file.path(shpr[length(shpr)], "proj.db"))
 dbListTables(db)
 
 ## ---- eval=run && odd_run-----------------------------------------------------
-dbReadTable(db, "metadata")
+(metadata <- dbReadTable(db, "metadata"))
+
+## ---- warning=TRUE, eval=odd_run----------------------------------------------
+cat(wkt(CRS(SRS_string="OGC:CRS84")), "\n")
 
 ## ---- warning=TRUE, eval=odd_run----------------------------------------------
 b_pump <- readOGR(system.file("vectors/b_pump.gpkg", package="rgdal"))
@@ -68,30 +71,32 @@ cat(WKT, "\n")
 
 ## ---- eval=run && odd_run-----------------------------------------------------
 cov <- dbReadTable(db, "coordinate_operation_view")
-cov[grep("OSGB", cov$name), c(1, 3, 4, 9, 16)]
+cov[grep("OSGB", cov$name), c("table_name", "code", "name", "method_name", "accuracy")]
 
 ## ---- eval=odd_run------------------------------------------------------------
 list_coordOps(paste0(proj4string(b_pump), " +type=crs"), "EPSG:4326")
 
 ## ---- eval=odd_run------------------------------------------------------------
+set_enforce_xy(FALSE)
+list_coordOps(paste0(proj4string(b_pump), " +type=crs"), "EPSG:4326")
+set_enforce_xy(TRUE)
+
+## ---- eval=odd_run------------------------------------------------------------
 set_transform_wkt_comment(FALSE)
-isballpark <- spTransform(b_pump, CRS(SRS_string="EPSG:4326"))
+isballpark <- spTransform(b_pump, CRS(SRS_string="OGC:CRS84"))
 get_last_coordOp()
 
 ## ---- eval=odd_run------------------------------------------------------------
 print(coordinates(isballpark), digits=10)
 
-## ---- eval=odd_run------------------------------------------------------------
-list_coordOps(WKT, "EPSG:4326")
-
 ## ---- eval=run && odd_run-----------------------------------------------------
 helm <- dbReadTable(db, "helmert_transformation_table")
-helm[helm$code == "1314",c(1:3, 15:17, 20:22, 25)]
+helm[helm$code == "1314", c("auth_name", "code", "name", "tx", "ty", "tz", "rx", "ry", "rz", "scale_difference")]
 dbDisconnect(db)
 
 ## ---- eval=odd_run------------------------------------------------------------
 set_transform_wkt_comment(TRUE)
-is2m <- spTransform(b_pump, CRS(SRS_string="EPSG:4326"))
+is2m <- spTransform(b_pump, CRS(SRS_string="OGC:CRS84"))
 get_last_coordOp()
 
 ## ---- eval=odd_run------------------------------------------------------------
@@ -115,6 +120,9 @@ c(maptools::gzAzimuth(coordinates(isballpark), coordinates(is2m)))
 all.equal(a, b)
 c(spDists(coordinates(isballpark), a)*1000)
 
+## ---- eval=odd_run------------------------------------------------------------
+list_coordOps(WKT, "OGC:CRS84")
+
 ## ---- eval=run && odd_run-----------------------------------------------------
 if (is.projected(b_pump)) { 
   o <- project(t(unclass(bbox(b_pump))), wkt(b_pump), inv=TRUE)
@@ -124,10 +132,10 @@ if (is.projected(b_pump)) {
 (aoi <- c(t(o + c(-0.1, +0.1))))
 
 ## ---- eval=run && odd_run-----------------------------------------------------
-nrow(list_coordOps(WKT, "EPSG:4326", area_of_interest=aoi))
+nrow(list_coordOps(WKT, "OGC:CRS84", area_of_interest=aoi))
 
 ## ---- eval=run && odd_run-----------------------------------------------------
-nrow(list_coordOps(WKT, "EPSG:4326", strict_containment=TRUE, area_of_interest=aoi))
+nrow(list_coordOps(WKT, "OGC:CRS84", strict_containment=TRUE, area_of_interest=aoi))
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  td <- tempfile()
@@ -150,10 +158,10 @@ shpr[1]
 try(file.size(file.path(shpr[1], "cache.db")))
 
 ## ---- eval=run && odd_run-----------------------------------------------------
-list_coordOps(WKT, "EPSG:4326", area_of_interest=aoi)
+list_coordOps(WKT, "OGC:CRS84", area_of_interest=aoi)
 
 ## ---- eval=run && odd_run-----------------------------------------------------
-system.time(is1m <- spTransform(b_pump, CRS(SRS_string="EPSG:4326")))
+system.time(is1m <- spTransform(b_pump, CRS(SRS_string="OGC:CRS84")))
 
 ## ---- eval=run && odd_run-----------------------------------------------------
 get_last_coordOp()
@@ -188,4 +196,27 @@ is_proj_CDN_enabled()
 
 ## -----------------------------------------------------------------------------
 knitr::include_graphics(system.file("misc/snow.png", package="rgdal"))
+
+## ---- eval=odd_run------------------------------------------------------------
+# library(CARBayesdata)
+library(sp)
+# data(GGHB.IG)
+# orig <- slot(GGHB.IG, "proj4string")
+(load(system.file("misc/GGHB.IG_CRS.rda", package="rgdal")))
+orig
+
+## ---- eval=odd_run, warning=FALSE---------------------------------------------
+sp_version_ok <- length(grep("get_source_if_boundcrs", deparse(args(sp::CRS)))) > 0L
+
+## ---- eval=odd_run && sp_version_ok, warning=FALSE----------------------------
+orig1 <- CRS(slot(orig, "projargs"), get_source_if_boundcrs=FALSE)
+cat(wkt(orig1), "\n")
+
+## ---- eval=odd_run, warning=FALSE---------------------------------------------
+orig1a <- CRS(slot(orig, "projargs"))
+cat(wkt(orig1a), "\n")
+
+## ---- eval=odd_run, warning=FALSE---------------------------------------------
+orig1b <- rebuild_CRS(orig)
+cat(wkt(orig1b), "\n")
 

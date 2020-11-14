@@ -9,6 +9,7 @@ download_scalac         Downloads default Scala Compilers
 dplyr_hof               dplyr wrappers for Apache Spark higher order
                         functions
 ensure                  Enforce Specific Structure for R Objects
+fill                    Fill
 find_scalac             Discover the Scala Compiler
 ft_binarizer            Feature Transformation - Binarizer
                         (Transformer)
@@ -57,6 +58,8 @@ ft_quantile_discretizer
 ft_r_formula            Feature Transformation - RFormula (Estimator)
 ft_regex_tokenizer      Feature Transformation - RegexTokenizer
                         (Transformer)
+ft_robust_scaler        Feature Transformation - RobustScaler
+                        (Estimator)
 ft_sql_transformer      Feature Transformation - SQLTransformer
 ft_standard_scaler      Feature Transformation - StandardScaler
                         (Estimator)
@@ -73,17 +76,28 @@ ft_vector_indexer       Feature Transformation - VectorIndexer
 ft_vector_slicer        Feature Transformation - VectorSlicer
                         (Transformer)
 ft_word2vec             Feature Transformation - Word2Vec (Estimator)
+full_join               Full join
 get_spark_sql_catalog_implementation
                         Retrieve the Spark connection's SQL catalog
                         implementation property
 hive_context_config     Runtime configuration interface for Hive
 hof_aggregate           Apply Aggregate Function to Array Column
+hof_array_sort          Sorts array using a custom comparator
 hof_exists              Determine Whether Some Element Exists in an
                         Array Column
 hof_filter              Filter Array Column
+hof_forall              Checks whether all elements in an array satisfy
+                        a predicate
+hof_map_filter          Filters a map
+hof_map_zip_with        Merges two maps into one
 hof_transform           Transform Array Column
+hof_transform_keys      Transforms keys of a map
+hof_transform_values    Transforms values of a map
 hof_zip_with            Combines 2 Array Columns
+inner_join              Inner join
 invoke                  Invoke a Method on a JVM Object
+join.tbl_spark          Join Spark tbls.
+left_join               Left join
 list_sparklyr_jars      list all sparklyr-*.jar files that have been
                         built
 livy_config             Create a Spark Configuration for Livy
@@ -157,11 +171,15 @@ ml_unsupervised_tidiers
                         Tidying methods for Spark ML unsupervised
                         models
 na.replace              Replace Missing Values in Objects
+nest                    Nest
+pivot_longer            Pivot longer
+pivot_wider             Pivot wider
 random_string           Random string generation
 reactiveSpark           Reactive spark reader
 registerDoSpark         Register a Prallel Backend
 register_extension      Register a Package that Implements a Spark
                         Extension
+right_join              Right join
 sdf-saveload            Save / Load a Spark DataFrame
 sdf-transform-methods   Spark ML - Transform, fit, and predict methods
                         (sdf_ interface)
@@ -202,9 +220,12 @@ sdf_seq                 Create DataFrame for Range
 sdf_sort                Sort a Spark DataFrame
 sdf_sql                 Spark DataFrame from SQL
 sdf_to_avro             Convert column(s) to avro format
+sdf_weighted_sample     Perform Weighted Random Sampling on a Spark
+                        DataFrame
 sdf_with_sequential_id
                         Add a Sequential ID Column to a Spark DataFrame
 sdf_with_unique_id      Add a Unique ID Column to a Spark DataFrame
+separate                Separate
 spark-api               Access the Spark API
 spark-connections       Manage Spark Connections
 spark_apply             Apply an R Function in Spark
@@ -313,3 +334,5 @@ tbl_change_db           Use specific database
 tbl_uncache             Uncache a Spark Table
 transform_sdf           transform a subset of column(s) in a Spark
                         Dataframe
+unite                   Unite
+unnest                  Unnest

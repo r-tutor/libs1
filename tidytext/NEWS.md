@@ -1,3 +1,8 @@
+# tidytext 0.2.6
+
+* Move one vignette to pkgdown site, because of dependency removal
+* Move all CI from Travis to GH actions
+
 # tidytext 0.2.5
 
 * `reorder_within()` now handles multiple variables, thanks to @tmastny (#170)
@@ -71,7 +76,7 @@
 # tidytext 0.1.4
 
 * Fix tidier for quanteda dictionary for correct class (#71).
-* Add a [pkgdown site](https://juliasilge.github.io/tidytext).
+* Add a [pkgdown site](https://juliasilge.github.io/tidytext/).
 * Convert NSE from underscored function to tidyeval (`unnest_tokens`, `bind_tf_idf`, all sparse casters) (#67, #74).
 * Added tidiers for topic models from the `stm` package (#51).
 

@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Print BibLaTeX bibliography Entries</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for print.BibEntry {RefManageR}"><tr><td>print.BibEntry {RefManageR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Print BibLaTeX bibliography Entries</h2>
+
+<h3>Description</h3>
+
+<p>Prints bibliographic information stored in BibEntry objects in BibLaTeX style
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'BibEntry'
+print(x, .opts = list(), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a BibEntry object</p>
+</td></tr>
+<tr valign="top"><td><code>.opts</code></td>
+<td>
+<p>a list of formatting options from <code><a href="BibOptions.html">BibOptions</a></code>.  Possible
+options are
+</p>
+
+<ul>
+<li> <p><code>style</code> - character string naming the printing style.  Possible
+values are plain text (style &ldquo;text&rdquo;), BibTeX (&ldquo;Bibtex&rdquo;), BibLaTeX
+(&ldquo;Biblatex&rdquo;), a mixture of plain text and BibTeX as
+traditionally used for citations (&ldquo;citation&rdquo;), HTML (&ldquo;html&rdquo;),
+LaTeX (&ldquo;latex&rdquo;), &ldquo;markdown&rdquo;, &ldquo;yaml&rdquo;,
+R code (&ldquo;R&rdquo;), and a simple copy of the textVersion elements
+(style &ldquo;textVersion&rdquo;, see <code><a href="BibEntry.html">BibEntry</a></code>)
+</p>
+</li>
+<li> <p><code>bib.style</code> - character string specifying BibLaTeX style to use for
+formatting references.  Possible values are &ldquo;numeric&rdquo; (default),
+&ldquo;authoryear&rdquo;, &ldquo;authortitle&rdquo;, &ldquo;alphabetic&rdquo;, &ldquo;draft&rdquo;.
+See section 3.3.2 of the BibLaTeX manual.
+</p>
+</li>
+<li> <p><code>sorting</code> - how should the entries in <code>x</code> be sorted?  See
+<code><a href="sort.BibEntry.html">sort.BibEntry</a></code>.
+</p>
+</li>
+<li> <p><code>max.names</code> - maximum number of names to display for name list fields before
+truncation with &ldquo;et al.&rdquo;.
+</p>
+</li>
+<li> <p><code>first.inits</code> - logical; if true only initials of given names are printed,
+otherwise full names are used.
+</p>
+</li>
+<li> <p><code>dashed</code> - logical; for <code>.bibstyle = "authoryear"</code> or
+<code>.bibstyle = "authoryear"</code> only,
+if <code>TRUE</code> duplicate author and editor lists are replaced with &ldquo;&mdash;&rdquo;
+when printed.
+</p>
+</li>
+<li> <p><code>no.print.fields</code> character vector; fields that should not be printed,
+e.g., doi, url, isbn, etc.
+</p>
+</li></ul>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>extra parameters to pass to the renderer.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>setting max.names to <code>value</code> is equivalent to setting <code>maxnames=value</code> and
+<code>minnames=value</code> in BibLaTeX.
+</p>
+<p>Custom BibLaTeX styles may be defined using the function <code><a href="../../tools/html/bibstyle.html">bibstyle</a></code>.  To fully
+support BibLaTeX, the created
+environment must have functions for formatting each of the entry types described in
+<code><a href="BibEntry.html">BibEntry</a></code>.
+</p>
+
+
+<h3>References</h3>
+
+<p>Lehman, Philipp and Kime, Philip and Boruvka, Audrey and Wright, J. (2013). The
+biblatex Package.
+<a href="https://mirror.pregi.net/tex-archive/macros/latex/contrib/biblatex/doc/biblatex.pdf">https://mirror.pregi.net/tex-archive/macros/latex/contrib/biblatex/doc/biblatex.pdf</a>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="BibEntry.html">BibEntry</a></code>, <code><a href="ReadBib.html">ReadBib</a></code>, <code><a href="sort.BibEntry.html">sort.BibEntry</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (requireNamespace("bibtex")) {
+    file.name &lt;- system.file("Bib", "biblatexExamples.bib", package="RefManageR")
+    bib &lt;- suppressMessages(ReadBib(file.name))
+    print(bib[author="aristotle"], .opts = list(bib.style = "numeric"))
+    print(bib[55:57], .opts = list(bib.style = "authortitle", first.inits = FALSE))
+    print(bib[80:88], .opts = list(bib.style = "alphabetic", max.names = 1,
+          no.print.fields = "issn"))
+    print(bib[32:36], .opts = list(bib.style = "draft"))
+    oldopts &lt;- BibOptions(bib.style = "authoryear", dashed = TRUE, sorting = "ydnt")
+    bib[editor = "westfahl"]
+    BibOptions(oldopts)
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RefManageR</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

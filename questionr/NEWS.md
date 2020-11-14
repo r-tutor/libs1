@@ -1,8 +1,19 @@
+questionr 0.7.3
+---------------
+
+* Remove `dplyr::recode` method from `irec` as it is in questioning lifecycle
+* Fix `forcats` and `dplyr` detection in `irec` (thanks @matthias-studer)
+* Fix R.cache blocking message in `irec`, `icut` or `iorder` (thanks @matthias-studer)
+* Fix name conflicts when `irec`, `icut` or `iorder` are called with a data frame with the same name as a function (113, thanks @nalimilan)
+* Sort level names in `irec` and `iorder` instead of relying on `unique` (thanks @nalimilan)
+
+
 questionr 0.7.2
 ---------------
 
 * `look_for()` and `lookfor()` are now simply imported and reexported 
   from `labelled` (#111, @larmarange)
+
 
 questionr 0.7.1
 ---------------

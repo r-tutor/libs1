@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Retrieve PubMed ID's for a BibEntry object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for LookupPubMedID {RefManageR}"><tr><td>LookupPubMedID {RefManageR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Retrieve PubMed ID's for a BibEntry object</h2>
+
+<h3>Description</h3>
+
+<p>Uses the NCBI E-utilities to to search for PubMed ID's for citations
+stored in a BibEntry object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+LookupPubMedID(bib, index)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>bib</code></td>
+<td>
+<p>a bibentry object</p>
+</td></tr>
+<tr valign="top"><td><code>index</code></td>
+<td>
+<p>indices specifying which entries of <code>bib</code> will be
+searched for.  If <code>missing</code>, all entries
+are searched for.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For each entry a citation string is created using the fields
+journaltitle/journal, date/year,
+volume, pages, and author; and these strings are then used to search the
+NCBI database for PubMed ID's.
+</p>
+<p>If an ID is found for an entry, the entry is updated so that the eprinttype
+field is assigned the value
+&ldquo;pubmed&rdquo; and the eprint field is assigned the ID.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a BibEntry object - <code>bib</code> with additional eprinttype and eprint
+fields when the search is successful
+for an entry.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other pubmed: 
+<code><a href="GetPubMedByID.html">GetPubMedByID</a>()</code>,
+<code><a href="GetPubMedRelated.html">GetPubMedRelated</a>()</code>,
+<code><a href="ReadCrossRef.html">ReadCrossRef</a>()</code>,
+<code><a href="ReadPubMed.html">ReadPubMed</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive() &amp;&amp; !httr::http_error("https://eutils.ncbi.nlm.nih.gov/")){
+  file.name &lt;- system.file("Bib", "RJC.bib", package = "RefManageR")
+  bib &lt;- ReadBib(file.name)
+  LookupPubMedID(bib[[101:102]])
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RefManageR</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

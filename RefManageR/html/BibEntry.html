@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Enhanced Bibliographic Entries</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for BibEntry {RefManageR}"><tr><td>BibEntry {RefManageR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Enhanced Bibliographic Entries</h2>
+
+<h3>Description</h3>
+
+<p>Provides a new class <code>BibEntry</code> which builds on <code><a href="../../utils/html/bibentry.html">bibentry</a></code>
+to provide enhanced functionality for representing, manipulating, importing,
+etc. bibliographic information in BibTeX or BibLaTeX style.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+BibEntry(
+  bibtype,
+  textVersion = NULL,
+  header = NULL,
+  footer = NULL,
+  key = NULL,
+  ...,
+  other = list(),
+  mheader = NULL,
+  mfooter = NULL
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>bibtype</code></td>
+<td>
+<p>a character string with a BibTeX entry type. See Entry Types
+for details.</p>
+</td></tr>
+<tr valign="top"><td><code>textVersion</code></td>
+<td>
+<p>a character string with a text representation of the
+reference to optionally be employed for printing.</p>
+</td></tr>
+<tr valign="top"><td><code>header</code></td>
+<td>
+<p>a character string with optional header text.</p>
+</td></tr>
+<tr valign="top"><td><code>footer</code></td>
+<td>
+<p>a character string with optional footer text.</p>
+</td></tr>
+<tr valign="top"><td><code>key</code></td>
+<td>
+<p>a character string giving the citation key for the entry.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments of the form <code>tag = value</code> giving the fields
+of the entry, with <code>tag</code> and <code>value</code> the name and value of the
+field, respectively. Arguments with empty values are dropped. See
+Entry Fields for details.</p>
+</td></tr>
+<tr valign="top"><td><code>other</code></td>
+<td>
+<p>list; additional way to specify fields and their values</p>
+</td></tr>
+<tr valign="top"><td><code>mheader</code></td>
+<td>
+<p>string; optional &ldquo;outer&rdquo; header text</p>
+</td></tr>
+<tr valign="top"><td><code>mfooter</code></td>
+<td>
+<p>string; optional &ldquo;outer&rdquo; footer text</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The BibEntry objects created by BibEntry can represent an
+arbitrary positive number of references, as with <code>bibentry</code>, but
+many additional methods are defined for building and manipulating a database
+of references.
+</p>
+
+
+<h3>Value</h3>
+
+<p>an object of class BibEntry
+</p>
+
+
+<h3>Entry Types</h3>
+
+<p>bibentry creates &quot;bibentry&quot; objects, which are modeled after BibLaTeX and
+BibTeX entries. The entry should
+be a valid BibLaTeX or BibTeX entry type.  For a list of valid BibTeX entry
+types, see <code><a href="../../utils/html/bibentry.html">bibentry</a></code>.  BibLaTeX supports all entry types from
+BibTeX for backwards compatibility. BibLaTeX defines following entry types
+'  </p>
+
+<ul>
+<li> <p><em>article</em> - An article in a journal, magazine, newspaper, or other periodical which forms a
+self-contained unit with its own title.  Required fields: author, title, journal/journaltitle, year/date.
+</p>
+</li>
+<li> <p><em>book</em> - A single-volume book with one or more authors where the authors share credit for
+the work as a whole.  Required fields: author, title, year/date. (Also covers BibTeX @inbook).
+</p>
+</li>
+<li> <p><em>mvbook</em> - A multi-volume <em>book</em>. For backwards compatibility, multi-volume books are also
+supported by the entry type @book.  Required fields: author, title, year/date.
+</p>
+</li>
+<li> <p><em>inbook</em> - A part of a book which forms a self-contained unit with its own title. Note that the
+profile of this entry type is different from standard BibTeX.  Required fields: author, title,
+booktitle, year/date
+</p>
+</li>
+<li> <p><em>bookinbook</em> This type is similar to <em>inbook</em> but intended for works originally published as a
+stand-alone book.
+</p>
+</li>
+<li> <p><em>suppbook</em> - Supplemental material in a <em>book</em>. This type is closely related to the <em>inbook</em> entry
+type.
+</p>
+</li>
+<li> <p><em>booklet</em> - A book-like work without a formal publisher or sponsoring institution.  Required fields:
+author/editor, title, year/date.
+</p>
+</li>
+<li> <p><em>collection</em> - A single-volume collection with multiple, self-contained contributions by distinct
+authors which have their own title.  Required fields: editor, title, year/date.
+</p>
+</li>
+<li> <p><em>mvcollection</em> - A multi-volume <em>collection</em>.  Also supported by <em>collection</em>.
+Required fields: editor, title, year/date.
+</p>
+</li>
+<li> <p><em>incollection</em> - A contribution to a collection which forms a self-contained unit with a distinct
+author and title.  Required fields: author, editor, title, booktitle, year/date.
+</p>
+</li>
+<li> <p><em>suppcollection</em> - Supplemental material in a <em>collection</em>.
+</p>
+</li>
+<li> <p><em>manual</em> - Technical or other documentation, not necessarily in printed form. Required fields:
+author/editor, title, year/date
+</p>
+</li>
+<li> <p><em>misc</em> - A fallback type for entries which do not fit into any other category.  Required fields:
+author/editor, title, year/date
+</p>
+</li>
+<li> <p><em>online</em> - An online resource.  Required fields: author, title, number, year/date.
+</p>
+</li>
+<li> <p><em>patent</em> - A patent or patent request.  Required fields: author, title, number, year/date.
+</p>
+</li>
+<li> <p><em>periodical</em> - A complete issue of a periodical, such as a special issue of a journal.  Required
+fields: editor, title, year/date
+</p>
+</li>
+<li> <p><em>suppperiodical</em> - Supplemental material in a <em>periodical</em>.
+</p>
+</li>
+<li> <p><em>proceedings</em> - A single-volume conference proceedings.  Required fields: editor, title, year/date.
+</p>
+</li>
+<li> <p><em>mvproceedings</em> - A multi-volume @proceedings entry. Required fields: editor, title, year/date.
+</p>
+</li>
+<li> <p><em>inproceedings</em> - An article in a conference proceedings.  Required fields: author, editor, title,
+booktitle, year/date.
+</p>
+</li>
+<li> <p><em>reference</em> - A single-volume work of reference such as an encyclopedia or a dictionary.  Alias
+for <em>collection</em> in standard styles.
+</p>
+</li>
+<li> <p><em>mvreference</em> - A multi-volume <em>reference</em> entry.
+</p>
+</li>
+<li> <p><em>inreference</em> - An article in a work of reference.  Alias for <em>incollection</em> in most styles.
+</p>
+</li>
+<li> <p><em>report</em> - A technical report, research report, or white paper published by a university or some
+other institution.  Required fields: author, title, type, institution, year/date.
+</p>
+</li>
+<li> <p><em>set</em> - An entry set. This entry type is special, see BibLaTeX manual.
+</p>
+</li>
+<li> <p><em>thesis</em> - A thesis written for an educational institution to satisfy the requirements for a degree.
+Use the type field to specify the type of thesis.  Required fields: author, title, type, institution,
+year/date.
+</p>
+</li>
+<li> <p><em>unpublished</em> A work with an author and a title which has not been formally published, such as a
+manuscript or the script of a talk.  Required fields: author, title, year/date.
+</p>
+</li>
+<li> <p><em>xdata</em> - This entry type is special. <em>xdata</em> entries hold data which may be inherited by other
+entries. (Biber only.)
+</p>
+</li>
+<li> <p><em>custom[a-f]</em> Custom types (up to five) for special bibliography styles. Not used by the standard
+styles.
+</p>
+</li></ul>
+
+
+
+<h3>Note</h3>
+
+<p>Date fields are parsed using the locale specified by
+<code>Sys.getlocale("LC_TIME")</code> (relevant when specifying a character
+&lsquo;month&rsquo; field, instead of the recommended integer format)
+</p>
+<p>Name list fields (author, editor, etc.) should be specified as they would be for
+BibTeX/BibLaTeX; e.g. <code>author = "Doe, Jane and Smith, Bob A."</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>McLean, M. W. <a href="mailto:mathew.w.mclean@gmail.com">mathew.w.mclean@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>BibLaTeX manual <a href="https://mirror.pregi.net/tex-archive/macros/latex/contrib/biblatex/doc/biblatex.pdf">https://mirror.pregi.net/tex-archive/macros/latex/contrib/biblatex/doc/biblatex.pdf</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../utils/html/bibentry.html">bibentry</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+BibEntry(bibtype = "Article", key = "mclean2014", title = "An Article Title",
+  author = "McLean, Mathew W. and Wand, Matt P.", journaltitle = "The Journal Title",
+  date = "2014-02-06", pubstate = "forthcoming")
+bib &lt;- BibEntry(bibtype = "XData", key = "arxiv_data", eprinttype = "arxiv",
+eprintclass = "stat.ME", year = 2013, urldate = "2014-02-01", pubstate = "submitted")
+bib &lt;- c(bib, BibEntry(bibtype = "Misc", key = "mclean2014b",
+  title = "Something On the {arXiv}", author = "Mathew W. McLean", eprint = "1312.9999",
+  xdata = "arxiv_data", url = "https://arxiv.org/abs/1310.5811"))
+bib
+toBiblatex(bib)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RefManageR</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

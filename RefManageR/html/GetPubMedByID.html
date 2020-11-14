@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Retrieve citation information from NCBI's Entrez for a set of...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for GetPubMedByID {RefManageR}"><tr><td>GetPubMedByID {RefManageR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Retrieve citation information from NCBI's Entrez for a set of PubMed IDs</h2>
+
+<h3>Description</h3>
+
+<p>Uses NCBI's E-Utilities to retrieve bibliographic information given a
+vector of PubMed ID's and returns the results as a BibEntry object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+GetPubMedByID(id, db = "pubmed", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>character vector; PubMed ID's for searching NCBI's Entrez.</p>
+</td></tr>
+<tr valign="top"><td><code>db</code></td>
+<td>
+<p>string; Entrez database to search.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional parameters to use for the search.
+See the Entrez documentation listed in the <em>References</em>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a BibEntry object.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Returned entries will have <code>bibtype</code> &ldquo;Article&rdquo; or &ldquo;Book&rdquo;,
+unless a collection title is present &ndash; in which case the <code>bibtype</code> will be
+&ldquo;InBook&rdquo; &ndash; or there is no journal information returned for an article &ndash; in
+which case the <code>bibtype</code> will be &ldquo;Misc&rdquo;.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://www.ncbi.nlm.nih.gov/books/NBK25500/">https://www.ncbi.nlm.nih.gov/books/NBK25500/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other pubmed: 
+<code><a href="GetPubMedRelated.html">GetPubMedRelated</a>()</code>,
+<code><a href="LookupPubMedID.html">LookupPubMedID</a>()</code>,
+<code><a href="ReadCrossRef.html">ReadCrossRef</a>()</code>,
+<code><a href="ReadPubMed.html">ReadPubMed</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive() &amp;&amp; !httr::http_error("https://eutils.ncbi.nlm.nih.gov/"))
+  GetPubMedByID(c("11209037", "21245076"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RefManageR</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

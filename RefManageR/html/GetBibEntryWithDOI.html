@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Lookup a Bibtex entry using a Digital Object Identifier</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for GetBibEntryWithDOI {RefManageR}"><tr><td>GetBibEntryWithDOI {RefManageR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Lookup a Bibtex entry using a Digital Object Identifier</h2>
+
+<h3>Description</h3>
+
+<p>Uses the DOI System API to look up bibliography information given a set of DOIs.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+GetBibEntryWithDOI(
+  doi,
+  temp.file = tempfile(fileext = ".bib"),
+  delete.file = TRUE
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>doi</code></td>
+<td>
+<p>character vector; DOIs to use to retrieve bibliographic information.</p>
+</td></tr>
+<tr valign="top"><td><code>temp.file</code></td>
+<td>
+<p>string; a file to write the Bibtex data returned by the
+DOI System to.</p>
+</td></tr>
+<tr valign="top"><td><code>delete.file</code></td>
+<td>
+<p>logical; should <code>temp.file</code> be deleted when the
+function exits?</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The bibliographic information returned by the search of the <a href="https://doi.org/">https://doi.org/</a>
+API is temporarily
+written to a file and then read back into <code>R</code> and return as a
+<code>BibEntry</code> object.
+</p>
+
+
+<h3>Value</h3>
+
+<p>an object of class BibEntry.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://www.doi.org/tools.html">https://www.doi.org/tools.html</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="ReadCrossRef.html">ReadCrossRef</a></code>, <code><a href="BibEntry.html">BibEntry</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive() &amp;&amp; !httr::http_error("https://doi.org/"))
+  GetBibEntryWithDOI(c("10.1016/j.iheduc.2003.11.004", "10.3998/3336451.0004.203"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RefManageR</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

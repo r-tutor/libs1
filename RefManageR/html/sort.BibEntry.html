@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Sort a BibEntry Object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sort.BibEntry {RefManageR}"><tr><td>sort.BibEntry {RefManageR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Sort a BibEntry Object</h2>
+
+<h3>Description</h3>
+
+<p>Sorts a <code>BibEntry</code> object by specified fields.  The possible fields used
+for sorting and the order they are used in correspond with the options
+available in BibLaTeX.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'BibEntry'
+sort(
+  x,
+  decreasing = FALSE,
+  sorting = BibOptions()$sorting,
+  .bibstyle = BibOptions()$bib.style,
+  ...
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an object of class BibEntry</p>
+</td></tr>
+<tr valign="top"><td><code>decreasing</code></td>
+<td>
+<p>logical; should the sort be increasing or decreasing?</p>
+</td></tr>
+<tr valign="top"><td><code>sorting</code></td>
+<td>
+<p>sort method to use, see <b>Details</b>.</p>
+</td></tr>
+<tr valign="top"><td><code>.bibstyle</code></td>
+<td>
+<p>bibliography style; used when <code>sort</code> is called by
+<code><a href="print.BibEntry.html">print.BibEntry</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>internal use only</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The possible values for argument <code>sorting</code> are
+</p>
+
+<ul>
+<li><p> nty - sort by name, then by title, then by year
+</p>
+</li>
+<li><p> nyt - sort by name, then by year, then title
+</p>
+</li>
+<li><p> nyvt - sort by name, year, volume, title
+</p>
+</li>
+<li><p> anyt - sort by alphabetic label, name, year, title
+</p>
+</li>
+<li><p> anyvt - sort by alphabetic label, name, year, volume, title
+</p>
+</li>
+<li><p> ynt - sort by year, name, title
+</p>
+</li>
+<li><p> ydnt - sort by year (descending), name, title
+</p>
+</li>
+<li><p> debug - sort by keys
+</p>
+</li>
+<li><p> none - no sorting is performed
+</p>
+</li></ul>
+
+<p>All sorting methods first consider the field presort, if available.
+Entries with no presort field are assigned presort
+value &ldquo;mm&rdquo;. Next the sortkey field is used.
+</p>
+<p>When sorting by name, the sortname field is used first.  If it is not present,
+the author field is used,
+if that is not present editor is used, and if that is not present translator is
+used.  All of these fields are affected
+by the value of <code>max.names</code> in .BibOptions()$max.names.
+</p>
+<p>When sorting by title, first the field sorttitle is considered.  Similarly,
+when sorting by year, the field sortyear is
+first considered.
+</p>
+<p>When sorting by volume, if the field is present it is padded to four digits
+with leading zeros; otherwise, the string &ldquo;0000&rdquo; is used.
+</p>
+<p>When sorting by alphabetic label, the labels that would be generating with
+the &ldquo;alphabetic&rdquo; bibstyle are used.  First the shorthand field is
+considered, then label, then shortauthor, shorteditor, author, editor,
+and translator.  Refer to the BibLaTeX manual Sections 3.1.2.1 and 3.5 and
+Appendix C.2 for more information.
+</p>
+
+
+<h3>Value</h3>
+
+<p>the sorted BibEntry object
+</p>
+
+
+<h3>References</h3>
+
+<p>Lehman, Philipp and Kime, Philip and Boruvka, Audrey and
+Wright, J. (2013). The biblatex Package.
+<a href="https://mirror.pregi.net/tex-archive/macros/latex/contrib/biblatex/doc/biblatex.pdf">https://mirror.pregi.net/tex-archive/macros/latex/contrib/biblatex/doc/biblatex.pdf</a>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="BibEntry.html">BibEntry</a></code>, <code><a href="print.BibEntry.html">print.BibEntry</a></code>, <code><a href="../../base/html/order.html">order</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (requireNamespace("bibtex")) {
+    file.name &lt;- system.file("Bib", "biblatexExamples.bib", package="RefManageR")
+    bib &lt;- suppressMessages(ReadBib(file.name)[[70:73]])
+    BibOptions(sorting = "none")
+    bib
+    sort(bib, sorting = "nyt")
+    sort(bib, sorting = "ynt")
+    BibOptions(restore.defaults = TRUE)
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RefManageR</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

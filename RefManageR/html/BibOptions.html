@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Set options/hooks for RefManageR</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for BibOptions {RefManageR}"><tr><td>BibOptions {RefManageR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Set options/hooks for RefManageR</h2>
+
+<h3>Description</h3>
+
+<p>This function is used to access and set package options for RefManageR, similar to <code><a href="../../base/html/options.html">options</a></code>.  
+The options are listed in the details
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+BibOptions(..., restore.defaults = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>a character vector or strings specifying option names to access; or to set options values, 
+a named list or vector of option values or options specified in name=value pairs.</p>
+</td></tr>
+<tr valign="top"><td><code>restore.defaults</code></td>
+<td>
+<p>logical; if TRUE, <code>...</code>'s are ignored and all package options are restored to their
+defaults.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The following are valid package options. 
+</p>
+<p><b>Options for searching/indexing a BibEntry object.  See <code><a href="SearchBib.html">[.BibEntry</a></code> and 
+<code><a href="subset-.BibEntry.html">[&lt;-.BibEntry</a></code></b>
+</p>
+
+<ol>
+<li> <p><code>match.author</code> - string; controls how name list fields (author, editor, translator, etc.) are matched 
+when searching for names.
+&ldquo;family.with.initials&rdquo; require family names and given name initials to match, &ldquo;exact&rdquo; requires names to match
+exactly, and any other value results in only family names being compared (the default).
+</p>
+</li>
+<li> <p><code>match.date</code> - string; controls how date fields are matched when searching.  If &ldquo;year.only&rdquo; (the default),
+only years are checked for equality when comparing dates, otherwise months and days will also be compared,
+if they are available.
+</p>
+</li>
+<li> <p><code>use.regex</code> - logical; if <code>TRUE</code>, regular expressions are used when searching non-date fields; otherwise, exact
+matching is used.
+</p>
+</li>
+<li> <p><code>ignore.case</code> - logical; if <code>TRUE</code>, case is ignored when searching.
+</p>
+</li>
+<li> <p><code>return.ind</code> - logical; if <code>TRUE</code> the return value of <code><a href="SearchBib.html">SearchBib</a></code> and the operators 
+<code><a href="SearchBib.html">[.BibEntry</a></code>, will be the indices of any matches; otherwise, a <code>BibEntry</code>
+object is returned.
+</p>
+</li></ol>
+
+<p><b>Options for Printing with <code><a href="print.BibEntry.html">print.BibEntry</a></code> and <code><a href="Cite.html">PrintBibliography</a></code></b>
+</p>
+
+<ol>
+<li> <p><code>bib.style</code> - string; Biblatex bibliography style to use when printing and formatting a BibEntry object.  Possible
+values are &ldquo;numeric&rdquo; (default), &ldquo;authoryear&rdquo;, &ldquo;authortitle&rdquo;, &ldquo;alphabetic&rdquo;, &ldquo;draft&rdquo;.
+</p>
+</li>
+<li> <p><code>first.inits</code> - logical; if <code>TRUE</code>, only given name initials are displayed when printing; otherwise, full names
+are used.
+</p>
+</li>
+<li> <p><code>dashed</code> - logical; if <code>TRUE</code> and <code>bib.style = "authoryear"</code> or <code>bib.style = "authortitle"</code>,
+recurring author and editor names are replaced with &ldquo;&mdash;&rdquo; when printing.
+</p>
+</li>
+<li> <p><code>sorting</code> - string; controls how BibEntry objects are sorted.  Possible values are &ldquo;nty&rdquo;, &ldquo;nyt&rdquo;, 
+&ldquo;nyvt&rdquo;, &ldquo;anyt&rdquo;, &ldquo;anyvt&rdquo;, &ldquo;ynt&rdquo;, &ldquo;ydnt&rdquo;, &ldquo;none&rdquo;, &ldquo;debug&rdquo;;  see 
+<code><a href="sort.BibEntry.html">sort.BibEntry</a></code>
+</p>
+</li>
+<li> <p><code>max.names</code> - numeric; maximum number of names to display before using
+&ldquo;et al.&rdquo; when formatting and printing name list fields. This is also the minimum
+number of names that will be displayed if &ldquo;et al.&rdquo; is used (corresponding
+to the &lsquo;minnames&rsquo; package option in Biblatex). See below and option
+<code>longnamesfirst</code> when using this argument with the citation
+functions (<code><a href="Cite.html">Citet</a></code>, etc.). 
+</p>
+</li>
+<li> <p><code>no.print.fields</code> character vector; fields that should not be printed, 
+e.g., doi, url, isbn, etc.
+</p>
+</li>
+<li> <p><code>style</code> - character string naming the printing style.  Possible values are 
+plain text (style &ldquo;text&rdquo;), BibTeX (&ldquo;Bibtex&rdquo;), BibLaTeX (&ldquo;Biblatex&rdquo;),
+a mixture of plain text and BibTeX as 
+traditionally used for citations (&ldquo;citation&rdquo;), HTML (&ldquo;html&rdquo;), 
+LaTeX (&ldquo;latex&rdquo;), &ldquo;markdown&rdquo;, &ldquo;yaml&rdquo;, 
+R code (&ldquo;R&rdquo;), and a simple copy of the textVersion elements 
+(style &ldquo;textVersion&rdquo;, see <code><a href="BibEntry.html">BibEntry</a></code>)
+</p>
+</li></ol>
+
+<p><b>Options for the <code><a href="Cite.html">Cite</a></code> functions</b>
+</p>
+
+<ol>
+<li> <p><code>cite.style</code> - character string; bibliography style to use to generate citations.  
+</p>
+</li>
+<li> <p><code>style</code> - as above, but used to format the citations.  
+</p>
+</li>
+<li> <p><code>hyperlink</code> - character string or logical; for use with <code>style = "markdown"</code>
+and <code>style = "html"</code> (ignored otherwise).  If <code>FALSE</code>, no hyperlink
+will be generated for the citation or in the bibliography when printing.  If
+set equal to <code>"to.bib"</code>, then hyperlinks will be
+generated linking the citation and bibliography.  The default value, <code>"to.doc"</code>,
+will try to create the hyperlink using the <code>url</code>, <code>doi</code>, or <code>eprint</code> fields of 
+entry.  If these fields are not available, the hyperlink will point to the bibliography.  See
+also <code><a href="open.BibEntry.html">open.BibEntry</a></code>.
+</p>
+</li>
+<li> <p><code>super</code> - logical; should superscripts be used for numeric citations?  Ignored if
+<code>cite.style != "numeric"</code>.
+</p>
+</li>
+<li> <p><code>max.names</code> - numeric; same as above, except for citations. Note, that the
+first time a reference is cited, this option will be ignored if <code>longfirstnames</code>
+is <code>TRUE</code>.
+</p>
+</li>
+<li> <p><code>longnamesfirst</code> logical; should the first time a citation appears in the text
+not be truncated at <code>max.names</code>?
+</p>
+</li>
+<li> <p><code>bibpunct</code> - character vector; punctuation to use in a citation.  The entries
+in <code>bibpunct</code> are as follows
+</p>
+
+<ol>
+<li><p> The left delimiter for non-alphabetic and non-numeric citation styles
+</p>
+</li>
+<li><p> The right delimiter for non-alphabetic and non-numeric citation styles
+</p>
+</li>
+<li><p> The left delimiter for alphabetic and numeric citation styles
+</p>
+</li>
+<li><p> The right delimiter for alphabetic and numeric citation styles 
+</p>
+</li>
+<li><p> The separator between references in a citation.
+</p>
+</li>
+<li><p> Punctuation to go between the author and year.
+</p>
+</li></ol>
+
+</li></ol>
+
+<p><b>Other</b>
+</p>
+
+<ol>
+<li> <p><code>check.entries</code> - string or <code>FALSE</code>; if <code>FALSE</code> entries are not checked to ensure that they have all the 
+required fields for the type of entry; if &ldquo;warn&rdquo; then entries are checked, but only a warning is issued and the 
+entry is processed anyway; otherwise an error is produced if an entry does not have the required fields (default).  Note that
+the majority of fields listed as required for a particular entry type in the Biblatex manual are not actually required for
+Biblatex to produce an entry.
+</p>
+</li>
+<li> <p><code>merge.fields.to.check</code> - character vector; for <code><a href="merge.BibEntry.html">merge.BibEntry</a></code> and the operator <code><a href="merge.BibEntry.html">+.BibEntry</a></code>,
+the fields that should be checked when comparing entries for equality when merging BibEntry objects.  Specifying 
+&ldquo;all&rdquo; results in all fields be checked with <code><a href="../../base/html/duplicated.html">duplicated</a></code>.  The default is &ldquo;key&rdquo; to only check for
+duplicated keys.
+</p>
+</li></ol>
+
+
+
+<h3>Value</h3>
+
+<p>if a vector of option names is supplied, the current value of the requested options, or if <code>...</code> is missing,
+all current option values; otherwise, when setting options the old values of the changed options are (invisibly) 
+returned as a list.
+</p>
+
+
+<h3>Note</h3>
+
+<p>If <code>...</code> is missing and <code>restore.defaults = FALSE</code>, all options and their current values will be returned
+as a list.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="print.BibEntry.html">print.BibEntry</a></code>, <code><a href="BibEntry.html">BibEntry</a></code>, <code><a href="../../base/html/options.html">options</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+BibOptions()
+BibOptions("first.inits", "bib.style")
+
+oldopts &lt;- BibOptions(first.inits = FALSE, bib.style = "authoryear")
+oldopts
+BibOptions(oldopts)
+
+BibOptions(restore.defaults = TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RefManageR</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

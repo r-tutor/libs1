@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Coerce to a BibEntry object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for as.BibEntry {RefManageR}"><tr><td>as.BibEntry {RefManageR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Coerce to a BibEntry object</h2>
+
+<h3>Description</h3>
+
+<p>Functions to check if an object is a BibEntry, or coerce it if possible.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+as.BibEntry(x)
+
+is.BibEntry(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>any <code>R</code> object.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>as.BibEntry</code> is able to coerce suitably formatted character
+vectors, <code><a href="../../utils/html/bibentry.html">bibentry</a></code> objects, lists,
+and data.frames to BibEntry objects.  See the examples.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>as.BibEntry</code> - if successful, an object of class BibEntry.
+</p>
+<p><code>is.BibEntry</code> - logical; <code>TRUE</code> if <code>x</code> is a BibEntry
+object.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Each entry to be coerced should have a bibtype, key, and all required
+fields for the specified bibtype.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="BibEntry.html">BibEntry</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (requireNamespace("bibtex")) {
+    file.name &lt;- system.file("Bib", "biblatexExamples.bib", package="RefManageR")
+    bib &lt;- suppressMessages(ReadBib(file.name))[[20:21]]
+    identical(as.BibEntry(unlist(bib)), bib)  ## see also RelistBibEntry
+
+    identical(as.BibEntry(unclass(bib)), bib)
+
+    identical(as.BibEntry(as.data.frame(bib)), bib)
+ }
+
+bib &lt;- c(bibtype = "article", key = "mclean2014", title = "My New Article",
+  author = "Mathew W. McLean", journaltitle = "The Journal", date = "2014-01")
+as.BibEntry(bib)
+
+bib &lt;- bibentry(bibtype = "article", key = "mclean2014", title = "My New Article",
+journal = "The Journal", year = 2014, author = "Mathew W. McLean")
+print(bib, .bibstyle = "JSS")
+as.BibEntry(bib)
+
+bib &lt;- list(c(bibtype = "article", key = "mclean2014a", title = "My New Article",
+  author = "Mathew W. McLean", journaltitle = "The Journal", date = "2014-01"),
+  c(bibtype = "article", key = "mclean2014b", title = "Newer Article",
+  author = "Mathew W. McLean", journaltitle = "The Journal", date = "2014-02"))
+as.BibEntry(bib)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RefManageR</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

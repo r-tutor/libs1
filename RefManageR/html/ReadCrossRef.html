@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Search CrossRef for citations.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ReadCrossRef {RefManageR}"><tr><td>ReadCrossRef {RefManageR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Search CrossRef for citations.</h2>
+
+<h3>Description</h3>
+
+<p>Provides an interface to the CrossRef API, searching for citations
+given a string query.  Results are written to a bib file, read back
+into <code>R</code> using <code><a href="WriteBib.html">WriteBib</a></code>, and returned as a
+BibEntry object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ReadCrossRef(
+  query = "",
+  filter = list(),
+  limit = 5,
+  offset = 0,
+  sort = "relevance",
+  year = NULL,
+  min.relevance = 2,
+  temp.file = tempfile(fileext = ".bib"),
+  delete.file = TRUE,
+  verbose = FALSE,
+  use.old.api = FALSE
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>query</code></td>
+<td>
+<p>string; search term</p>
+</td></tr>
+<tr valign="top"><td><code>filter</code></td>
+<td>
+<p>named list of possible filters; see <code>Details</code>
+and <code>References</code>; ignored if <code>use.old.api = TRUE</code></p>
+</td></tr>
+<tr valign="top"><td><code>limit</code></td>
+<td>
+<p>numeric; maximum number of entries to return</p>
+</td></tr>
+<tr valign="top"><td><code>offset</code></td>
+<td>
+<p>numeric; CrossRef will not return the first
+<code>offset</code> results (default 0); ignored if <code>use.old.api
+= TRUE</code></p>
+</td></tr>
+<tr valign="top"><td><code>sort</code></td>
+<td>
+<p>string; how specifying how the results from CrossRef
+should be sorted.  Possible values when <code>use.old.api =
+FALSE</code> are <code>"score"</code> (default; same as
+<code>"relevance"</code>), <code>"updated"</code>, <code>"deposited"</code>,
+<code>"indexed"</code>, or <code>"published"</code>; see the references</p>
+</td></tr>
+<tr valign="top"><td><code>year</code></td>
+<td>
+<p>numeric; if specified, only results from this year will
+be returned.</p>
+</td></tr>
+<tr valign="top"><td><code>min.relevance</code></td>
+<td>
+<p>numeric; only results with a CrossRef-assigned
+relevance score at least this high will be returned.</p>
+</td></tr>
+<tr valign="top"><td><code>temp.file</code></td>
+<td>
+<p>string; file name to use for storing Bibtex
+information returned by CrossRef.</p>
+</td></tr>
+<tr valign="top"><td><code>delete.file</code></td>
+<td>
+<p>boolean; should the bib file be deleted on exit?</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>boolean; if <code>TRUE</code>, additional messages are
+output regarding the results of the query.</p>
+</td></tr>
+<tr valign="top"><td><code>use.old.api</code></td>
+<td>
+<p>boolean; should the older CrossRef API be used
+for the search? NO LONGER SUPPORTED, all queries need to use
+the new API.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When <code>use.old.api = TRUE</code>, the query HTTP request only returns DOIs,
+which are then used to make HTTP requests for the corresponding BibTeX entries from
+CrossRef; when <code>use.old.api = FALSE</code>, the query HTTP request is parsed to create
+the <code>BibEntry</code> object (i.e. there are less HTTP requests when using the new API).
+</p>
+<p>CrossRef assigns a score between 0 and 100 based on how relevant a
+reference seems to be to your query.  The <em>old</em> API
+documentation warns that while false negatives are unlikely, the
+search can be prone to false positives.  Hence, setting
+<code>min.revelance</code> to a high value may be necessary if
+<code>use.old.api = TRUE</code>. In some instances with the old API, no
+score is returned, if this happens, the entries are added with a
+message indicating that no score was available.
+</p>
+<p>Possible values for the <em>names</em> in <code>filter</code> are <code>"has-funder"</code>,
+<code>"funder"</code>, <code>"prefix"</code>, <code>"member"</code>, <code>"from-index-date"</code>,
+<code>"until-index-date"</code>,
+<code>"from-deposit-date"</code>, <code>"until-deposit-date"</code>, <code>"from-update-date"</code>,
+<code>"until-update-date"</code>, <code>"from-created-date"</code>, <code>"until-created-date"</code>,
+<code>"from-pub-date"</code>, <code>"until-pub-date"</code>, <code>"has-license"</code>, <code>"license.url"</code>,
+<code>"license.version"</code>, <code>"license.delay"</code>, <code>"has-full-text"</code>,
+<code>"full-text.version"</code>, <code>"full-text.type"</code>, <code>"public-references"</code>,
+<code>"has-references"</code>, <code>"has-archive"</code>, <code>"archive"</code>, <code>"has-orcid"</code>,
+<code>"orcid"</code>, <code>"issn"</code>, <code>"type"</code>, <code>"directory"</code>, <code>"doi"</code>,
+<code>"updates"</code>, <code>"is-update"</code>, <code>"has-update-policy"</code>, <code>"container-title"</code>,
+<code>"publisher-name"</code>, <code>"category-name"</code>, <code>"type-name"</code>, <code>"award.number"</code>,
+<code>"award.funder"</code>, <code>"assertion-group"</code>, <code>"assertion"</code>, <code>"affiliation"</code>,
+<code>"has-affiliation"</code>, <code>"alternative-id"</code>, and <code>"article-number"</code>.
+See the first reference for a description of their meanings.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>BibEntry</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The entries returned by Crossref are frequently missing
+fields required by BibTeX, if you want the entries to be
+returned anyway, set <code>BibOptions()$check.entries</code> to
+<code>FALSE</code> or <code>"warn"</code>
+</p>
+<p>Fields <code>"score"</code> (the relevancy score) and <code>"license"</code> will be
+returned when <code>use.old.api = FALSE</code>.
+</p>
+
+
+<h3>References</h3>
+
+<p>Newer API: <a href="https://github.com/CrossRef/rest-api-doc/blob/master/rest_api.md">https://github.com/CrossRef/rest-api-doc/blob/master/rest_api.md</a>,
+Older API: <a href="https://search.crossref.org/help/api">https://search.crossref.org/help/api</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="ReadZotero.html">ReadZotero</a></code>, <code><a href="BibEntry.html">BibEntry</a></code>,
+package <code>rcrossref</code> for larger queries and deep paging
+</p>
+<p>Other pubmed: 
+<code><a href="GetPubMedByID.html">GetPubMedByID</a>()</code>,
+<code><a href="GetPubMedRelated.html">GetPubMedRelated</a>()</code>,
+<code><a href="LookupPubMedID.html">LookupPubMedID</a>()</code>,
+<code><a href="ReadPubMed.html">ReadPubMed</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive() &amp;&amp; !httr::http_error("https://search.crossref.org/")){
+  BibOptions(check.entries = FALSE)
+  ## 3 results from the American Statistical Association involving "regression"
+  ReadCrossRef("regression", filter = list(prefix="10.1198"), limit = 3)
+
+  ## Some JRSS-B papers published in 2010 or later, note the quotes for filter
+  ##   names with hypens
+  ReadCrossRef(filter = list(issn = "1467-9868", "from-pub-date" = 2010),
+               limit = 2, min.relevance = 0)
+
+  ## Articles published by Institute of Mathematical Statistics
+  ReadCrossRef(filter = list(prefix = "10.1214"), limit = 5, min.relevance = 0)
+
+  ## old API
+  ReadCrossRef(query = 'rj carroll measurement error', limit = 2, sort = "relevance",
+    min.relevance = 80, use.old.api = TRUE)
+
+  ReadCrossRef(query = 'carroll journal of the american statistical association',
+    year = 2012, limit = 2, use.old.api = TRUE)
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RefManageR</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

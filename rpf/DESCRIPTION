@@ -1,8 +1,8 @@
 Type: Package
 Package: rpf
 Title: Response Probability Functions
-Version: 1.0.4
-Date: 2020-05-06
+Version: 1.0.5
+Date: 2020-09-15
 Authors@R: 
     c(person(given = "Joshua",
              family = "Pritikin",
@@ -35,26 +35,27 @@ Description: The purpose of this package is to factor out logic
     analysis. It is envisioned as core support code suitable for more
     specialized IRT packages to build upon. Complete access to optimized C
     functions are made available with R_RegisterCCallable().
+    This software is described in Pritikin & Falk (2020) <doi:10.1177/0146621620929431>.
 License: GPL (>= 3)
 URL: https://github.com/jpritikin/rpf
 Depends: methods, parallel, R (>= 2.14.0)
 Imports: Rcpp (>= 1.0.2), mvtnorm, lifecycle
 Suggests: testthat, roxygen2, ggplot2, reshape2, gridExtra, numDeriv,
-        knitr, mirt
+        knitr, mirt, markdown
 LinkingTo: Rcpp, RcppEigen
 VignetteBuilder: knitr
 RdMacros: lifecycle
 Encoding: UTF-8
 LazyData: yes
 LazyDataCompression: bzip2
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 SystemRequirements: GNU make
 Collate: 'init.R' 'classes.R' 'fit.R' 'drm.R' 'nrm.R' 'mcm.R' 'grm.R'
         'LSAT.R' 'sample.R' 'dataframe.R' 'diagnose.R' 'science.R'
         'kct.R' 'openmx.R' 'flexmirt.R' 'util.R' 'lmp.R' 'grmp.R'
         'gpcmp.R' 'RcppExports.R'
 NeedsCompilation: yes
-Packaged: 2020-05-07 02:08:10 UTC; joshua
+Packaged: 2020-09-15 19:15:51 UTC; joshua
 Author: Joshua Pritikin [cre, aut],
   Jonathan Weeks [ctb],
   Li Cai [ctb],
@@ -63,6 +64,6 @@ Author: Joshua Pritikin [cre, aut],
   Michael D. Hunter [ctb],
   Carl F. Falk [ctb]
 Repository: CRAN
-Date/Publication: 2020-05-07 11:20:02 UTC
-Built: R 4.0.0; x86_64-w64-mingw32; 2020-05-08 13:00:18 UTC; windows
+Date/Publication: 2020-09-16 04:10:03 UTC
+Built: R 4.0.3; x86_64-w64-mingw32; 2020-11-09 07:48:56 UTC; windows
 Archs: i386, x64

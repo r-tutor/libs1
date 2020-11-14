@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a BibTeX File from a BibEntry Object e Creates a...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for WriteBib {RefManageR}"><tr><td>WriteBib {RefManageR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a BibTeX File from a BibEntry Object
+e
+Creates a Bibtex File from a BibEntry object for use with either BibTeX
+or BibLaTex.</h2>
+
+<h3>Description</h3>
+
+<p>Create a BibTeX File from a BibEntry Object
+e
+Creates a Bibtex File from a BibEntry object for use with either BibTeX
+or BibLaTex.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+WriteBib(
+  bib,
+  file = "references.bib",
+  biblatex = TRUE,
+  append = FALSE,
+  verbose = TRUE,
+  ...
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>bib</code></td>
+<td>
+<p>a BibEntry object to be written to file</p>
+</td></tr>
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>character string naming a file, should; end in &ldquo;.bib&rdquo;.
+Can be <code>NULL</code>, in which case the BibEntry object will be written
+to <code><a href="../../base/html/showConnections.html">stdout</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>biblatex</code></td>
+<td>
+<p>boolean; if <code>TRUE</code>, <code><a href="toBiblatex.html">toBiblatex</a></code> is used
+and no conversions of the BibEntry object
+are done; if <code>FALSE</code> entries will be converted as described in
+<code><a href="toBiblatex.html">toBibtex.BibEntry</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>append</code></td>
+<td>
+<p>as in <code>write.bib</code> in package <code>bibtex</code></p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>as in <code>write.bib</code> in package <code>bibtex</code></p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional arguments passed to <code><a href="../../base/html/writeLines.html">writeLines</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>bib</code> - invisibly
+</p>
+
+
+<h3>Note</h3>
+
+<p>To write the contents of <code>bib</code> &ldquo;as is&rdquo;, the argument
+<code>biblatex</code> should be <code>TRUE</code>, otherwise
+conversion is done as in <code><a href="toBiblatex.html">toBibtex.BibEntry</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>McLean, M. W. based on <code>write.bib</code> by Gaujoux, R.
+in package <code>bibtex</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code>write.bib</code> in package <code>bibtex</code>, <code><a href="ReadBib.html">ReadBib</a></code>,
+<code><a href="toBiblatex.html">toBibtex.BibEntry</a></code>, <code><a href="toBiblatex.html">toBiblatex</a></code>,
+<code><a href="BibEntry.html">BibEntry</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (requireNamespace("bibtex")){
+    bib &lt;- BibEntry("Article", key = "Carroll_2012",
+                    doi = "10.1080/01621459.2012.699793",
+                    year = "2012", month = "sep",
+                    volume = 107, number = 499,
+                    pages = {1166--1177},
+      author = "R. Carroll and A. Delaigle and P. Hall",
+      title = "Deconvolution When Classifying Noisy Data ...",
+      journal = "Journal of the American Statistical Association")
+
+  ## Write bib if no server error and bibtex available
+  if (length(bib)){
+    tfile &lt;- tempfile(fileext = ".bib")
+    WriteBib(bib, tfile, biblatex = TRUE)
+    identical(ReadBib(tfile), bib)
+    unlink(tfile)
+  }
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RefManageR</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

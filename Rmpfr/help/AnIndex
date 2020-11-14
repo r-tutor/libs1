@@ -10,6 +10,7 @@ Rmpfr-package	Rmpfr-package
 .bigq2mpfr	gmp-conversions
 .bigz2mpfr	gmp-conversions
 .getPrec	mpfr-utils
+.matmult.R	matmult
 .mpfr.is.whole	utils
 .mpfr2bigz	gmp-conversions
 .mpfr2exp	mpfr-utils
@@ -78,11 +79,13 @@ cbind-methods	bind-methods
 chooseMpfr	chooseMpfr
 chooseMpfr.all	chooseMpfr
 coerce,array,mpfr-method	mpfr-class
+coerce,array,mpfrArray-method	mpfrMatrix-class
 coerce,bigq,mpfr-method	gmp-conversions
 coerce,bigz,mpfr-method	gmp-conversions
 coerce,character,mpfr-method	mpfr-class
 coerce,integer,mpfr-method	mpfr-class
 coerce,logical,mpfr-method	mpfr-class
+coerce,matrix,mpfrMatrix-method	mpfrMatrix-class
 coerce,mpfr,bigz-method	mpfr-class
 coerce,mpfr,character-method	mpfr-class
 coerce,mpfr,integer-method	mpfr-class
@@ -132,6 +135,7 @@ dim,mpfrArray-method	mpfrMatrix-class
 dim<-,mpfr-method	mpfr-class
 dimnames,mpfrArray-method	mpfrMatrix-class
 dimnames<-,mpfrArray-method	mpfrMatrix-class
+dnbinom	distr-etc
 dnorm	distr-etc
 dpois	distr-etc
 Ei	special-math
@@ -156,6 +160,7 @@ is.finite,mpfr-method	mpfr-class
 is.finite,mpfrArray-method	mpfr-class
 is.infinite,mpfr-method	mpfr-class
 is.infinite,mpfrArray-method	mpfr-class
+is.mpfr	mpfr
 is.na,mpfr-method	mpfr-class
 is.na,mpfrArray-method	mpfr-class
 is.nan,mpfr-method	mpfr-class
@@ -174,11 +179,14 @@ lbeta,mpfrArray,mpfrArray-method	mpfr-class
 lbeta,numeric,mpfr-method	mpfr-class
 Li2	special-math
 log,mpfr-method	mpfr-class
+log1mexp	log1mexp
+log1pexp	log1mexp
 Logic,mpfr,mpfr-method	mpfr-class
 Logic,mpfr,numeric-method	mpfr-class
 Logic,numeric,mpfr-method	mpfr-class
 Math,mpfr-method	mpfr-class
 Math2,mpfr-method	mpfr-class
+matmult	matmult
 mean,mpfr-method	mpfr-class
 median,mpfr-method	mpfr-class
 Mnumber-class	Mnumber-class

@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;sparklyr&rsquo; version 1.3.1</h2>
+</div><h2>Documentation for package &lsquo;sparklyr&rsquo; version 1.4.0</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 </ul>
@@ -32,9 +32,11 @@
 <a href="#L">L</a>
 <a href="#M">M</a>
 <a href="#N">N</a>
+<a href="#P">P</a>
 <a href="#R">R</a>
 <a href="#S">S</a>
 <a href="#T">T</a>
+<a href="#U">U</a>
 <a href="#misc">misc</a>
 </p>
 
@@ -116,6 +118,8 @@
 <h2><a name="F">-- F --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="fill.html">fill</a></td>
+<td>Fill</td></tr>
 <tr><td style="width: 25%;"><a href="find_scalac.html">find_scalac</a></td>
 <td>Discover the Scala Compiler</td></tr>
 <tr><td style="width: 25%;"><a href="ft_binarizer.html">ft_binarizer</a></td>
@@ -174,6 +178,8 @@
 <td>Feature Transformation - QuantileDiscretizer (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_regex_tokenizer.html">ft_regex_tokenizer</a></td>
 <td>Feature Transformation - RegexTokenizer (Transformer)</td></tr>
+<tr><td style="width: 25%;"><a href="ft_robust_scaler.html">ft_robust_scaler</a></td>
+<td>Feature Transformation - RobustScaler (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_r_formula.html">ft_r_formula</a></td>
 <td>Feature Transformation - RFormula (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="sql-transformer.html">ft_sql_transformer</a></td>
@@ -196,6 +202,10 @@
 <td>Feature Transformation - VectorSlicer (Transformer)</td></tr>
 <tr><td style="width: 25%;"><a href="ft_word2vec.html">ft_word2vec</a></td>
 <td>Feature Transformation - Word2Vec (Estimator)</td></tr>
+<tr><td style="width: 25%;"><a href="full_join.html">full_join</a></td>
+<td>Full join</td></tr>
+<tr><td style="width: 25%;"><a href="join.tbl_spark.html">full_join.tbl_spark</a></td>
+<td>Join Spark tbls.</td></tr>
 </table>
 
 <h2><a name="G">-- G --</a></h2>
@@ -254,12 +264,24 @@
 <td>Runtime configuration interface for Hive</td></tr>
 <tr><td style="width: 25%;"><a href="hof_aggregate.html">hof_aggregate</a></td>
 <td>Apply Aggregate Function to Array Column</td></tr>
+<tr><td style="width: 25%;"><a href="hof_array_sort.html">hof_array_sort</a></td>
+<td>Sorts array using a custom comparator</td></tr>
 <tr><td style="width: 25%;"><a href="hof_exists.html">hof_exists</a></td>
 <td>Determine Whether Some Element Exists in an Array Column</td></tr>
 <tr><td style="width: 25%;"><a href="hof_filter.html">hof_filter</a></td>
 <td>Filter Array Column</td></tr>
+<tr><td style="width: 25%;"><a href="hof_forall.html">hof_forall</a></td>
+<td>Checks whether all elements in an array satisfy a predicate</td></tr>
+<tr><td style="width: 25%;"><a href="hof_map_filter.html">hof_map_filter</a></td>
+<td>Filters a map</td></tr>
+<tr><td style="width: 25%;"><a href="hof_map_zip_with.html">hof_map_zip_with</a></td>
+<td>Merges two maps into one</td></tr>
 <tr><td style="width: 25%;"><a href="hof_transform.html">hof_transform</a></td>
 <td>Transform Array Column</td></tr>
+<tr><td style="width: 25%;"><a href="hof_transform_keys.html">hof_transform_keys</a></td>
+<td>Transforms keys of a map</td></tr>
+<tr><td style="width: 25%;"><a href="hof_transform_values.html">hof_transform_values</a></td>
+<td>Transforms values of a map</td></tr>
 <tr><td style="width: 25%;"><a href="hof_zip_with.html">hof_zip_with</a></td>
 <td>Combines 2 Array Columns</td></tr>
 </table>
@@ -267,6 +289,10 @@
 <h2><a name="I">-- I --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="inner_join.html">inner_join</a></td>
+<td>Inner join</td></tr>
+<tr><td style="width: 25%;"><a href="join.tbl_spark.html">inner_join.tbl_spark</a></td>
+<td>Join Spark tbls.</td></tr>
 <tr><td style="width: 25%;"><a href="invoke.html">invoke</a></td>
 <td>Invoke a Method on a JVM Object</td></tr>
 <tr><td style="width: 25%;"><a href="invoke.html">invoke_new</a></td>
@@ -284,11 +310,17 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="spark-api.html">java_context</a></td>
 <td>Access the Spark API</td></tr>
+<tr><td style="width: 25%;"><a href="join.tbl_spark.html">join.tbl_spark</a></td>
+<td>Join Spark tbls.</td></tr>
 </table>
 
 <h2><a name="L">-- L --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="left_join.html">left_join</a></td>
+<td>Left join</td></tr>
+<tr><td style="width: 25%;"><a href="join.tbl_spark.html">left_join.tbl_spark</a></td>
+<td>Join Spark tbls.</td></tr>
 <tr><td style="width: 25%;"><a href="list_sparklyr_jars.html">list_sparklyr_jars</a></td>
 <td>list all sparklyr-*.jar files that have been built</td></tr>
 <tr><td style="width: 25%;"><a href="livy_config.html">livy_config</a></td>
@@ -509,6 +541,17 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="na.replace.html">na.replace</a></td>
 <td>Replace Missing Values in Objects</td></tr>
+<tr><td style="width: 25%;"><a href="nest.html">nest</a></td>
+<td>Nest</td></tr>
+</table>
+
+<h2><a name="P">-- P --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="pivot_longer.html">pivot_longer</a></td>
+<td>Pivot longer</td></tr>
+<tr><td style="width: 25%;"><a href="pivot_wider.html">pivot_wider</a></td>
+<td>Pivot wider</td></tr>
 </table>
 
 <h2><a name="R">-- R --</a></h2>
@@ -524,6 +567,10 @@
 <td>Register a Package that Implements a Spark Extension</td></tr>
 <tr><td style="width: 25%;"><a href="register_extension.html">register_extension</a></td>
 <td>Register a Package that Implements a Spark Extension</td></tr>
+<tr><td style="width: 25%;"><a href="right_join.html">right_join</a></td>
+<td>Right join</td></tr>
+<tr><td style="width: 25%;"><a href="join.tbl_spark.html">right_join.tbl_spark</a></td>
+<td>Join Spark tbls.</td></tr>
 </table>
 
 <h2><a name="S">-- S --</a></h2>
@@ -631,10 +678,14 @@
 <td>Convert column(s) to avro format</td></tr>
 <tr><td style="width: 25%;"><a href="sdf-transform-methods.html">sdf_transform</a></td>
 <td>Spark ML - Transform, fit, and predict methods (sdf_ interface)</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_weighted_sample.html">sdf_weighted_sample</a></td>
+<td>Perform Weighted Random Sampling on a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_with_sequential_id.html">sdf_with_sequential_id</a></td>
 <td>Add a Sequential ID Column to a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_with_unique_id.html">sdf_with_unique_id</a></td>
 <td>Add a Unique ID Column to a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="separate.html">separate</a></td>
+<td>Separate</td></tr>
 <tr><td style="width: 25%;"><a href="spark-api.html">spark-api</a></td>
 <td>Access the Spark API</td></tr>
 <tr><td style="width: 25%;"><a href="spark-connections.html">spark-connections</a></td>
@@ -870,6 +921,15 @@
 <td>Tidying methods for Spark ML tree models</td></tr>
 <tr><td style="width: 25%;"><a href="transform_sdf.html">transform_sdf</a></td>
 <td>transform a subset of column(s) in a Spark Dataframe</td></tr>
+</table>
+
+<h2><a name="U">-- U --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="unite.html">unite</a></td>
+<td>Unite</td></tr>
+<tr><td style="width: 25%;"><a href="unnest.html">unnest</a></td>
+<td>Unnest</td></tr>
 </table>
 
 <h2><a name="misc">-- misc --</a></h2>

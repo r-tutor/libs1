@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get Bibliography Information From a Zotero Library.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ReadZotero {RefManageR}"><tr><td>ReadZotero {RefManageR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get Bibliography Information From a Zotero Library.</h2>
+
+<h3>Description</h3>
+
+<p>Get Bibliography Information From a Zotero Library.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ReadZotero(
+  user,
+  group,
+  .params,
+  temp.file = tempfile(fileext = ".bib"),
+  delete.file = TRUE
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>user</code></td>
+<td>
+<p>Zotero userID for use in calls to the Zotero API.  This is not
+the same as your Zotero username.  The userID for accessing user-owned
+libraries can be found at <code style="white-space: pre;">https://www.zotero.org/settings/keys</code>
+after logging in.</p>
+</td></tr>
+<tr valign="top"><td><code>group</code></td>
+<td>
+<p>Zotero groupID for use in calls to the Zotero API.  Only one
+of <code>user</code> and <code>group</code> should be specified; <code>group</code> will be
+ignored if both are specified.</p>
+</td></tr>
+<tr valign="top"><td><code>.params</code></td>
+<td>
+<p>A <em>named</em> list of parameters to use in requests to the
+Zotero API with possible values
+</p>
+
+<ul>
+<li><p> q - Search string to use to search the library
+</p>
+</li>
+<li><p> qmode - Search mode. Default is &quot;titleCreatorYear&quot;.  Use &quot;everything&quot;
+to include full-text content in search.
+</p>
+</li>
+<li><p> key - API key.  This must be specified to access non-public libraries.
+</p>
+</li>
+<li><p> collection - name of a specific collection within the library to search
+</p>
+</li>
+<li><p> itemType - type of entry to search for; e.g., &quot;book&quot; or &quot;journalArticle&quot;
+</p>
+</li>
+<li><p> tag - name of tag to search for in library
+</p>
+</li>
+<li><p> limit - maximum number of entries to return
+</p>
+</li>
+<li><p> start - index of first entry to return
+</p>
+</li></ul>
+</td></tr>
+<tr valign="top"><td><code>temp.file</code></td>
+<td>
+<p>character; file name where the BibTeX data returned by
+Zotero will be temporarily written.</p>
+</td></tr>
+<tr valign="top"><td><code>delete.file</code></td>
+<td>
+<p>boolean; should <code>temp.file</code> be removed on exit?</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of class BibEntry
+</p>
+
+
+<h3>References</h3>
+
+<p><code style="white-space: pre;">https://www.zotero.org/support/dev/server_api/v2/read_requests</code>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="BibEntry.html">BibEntry</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## first two entries in library with bayesian in title
+ReadZotero(user = "1648676", .params = list(q = "bayesian",
+  key = "7lhgvcwVq60CDi7E68FyE3br", limit=2))
+
+## Search specific collection
+## collection key can be found by reading uri when collection is selected in Zotero
+ReadZotero(user = "1648676", .params=list(q = "yu", key = "7lhgvcwVq60CDi7E68FyE3br",
+  collection = "3STEQRNU"))
+
+## Search by tag
+## Notice the issue with how Zotero uses a TechReport entry for arXiv manuscripts
+## This is one instance where the added fields of BibLaTeX are useful
+ReadZotero(user = "1648676", .params=list(key = "7lhgvcwVq60CDi7E68FyE3br",
+  tag = "Statistics - Machine Learning"))
+
+## To read these in you must set check.entries to FALSE or "warn"
+old.opts &lt;- BibOptions(check.entries = FALSE)
+length(ReadZotero(user = "1648676", .params = list(key = "7lhgvcwVq60CDi7E68FyE3br",
+  tag = "Statistics - Machine Learning")))
+
+## Example using groups
+ReadZotero(group = "13495", .params = list(q = "Schmidhuber",
+  collection = "QU23T27Q"))
+BibOptions(old.opts)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RefManageR</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

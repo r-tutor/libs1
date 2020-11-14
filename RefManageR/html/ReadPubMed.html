@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Search NCBI's E-Utilities for citation information</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ReadPubMed {RefManageR}"><tr><td>ReadPubMed {RefManageR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Search NCBI's E-Utilities for citation information</h2>
+
+<h3>Description</h3>
+
+<p>This function takes a query and searches an Entrez database for
+references using NCBI's E-Utilities, returning the results in a BibEntry
+object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ReadPubMed(query, database = "PubMed", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>query</code></td>
+<td>
+<p>string; search term.</p>
+</td></tr>
+<tr valign="top"><td><code>database</code></td>
+<td>
+<p>string; the Entrez database to search.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional parameters to use for the search.
+See the <em>Details</em>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Optional additional parameters to pass to the server include
+</p>
+
+<ul>
+<li> <p><code>retstart</code> - index of the first retrieved ID that should be
+included in the results.
+</p>
+</li>
+<li> <p><code>retmax</code> - maximum number of IDs the server will
+return (default 20). 
+</p>
+</li>
+<li> <p><code>field</code> - limits the query to search only the specified
+field (e.g. &ldquo;title&rdquo;).
+</p>
+</li>
+<li> <p><code>datetype</code> - type of date to use when limiting search by
+dates. E.g. &ldquo;mdat&rdquo;
+for modification date or &ldquo;pdat&rdquo; for publication date.
+</p>
+</li>
+<li> <p><code>reldate</code> - integer; only items that have (<code>datetype</code>)
+date values within <code>reldate</code> <em>days</em>
+of the current date will be returned.
+</p>
+</li>
+<li> <p><code>mindate</code>, <code>maxdate</code> - date ranges to restrict search
+results.  Possible formats are
+&ldquo;YYYY&rdquo;, &ldquo;YYYY/MM&rdquo;, and &ldquo;YYYY/MM/DD&rdquo;.
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>an object of class BibEntry.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The returned entries will have type either &lsquo;Article&rsquo; or
+&lsquo;Misc&rsquo; depending on whether journal information was retrieved.
+See the Entrez documentation listed in the <em>References</em>.
+</p>
+<p>The language of the entry will be returned in the field &ldquo;language&rdquo;
+and the abstract will be returned in the field &ldquo;abstract&rdquo;, if they
+are available.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch">https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other pubmed: 
+<code><a href="GetPubMedByID.html">GetPubMedByID</a>()</code>,
+<code><a href="GetPubMedRelated.html">GetPubMedRelated</a>()</code>,
+<code><a href="LookupPubMedID.html">LookupPubMedID</a>()</code>,
+<code><a href="ReadCrossRef.html">ReadCrossRef</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive() &amp;&amp; !httr::http_error("https://eutils.ncbi.nlm.nih.gov/"))
+  ReadPubMed(query = "raymond carroll measurement error", retmax = 5, mindate = 1990)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RefManageR</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

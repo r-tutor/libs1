@@ -12,7 +12,7 @@
 
 <meta name="author" content="Kent Russell" />
 
-<meta name="date" content="2020-07-06" />
+<meta name="date" content="2020-10-07" />
 
 <title>Sunburst 2.0.0</title>
 
@@ -11704,10 +11704,14 @@ Object.defineProperty(exports, '__esModule', { value: true });
           });
         }
 
+        // add x to instance for future reference
+        instance.x = x;
+
       },
 
       resize: function(width, height) {
 
+        var x = instance.x;
         sunburst.chartFrame().size({height: height});
         d3.select(el).call(sunburst);
 
@@ -12026,7 +12030,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Sunburst 2.0.0</h1>
 <h4 class="author">Kent Russell</h4>
-<h4 class="date">2020-07-06</h4>
+<h4 class="date">2020-10-07</h4>
 
 
 
@@ -12036,7 +12040,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>Let’s get started by loading some packages and making some simple data to use throughout the post.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(sunburstR)</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="kw">packageVersion</span>(<span class="st">&quot;sunburstR&quot;</span>)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="co">#&gt; [1] &#39;2.1.4&#39;</span></span></code></pre></div>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">#&gt; [1] &#39;2.1.5&#39;</span></span></code></pre></div>
 <p>Simple data should suffice for these examples.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(htmltools)</span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="kw">library</span>(d3r)</span>
@@ -12115,7 +12119,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb4-14"><a href="#cb4-14"></a>)</span></code></pre></div>
 <div style="display: flex; align-items:center;">
 <div style="width:50%; border:1px solid #ccc;">
-<div class="sunburst html-widget" id="htmlwidget-32c207b87e080b0b3ce5" style="width:100%;height:400px; position:relative;">
+<div class="sunburst html-widget" id="htmlwidget-ff1b806a1789e3bb52da" style="width:100%;height:400px; position:relative;">
 <div>
 <div class="sunburst-main">
 <div class="sunburst-sequence"></div>
@@ -12129,10 +12133,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 </div>
 </div>
-<script type="application/json" data-for="htmlwidget-32c207b87e080b0b3ce5">{"x":{"data":{"children":[{"name":"a","children":[{"name":"a1","size":10,"colname":"level2"},{"name":"a2","size":5,"colname":"level2"},{"name":"a3","size":2,"colname":"level2"}],"colname":"level1"},{"name":"b","children":[{"name":"b1","size":3,"colname":"level2"},{"name":"b2","size":8,"colname":"level2"},{"name":"b3","size":6,"colname":"level2"}],"colname":"level1"}],"name":"root"},"options":{"legendOrder":null,"colors":null,"valueField":"size","percent":true,"count":false,"explanation":null,"breadcrumb":[],"legend":[],"sortFunction":null,"sumNodes":true}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-ff1b806a1789e3bb52da">{"x":{"data":{"children":[{"name":"a","children":[{"name":"a1","size":10,"colname":"level2"},{"name":"a2","size":5,"colname":"level2"},{"name":"a3","size":2,"colname":"level2"}],"colname":"level1"},{"name":"b","children":[{"name":"b1","size":3,"colname":"level2"},{"name":"b2","size":8,"colname":"level2"},{"name":"b3","size":6,"colname":"level2"}],"colname":"level1"}],"name":"root"},"options":{"legendOrder":null,"colors":null,"valueField":"size","percent":true,"count":false,"explanation":null,"breadcrumb":[],"legend":[],"sortFunction":null,"sumNodes":true}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div style="width:50%; border:1px solid #ccc;">
-<div class="sunburst html-widget" id="htmlwidget-5424d11f2ee2e273d3c6" style="width:100%;height:400px; position:relative;">
+<div class="sunburst html-widget" id="htmlwidget-d97775c405eda9e606ba" style="width:100%;height:400px; position:relative;">
 <div>
 <div class="sunburst-main">
 <div class="sunburst-sequence"></div>
@@ -12146,7 +12150,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 </div>
 </div>
-<script type="application/json" data-for="htmlwidget-5424d11f2ee2e273d3c6">{"x":{"data":{"children":[{"name":"a","children":[{"name":"a1","size":10,"colname":"level2"},{"name":"a2","size":5,"colname":"level2"},{"name":"a3","size":2,"colname":"level2"}],"colname":"level1"},{"name":"b","children":[{"name":"b1","size":3,"colname":"level2"},{"name":"b2","size":8,"colname":"level2"},{"name":"b3","size":6,"colname":"level2"}],"colname":"level1"}],"name":"root"},"options":{"legendOrder":null,"colors":null,"valueField":"size","percent":true,"count":false,"explanation":null,"breadcrumb":[],"legend":false,"sortFunction":null,"sumNodes":true}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-d97775c405eda9e606ba">{"x":{"data":{"children":[{"name":"a","children":[{"name":"a1","size":10,"colname":"level2"},{"name":"a2","size":5,"colname":"level2"},{"name":"a3","size":2,"colname":"level2"}],"colname":"level1"},{"name":"b","children":[{"name":"b1","size":3,"colname":"level2"},{"name":"b2","size":8,"colname":"level2"},{"name":"b3","size":6,"colname":"level2"}],"colname":"level1"}],"name":"root"},"options":{"legendOrder":null,"colors":null,"valueField":"size","percent":true,"count":false,"explanation":null,"breadcrumb":[],"legend":false,"sortFunction":null,"sumNodes":true}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -12160,8 +12164,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb5-5"><a href="#cb5-5"></a>  sb3</span>
 <span id="cb5-6"><a href="#cb5-6"></a>)</span></code></pre></div>
 <div style="display: flex; align-items:center;">
-<div id="htmlwidget-5c83ca5ef72396994877" style="width:100%;height:500px;" class="sund2b html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5c83ca5ef72396994877">{"x":{"data":{"root":{"children":[{"name":"a","children":[{"name":"a1","size":10,"colname":"level2"},{"name":"a2","size":5,"colname":"level2"},{"name":"a3","size":2,"colname":"level2"}],"colname":"level1"},{"name":"b","children":[{"name":"b1","size":3,"colname":"level2"},{"name":"b2","size":8,"colname":"level2"},{"name":"b3","size":6,"colname":"level2"}],"colname":"level1"}],"name":"root"},"tooltip":null,"breadcrumbs":null},"options":{"colors":null,"valueField":"size","rootLabel":null,"showLabels":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-db906319e8bd61765b70" style="width:100%;height:500px;" class="sund2b html-widget"></div>
+<script type="application/json" data-for="htmlwidget-db906319e8bd61765b70">{"x":{"data":{"root":{"children":[{"name":"a","children":[{"name":"a1","size":10,"colname":"level2"},{"name":"a2","size":5,"colname":"level2"},{"name":"a3","size":2,"colname":"level2"}],"colname":"level1"},{"name":"b","children":[{"name":"b1","size":3,"colname":"level2"},{"name":"b2","size":8,"colname":"level2"},{"name":"b3","size":6,"colname":"level2"}],"colname":"level1"}],"name":"root"},"tooltip":null,"breadcrumbs":null},"options":{"colors":null,"valueField":"size","rootLabel":null,"showLabels":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="sum-nodes" class="section level2">

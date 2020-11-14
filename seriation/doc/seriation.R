@@ -1,5 +1,4 @@
 ### R code from vignette source 'seriation.Rnw'
-### Encoding: UTF-8
 
 ###################################################
 ### code chunk number 1: seriation.Rnw:120-123

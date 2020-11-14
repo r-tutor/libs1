@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Extract fields from a BibEntry object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for $.BibEntry {RefManageR}"><tr><td>$.BibEntry {RefManageR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Extract fields from a BibEntry object</h2>
+
+<h3>Description</h3>
+
+<p>used to extract a single field from each entry in a BibEntry object
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'BibEntry'
+x$name
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an object of class BibEntry</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>the field to extract</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a named list of values for the field specified by name for each entry; <code>NULL</code> if the field is not present for
+a particular entry.  The names attribute of the returned list contains the entry keys (potentially back-quoted).
+</p>
+
+
+<h3>Note</h3>
+
+<p><code>name</code> may be &ldquo;bibtype&rdquo; to extract entry types or &ldquo;key&rdquo; to extract keys.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other operators: 
+<code><a href="cash-set-.BibEntry.html">$&lt;-.BibEntry</a>()</code>,
+<code><a href="merge.BibEntry.html">+.BibEntry</a>()</code>,
+<code><a href="SearchBib.html">[.BibEntry</a>()</code>,
+<code><a href="subset-.BibEntry.html">[&lt;-.BibEntry</a>()</code>,
+<code><a href="sub-sub-.BibEntry.html">[[.BibEntry</a>()</code>,
+<code><a href="sub-subset-.BibEntry.html">[[&lt;-.BibEntry</a>()</code>,
+<code><a href="c.BibEntry.html">c.BibEntry</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (requireNamespace("bibtex")) {
+    file.name &lt;- system.file("Bib", "biblatexExamples.bib", package="RefManageR")
+    bib &lt;- suppressMessages(ReadBib(file.name))
+    bib[[50:55]]$author
+    bib[[seq_len(5)]]$bibtype
+ }
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RefManageR</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

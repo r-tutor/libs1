@@ -50,25 +50,27 @@ Fisk                    The Fisk Distribution
 Foldnorm                The Folded-Normal Distribution
 Frank                   Frank's Bivariate Distribution
 Frechet                 The Frechet Distribution
-Gaitbinom.mlm           Generally-Altered, -Inflated and -Truncated
-                        Binomial Distribution (GAIT-binom-MLM-MLM)
+Gaitbinom               Generally-Altered, -Inflated and -Truncated
+                        Binomial Distribution
 Gaitlog                 Generally-Altered, -Inflated and -Truncated
                         Logarithmic Distribution
-Gaitnbinom.mix          Generally-Altered, -Inflated and -Truncated
-                        Negative Binomial Distribution (GAIT-NB-NB-NB
-                        mixture)
-Gaitnbinom.mlm          Generally-Altered, -Inflated and -Truncated
+Gaitnbinom              Generally-Altered, -Inflated and -Truncated
                         Negative Binomial Distribution
-                        (GAIT-NB-MLM-MLM)
 Gaitpois                Generally-Altered, -Inflated and -Truncated
                         Poisson Distribution
 Gaitzeta                Generally-Altered, -Inflated and -Truncated
                         Zeta Distribution
 GenbetaII               The Generalized Beta II Distribution
-Gompertz                The Gompertz Distribution
+Genpois0                Generalized Poisson Distribution (Original
+                        Parameterization)
+Genpois1                Generalized Poisson Distribution (GP-1 and GP-2
+                        Parameterizations of the Mean)
+Gompertz                Gompertz Distribution
 Gumbel-II               The Gumbel-II Distribution
 Huggins89.t1            Table 1 of Huggins (1989)
 Hzeta                   Haight's Zeta Distribution
+Influence               Influence Function (S4 generic) of a Fitted
+                        Model
 Inv.gaussian            The Inverse Gaussian Distribution
 Inv.lomax               The Inverse Lomax Distribution
 Inv.paralogistic        The Inverse Paralogistic Distribution
@@ -84,33 +86,19 @@ Makeham                 The Makeham Distribution
 Max                     Maximums
 Maxwell                 The Maxwell Distribution
 Nakagami                Nakagami Distribution
-Oalog                   One-Altered Logarithmic Distribution
-Oapospois               One-Altered Logarithmic Distribution
-Oazeta                  One-Altered Logarithmic Distribution
-Oilog                   One-Inflated Logarithmic Distribution
-Oiposbinom              One-Inflated Positive Binomial Distribution
-Oipospois               One-Inflated Positive Poisson Distribution
-Oizeta                  One-Inflated Zeta Distribution
-Oizipf                  One-Inflated Zipf Distribution
 Opt                     Optimums
-Otlog                   One-truncated Logarithmic Distribution
-Otpospois               One-truncated Positive-Poisson Distribution
-Otzeta                  One-truncated Zeta Distribution
 Paralogistic            The Paralogistic Distribution
 Pareto                  The Pareto Distribution
 ParetoIV                The Pareto(IV/III/II) Distributions
 Perks                   The Perks Distribution
 PoissonPoints           Poisson Points Distribution
 Polono                  The Poisson Lognormal Distribution
-Posbinom                Positive-Binomial Distribution
 Posgeom                 Positive-Geometric Distribution
-Posnegbin               Positive-Negative Binomial Distribution
 Posnorm                 The Positive-Normal Distribution
-Pospois                 Positive-Poisson Distribution
 Qvar                    Quasi-variances Preprocessing Function
 R2latvar                R-squared for Latent Variable Models
 Rank                    Rank
-Rayleigh                The Rayleigh Distribution
+Rayleigh                Rayleigh Distribution
 Rcim                    Mark the Baseline of Row and Column on a Matrix
                         data
 Rice                    The Rice Distribution
@@ -130,6 +118,7 @@ Topple                  The Topp-Leone Distribution
 Triangle                The Triangle Distribution
 Trinorm                 Trivariate Normal Distribution Density and
                         Random Variates
+Trunc                   Truncated Values for the GT-Expansion Method
 Truncpareto             The Truncated Pareto Distribution
 UtilitiesVGAM           Utility Functions for the VGAM Package
 V1                      V1 Flying-Bombs Hits in London
@@ -262,7 +251,7 @@ deplot.lmscreg          Density Plot for LMS Quantile Regression
 depvar                  Response Variable Extracted
 dextlogF                Extended log-F Distribution
 df.residual             Residual Degrees-of-Freedom
-dgenpois                The Generalized Poisson Distribution
+dgaitplot               Plotting the GAIT Combo Density
 dgumbel                 The Gumbel Distribution
 dhuber                  Huber's Least Favourable Distribution
 diffzeta                Differenced Zeta Distribution Family Function
@@ -315,35 +304,28 @@ formulavlm              Model Formulae and Term Names for VGLMs
 frechet                 Frechet Distribution Family Function
 freund61                Freund's (1961) Bivariate Extension of the
                         Exponential Distribution
-gabinomial.mlm          Generally-Altered Binomial Regression Family
-                        Function (multinomial logit model based;
-                        GA-binom-MLM)
-gaitlog.mix             Generally-Altered, -Inflated and -Truncated
-                        Logarithmic Regression Family Function
-                        (GAIT-Log-Log-Log Mixture Variant)
-gaitpoisson.mix         Generally-Altered, -Inflated and -Truncated
-                        Poisson Regression Family Function
-                        (GAIT-Pois-Pois-Pois Mixture Variant)
-gaitpoisson.mlm         Generally-Altered, -Inflated and -Truncated
-                        Poisson Regression Family Function
-                        (GAIT-Pois-MLM-MLM Variant)
+gaitlog                 Generally-Altered, -Inflated and -Truncated
+                        Logarithmic Regression
+gaitpoisson             Generally-Altered, -Inflated and -Truncated
+                        Poisson Regression
+gaitzeta                Generally-Altered, -Inflated and -Truncated
+                        Zeta Regression
 gamma1                  1-parameter Gamma Regression Family Function
 gamma2                  2-parameter Gamma Regression Family Function
 gammaR                  2-parameter Gamma Regression Family Function
 gammahyperbola          Gamma Hyperbola Bivariate Distribution
 garma                   GARMA (Generalized Autoregressive
                         Moving-Average) Models
-gatnbinomial.mix        Generally-Altered and -Truncated Negative
-                        Binomial Regression Family Function (GAT-NB-NB
-                        Mixture Variant)
-gatnbinomial.mlm        Generally-Altered and -Truncated Negative
-                        Binomial Regression Family Function (GAT-NB-MLM
-                        Variant)
 genbetaII               Generalized Beta Distribution of the Second
                         Kind
 gengamma.stacy          Generalized Gamma distribution family function
-gengammaUC              The Generalized Gamma Distribution
-genpoisson              Generalized Poisson distribution
+gengammaUC              Generalized Gamma Distribution
+genpoisson0             Generalized Poisson Regression (Original
+                        Parameterization)
+genpoisson1             Generalized Poisson Regression (GP-1
+                        Parameterization)
+genpoisson2             Generalized Poisson Regression (GP-2
+                        Parameterization)
 genray                  The Generalized Rayleigh Distribution
 genrayleigh             Generalized Rayleigh Distribution Family
                         Function
@@ -364,8 +346,6 @@ grain.us                Grain Prices Data in USA
 grc                     Row-Column Interaction Models including
                         Goodman's RC Association Model and
                         Unconstrained Quadratic Ordination
-gtbinomial              Generally-Truncated Binomial Distribution
-                        Family Function
 gumbel                  Gumbel Regression Family Function
 gumbelII                Gumbel-II Regression Family Function
 guplot                  Gumbel Plot
@@ -473,24 +453,10 @@ negbinomial.size        Negative Binomial Distribution Family Function
 normal.vcm              Univariate Normal Distribution as a
                         Varying-Coefficient Model
 nparam.vlm              Number of Parameters
-oalog                   One-Altered Logarithmic Distribution
-oapospoisson            One-Altered Positive-Poisson Distribution
-oazeta                  One-Altered Zeta Distribution
-oilog                   One-inflated Logarithmic Distribution Family
-                        Function
-oiposbinomial           One-Inflated Positive Binomial Distribution
-                        Family Function
-oipospoisson            One-inflated Positive Poisson Distribution
-                        Family Function
-oizeta                  One-inflated Zeta Distribution Family Function
-oizipf                  One-inflated Zipf Distribution Family Function
 olym08                  2008 and 2012 Summer Olympic Final Medal Count
                         Data
 ordpoisson              Ordinal Poisson Family Function
 ordsup                  Ordinal Superiority Measures
-otlog                   One-truncated Logarithmic Distribution
-otpospoisson            One-truncated Poisson Distribution
-otzeta                  One-truncated Zeta Distribution Family Function
 oxtemp                  Oxford Temperature Data
 paralogistic            Paralogistic Distribution Family Function
 paretoIV                Pareto(IV/III/II) Distribution Family Functions
@@ -502,6 +468,8 @@ pgamma.deriv            Derivatives of the Incomplete Gamma Integral
 pgamma.deriv.unscaled   Derivatives of the Incomplete Gamma Integral
                         (Unscaled Version)
 plotdeplot.lmscreg      Density Plot for LMS Quantile Regression
+plotdgait.vglm          Plotting the GAIT Combo Density from a GAIT
+                        Regression Object
 plotqrrvglm             Model Diagnostic Plots for QRR-VGLMs
 plotqtplot.lmscreg      Quantile Plot for LMS Quantile Regression
 plotrcim0               Main Effects Plot for a Row-Column Interaction
@@ -512,7 +480,7 @@ plotvglm                Plots for VGLMs
 pneumo                  Pneumoconiosis in Coalminers Data
 poisson.points          Poisson-points-on-a-plane/volume Distances
                         Distribution
-poissonff               Poisson Family Function
+poissonff               Poisson Regression
 pordlink                Poisson-Ordinal Link Function
 posbernUC               Positive Bernoulli Sequence Model
 posbernoulli.b          Positive Bernoulli Family Function with
@@ -557,6 +525,7 @@ rigff                   Reciprocal Inverse Gaussian distribution
 rlplot.gevff            Return Level Plot for GEV Fits
 rootogram4              Rootograms (S4 generic) for Assessing Goodness
                         of Fit of Probability Models
+round2                  Rounding of Numbers to Base 2
 rrar                    Nested Reduced-rank Autoregressive Models for
                         Multiple Time Series
 rrvglm                  Fitting Reduced-Rank Vector Generalized Linear
@@ -601,7 +570,7 @@ summaryvglm             Summarizing Vector Generalized Linear Model
                         Fits
 tikuv                   Short-tailed Symmetric Distribution Family
                         Function
-tobit                   Tobit Model
+tobit                   Tobit Regression
 topple                  Topp-Leone Distribution Family Function
 toxop                   Toxoplasmosis Data
 triangle                Triangle Distribution Family Function

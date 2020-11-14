@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Open BibEntry in PDF viewer or web browser.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for open.BibEntry {RefManageR}"><tr><td>open.BibEntry {RefManageR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Open BibEntry in PDF viewer or web browser.</h2>
+
+<h3>Description</h3>
+
+<p>Attempts to open a connection to an entry in a BibEntry object using fields
+such as &lsquo;file&rsquo;, &lsquo;DOI&rsquo;, &lsquo;eprint&rsquo; + &lsquo;eprinttype&rsquo;,
+and &lsquo;URL&rsquo;.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'BibEntry'
+open(
+  con,
+  entry = 1L,
+  open.field = c("file", "url", "eprint", "doi"),
+  viewer,
+  ...
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>con</code></td>
+<td>
+<p>BibEntry object to extract connections from.</p>
+</td></tr>
+<tr valign="top"><td><code>entry</code></td>
+<td>
+<p>numeric index or character key of entry in <code>bib</code> to open.</p>
+</td></tr>
+<tr valign="top"><td><code>open.field</code></td>
+<td>
+<p>character vector of fields to use in <code>bib</code> to open
+the BibEntry.  Possible fields are any combination of &ldquo;file&rdquo;,
+&ldquo;url&rdquo;, &ldquo;eprint&rdquo;, or &ldquo;doi&rdquo;.  &ldquo;eprint&rdquo; is
+implemented for <code>eprinttype=</code> &ldquo;JSTOR&rdquo;, &ldquo;PubMed&rdquo;,
+or &ldquo;arXiv&rdquo;.  When multiple fields are specified, they are tried in
+the order they appear in the vector.</p>
+</td></tr>
+<tr valign="top"><td><code>viewer</code></td>
+<td>
+<p>character string giving the name of the program to be used
+as hypertext browser.  It should be in the PATH, or a full path specified.
+Alternatively, an R function to be called to invoke the browser.  Defaults
+to <code>getOptions("pdfviewer")</code> if <code>open.field = "file"</code> and
+<code>getOptions("browser")</code>, otherwise.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>not used.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>McLean, M. W. <a href="mailto:mathew.w.mclean@gmail.com">mathew.w.mclean@gmail.com</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../utils/html/browseURL.html">browseURL</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+if (requireNamespace("bibtex")) {
+    testbib &lt;- ReadBib(system.file("REFERENCES.bib", package="bibtex"))
+    open(testbib)
+    testbib$file &lt;- file.path(R.home("doc/manual"), "R-intro.pdf")
+    open(testbib)
+}
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RefManageR</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

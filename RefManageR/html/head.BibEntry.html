@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Return the first or last part of a BibEntry object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for head.BibEntry {RefManageR}"><tr><td>head.BibEntry {RefManageR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Return the first or last part of a BibEntry object</h2>
+
+<h3>Description</h3>
+
+<p>Prints the first or last entries of a BibEntry object (via <code><a href="../../base/html/message.html">message</a></code>) and returns them <em>invisibly</em>
+(via <code><a href="../../base/html/invisible.html">invisible</a></code>).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'BibEntry'
+head(x, n = 6L, suppress.messages = TRUE, ...)
+
+## S3 method for class 'BibEntry'
+tail(x, n = 6L, suppress.messages = TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an object of class BibEntry.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>a single integer. If positive, size for the resulting object: number of elements for a vector
+(including lists), rows for a matrix or data frame or lines for a function. If negative, all but the
+n last/first number of elements of x.</p>
+</td></tr>
+<tr valign="top"><td><code>suppress.messages</code></td>
+<td>
+<p>boolean; should the head/tail entries be printed via <code><a href="../../base/html/message.html">message</a></code>?</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments to be passed to or from other methods.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>suppress.messages</code> is <code>FALSE</code>, the head/tail entries are output to the console along
+with some additional formatting for the &lsquo;bibtype&rsquo; and &lsquo;key&rsquo;, in addition to
+invisibly returning the entries.
+</p>
+
+
+<h3>Value</h3>
+
+<p>an object of class BibEntry.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (requireNamespace("bibtex")) {
+    file &lt;- system.file("Bib", "biblatexExamples.bib", package = "RefManageR")
+    BibOptions(check.entries = FALSE)
+    bib &lt;- ReadBib(file)
+    tail(bib, 2, suppress.messages = FALSE)
+    bib &lt;- head(bib, 1, suppress.messages = TRUE)
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RefManageR</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Replace values for a particular field in a BibEntry object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for $&amp;lt;-.BibEntry {RefManageR}"><tr><td>$&lt;-.BibEntry {RefManageR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Replace values for a particular field in a BibEntry object</h2>
+
+<h3>Description</h3>
+
+<p>Used to replace the values stored for a specified field in a BibEntry object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 replacement method for class 'BibEntry'
+x$name &lt;- value
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a BibEntry object</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>string; the field to assign the new values to.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>character vector; the replacement field values to be assigned.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>an object of class BibEntry with the updated fields.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The method expects date and name list fields to be in the format
+expected by Biblatex.  The 
+field specified by <code>name</code> does not have to be one currently in <code>x</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other operators: 
+<code><a href="cash-.BibEntry.html">$.BibEntry</a>()</code>,
+<code><a href="merge.BibEntry.html">+.BibEntry</a>()</code>,
+<code><a href="SearchBib.html">[.BibEntry</a>()</code>,
+<code><a href="subset-.BibEntry.html">[&lt;-.BibEntry</a>()</code>,
+<code><a href="sub-sub-.BibEntry.html">[[.BibEntry</a>()</code>,
+<code><a href="sub-subset-.BibEntry.html">[[&lt;-.BibEntry</a>()</code>,
+<code><a href="c.BibEntry.html">c.BibEntry</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+bib &lt;- BibEntry(bibtype = "misc", key = "mclean", author = "Mathew W. McLean", 
+  title = "My Work", year = "2012")
+bib$year &lt;- 2014
+bib$author &lt;- "McLean, M. W. and Carroll, R. J." 
+bib$url &lt;- "https://example.com"
+bib
+
+bib &lt;- c(bib, as.BibEntry(citation()))
+bib[1]$author[2] &lt;- person(c("Raymond", "J."), "Carroll")
+bib$author
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RefManageR</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create bibliographic information from PDF Metadata.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ReadPDFs {RefManageR}"><tr><td>ReadPDFs {RefManageR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create bibliographic information from PDF Metadata.</h2>
+
+<h3>Description</h3>
+
+<p>This function creates bibliographic information by reading the Metadata and
+text of PDFs stored in a user specified directory using Poppler
+(<a href="https://poppler.freedesktop.org/">https://poppler.freedesktop.org/</a>).  IF requested, the function
+first searches for DOIs and downloads <code>BibTeX</code> entries from
+<code><a href="ReadCrossRef.html">ReadCrossRef</a></code> if DOIs are found.  If this is not requested or
+a DOI is not found for an entry, an attempt is made to build a BibTeX
+entry from the metadata and text.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ReadPDFs(
+  path,
+  .enc = "UTF-8",
+  recursive = TRUE,
+  use.crossref = TRUE,
+  use.metadata = TRUE,
+  progress = FALSE
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>character; path to directory containing pdfs or filename of
+one pdf. <code>normalizePath</code> is used on the specified path</p>
+</td></tr>
+<tr valign="top"><td><code>.enc</code></td>
+<td>
+<p>character; text encoding to use for reading pdf and creating
+BibEntry object. Available encodings for Poppler can be found using
+<code>system("pdfinfo -listenc")</code>.  The encoding must also be listed
+in <code>iconvlist()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>recursive</code></td>
+<td>
+<p>logical; same as <code><a href="../../base/html/list.files.html">list.files</a></code>.  Should pdfs
+in subdirectories of path be used?</p>
+</td></tr>
+<tr valign="top"><td><code>use.crossref</code></td>
+<td>
+<p>logical; should an attempt be made to download bibliographic
+information from CrossRef if
+any Document Object Identifiers (DOIs) are found? This is only supported if the Suggeseted package <code>bibtex</code> is found.</p>
+</td></tr>
+<tr valign="top"><td><code>use.metadata</code></td>
+<td>
+<p>logical; should the PDF metadata also be used to help
+create entries?</p>
+</td></tr>
+<tr valign="top"><td><code>progress</code></td>
+<td>
+<p>logical; should progress bar be generated when fetching from
+CrossRef?</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function requires that the <code>pdfinfo</code> utility from Poppler PDF
+<a href="https://poppler.freedesktop.org/">https://poppler.freedesktop.org/</a> be installed.
+</p>
+<p>This function will create only <code>Article</code> or <code>Misc</code> <code>BibTeX</code> entries.
+</p>
+<p>The absolute path to each file will be stored in the bib entry in a field
+called &lsquo;file&rsquo;, which is recognized by <code>BibLaTeX</code> (though not printed by
+any standard style) and can be used by the
+<code><a href="open.BibEntry.html">open.BibEntry</a></code> function to open the PDF in the default viewer.
+</p>
+<p>If the keywords metadata field is available, it will be added to the bib entry
+in a field &lsquo;keywords&rsquo;, which is recognized by <code>BibLaTeX</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class BibEntry.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://poppler.freedesktop.org/">https://poppler.freedesktop.org/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="ReadCrossRef.html">ReadCrossRef</a></code>, <code><a href="BibEntry.html">BibEntry</a></code>,
+<code><a href="open.BibEntry.html">open.BibEntry</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+path &lt;- system.file("doc", package = "RefManageR")
+ReadPDFs(path)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RefManageR</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>
