@@ -1,10 +1,12 @@
 %->%                    Infix operator for composing a lambda
                         expression
+[.tbl_spark             Subsetting operator for Spark dataframe
 checkpoint_directory    Set/Get Spark checkpoint directory
 compile_package_jars    Compile Scala sources into a Java Archive (jar)
 connection_config       Read configuration values for a connection
 copy_to.spark_connection
                         Copy an R Data Frame to Spark
+distinct                Distinct
 download_scalac         Downloads default Scala Compilers
 dplyr_hof               dplyr wrappers for Apache Spark higher order
                         functions
@@ -176,7 +178,7 @@ pivot_longer            Pivot longer
 pivot_wider             Pivot wider
 random_string           Random string generation
 reactiveSpark           Reactive spark reader
-registerDoSpark         Register a Prallel Backend
+registerDoSpark         Register a Parallel Backend
 register_extension      Register a Package that Implements a Spark
                         Extension
 right_join              Right join
@@ -197,11 +199,15 @@ sdf_describe            Compute summary statistics for columns of a
                         data frame
 sdf_dim                 Support for Dimension Operations
 sdf_drop_duplicates     Remove duplicates from a Spark DataFrame
+sdf_expand_grid         Create a Spark dataframe containing all
+                        combinations of inputs
 sdf_from_avro           Convert column(s) from avro format
 sdf_is_streaming        Spark DataFrame is Streaming
 sdf_last_index          Returns the last index of a Spark DataFrame
 sdf_len                 Create DataFrame for Length
 sdf_num_partitions      Gets number of partitions of a Spark DataFrame
+sdf_partition_sizes     Compute the number of records within each
+                        partition of a Spark DataFrame
 sdf_persist             Persist a Spark DataFrame
 sdf_pivot               Pivot a Spark DataFrame
 sdf_project             Project features onto principal components
@@ -220,6 +226,8 @@ sdf_seq                 Create DataFrame for Range
 sdf_sort                Sort a Spark DataFrame
 sdf_sql                 Spark DataFrame from SQL
 sdf_to_avro             Convert column(s) to avro format
+sdf_unnest_longer       Unnest longer
+sdf_unnest_wider        Unnest wider
 sdf_weighted_sample     Perform Weighted Random Sampling on a Spark
                         DataFrame
 sdf_with_sequential_id
@@ -302,6 +310,8 @@ src_databases           Show database list
 stream_find             Find Stream
 stream_generate_test    Generate Test Stream
 stream_id               Spark Stream's Identifier
+stream_lag              Apply lag function to columns of a Spark
+                        Streaming DataFrame
 stream_name             Spark Stream's Name
 stream_read_csv         Read CSV Stream
 stream_read_delta       Read Delta Stream

@@ -1,4 +1,20 @@
 
+# cli 2.2.0
+
+* New `style_hyperlink()` function to add hyperlinks, on terminals that
+  support them.
+
+* `cli_format_method()` now works properly in knitr, and other environments
+  that catch message conditions (#159).
+
+* ANSI strings created by `col_*`, `bg_*` and `style_*` now also add the
+  `character` class to the result. This fixes issues with code that
+  expect `character` objects.
+
+* New functions to manipulate ANSI strings: `ansi_aling()`,
+  `ansi_has_any()`, `ansi_nchar()`, `ansi_regex()`, `ansi_strip()`,
+  `ansi_strsplit()`, `ansi_substr()`, `ansi_substring()`.
+
 # cli 2.1.0
 
 * New `cli_vec()` function to allow easier formatting of collapsed
@@ -41,6 +57,8 @@
   space characters (`\u00a0`) with regular space characters, right before
   output. They are still used to calculate the line breaks, but not
   outputted (#161).
+* Progress bars now respect `is_dynamic_tty()` and do not output `\r` when this
+  is false (@jimhester, #177)
 
 # cli 2.0.2
 

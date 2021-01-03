@@ -41,6 +41,14 @@ kable(txt, format = "html", escape = FALSE, align = c('l', 'l')) %>%
 freq(iris$Species, plain.ascii = FALSE, style = "rmarkdown")
 
 ## -----------------------------------------------------------------------------
+set.seed(2835)
+Random_numbers <- sample(c(5e3, 5e4, 5e5), size = 1e4, replace = TRUE, prob = c(.12, .36, .52))
+freq(Random_numbers, big.mark = ",", cumul = FALSE, headings = FALSE)
+
+# We can also use format() arguments with print / view
+print(freq(Random_numbers, cumul = FALSE, headings = FALSE), big.mark = " ", decimal.mark = ".")
+
+## -----------------------------------------------------------------------------
 freq(iris$Species, report.nas = FALSE, headings = FALSE)
 
 ## -----------------------------------------------------------------------------
@@ -51,7 +59,7 @@ freq(iris$Species, report.nas = FALSE, totals = FALSE,
 #  freq(tobacco)
 
 ## -----------------------------------------------------------------------------
-freq(tobacco$disease, order = "freq", rows = 1:5)
+freq(tobacco$disease, order = "freq", rows = 1:5, headings = FALSE)
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  view(freq(tobacco), collapse = TRUE)

@@ -1,10 +1,19 @@
+questionr 0.7.4
+---------------
+
+* Add `useNA` and deprecate `na.rm` and `na.show` arguments to `wtd.table` (thanks @nalimilan)
+* Add `fct_relevel` method to `iorder` (thanks @nalimilan)
+* New function `ggsurvey()` for easy plots with `survey` objects and 
+  `ggplot2` (#123, @larmarange)
+
+
 questionr 0.7.3
 ---------------
 
 * Remove `dplyr::recode` method from `irec` as it is in questioning lifecycle
 * Fix `forcats` and `dplyr` detection in `irec` (thanks @matthias-studer)
 * Fix R.cache blocking message in `irec`, `icut` or `iorder` (thanks @matthias-studer)
-* Fix name conflicts when `irec`, `icut` or `iorder` are called with a data frame with the same name as a function (113, thanks @nalimilan)
+* Fix name conflicts when `irec`, `icut` or `iorder` are called with a data frame with the same name as a function (thanks @nalimilan)
 * Sort level names in `irec` and `iorder` instead of relying on `unique` (thanks @nalimilan)
 
 
