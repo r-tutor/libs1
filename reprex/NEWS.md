@@ -1,3 +1,63 @@
+# reprex 1.0.0
+
+## Venues
+
+* `reprex_VENUE(...)` is a new way to call `reprex(..., venue = "VENUE")`. For example, `reprex_r()` is equivalent to `reprex(venue = "r")`. This makes non-default venues easier to access via auto-completion (#256).
+
+* `venue = "so"` (SO = Stack Overflow) has converged with default `venue = "gh"` (GitHub). As of January 2019, SO [supports CommonMark fenced code blocks](https://meta.stackexchange.com/questions/125148/implement-style-fenced-markdown-code-blocks/322000#322000). The only remaining difference is that Stack Overflow does not support the collapsible details tag that we use on GitHub to reduce the clutter from, e.g., session info (#231).
+
+* "rtf" (Rich Text Format) is a new experimental `venue` for pasting into applications like PowerPoint and Keynote. It is experimental because it requires a working installation of the highlight command line tool, which is left as a somewhat fiddly exercise for the user (#331). `venue = "rtf"` is documented in its [own article](https://reprex.tidyverse.org/articles/articles/rtf.html).
+
+* `reprex.current_venue` is a new read-only option that is set during `reprex_render()`. Other packages can use it to generate `reprex()`-compatible, `venue`-aware output, such as an renv lockfile.
+
+## Implementation and internals
+
+* `reprex()` has been internally refactored to make better use of the official
+  machinery for extending rmarkdown:
+  - `reprex_document()` is a new R Markdown output format.
+  - `reprex_render()` is a newly exported function.
+  - A `reprex_document()` is designed to be rendered with `reprex_render()`.
+    `reprex_render()` is designed to act on a `reprex_document()`. This is
+    (still) the heart of what the `reprex()` function does, in addition to
+    various interface and workflow niceties.
+  - Two R Markdown templates ship with the package, which an RStudio user can
+    access via *File > New File > R Markdown ... > From Template*. One is
+    minimal; the other uses lots of reprex features. Both include
+    `knit: reprex::reprex_render` in the YAML, which causes the RStudio "Knit"
+    button to use `reprex_render()`.
+
+* `prex()`, `prex_VENUE()`, and `prex_render()` are new **unexported** functions that, like `reprex()`, render a small bit of code, but with much less **re**producibility! The code is evaluated in the global workspace of the current process, with the current working directory. This pragmatic hack is useful when preparing a series of related snippets, e.g., for a Keynote or PowerPoint presentation, and there's not enough space to make each one self-contained.
+
+* UTF-8 encoding: Following the lead of knitr, reprex makes explicit use of UTF-8 internally (#237 @krlmlr, #261).
+
+* When the reprex causes R to crash, `reprex(std_out_err = TRUE)` is able to provide more information about the crash, in some cases (#312).
+
+## Other changes and improvements
+
+*  The `tidyverse_quiet` argument and `reprex.tidyverse_quiet` option also control startup messages from the [tidymodels](https://www.tidymodels.org) meta-package (#326, @juliasilge).
+
+* `reprex_locale()` is a new thin wrapper around `reprex()` that renders in a temporarily-altered locale (#250).
+
+* The `si` argument of `reprex()` is now `session_info`. Being explicit seems more important than saving characters, given auto-completion.
+
+* The `show` argument of `reprex()` is now `html_preview`, for the sake of consistency with other R Markdown output formats.
+
+* New article on techniques for making package startup quieter (#187, @marionlouveaux).
+
+## Dependency changes
+
+R 3.1 and R 3.2 are no longer explicitly supported or tested. Our general practice is to support the current release (4.0, at time of writing), devel, and the 4 previous versions of R (3.6, 3.5, 3.4, 3.3).
+
+* sessioninfo is new in Suggests, replacing devtools.
+
+* glue is new in Imports, replacing whisker.
+
+* knitr moves from Suggests to Imports (although it was already a hard dependency via rmarkdown), so we can require v1.23 or higher, which represents a major switch to UTF-8.
+
+* cli is new in Imports.
+
+* reprex now relies on testthat >= 3.0.0 and, specifically, uses third edition features.
+
 # reprex 0.3.0
 
 * The `crayon.enabled` option is explicitly set to `FALSE` when rendering the reprex (#238, #239).
@@ -76,7 +136,7 @@ This was a non-functioning release created by CRAN maintainers by commenting out
 
 # reprex 0.1.1
 
-  * pandoc added to SystemRequirements.
+  * Pandoc added to SystemRequirements.
 
 # reprex 0.1.0
 
@@ -97,7 +157,7 @@ This was a non-functioning release created by CRAN maintainers by commenting out
   * The reprex is rendered via `callr::r_safe()` and is thus run in a clean, separate R process, eliminating any leakage of objects or loaded packages to/from the calling session.
 
   * `reprex()` gains optional arguments `opts_chunk` and `opts_knit`, taking named list as input, in order to supplement or override default knitr chunk and package options, respectively. (#33)
-    - This made the explicit `upload.fun` argument unnecessary, so it's gone. The `upload.fun` option defaults to `knitr::imgur_upload`, which means figures produced by the reprex will be uploaded to [imgur.com](http://imgur.com) and the associated image syntax will be put into the Markdown, e.g. `![](http://i.imgur.com/QPU5Cg9.png)`. (#15 @paternogbc)
+    - This made the explicit `upload.fun` argument unnecessary, so it's gone. The `upload.fun` option defaults to `knitr::imgur_upload`, which means figures produced by the reprex will be uploaded to [imgur.com](https://imgur.com/) and the associated image syntax will be put into the Markdown, e.g. `![](https://i.imgur.com/QPU5Cg9.png)`. (#15 @paternogbc)
     
   * Order of `reprex()` arguments has changed.
 

@@ -1,7 +1,8 @@
+Encoding: UTF-8
 Package: semTools
-Version: 0.5-3
+Version: 0.5-4
 Title: Useful Tools for Structural Equation Modeling
-Description: Provides useful tools for structural equation modeling.
+Description: Provides tools for structural equation modeling, many of which extend the 'lavaan' package; for example, to pool results from multiple imputations, probe latent interactions, or test measurement invariance.
 Authors@R: c(person(given = c("Terrence","D."), family = "Jorgensen", role = c("aut","cre"), email="TJorgensen314@gmail.com", comment = c(ORCID = "0000-0001-5111-6773")),
 		person(given = "Sunthud", family = "Pornprasertmanit", role = "aut", email = "psunthud@gmail.com"),
 		person(given = c("Alexander","M."), family = "Schoemann", role = "aut", email="schoemanna@ecu.edu", comment = c(ORCID = "0000-0002-8479-8798")),
@@ -25,9 +26,10 @@ Authors@R: c(person(given = c("Terrence","D."), family = "Jorgensen", role = c("
 		person(given = c("Jason","D."), family = "Rights", role = "ctb", email="jrights@psych.ubc.ca"),
 		person(given = "Ylenio", family = "Longo", role = "ctb", email="yleniolongo@gmail.com"),
 		person(given = "Maxwell", family = "Mansolf", role = "ctb", email="mamansolf@gmail.com", comment = c(ORCID = "0000-0001-6861-8657")),
-		person(given = "Mattan S.", family = "Ben-Shachar", role = "ctb", email="matanshm@post.bgu.ac.il", comment = c(ORCID = "0000-0002-4287-4801"))
+		person(given = "Mattan S.", family = "Ben-Shachar", role = "ctb", email="matanshm@post.bgu.ac.il", comment = c(ORCID = "0000-0002-4287-4801")),
+		person(given = "Mikko", family = "Rönkkö", role = "ctb", email = "mikko.ronkko@jyu.fi", comment = c(ORCID = "0000-0001-7988-7609"))
 		)
-Depends: R(>= 3.4), utils, stats, graphics, lavaan(>= 0.6-6)
+Depends: R(>= 3.4), utils, stats, graphics, lavaan(>= 0.6-7)
 Imports: methods
 Suggests: MASS, foreign, parallel, boot, Amelia, mice, GPArotation,
         mnormt, blavaan, emmeans, testthat
@@ -36,10 +38,10 @@ LazyData: yes
 LazyLoad: yes
 URL: https://github.com/simsem/semTools/wiki
 BugReports: https://github.com/simsem/semTools/issues
-Date/Publication: 2020-05-27 17:00:02 UTC
-RoxygenNote: 7.1.0
+Date/Publication: 2021-01-11 08:00:06 UTC
+RoxygenNote: 7.1.1
 NeedsCompilation: no
-Packaged: 2020-05-27 14:30:02 UTC; terrence
+Packaged: 2021-01-10 23:48:44 UTC; terrence
 Author: Terrence D. Jorgensen [aut, cre]
     (<https://orcid.org/0000-0001-5111-6773>),
   Sunthud Pornprasertmanit [aut],
@@ -65,7 +67,8 @@ Author: Terrence D. Jorgensen [aut, cre]
   Jason D. Rights [ctb],
   Ylenio Longo [ctb],
   Maxwell Mansolf [ctb] (<https://orcid.org/0000-0001-6861-8657>),
-  Mattan S. Ben-Shachar [ctb] (<https://orcid.org/0000-0002-4287-4801>)
+  Mattan S. Ben-Shachar [ctb] (<https://orcid.org/0000-0002-4287-4801>),
+  Mikko Rönkkö [ctb] (<https://orcid.org/0000-0001-7988-7609>)
 Maintainer: Terrence D. Jorgensen <TJorgensen314@gmail.com>
 Repository: CRAN
-Built: R 4.0.0; ; 2020-05-31 01:15:52 UTC; windows
+Built: R 4.0.3; ; 2021-02-08 02:08:54 UTC; windows

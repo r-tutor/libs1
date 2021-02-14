@@ -9,17 +9,30 @@ library(testthat)
 
 ## -----------------------------------------------------------------------------
 skip_if_Tuesday <- function() {
-  if (as.POSIXlt(Sys.Date())$wday == 2) {
-    skip("Not run on Tuesday")
+  if (as.POSIXlt(Sys.Date())$wday != 2) {
+    return(invisible(TRUE))
   }
+  
+  skip("Not run on Tuesday")
 }
 
 ## -----------------------------------------------------------------------------
-test_that("skips work", {
-  # Test that a skip happens
-  expect_error(skip("Hi"), class = "skip")  
+skip_if_dangerous <- function() {
+  if (identical(Sys.getenv("DANGER"), "")) {
+    return(invisible(TRUE))
+  }
   
+  skip("Not run in dangerous enviromnents")
+}
+
+## -----------------------------------------------------------------------------
+test_that("skip_if_dangerous work", {
+  # Test that a skip happens
+  withr::local_envvar(DANGER = "yes")
+  expect_condition(skip_if_dangerous(), class = "skip") 
+
   # Test that a skip doesn't happen
-  expect_error("Hi", NA, class = "skip")  
+  withr::local_envvar(DANGER = "")
+  expect_condition(skip_if_dangerous(), NA, class = "skip")
 })
 

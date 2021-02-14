@@ -1,4 +1,28 @@
-# Version 1.5-18 (development, rev. 1071-)
+# Version 1.5-23 (development, rev. 1120-1121)
+
+* Further fallout after removing valgrind issues.
+
+# Version 1.5-22 (2021-02-02, rev. 1106-1119)
+
+* Attempt to remove further valgrind leak in proj6.cpp: PROJcopyEPSG() and in ogr_proj.cpp, both wrongly placed object destructors.
+
+* Modified roundtripping all declared projections in ?project examples  because some listed projections for PROJ >= 5 provoke valgrind leakages by returning very large out-of-scope values for input coordinates (0, 0); inversion of these is not attempted; some listed projections are not projections.
+
+# Version 1.5-21 (2021-01-27, rev. 1093-1105)
+
+* Suggest **rgeos** to write pre-SFS multipolygon objects to avoid unpleasant workaround.
+
+* Try to eliminate current valgrind leaks, starting from (https://github.com/r-spatial/gstat/issues/82).
+
+* Try to increase robustness to installation with early PROJ 6 versions, which often lack functionality found necessary later (for example visualization order); the code had assumed that this function always was available and behaved as it now does. There are now graceful failures when not available.
+
+# Version 1.5-19 (2021-01-05, rev. 1083-1092)
+
+* Dan Baston: raster speedups 
+
+* PROJ 7.2.1 includes a bug-fix for `+proj=ob_tran` cases that required changes in detection and handling of target/source CRS reversal, https://lists.osgeo.org/pipermail/proj/2020-December/009999.html
+
+# Version 1.5-18 (2020-10-13, rev. 1071-1082)
 
 * condition `tests/test_enforce_xy.R` on PROJ >= 6 and GDAL >= 3 (email BDR, I forgot to re-check with PROJ-5.2.0/GDAL-2.2.4).
 

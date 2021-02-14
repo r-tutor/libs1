@@ -1,5 +1,6 @@
 ## ----setup, include=FALSE-----------------------------------------------------
-knitr::opts_chunk$set(dev.args = list(type = "cairo"))
+if(capabilities("cairo"))
+    knitr::opts_chunk$set(dev.args = list(type = "cairo"))
 
 ## ----message = FALSE, fig.align='center', fig.showtext=TRUE-------------------
 library(showtext)

@@ -1,3 +1,25 @@
+# version 0.9-7
+
+* n-ary `st_intersection` skips failing geometries, rather than returning an error; #1549
+
+* use `s2_centroid` for geographical coordinates if `sf_use_s2()` is `TRUE`.
+
+* `st_as_text` method for `crs` objects can return projjson (if GDAL >= 3.1.0 and PROJ > 6.2.0)
+
+* `st_transform` no longer warns on conversions like `"+proj=ob_tran +o_proj=longlat +o_lat_p=45 +o_lon_p=30"`
+
+* `st_as_wkb` takes `srid` from `wkt` field of `crs` when `input` field doesn't contain it; #1490
+
+* `plot.sf` adds `key.pos=0` option to run the logic behind the key without plotting it; #1487
+
+* fix bug in `select.sf` when selected variables were renamed; #1483
+
+* `st_as_sf.stars` with `merge = TRUE` now works if crs is `NA`; #1389
+
+* add (dynamically loaded) `as_wkb` methods for `sf`, `sfc` and `sfg`, making `st_as_s2()` unnecessary
+
+* `st_as_s2` transforms non-longlat objects to EPSG:4326 first
+
 # version 0.9-6
 
 * `gdal_utils` print (GDAL-style) progress bar if `quiet = FALSE` (except for `info` and `mdiminfo`)
@@ -113,6 +135,8 @@
 * `st_make_grid` returns grid cells or points that intersect with the target geometry, not its bounding box; #1260
 
 * allow for PROJ >= 7; #1254
+
+* `st_geometry_type` accepts `by_geometry` argument; #1264
 
 # version 0.8-1
 

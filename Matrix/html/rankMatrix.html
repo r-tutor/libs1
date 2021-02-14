@@ -133,7 +133,8 @@ from <span class="pkg">Matrix</span> package sparse <code><a href="qr.html">qr</
 </td></tr>
 <tr valign="top"><td><code>do.warn</code></td>
 <td>
-<p>logical; if true, warn about non-finite or negative
+<p>logical; if true, warn about non-finite (or in the
+<code>sparseQR</code> case negative)
 diagonal entries in the <i>R</i> matrix of the <i>QR</i> decomposition.
 Do not change lightly!</p>
 </td></tr>
@@ -203,8 +204,8 @@ rankMatrix(cbind(1, 0, 1:3)) # 2
 H12 &lt;- Hilbert(12)
 rankMatrix(H12, tol = 1e-20) # 12;  but  11  with default method &amp; tol.
 sapply(meths, function(.m.) rankMatrix(H12, method = .m.))
-## tolNorm2    qr   qr.R  qrLINPACK  useGrad maybeGrad
-##       11    12     11         12       11        11
+## tolNorm2   qr.R  qrLINPACK   qr  useGrad maybeGrad
+##       11     11         12   12       11        11
 ## The meaning of 'tol' for method="qrLINPACK" and *dense* x is not entirely "scale free"
 rMQL &lt;- function(ex, M) rankMatrix(M, method="qrLINPACK",tol = 10^-ex)
 rMQR &lt;- function(ex, M) rankMatrix(M, method="qr.R",     tol = 10^-ex)
@@ -221,6 +222,7 @@ sapply(5:15, rMQR, M = 1000 * H12) # the *same*
 M15 &lt;- kronecker(diag(x=c(100,1,10)), Hilbert(5))
 sapply(meths, function(.m.) rankMatrix(M15, method = .m.))
 #--&gt; all 15, but 'useGrad' has 14.
+sapply(meths, function(.m.) rankMatrix(M15, method = .m., tol = 1e-7)) # all 14
 
 ## "large" sparse
 n &lt;- 250000; p &lt;- 33; nnz &lt;- 10000
@@ -246,5 +248,5 @@ stopifnot(sapply(meths, function(.m.)
                         rankMatrix(matrix(0, 2, 2), method = .m.)) == 0)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>Matrix</em> version 1.3-0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>Matrix</em> version 1.3-2 <a href="00Index.html">Index</a>]</div>
 </body></html>

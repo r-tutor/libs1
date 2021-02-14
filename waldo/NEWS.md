@@ -1,3 +1,18 @@
+# waldo 0.2.4
+
+* Additional arguments to `compare()` generate a more informative warning 
+  (#58).
+
+* Numbers use a better algorithm for picking the number of decimal places to  
+  show (#63).
+
+* ASTs with identical deparsed strings now show exactly how the AST differs.
+  Source references are now more comprehensively stripped using
+  `rlang::zap_srcrefs()`
+
+* S3 objects now show the base type, and no longer fails when the types are
+  incompatible.
+
 # waldo 0.2.3
 
 * `compare()` gains a new `max_diffs` argument that allows you to control

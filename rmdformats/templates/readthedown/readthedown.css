@@ -91,47 +91,54 @@ h1,h2,h3,h4,h5,h6,legend{
 }
 
 h1{
-    font-size:200%;
+    font-size:2rem;
     margin-top: 1em;
     margin-bottom: 1.2em;
 }
 
-h1.title{
-  font-size: 250%;
-  margin-top: 0px;
+h1.title {
+  margin-top: 1em;
+}
+h1.title,
+h1.title p {
+  font-size: 2.3rem;
+  line-height: 2.7rem;
 }
 
-.subtitle{
-    font-size:95%; /* of h1 */
+
+h1.subtitle {
+    margin-top: -1em;
+    margin-bottom: 2em;
+}
+h1.subtitle,
+h1.subtitle p {
+    font-size: 1.6rem;
+    line-height: 2rem;
 }
 
 h2{
   margin-top: 1em;
   margin-bottom: 1.2em;
-  font-size:160%;
+  font-size:1.6rem;
 }
 
 h3{
   margin-top: 1em;
   margin-bottom: 1.2em;
-  font-size:125%;
+  font-size:1.25rem;
 }
 
 h4{
   margin-top: 1em;
   margin-bottom: 1.2em;
-  font-size:115%;
+  font-size:1.15rem;
 }
 
 h5{
-    font-size:110%;
+    font-size:1.1rem;
 }
 
-h6{
-    font-size:100%;
-}
-
-h4,h5,h6{
+h4,h5 {
     font-weight:300;
 }
 
@@ -162,7 +169,7 @@ body{
     min-height:100%;
 }
 
-p{
+p {
     font-size:16px;
     line-height:24px;
     margin:0px 0px 24px 0px;
@@ -440,6 +447,10 @@ code{
     white-space: pre;
 }
 
+#content #main code a {
+  color: inherit;
+  background: none;
+}
 
 #content pre {
     /* background:#f3f6f6; */
@@ -468,7 +479,7 @@ code{
   margin-bottom: 1.8em;
 }
 
-table{
+#main table{
     border-collapse:collapse;
     border-spacing:0;
     empty-cells:show;
@@ -476,21 +487,24 @@ table{
     border-bottom:1px solid #e1e4e5;
 }
 
-td{
-    vertical-align:top}
+#main table:not(.dataTable) {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 20px;
+}
 
-table td,table th{
+table:not(.dataTable) td,table:not(.dataTable) th{
     font-size:90%;
+    padding: 8px;
     margin:0;
     overflow:visible;
-    padding:8px 16px;
     border:1px solid #e1e4e5;
 }
 
-table thead th{
+#main table thead th {
     font-weight:bold;
-    border-top:3px solid #e1e4e5;
-    border-bottom:1px solid #e1e4e5;
+    border-top: 1px solid #ddd;
+    border-bottom: 2px solid #ddd;
     background-color:white;
 }
 

@@ -1,3 +1,187 @@
+2021-02-02 20:37  rsbivand
+
+	* [r1120] DESCRIPTION, NEWS.md, configure, src/proj6.cpp,
+	  src/projectit.cpp: correct erroneous PROJ < 6 function
+	  declaration not tested for in 1.5-22
+
+2021-02-02 09:48  rsbivand
+
+	* [r1119] ChangeLog, NEWS.md, inst/ChangeLog: tidy
+
+2021-02-02 09:47  rsbivand
+
+	* [r1118] NEWS.md, R/project.R, man/project.Rd: revert condition on
+	  stress-testing of project but protect against bad values and
+	  empty CO strings
+
+2021-02-01 19:34  rsbivand
+
+	* [r1117] ChangeLog, inst/ChangeLog: tidy
+
+2021-02-01 19:32  rsbivand
+
+	* [r1116] NEWS.md, man/project.Rd: convert stress-testing of
+	  project to PROJ < 5
+
+2021-02-01 15:08  rsbivand
+
+	* [r1115] ChangeLog, NEWS.md, inst/ChangeLog: tidy
+
+2021-02-01 15:06  rsbivand
+
+	* [r1114] NEWS.md, man/project.Rd, src/proj6.cpp: convert
+	  stress-testing of project to dontrun
+
+2021-01-31 14:29  rsbivand
+
+	* [r1113] ChangeLog, NEWS.md, inst/ChangeLog: tidy
+
+2021-01-31 14:25  rsbivand
+
+	* [r1112] src/ogr_proj.cpp, src/proj6.cpp: ogr_proj.cpp leak
+
+2021-01-30 14:05  rsbivand
+
+	* [r1111] NEWS.md, tests/test_proj.Rout.save,
+	  tests/tripup.Rout.save: tidy
+
+2021-01-30 12:57  rsbivand
+
+	* [r1110] NEWS.md: tidy
+
+2021-01-30 12:57  rsbivand
+
+	* [r1109] NEWS.md: tidy
+
+2021-01-30 12:56  rsbivand
+
+	* [r1108] ChangeLog, configure, inst/ChangeLog: tidy
+
+2021-01-30 12:54  rsbivand
+
+	* [r1107] DESCRIPTION, NEWS.md, R/make_EPSG.R, R/project.R,
+	  src/Makevars.win, src/proj6.cpp, src/projectit.cpp: remove
+	  PROJcopyEPSG valgrind issue
+
+2021-01-27 15:39  rsbivand
+
+	* [r1106] DESCRIPTION, NEWS.md, man/spTransform-methods.Rd,
+	  src/proj6.cpp, tests/tripup.R: revert project_ng(), admit leak
+
+2021-01-26 08:57  rsbivand
+
+	* [r1105] configure: tidy
+
+2021-01-26 08:54  rsbivand
+
+	* [r1104] ChangeLog, inst/ChangeLog: tidy
+
+2021-01-26 08:53  rsbivand
+
+	* [r1103] DESCRIPTION, NEWS.md, man/spTransform-methods.Rd: tidy
+
+2021-01-26 08:31  rsbivand
+
+	* [r1102] src/OGR_write.cpp: tidy
+
+2021-01-25 18:03  rsbivand
+
+	* [r1101] ChangeLog, NEWS.md, inst/ChangeLog, src/OGR_write.cpp,
+	  src/gdal-bindings.cpp, src/ogr_proj.cpp, src/proj6.cpp: adapt to
+	  older PROJ
+
+2021-01-24 17:32  rsbivand
+
+	* [r1100] configure: remaining valgrind leaks
+
+2021-01-24 17:31  rsbivand
+
+	* [r1099] DESCRIPTION, R/gdal.R, R/ogr_write.R, R/sgdf_gdal.R,
+	  R/sp_gdal.R, R/subs.R, src/OGR_write.cpp, src/gdal-bindings.cpp,
+	  tests/srs_rendering.Rout.save, tests/test_proj.Rout.save,
+	  tests/tripup.R, tests/tripup.Rout.save: remaining valgrind leaks
+
+2021-01-22 13:39  rsbivand
+
+	* [r1098] src/OGR_write.cpp, src/gdal-bindings.cpp,
+	  src/ogr_proj.cpp, src/proj6.cpp: ogr_proj.cpp remaining leaks fix
+
+2021-01-21 09:25  rsbivand
+
+	* [r1097] R/gdal.R, R/ogr.R, R/ogr_sp.R, src/OGR_write.cpp,
+	  src/gdal-bindings.cpp, src/ogr_proj.cpp, src/proj6.cpp: proj6.cpp
+	  remaining leaks fix
+
+2021-01-20 12:05  rsbivand
+
+	* [r1096] src/proj6.cpp: proj6.cpp remaining leaks fix
+
+2021-01-20 09:47  rsbivand
+
+	* [r1095] src/OGR_write.cpp, src/gdal-bindings.cpp,
+	  src/ogr_proj.cpp, src/proj6.cpp: proj6.cpp l. 946 leak fix
+
+2021-01-15 10:03  rsbivand
+
+	* [r1094] src/gdal-bindings.cpp: tidy
+
+2021-01-14 20:54  rsbivand
+
+	* [r1093] DESCRIPTION, man/writeOGR.Rd, src/ogr_proj.cpp,
+	  src/proj6.cpp: tidy
+
+2020-12-29 19:24  rsbivand
+
+	* [r1092] NEWS.md, tests/test_enforce_xy.Rout.save: tidy
+
+2020-12-29 19:10  rsbivand
+
+	* [r1091] ChangeLog, NEWS.md, inst/ChangeLog: tidy
+
+2020-12-29 19:08  rsbivand
+
+	* [r1090] ChangeLog, NEWS.md: ob_tran handling for 7.2.1
+
+2020-12-29 18:56  rsbivand
+
+	* [r1089] src/projectit.cpp, tests/srs_rendering.Rout.save,
+	  tests/test_proj.Rout.save: ob_tran handling for 7.2.1
+
+2020-12-29 15:25  rsbivand
+
+	* [r1088] R/project.R, src/init.c, src/proj6.cpp, src/rgdal.h:
+	  adapt ob_tran for PROJ > 7.2.0
+
+2020-12-29 15:13  rsbivand
+
+	* [r1087] src/proj6.cpp: test with PROJ 7.2.0
+
+2020-12-29 14:58  rsbivand
+
+	* [r1086] DESCRIPTION, R/project.R, src/init.c, src/proj6.cpp,
+	  src/rgdal.h: adapt ob_tran for PROJ > 7.2.0
+
+2020-12-28 08:47  rsbivand
+
+	* [r1085] ChangeLog, inst/ChangeLog: tidy
+
+2020-11-14 15:43  rsbivand
+
+	* [r1084] ChangeLog, configure, inst/ChangeLog: tidy
+
+2020-11-14 15:40  rsbivand
+
+	* [r1083] .Rbuildignore, DESCRIPTION, R/gdal.R,
+	  src/gdal-bindings.cpp, src/proj6.cpp: Dan Baston: raster speedups
+
+2020-10-13 09:21  rsbivand
+
+	* [r1082] man/make_EPSG.Rd: tidy
+
+2020-10-13 08:08  rsbivand
+
+	* [r1081] ChangeLog, NEWS.md, inst/ChangeLog: tidy
+
 2020-10-10 08:36  rsbivand
 
 	* [r1080] vignettes/CRS_projections_transformations.Rmd: adapt to

@@ -120,10 +120,10 @@ message3 <- function(..., verbose = getOption("verbose")) {
 
 ## -----------------------------------------------------------------------------
 test_that("message2() output depends on verbose option", {
-  withr::local_options(list(verbose = TRUE))
+  withr::local_options(verbose = TRUE)
   expect_message(message2("Hi!"))
   
-  withr::local_options(list(verbose = FALSE))
+  withr::local_options(verbose = FALSE)
   expect_message(message2("Hi!"), NA)
 })
 

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Yixuan Qiu" />
 
-<meta name="date" content="2020-11-10" />
+<meta name="date" content="2021-01-09" />
 
 <title>showtext: Using Fonts More Easily in R Graphs</title>
 
@@ -43,45 +43,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
   }
-});
-</script>
-<style type="text/css">
-a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
-a.anchor-section::before {content: '#';}
-.hasAnchor:hover a.anchor-section {visibility: visible;}
-</style>
-<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
-document.addEventListener('DOMContentLoaded', function() {
-  // Do nothing if AnchorJS is used
-  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
-    return;
-  }
-
-  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-
-  // Do nothing if sections are already anchored
-  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
-    return null;
-  }
-
-  // Use section id when pandoc runs with --section-divs
-  const section_id = function(x) {
-    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
-            ? x.id : '');
-  };
-
-  // Add anchors
-  h.forEach(function(x) {
-    const id = x.id || section_id(x.parentElement);
-    if (id === '') {
-      return null;
-    }
-    let anchor = document.createElement('a');
-    anchor.href = '#' + id;
-    anchor.classList = ['anchor-section'];
-    x.classList.add('hasAnchor');
-    x.appendChild(anchor);
-  });
 });
 </script>
 
@@ -206,7 +167,7 @@ code span.ot { color: #007020; }
 <section class="page-header">
 <h1 class="title toc-ignore project-name">showtext: Using Fonts More Easily in R Graphs</h1>
 <h4 class="author project-author">Yixuan Qiu</h4>
-<h4 class="date project-date">2020-11-10</h4>
+<h4 class="date project-date">2021-01-09</h4>
 </section>
 
 
@@ -235,7 +196,6 @@ code span.ot { color: #007020; }
 <div id="a-quick-example" class="section level2">
 <h2>A Quick Example</h2>
 <p>Below is a quick example to show the functionality of the <strong>showtext</strong> package.</p>
-<p><strong>NOTE:</strong> Currently <strong>showtext</strong> does not work with the built-in graphics device of RStudio, hence to try the code below, it is suggested to run the code in original R console, or use other graphics devices such as <code>x11()</code> and <code>windows()</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(showtext)</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="co">## Loading Google fonts (https://fonts.google.com/)</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="kw">font_add_google</span>(<span class="st">&quot;Gochi Hand&quot;</span>, <span class="st">&quot;gochi&quot;</span>)</span>
@@ -368,7 +328,7 @@ text(1, 1.1, &quot;A fancy dot&quot;, family = &quot;lobster&quot;, col = &quot;
 </div>
 <div id="compatibility-with-rstudio" class="section level2">
 <h2>Compatibility with RStudio</h2>
-<p>Starting from version 0.9, <strong>showtext</strong> can work well with the RStudio graphics device (RStudioGD). Simply call <code>showtext_auto()</code> in the RStudio session and then the plots will be displayed correctly.</p>
+<p>Previously <strong>showtext</strong> did not work well with the RStudio graphics device (RStudioGD), but starting from version 0.9, this issue has been fixed. Simply call <code>showtext_auto()</code> in the RStudio session and then the plots will be displayed correctly.</p>
 </div>
 </section>
 
