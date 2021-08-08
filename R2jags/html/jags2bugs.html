@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Read jags output files in CODA format</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for jags2bugs {R2jags}"><tr><td>jags2bugs {R2jags}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read jags output files in CODA format</h2>
+
+<h3>Description</h3>
+
+<p>This function reads Markov Chain Monte Carlo output in the
+CODA format produced by <span class="pkg">jags</span> and returns an object of class
+<code><a href="../../coda/help/mcmc.list.html">mcmc.list</a></code> for further output analysis using the
+<span class="pkg">coda</span> package.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+jags2bugs(path=getwd(), parameters.to.save, 
+  n.chains=3, n.iter=2000, n.burnin=1000, n.thin=2,
+  DIC=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>sets working directory during execution of
+this function; This should be the directory where CODA files are.</p>
+</td></tr>
+<tr valign="top"><td><code>parameters.to.save</code></td>
+<td>
+<p>character vector of the names of the
+parameters to save which should be monitored.</p>
+</td></tr>
+<tr valign="top"><td><code>n.chains</code></td>
+<td>
+<p>number of Markov chains (default: 3)</p>
+</td></tr>
+<tr valign="top"><td><code>n.iter</code></td>
+<td>
+<p>number of total iterations per chain (including burn in;
+default: 2000)</p>
+</td></tr>
+<tr valign="top"><td><code>n.burnin</code></td>
+<td>
+<p>length of burn in, i.e. number of iterations to
+discard at the beginning. Default is <code>n.iter/2</code>, that is,
+discarding the first half of the simulations.</p>
+</td></tr>
+<tr valign="top"><td><code>n.thin</code></td>
+<td>
+<p>thinning rate, default is 2</p>
+</td></tr>
+<tr valign="top"><td><code>DIC</code></td>
+<td>
+<p>logical; if <code>TRUE</code> (default), compute deviance, pD,
+and DIC. The rule <code>pD=var(deviance) / 2</code> is used.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+ 
+<p>Yu-Sung Su <a href="mailto:suyusung@tsinghua.edu.cn">suyusung@tsinghua.edu.cn</a>,
+Masanao Yajima <a href="mailto:yajima@stat.columbia.edu">yajima@stat.columbia.edu</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>R2jags</em> version 0.7-1 <a href="00Index.html">Index</a>]</div>
+</body></html>

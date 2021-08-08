@@ -408,6 +408,17 @@
 #endif
 
 
+#if ( defined(_WIN32) || defined(_WIN64) || defined(_MSC_VER) || defined(__MINGW32__) || defined(__MINGW64__) )
+  #undef  ARMA_PRINT_EXCEPTIONS
+  #define ARMA_PRINT_EXCEPTIONS
+#endif
+
+
+#if (defined(ARMA_ALIEN_MEM_ALLOC_FUNCTION) && !defined(ARMA_ALIEN_MEM_FREE_FUNCTION)) || (!defined(ARMA_ALIEN_MEM_ALLOC_FUNCTION) && defined(ARMA_ALIEN_MEM_FREE_FUNCTION))
+  #error "*** both ARMA_ALIEN_MEM_ALLOC_FUNCTION and ARMA_ALIEN_MEM_FREE_FUNCTION must be defined ***"
+#endif
+
+
 
 // cleanup
 

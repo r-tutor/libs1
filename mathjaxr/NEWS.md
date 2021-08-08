@@ -1,3 +1,9 @@
+# mathjaxr 1.4-0 (2021-03-01)
+
+* fixed issue with minifying the javascript files upon installation under Windows
+
+* `preview_rd()` now loads package macros
+
 # mathjaxr 1.2-0 (2021-01-30)
 
 * upgraded MathJax version to 3.1.2

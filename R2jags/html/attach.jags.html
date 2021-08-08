@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Attach/detach elements of 'JAGS' objects to search path</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for attach.jags {R2jags}"><tr><td>attach.jags {R2jags}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Attach/detach elements of &lsquo;JAGS&rsquo; objects to search path</h2>
+
+<h3>Description</h3>
+
+<p>These are wraper functions for <code><a href="../../R2WinBUGS/help/attach.bugs.html">attach.bugs</a></code> and <code><a href="../../R2WinBUGS/help/detach.bugs.html">detach.bugs</a></code>, which
+attach or detach three-way-simulation array of bugs object to the search path. See <code><a href="../../R2WinBUGS/help/attach.all.html">attach.all</a></code> for details.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  attach.jags(x, overwrite = NA)
+  detach.jags()
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An <code>rjags</code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>overwrite</code></td>
+<td>
+<p>If <code>TRUE</code>, objects with identical names in the Workspace
+(.GlobalEnv) that are masking objects in the database to be attached will be deleted.
+If <code>NA</code> (the default) and an interactive session is running, a dialog box asks
+the user whether masking objects should be deleted.  In non-interactive mode, behaviour
+is identical to <code>overwrite=FALSE</code>, i.e. nothing will be deleted.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>See <code><a href="../../R2WinBUGS/help/attach.bugs.html">attach.bugs</a></code> for details
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Yu-Sung Su <a href="mailto:suyusung@tsinghua.edu.cn">suyusung@tsinghua.edu.cn</a>,
+</p>
+
+
+<h3>References</h3>
+
+<p>Sibylle Sturtz and Uwe Ligges and Andrew Gelman. (2005).
+&ldquo;R2WinBUGS: A Package for Running WinBUGS from R.&rdquo;
+<em>Journal of Statistical Software</em> 3 (12): 1&ndash;6.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  # See the example in ?jags for the usage.
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>R2jags</em> version 0.7-1 <a href="00Index.html">Index</a>]</div>
+</body></html>

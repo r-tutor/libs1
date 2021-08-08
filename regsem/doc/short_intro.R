@@ -1,11 +1,5 @@
-## ----results='hide',warning=FALSE,message=FALSE-------------------------------
-# install.packages("regsem") # lavaan is a dependency
-# install.packages("semPlot")
-library(semPlot) # for plotting the model
-library(lavaan)
-library(regsem)
-
 ## -----------------------------------------------------------------------------
+library(lavaan);library(regsem)
 sim.mod <- "
 f1 =~ 1*y1 + 1*y2 + 1*y3+ 1*y4 + 1*y5
 f1 ~ 0*x1 + 0*x2 + 0*x3 + 0*x4 + 0*x5 + 0.2*x6 + 0.5*x7 + 0.8*x8
@@ -23,7 +17,7 @@ lav.out <- sem(run.mod,dat.sim,fixed.x=FALSE)
 parameterestimates(lav.out)[6:13,] # just look at regressions
 
 ## ----message=FALSE,warning=FALSE,fig.width=5,fig.height=5---------------------
-semPaths(lav.out)
+semPlot::semPaths(lav.out)
 
 ## ----results='hide'-----------------------------------------------------------
 reg.out <- cv_regsem(lav.out,n.lambda=30,type="lasso",jump=0.04,

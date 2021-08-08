@@ -643,6 +643,16 @@ table {
     page-break-inside: avoid
 }
 
+
+.book .book-body .page-inner section.normal table th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #ddd;
+}
+
+.book .book-body .page-inner section.normal table td {
+  border-top: 1px solid #ddd;
+}
+
 .book .book-body .page-inner section.normal table th,
 .book .book-body .page-inner section.normal table td,
 .book .book-body .page-inner section.normal .table th,
@@ -650,7 +660,6 @@ table {
     padding: 6px 15px;
 }
 
-.book .book-body .page-inner section.normal  ,
 .book .book-body .page-inner section.normal h3,
 .book .book-body .page-inner section.normal h4,
 .book .book-body .page-inner section.normal h5,
@@ -1000,6 +1009,10 @@ body {
   margin-top: 5px;
 }
 
+.book .book-body .page-inner section.normal .table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 1.8em;
+}
 
 .book .book-body .page-inner section.normal table,
 .book .book-body .page-inner section.normal .table,
@@ -1318,9 +1331,17 @@ button.code-folding-btn {
   font-size: 90%;
 }
 
-.book .book-body .page-inner section.normal .pagedtable-index-current {
-  font-weight: bold;
+.book .book-body .page-inner section.normal .dataTables_paginate .paginate_button:hover {
+  background-color: #000;
 }
+
+/* paged tables */
+
+.book .book-body .page-inner section.normal .pagedtable .table th,
+.book .book-body .page-inner section.normal .pagedtable .table td {
+  padding: 5px;
+}
+
 
 /* TOC and scrollspy */
 

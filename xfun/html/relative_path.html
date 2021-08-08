@@ -1,11 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get the relative path of a path relative a directory</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get the relative path of a path relative to a directory</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
 <table width="100%" summary="page for relative_path {xfun}"><tr><td>relative_path {xfun}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Get the relative path of a path relative a directory</h2>
+<h2>Get the relative path of a path relative to a directory</h2>
 
 <h3>Description</h3>
 
@@ -28,7 +28,7 @@ relative_path(x, dir = ".", use.. = TRUE, error = TRUE)
 <table summary="R argblock">
 <tr valign="top"><td><code>x</code></td>
 <td>
-<p>The path to be converted to a relative path.</p>
+<p>A vector of paths to be converted to relative paths.</p>
 </td></tr>
 <tr valign="top"><td><code>dir</code></td>
 <td>
@@ -42,7 +42,7 @@ provided by the <code>dir</code> argument).</p>
 </td></tr>
 <tr valign="top"><td><code>error</code></td>
 <td>
-<p>Whether to signal an error if the path cannot be converted to a
+<p>Whether to signal an error if a path cannot be converted to a
 relative path.</p>
 </td></tr>
 </table>
@@ -50,8 +50,9 @@ relative path.</p>
 
 <h3>Value</h3>
 
-<p>A relative path if the conversion succeeded; otherwise the original
-path when <code>error = FALSE</code>, and an error when <code>error = TRUE</code>.
+<p>A vector of relative paths if the conversion succeeded; otherwise the
+original paths when <code>error = FALSE</code>, and an error when <code>error =
+  TRUE</code>.
 </p>
 
 
@@ -63,5 +64,5 @@ xfun::relative_path("foo/bar/a.txt", "foo/haha/")
 xfun::relative_path(getwd())
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.21 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.25 <a href="00Index.html">Index</a>]</div>
 </body></html>

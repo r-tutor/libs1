@@ -31,11 +31,15 @@ namespace RcppParallel {
 inline void parallelFor(std::size_t begin,
                         std::size_t end, 
                         Worker& worker,
-                        std::size_t grainSize = 1)
+                        std::size_t grainSize = 1,
+                        int numThreads = -1)
 {
+   grainSize = resolveValue("RCPP_PARALLEL_GRAIN_SIZE", grainSize, 1u);
+   numThreads = resolveValue("RCPP_PARALLEL_NUM_THREADS", numThreads, -1);
+   
 #if RCPP_PARALLEL_USE_TBB
    if (internal::backend() == internal::BACKEND_TBB)
-      tbbParallelFor(begin, end, worker, grainSize);
+      tbbParallelFor(begin, end, worker, grainSize, numThreads);
    else
       ttParallelFor(begin, end, worker, grainSize);
 #else
@@ -47,11 +51,15 @@ template <typename Reducer>
 inline void parallelReduce(std::size_t begin,
                            std::size_t end, 
                            Reducer& reducer,
-                           std::size_t grainSize = 1)
+                           std::size_t grainSize = 1,
+                           int numThreads = -1)
 {
+   grainSize = resolveValue("RCPP_PARALLEL_GRAIN_SIZE", grainSize, 1);
+   numThreads = resolveValue("RCPP_PARALLEL_NUM_THREADS", numThreads, -1);
+   
 #if RCPP_PARALLEL_USE_TBB
    if (internal::backend() == internal::BACKEND_TBB)
-      tbbParallelReduce(begin, end, reducer, grainSize);
+      tbbParallelReduce(begin, end, reducer, grainSize, numThreads);
    else
       ttParallelReduce(begin, end, reducer, grainSize);
 #else
@@ -59,6 +67,6 @@ inline void parallelReduce(std::size_t begin,
 #endif
 }
 
-} // namespace RcppParallel
+} // end namespace RcppParallel
 
 #endif // __RCPP_PARALLEL__

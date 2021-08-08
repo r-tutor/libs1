@@ -59,16 +59,16 @@ diagnostics.
 <h3>Value</h3>
 
 <p>A character vector of the session information marked as
-<code><a href="raw_string.html">raw_string</a>()</code>.
+<code><a href="../../xfun/help/raw_string.html">raw_string</a>()</code>.
 </p>
 
 
 <h3>Examples</h3>
 
 <pre>
-xfun::session_info()
-if (loadable("MASS")) xfun::session_info("MASS")
+if (interactive()) xfun::session_info()
+if (interactive() &amp;&amp; loadable("MASS")) xfun::session_info("MASS")
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.21 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.25 <a href="00Index.html">Index</a>]</div>
 </body></html>

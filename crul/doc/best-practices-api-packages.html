@@ -33,6 +33,15 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
@@ -121,6 +130,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 })();
 </script>
+
 
 
 
@@ -417,7 +427,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="testing-with-vcr" class="section level2">
 <h2>Testing with vcr</h2>
-<p><a href="https://github.com/ropensci/vcr">vcr</a> records and replays HTTP requests. It’s main use case is for caching HTTP requests in test suites in R packages. It has support for working with two HTTP request packages: <a href="https://github.com/ropensci/crul">crul</a> and <a href="https://github.com/r-lib/httr">httr</a>.</p>
+<p><a href="https://github.com/ropensci/vcr">vcr</a> records and replays HTTP requests. Its main use case is for caching HTTP requests in test suites in R packages. It has support for working with two HTTP request packages: <a href="https://github.com/ropensci/crul">crul</a> and <a href="https://github.com/r-lib/httr">httr</a>.</p>
 <p>To use <code>vcr</code> for testing the setup is pretty easy.</p>
 <ol style="list-style-type: decimal">
 <li>Add <code>vcr</code> to Suggests in your DESCRIPTION file</li>

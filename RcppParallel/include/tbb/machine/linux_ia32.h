@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2005-2017 Intel Corporation
+    Copyright (c) 2005-2019 Intel Corporation
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -12,10 +12,6 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-
-
-
 */
 
 #if !defined(__TBB_machine_H) || defined(__TBB_machine_linux_ia32_H)
@@ -79,9 +75,9 @@ __TBB_MACHINE_DEFINE_ATOMICS(2,int16_t,"","=r")
 __TBB_MACHINE_DEFINE_ATOMICS(4,int32_t,"l","=r")
 
 #if __INTEL_COMPILER
-#pragma warning( push )
+// #pragma warning( push )
 // reference to EBX in a function requiring stack alignment
-#pragma warning( disable: 998 )
+// #pragma warning( disable: 998 )
 #endif
 
 #if __TBB_GCC_CAS8_BUILTIN_INLINING_BROKEN
@@ -147,7 +143,7 @@ static inline __TBB_IA32_CAS8_NOINLINE int64_t __TBB_machine_cmpswp8 (volatile v
 #undef __TBB_IA32_CAS8_NOINLINE
 
 #if __INTEL_COMPILER
-#pragma warning( pop )
+// #pragma warning( pop )
 #endif // warning 998 is back
 
 static inline void __TBB_machine_or( volatile void *ptr, uint32_t addend ) {

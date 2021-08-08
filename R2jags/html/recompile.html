@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Function for recompiling rjags object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for recompile {R2jags}"><tr><td>recompile {R2jags}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Function for recompiling rjags object</h2>
+
+<h3>Description</h3>
+
+<p>The <code>recompile</code> takes a <code>rjags</code> object as input.  
+<code>recompile</code> will re-compile the previous saved <code>rjags</code> object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+
+recompile(object, n.iter, refresh, progress.bar)
+## S3 method for class 'rjags'
+recompile(object, n.iter=100, refresh=n.iter/50, 
+    progress.bar = "text")
+
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>an object of <code>rjags</code> class.</p>
+</td></tr>
+<tr valign="top"><td><code>n.iter</code></td>
+<td>
+<p>number of iteration for adapting, default is 100</p>
+</td></tr>
+<tr valign="top"><td><code>refresh</code></td>
+<td>
+<p>refresh frequency for progress bar, default is <code>n.iter/50</code></p>
+</td></tr>
+<tr valign="top"><td><code>progress.bar</code></td>
+<td>
+<p>type of progress bar. Possible values are &ldquo;text&rdquo;, 
+&ldquo;gui&rdquo;, and &ldquo;none&rdquo;. Type &ldquo;text&rdquo; is displayed
+on the R console. Type &ldquo;gui&rdquo; is a graphical progress bar 
+in a new window. The progress bar is suppressed if <code>progress.bar</code> is 
+&ldquo;none&rdquo;</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+ 
+<p>Yu-Sung Su <a href="mailto:suyusung@tsinghua.edu.cn">suyusung@tsinghua.edu.cn</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ # see ?jags for an example.
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>R2jags</em> version 0.7-1 <a href="00Index.html">Index</a>]</div>
+</body></html>

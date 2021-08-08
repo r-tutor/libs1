@@ -1,3 +1,34 @@
+# seriation 1.3-0 (06/29/2021)
+
+## Changes
+* Plotting
+  - Most plotting functions have now a common interface. This changed many parameters. 
+  - hmap now uses heatmap from package stats.
+  - dissplot shows now averages in the top triangles.
+  - improved layout (less white space) for grid-based plots.
+* Registry
+  - list_seriation_methods and list_criterion_methods without kind return now a list.
+  - show_seriation_methods and show_criterion_methods are deprecated
+* Other Changes
+  - criterion returns now NA with a warning for ME for non-positive matrices (used to stop with an error).
+  - dependency dendextend is now only suggested (used for testing).
+  - get_order now returns also labels.
+  - hclust-based seriations now defaults for linkage to complete instead of average.
+
+## New Features
+* Plotting 
+  - Major refactoring of plotting functions to provide a more consistent interface.
+  - added ggplot2-based plots, ggimage, gghmap, ggVAT, ggiVAT, ggbertinplot, ggdissplot.
+  - colors are now more consistent and all have bias and power.
+* Seriation methods 
+  - seriate for matrix has now method "Heatmap".
+  - seriate now accepts data.frames and used method "heatmap" as the default.
+  - added seriation method "Reverse" for reverse identity order.
+* Permutation
+  - permute for matrix-like objects gained parameter margin.
+  - permute for data.frame works now identical to permute for matrix.
+
+
 # seriation 1.2-9 (09/29/2020)
 * removed dependency on methods.
 * added DOIs.
@@ -61,7 +92,7 @@
 
 * Default for seriate (dist) and dissplot is now "Spectal" since it 
   gives a better tradeoff between quality and speed.
-* Seriaiton method ARSA's control argument nreps is now for consistency 
+* Seriation method ARSA's control argument nreps is now for consistency 
   called reps.
 * Criterion: dist objects are now automatically converted into a
   similarity matrix for ME, Moore\_stress and Neumann\_stress.
@@ -160,7 +191,7 @@
 * We use now package registry to manage methods.
 * reorder for hclust added.
 * iVAT with path distance added.
-* color palettes (bluered, greenred, greys) added.
+* color palettes (bluered, greenred, grays) added.
 * Improved speed of C code.
 * Fixed problem with testthat filenames fixed.
 * bburg.f/bbwrg.f: memory access problem fixed.

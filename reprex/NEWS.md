@@ -1,12 +1,91 @@
+# reprex 2.0.1
+
+`reprex_document()` has been adjusted for compatibility with changes introduced in Pandoc 2.13 around YAML headers (#375, #383 @cderv).
+
+`reprex_rtf()` (and the unexported `prex_rtf()`) work again.
+One of the filepaths involved in the highlight call was broken, but now it's not (#379).
+
+The unexported `prex_*()` functions once again write their files to a temporary directory, as opposed to current working directory (#380).
+
+# reprex 2.0.0
+
+## When the clipboard isn't available
+
+We've made reprex more pleasant to use in settings where we cannot access the user's clipboard from R.
+Specifically, this applies to use on RStudio Server and RStudio Cloud.
+
+* When `reprex()` is called without `expr` or `input`, in a context where the
+  user's clipboard can't be reached from R, the default is now to consult the
+  current selection for reprex source. Previously this was only available via
+  the `reprex_selection()` addin. Note that this "current selection" default
+  behaviour propagates to convenience wrappers around `reprex()`, such as
+  `reprex_locale()` and venue-specific functions like `reprex_r()`, and to the
+  un-`reprex()` functions, such as `reprex_clean()`.
+* In this context, the file containing the (un)rendered reprex is opened so the
+  user can manually copy its contents.
+  
+## Filepaths
+
+`wd` is a new argument to set the reprex working directory.
+As a result, the `outfile` argument is deprecated and the `input` argument has new significance.
+Here's how to use `input` and `wd` to control reprex filepaths:
+
+* To reprex in the current working directory,  
+  Previously: `reprex(outfile = NA)`  
+  Now: `reprex(wd = ".")`  
+  More generally, usage looks like `reprex(wd = "path/to/desired/wd")`.
+* If you really care about reprex filename (and location), write your source to
+  `path/to/stuff.R` and call `reprex(input = "path/to/stuff.R")`. When `input`
+  is a filepath, that filepath determines the working directory and how reprex
+  files are named and `wd` is never even consulted.
+
+Various changes mean that more users will see reprex filepaths.
+Therefore, we've revised them to be more self-explanatory and human-friendly.
+When reprex needs to invent a file name, it is now based on a random "adjective-animal" slug.
+Bring on the `angry-hamster`!
+
+## `.Rprofile`
+
+`reprex()` renders the reprex in a separate, fresh R session using `callr::r()`.
+As of callr 3.4.0 (released 2019-12-09), the default became `callr::r(..., user_profile = "project")`, which means that callr executes a `.Rprofile` found in current working directory.
+Most reprexes happen in a temp directory and there will be no such `.Rprofile`.
+But if the user intentionally reprexes in an existing project with a `.Rprofile`, `callr::r()` and therefore `reprex()` honor it.
+In this version of reprex:
+
+* We explicitly make sure that the working directory of the `callr::r()` call is
+  the same as the effective working directory of the reprex.
+* We alert the user that a local `.Rprofile` has been found.
+* We indicate the usage of a local `.Rprofile` in the rendered reprex.
+
+These changes are of special interest to users of the [renv package](https://rstudio.github.io/renv/), which uses `.Rprofile` to implement a project-specific R package library.
+Combined with the filepath changes (described above), this means an renv user can call `reprex(wd = ".")`, to render a reprex with respect to a project-specific library.
+
+## Other
+
+HTML preview should work better with more ways of using `reprex_render()`, i.e. usage that doesn't come via a call to `reprex()` (#293).
+
+## Dependency changes
+
+* rstudioapi moves from Suggests to Imports. Related to improving the experience
+  when reprex cannot access the user's clipboard.
+
+* mockr is new in Suggests; it's used in the tests.
+
+* We bumped the documented minimum version of Pandoc, because we use the `gfm`
+  markdown variant to get GitHub-Flavored Markdown. The `gfm` variant was
+  introduced in Pandoc 2.0 (released 2017-10-29).
+
 # reprex 1.0.0
 
 ## Venues
 
 * `reprex_VENUE(...)` is a new way to call `reprex(..., venue = "VENUE")`. For example, `reprex_r()` is equivalent to `reprex(venue = "r")`. This makes non-default venues easier to access via auto-completion (#256).
 
+* `"slack"` is a new venue that tweaks the default Markdown output for pasting into Slack messages. It removes the `r` language identifier from the opening code fence, simplifies image links and, by default, suppresses the ad. Note that `venue = "slack"` or `reprex_slack()` work best for people who opt-out of the WYSIWYG message editor: in *Preferences > Advanced*, select "Format messages with markup".
+
 * `venue = "so"` (SO = Stack Overflow) has converged with default `venue = "gh"` (GitHub). As of January 2019, SO [supports CommonMark fenced code blocks](https://meta.stackexchange.com/questions/125148/implement-style-fenced-markdown-code-blocks/322000#322000). The only remaining difference is that Stack Overflow does not support the collapsible details tag that we use on GitHub to reduce the clutter from, e.g., session info (#231).
 
-* "rtf" (Rich Text Format) is a new experimental `venue` for pasting into applications like PowerPoint and Keynote. It is experimental because it requires a working installation of the highlight command line tool, which is left as a somewhat fiddly exercise for the user (#331). `venue = "rtf"` is documented in its [own article](https://reprex.tidyverse.org/articles/articles/rtf.html).
+* `"rtf"` (Rich Text Format) is a new experimental `venue` for pasting into applications like PowerPoint and Keynote. It is experimental because it requires a working installation of the highlight command line tool, which is left as a somewhat fiddly exercise for the user (#331). `venue = "rtf"` is documented in its [own article](https://reprex.tidyverse.org/articles/articles/rtf.html).
 
 * `reprex.current_venue` is a new read-only option that is set during `reprex_render()`. Other packages can use it to generate `reprex()`-compatible, `venue`-aware output, such as an renv lockfile.
 

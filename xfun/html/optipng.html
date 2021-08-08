@@ -9,15 +9,19 @@
 
 <h3>Description</h3>
 
-<p>Calls the command <code>optipng</code> to optimize all PNG files under a
-directory.
+<p>Call the command <code>optipng</code> via <code>system2()</code> to optimize all PNG
+files under a directory.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-optipng(dir = ".")
+optipng(
+  dir = ".",
+  files = list.files(dir, "[.]png$", recursive = TRUE, full.names = TRUE),
+  ...
+)
 </pre>
 
 
@@ -28,6 +32,14 @@ optipng(dir = ".")
 <td>
 <p>Path to a directory.</p>
 </td></tr>
+<tr valign="top"><td><code>files</code></td>
+<td>
+<p>Alternatively, you can choose the specific files to optimize.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Arguments to be passed to <code>system2()</code>.</p>
+</td></tr>
 </table>
 
 
@@ -36,5 +48,5 @@ optipng(dir = ".")
 <p>OptiPNG: <a href="http://optipng.sourceforge.net">http://optipng.sourceforge.net</a>.
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.21 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.25 <a href="00Index.html">Index</a>]</div>
 </body></html>

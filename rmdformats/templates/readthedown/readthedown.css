@@ -48,6 +48,7 @@ img.image-lb {
 .figure {
     margin: 5px 10px 30px 0px;
     display: table;
+    text-align: center;
 }
 
 .figure img {
@@ -55,7 +56,6 @@ img.image-lb {
 }
 
 .figure p.caption {
-    text-align: center;
     font-style: italic;
     font-size: 90%;
 }
@@ -175,9 +175,11 @@ p {
     margin:0px 0px 24px 0px;
 }
 
-#content ul {
+#content ul,
+#content ol {
   font-size: 16px;
 }
+
 
 #content p {
   margin-bottom: 16px;
@@ -493,7 +495,8 @@ code{
   margin-bottom: 20px;
 }
 
-table:not(.dataTable) td,table:not(.dataTable) th{
+#main table:not(.dataTable) td,
+#main table:not(.dataTable) th {
     font-size:90%;
     padding: 8px;
     margin:0;
@@ -505,6 +508,9 @@ table:not(.dataTable) td,table:not(.dataTable) th{
     font-weight:bold;
     border-top: 1px solid #ddd;
     border-bottom: 2px solid #ddd;
+}
+
+#main table:not(.dataTable) thead th {
     background-color:white;
 }
 
@@ -514,17 +520,22 @@ table caption{
     padding:1em 0;
 }
 
-table tr:nth-child(2n-1) {
+table:not(.dataTable) tr:nth-child(2n-1) {
     background-color:#f3f6f6;
 }
 
-table tr:nth-child(2n) {
+table:not(.dataTable) tr:nth-child(2n) {
     background-color:white;
 }
 
 .dataTables_wrapper {
   overflow-x: auto;
 }
+
+.dataTables_wrapper .table-wrapper {
+  margin-top: 3em;
+}
+
 
 #main .dataTables_wrapper a {
   background-image: none;
@@ -803,6 +814,12 @@ hr{
     color:#b3b3b3;
     direction: ltr;
     text-decoration: none;
+}
+
+#sidebar #postamble a {
+  display: inline;
+  padding: 0 2px;
+  font-size: 100%;
 }
 
 #sidebar a:hover{

@@ -17,7 +17,9 @@ write back to the original file.
 <h3>Usage</h3>
 
 <pre>
-process_file(file, FUN = identity, x = read_utf8(file))
+process_file(file, fun = identity, x = read_utf8(file))
+
+sort_file(..., fun = sort)
 </pre>
 
 
@@ -28,7 +30,7 @@ process_file(file, FUN = identity, x = read_utf8(file))
 <td>
 <p>Path to a text file.</p>
 </td></tr>
-<tr valign="top"><td><code>FUN</code></td>
+<tr valign="top"><td><code>fun</code></td>
 <td>
 <p>A function to process the text.</p>
 </td></tr>
@@ -36,7 +38,19 @@ process_file(file, FUN = identity, x = read_utf8(file))
 <td>
 <p>The content of the file.</p>
 </td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Arguments to be passed to <code>process_file()</code>.</p>
+</td></tr>
 </table>
+
+
+<h3>Details</h3>
+
+<p><code>sort_file()</code> is an application of <code>process_file()</code>, with the
+processing function being <code><a href="../../base/html/sort.html">sort</a>()</code>, i.e., it sorts the text lines
+in a file and write back the sorted text.
+</p>
 
 
 <h3>Value</h3>
@@ -57,5 +71,5 @@ xfun::read_utf8(f)  # see if it has been updated
 file.remove(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.21 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>xfun</em> version 0.25 <a href="00Index.html">Index</a>]</div>
 </body></html>

@@ -24,7 +24,7 @@ Mat<eT>::~Mat()
   {
   arma_extra_debug_sigprint_this(this);
   
-  if(n_alloc > arma_config::mat_prealloc)
+  if(n_alloc > 0)
     {
     arma_extra_debug_print("Mat::destructor: releasing memory");
     memory::release( access::rw(mem) );
@@ -69,6 +69,13 @@ Mat<eT>::Mat(const uword in_n_rows, const uword in_n_cols)
   arma_extra_debug_sigprint_this(this);
   
   init_cold();
+  
+  #if (!defined(ARMA_DONT_ZERO_INIT))
+    {
+    arma_extra_debug_print("Mat::constructor: zeroing memory");
+    arrayops::fill_zeros(memptr(), n_elem);
+    }
+  #endif
   }
 
 
@@ -87,6 +94,65 @@ Mat<eT>::Mat(const SizeMat& s)
   arma_extra_debug_sigprint_this(this);
   
   init_cold();
+  
+  #if (!defined(ARMA_DONT_ZERO_INIT))
+    {
+    arma_extra_debug_print("Mat::constructor: zeroing memory");
+    arrayops::fill_zeros(memptr(), n_elem);
+    }
+  #endif
+  }
+
+
+
+//! internal use only
+template<typename eT>
+template<bool do_zeros>
+inline
+Mat<eT>::Mat(const uword in_n_rows, const uword in_n_cols, const arma_initmode_indicator<do_zeros>&)
+  : n_rows(in_n_rows)
+  , n_cols(in_n_cols)
+  , n_elem(in_n_rows*in_n_cols)
+  , n_alloc()
+  , vec_state(0)
+  , mem_state(0)
+  , mem()
+  {
+  arma_extra_debug_sigprint_this(this);
+  
+  init_cold();
+  
+  if(do_zeros)
+    {
+    arma_extra_debug_print("Mat::constructor: zeroing memory");
+    arrayops::fill_zeros(memptr(), n_elem);
+    }
+  }
+
+
+
+//! internal use only
+template<typename eT>
+template<bool do_zeros>
+inline
+Mat<eT>::Mat(const SizeMat& s, const arma_initmode_indicator<do_zeros>&)
+  : n_rows(s.n_rows)
+  , n_cols(s.n_cols)
+  , n_elem(s.n_rows*s.n_cols)
+  , n_alloc()
+  , vec_state(0)
+  , mem_state(0)
+  , mem()
+  {
+  arma_extra_debug_sigprint_this(this);
+  
+  init_cold();
+  
+  if(do_zeros)
+    {
+    arma_extra_debug_print("Mat::constructor: zeroing memory");
+    arrayops::fill_zeros(memptr(), n_elem);
+    }
   }
 
 
@@ -130,6 +196,47 @@ Mat<eT>::Mat(const SizeMat& s, const fill::fill_class<fill_type>& f)
   init_cold();
   
   (*this).fill(f);
+  }
+
+
+
+//! construct the matrix to have user specified dimensions and fill with specified value
+template<typename eT>
+inline
+Mat<eT>::Mat(const uword in_n_rows, const uword in_n_cols, const fill::scalar_holder<eT> f)
+  : n_rows(in_n_rows)
+  , n_cols(in_n_cols)
+  , n_elem(in_n_rows*in_n_cols)
+  , n_alloc()
+  , vec_state(0)
+  , mem_state(0)
+  , mem()
+  {
+  arma_extra_debug_sigprint_this(this);
+  
+  init_cold();
+  
+  (*this).fill(f.scalar);
+  }
+
+
+
+template<typename eT>
+inline
+Mat<eT>::Mat(const SizeMat& s, const fill::scalar_holder<eT> f)
+  : n_rows(s.n_rows)
+  , n_cols(s.n_cols)
+  , n_elem(s.n_rows*s.n_cols)
+  , n_alloc()
+  , vec_state(0)
+  , mem_state(0)
+  , mem()
+  {
+  arma_extra_debug_sigprint_this(this);
+  
+  init_cold();
+  
+  (*this).fill(f.scalar);
   }
 
 
@@ -305,8 +412,8 @@ Mat<eT>::init_warm(uword in_n_rows, uword in_n_cols)
     
     if(new_n_elem > 0)  { arma_extra_debug_print("Mat::init(): using local memory"); }
     
-    access::rw(mem)       = (new_n_elem == 0) ? nullptr : mem_local;
-    access::rw(n_alloc)   = 0;
+    access::rw(mem)     = (new_n_elem == 0) ? nullptr : mem_local;
+    access::rw(n_alloc) = 0;
     }
   else  // condition: new_n_elem > arma_config::mat_prealloc
     {
@@ -316,11 +423,18 @@ Mat<eT>::init_warm(uword in_n_rows, uword in_n_cols)
         {
         arma_extra_debug_print("Mat::init(): releasing memory");
         memory::release( access::rw(mem) );
+        
+        // in case memory::acquire() throws an exception
+        access::rw(mem)     = nullptr;
+        access::rw(n_rows)  = 0;
+        access::rw(n_cols)  = 0;
+        access::rw(n_elem)  = 0;
+        access::rw(n_alloc) = 0;
         }
       
       arma_extra_debug_print("Mat::init(): acquiring memory");
-      access::rw(mem)       = memory::acquire<eT>(new_n_elem);
-      access::rw(n_alloc)   = new_n_elem;
+      access::rw(mem)     = memory::acquire<eT>(new_n_elem);
+      access::rw(n_alloc) = new_n_elem;
       }
     else // condition: new_n_elem <= n_alloc
       {
@@ -1175,7 +1289,7 @@ Mat<eT>::steal_mem_col(Mat<eT>& x, const uword max_n_rows)
     }
   else
     {
-    Mat<eT> tmp(alt_n_rows, 1);
+    Mat<eT> tmp(alt_n_rows, 1, arma_nozeros_indicator());
     
     arrayops::copy( tmp.memptr(), x.memptr(), alt_n_rows );
     
@@ -2886,7 +3000,7 @@ Mat<eT>::row(const uword row_num)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( row_num >= n_rows, "Mat::row(): index out of bounds" );
+  arma_debug_check_bounds( row_num >= n_rows, "Mat::row(): index out of bounds" );
   
   return subview_row<eT>(*this, row_num);
   }
@@ -2901,7 +3015,7 @@ Mat<eT>::row(const uword row_num) const
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( row_num >= n_rows, "Mat::row(): index out of bounds" );
+  arma_debug_check_bounds( row_num >= n_rows, "Mat::row(): index out of bounds" );
   
   return subview_row<eT>(*this, row_num);
   }
@@ -2923,7 +3037,7 @@ Mat<eT>::operator()(const uword row_num, const span& col_span)
   const uword in_col2       =                          col_span.b;
   const uword submat_n_cols = col_all ? local_n_cols : in_col2 - in_col1 + 1;
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (row_num >= n_rows)
     ||
@@ -2952,7 +3066,7 @@ Mat<eT>::operator()(const uword row_num, const span& col_span) const
   const uword in_col2       =                          col_span.b;
   const uword submat_n_cols = col_all ? local_n_cols : in_col2 - in_col1 + 1;
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (row_num >= n_rows)
     ||
@@ -2974,7 +3088,7 @@ Mat<eT>::col(const uword col_num)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( col_num >= n_cols, "Mat::col(): index out of bounds" );
+  arma_debug_check_bounds( col_num >= n_cols, "Mat::col(): index out of bounds" );
   
   return subview_col<eT>(*this, col_num);
   }
@@ -2989,7 +3103,7 @@ Mat<eT>::col(const uword col_num) const
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( col_num >= n_cols, "Mat::col(): index out of bounds" );
+  arma_debug_check_bounds( col_num >= n_cols, "Mat::col(): index out of bounds" );
   
   return subview_col<eT>(*this, col_num);
   }
@@ -3011,7 +3125,7 @@ Mat<eT>::operator()(const span& row_span, const uword col_num)
   const uword in_row2       =                          row_span.b;
   const uword submat_n_rows = row_all ? local_n_rows : in_row2 - in_row1 + 1;
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (col_num >= n_cols)
     ||
@@ -3040,7 +3154,7 @@ Mat<eT>::operator()(const span& row_span, const uword col_num) const
   const uword in_row2       =                          row_span.b;
   const uword submat_n_rows = row_all ? local_n_rows : in_row2 - in_row1 + 1;
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (col_num >= n_cols)
     ||
@@ -3066,7 +3180,7 @@ Mat<eT>::unsafe_col(const uword col_num)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( col_num >= n_cols, "Mat::unsafe_col(): index out of bounds" );
+  arma_debug_check_bounds( col_num >= n_cols, "Mat::unsafe_col(): index out of bounds" );
   
   return Col<eT>(colptr(col_num), n_rows, false, true);
   }
@@ -3085,7 +3199,7 @@ Mat<eT>::unsafe_col(const uword col_num) const
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( col_num >= n_cols, "Mat::unsafe_col(): index out of bounds" );
+  arma_debug_check_bounds( col_num >= n_cols, "Mat::unsafe_col(): index out of bounds" );
   
   typedef const Col<eT> out_type;
   
@@ -3102,7 +3216,7 @@ Mat<eT>::rows(const uword in_row1, const uword in_row2)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (in_row1 > in_row2) || (in_row2 >= n_rows),
     "Mat::rows(): indices out of bounds or incorrectly used"
@@ -3123,7 +3237,7 @@ Mat<eT>::rows(const uword in_row1, const uword in_row2) const
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (in_row1 > in_row2) || (in_row2 >= n_rows),
     "Mat::rows(): indices out of bounds or incorrectly used"
@@ -3144,7 +3258,7 @@ Mat<eT>::cols(const uword in_col1, const uword in_col2)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (in_col1 > in_col2) || (in_col2 >= n_cols),
     "Mat::cols(): indices out of bounds or incorrectly used"
@@ -3165,7 +3279,7 @@ Mat<eT>::cols(const uword in_col1, const uword in_col2) const
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (in_col1 > in_col2) || (in_col2 >= n_cols),
     "Mat::cols(): indices out of bounds or incorrectly used"
@@ -3194,7 +3308,7 @@ Mat<eT>::rows(const span& row_span)
   const uword in_row2       =                          row_span.b;
   const uword submat_n_rows = row_all ? local_n_rows : in_row2 - in_row1 + 1;
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     ( row_all ? false : ((in_row1 > in_row2) || (in_row2 >= local_n_rows)) )
     ,
@@ -3222,7 +3336,7 @@ Mat<eT>::rows(const span& row_span) const
   const uword in_row2       =                          row_span.b;
   const uword submat_n_rows = row_all ? local_n_rows : in_row2 - in_row1 + 1;
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     ( row_all ? false : ((in_row1 > in_row2) || (in_row2 >= local_n_rows)) )
     ,
@@ -3250,7 +3364,7 @@ Mat<eT>::cols(const span& col_span)
   const uword in_col2       =                          col_span.b;
   const uword submat_n_cols = col_all ? local_n_cols : in_col2 - in_col1 + 1;
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     ( col_all ? false : ((in_col1 > in_col2) || (in_col2 >= local_n_cols)) )
     ,
@@ -3278,7 +3392,7 @@ Mat<eT>::cols(const span& col_span) const
   const uword in_col2       =                          col_span.b;
   const uword submat_n_cols = col_all ? local_n_cols : in_col2 - in_col1 + 1;
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     ( col_all ? false : ((in_col1 > in_col2) || (in_col2 >= local_n_cols)) )
     ,
@@ -3298,7 +3412,7 @@ Mat<eT>::submat(const uword in_row1, const uword in_col1, const uword in_row2, c
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (in_row1 > in_row2) || (in_col1 >  in_col2) || (in_row2 >= n_rows) || (in_col2 >= n_cols),
     "Mat::submat(): indices out of bounds or incorrectly used"
@@ -3320,7 +3434,7 @@ Mat<eT>::submat(const uword in_row1, const uword in_col1, const uword in_row2, c
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (in_row1 > in_row2) || (in_col1 >  in_col2) || (in_row2 >= n_rows) || (in_col2 >= n_cols),
     "Mat::submat(): indices out of bounds or incorrectly used"
@@ -3348,7 +3462,7 @@ Mat<eT>::submat(const uword in_row1, const uword in_col1, const SizeMat& s)
   const uword s_n_rows = s.n_rows;
   const uword s_n_cols = s.n_cols;
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     ((in_row1 >= l_n_rows) || (in_col1 >= l_n_cols) || ((in_row1 + s_n_rows) > l_n_rows) || ((in_col1 + s_n_cols) > l_n_cols)),
     "Mat::submat(): indices or size out of bounds"
@@ -3373,7 +3487,7 @@ Mat<eT>::submat(const uword in_row1, const uword in_col1, const SizeMat& s) cons
   const uword s_n_rows = s.n_rows;
   const uword s_n_cols = s.n_cols;
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     ((in_row1 >= l_n_rows) || (in_col1 >= l_n_cols) || ((in_row1 + s_n_rows) > l_n_rows) || ((in_col1 + s_n_cols) > l_n_cols)),
     "Mat::submat(): indices or size out of bounds"
@@ -3406,7 +3520,7 @@ Mat<eT>::submat(const span& row_span, const span& col_span)
   const uword in_col2       =                          col_span.b;
   const uword submat_n_cols = col_all ? local_n_cols : in_col2 - in_col1 + 1;
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     ( row_all ? false : ((in_row1 > in_row2) || (in_row2 >= local_n_rows)) )
     ||
@@ -3442,7 +3556,7 @@ Mat<eT>::submat(const span& row_span, const span& col_span) const
   const uword in_col2       =                          col_span.b;
   const uword submat_n_cols = col_all ? local_n_cols : in_col2 - in_col1 + 1;
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     ( row_all ? false : ((in_row1 > in_row2) || (in_row2 >= local_n_rows)) )
     ||
@@ -3511,7 +3625,7 @@ Mat<eT>::head_rows(const uword N)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( (N > n_rows), "Mat::head_rows(): size out of bounds" );
+  arma_debug_check_bounds( (N > n_rows), "Mat::head_rows(): size out of bounds" );
   
   return subview<eT>(*this, 0, 0, N, n_cols);
   }
@@ -3525,7 +3639,7 @@ Mat<eT>::head_rows(const uword N) const
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( (N > n_rows), "Mat::head_rows(): size out of bounds" );
+  arma_debug_check_bounds( (N > n_rows), "Mat::head_rows(): size out of bounds" );
   
   return subview<eT>(*this, 0, 0, N, n_cols);
   }
@@ -3539,7 +3653,7 @@ Mat<eT>::tail_rows(const uword N)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( (N > n_rows), "Mat::tail_rows(): size out of bounds" );
+  arma_debug_check_bounds( (N > n_rows), "Mat::tail_rows(): size out of bounds" );
   
   const uword start_row = n_rows - N;
   
@@ -3555,7 +3669,7 @@ Mat<eT>::tail_rows(const uword N) const
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( (N > n_rows), "Mat::tail_rows(): size out of bounds" );
+  arma_debug_check_bounds( (N > n_rows), "Mat::tail_rows(): size out of bounds" );
   
   const uword start_row = n_rows - N;
   
@@ -3571,7 +3685,7 @@ Mat<eT>::head_cols(const uword N)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( (N > n_cols), "Mat::head_cols(): size out of bounds" );
+  arma_debug_check_bounds( (N > n_cols), "Mat::head_cols(): size out of bounds" );
   
   return subview<eT>(*this, 0, 0, n_rows, N);
   }
@@ -3585,7 +3699,7 @@ Mat<eT>::head_cols(const uword N) const
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( (N > n_cols), "Mat::head_cols(): size out of bounds" );
+  arma_debug_check_bounds( (N > n_cols), "Mat::head_cols(): size out of bounds" );
   
   return subview<eT>(*this, 0, 0, n_rows, N);
   }
@@ -3599,7 +3713,7 @@ Mat<eT>::tail_cols(const uword N)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( (N > n_cols), "Mat::tail_cols(): size out of bounds" );
+  arma_debug_check_bounds( (N > n_cols), "Mat::tail_cols(): size out of bounds" );
   
   const uword start_col = n_cols - N;
   
@@ -3615,7 +3729,7 @@ Mat<eT>::tail_cols(const uword N) const
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( (N > n_cols), "Mat::tail_cols(): size out of bounds" );
+  arma_debug_check_bounds( (N > n_cols), "Mat::tail_cols(): size out of bounds" );
   
   const uword start_col = n_cols - N;
   
@@ -4053,7 +4167,7 @@ Mat<eT>::diag(const sword in_id)
   const uword row_offset = (in_id < 0) ? uword(-in_id) : 0;
   const uword col_offset = (in_id > 0) ? uword( in_id) : 0;
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     ((row_offset > 0) && (row_offset >= n_rows)) || ((col_offset > 0) && (col_offset >= n_cols)),
     "Mat::diag(): requested diagonal out of bounds"
@@ -4077,7 +4191,7 @@ Mat<eT>::diag(const sword in_id) const
   const uword row_offset = uword( (in_id < 0) ? -in_id : 0 );
   const uword col_offset = uword( (in_id > 0) ?  in_id : 0 );
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     ((row_offset > 0) && (row_offset >= n_rows)) || ((col_offset > 0) && (col_offset >= n_cols)),
     "Mat::diag(): requested diagonal out of bounds"
@@ -4100,7 +4214,7 @@ Mat<eT>::swap_rows(const uword in_row1, const uword in_row2)
   const uword local_n_rows = n_rows;
   const uword local_n_cols = n_cols;
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (in_row1 >= local_n_rows) || (in_row2 >= local_n_rows),
     "Mat::swap_rows(): index out of bounds"
@@ -4131,7 +4245,7 @@ Mat<eT>::swap_cols(const uword in_colA, const uword in_colB)
   const uword local_n_rows = n_rows;
   const uword local_n_cols = n_cols;
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (in_colA >= local_n_cols) || (in_colB >= local_n_cols),
     "Mat::swap_cols(): index out of bounds"
@@ -4175,7 +4289,7 @@ Mat<eT>::shed_row(const uword row_num)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( row_num >= n_rows, "Mat::shed_row(): index out of bounds" );
+  arma_debug_check_bounds( row_num >= n_rows, "Mat::shed_row(): index out of bounds" );
   
   shed_rows(row_num, row_num);
   }
@@ -4190,7 +4304,7 @@ Mat<eT>::shed_col(const uword col_num)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( col_num >= n_cols, "Mat::shed_col(): index out of bounds" );
+  arma_debug_check_bounds( col_num >= n_cols, "Mat::shed_col(): index out of bounds" );
   
   shed_cols(col_num, col_num);
   }
@@ -4205,7 +4319,7 @@ Mat<eT>::shed_rows(const uword in_row1, const uword in_row2)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (in_row1 > in_row2) || (in_row2 >= n_rows),
     "Mat::shed_rows(): indices out of bounds or incorrectly used"
@@ -4214,7 +4328,7 @@ Mat<eT>::shed_rows(const uword in_row1, const uword in_row2)
   const uword n_keep_front = in_row1;
   const uword n_keep_back  = n_rows - (in_row2 + 1);
   
-  Mat<eT> X(n_keep_front + n_keep_back, n_cols);
+  Mat<eT> X(n_keep_front + n_keep_back, n_cols, arma_nozeros_indicator());
   
   if(n_keep_front > 0)
     {
@@ -4239,7 +4353,7 @@ Mat<eT>::shed_cols(const uword in_col1, const uword in_col2)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (in_col1 > in_col2) || (in_col2 >= n_cols),
     "Mat::shed_cols(): indices out of bounds or incorrectly used"
@@ -4248,7 +4362,7 @@ Mat<eT>::shed_cols(const uword in_col1, const uword in_col2)
   const uword n_keep_front = in_col1;
   const uword n_keep_back  = n_cols - (in_col2 + 1);
   
-  Mat<eT> X(n_rows, n_keep_front + n_keep_back);
+  Mat<eT> X(n_rows, n_keep_front + n_keep_back, arma_nozeros_indicator());
   
   if(n_keep_front > 0)
     {
@@ -4294,11 +4408,11 @@ Mat<eT>::shed_rows(const Base<uword, T1>& indices)
     {
     for(uword i=0; i<N; ++i)
       {
-      arma_debug_check( (rows_to_shed_mem[i] >= n_rows), "Mat::shed_rows(): indices out of bounds" );
+      arma_debug_check_bounds( (rows_to_shed_mem[i] >= n_rows), "Mat::shed_rows(): indices out of bounds" );
       }
     }
   
-  Col<uword> tmp3(n_rows);
+  Col<uword> tmp3(n_rows, arma_nozeros_indicator());
   
   uword* tmp3_mem = tmp3.memptr();
   
@@ -4364,11 +4478,11 @@ Mat<eT>::shed_cols(const Base<uword, T1>& indices)
     {
     for(uword i=0; i<N; ++i)
       {
-      arma_debug_check( (cols_to_shed_mem[i] >= n_cols), "Mat::shed_cols(): indices out of bounds" );
+      arma_debug_check_bounds( (cols_to_shed_mem[i] >= n_cols), "Mat::shed_cols(): indices out of bounds" );
       }
     }
   
-  Col<uword> tmp3(n_cols);
+  Col<uword> tmp3(n_cols, arma_nozeros_indicator());
   
   uword* tmp3_mem = tmp3.memptr();
   
@@ -4421,11 +4535,11 @@ Mat<eT>::insert_rows(const uword row_num, const uword N, const bool set_to_zero)
   const uword B_n_rows = t_n_rows - row_num;
   
   // insertion at row_num == n_rows is in effect an append operation
-  arma_debug_check( (row_num > t_n_rows), "Mat::insert_rows(): index out of bounds" );
+  arma_debug_check_bounds( (row_num > t_n_rows), "Mat::insert_rows(): index out of bounds" );
   
   if(N > 0)
     {
-    Mat<eT> out(t_n_rows + N, t_n_cols);
+    Mat<eT> out(t_n_rows + N, t_n_cols, arma_nozeros_indicator());
     
     if(A_n_rows > 0)
       {
@@ -4464,11 +4578,11 @@ Mat<eT>::insert_cols(const uword col_num, const uword N, const bool set_to_zero)
   const uword B_n_cols = t_n_cols - col_num;
   
   // insertion at col_num == n_cols is in effect an append operation
-  arma_debug_check( (col_num > t_n_cols), "Mat::insert_cols(): index out of bounds" );
+  arma_debug_check_bounds( (col_num > t_n_cols), "Mat::insert_cols(): index out of bounds" );
   
   if(N > 0)
     {
-    Mat<eT> out(t_n_rows, t_n_cols + N);
+    Mat<eT> out(t_n_rows, t_n_cols + N, arma_nozeros_indicator());
     
     if(A_n_cols > 0)
       {
@@ -4534,11 +4648,11 @@ Mat<eT>::insert_rows(const uword row_num, const Base<eT,T1>& X)
     "Mat::insert_rows(): given object has an incompatible number of columns"
     );
   
-  arma_debug_check(err_state, err_msg);
+  arma_debug_check_bounds(err_state, err_msg);
   
   if(C_n_rows > 0)
     {
-    Mat<eT> out( t_n_rows + C_n_rows, (std::max)(t_n_cols, C_n_cols) );
+    Mat<eT> out( t_n_rows + C_n_rows, (std::max)(t_n_cols, C_n_cols), arma_nozeros_indicator() );
     
     if(t_n_cols > 0)
       {
@@ -4607,11 +4721,11 @@ Mat<eT>::insert_cols(const uword col_num, const Base<eT,T1>& X)
     "Mat::insert_cols(): given object has an incompatible number of rows"
     );
   
-  arma_debug_check(err_state, err_msg);
+  arma_debug_check_bounds(err_state, err_msg);
   
   if(C_n_cols > 0)
     {
-    Mat<eT> out( (std::max)(t_n_rows, C_n_rows), t_n_cols + C_n_cols );
+    Mat<eT> out( (std::max)(t_n_rows, C_n_rows), t_n_cols + C_n_cols, arma_nozeros_indicator() );
     
     if(t_n_rows > 0)
       {
@@ -5854,7 +5968,7 @@ arma_warn_unused
 eT&
 Mat<eT>::operator() (const uword ii)
   {
-  arma_debug_check( (ii >= n_elem), "Mat::operator(): index out of bounds" );
+  arma_debug_check_bounds( (ii >= n_elem), "Mat::operator(): index out of bounds" );
   
   return access::rw(mem[ii]);
   }
@@ -5868,7 +5982,7 @@ arma_warn_unused
 const eT&
 Mat<eT>::operator() (const uword ii) const
   {
-  arma_debug_check( (ii >= n_elem), "Mat::operator(): index out of bounds" );
+  arma_debug_check_bounds( (ii >= n_elem), "Mat::operator(): index out of bounds" );
   
   return mem[ii];
   }
@@ -5929,7 +6043,7 @@ arma_warn_unused
 eT&
 Mat<eT>::operator() (const uword in_row, const uword in_col)
   {
-  arma_debug_check( ((in_row >= n_rows) || (in_col >= n_cols)), "Mat::operator(): index out of bounds" );
+  arma_debug_check_bounds( ((in_row >= n_rows) || (in_col >= n_cols)), "Mat::operator(): index out of bounds" );
   
   return access::rw(mem[in_row + in_col*n_rows]);
   }
@@ -5943,7 +6057,7 @@ arma_warn_unused
 const eT&
 Mat<eT>::operator() (const uword in_row, const uword in_col) const
   {
-  arma_debug_check( ((in_row >= n_rows) || (in_col >= n_cols)), "Mat::operator(): index out of bounds" );
+  arma_debug_check_bounds( ((in_row >= n_rows) || (in_col >= n_cols)), "Mat::operator(): index out of bounds" );
   
   return mem[in_row + in_col*n_rows];
   }
@@ -6601,7 +6715,7 @@ Mat<eT>::reshape(const uword in_rows, const uword in_cols, const uword dim)
   {
   arma_extra_debug_sigprint();
   
-  // arma_debug_warn("this form of reshape() is deprecated and will be removed");
+  // arma_debug_warn_level(1, "this form of reshape() is deprecated and will be removed");
   
   arma_debug_check( (dim > 1), "reshape(): parameter 'dim' must be 0 or 1" );
   
@@ -6797,6 +6911,30 @@ Mat<eT>::clean(const typename get_pod_type<eT>::result threshold)
 
 
 
+template<typename eT>
+inline
+const Mat<eT>&
+Mat<eT>::clamp(const eT min_val, const eT max_val)
+  {
+  arma_extra_debug_sigprint();
+  
+  if(is_cx<eT>::no)
+    {
+    arma_debug_check( (access::tmp_real(min_val) > access::tmp_real(max_val)), "Mat::clamp(): min_val must be less than max_val" );
+    }
+  else
+    {
+    arma_debug_check( (access::tmp_real(min_val) > access::tmp_real(max_val)), "Mat::clamp(): real(min_val) must be less than real(max_val)" );
+    arma_debug_check( (access::tmp_imag(min_val) > access::tmp_imag(max_val)), "Mat::clamp(): imag(min_val) must be less than imag(max_val)" );
+    }
+  
+  arrayops::clamp(memptr(), n_elem, min_val, max_val);
+  
+  return *this;
+  }
+
+
+
 //! fill the matrix with the specified value
 template<typename eT>
 inline
@@ -6812,7 +6950,7 @@ Mat<eT>::fill(const eT val)
 
 
 
-//! fill the matrix with the specified value
+//! fill the matrix with the specified pattern
 template<typename eT>
 template<typename fill_type>
 inline
@@ -6821,11 +6959,11 @@ Mat<eT>::fill(const fill::fill_class<fill_type>&)
   {
   arma_extra_debug_sigprint();
   
-  if(is_same_type<fill_type, fill::fill_zeros>::yes)  (*this).zeros();
-  if(is_same_type<fill_type, fill::fill_ones >::yes)  (*this).ones();
-  if(is_same_type<fill_type, fill::fill_eye  >::yes)  (*this).eye();
-  if(is_same_type<fill_type, fill::fill_randu>::yes)  (*this).randu();
-  if(is_same_type<fill_type, fill::fill_randn>::yes)  (*this).randn();
+  if(is_same_type<fill_type, fill::fill_zeros>::yes)  { (*this).zeros(); }
+  if(is_same_type<fill_type, fill::fill_ones >::yes)  { (*this).ones();  }
+  if(is_same_type<fill_type, fill::fill_eye  >::yes)  { (*this).eye();   }
+  if(is_same_type<fill_type, fill::fill_randu>::yes)  { (*this).randu(); }
+  if(is_same_type<fill_type, fill::fill_randn>::yes)  { (*this).randn(); }
   
   return *this;
   }
@@ -7121,7 +7259,6 @@ Mat<eT>::soft_reset()
     }
   else
     {
-    // fill(Datum<eT>::nan);
     zeros();
     }
   }
@@ -7299,7 +7436,7 @@ template<typename eT>
 inline
 arma_cold
 bool
-Mat<eT>::save(const std::string name, const file_type type, const bool print_status) const
+Mat<eT>::save(const std::string name, const file_type type) const
   {
   arma_extra_debug_sigprint();
   
@@ -7316,7 +7453,15 @@ Mat<eT>::save(const std::string name, const file_type type, const bool print_sta
       break;
     
     case csv_ascii:
-      return (*this).save(csv_name(name), type, print_status);
+      return (*this).save(csv_name(name), type);
+      break;
+    
+    case ssv_ascii:
+      return (*this).save(csv_name(name), type);
+      break;
+    
+    case coord_ascii:
+      save_okay = diskio::save_coord_ascii(*this, name);
       break;
     
     case raw_binary:
@@ -7340,11 +7485,11 @@ Mat<eT>::save(const std::string name, const file_type type, const bool print_sta
       break;
     
     default:
-      if(print_status)  { arma_debug_warn("Mat::save(): unsupported file type"); }
+      arma_debug_warn_level(1, "Mat::save(): unsupported file type");
       save_okay = false;
     }
   
-  if(print_status && (save_okay == false))  { arma_debug_warn("Mat::save(): couldn't write to ", name); }
+  if(save_okay == false)  { arma_debug_warn_level(3, "Mat::save(): couldn't write; file: ", name); }
   
   return save_okay;
   }
@@ -7355,7 +7500,7 @@ template<typename eT>
 inline
 arma_cold
 bool
-Mat<eT>::save(const hdf5_name& spec, const file_type type, const bool print_status) const
+Mat<eT>::save(const hdf5_name& spec, const file_type type) const
   {
   arma_extra_debug_sigprint();
   
@@ -7363,7 +7508,7 @@ Mat<eT>::save(const hdf5_name& spec, const file_type type, const bool print_stat
   
   if( (type != hdf5_binary) && (type != hdf5_binary_trans) )
     {
-    arma_debug_check(true, "Mat::save(): unsupported file type for hdf5_name()");
+    arma_stop_runtime_error("Mat::save(): unsupported file type for hdf5_name()");
     return false;
     }
   
@@ -7373,7 +7518,7 @@ Mat<eT>::save(const hdf5_name& spec, const file_type type, const bool print_stat
   
   if(append && replace)
     {
-    arma_debug_check(true, "Mat::save(): only one of 'append' or 'replace' options can be used");
+    arma_stop_runtime_error("Mat::save(): only one of 'append' or 'replace' options can be used");
     return false;
     }
   
@@ -7394,15 +7539,15 @@ Mat<eT>::save(const hdf5_name& spec, const file_type type, const bool print_stat
     save_okay = diskio::save_hdf5_binary(*this, spec, err_msg);
     }
   
-  if(print_status && (save_okay == false))
+  if(save_okay == false)
     {
     if(err_msg.length() > 0)
       {
-      arma_debug_warn("Mat::save(): ", err_msg, spec.filename);
+      arma_debug_warn_level(3, "Mat::save(): ", err_msg, "; file: ", spec.filename);
       }
     else
       {
-      arma_debug_warn("Mat::save(): couldn't write to ", spec.filename);
+      arma_debug_warn_level(3, "Mat::save(): couldn't write; file: ", spec.filename);
       }
     }
   
@@ -7415,25 +7560,29 @@ template<typename eT>
 inline
 arma_cold
 bool
-Mat<eT>::save(const csv_name& spec, const file_type type, const bool print_status) const
+Mat<eT>::save(const csv_name& spec, const file_type type) const
   {
   arma_extra_debug_sigprint();
   
-  if(type != csv_ascii)
+  if( (type != csv_ascii) && (type != ssv_ascii) ) 
     {
-    arma_debug_check(true, "Mat::save(): unsupported file type for csv_name()");
+    arma_stop_runtime_error("Mat::save(): unsupported file type for csv_name()");
     return false;
     }
   
-  const bool   do_trans  = bool(spec.opts.flags & csv_opts::flag_trans      );
-  const bool   no_header = bool(spec.opts.flags & csv_opts::flag_no_header  );
-        bool with_header = bool(spec.opts.flags & csv_opts::flag_with_header);
+  const bool   do_trans     = bool(spec.opts.flags & csv_opts::flag_trans      );
+  const bool   no_header    = bool(spec.opts.flags & csv_opts::flag_no_header  );
+        bool with_header    = bool(spec.opts.flags & csv_opts::flag_with_header);
+  const bool  use_semicolon = bool(spec.opts.flags & csv_opts::flag_semicolon  ) || (type == ssv_ascii);
   
   arma_extra_debug_print("Mat::save(csv_name): enabled flags:");
   
-  if(do_trans   )  { arma_extra_debug_print("trans");       }
-  if(no_header  )  { arma_extra_debug_print("no_header");   }
-  if(with_header)  { arma_extra_debug_print("with_header"); }
+  if(do_trans     )  { arma_extra_debug_print("trans");       }
+  if(no_header    )  { arma_extra_debug_print("no_header");   }
+  if(with_header  )  { arma_extra_debug_print("with_header"); }
+  if(use_semicolon)  { arma_extra_debug_print("semicolon");   }
+  
+  const char separator = (use_semicolon) ? char(';') : char(',');
   
   if(no_header)  { with_header = false; }
   
@@ -7441,7 +7590,7 @@ Mat<eT>::save(const csv_name& spec, const file_type type, const bool print_statu
     {
     if( (spec.header_ro.n_cols != 1) && (spec.header_ro.n_rows != 1) )
       {
-      if(print_status)  { arma_debug_warn("Mat::save(): given header must have a vector layout"); }
+      arma_debug_warn_level(1, "Mat::save(): given header must have a vector layout");
       return false;
       }
     
@@ -7449,9 +7598,9 @@ Mat<eT>::save(const csv_name& spec, const file_type type, const bool print_statu
       {
       const std::string& token = spec.header_ro.at(i);
       
-      if(token.find(',') != std::string::npos)
+      if(token.find(separator) != std::string::npos)
         {
-        if(print_status)  { arma_debug_warn("Mat::save(): token within the header contains a comma: '", token, "'"); }
+        arma_debug_warn_level(1, "Mat::save(): token within the header contains the separator character: '", token, "'");
         return false;
         }
       }
@@ -7460,7 +7609,7 @@ Mat<eT>::save(const csv_name& spec, const file_type type, const bool print_statu
     
     if(spec.header_ro.n_elem != save_n_cols)
       {
-      if(print_status)  { arma_debug_warn("Mat::save(): size mistmach between header and matrix"); }
+      arma_debug_warn_level(1, "Mat::save(): size mistmach between header and matrix");
       return false;
       }
     }
@@ -7471,17 +7620,14 @@ Mat<eT>::save(const csv_name& spec, const file_type type, const bool print_statu
     {
     const Mat<eT> tmp = (*this).st();
     
-    save_okay = diskio::save_csv_ascii(tmp, spec.filename, spec.header_ro, with_header);
+    save_okay = diskio::save_csv_ascii(tmp, spec.filename, spec.header_ro, with_header, separator);
     }
   else
     {
-    save_okay = diskio::save_csv_ascii(*this, spec.filename, spec.header_ro, with_header);
+    save_okay = diskio::save_csv_ascii(*this, spec.filename, spec.header_ro, with_header, separator);
     }
   
-  if(print_status && (save_okay == false))
-    {
-    arma_debug_warn("Mat::save(): couldn't write to ", spec.filename);
-    }
+  if(save_okay == false)  { arma_debug_warn_level(3, "Mat::save(): couldn't write; file: ", spec.filename); }
   
   return save_okay;
   }
@@ -7493,7 +7639,7 @@ template<typename eT>
 inline
 arma_cold
 bool
-Mat<eT>::save(std::ostream& os, const file_type type, const bool print_status) const
+Mat<eT>::save(std::ostream& os, const file_type type) const
   {
   arma_extra_debug_sigprint();
   
@@ -7510,7 +7656,15 @@ Mat<eT>::save(std::ostream& os, const file_type type, const bool print_status) c
       break;
     
     case csv_ascii:
-      save_okay = diskio::save_csv_ascii(*this, os);
+      save_okay = diskio::save_csv_ascii(*this, os, char(','));
+      break;
+    
+    case ssv_ascii:
+      save_okay = diskio::save_csv_ascii(*this, os, char(';'));
+      break;
+    
+    case coord_ascii:
+      save_okay = diskio::save_coord_ascii(*this, os);
       break;
     
     case raw_binary:
@@ -7526,11 +7680,11 @@ Mat<eT>::save(std::ostream& os, const file_type type, const bool print_status) c
       break;
     
     default:
-      if(print_status)  { arma_debug_warn("Mat::save(): unsupported file type"); }
+      arma_debug_warn_level(1, "Mat::save(): unsupported file type");
       save_okay = false;
     }
   
-  if(print_status && (save_okay == false))  { arma_debug_warn("Mat::save(): couldn't write to the given stream"); }
+  if(save_okay == false)  { arma_debug_warn_level(3, "Mat::save(): couldn't write to stream"); }
   
   return save_okay;
   }
@@ -7542,7 +7696,7 @@ template<typename eT>
 inline
 arma_cold
 bool
-Mat<eT>::load(const std::string name, const file_type type, const bool print_status)
+Mat<eT>::load(const std::string name, const file_type type)
   {
   arma_extra_debug_sigprint();
   
@@ -7564,7 +7718,15 @@ Mat<eT>::load(const std::string name, const file_type type, const bool print_sta
       break;
     
     case csv_ascii:
-      return (*this).load(csv_name(name), type, print_status);
+      return (*this).load(csv_name(name), type);
+      break;
+    
+    case ssv_ascii:
+      return (*this).load(csv_name(name), type);
+      break;
+    
+    case coord_ascii:
+      load_okay = diskio::load_coord_ascii(*this, name, err_msg);
       break;
     
     case raw_binary:
@@ -7588,19 +7750,19 @@ Mat<eT>::load(const std::string name, const file_type type, const bool print_sta
       break;
     
     default:
-      if(print_status)  { arma_debug_warn("Mat::load(): unsupported file type"); }
+      arma_debug_warn_level(1, "Mat::load(): unsupported file type");
       load_okay = false;
     }
   
-  if( print_status && (load_okay == false) )
+  if(load_okay == false)
     {
     if(err_msg.length() > 0)
       {
-      arma_debug_warn("Mat::load(): ", err_msg, name);
+      arma_debug_warn_level(3, "Mat::load(): ", err_msg, "; file: ", name);
       }
     else
       {
-      arma_debug_warn("Mat::load(): couldn't read ", name);
+      arma_debug_warn_level(3, "Mat::load(): couldn't read; file: ", name);
       }
     }
   
@@ -7615,14 +7777,13 @@ template<typename eT>
 inline
 arma_cold
 bool
-Mat<eT>::load(const hdf5_name& spec, const file_type type, const bool print_status)
+Mat<eT>::load(const hdf5_name& spec, const file_type type)
   {
   arma_extra_debug_sigprint();
   
   if( (type != hdf5_binary) && (type != hdf5_binary_trans) )
     {
-    if(print_status)  { arma_debug_warn("Mat::load(): unsupported file type for hdf5_name()"); }
-    (*this).soft_reset();
+    arma_stop_runtime_error("Mat::load(): unsupported file type for hdf5_name()");
     return false;
     }
   
@@ -7645,15 +7806,15 @@ Mat<eT>::load(const hdf5_name& spec, const file_type type, const bool print_stat
     }
   
   
-  if( print_status && (load_okay == false) )
+  if(load_okay == false)
     {
     if(err_msg.length() > 0)
       {
-      arma_debug_warn("Mat::load(): ", err_msg, spec.filename);
+      arma_debug_warn_level(3, "Mat::load(): ", err_msg, "; file: ", spec.filename);
       }
     else
       {
-      arma_debug_warn("Mat::load(): couldn't read ", spec.filename);
+      arma_debug_warn_level(3, "Mat::load(): couldn't read; file: ", spec.filename);
       }
     }
   
@@ -7668,25 +7829,29 @@ template<typename eT>
 inline
 arma_cold
 bool
-Mat<eT>::load(const csv_name& spec, const file_type type, const bool print_status)
+Mat<eT>::load(const csv_name& spec, const file_type type)
   {
   arma_extra_debug_sigprint();
   
-  if(type != csv_ascii)
+  if( (type != csv_ascii) && (type != ssv_ascii) ) 
     {
-    arma_debug_check(true, "Mat::load(): unsupported file type for csv_name()");
+    arma_stop_runtime_error("Mat::load(): unsupported file type for csv_name()");
     return false;
     }
   
-  const bool   do_trans  = bool(spec.opts.flags & csv_opts::flag_trans      );
-  const bool   no_header = bool(spec.opts.flags & csv_opts::flag_no_header  );
-        bool with_header = bool(spec.opts.flags & csv_opts::flag_with_header);
+  const bool   do_trans     = bool(spec.opts.flags & csv_opts::flag_trans      );
+  const bool   no_header    = bool(spec.opts.flags & csv_opts::flag_no_header  );
+        bool with_header    = bool(spec.opts.flags & csv_opts::flag_with_header);
+  const bool  use_semicolon = bool(spec.opts.flags & csv_opts::flag_semicolon  ) || (type == ssv_ascii);
   
   arma_extra_debug_print("Mat::load(csv_name): enabled flags:");
   
-  if(do_trans   )  { arma_extra_debug_print("trans");       }
-  if(no_header  )  { arma_extra_debug_print("no_header");   }
-  if(with_header)  { arma_extra_debug_print("with_header"); }
+  if(do_trans     )  { arma_extra_debug_print("trans");       }
+  if(no_header    )  { arma_extra_debug_print("no_header");   }
+  if(with_header  )  { arma_extra_debug_print("with_header"); }
+  if(use_semicolon)  { arma_extra_debug_print("semicolon");   }
+  
+  const char separator = (use_semicolon) ? char(';') : char(',');
   
   if(no_header)  { with_header = false; }
   
@@ -7697,7 +7862,7 @@ Mat<eT>::load(const csv_name& spec, const file_type type, const bool print_statu
     {
     Mat<eT> tmp_mat;
     
-    load_okay = diskio::load_csv_ascii(tmp_mat, spec.filename, err_msg, spec.header_rw, with_header);
+    load_okay = diskio::load_csv_ascii(tmp_mat, spec.filename, err_msg, spec.header_rw, with_header, separator);
     
     if(load_okay)
       {
@@ -7712,30 +7877,27 @@ Mat<eT>::load(const csv_name& spec, const file_type type, const bool print_statu
     }
   else
     {
-    load_okay = diskio::load_csv_ascii(*this, spec.filename, err_msg, spec.header_rw, with_header);
+    load_okay = diskio::load_csv_ascii(*this, spec.filename, err_msg, spec.header_rw, with_header, separator);
     }
   
-  if(print_status)
+  if(load_okay == false)
     {
-    if(load_okay == false)
+    if(err_msg.length() > 0)
       {
-      if(err_msg.length() > 0)
-        {
-        arma_debug_warn("Mat::load(): ", err_msg, spec.filename);
-        }
-      else
-        {
-        arma_debug_warn("Mat::load(): couldn't read ", spec.filename);
-        }
+      arma_debug_warn_level(3, "Mat::load(): ", err_msg, "; file: ", spec.filename);
       }
     else
       {
-      const uword load_n_cols = (do_trans) ? (*this).n_rows : (*this).n_cols;
-      
-      if(with_header && (spec.header_rw.n_elem != load_n_cols))
-        {
-        arma_debug_warn("Mat::load(): size mistmach between header and matrix");
-        }
+      arma_debug_warn_level(3, "Mat::load(): couldn't read; file: ", spec.filename);
+      }
+    }
+  else
+    {
+    const uword load_n_cols = (do_trans) ? (*this).n_rows : (*this).n_cols;
+    
+    if(with_header && (spec.header_rw.n_elem != load_n_cols))
+      {
+      arma_debug_warn_level(3, "Mat::load(): size mistmach between header and matrix");
       }
     }
   
@@ -7756,7 +7918,7 @@ template<typename eT>
 inline
 arma_cold
 bool
-Mat<eT>::load(std::istream& is, const file_type type, const bool print_status)
+Mat<eT>::load(std::istream& is, const file_type type)
   {
   arma_extra_debug_sigprint();
   
@@ -7778,7 +7940,15 @@ Mat<eT>::load(std::istream& is, const file_type type, const bool print_status)
       break;
     
     case csv_ascii:
-      load_okay = diskio::load_csv_ascii(*this, is, err_msg);
+      load_okay = diskio::load_csv_ascii(*this, is, err_msg, char(','));
+      break;
+    
+    case ssv_ascii:
+      load_okay = diskio::load_csv_ascii(*this, is, err_msg, char(';'));
+      break;
+    
+    case coord_ascii:
+      load_okay = diskio::load_coord_ascii(*this, is, err_msg);
       break;
     
     case raw_binary:
@@ -7794,19 +7964,19 @@ Mat<eT>::load(std::istream& is, const file_type type, const bool print_status)
       break;
     
     default:
-      if(print_status)  { arma_debug_warn("Mat::load(): unsupported file type"); }
+      arma_debug_warn_level(1, "Mat::load(): unsupported file type");
       load_okay = false;
     }
   
-  if( print_status && (load_okay == false) )
+  if(load_okay == false)
     {
     if(err_msg.length() > 0)
       {
-      arma_debug_warn("Mat::load(): ", err_msg, "the given stream");
+      arma_debug_warn_level(3, "Mat::load(): ", err_msg);
       }
     else
       {
-      arma_debug_warn("Mat::load(): couldn't load from the given stream");
+      arma_debug_warn_level(3, "Mat::load(): couldn't load from stream");
       }
     }
   
@@ -7826,7 +7996,7 @@ Mat<eT>::quiet_save(const std::string name, const file_type type) const
   {
   arma_extra_debug_sigprint();
   
-  return (*this).save(name, type, false);
+  return (*this).save(name, type);
   }
 
 
@@ -7839,7 +8009,7 @@ Mat<eT>::quiet_save(const hdf5_name& spec, const file_type type) const
   {
   arma_extra_debug_sigprint();
   
-  return (*this).save(spec, type, false);
+  return (*this).save(spec, type);
   }
 
 
@@ -7852,7 +8022,7 @@ Mat<eT>::quiet_save(const csv_name& spec, const file_type type) const
   {
   arma_extra_debug_sigprint();
   
-  return (*this).save(spec, type, false);
+  return (*this).save(spec, type);
   }
 
 
@@ -7866,7 +8036,7 @@ Mat<eT>::quiet_save(std::ostream& os, const file_type type) const
   {
   arma_extra_debug_sigprint();
   
-  return (*this).save(os, type, false);
+  return (*this).save(os, type);
   }
 
 
@@ -7880,7 +8050,7 @@ Mat<eT>::quiet_load(const std::string name, const file_type type)
   {
   arma_extra_debug_sigprint();
   
-  return (*this).load(name, type, false);
+  return (*this).load(name, type);
   }
 
 
@@ -7893,7 +8063,7 @@ Mat<eT>::quiet_load(const hdf5_name& spec, const file_type type)
   {
   arma_extra_debug_sigprint();
   
-  return (*this).load(spec, type, false);
+  return (*this).load(spec, type);
   }
 
 
@@ -7906,7 +8076,7 @@ Mat<eT>::quiet_load(const csv_name& spec, const file_type type)
   {
   arma_extra_debug_sigprint();
   
-  return (*this).load(spec, type, false);
+  return (*this).load(spec, type);
   }
 
 
@@ -7920,7 +8090,7 @@ Mat<eT>::quiet_load(std::istream& is, const file_type type)
   {
   arma_extra_debug_sigprint();
   
-  return (*this).load(is, type, false);
+  return (*this).load(is, type);
   }
 
 
@@ -8742,7 +8912,7 @@ Mat<eT>::begin_col(const uword col_num)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( (col_num >= n_cols), "Mat::begin_col(): index out of bounds" );
+  arma_debug_check_bounds( (col_num >= n_cols), "Mat::begin_col(): index out of bounds" );
   
   return colptr(col_num);
   }
@@ -8756,7 +8926,7 @@ Mat<eT>::begin_col(const uword col_num) const
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( (col_num >= n_cols), "Mat::begin_col(): index out of bounds" );
+  arma_debug_check_bounds( (col_num >= n_cols), "Mat::begin_col(): index out of bounds" );
   
   return colptr(col_num);
   }
@@ -8770,7 +8940,7 @@ Mat<eT>::end_col(const uword col_num)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( (col_num >= n_cols), "Mat::end_col(): index out of bounds" );
+  arma_debug_check_bounds( (col_num >= n_cols), "Mat::end_col(): index out of bounds" );
   
   return colptr(col_num) + n_rows;
   }
@@ -8784,7 +8954,7 @@ Mat<eT>::end_col(const uword col_num) const
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( (col_num >= n_cols), "Mat::end_col(): index out of bounds" );
+  arma_debug_check_bounds( (col_num >= n_cols), "Mat::end_col(): index out of bounds" );
   
   return colptr(col_num) + n_rows;
   }
@@ -8798,7 +8968,7 @@ Mat<eT>::begin_row(const uword row_num)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( (row_num >= n_rows), "Mat::begin_row(): index out of bounds" );
+  arma_debug_check_bounds( (row_num >= n_rows), "Mat::begin_row(): index out of bounds" );
   
   return typename Mat<eT>::row_iterator(*this, row_num, uword(0));
   }
@@ -8812,7 +8982,7 @@ Mat<eT>::begin_row(const uword row_num) const
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( (row_num >= n_rows), "Mat::begin_row(): index out of bounds" );
+  arma_debug_check_bounds( (row_num >= n_rows), "Mat::begin_row(): index out of bounds" );
   
   return typename Mat<eT>::const_row_iterator(*this, row_num, uword(0));
   }
@@ -8826,7 +8996,7 @@ Mat<eT>::end_row(const uword row_num)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( (row_num >= n_rows), "Mat::end_row(): index out of bounds" );
+  arma_debug_check_bounds( (row_num >= n_rows), "Mat::end_row(): index out of bounds" );
   
   return typename Mat<eT>::row_iterator(*this, (row_num + uword(1)), 0);
   }
@@ -8840,7 +9010,7 @@ Mat<eT>::end_row(const uword row_num) const
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( (row_num >= n_rows), "Mat::end_row(): index out of bounds" );
+  arma_debug_check_bounds( (row_num >= n_rows), "Mat::end_row(): index out of bounds" );
   
   return typename Mat<eT>::const_row_iterator(*this, (row_num + uword(1)), 0);
   }
@@ -8920,6 +9090,7 @@ Mat<eT>::size() const
 
 template<typename eT>
 inline
+arma_warn_unused
 eT&
 Mat<eT>::front()
   {
@@ -8932,6 +9103,7 @@ Mat<eT>::front()
 
 template<typename eT>
 inline
+arma_warn_unused
 const eT&
 Mat<eT>::front() const
   {
@@ -8944,6 +9116,7 @@ Mat<eT>::front() const
 
 template<typename eT>
 inline
+arma_warn_unused
 eT&
 Mat<eT>::back()
   {
@@ -8956,6 +9129,7 @@ Mat<eT>::back()
 
 template<typename eT>
 inline
+arma_warn_unused
 const eT&
 Mat<eT>::back() const
   {
@@ -8973,6 +9147,16 @@ Mat<eT>::fixed<fixed_n_rows, fixed_n_cols>::fixed()
   : Mat<eT>( arma_fixed_indicator(), fixed_n_rows, fixed_n_cols, 0, ((use_extra) ? mem_local_extra : Mat<eT>::mem_local) )
   {
   arma_extra_debug_sigprint_this(this);
+  
+  #if (!defined(ARMA_DONT_ZERO_INIT))
+    {
+    arma_extra_debug_print("Mat::fixed::constructor: zeroing memory");
+    
+    eT* mem_use = (use_extra) ? &(mem_local_extra[0]) : &(mem_local[0]);
+    
+    arrayops::inplace_set_fixed<eT,fixed_n_elem>( mem_use, eT(0) );
+    }
+  #endif
   }
 
 
@@ -8995,6 +9179,19 @@ Mat<eT>::fixed<fixed_n_rows, fixed_n_cols>::fixed(const fixed<fixed_n_rows, fixe
 
 template<typename eT>
 template<uword fixed_n_rows, uword fixed_n_cols>
+inline
+Mat<eT>::fixed<fixed_n_rows, fixed_n_cols>::fixed(const fill::scalar_holder<eT> f)
+  : Mat<eT>( arma_fixed_indicator(), fixed_n_rows, fixed_n_cols, 0, ((use_extra) ? mem_local_extra : Mat<eT>::mem_local) )
+  {
+  arma_extra_debug_sigprint_this(this);
+  
+  (*this).fill(f.scalar);
+  }
+
+
+
+template<typename eT>
+template<uword fixed_n_rows, uword fixed_n_cols>
 template<typename fill_type>
 inline
 Mat<eT>::fixed<fixed_n_rows, fixed_n_cols>::fixed(const fill::fill_class<fill_type>&)
@@ -9002,11 +9199,11 @@ Mat<eT>::fixed<fixed_n_rows, fixed_n_cols>::fixed(const fill::fill_class<fill_ty
   {
   arma_extra_debug_sigprint_this(this);
   
-  if(is_same_type<fill_type, fill::fill_zeros>::yes)  (*this).zeros();
-  if(is_same_type<fill_type, fill::fill_ones >::yes)  (*this).ones();
-  if(is_same_type<fill_type, fill::fill_eye  >::yes)  (*this).eye();
-  if(is_same_type<fill_type, fill::fill_randu>::yes)  (*this).randu();
-  if(is_same_type<fill_type, fill::fill_randn>::yes)  (*this).randn();
+  if(is_same_type<fill_type, fill::fill_zeros>::yes)  { (*this).zeros(); }
+  if(is_same_type<fill_type, fill::fill_ones >::yes)  { (*this).ones();  }
+  if(is_same_type<fill_type, fill::fill_eye  >::yes)  { (*this).eye();   }
+  if(is_same_type<fill_type, fill::fill_randu>::yes)  { (*this).randu(); }
+  if(is_same_type<fill_type, fill::fill_randn>::yes)  { (*this).randn(); }
   }
 
 
@@ -9351,7 +9548,7 @@ arma_warn_unused
 eT&
 Mat<eT>::fixed<fixed_n_rows, fixed_n_cols>::operator() (const uword ii)
   {
-  arma_debug_check( (ii >= fixed_n_elem), "Mat::operator(): index out of bounds" );
+  arma_debug_check_bounds( (ii >= fixed_n_elem), "Mat::operator(): index out of bounds" );
   
   return (use_extra) ? mem_local_extra[ii] : mem_local[ii];
   }
@@ -9365,7 +9562,7 @@ arma_warn_unused
 const eT&
 Mat<eT>::fixed<fixed_n_rows, fixed_n_cols>::operator() (const uword ii) const
   {
-  arma_debug_check( (ii >= fixed_n_elem), "Mat::operator(): index out of bounds" );
+  arma_debug_check_bounds( (ii >= fixed_n_elem), "Mat::operator(): index out of bounds" );
   
   return (use_extra) ? mem_local_extra[ii] : mem_local[ii];
   }
@@ -9407,7 +9604,7 @@ arma_warn_unused
 eT&
 Mat<eT>::fixed<fixed_n_rows, fixed_n_cols>::operator() (const uword in_row, const uword in_col)
   {
-  arma_debug_check( ((in_row >= fixed_n_rows) || (in_col >= fixed_n_cols)), "Mat::operator(): index out of bounds" );
+  arma_debug_check_bounds( ((in_row >= fixed_n_rows) || (in_col >= fixed_n_cols)), "Mat::operator(): index out of bounds" );
   
   const uword iq = in_row + in_col*fixed_n_rows;
   
@@ -9423,7 +9620,7 @@ arma_warn_unused
 const eT&
 Mat<eT>::fixed<fixed_n_rows, fixed_n_cols>::operator() (const uword in_row, const uword in_col) const
   {
-  arma_debug_check( ((in_row >= fixed_n_rows) || (in_col >= fixed_n_cols)), "Mat::operator(): index out of bounds" );
+  arma_debug_check_bounds( ((in_row >= fixed_n_rows) || (in_col >= fixed_n_cols)), "Mat::operator(): index out of bounds" );
   
   const uword iq = in_row + in_col*fixed_n_rows;
   

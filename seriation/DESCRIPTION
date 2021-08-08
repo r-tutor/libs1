@@ -1,8 +1,8 @@
 Package: seriation
 Type: Package
 Title: Infrastructure for Ordering Objects Using Seriation
-Version: 1.2-9
-Date: 2020-09-29
+Version: 1.3.0
+Date: 2021-06-29
 Authors@R: c(
 	person("Michael", "Hahsler", role = c("aut", "cre", "cph"),
 	    email = "mhahsler@lyle.smu.edu"),
@@ -21,9 +21,9 @@ Classification/ACM: G.1.6, G.2.1, G.4
 URL: https://github.com/mhahsler/seriation
 BugReports: https://github.com/mhahsler/seriation/issues
 Depends: R (>= 2.14.0)
-Imports: stats, grDevices, grid, TSP, qap, cluster, gclus, dendextend,
-        colorspace, MASS, gplots, registry
-Suggests: biclust, testthat, DendSer, GA
+Imports: stats, grDevices, grid, TSP, qap, cluster, gclus, colorspace,
+        MASS, registry
+Suggests: DendSer, GA, testthat, dendextend, ggplot2, scales
 License: GPL-3
 Copyright: The code in src/bea.f is Copyright (C) 1991 F. Murtagh;
         src/bbwrcg.f, src/arsa.f and src/bburcg.f are Copyright (C)
@@ -31,7 +31,7 @@ Copyright: The code in src/bea.f is Copyright (C) 1991 F. Murtagh;
         Copyright (C) Michael Hahsler, Christian Buchta, and Kurt
         Hornik.
 NeedsCompilation: yes
-Packaged: 2020-09-30 15:42:50 UTC; hahsler
+Packaged: 2021-06-30 16:19:22 UTC; hahsler
 Author: Michael Hahsler [aut, cre, cph],
   Christian Buchta [aut, cph],
   Kurt Hornik [aut, cph],
@@ -41,6 +41,6 @@ Author: Michael Hahsler [aut, cre, cph],
   Hans-Friedrich Koehn [ctb, cph]
 Maintainer: Michael Hahsler <mhahsler@lyle.smu.edu>
 Repository: CRAN
-Date/Publication: 2020-10-01 08:10:06 UTC
-Built: R 4.0.3; x86_64-w64-mingw32; 2020-11-09 12:10:28 UTC; windows
+Date/Publication: 2021-06-30 17:10:02 UTC
+Built: R 4.1.0; x86_64-w64-mingw32; 2021-08-05 09:05:48 UTC; windows
 Archs: i386, x64

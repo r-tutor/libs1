@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2005-2017 Intel Corporation
+    Copyright (c) 2005-2019 Intel Corporation
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -12,10 +12,6 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-
-
-
 */
 
 #ifndef __TBB_atomic_H
@@ -33,8 +29,8 @@
 
 #if _MSC_VER && !__INTEL_COMPILER
     // Suppress overzealous compiler warnings till the end of the file
-    #pragma warning (push)
-    #pragma warning (disable: 4244 4267 4512)
+    // #pragma warning (push)
+    // #pragma warning (disable: 4244 4267 4512)
 #endif
 
 namespace tbb {
@@ -552,7 +548,7 @@ inline atomic<T>& as_atomic( T& t ) {
 } // namespace tbb
 
 #if _MSC_VER && !__INTEL_COMPILER
-    #pragma warning (pop)
+    // #pragma warning (pop)
 #endif // warnings are restored
 
 #endif /* __TBB_atomic_H */

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Scott Chamberlain" />
 
-<meta name="date" content="2020-07-09" />
+<meta name="date" content="2021-02-05" />
 
 <title>4. curl options</title>
 
@@ -32,6 +32,15 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -121,6 +130,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 })();
 </script>
+
 
 
 
@@ -318,7 +328,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">4. curl options</h1>
 <h4 class="author">Scott Chamberlain</h4>
-<h4 class="date">2020-07-09</h4>
+<h4 class="date">2021-02-05</h4>
 
 
 
@@ -326,22 +336,22 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>adapted in part from the blog post <a href="https://ropensci.org/blog/2014/12/18/curl-options/">Curling - exploring web request options</a></p>
 </blockquote>
 <p>Most times you request data from the web, you should have no problem. However, you eventually will run into problems. In addition, there are advanced things you can do modifying requests to web resources that fall in the <em>advanced stuff</em> category.</p>
-<p>Requests to web resources are served over the <code>http</code> protocol via <a href="http://curl.haxx.se/">curl</a>. <code>curl</code> <em>is a command line tool and library for transferring data with URL syntax, supporting (lots of protocols)</em> . <code>curl</code> has many options that you may not know about.</p>
+<p>Requests to web resources are served over the <code>http</code> protocol via <a href="https://curl.se/">curl</a>. <code>curl</code> <em>is a command line tool and library for transferring data with URL syntax, supporting (lots of protocols)</em> . <code>curl</code> has many options that you may not know about.</p>
 <p>I’ll go over some of the common and less commonly used curl options, and try to explain why you may want to use some of them.</p>
 <div id="discover-curl-options" class="section level2">
 <h2>Discover curl options</h2>
-<p>You can go to the source, that is the curl book at <a href="https://ec.haxx.se/" class="uri">https://ec.haxx.se/</a>. In R: <code>curl::curl_options()</code> for finding curl options. which gives information for each curl option, including the libcurl variable name (e.g., <code>CURLOPT_CERTINFO</code>) and the type of variable (e.g., logical).</p>
+<p>You can go to the source, that is the curl book at <a href="https://everything.curl.dev/" class="uri">https://everything.curl.dev/</a>. In R: <code>curl::curl_options()</code> for finding curl options. which gives information for each curl option, including the libcurl variable name (e.g., <code>CURLOPT_CERTINFO</code>) and the type of variable (e.g., logical).</p>
 </div>
 <div id="other-ways-to-use-curl-besides-r" class="section level2">
 <h2>Other ways to use curl besides R</h2>
-<p>Perhaps the canonical way to use curl is on the command line. You can get curl for your operating system at <a href="http://curl.haxx.se/download.html" class="uri">http://curl.haxx.se/download.html</a>, though hopefully you already have curl. Once you have curl, you can have lots of fun. For example, get the contents of the Google landing page:</p>
+<p>Perhaps the canonical way to use curl is on the command line. You can get curl for your operating system at <a href="https://curl.se/download.html" class="uri">https://curl.se/download.html</a>, though hopefully you already have curl. Once you have curl, you can have lots of fun. For example, get the contents of the Google landing page:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">curl</span> https://www.google.com</span></code></pre></div>
 <ul>
-<li>If you like that you may also like <a href="https://github.com/jakubroztocil/httpie">httpie</a>, a Python command line tool that is a little more convenient than curl (e.g., JSON output is automatically parsed and colorized).</li>
-<li>Alot of data from the web is in JSON format. A great command line tool to pair with <code>curl</code> is <a href="http://stedolan.github.io/jq/">jq</a>.</li>
+<li>If you like that you may also like <a href="https://github.com/httpie/httpie">httpie</a>, a Python command line tool that is a little more convenient than curl (e.g., JSON output is automatically parsed and colorized).</li>
+<li>Alot of data from the web is in JSON format. A great command line tool to pair with <code>curl</code> is <a href="https://stedolan.github.io/jq/">jq</a>.</li>
 </ul>
 <blockquote>
-<p>Note: if you are on windows you may require extra setup if you want to play with curl on the command line. OSX and linux have it by default. On Windows 8, installing the latest version from here <a href="http://curl.haxx.se/download.html#Win64" class="uri">http://curl.haxx.se/download.html#Win64</a> worked for me.</p>
+<p>Note: if you are on windows you may require extra setup if you want to play with curl on the command line. OSX and linux have it by default. On Windows 8, installing the latest version from here <a href="https://curl.se/download.html#Win64" class="uri">https://curl.se/download.html#Win64</a> worked for me.</p>
 </blockquote>
 </div>
 <div id="general-info" class="section level2">

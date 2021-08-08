@@ -1,3 +1,17 @@
+# radiant.model 1.4.0
+
+* Allow jitter in regression plots with scatter 
+* Log transformation of nnet::multinom estimates is no longer needed
+
+# radiant.model 1.3.16
+
+* Remove missing values from _tidy_ model output
+
+# radiant.model 1.3.15
+
+* Allow user to include or exclude variables from the coefficient plot in linear and logistic regression
+* Fix for error on R-dev in _Model > Collaborative filtering_ ("Error in xtfrm.data.frame(x) : cannot xtfrm data frames") 
+
 # radiant.model 1.3.14
 
 * Fix for issue introduced by version 0.7.0 of the broom package related to degrees of freedom in linear regression

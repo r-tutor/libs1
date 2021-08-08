@@ -95,10 +95,26 @@ df2$a
 data.frame(a = 1:3)[, "a", drop = TRUE]
 tibble(a = 1:3)[, "a", drop = TRUE]
 
+## -----------------------------------------------------------------------------
+df <- data.frame(a = 1:3, row.names = letters[1:3])
+rownames(df)
+rownames(as_tibble(df))
+
+tbl <- tibble(a = 1:3)
+rownames(tbl) <- letters[1:3]
+rownames(tbl)
+rownames(tbl[1, ])
+
 ## ---- error = TRUE------------------------------------------------------------
 tibble(a = 1, b = 1:3)
 tibble(a = 1:3, b = 1)
 tibble(a = 1:3, c = 1:2)
+
+## -----------------------------------------------------------------------------
 tibble(a = 1, b = integer())
 tibble(a = integer(), b = 1)
+
+## -----------------------------------------------------------------------------
+tbl <- tibble(a = 1:3, b = 4:6)
+tbl * 2
 

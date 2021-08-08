@@ -11,7 +11,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;sparklyr&rsquo; version 1.5.2</h2>
+</div><h2>Documentation for package &lsquo;sparklyr&rsquo; version 1.7.1</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 </ul>
@@ -91,6 +91,8 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="checkpoint_directory.html">checkpoint_directory</a></td>
 <td>Set/Get Spark checkpoint directory</td></tr>
+<tr><td style="width: 25%;"><a href="collect_from_rds.html">collect_from_rds</a></td>
+<td>Collect Spark data serialized in RDS format into R</td></tr>
 <tr><td style="width: 25%;"><a href="compile_package_jars.html">compile_package_jars</a></td>
 <td>Compile Scala sources into a Java Archive (jar)</td></tr>
 <tr><td style="width: 25%;"><a href="connection_config.html">connection_config</a></td>
@@ -122,6 +124,8 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="fill.html">fill</a></td>
 <td>Fill</td></tr>
+<tr><td style="width: 25%;"><a href="filter.html">filter</a></td>
+<td>Filter</td></tr>
 <tr><td style="width: 25%;"><a href="find_scalac.html">find_scalac</a></td>
 <td>Discover the Scala Compiler</td></tr>
 <tr><td style="width: 25%;"><a href="ft_binarizer.html">ft_binarizer</a></td>
@@ -213,6 +217,8 @@
 <h2><a name="G">-- G --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="generic_call_interface.html">generic_call_interface</a></td>
+<td>Generic Call Interface</td></tr>
 <tr><td style="width: 25%;"><a href="get_spark_sql_catalog_implementation.html">get_spark_sql_catalog_implementation</a></td>
 <td>Retrieve the Spark connection's SQL catalog implementation property</td></tr>
 <tr><td style="width: 25%;"><a href="ml_survival_regression_tidiers.html">glance.ml_model_aft_survival_regression</a></td>
@@ -310,10 +316,22 @@
 <h2><a name="J">-- J --</a></h2>
 
 <table width="100%">
+<tr><td style="width: 25%;"><a href="jarray.html">jarray</a></td>
+<td>Instantiate a Java array with a specific element type.</td></tr>
 <tr><td style="width: 25%;"><a href="spark-api.html">java_context</a></td>
 <td>Access the Spark API</td></tr>
+<tr><td style="width: 25%;"><a href="jfloat.html">jfloat</a></td>
+<td>Instantiate a Java float type.</td></tr>
+<tr><td style="width: 25%;"><a href="jfloat_array.html">jfloat_array</a></td>
+<td>Instantiate an Array[Float].</td></tr>
 <tr><td style="width: 25%;"><a href="join.tbl_spark.html">join.tbl_spark</a></td>
 <td>Join Spark tbls.</td></tr>
+<tr><td style="width: 25%;"><a href="j_invoke.html">j_invoke</a></td>
+<td>Invoke a Java function.</td></tr>
+<tr><td style="width: 25%;"><a href="j_invoke.html">j_invoke_new</a></td>
+<td>Invoke a Java function.</td></tr>
+<tr><td style="width: 25%;"><a href="j_invoke.html">j_invoke_static</a></td>
+<td>Invoke a Java function.</td></tr>
 </table>
 
 <h2><a name="L">-- L --</a></h2>
@@ -370,6 +388,8 @@
 <td>Spark ML - Clustering Evaluator</td></tr>
 <tr><td style="width: 25%;"><a href="ml_kmeans.html">ml_compute_cost</a></td>
 <td>Spark ML - K-Means Clustering</td></tr>
+<tr><td style="width: 25%;"><a href="ml_kmeans.html">ml_compute_silhouette_measure</a></td>
+<td>Spark ML - K-Means Clustering</td></tr>
 <tr><td style="width: 25%;"><a href="ml_corr.html">ml_corr</a></td>
 <td>Compute correlation matrix</td></tr>
 <tr><td style="width: 25%;"><a href="ml-tuning.html">ml_cross_validator</a></td>
@@ -418,6 +438,8 @@
 <td>Frequent Pattern Mining - FPGrowth</td></tr>
 <tr><td style="width: 25%;"><a href="ml_fpgrowth.html">ml_freq_itemsets</a></td>
 <td>Frequent Pattern Mining - FPGrowth</td></tr>
+<tr><td style="width: 25%;"><a href="ml_prefixspan.html">ml_freq_seq_patterns</a></td>
+<td>Frequent Pattern Mining - PrefixSpan</td></tr>
 <tr><td style="width: 25%;"><a href="ml_gaussian_mixture.html">ml_gaussian_mixture</a></td>
 <td>Spark ML - Gaussian Mixture clustering.</td></tr>
 <tr><td style="width: 25%;"><a href="ml_gradient_boosted_trees.html">ml_gbt_classifier</a></td>
@@ -438,6 +460,8 @@
 <td>Spark ML - ML Params</td></tr>
 <tr><td style="width: 25%;"><a href="ml_kmeans.html">ml_kmeans</a></td>
 <td>Spark ML - K-Means Clustering</td></tr>
+<tr><td style="width: 25%;"><a href="ml_kmeans_cluster_eval.html">ml_kmeans_cluster_eval</a></td>
+<td>Evaluate a K-mean clustering</td></tr>
 <tr><td style="width: 25%;"><a href="ft_string_indexer.html">ml_labels</a></td>
 <td>Feature Transformation - StringIndexer (Estimator)</td></tr>
 <tr><td style="width: 25%;"><a href="ml_lda.html">ml_lda</a></td>
@@ -488,10 +512,14 @@
 <td>Tidying methods for Spark ML Principal Component Analysis</td></tr>
 <tr><td style="width: 25%;"><a href="ml_pipeline.html">ml_pipeline</a></td>
 <td>Spark ML - Pipelines</td></tr>
+<tr><td style="width: 25%;"><a href="ml_power_iteration.html">ml_power_iteration</a></td>
+<td>Spark ML - Power Iteration Clustering</td></tr>
 <tr><td style="width: 25%;"><a href="ml-transform-methods.html">ml_predict</a></td>
 <td>Spark ML - Transform, fit, and predict methods (ml_ interface)</td></tr>
 <tr><td style="width: 25%;"><a href="ml-transform-methods.html">ml_predict.ml_model_classification</a></td>
 <td>Spark ML - Transform, fit, and predict methods (ml_ interface)</td></tr>
+<tr><td style="width: 25%;"><a href="ml_prefixspan.html">ml_prefixspan</a></td>
+<td>Frequent Pattern Mining - PrefixSpan</td></tr>
 <tr><td style="width: 25%;"><a href="ml_random_forest.html">ml_random_forest</a></td>
 <td>Spark ML - Random Forest</td></tr>
 <tr><td style="width: 25%;"><a href="ml_random_forest.html">ml_random_forest_classifier</a></td>
@@ -536,6 +564,8 @@
 <td>Spark ML - Tuning</td></tr>
 <tr><td style="width: 25%;"><a href="ft_count_vectorizer.html">ml_vocabulary</a></td>
 <td>Feature Transformation - CountVectorizer (Estimator)</td></tr>
+<tr><td style="width: 25%;"><a href="mutate.html">mutate</a></td>
+<td>Mutate</td></tr>
 </table>
 
 <h2><a name="N">-- N --</a></h2>
@@ -608,6 +638,8 @@
 <td>Compute summary statistics for columns of a data frame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_dim.html">sdf_dim</a></td>
 <td>Support for Dimension Operations</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_distinct.html">sdf_distinct</a></td>
+<td>Invoke distinct on a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_drop_duplicates.html">sdf_drop_duplicates</a></td>
 <td>Remove duplicates from a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_expand_grid.html">sdf_expand_grid</a></td>
@@ -652,6 +684,14 @@
 <td>Compute (Approximate) Quantiles with a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_random_split.html">sdf_random_split</a></td>
 <td>Partition a Spark Dataframe</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_rbeta.html">sdf_rbeta</a></td>
+<td>Generate random samples from a Beta distribution</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_rbinom.html">sdf_rbinom</a></td>
+<td>Generate random samples from a binomial distribution</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_rcauchy.html">sdf_rcauchy</a></td>
+<td>Generate random samples from a Cauchy distribution</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_rchisq.html">sdf_rchisq</a></td>
+<td>Generate random samples from a chi-squared distribution</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_read_column.html">sdf_read_column</a></td>
 <td>Read a Column from a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_register.html">sdf_register</a></td>
@@ -664,6 +704,26 @@
 <td>Model Residuals</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_residuals.html">sdf_residuals.ml_model_linear_regression</a></td>
 <td>Model Residuals</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_rexp.html">sdf_rexp</a></td>
+<td>Generate random samples from an exponential distribution</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_rgamma.html">sdf_rgamma</a></td>
+<td>Generate random samples from a Gamma distribution</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_rgeom.html">sdf_rgeom</a></td>
+<td>Generate random samples from a geometric distribution</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_rhyper.html">sdf_rhyper</a></td>
+<td>Generate random samples from a hypergeometric distribution</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_rlnorm.html">sdf_rlnorm</a></td>
+<td>Generate random samples from a log normal distribution</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_rnorm.html">sdf_rnorm</a></td>
+<td>Generate random samples from the standard normal distribution</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_rpois.html">sdf_rpois</a></td>
+<td>Generate random samples from a Poisson distribution</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_rt.html">sdf_rt</a></td>
+<td>Generate random samples from a t-distribution</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_runif.html">sdf_runif</a></td>
+<td>Generate random samples from the uniform distribution U(0, 1).</td></tr>
+<tr><td style="width: 25%;"><a href="sdf_rweibull.html">sdf_rweibull</a></td>
+<td>Generate random samples from a Weibull distribution.</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_sample.html">sdf_sample</a></td>
 <td>Randomly Sample Rows from a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf-saveload.html">sdf_save_parquet</a></td>
@@ -694,18 +754,34 @@
 <td>Add a Sequential ID Column to a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="sdf_with_unique_id.html">sdf_with_unique_id</a></td>
 <td>Add a Unique ID Column to a Spark DataFrame</td></tr>
+<tr><td style="width: 25%;"><a href="select.html">select</a></td>
+<td>Select</td></tr>
 <tr><td style="width: 25%;"><a href="separate.html">separate</a></td>
 <td>Separate</td></tr>
 <tr><td style="width: 25%;"><a href="spark-api.html">spark-api</a></td>
 <td>Access the Spark API</td></tr>
 <tr><td style="width: 25%;"><a href="spark-connections.html">spark-connections</a></td>
 <td>Manage Spark Connections</td></tr>
+<tr><td style="width: 25%;"><a href="spark_adaptive_query_execution.html">spark_adaptive_query_execution</a></td>
+<td>Retrieves or sets status of Spark AQE</td></tr>
+<tr><td style="width: 25%;"><a href="spark_advisory_shuffle_partition_size.html">spark_advisory_shuffle_partition_size</a></td>
+<td>Retrieves or sets advisory size of the shuffle partition</td></tr>
 <tr><td style="width: 25%;"><a href="spark_apply.html">spark_apply</a></td>
 <td>Apply an R Function in Spark</td></tr>
 <tr><td style="width: 25%;"><a href="spark_apply_bundle.html">spark_apply_bundle</a></td>
 <td>Create Bundle for Spark Apply</td></tr>
 <tr><td style="width: 25%;"><a href="spark_apply_log.html">spark_apply_log</a></td>
 <td>Log Writer for Spark Apply</td></tr>
+<tr><td style="width: 25%;"><a href="spark_auto_broadcast_join_threshold.html">spark_auto_broadcast_join_threshold</a></td>
+<td>Retrieves or sets the auto broadcast join threshold</td></tr>
+<tr><td style="width: 25%;"><a href="spark_install.html">spark_available_versions</a></td>
+<td>Download and install various versions of Spark</td></tr>
+<tr><td style="width: 25%;"><a href="spark_coalesce_initial_num_partitions.html">spark_coalesce_initial_num_partitions</a></td>
+<td>Retrieves or sets initial number of shuffle partitions before coalescing</td></tr>
+<tr><td style="width: 25%;"><a href="spark_coalesce_min_num_partitions.html">spark_coalesce_min_num_partitions</a></td>
+<td>Retrieves or sets the minimum number of shuffle partitions after coalescing</td></tr>
+<tr><td style="width: 25%;"><a href="spark_coalesce_shuffle_partitions.html">spark_coalesce_shuffle_partitions</a></td>
+<td>Retrieves or sets whether coalescing contiguous shuffle partitions is enabled</td></tr>
 <tr><td style="width: 25%;"><a href="spark_compilation_spec.html">spark_compilation_spec</a></td>
 <td>Define a Spark Compilation Specification</td></tr>
 <tr><td style="width: 25%;"><a href="spark_config.html">spark_config</a></td>
@@ -748,6 +824,14 @@
 <td>Set/Get Spark checkpoint directory</td></tr>
 <tr><td style="width: 25%;"><a href="spark_home_set.html">spark_home_set</a></td>
 <td>Set the SPARK_HOME environment variable</td></tr>
+<tr><td style="width: 25%;"><a href="spark_install.html">spark_install</a></td>
+<td>Download and install various versions of Spark</td></tr>
+<tr><td style="width: 25%;"><a href="spark_install.html">spark_installed_versions</a></td>
+<td>Download and install various versions of Spark</td></tr>
+<tr><td style="width: 25%;"><a href="spark_install.html">spark_install_dir</a></td>
+<td>Download and install various versions of Spark</td></tr>
+<tr><td style="width: 25%;"><a href="spark_install.html">spark_install_tar</a></td>
+<td>Download and install various versions of Spark</td></tr>
 <tr><td style="width: 25%;"><a href="spark_jobj.html">spark_jobj</a></td>
 <td>Retrieve a Spark JVM Object Reference</td></tr>
 <tr><td style="width: 25%;"><a href="spark_jobj-class.html">spark_jobj-class</a></td>
@@ -760,10 +844,14 @@
 <td>Read file(s) into a Spark DataFrame using a custom reader</td></tr>
 <tr><td style="width: 25%;"><a href="spark_read_avro.html">spark_read_avro</a></td>
 <td>Read Apache Avro data into a Spark DataFrame.</td></tr>
+<tr><td style="width: 25%;"><a href="spark_read_binary.html">spark_read_binary</a></td>
+<td>Read binary data into a Spark DataFrame.</td></tr>
 <tr><td style="width: 25%;"><a href="spark_read_csv.html">spark_read_csv</a></td>
 <td>Read a CSV file into a Spark DataFrame</td></tr>
 <tr><td style="width: 25%;"><a href="spark_read_delta.html">spark_read_delta</a></td>
 <td>Read from Delta Lake into a Spark DataFrame.</td></tr>
+<tr><td style="width: 25%;"><a href="spark_read_image.html">spark_read_image</a></td>
+<td>Read image data into a Spark DataFrame.</td></tr>
 <tr><td style="width: 25%;"><a href="spark_read_jdbc.html">spark_read_jdbc</a></td>
 <td>Read from JDBC connection into a Spark DataFrame.</td></tr>
 <tr><td style="width: 25%;"><a href="spark_read_json.html">spark_read_json</a></td>
@@ -788,10 +876,14 @@
 <td>Runtime configuration interface for the Spark Session</td></tr>
 <tr><td style="width: 25%;"><a href="checkpoint_directory.html">spark_set_checkpoint_dir</a></td>
 <td>Set/Get Spark checkpoint directory</td></tr>
+<tr><td style="width: 25%;"><a href="spark_statistical_routines.html">spark_statistical_routines</a></td>
+<td>Generate random samples from some distribution</td></tr>
 <tr><td style="width: 25%;"><a href="spark-connections.html">spark_submit</a></td>
 <td>Manage Spark Connections</td></tr>
 <tr><td style="width: 25%;"><a href="spark_table_name.html">spark_table_name</a></td>
 <td>Generate a Table Name from Expression</td></tr>
+<tr><td style="width: 25%;"><a href="spark_install.html">spark_uninstall</a></td>
+<td>Download and install various versions of Spark</td></tr>
 <tr><td style="width: 25%;"><a href="spark_version.html">spark_version</a></td>
 <td>Get the Spark Version Associated with a Spark Connection</td></tr>
 <tr><td style="width: 25%;"><a href="spark_version_from_home.html">spark_version_from_home</a></td>
@@ -814,6 +906,8 @@
 <td>Write a Spark DataFrame to a ORC file</td></tr>
 <tr><td style="width: 25%;"><a href="spark_write_parquet.html">spark_write_parquet</a></td>
 <td>Write a Spark DataFrame to a Parquet file</td></tr>
+<tr><td style="width: 25%;"><a href="spark_write_rds.html">spark_write_rds</a></td>
+<td>Write Spark DataFrame to RDS files</td></tr>
 <tr><td style="width: 25%;"><a href="spark_write_source.html">spark_write_source</a></td>
 <td>Writes a Spark DataFrame into a generic source</td></tr>
 <tr><td style="width: 25%;"><a href="spark_write_table.html">spark_write_table</a></td>

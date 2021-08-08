@@ -108,6 +108,8 @@ class subview : public Base< eT, subview<eT> >
   
   inline void clean(const pod_type threshold);
   
+  inline void clamp(const eT min_val, const eT max_val);
+  
   inline void fill(const eT val);
   inline void zeros();
   inline void ones();
@@ -115,25 +117,25 @@ class subview : public Base< eT, subview<eT> >
   inline void randu();
   inline void randn();
   
-  inline eT  at_alt    (const uword ii) const;
+  inline arma_warn_unused eT  at_alt    (const uword ii) const;
   
-  inline eT& operator[](const uword ii);
-  inline eT  operator[](const uword ii) const;
+  inline arma_warn_unused eT& operator[](const uword ii);
+  inline arma_warn_unused eT  operator[](const uword ii) const;
   
-  inline eT& operator()(const uword ii);
-  inline eT  operator()(const uword ii) const;
+  inline arma_warn_unused eT& operator()(const uword ii);
+  inline arma_warn_unused eT  operator()(const uword ii) const;
   
-  inline eT& operator()(const uword in_row, const uword in_col);
-  inline eT  operator()(const uword in_row, const uword in_col) const;
+  inline arma_warn_unused eT& operator()(const uword in_row, const uword in_col);
+  inline arma_warn_unused eT  operator()(const uword in_row, const uword in_col) const;
   
-  inline eT&         at(const uword in_row, const uword in_col);
-  inline eT          at(const uword in_row, const uword in_col) const;
+  inline arma_warn_unused eT&         at(const uword in_row, const uword in_col);
+  inline arma_warn_unused eT          at(const uword in_row, const uword in_col) const;
   
-  inline eT&         front();
-  inline eT          front() const;
+  inline arma_warn_unused eT& front();
+  inline arma_warn_unused eT  front() const;
   
-  inline eT&         back();
-  inline eT          back() const;
+  inline arma_warn_unused eT& back();
+  inline arma_warn_unused eT  back() const;
   
   arma_inline       eT* colptr(const uword in_col);
   arma_inline const eT* colptr(const uword in_col) const;
@@ -548,8 +550,9 @@ class subview_row_strans : public Base< eT, subview_row_strans<eT> >
   
   arma_aligned const subview_row<eT>& sv_row;
   
-         const     uword n_rows;     // equal to n_elem
-         const     uword n_elem;
+  const uword n_rows;     // equal to n_elem
+  const uword n_elem;
+  
   static constexpr uword n_cols = 1;
   
   
@@ -582,8 +585,9 @@ class subview_row_htrans : public Base< eT, subview_row_htrans<eT> >
   
   arma_aligned const subview_row<eT>& sv_row;
   
-         const     uword n_rows;     // equal to n_elem
-         const     uword n_elem;
+  const uword n_rows;     // equal to n_elem
+  const uword n_elem;
+  
   static constexpr uword n_cols = 1;
   
   

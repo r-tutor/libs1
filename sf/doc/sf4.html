@@ -15,45 +15,6 @@
 
 <title>4. Manipulating Simple Features</title>
 
-<style type="text/css">
-a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
-a.anchor-section::before {content: '#';}
-.hasAnchor:hover a.anchor-section {visibility: visible;}
-</style>
-<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
-document.addEventListener('DOMContentLoaded', function() {
-  // Do nothing if AnchorJS is used
-  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
-    return;
-  }
-
-  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-
-  // Do nothing if sections are already anchored
-  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
-    return null;
-  }
-
-  // Use section id when pandoc runs with --section-divs
-  const section_id = function(x) {
-    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
-            ? x.id : '');
-  };
-
-  // Add anchors
-  h.forEach(function(x) {
-    const id = x.id || section_id(x.parentElement);
-    if (id === '') {
-      return null;
-    }
-    let anchor = document.createElement('a');
-    anchor.href = '#' + id;
-    anchor.classList = ['anchor-section'];
-    x.classList.add('hasAnchor');
-    x.appendChild(anchor);
-  });
-});
-</script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -65,7 +26,14 @@ document.addEventListener('DOMContentLoaded', function() {
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
@@ -151,6 +119,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 })();
 </script>
+
 
 
 
@@ -352,41 +321,42 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <p><strong>For a better version of the sf vignettes see</strong> <a href="https://r-spatial.github.io/sf/articles/" class="uri">https://r-spatial.github.io/sf/articles/</a></p>
-<p>This vignetted describes how simple features, i.e. records that come with a geometry, can be manipulated, for the case where these manipulations involve geometries. Manipulations include:</p>
+<p>This vignette describes how simple features, i.e. records that come with a geometry, can be manipulated, for the case where these manipulations involve geometries. Manipulations include:</p>
 <ul>
 <li>aggregating feature sets</li>
 <li>summarising feature sets</li>
 <li>joining two feature sets based on feature geometry</li>
 </ul>
-<p>Features are represented by records in an <code>sf</code> object, and have feature attributes (all non-geometry fields) and feature geometry. Since <code>sf</code> objects are a subclass of <code>data.frame</code> or <code>tbl_df</code>, operations on feature attributes work identical to how they work on <code>data.frame</code>s, e.g.</p>
+<p>Features are represented by records in an <code>sf</code> object, and have feature attributes (all non-geometry fields) and feature geometry. Since <code>sf</code> objects are a subclass of <code>data.frame</code> or <code>tbl_df</code>, operations on feature attributes work identically to how they work on <code>data.frame</code>s, e.g.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(sf)</a>
 <a class="sourceLine" id="cb1-2" title="2">nc &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="kw">system.file</span>(<span class="st">&quot;shape/nc.shp&quot;</span>, <span class="dt">package=</span><span class="st">&quot;sf&quot;</span>))</a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="co">## Reading layer `nc&#39; from data source `/tmp/RtmptpFtGS/Rinst253762c85271e/sf/shape/nc.shp&#39; using driver `ESRI Shapefile&#39;</span></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="co">## Simple feature collection with 100 features and 14 fields</span></a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="co">## geometry type:  MULTIPOLYGON</span></a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="co">## dimension:      XY</span></a>
-<a class="sourceLine" id="cb1-7" title="7"><span class="co">## bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965</span></a>
-<a class="sourceLine" id="cb1-8" title="8"><span class="co">## geographic CRS: NAD27</span></a>
-<a class="sourceLine" id="cb1-9" title="9">nc &lt;-<span class="st"> </span><span class="kw">st_transform</span>(nc, <span class="dv">2264</span>)</a>
-<a class="sourceLine" id="cb1-10" title="10">nc[<span class="dv">1</span>,]</a>
-<a class="sourceLine" id="cb1-11" title="11"><span class="co">## Simple feature collection with 1 feature and 14 fields</span></a>
-<a class="sourceLine" id="cb1-12" title="12"><span class="co">## geometry type:  MULTIPOLYGON</span></a>
-<a class="sourceLine" id="cb1-13" title="13"><span class="co">## dimension:      XY</span></a>
-<a class="sourceLine" id="cb1-14" title="14"><span class="co">## bbox:           xmin: 1193283 ymin: 913341.9 xmax: 1340555 ymax: 1044158</span></a>
-<a class="sourceLine" id="cb1-15" title="15"><span class="co">## projected CRS:  NAD83 / North Carolina (ftUS)</span></a>
-<a class="sourceLine" id="cb1-16" title="16"><span class="co">##    AREA PERIMETER CNTY_ CNTY_ID NAME  FIPS FIPSNO CRESS_ID BIR74 SID74 NWBIR74</span></a>
-<a class="sourceLine" id="cb1-17" title="17"><span class="co">## 1 0.114     1.442  1825    1825 Ashe 37009  37009        5  1091     1      10</span></a>
-<a class="sourceLine" id="cb1-18" title="18"><span class="co">##   BIR79 SID79 NWBIR79                       geometry</span></a>
-<a class="sourceLine" id="cb1-19" title="19"><span class="co">## 1  1364     0      19 MULTIPOLYGON (((1270814 913...</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-3" title="3"><span class="co">## Reading layer `nc&#39; from data source </span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co">##   `/tmp/RtmpZ2BUZQ/Rinst160d159176124/sf/shape/nc.shp&#39; using driver `ESRI Shapefile&#39;</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="co">## Simple feature collection with 100 features and 14 fields</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="co">## Geometry type: MULTIPOLYGON</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="co">## Dimension:     XY</span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="co">## Bounding box:  xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965</span></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="co">## Geodetic CRS:  NAD27</span></a>
+<a class="sourceLine" id="cb1-10" title="10">nc &lt;-<span class="st"> </span><span class="kw">st_transform</span>(nc, <span class="dv">2264</span>)</a>
+<a class="sourceLine" id="cb1-11" title="11">nc[<span class="dv">1</span>,]</a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="co">## Simple feature collection with 1 feature and 14 fields</span></a>
+<a class="sourceLine" id="cb1-13" title="13"><span class="co">## Geometry type: MULTIPOLYGON</span></a>
+<a class="sourceLine" id="cb1-14" title="14"><span class="co">## Dimension:     XY</span></a>
+<a class="sourceLine" id="cb1-15" title="15"><span class="co">## Bounding box:  xmin: 1193283 ymin: 913341.9 xmax: 1340555 ymax: 1044158</span></a>
+<a class="sourceLine" id="cb1-16" title="16"><span class="co">## Projected CRS: NAD83 / North Carolina (ftUS)</span></a>
+<a class="sourceLine" id="cb1-17" title="17"><span class="co">##    AREA PERIMETER CNTY_ CNTY_ID NAME  FIPS FIPSNO CRESS_ID BIR74 SID74 NWBIR74</span></a>
+<a class="sourceLine" id="cb1-18" title="18"><span class="co">## 1 0.114     1.442  1825    1825 Ashe 37009  37009        5  1091     1      10</span></a>
+<a class="sourceLine" id="cb1-19" title="19"><span class="co">##   BIR79 SID79 NWBIR79                       geometry</span></a>
+<a class="sourceLine" id="cb1-20" title="20"><span class="co">## 1  1364     0      19 MULTIPOLYGON (((1270814 913...</span></a></code></pre></div>
 <p>prints the first record.</p>
-<p>Many of the tidyverse/dplyr verbs have methods for <code>sf</code> objects. This means that given that both <code>sf</code> and <code>dplyr</code> are loaded, manipulations such as selecting a single attribute will return an <code>sf</code> object:</p>
+<p>Many of the tidyverse/dplyr verbs have methods for <code>sf</code> objects. This means that if both <code>sf</code> and <code>dplyr</code> are loaded, manipulations such as selecting a single attribute will return an <code>sf</code> object:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">library</span>(dplyr)</a>
 <a class="sourceLine" id="cb2-2" title="2">nc <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(NWBIR74) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">2</span>)</a>
 <a class="sourceLine" id="cb2-3" title="3"><span class="co">## Simple feature collection with 2 features and 1 field</span></a>
-<a class="sourceLine" id="cb2-4" title="4"><span class="co">## geometry type:  MULTIPOLYGON</span></a>
-<a class="sourceLine" id="cb2-5" title="5"><span class="co">## dimension:      XY</span></a>
-<a class="sourceLine" id="cb2-6" title="6"><span class="co">## bbox:           xmin: 1193283 ymin: 913341.9 xmax: 1441003 ymax: 1044158</span></a>
-<a class="sourceLine" id="cb2-7" title="7"><span class="co">## projected CRS:  NAD83 / North Carolina (ftUS)</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="co">## Geometry type: MULTIPOLYGON</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="co">## Dimension:     XY</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="co">## Bounding box:  xmin: 1193283 ymin: 913341.9 xmax: 1441003 ymax: 1044158</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="co">## Projected CRS: NAD83 / North Carolina (ftUS)</span></a>
 <a class="sourceLine" id="cb2-8" title="8"><span class="co">##   NWBIR74                       geometry</span></a>
 <a class="sourceLine" id="cb2-9" title="9"><span class="co">## 1      10 MULTIPOLYGON (((1270814 913...</span></a>
 <a class="sourceLine" id="cb2-10" title="10"><span class="co">## 2      10 MULTIPOLYGON (((1340555 959...</span></a></code></pre></div>
@@ -400,10 +370,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>We can subset feature sets by using the square bracket notation</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">nc[<span class="dv">1</span>, <span class="st">&quot;NWBIR74&quot;</span>]</a>
 <a class="sourceLine" id="cb4-2" title="2"><span class="co">## Simple feature collection with 1 feature and 1 field</span></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="co">## geometry type:  MULTIPOLYGON</span></a>
-<a class="sourceLine" id="cb4-4" title="4"><span class="co">## dimension:      XY</span></a>
-<a class="sourceLine" id="cb4-5" title="5"><span class="co">## bbox:           xmin: 1193283 ymin: 913341.9 xmax: 1340555 ymax: 1044158</span></a>
-<a class="sourceLine" id="cb4-6" title="6"><span class="co">## projected CRS:  NAD83 / North Carolina (ftUS)</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="co">## Geometry type: MULTIPOLYGON</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co">## Dimension:     XY</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="co">## Bounding box:  xmin: 1193283 ymin: 913341.9 xmax: 1340555 ymax: 1044158</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="co">## Projected CRS: NAD83 / North Carolina (ftUS)</span></a>
 <a class="sourceLine" id="cb4-7" title="7"><span class="co">##   NWBIR74                       geometry</span></a>
 <a class="sourceLine" id="cb4-8" title="8"><span class="co">## 1      10 MULTIPOLYGON (((1270814 913...</span></a></code></pre></div>
 <p>and use the <code>drop</code> argument to drop geometries:</p>
@@ -417,10 +387,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb6-3" title="3"><span class="co">## [1] &quot;sf&quot;         &quot;data.frame&quot;</span></a>
 <a class="sourceLine" id="cb6-4" title="4">nc[Ashe,]</a>
 <a class="sourceLine" id="cb6-5" title="5"><span class="co">## Simple feature collection with 4 features and 14 fields</span></a>
-<a class="sourceLine" id="cb6-6" title="6"><span class="co">## geometry type:  MULTIPOLYGON</span></a>
-<a class="sourceLine" id="cb6-7" title="7"><span class="co">## dimension:      XY</span></a>
-<a class="sourceLine" id="cb6-8" title="8"><span class="co">## bbox:           xmin: 1142157 ymin: 823092 xmax: 1448920 ymax: 1044158</span></a>
-<a class="sourceLine" id="cb6-9" title="9"><span class="co">## projected CRS:  NAD83 / North Carolina (ftUS)</span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="co">## Geometry type: MULTIPOLYGON</span></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="co">## Dimension:     XY</span></a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="co">## Bounding box:  xmin: 1142157 ymin: 823092 xmax: 1448920 ymax: 1044158</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="co">## Projected CRS: NAD83 / North Carolina (ftUS)</span></a>
 <a class="sourceLine" id="cb6-10" title="10"><span class="co">##     AREA PERIMETER CNTY_ CNTY_ID      NAME  FIPS FIPSNO CRESS_ID BIR74 SID74</span></a>
 <a class="sourceLine" id="cb6-11" title="11"><span class="co">## 1  0.114     1.442  1825    1825      Ashe 37009  37009        5  1091     1</span></a>
 <a class="sourceLine" id="cb6-12" title="12"><span class="co">## 2  0.061     1.231  1827    1827 Alleghany 37005  37005        3   487     0</span></a>
@@ -431,14 +401,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb6-17" title="17"><span class="co">## 2       10   542     3      12 MULTIPOLYGON (((1340555 959...</span></a>
 <a class="sourceLine" id="cb6-18" title="18"><span class="co">## 18     200  3725     7     222 MULTIPOLYGON (((1402677 837...</span></a>
 <a class="sourceLine" id="cb6-19" title="19"><span class="co">## 19      17  1775     1      33 MULTIPOLYGON (((1171158 868...</span></a></code></pre></div>
-<p>we see that in the result set <code>Ashe</code> is included, as the default value for argument <code>op</code> in <code>[.sf</code> is <code>st_intersects</code>, and <code>Ashe</code> intersects with itself. We could exclude self-intersection by using predicate <code>st_touches</code> (overlapping features don’t touch):</p>
+<p>We see that in the result set <code>Ashe</code> is included, as the default value for argument <code>op</code> in <code>[.sf</code> is <code>st_intersects</code>, and <code>Ashe</code> intersects with itself. We could exclude self-intersection by using predicate <code>st_touches</code> (overlapping features don’t touch):</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">Ashe =<span class="st"> </span>nc[nc<span class="op">$</span>NAME <span class="op">==</span><span class="st"> &quot;Ashe&quot;</span>,]</a>
 <a class="sourceLine" id="cb7-2" title="2">nc[Ashe, op =<span class="st"> </span>st_touches]</a>
 <a class="sourceLine" id="cb7-3" title="3"><span class="co">## Simple feature collection with 3 features and 14 fields</span></a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="co">## geometry type:  MULTIPOLYGON</span></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="co">## dimension:      XY</span></a>
-<a class="sourceLine" id="cb7-6" title="6"><span class="co">## bbox:           xmin: 1142157 ymin: 823092 xmax: 1448920 ymax: 1035641</span></a>
-<a class="sourceLine" id="cb7-7" title="7"><span class="co">## projected CRS:  NAD83 / North Carolina (ftUS)</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="co">## Geometry type: MULTIPOLYGON</span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="co">## Dimension:     XY</span></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="co">## Bounding box:  xmin: 1142157 ymin: 823092 xmax: 1448920 ymax: 1035641</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="co">## Projected CRS: NAD83 / North Carolina (ftUS)</span></a>
 <a class="sourceLine" id="cb7-8" title="8"><span class="co">##     AREA PERIMETER CNTY_ CNTY_ID      NAME  FIPS FIPSNO CRESS_ID BIR74 SID74</span></a>
 <a class="sourceLine" id="cb7-9" title="9"><span class="co">## 2  0.061     1.231  1827    1827 Alleghany 37005  37005        3   487     0</span></a>
 <a class="sourceLine" id="cb7-10" title="10"><span class="co">## 18 0.199     1.984  1874    1874    Wilkes 37193  37193       97  3146     4</span></a>
@@ -447,13 +417,13 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb7-13" title="13"><span class="co">## 2       10   542     3      12 MULTIPOLYGON (((1340555 959...</span></a>
 <a class="sourceLine" id="cb7-14" title="14"><span class="co">## 18     200  3725     7     222 MULTIPOLYGON (((1402677 837...</span></a>
 <a class="sourceLine" id="cb7-15" title="15"><span class="co">## 19      17  1775     1      33 MULTIPOLYGON (((1171158 868...</span></a></code></pre></div>
-<p>using <code>dplyr</code>, we can do the same by calling the predicate directly:</p>
+<p>Using <code>dplyr</code>, we can do the same by calling the predicate directly:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">nc <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="kw">lengths</span>(<span class="kw">st_touches</span>(., Ashe)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb8-2" title="2"><span class="co">## Simple feature collection with 3 features and 14 fields</span></a>
-<a class="sourceLine" id="cb8-3" title="3"><span class="co">## geometry type:  MULTIPOLYGON</span></a>
-<a class="sourceLine" id="cb8-4" title="4"><span class="co">## dimension:      XY</span></a>
-<a class="sourceLine" id="cb8-5" title="5"><span class="co">## bbox:           xmin: 1142157 ymin: 823092 xmax: 1448920 ymax: 1035641</span></a>
-<a class="sourceLine" id="cb8-6" title="6"><span class="co">## projected CRS:  NAD83 / North Carolina (ftUS)</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="co">## Geometry type: MULTIPOLYGON</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="co">## Dimension:     XY</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">## Bounding box:  xmin: 1142157 ymin: 823092 xmax: 1448920 ymax: 1035641</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">## Projected CRS: NAD83 / North Carolina (ftUS)</span></a>
 <a class="sourceLine" id="cb8-7" title="7"><span class="co">##    AREA PERIMETER CNTY_ CNTY_ID      NAME  FIPS FIPSNO CRESS_ID BIR74 SID74</span></a>
 <a class="sourceLine" id="cb8-8" title="8"><span class="co">## 1 0.061     1.231  1827    1827 Alleghany 37005  37005        3   487     0</span></a>
 <a class="sourceLine" id="cb8-9" title="9"><span class="co">## 2 0.199     1.984  1874    1874    Wilkes 37193  37193       97  3146     4</span></a>
@@ -465,14 +435,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="aggregating-or-summarizing-feature-sets" class="section level2">
 <h2>Aggregating or summarizing feature sets</h2>
-<p>Suppose we want to compare the 1974 fraction of SID (sudden infant death) of the counties that intersect with <code>Ashe</code> to the remaining ones. We can do this by</p>
+<p>Suppose we want to compare the 1974 fraction of SID (sudden infant death) of the counties that intersect with <code>Ashe</code> to the remaining ones. We can do this by:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">a &lt;-<span class="st"> </span><span class="kw">aggregate</span>(nc[, <span class="kw">c</span>(<span class="st">&quot;SID74&quot;</span>, <span class="st">&quot;BIR74&quot;</span>)], <span class="kw">list</span>(<span class="dt">Ashe_nb =</span> <span class="kw">lengths</span>(<span class="kw">st_intersects</span>(nc, Ashe)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>), sum)</a>
 <a class="sourceLine" id="cb9-2" title="2">(a &lt;-<span class="st"> </span>a <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">frac74 =</span> SID74 <span class="op">/</span><span class="st"> </span>BIR74) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(frac74))</a>
 <a class="sourceLine" id="cb9-3" title="3"><span class="co">## Simple feature collection with 2 features and 1 field</span></a>
-<a class="sourceLine" id="cb9-4" title="4"><span class="co">## geometry type:  GEOMETRY</span></a>
-<a class="sourceLine" id="cb9-5" title="5"><span class="co">## dimension:      XY</span></a>
-<a class="sourceLine" id="cb9-6" title="6"><span class="co">## bbox:           xmin: 406262.2 ymin: 48374.87 xmax: 3052887 ymax: 1044158</span></a>
-<a class="sourceLine" id="cb9-7" title="7"><span class="co">## projected CRS:  NAD83 / North Carolina (ftUS)</span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="co">## Geometry type: GEOMETRY</span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="co">## Dimension:     XY</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="co">## Bounding box:  xmin: 406262.2 ymin: 48374.87 xmax: 3052887 ymax: 1044158</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="co">## Projected CRS: NAD83 / North Carolina (ftUS)</span></a>
 <a class="sourceLine" id="cb9-8" title="8"><span class="co">##         frac74                       geometry</span></a>
 <a class="sourceLine" id="cb9-9" title="9"><span class="co">## 1 0.0020406588 MULTIPOLYGON (((1464961 438...</span></a>
 <a class="sourceLine" id="cb9-10" title="10"><span class="co">## 2 0.0009922276 POLYGON ((1166958 888251.7,...</span></a>
@@ -482,23 +452,23 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="joining-two-feature-sets-based-on-attributes" class="section level2">
 <h2>Joining two feature sets based on attributes</h2>
-<p>The usual join verbs base R (<code>merge</code>) and of dplyr (<code>left_join</code>, etc) work for <code>sf</code> objects as well; the joining takes place on attributes (ignoring geometries). In case of no matching geometry, an empty geometry is substituted. The second argument should be a <code>data.frame</code> (or similar), not an <code>sf</code> object:</p>
+<p>The usual join verbs of base R (<code>merge</code>) and of dplyr (<code>left_join</code>, etc) work for <code>sf</code> objects as well; the joining takes place on attributes (ignoring geometries). In case of no matching geometry, an empty geometry is substituted. The second argument should be a <code>data.frame</code> (or similar), not an <code>sf</code> object:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">x =<span class="st"> </span><span class="kw">st_sf</span>(<span class="dt">a =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dt">geom =</span> <span class="kw">st_sfc</span>(<span class="kw">st_point</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)), <span class="kw">st_point</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))))</a>
 <a class="sourceLine" id="cb10-2" title="2">y =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">a =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>)</a>
 <a class="sourceLine" id="cb10-3" title="3"><span class="kw">merge</span>(x, y)</a>
 <a class="sourceLine" id="cb10-4" title="4"><span class="co">## Simple feature collection with 1 feature and 1 field</span></a>
-<a class="sourceLine" id="cb10-5" title="5"><span class="co">## geometry type:  POINT</span></a>
-<a class="sourceLine" id="cb10-6" title="6"><span class="co">## dimension:      XY</span></a>
-<a class="sourceLine" id="cb10-7" title="7"><span class="co">## bbox:           xmin: 1 ymin: 1 xmax: 1 ymax: 1</span></a>
-<a class="sourceLine" id="cb10-8" title="8"><span class="co">## CRS:            NA</span></a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="co">## Geometry type: POINT</span></a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="co">## Dimension:     XY</span></a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="co">## Bounding box:  xmin: 1 ymin: 1 xmax: 1 ymax: 1</span></a>
+<a class="sourceLine" id="cb10-8" title="8"><span class="co">## CRS:           NA</span></a>
 <a class="sourceLine" id="cb10-9" title="9"><span class="co">##   a    geometry</span></a>
 <a class="sourceLine" id="cb10-10" title="10"><span class="co">## 1 2 POINT (1 1)</span></a>
 <a class="sourceLine" id="cb10-11" title="11"><span class="kw">merge</span>(x, y, <span class="dt">all =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb10-12" title="12"><span class="co">## Simple feature collection with 3 features and 1 field (with 1 geometry empty)</span></a>
-<a class="sourceLine" id="cb10-13" title="13"><span class="co">## geometry type:  GEOMETRY</span></a>
-<a class="sourceLine" id="cb10-14" title="14"><span class="co">## dimension:      XY</span></a>
-<a class="sourceLine" id="cb10-15" title="15"><span class="co">## bbox:           xmin: 0 ymin: 0 xmax: 1 ymax: 1</span></a>
-<a class="sourceLine" id="cb10-16" title="16"><span class="co">## CRS:            NA</span></a>
+<a class="sourceLine" id="cb10-13" title="13"><span class="co">## Geometry type: GEOMETRY</span></a>
+<a class="sourceLine" id="cb10-14" title="14"><span class="co">## Dimension:     XY</span></a>
+<a class="sourceLine" id="cb10-15" title="15"><span class="co">## Bounding box:  xmin: 0 ymin: 0 xmax: 1 ymax: 1</span></a>
+<a class="sourceLine" id="cb10-16" title="16"><span class="co">## CRS:           NA</span></a>
 <a class="sourceLine" id="cb10-17" title="17"><span class="co">##   a                 geometry</span></a>
 <a class="sourceLine" id="cb10-18" title="18"><span class="co">## 1 1              POINT (0 0)</span></a>
 <a class="sourceLine" id="cb10-19" title="19"><span class="co">## 2 2              POINT (1 1)</span></a>
@@ -506,10 +476,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb10-21" title="21"><span class="kw">right_join</span>(x, y)</a>
 <a class="sourceLine" id="cb10-22" title="22"><span class="co">## Joining, by = &quot;a&quot;</span></a>
 <a class="sourceLine" id="cb10-23" title="23"><span class="co">## Simple feature collection with 2 features and 1 field (with 1 geometry empty)</span></a>
-<a class="sourceLine" id="cb10-24" title="24"><span class="co">## geometry type:  POINT</span></a>
-<a class="sourceLine" id="cb10-25" title="25"><span class="co">## dimension:      XY</span></a>
-<a class="sourceLine" id="cb10-26" title="26"><span class="co">## bbox:           xmin: 1 ymin: 1 xmax: 1 ymax: 1</span></a>
-<a class="sourceLine" id="cb10-27" title="27"><span class="co">## CRS:            NA</span></a>
+<a class="sourceLine" id="cb10-24" title="24"><span class="co">## Geometry type: POINT</span></a>
+<a class="sourceLine" id="cb10-25" title="25"><span class="co">## Dimension:     XY</span></a>
+<a class="sourceLine" id="cb10-26" title="26"><span class="co">## Bounding box:  xmin: 1 ymin: 1 xmax: 1 ymax: 1</span></a>
+<a class="sourceLine" id="cb10-27" title="27"><span class="co">## CRS:           NA</span></a>
 <a class="sourceLine" id="cb10-28" title="28"><span class="co">##   a        geom</span></a>
 <a class="sourceLine" id="cb10-29" title="29"><span class="co">## 1 2 POINT (1 1)</span></a>
 <a class="sourceLine" id="cb10-30" title="30"><span class="co">## 2 3 POINT EMPTY</span></a></code></pre></div>
@@ -527,39 +497,39 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>The join method is a left join, retaining all records of the first attribute:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">st_join</span>(x, y)</a>
 <a class="sourceLine" id="cb12-2" title="2"><span class="co">## Simple feature collection with 2 features and 2 fields</span></a>
-<a class="sourceLine" id="cb12-3" title="3"><span class="co">## geometry type:  POINT</span></a>
-<a class="sourceLine" id="cb12-4" title="4"><span class="co">## dimension:      XY</span></a>
-<a class="sourceLine" id="cb12-5" title="5"><span class="co">## bbox:           xmin: 1 ymin: 1 xmax: 2 ymax: 2</span></a>
-<a class="sourceLine" id="cb12-6" title="6"><span class="co">## CRS:            NA</span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="co">## Geometry type: POINT</span></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="co">## Dimension:     XY</span></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="co">## Bounding box:  xmin: 1 ymin: 1 xmax: 2 ymax: 2</span></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="co">## CRS:           NA</span></a>
 <a class="sourceLine" id="cb12-7" title="7"><span class="co">##   a.x a.y        geom</span></a>
 <a class="sourceLine" id="cb12-8" title="8"><span class="co">## 1   1  NA POINT (1 1)</span></a>
 <a class="sourceLine" id="cb12-9" title="9"><span class="co">## 2   2   2 POINT (2 2)</span></a>
 <a class="sourceLine" id="cb12-10" title="10"><span class="kw">st_join</span>(y, x)</a>
 <a class="sourceLine" id="cb12-11" title="11"><span class="co">## Simple feature collection with 2 features and 2 fields</span></a>
-<a class="sourceLine" id="cb12-12" title="12"><span class="co">## geometry type:  POLYGON</span></a>
-<a class="sourceLine" id="cb12-13" title="13"><span class="co">## dimension:      XY</span></a>
-<a class="sourceLine" id="cb12-14" title="14"><span class="co">## bbox:           xmin: 1.9 ymin: 1.9 xmax: 3.1 ymax: 3.1</span></a>
-<a class="sourceLine" id="cb12-15" title="15"><span class="co">## CRS:            NA</span></a>
+<a class="sourceLine" id="cb12-12" title="12"><span class="co">## Geometry type: POLYGON</span></a>
+<a class="sourceLine" id="cb12-13" title="13"><span class="co">## Dimension:     XY</span></a>
+<a class="sourceLine" id="cb12-14" title="14"><span class="co">## Bounding box:  xmin: 1.9 ymin: 1.9 xmax: 3.1 ymax: 3.1</span></a>
+<a class="sourceLine" id="cb12-15" title="15"><span class="co">## CRS:           NA</span></a>
 <a class="sourceLine" id="cb12-16" title="16"><span class="co">##   a.x a.y                           geom</span></a>
 <a class="sourceLine" id="cb12-17" title="17"><span class="co">## 2   2   2 POLYGON ((2.1 2, 2.099863 1...</span></a>
 <a class="sourceLine" id="cb12-18" title="18"><span class="co">## 3   3  NA POLYGON ((3.1 3, 3.099863 2...</span></a></code></pre></div>
 <p>and the geometry retained is that of the first argument.</p>
-<p>The spatial join predicate can be controlled with any function compatible to <code>st_intersects</code> (the default), e.g.</p>
+<p>The spatial join predicate can be controlled with any function compatible with <code>st_intersects</code> (the default), e.g.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">st_join</span>(x, y, <span class="dt">join =</span> st_covers) <span class="co"># no matching y records: points don&#39;t cover circles</span></a>
 <a class="sourceLine" id="cb13-2" title="2"><span class="co">## Simple feature collection with 2 features and 2 fields</span></a>
-<a class="sourceLine" id="cb13-3" title="3"><span class="co">## geometry type:  POINT</span></a>
-<a class="sourceLine" id="cb13-4" title="4"><span class="co">## dimension:      XY</span></a>
-<a class="sourceLine" id="cb13-5" title="5"><span class="co">## bbox:           xmin: 1 ymin: 1 xmax: 2 ymax: 2</span></a>
-<a class="sourceLine" id="cb13-6" title="6"><span class="co">## CRS:            NA</span></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="co">## Geometry type: POINT</span></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="co">## Dimension:     XY</span></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="co">## Bounding box:  xmin: 1 ymin: 1 xmax: 2 ymax: 2</span></a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="co">## CRS:           NA</span></a>
 <a class="sourceLine" id="cb13-7" title="7"><span class="co">##   a.x a.y        geom</span></a>
 <a class="sourceLine" id="cb13-8" title="8"><span class="co">## 1   1  NA POINT (1 1)</span></a>
 <a class="sourceLine" id="cb13-9" title="9"><span class="co">## 2   2  NA POINT (2 2)</span></a>
 <a class="sourceLine" id="cb13-10" title="10"><span class="kw">st_join</span>(y, x, <span class="dt">join =</span> st_covers) <span class="co"># matches for those circles covering a point</span></a>
 <a class="sourceLine" id="cb13-11" title="11"><span class="co">## Simple feature collection with 2 features and 2 fields</span></a>
-<a class="sourceLine" id="cb13-12" title="12"><span class="co">## geometry type:  POLYGON</span></a>
-<a class="sourceLine" id="cb13-13" title="13"><span class="co">## dimension:      XY</span></a>
-<a class="sourceLine" id="cb13-14" title="14"><span class="co">## bbox:           xmin: 1.9 ymin: 1.9 xmax: 3.1 ymax: 3.1</span></a>
-<a class="sourceLine" id="cb13-15" title="15"><span class="co">## CRS:            NA</span></a>
+<a class="sourceLine" id="cb13-12" title="12"><span class="co">## Geometry type: POLYGON</span></a>
+<a class="sourceLine" id="cb13-13" title="13"><span class="co">## Dimension:     XY</span></a>
+<a class="sourceLine" id="cb13-14" title="14"><span class="co">## Bounding box:  xmin: 1.9 ymin: 1.9 xmax: 3.1 ymax: 3.1</span></a>
+<a class="sourceLine" id="cb13-15" title="15"><span class="co">## CRS:           NA</span></a>
 <a class="sourceLine" id="cb13-16" title="16"><span class="co">##   a.x a.y                           geom</span></a>
 <a class="sourceLine" id="cb13-17" title="17"><span class="co">## 2   2   2 POLYGON ((2.1 2, 2.099863 1...</span></a>
 <a class="sourceLine" id="cb13-18" title="18"><span class="co">## 3   3  NA POLYGON ((3.1 3, 3.099863 2...</span></a></code></pre></div>

@@ -61,8 +61,14 @@ class Mat : public Base< eT, Mat<eT> >
   inline explicit Mat(const uword in_rows, const uword in_cols);
   inline explicit Mat(const SizeMat& s);
   
+  template<bool do_zeros> inline explicit Mat(const uword in_rows, const uword in_cols, const arma_initmode_indicator<do_zeros>&);
+  template<bool do_zeros> inline explicit Mat(const SizeMat& s,                         const arma_initmode_indicator<do_zeros>&);
+  
   template<typename fill_type> inline Mat(const uword in_rows, const uword in_cols, const fill::fill_class<fill_type>& f);
   template<typename fill_type> inline Mat(const SizeMat& s,                         const fill::fill_class<fill_type>& f);
+  
+  inline Mat(const uword in_rows, const uword in_cols, const fill::scalar_holder<eT> f);
+  inline Mat(const SizeMat& s,                         const fill::scalar_holder<eT> f);
   
   inline arma_cold            Mat(const char*        text);
   inline arma_cold Mat& operator=(const char*        text);
@@ -464,6 +470,8 @@ class Mat : public Base< eT, Mat<eT> >
   
   inline const Mat& clean(const pod_type threshold);
   
+  inline const Mat& clamp(const eT min_val, const eT max_val);
+  
   inline const Mat& fill(const eT val);
   
   template<typename fill_type>
@@ -511,15 +519,15 @@ class Mat : public Base< eT, Mat<eT> >
   inline eT max(uword& row_of_max_val, uword& col_of_max_val) const;
   
   
-  inline arma_cold bool save(const std::string   name, const file_type type = arma_binary, const bool print_status = true) const;
-  inline arma_cold bool save(const hdf5_name&    spec, const file_type type = hdf5_binary, const bool print_status = true) const;
-  inline arma_cold bool save(const  csv_name&    spec, const file_type type =   csv_ascii, const bool print_status = true) const;
-  inline arma_cold bool save(      std::ostream& os,   const file_type type = arma_binary, const bool print_status = true) const;
+  inline arma_cold bool save(const std::string   name, const file_type type = arma_binary) const;
+  inline arma_cold bool save(const hdf5_name&    spec, const file_type type = hdf5_binary) const;
+  inline arma_cold bool save(const  csv_name&    spec, const file_type type =   csv_ascii) const;
+  inline arma_cold bool save(      std::ostream& os,   const file_type type = arma_binary) const;
   
-  inline arma_cold bool load(const std::string   name, const file_type type = auto_detect, const bool print_status = true);
-  inline arma_cold bool load(const hdf5_name&    spec, const file_type type = hdf5_binary, const bool print_status = true);
-  inline arma_cold bool load(const  csv_name&    spec, const file_type type =   csv_ascii, const bool print_status = true);
-  inline arma_cold bool load(      std::istream& is,   const file_type type = auto_detect, const bool print_status = true);
+  inline arma_cold bool load(const std::string   name, const file_type type = auto_detect);
+  inline arma_cold bool load(const hdf5_name&    spec, const file_type type = hdf5_binary);
+  inline arma_cold bool load(const  csv_name&    spec, const file_type type =   csv_ascii);
+  inline arma_cold bool load(      std::istream& is,   const file_type type = auto_detect);
   
   inline arma_cold bool quiet_save(const std::string   name, const file_type type = arma_binary) const;
   inline arma_cold bool quiet_save(const hdf5_name&    spec, const file_type type = hdf5_binary) const;
@@ -721,11 +729,11 @@ class Mat : public Base< eT, Mat<eT> >
   inline bool  empty() const;
   inline uword size()  const;
   
-  inline       eT& front();
-  inline const eT& front() const;
+  inline arma_warn_unused       eT& front();
+  inline arma_warn_unused const eT& front() const;
   
-  inline       eT& back();
-  inline const eT& back() const;
+  inline arma_warn_unused       eT& back();
+  inline arma_warn_unused const eT& back() const;
   
   inline void swap(Mat& B);
   
@@ -808,6 +816,7 @@ class Mat<eT>::fixed : public Mat<eT>
   arma_inline fixed();
   arma_inline fixed(const fixed<fixed_n_rows, fixed_n_cols>& X);
   
+                                     inline fixed(const fill::scalar_holder<eT> f);
   template<typename fill_type>       inline fixed(const fill::fill_class<fill_type>& f);
   template<typename T1>              inline fixed(const Base<eT,T1>& A);
   template<typename T1, typename T2> inline fixed(const Base<pod_type,T1>& A, const Base<pod_type,T2>& B);

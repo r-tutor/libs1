@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2005-2017 Intel Corporation
+    Copyright (c) 2005-2019 Intel Corporation
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -12,10 +12,6 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-
-
-
 */
 
 #if !defined(__TBB_machine_H) || defined(__TBB_machine_macos_common_H)
@@ -23,6 +19,9 @@
 #endif
 
 #define __TBB_machine_macos_common_H
+
+// #pragma clang diagnostic push
+// #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 #include <sched.h>
 #define __TBB_Yield()  sched_yield()
@@ -92,10 +91,10 @@ static inline int64_t __TBB_machine_cmpswp8_OsX(volatile void *ptr, int64_t valu
     fence usages where a more lightweight synchronization means (or none at all)
     could suffice. Thus if you use this header to enable TBB on a new platform,
     consider forking it and relaxing below helpers as appropriate. **/
-#define __TBB_control_consistency_helper() OSMemoryBarrier()
-#define __TBB_acquire_consistency_helper() OSMemoryBarrier()
-#define __TBB_release_consistency_helper() OSMemoryBarrier()
-#define __TBB_full_memory_fence()          OSMemoryBarrier()
+#define __TBB_control_consistency_helper() std::atomic_thread_fence(std::memory_order_seq_cst)
+#define __TBB_acquire_consistency_helper() std::atomic_thread_fence(std::memory_order_seq_cst)
+#define __TBB_release_consistency_helper() std::atomic_thread_fence(std::memory_order_seq_cst)
+#define __TBB_full_memory_fence()          std::atomic_thread_fence(std::memory_order_seq_cst)
 
 static inline int32_t __TBB_machine_cmpswp4(volatile void *ptr, int32_t value, int32_t comparand)
 {
@@ -129,5 +128,7 @@ static inline int64_t __TBB_machine_fetchadd8(volatile void *ptr, int64_t addend
     #define __TBB_USE_GENERIC_DWORD_LOAD_STORE              1
 #endif
 #define __TBB_USE_GENERIC_SEQUENTIAL_CONSISTENCY_LOAD_STORE 1
+
+// #pragma clang diagnostic pop
 
 #endif /* __TBB_UnknownArchitecture */

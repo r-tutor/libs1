@@ -26,11 +26,19 @@
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -281,7 +289,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td align="left"></td>
 <td align="left">tbl_df</td>
 <td align="left"><code>tibble(a = 1)</code></td>
-<td align="left">tibble</td>
+<td align="left">tibble[,1]</td>
 </tr>
 <tr class="odd">
 <td align="left">Unchanged</td>
@@ -353,54 +361,63 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt; Columns: 23
 #&gt; Warning: Subsetting quosures with `[[` is deprecated as of rlang 0.4.0
 #&gt; Please use `quo_get_expr()` instead.
-#&gt; $ logical       &lt;lgl&gt; TRUE
-#&gt; $ integer       &lt;int&gt; 1
-#&gt; $ double        &lt;dbl&gt; 1.5
-#&gt; $ character     &lt;chr&gt; &quot;A&quot;
-#&gt; $ complex       &lt;cpl&gt; 0+1i
-#&gt; $ raw           &lt;raw&gt; 01
-#&gt; $ list          &lt;list&gt; [1]
-#&gt; $ `named list`  &lt;named list&gt; [1]
-#&gt; $ factor        &lt;fct&gt; A
-#&gt; $ ordered       &lt;ord&gt; a
-#&gt; $ Date          &lt;date&gt; 2021-01-28
-#&gt; $ POSIXt        &lt;dttm&gt; 2021-01-28 17:53:18
-#&gt; $ difftime      &lt;drtn&gt; 1 secs
-#&gt; $ hms           &lt;time&gt; 00:00:01
-#&gt; $ integer64     &lt;int64&gt; 10000000000
-#&gt; $ blob          &lt;blob&gt; [00]
-#&gt; $ data.frame    &lt;df[,1]&gt; &lt;data.frame[1 x 1]&gt;
-#&gt; $ tbl_df        &lt;tibble&gt; &lt;tbl_df[1 x 1]&gt;
-#&gt; $ AsIs          &lt;I&lt;int&gt;&gt; 1
-#&gt; $ unspecified   &lt;???&gt; NA
-#&gt; $ vctrs_list_of &lt;list&lt;int&gt;&gt; [1]
-#&gt; $ vctrs_vctr    &lt;vctrs_vc&gt; 1
-#&gt; $ quosures      &lt;quos&gt; [~1]</code></pre>
+#&gt; $ [1mlogical      [22m [3m[90m&lt;lgl&gt;[39m[23m TRUE
+#&gt; $ [1minteger      [22m [3m[90m&lt;int&gt;[39m[23m 1
+#&gt; $ [1mdouble       [22m [3m[90m&lt;dbl&gt;[39m[23m 1.5
+#&gt; $ [1mcharacter    [22m [3m[90m&lt;chr&gt;[39m[23m &quot;A&quot;
+#&gt; $ [1mcomplex      [22m [3m[90m&lt;cpl&gt;[39m[23m 0+1i
+#&gt; $ [1mraw          [22m [3m[90m&lt;raw&gt;[39m[23m 01
+#&gt; $ [1mlist         [22m [3m[90m&lt;list&gt;[39m[23m 1
+#&gt; $ [1m`named list` [22m [3m[90m&lt;named list&gt;[39m[23m 1
+#&gt; $ [1mfactor       [22m [3m[90m&lt;fct&gt;[39m[23m A
+#&gt; $ [1mordered      [22m [3m[90m&lt;ord&gt;[39m[23m a
+#&gt; $ [1mDate         [22m [3m[90m&lt;date&gt;[39m[23m 2021-07-23
+#&gt; $ [1mPOSIXt       [22m [3m[90m&lt;dttm&gt;[39m[23m 2021-07-23 05:00:03
+#&gt; $ [1mdifftime     [22m [3m[90m&lt;drtn&gt;[39m[23m 1 secs
+#&gt; $ [1mhms          [22m [3m[90m&lt;time&gt;[39m[23m 00:00:01
+#&gt; $ [1minteger64    [22m [3m[90m&lt;int64&gt;[39m[23m 10000000000
+#&gt; $ [1mblob         [22m [3m[90m&lt;blob&gt;[39m[23m 00
+#&gt; $ [1mdata.frame   [22m [3m[90m&lt;df[,1]&gt;[39m[23m &lt;data.frame[1 x 1]&gt;
+#&gt; $ [1mtbl_df       [22m [3m[90m&lt;tibble[,1]&gt;[39m[23m &lt;tbl_df[1 x 1]&gt;
+#&gt; $ [1mAsIs         [22m [3m[90m&lt;I&lt;int&gt;&gt;[39m[23m 1
+#&gt; $ [1munspecified  [22m [3m[90m&lt;???&gt;[39m[23m NA
+#&gt; $ [1mvctrs_list_of[22m [3m[90m&lt;list&lt;int&gt;&gt;[39m[23m 1
+#&gt; $ [1mvctrs_vctr   [22m [3m[90m&lt;vctrs_vc&gt;[39m[23m 1
+#&gt; $ [1mquosures     [22m [3m[90m&lt;quos&gt;[39m[23m &lt;~1&gt;</code></pre>
 </div>
 <div id="implementation" class="section level2">
 <h2>Implementation</h2>
 <p>The column header is obtained by calling <code>pillar::type_sum()</code> on the column. This is an S3 method that can be overridden, but most of the time it is more useful to override <code>vctrs::vec_ptype_abbr()</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pillar<span class="sc">:::</span>type_sum.default</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; function(x) {</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   if (is.object(x) || vctrs::vec_is(x)) return(vctrs::vec_ptype_abbr(x))</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   pillar_attr &lt;- attr(x, &quot;pillar&quot;)</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   switch(typeof(x),</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     builtin = ,</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     special = ,</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     closure = &quot;fn&quot;,</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     environment = &quot;env&quot;,</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     symbol =</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       if (is_missing(x)) {</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &quot;missing&quot;</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       } else {</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &quot;sym&quot;</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       },</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     typeof(x)</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   )</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; }</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bytecode: 0x556259f4f480&gt;</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;environment: namespace:pillar&gt;</span></span></code></pre></div>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   label &lt;- pillar_attr$label</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   if (!is.null(label)) {</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     return(I(label))</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   if (is.object(x) || vctrs::vec_is(x)) {</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     return(vec_ptype_abbr(x))</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   }</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   switch(typeof(x),</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     builtin = ,</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     special = ,</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     closure = &quot;fn&quot;,</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     environment = &quot;env&quot;,</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     symbol =</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       if (is_missing(x)) {</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &quot;missing&quot;</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       } else {</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &quot;sym&quot;</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       },</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     typeof(x)</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   )</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; }</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bytecode: 0x108f520a8&gt;</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;environment: namespace:pillar&gt;</span></span></code></pre></div>
 </div>
 
 

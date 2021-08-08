@@ -1,3 +1,8 @@
+# waldo 0.2.5
+
+* On platforms without UTF-8 support, strings that differ only in their
+  encoding are now correctly considered to be identical (#66).
+
 # waldo 0.2.4
 
 * Additional arguments to `compare()` generate a more informative warning 

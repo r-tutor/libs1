@@ -112,7 +112,7 @@ op_trimat::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_trimat>& in)
     
     if(P.is_alias(out))
       {
-      Mat<eT> tmp(N,N);
+      Mat<eT> tmp(N, N, arma_nozeros_indicator());
       
       if(upper)
         {
@@ -185,7 +185,7 @@ op_trimatu_ext::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_trimatu_e
   const uword n_rows = A.n_rows;
   const uword n_cols = A.n_cols;
   
-  arma_debug_check( ((row_offset > 0) && (row_offset >= n_rows)) || ((col_offset > 0) && (col_offset >= n_cols)), "trimatu(): requested diagonal is out of bounds" );
+  arma_debug_check_bounds( ((row_offset > 0) && (row_offset >= n_rows)) || ((col_offset > 0) && (col_offset >= n_cols)), "trimatu(): requested diagonal is out of bounds" );
   
   if(&out != &A)
     {
@@ -276,7 +276,7 @@ op_trimatl_ext::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_trimatl_e
   const uword n_rows = A.n_rows;
   const uword n_cols = A.n_cols;
   
-  arma_debug_check( ((row_offset > 0) && (row_offset >= n_rows)) || ((col_offset > 0) && (col_offset >= n_cols)), "trimatl(): requested diagonal is out of bounds" );
+  arma_debug_check_bounds( ((row_offset > 0) && (row_offset >= n_rows)) || ((col_offset > 0) && (col_offset >= n_cols)), "trimatl(): requested diagonal is out of bounds" );
   
   if(&out != &A)
     {

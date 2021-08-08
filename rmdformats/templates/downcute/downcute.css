@@ -506,6 +506,11 @@ a {
     margin: 15px 0
 }
 
+.page-content .table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 3rem;
+}
+
 .page-content table {
     width: 100%;
     border-spacing: 0;
@@ -1043,6 +1048,7 @@ button.code-folding-btn {
 .page-content .figure {
     margin: 5px 10px 30px 0px;
     display: table;
+    text-align: center;
 }
 
 .page-content .figure img {
@@ -1050,7 +1056,6 @@ button.code-folding-btn {
 }
 
 .page-content .figure p.caption {
-    text-align: center;
     font-style: italic;
     font-size: 90%;
     margin-top: 0;
@@ -1059,7 +1064,7 @@ button.code-folding-btn {
 /* Table */
 
 .page-content table {
-    margin: .5rem 0 3rem;
+    margin: .5rem 0 0;
 
 }
 
@@ -1070,7 +1075,7 @@ button.code-folding-btn {
 }
 
 .page-content .datatables {
-    margin: 2em 0em;
+    margin: 2em 0 0;
 }
 
 .page-content .dataTables_wrapper .dataTables_length,
@@ -1107,6 +1112,11 @@ button.code-folding-btn {
 .page-content table.dataTable.display tbody th, 
 .page-content table.dataTable.display tbody td {
     border-top: 1px solid var(--border-color);
+}
+
+.pagedtable .table th,
+.pagedtable .table td {
+    padding: 5px;
 }
 
 /* TOC and scrollspy */

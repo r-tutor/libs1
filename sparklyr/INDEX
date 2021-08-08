@@ -2,6 +2,8 @@
                         expression
 [.tbl_spark             Subsetting operator for Spark dataframe
 checkpoint_directory    Set/Get Spark checkpoint directory
+collect_from_rds        Collect Spark data serialized in RDS format
+                        into R
 compile_package_jars    Compile Scala sources into a Java Archive (jar)
 connection_config       Read configuration values for a connection
 copy_to.spark_connection
@@ -12,6 +14,7 @@ dplyr_hof               dplyr wrappers for Apache Spark higher order
                         functions
 ensure                  Enforce Specific Structure for R Objects
 fill                    Fill
+filter                  Filter
 find_scalac             Discover the Scala Compiler
 ft_binarizer            Feature Transformation - Binarizer
                         (Transformer)
@@ -79,6 +82,8 @@ ft_vector_slicer        Feature Transformation - VectorSlicer
                         (Transformer)
 ft_word2vec             Feature Transformation - Word2Vec (Estimator)
 full_join               Full join
+generic_call_interface
+                        Generic Call Interface
 get_spark_sql_catalog_implementation
                         Retrieve the Spark connection's SQL catalog
                         implementation property
@@ -98,6 +103,11 @@ hof_transform_values    Transforms values of a map
 hof_zip_with            Combines 2 Array Columns
 inner_join              Inner join
 invoke                  Invoke a Method on a JVM Object
+j_invoke                Invoke a Java function.
+jarray                  Instantiate a Java array with a specific
+                        element type.
+jfloat                  Instantiate a Java float type.
+jfloat_array            Instantiate an Array[Float].
 join.tbl_spark          Join Spark tbls.
 left_join               Left join
 list_sparklyr_jars      list all sparklyr-*.jar files that have been
@@ -138,6 +148,8 @@ ml_isotonic_regression_tidiers
                         Tidying methods for Spark ML Isotonic
                         Regression
 ml_kmeans               Spark ML - K-Means Clustering
+ml_kmeans_cluster_eval
+                        Evaluate a K-mean clustering
 ml_lda                  Spark ML - Latent Dirichlet Allocation
 ml_lda_tidiers          Tidying methods for Spark ML LDA models
 ml_linear_regression    Spark ML - Linear Regression
@@ -160,6 +172,8 @@ ml_one_vs_rest          Spark ML - OneVsRest
 ml_pca_tidiers          Tidying methods for Spark ML Principal
                         Component Analysis
 ml_pipeline             Spark ML - Pipelines
+ml_power_iteration      Spark ML - Power Iteration Clustering
+ml_prefixspan           Frequent Pattern Mining - PrefixSpan
 ml_random_forest_classifier
                         Spark ML - Random Forest
 ml_stage                Spark ML - Pipeline stage extraction
@@ -172,6 +186,7 @@ ml_uid                  Spark ML - UID
 ml_unsupervised_tidiers
                         Tidying methods for Spark ML unsupervised
                         models
+mutate                  Mutate
 na.replace              Replace Missing Values in Objects
 nest                    Nest
 pivot_longer            Pivot longer
@@ -198,6 +213,7 @@ sdf_debug_string        Debug Info for Spark DataFrame
 sdf_describe            Compute summary statistics for columns of a
                         data frame
 sdf_dim                 Support for Dimension Operations
+sdf_distinct            Invoke distinct on a Spark DataFrame
 sdf_drop_duplicates     Remove duplicates from a Spark DataFrame
 sdf_expand_grid         Create a Spark dataframe containing all
                         combinations of inputs
@@ -214,11 +230,38 @@ sdf_project             Project features onto principal components
 sdf_quantile            Compute (Approximate) Quantiles with a Spark
                         DataFrame
 sdf_random_split        Partition a Spark Dataframe
+sdf_rbeta               Generate random samples from a Beta
+                        distribution
+sdf_rbinom              Generate random samples from a binomial
+                        distribution
+sdf_rcauchy             Generate random samples from a Cauchy
+                        distribution
+sdf_rchisq              Generate random samples from a chi-squared
+                        distribution
 sdf_read_column         Read a Column from a Spark DataFrame
 sdf_register            Register a Spark DataFrame
 sdf_repartition         Repartition a Spark DataFrame
 sdf_residuals.ml_model_generalized_linear_regression
                         Model Residuals
+sdf_rexp                Generate random samples from an exponential
+                        distribution
+sdf_rgamma              Generate random samples from a Gamma
+                        distribution
+sdf_rgeom               Generate random samples from a geometric
+                        distribution
+sdf_rhyper              Generate random samples from a hypergeometric
+                        distribution
+sdf_rlnorm              Generate random samples from a log normal
+                        distribution
+sdf_rnorm               Generate random samples from the standard
+                        normal distribution
+sdf_rpois               Generate random samples from a Poisson
+                        distribution
+sdf_rt                  Generate random samples from a t-distribution
+sdf_runif               Generate random samples from the uniform
+                        distribution U(0, 1).
+sdf_rweibull            Generate random samples from a Weibull
+                        distribution.
 sdf_sample              Randomly Sample Rows from a Spark DataFrame
 sdf_schema              Read the Schema of a Spark DataFrame
 sdf_separate_column     Separate a Vector Column into Scalar Columns
@@ -233,12 +276,30 @@ sdf_weighted_sample     Perform Weighted Random Sampling on a Spark
 sdf_with_sequential_id
                         Add a Sequential ID Column to a Spark DataFrame
 sdf_with_unique_id      Add a Unique ID Column to a Spark DataFrame
+select                  Select
 separate                Separate
 spark-api               Access the Spark API
 spark-connections       Manage Spark Connections
+spark_adaptive_query_execution
+                        Retrieves or sets status of Spark AQE
+spark_advisory_shuffle_partition_size
+                        Retrieves or sets advisory size of the shuffle
+                        partition
 spark_apply             Apply an R Function in Spark
 spark_apply_bundle      Create Bundle for Spark Apply
 spark_apply_log         Log Writer for Spark Apply
+spark_auto_broadcast_join_threshold
+                        Retrieves or sets the auto broadcast join
+                        threshold
+spark_coalesce_initial_num_partitions
+                        Retrieves or sets initial number of shuffle
+                        partitions before coalescing
+spark_coalesce_min_num_partitions
+                        Retrieves or sets the minimum number of shuffle
+                        partitions after coalescing
+spark_coalesce_shuffle_partitions
+                        Retrieves or sets whether coalescing contiguous
+                        shuffle partitions is enabled
 spark_compilation_spec
                         Define a Spark Compilation Specification
 spark_config            Read Spark Configuration
@@ -262,6 +323,7 @@ spark_dependency_fallback
                         Fallback to Spark Dependency
 spark_extension         Create Spark Extension
 spark_home_set          Set the SPARK_HOME environment variable
+spark_install           Download and install various versions of Spark
 spark_jobj              Retrieve a Spark JVM Object Reference
 spark_jobj-class        spark_jobj class
 spark_load_table        Reads from a Spark Table into a Spark
@@ -270,8 +332,10 @@ spark_log               View Entries in the Spark Log
 spark_read              Read file(s) into a Spark DataFrame using a
                         custom reader
 spark_read_avro         Read Apache Avro data into a Spark DataFrame.
+spark_read_binary       Read binary data into a Spark DataFrame.
 spark_read_csv          Read a CSV file into a Spark DataFrame
 spark_read_delta        Read from Delta Lake into a Spark DataFrame.
+spark_read_image        Read image data into a Spark DataFrame.
 spark_read_jdbc         Read from JDBC connection into a Spark
                         DataFrame.
 spark_read_json         Read a JSON file into a Spark DataFrame
@@ -286,6 +350,8 @@ spark_read_text         Read a Text file into a Spark DataFrame
 spark_save_table        Saves a Spark DataFrame as a Spark table
 spark_session_config    Runtime configuration interface for the Spark
                         Session
+spark_statistical_routines
+                        Generate random samples from some distribution
 spark_table_name        Generate a Table Name from Expression
 spark_version           Get the Spark Version Associated with a Spark
                         Connection
@@ -303,6 +369,7 @@ spark_write_jdbc        Writes a Spark DataFrame into a JDBC table
 spark_write_json        Write a Spark DataFrame to a JSON file
 spark_write_orc         Write a Spark DataFrame to a ORC file
 spark_write_parquet     Write a Spark DataFrame to a Parquet file
+spark_write_rds         Write Spark DataFrame to RDS files
 spark_write_source      Writes a Spark DataFrame into a generic source
 spark_write_table       Writes a Spark DataFrame into a Spark table
 spark_write_text        Write a Spark DataFrame to a Text file

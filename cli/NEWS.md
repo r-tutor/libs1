@@ -1,3 +1,67 @@
+# cli 3.0.1
+
+* `ansi_strtrim()` now correctly keeps `NA` values (#309).
+
+* `format_inline()` now uses the correct environment (@rundel, #314).
+
+# cli 3.0.0
+
+* New functions for progress bars, please see the new articles at
+  https://cli.r-lib.org/articles/ for details.
+
+* New `cli_abort()`, `cli_warn()` and `cli_inform()` functions, to throw
+  errors with cli pluralization and styling.
+
+* New `format_inline()` function to format a cli string without emitting
+  it (#278).
+
+# cli 2.5.0
+
+* New `style_no_*()` functions to locally undo styling.
+  New `col_none()` and `bg_none()` functions to locally undo text color
+  and background color.
+
+* It is now possible to undo text and background color in a theme, by
+  setting them to `NULL` or `"none"`.
+
+* `cli_memo()` was renamed to `cli_bullets()`, as it is by default
+  formatted as a bullet list (#250).
+
+* New `ansi_toupper()`, `ansi_tolower` and `ansi_chartr()` functions,
+  the ANSI styling aware variants of `toupper()`, `tolower()` and
+  `chartr()` (#248).
+
+* New `test_that_cli()` helper function to write testthat tests for
+  cli output.
+
+* `tree()` now does not produce warnings for tibbles (#238).
+
+* New inline style: `.cls` to format class names, e.g.
+  `"{.var fit} must be an {.cls lm} object"`.
+
+# cli 2.4.0
+
+* New `cli_memo()` function to create a list of items or tasks.
+
+* New `cli::cli()` function to create a single cli message from multiple
+  cli calls (#170).
+
+* cli now highlights weird names, e.g. path names with leading or
+  trailing space (#227).
+
+* Styling is fixed at several places. In particular, nested lists should
+  be now formatted better (#221).
+
+* New `spark_bar()` and `spark_line()` funcions to draw small bar or
+  line charts.
+
+# cli 2.3.1
+
+* ANSI color support detection works correctly now in older RStudio,
+  and also on older R versions.
+
+* `cli_h1()`, `cli_h2()` and `cli_h3()` now work with multiple glue
+  substitutions (#218).
 
 # cli 2.3.0
 

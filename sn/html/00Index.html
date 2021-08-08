@@ -1,17 +1,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head><title>R: The Skew-Normal and Related Distributions Such as the Skew-t</title>
+<head><title>R: The Skew-Normal and Related Distributions Such as the Skew-t and
+the SUN</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
-<h1> The Skew-Normal and Related Distributions Such as the Skew-t
+<h1> The Skew-Normal and Related Distributions Such as the Skew-t and
+the SUN
 <img class="toplogo" src="../../../doc/html/Rlogo.svg" alt="[R logo]" />
 </h1>
 <hr/>
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;sn&rsquo; version 1.6-2</h2>
+</div><h2>Documentation for package &lsquo;sn&rsquo; version 2.0.0</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 <li><a href="../doc/index.html">User guides, package vignettes and other documentation.</a></li>
@@ -30,6 +32,7 @@
 <a href="#E">E</a>
 <a href="#F">F</a>
 <a href="#G">G</a>
+<a href="#J">J</a>
 <a href="#L">L</a>
 <a href="#M">M</a>
 <a href="#O">O</a>
@@ -45,7 +48,7 @@
 
 <table width="100%">
 <tr><td style="width: 25%;"><a href="sn-package.html">sn-package</a></td>
-<td>Package 'sn': development and brief overview</td></tr>
+<td>Package 'sn': overview, background and history</td></tr>
 </table>
 
 <h2><a name="A">-- A --</a></h2>
@@ -53,6 +56,8 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="affineTransSECdistr.html">affineTransSECdistr</a></td>
 <td>Affine transformations and marginals of a skew-elliptical distribution</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-op.html">affineTransSUNdistr</a></td>
+<td>Operations on SUNdistr-class objects</td></tr>
 <tr><td style="width: 25%;"><a href="ais.html">ais</a></td>
 <td>Australian Institute of Sport data</td></tr>
 </table>
@@ -62,6 +67,8 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="barolo.html">barolo</a></td>
 <td>Price of Barolo wine</td></tr>
+<tr><td style="width: 25%;"><a href="matrix-op.html">blockDiag</a></td>
+<td>vech, tr and other matrix operators</td></tr>
 </table>
 
 <h2><a name="C">-- C --</a></h2>
@@ -75,12 +82,20 @@
 <td>Coefficients of objects created by 'selm'</td></tr>
 <tr><td style="width: 25%;"><a href="conditionalSECdistr.html">conditionalSECdistr</a></td>
 <td>Skew-normal conditional distribution</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-op.html">conditionalSUNdistr</a></td>
+<td>Operations on SUNdistr-class objects</td></tr>
 <tr><td style="width: 25%;"><a href="selm-class.html">confint-method</a></td>
 <td>Classes 'selm' and 'mselm' of objects created by function 'selm'</td></tr>
 <tr><td style="width: 25%;"><a href="confint.selm.html">confint.selm</a></td>
 <td>Confidence intervals for parameters of a selm-class object</td></tr>
 <tr><td style="width: 25%;"><a href="confint.selm.html">confint.selm-method</a></td>
 <td>Confidence intervals for parameters of a selm-class object</td></tr>
+<tr><td style="width: 25%;"><a href="convertCSN2SUNpar.html">convertCSN2SUNpar</a></td>
+<td>Conversion of CSN parameters to SUN parameters</td></tr>
+<tr><td style="width: 25%;"><a href="convertSN2SUNdistr.html">convertSN2SUNdistr</a></td>
+<td>Convert a SN distribution into a SUN</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-op.html">convolutionSUNdistr</a></td>
+<td>Operations on SUNdistr-class objects</td></tr>
 <tr><td style="width: 25%;"><a href="dp2cp.html">cp2dp</a></td>
 <td>Conversion between parametrizations of a skew-elliptical distribution</td></tr>
 </table>
@@ -106,17 +121,19 @@
 <td>Skew-Normal Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="dst.html">dst</a></td>
 <td>Skew-t Distribution</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-base.html">dsun</a></td>
+<td>The Unified Skew-Normal (SUN) probability distribution</td></tr>
 <tr><td style="width: 25%;"><a href="symm-modulated-distr.html">dSymmModulated</a></td>
 <td>Symmetry-modulated distributions</td></tr>
 <tr><td style="width: 25%;"><a href="matrix-op.html">duplicationMatrix</a></td>
-<td>vech and other matrix operators</td></tr>
+<td>vech, tr and other matrix operators</td></tr>
 </table>
 
 <h2><a name="E">-- E --</a></h2>
 
 <table width="100%">
 <tr><td style="width: 25%;"><a href="extractSECdistr.html">extractSECdistr</a></td>
-<td>Extract the SEC error term from an object created by 'selm'</td></tr>
+<td>Extract the SEC error distribution from an object created by 'selm'</td></tr>
 </table>
 
 <h2><a name="F">-- F --</a></h2>
@@ -141,6 +158,13 @@
 <td>Mapping of the (Galton-Bowley, Moors) measures to the (alpha, nu) parameters of a ST distribution</td></tr>
 </table>
 
+<h2><a name="J">-- J --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="SUNdistr-op.html">joinSUNdistr</a></td>
+<td>Operations on SUNdistr-class objects</td></tr>
+</table>
+
 <h2><a name="L">-- L --</a></h2>
 
 <table width="100%">
@@ -153,12 +177,20 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="makeSECdistr.html">makeSECdistr</a></td>
 <td>Build a skew-elliptically contoured distribution</td></tr>
+<tr><td style="width: 25%;"><a href="makeSUNdistr.html">makeSUNdistr</a></td>
+<td>Build an object representing a SUN distribution</td></tr>
 <tr><td style="width: 25%;"><a href="affineTransSECdistr.html">marginalSECdistr</a></td>
 <td>Affine transformations and marginals of a skew-elliptical distribution</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-op.html">marginalSUNdistr</a></td>
+<td>Operations on SUNdistr-class objects</td></tr>
 <tr><td style="width: 25%;"><a href="SECdistrMv-class.html">mean-method</a></td>
 <td>Class '"SECdistrMv"'</td></tr>
 <tr><td style="width: 25%;"><a href="SECdistrUv-class.html">mean-method</a></td>
 <td>Class '"SECdistrUv"'</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-class.html">mean-method</a></td>
+<td>Class '"SUNdistr"' and its methods</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-class.html">mean.SUNdistr</a></td>
+<td>Class '"SUNdistr"' and its methods</td></tr>
 <tr><td style="width: 25%;"><a href="modeSECdistr.html">modeSECdistr</a></td>
 <td>The mode of a skew-elliptically contoured (SEC) distribution</td></tr>
 <tr><td style="width: 25%;"><a href="Qpenalty.html">MPpenalty</a></td>
@@ -180,19 +212,17 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="dp2cp.html">op2dp</a></td>
 <td>Conversion between parametrizations of a skew-elliptical distribution</td></tr>
-<tr><td style="width: 25%;"><a href="overview.html">overview</a></td>
-<td>Package 'sn': overview of the package structure and commands</td></tr>
-<tr><td style="width: 25%;"><a href="overview.html">overview-sn</a></td>
+<tr><td style="width: 25%;"><a href="overview-sn.html">overview-sn</a></td>
 <td>Package 'sn': overview of the package structure and commands</td></tr>
 </table>
 
 <h2><a name="P">-- P --</a></h2>
 
 <table width="100%">
-<tr><td style="width: 25%;"><a href="overview.html">pkg-overview</a></td>
-<td>Package 'sn': overview of the package structure and commands</td></tr>
 <tr><td style="width: 25%;"><a href="plot.SECdistr.html">plot-method</a></td>
 <td>Plotting methods for classes 'SECdistrUv' and 'SECdistrMv'</td></tr>
+<tr><td style="width: 25%;"><a href="plot.SUNdistr-method.html">plot-method</a></td>
+<td>Plotting method for class 'SUNdistr'</td></tr>
 <tr><td style="width: 25%;"><a href="plot.selm.html">plot-method</a></td>
 <td>Diagnostic plots for 'selm' fits</td></tr>
 <tr><td style="width: 25%;"><a href="selm-class.html">plot-method</a></td>
@@ -207,6 +237,8 @@
 <td>Plotting methods for classes 'SECdistrUv' and 'SECdistrMv'</td></tr>
 <tr><td style="width: 25%;"><a href="plot.selm.html">plot.selm</a></td>
 <td>Diagnostic plots for 'selm' fits</td></tr>
+<tr><td style="width: 25%;"><a href="plot.SUNdistr-method.html">plot.SUNdistr</a></td>
+<td>Plotting method for class 'SUNdistr'</td></tr>
 <tr><td style="width: 25%;"><a href="symm-modulated-distr.html">plot2D.SymmModulated</a></td>
 <td>Symmetry-modulated distributions</td></tr>
 <tr><td style="width: 25%;"><a href="dmst.html">pmsc</a></td>
@@ -235,6 +267,8 @@
 <td>Skew-Normal Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="dst.html">pst</a></td>
 <td>Skew-t Distribution</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-base.html">psun</a></td>
+<td>The Unified Skew-Normal (SUN) probability distribution</td></tr>
 </table>
 
 <h2><a name="Q">-- Q --</a></h2>
@@ -275,6 +309,8 @@
 <td>Skew-Normal Distribution</td></tr>
 <tr><td style="width: 25%;"><a href="dst.html">rst</a></td>
 <td>Skew-t Distribution</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-base.html">rsun</a></td>
+<td>The Unified Skew-Normal (SUN) probability distribution</td></tr>
 <tr><td style="width: 25%;"><a href="symm-modulated-distr.html">rSymmModulated</a></td>
 <td>Symmetry-modulated distributions</td></tr>
 </table>
@@ -302,14 +338,20 @@
 <td>Class '"SECdistrMv"'</td></tr>
 <tr><td style="width: 25%;"><a href="SECdistrUv-class.html">show-method</a></td>
 <td>Class '"SECdistrUv"'</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-class.html">show-method</a></td>
+<td>Class '"SUNdistr"' and its methods</td></tr>
 <tr><td style="width: 25%;"><a href="selm-class.html">show-method</a></td>
 <td>Classes 'selm' and 'mselm' of objects created by function 'selm'</td></tr>
 <tr><td style="width: 25%;"><a href="summary.SECdistr-class.html">show-method</a></td>
 <td>Classes 'summary.SECdistrMv' and 'summary.SECdistrUv'</td></tr>
+<tr><td style="width: 25%;"><a href="summary.SUNdistr-class.html">show-method</a></td>
+<td>Class 'summary.SUNdistr'</td></tr>
 <tr><td style="width: 25%;"><a href="summary.selm.html">show-method</a></td>
 <td>Summarizing 'selm' fits</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-class.html">show.SUNdistr</a></td>
+<td>Class '"SUNdistr"' and its methods</td></tr>
 <tr><td style="width: 25%;"><a href="sn-package.html">SN</a></td>
-<td>Package 'sn': development and brief overview</td></tr>
+<td>Package 'sn': overview, background and history</td></tr>
 <tr><td style="width: 25%;"><a href="sn-st.cumulants.html">sn.cumulants</a></td>
 <td>Cumulants of univariate skew-normal and skew-t distributions</td></tr>
 <tr><td style="width: 25%;"><a href="sn-st.info.html">sn.infoMv</a></td>
@@ -330,6 +372,8 @@
 <td>Compute preliminary estimates for a linear model with ST-distributed error term</td></tr>
 <tr><td style="width: 25%;"><a href="summary.SECdistr.html">summary-method</a></td>
 <td>Summary of a SEC distribution object</td></tr>
+<tr><td style="width: 25%;"><a href="summary.SUNdistr.html">summary-method</a></td>
+<td>Summary of a SUN distribution object</td></tr>
 <tr><td style="width: 25%;"><a href="summary.selm.html">summary-method</a></td>
 <td>Summarizing 'selm' fits</td></tr>
 <tr><td style="width: 25%;"><a href="summary.selm.html">summary.mselm</a></td>
@@ -350,6 +394,22 @@
 <td>Summarizing 'selm' fits</td></tr>
 <tr><td style="width: 25%;"><a href="summary.selm.html">summary.selm-class</a></td>
 <td>Summarizing 'selm' fits</td></tr>
+<tr><td style="width: 25%;"><a href="summary.SUNdistr.html">summary.SUNdistr</a></td>
+<td>Summary of a SUN distribution object</td></tr>
+<tr><td style="width: 25%;"><a href="summary.SUNdistr-class.html">summary.SUNdistr-class</a></td>
+<td>Class 'summary.SUNdistr'</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-base.html">SUNdistr-base</a></td>
+<td>The Unified Skew-Normal (SUN) probability distribution</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-class.html">SUNdistr-class</a></td>
+<td>Class '"SUNdistr"' and its methods</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-op.html">SUNdistr-op</a></td>
+<td>Operations on SUNdistr-class objects</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-base.html">sunMardia</a></td>
+<td>The Unified Skew-Normal (SUN) probability distribution</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-base.html">sunMean</a></td>
+<td>The Unified Skew-Normal (SUN) probability distribution</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-base.html">sunVcov</a></td>
+<td>The Unified Skew-Normal (SUN) probability distribution</td></tr>
 <tr><td style="width: 25%;"><a href="symm-modulated-distr.html">SymmModulatedDistr</a></td>
 <td>Symmetry-modulated distributions</td></tr>
 </table>
@@ -359,6 +419,8 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="T.Owen.html">T.Owen</a></td>
 <td>Owen's function</td></tr>
+<tr><td style="width: 25%;"><a href="matrix-op.html">tr</a></td>
+<td>vech, tr and other matrix operators</td></tr>
 </table>
 
 <h2><a name="V">-- V --</a></h2>
@@ -366,12 +428,16 @@
 <table width="100%">
 <tr><td style="width: 25%;"><a href="SECdistrMv-class.html">vcov-method</a></td>
 <td>Class '"SECdistrMv"'</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-class.html">vcov-method</a></td>
+<td>Class '"SUNdistr"' and its methods</td></tr>
 <tr><td style="width: 25%;"><a href="selm-class.html">vcov-method</a></td>
 <td>Classes 'selm' and 'mselm' of objects created by function 'selm'</td></tr>
+<tr><td style="width: 25%;"><a href="SUNdistr-class.html">vcov.SUNdistr</a></td>
+<td>Class '"SUNdistr"' and its methods</td></tr>
 <tr><td style="width: 25%;"><a href="matrix-op.html">vech</a></td>
-<td>vech and other matrix operators</td></tr>
+<td>vech, tr and other matrix operators</td></tr>
 <tr><td style="width: 25%;"><a href="matrix-op.html">vech2mat</a></td>
-<td>vech and other matrix operators</td></tr>
+<td>vech, tr and other matrix operators</td></tr>
 </table>
 
 <h2><a name="W">-- W --</a></h2>

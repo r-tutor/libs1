@@ -1,3 +1,58 @@
+# summarytools 1.0.0 (2021-07-27)
+
+ - In `dfSummary()`:  
+   + It is now possible to control which statistics to show in the
+     *Freqs / Values* column (see `help("st_options", "summarytools")`
+     for examples)   
+   + In *html* outputs, tables are better aligned horizontally (categories >>
+     counts >> charts); if misalignment occurs, adjusting `graph.magnif` should
+     resolve it 
+   + List-type columns and `Inf` values no longer generate errors 
+   + `tmp.img.dir` can be left to `NA` when `style = "grid"`  
+   + Fixed typo in attribute name `Dataf.rame.label` 
+   + Removal of grouping variables is now consistent across all languages 
+ - In `descr()`:  
+   + Fixed headings being shown even if `headings=FALSE` (when using
+    `stby()` or `dplyr::group_by()`) 
+ - In `ctable()`:  
+   + Fixed row/column names not always properly displayed   
+   + Fixed risk ratios showing when only odds ratios should  
+   + Fixed error when `prop="none"` with integer data  
+ - Selected heading elements can be totally omitted by one of two ways: 
+   + Setting their *value* to empty string using `print()` or
+     `view()` parameters (in `?print.summarytools`, refer to list of arguments
+     that can be used to override heading elements)  
+   + Using `define_keywords()` and setting the *heading's label* to empty
+     string 
+ - Improved functionality for customized terms / translations (see
+   `vignette("introduction", "summarytools")` for details) 
+ - `fix-valign.tex` is now in the *includes* directory for use with
+   *R Markdown* when creating *pdf* documents with `dfSummary()` outputs -
+   see `vignette("rmarkdown", )
+   
+ - Navigation links and table of contents were added to introductory vignette,
+   making it is easier to navigate 
+
+# summarytools 0.9.9 (2021-02-04)
+
+ - Style "jira" has been added to reflect pander's support for it. 
+ - Documentation has been reviewed and improved. 
+ - In `dfSummary()`:
+   + When generating a `dfSummary()` in Rmarkdown using `method = "render"`,
+     it is possible to set `tmp.img.dir = NA`. It must still be defined 
+     (not as `NA`) when `method = "pander"` and `style = "grid"`.
+   + Grouping variable(s) are now excluded from results when using
+     `stby()` or `dpyr::group_by()`. Use `keep.grp.vars = TRUE` to replicate
+     previous behavior.
+   + Removed an extra (empty) line in text graphs
+ - In `ctable()` and `freq()`:
+   + Fixed bug with integers
+ - The `ctable.round.digits` was added to the list of `st_options()` (there
+   is already a global `round.digits` option, but it uses `2` as default,
+   while `1` is a more sensible value for `ctable()`.
+ - `print.summarytools()` now removes titles from headings when keyword 
+   "title.function" is set to `NA` or empty string. 
+
 # summarytools 0.9.8 (2020-12-10)
 
 Version 0.9.8 is essentially the CRAN release of the 0.9.7 _GitHub-Only_ release
@@ -62,14 +117,14 @@ released as 0.9.8 on CRAN when it reached maturity.
 
 # summarytools 0.9.6 (2020-03-01)
 
- - In ctable():
+ - In `ctable()`:
    + Added Odds Ratio and Risk Ratio (aka Relative Risk) 
      statistics with 95% C.I.'s
    + Fixed issue with chi-square statistic not reporting
      appropriate values
    + Fixed html alignment of statistics below the table
      (now centering based on table width as it should)
- - In dfSummary(), fixed an issue arising when a very
+ - In `dfSummary()`, fixed an issue arising when a very
    large range of numeric values exists in a column
 
 # summarytools 0.9.5 (2020-02-10)

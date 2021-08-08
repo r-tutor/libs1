@@ -1,8 +1,20 @@
+# svUnit 1.0.6
+
+- A few more URLs corrections (for CRAN)!
+
+# svUnit 1.0.5
+
+- Correction of a few URLs in the vignette.
+
+# svUnit 1.0.4
+
+- Minor change: markdown added in "suggests". Komodo Edit is now Komodo IDE.
+
 # svUnit 1.0.3
 
-- During the conversion to Roxygen2, the topic 'svUnit' was lost . Corrected.
+- During the conversion to Roxygen2, the topic 'svUnit' was lost. Corrected.
 
-- A new 'pkgdown' web site is added at https://www.sciviews.org/svUnit.
+- A new 'pkgdown' web site is added at https://www.sciviews.org/svUnit/.
 
 # svUnit 1.0.2
 

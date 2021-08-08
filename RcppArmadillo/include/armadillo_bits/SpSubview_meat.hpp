@@ -111,7 +111,7 @@ SpSubview<eT>::operator+=(const eT val)
   
   if(val == eT(0))  { return *this; }
   
-  Mat<eT> tmp( (*this).n_rows, (*this).n_cols );
+  Mat<eT> tmp( (*this).n_rows, (*this).n_cols, arma_nozeros_indicator() );
   
   tmp.fill(val);
   
@@ -129,7 +129,7 @@ SpSubview<eT>::operator-=(const eT val)
   
   if(val == eT(0))  { return *this; }
   
-  Mat<eT> tmp( (*this).n_rows, (*this).n_cols );
+  Mat<eT> tmp( (*this).n_rows, (*this).n_cols, arma_nozeros_indicator() );
   
   tmp.fill(val);
   
@@ -773,13 +773,43 @@ SpSubview<eT>::clean(const typename get_pod_type<eT>::result threshold)
 template<typename eT>
 inline
 void
+SpSubview<eT>::clamp(const eT min_val, const eT max_val)
+  {
+  arma_extra_debug_sigprint();
+  
+  if(is_cx<eT>::no)
+    {
+    arma_debug_check( (access::tmp_real(min_val) > access::tmp_real(max_val)), "SpSubview::clamp(): min_val must be less than max_val" );
+    }
+  else
+    {
+    arma_debug_check( (access::tmp_real(min_val) > access::tmp_real(max_val)), "SpSubview::clamp(): real(min_val) must be less than real(max_val)" );
+    arma_debug_check( (access::tmp_imag(min_val) > access::tmp_imag(max_val)), "SpSubview::clamp(): imag(min_val) must be less than imag(max_val)" );
+    }
+  
+  if((n_elem == 0) || (n_nonzero == 0))  { return; }
+  
+  // TODO: replace with a more efficient implementation
+  
+  SpMat<eT> tmp(*this);
+  
+  tmp.clamp(min_val, max_val);
+  
+  (*this).operator=(tmp);
+  }
+
+
+
+template<typename eT>
+inline
+void
 SpSubview<eT>::fill(const eT val)
   {
   arma_extra_debug_sigprint();
   
   if(val != eT(0))
     {
-    Mat<eT> tmp( (*this).n_rows, (*this).n_cols );
+    Mat<eT> tmp( (*this).n_rows, (*this).n_cols, arma_nozeros_indicator() );
     
     tmp.fill(val);
     
@@ -879,6 +909,34 @@ SpSubview<eT>::eye()
 
 
 template<typename eT>
+inline
+void
+SpSubview<eT>::randu()
+  {
+  arma_extra_debug_sigprint();
+  
+  Mat<eT> tmp( (*this).n_rows, (*this).n_cols, fill::randu );
+  
+  (*this).operator=(tmp);
+  }
+
+
+
+template<typename eT>
+inline
+void
+SpSubview<eT>::randn()
+  {
+  arma_extra_debug_sigprint();
+  
+  Mat<eT> tmp( (*this).n_rows, (*this).n_cols, fill::randn );
+  
+  (*this).operator=(tmp);
+  }
+
+
+
+template<typename eT>
 arma_hot
 inline
 SpSubview_MapMat_val<eT>
@@ -912,7 +970,7 @@ inline
 SpSubview_MapMat_val<eT>
 SpSubview<eT>::operator()(const uword i)
   {
-  arma_debug_check( (i >= n_elem), "SpSubview::operator(): index out of bounds" );
+  arma_debug_check_bounds( (i >= n_elem), "SpSubview::operator(): index out of bounds" );
   
   const uword lrow = i % n_rows;
   const uword lcol = i / n_rows;
@@ -928,7 +986,7 @@ inline
 eT
 SpSubview<eT>::operator()(const uword i) const
   {
-  arma_debug_check( (i >= n_elem), "SpSubview::operator(): index out of bounds" );
+  arma_debug_check_bounds( (i >= n_elem), "SpSubview::operator(): index out of bounds" );
   
   const uword lrow = i % n_rows;
   const uword lcol = i / n_rows;
@@ -944,7 +1002,7 @@ inline
 SpSubview_MapMat_val<eT>
 SpSubview<eT>::operator()(const uword in_row, const uword in_col)
   {
-  arma_debug_check( (in_row >= n_rows) || (in_col >= n_cols), "SpSubview::operator(): index out of bounds" );
+  arma_debug_check_bounds( (in_row >= n_rows) || (in_col >= n_cols), "SpSubview::operator(): index out of bounds" );
   
   return (*this).at(in_row, in_col);
   }
@@ -957,7 +1015,7 @@ inline
 eT
 SpSubview<eT>::operator()(const uword in_row, const uword in_col) const
   {
-  arma_debug_check( (in_row >= n_rows) || (in_col >= n_cols), "SpSubview::operator(): index out of bounds" );
+  arma_debug_check_bounds( (in_row >= n_rows) || (in_col >= n_cols), "SpSubview::operator(): index out of bounds" );
   
   return (*this).at(in_row, in_col);
   }
@@ -1072,7 +1130,7 @@ SpSubview<eT>::row(const uword row_num)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check(row_num >= n_rows, "SpSubview::row(): out of bounds");
+  arma_debug_check_bounds(row_num >= n_rows, "SpSubview::row(): out of bounds");
   
   return SpSubview_row<eT>(const_cast< SpMat<eT>& >(m), row_num + aux_row1, aux_col1, n_cols);
   }
@@ -1086,7 +1144,7 @@ SpSubview<eT>::row(const uword row_num) const
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check(row_num >= n_rows, "SpSubview::row(): out of bounds");
+  arma_debug_check_bounds(row_num >= n_rows, "SpSubview::row(): out of bounds");
   
   return SpSubview_row<eT>(m, row_num + aux_row1, aux_col1, n_cols);
   }
@@ -1100,7 +1158,7 @@ SpSubview<eT>::col(const uword col_num)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check(col_num >= n_cols, "SpSubview::col(): out of bounds");
+  arma_debug_check_bounds(col_num >= n_cols, "SpSubview::col(): out of bounds");
   
   return SpSubview_col<eT>(const_cast< SpMat<eT>& >(m), col_num + aux_col1, aux_row1, n_rows);
   }
@@ -1114,7 +1172,7 @@ SpSubview<eT>::col(const uword col_num) const
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check(col_num >= n_cols, "SpSubview::col(): out of bounds");
+  arma_debug_check_bounds(col_num >= n_cols, "SpSubview::col(): out of bounds");
   
   return SpSubview_col<eT>(m, col_num + aux_col1, aux_row1, n_rows);
   }
@@ -1128,7 +1186,7 @@ SpSubview<eT>::rows(const uword in_row1, const uword in_row2)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (in_row1 > in_row2) || (in_row2 >= n_rows),
     "SpSubview::rows(): indices out of bounds or incorrectly used"
@@ -1146,7 +1204,7 @@ SpSubview<eT>::rows(const uword in_row1, const uword in_row2) const
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (in_row1 > in_row2) || (in_row2 >= n_rows),
     "SpSubview::rows(): indices out of bounds or incorrectly used"
@@ -1164,7 +1222,7 @@ SpSubview<eT>::cols(const uword in_col1, const uword in_col2)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (in_col1 > in_col2) || (in_col2 >= n_cols),
     "SpSubview::cols(): indices out of bounds or incorrectly used"
@@ -1182,7 +1240,7 @@ SpSubview<eT>::cols(const uword in_col1, const uword in_col2) const
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (in_col1 > in_col2) || (in_col2 >= n_cols),
     "SpSubview::cols(): indices out of bounds or incorrectly used"
@@ -1200,7 +1258,7 @@ SpSubview<eT>::submat(const uword in_row1, const uword in_col1, const uword in_r
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (in_row1 > in_row2) || (in_col1 > in_col2) || (in_row2 >= n_rows) || (in_col2 >= n_cols),
     "SpSubview::submat(): indices out of bounds or incorrectly used"
@@ -1218,7 +1276,7 @@ SpSubview<eT>::submat(const uword in_row1, const uword in_col1, const uword in_r
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     (in_row1 > in_row2) || (in_col1 > in_col2) || (in_row2 >= n_rows) || (in_col2 >= n_cols),
     "SpSubview::submat(): indices out of bounds or incorrectly used"
@@ -1245,7 +1303,7 @@ SpSubview<eT>::submat(const span& row_span, const span& col_span)
   const uword in_col1 = col_all ? 0      : col_span.a;
   const uword in_col2 = col_all ? n_cols : col_span.b;
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     ( row_all ? false : ((in_row1 > in_row2) || (in_row2 >= n_rows)))
     ||
@@ -1274,7 +1332,7 @@ SpSubview<eT>::submat(const span& row_span, const span& col_span) const
   const uword in_col1 = col_all ? 0          : col_span.a;
   const uword in_col2 = col_all ? n_cols - 1 : col_span.b;
   
-  arma_debug_check
+  arma_debug_check_bounds
     (
     ( row_all ? false : ((in_row1 > in_row2) || (in_row2 >= n_rows)))
     ||
