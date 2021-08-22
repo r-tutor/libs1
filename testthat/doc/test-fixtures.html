@@ -26,11 +26,19 @@
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -358,7 +366,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  dir</span>
 <span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Note that the cleanup automatically unfolds in the opposite order from the setup. Setup is <code>A</code>, then <code>B</code>, then <code>C</code>; cleanup is <code>-C</code>, then <code>-B</code>, then <code>-A</code>. This is important because we must create directory <code>dir</code> before we can make it the working directory; and we must restore the original working directory before we can delete <code>dir</code>; we can’t delete <code>dir</code> while it’s still the working directory!</p>
-<p><code>create_local_package()</code> is used in over 170 tests. Here’s one example that checks that <code>usethis::use_roxygen_md()</code> does the setup necessary to use roxygen2 in a package, with markdown support turned on. All 3 expectations consult the DESCRIPTION file, directly or indirectly. So it’s very convenient that <code>create_local_package()</code> creates a minimal package, with a valid <code>DESCRIPTION</code> file, for us to test against. And when the test is done — poof! — the package is gone.</p>
+<p><code>local_create_package()</code> is used in over 170 tests. Here’s one example that checks that <code>usethis::use_roxygen_md()</code> does the setup necessary to use roxygen2 in a package, with markdown support turned on. All 3 expectations consult the DESCRIPTION file, directly or indirectly. So it’s very convenient that <code>local_create_package()</code> creates a minimal package, with a valid <code>DESCRIPTION</code> file, for us to test against. And when the test is done — poof! — the package is gone.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">&quot;use_roxygen_md() adds DESCRIPTION fields&quot;</span>, {</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  pkg <span class="ot">&lt;-</span> <span class="fu">local_create_package</span>()</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">use_roxygen_md</span>()</span>

@@ -26,11 +26,19 @@
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -184,7 +192,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  withr<span class="sc">::</span><span class="fu">local_envvar</span>(<span class="at">DANGER =</span> <span class="st">&quot;&quot;</span>)</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expect_condition</span>(<span class="fu">skip_if_dangerous</span>(), <span class="cn">NA</span>, <span class="at">class =</span> <span class="st">&quot;skip&quot;</span>)</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Test passed 😀</span></span></code></pre></div>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Test passed 🥳</span></span></code></pre></div>
 <p>Testing <code>skip_if_Tuesday()</code> is harder because there’s no way to control the skipping from the outside. That means you’d need to “mock” its behaviour in a test, using the <a href="https://github.com/r-lib/mockery">mockery</a> or <a href="https://krlmlr.github.io/mockr/">mockr</a> packages.</p>
 </div>
 

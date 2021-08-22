@@ -1,3 +1,16 @@
+# widyr 0.1.4
+
+### Fixes
+
+* Fix a bug in United Nations vignette, caused by update in unvotes data.
+* Update to use SUGGESTS packages such as unvotes, fuzzyjoin and maps conditionally in vignettes.
+* Fix four links that were redirected (mostly http -> https)
+
+### Maintenance
+
+* Move gapminder from SUGGESTS to IMPORTS, since it's used in almost every example and vignette and would be cumbersome to use conditionally.
+* Change unvotes SUGGESTS to (>= 0.3.0)
+
 # widyr 0.1.3
 
 * Update to work with the latest version of tidytext's cast_sparse. Adds rlang to IMPORTs. (@juliasilge, #30)

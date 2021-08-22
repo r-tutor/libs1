@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Obtain hierarchical color palettes (Tree Colors)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for treepalette {treemap}"><tr><td>treepalette {treemap}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Obtain hierarchical color palettes (Tree Colors)</h2>
+
+<h3>Description</h3>
+
+<p>Obtain hierarchical color palettes, either the so-called Tree Colors from the HCL color space model, or by using an existing color palette. The former method, which is recommended, is used by default in <code><a href="../../treemap/help/treemap.html">treemap</a></code> (type <code>"index"</code>) and <code><a href="../../treemap/help/treegraph.html">treegraph</a></code>. Use <code><a href="../../treemap/help/treecolors.html">treecolors</a></code> to experiment with this method.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+treepalette(
+  dtf,
+  index = names(dtf),
+  method = "HCL",
+  palette = NULL,
+  palette.HCL.options,
+  return.parameters = TRUE,
+  prepare.dat = TRUE
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dtf</code></td>
+<td>
+<p>a data.frame or data.table. Required.</p>
+</td></tr>
+<tr valign="top"><td><code>index</code></td>
+<td>
+<p>the index variables of dtf</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>used method: either <code>"HCL"</code> (recommended), which is based on the HCL color space model, or <code>"HSV"</code>, which uses the argument <code>palette</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>palette</code></td>
+<td>
+<p>color palette, which is only used for the HSV method</p>
+</td></tr>
+<tr valign="top"><td><code>palette.HCL.options</code></td>
+<td>
+<p>list of options to obtain Tree Colors from  the HCL space (when <code>palette="HCL"</code>). This list contains: 
+</p>
+
+<dl>
+<dt><code>hue_start</code>:</dt><dd><p>number between 0 and 360 that determines the starting hue value (default: 30)</p>
+</dd>
+<dt><code>hue_end</code>:</dt><dd><p>number between <code>hue_start</code> and <code>hue_start + 360</code> that determines the ending hue value (default: 390)</p>
+</dd>
+<dt><code>hue_perm</code>:</dt><dd><p>boolean that determines whether the colors are permuted such that adjacent levels get more distinguishable colors. If <code>FALSE</code>, then the colors are equally distributed from <code>hue_start</code> to <code>hue_end</code> (default: TRUE)</p>
+</dd>
+<dt><code>hue_rev</code>:</dt><dd><p>boolean that determines whether the colors of even-numbered branched are reversed (to increase discrimination among branches)</p>
+</dd>
+<dt><code>hue_fraction</code>:</dt><dd><p>number between 0 and 1 that determines the fraction of the hue circle that is used for recursive color picking: if 1 then the full hue circle is used, which means that the hue of the colors of lower-level nodes are spread maximally. If 0, then the hue of the colors of lower-level nodes are identical of the hue of their parents. (default: .5)</p>
+</dd>
+<dt><code>chroma</code>:</dt><dd><p>chroma value of colors of the first-level nodes, that are determined by the first index variable (default: 60)</p>
+</dd>
+<dt><code>luminance</code>:</dt><dd><p>luminance value of colors of the first-level nodes, i.e. determined by the first index variable (default: 70)</p>
+</dd>
+<dt><code>chroma_slope</code>:</dt><dd><p>slope value for chroma of the non-first-level nodes. The chroma values for the second-level nodes are <code>chroma+chroma_slope</code>, for the third-level nodes <code>chroma+2*chroma_slope</code>, etc. (default: 5)</p>
+</dd>
+<dt><code>luminance_slope</code>:</dt><dd><p>slope value for luminance of the non-first-level nodes (default: -10)</p>
+</dd></dl>
+<p> For &quot;depth&quot; and &quot;categorical&quot; types, only the first two items are used. Use <code><a href="../../treemap/help/treecolors.html">treecolors</a></code> to experiment with these parameters.</p>
+</td></tr>
+<tr valign="top"><td><code>return.parameters</code></td>
+<td>
+<p>should a data.frame with color values and parameter options be returned (<code>TRUE</code>), or just the vector of color values (<code>FALSE</code>)?</p>
+</td></tr>
+<tr valign="top"><td><code>prepare.dat</code></td>
+<td>
+<p>data is by default preprocessed, except for interal use</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Either a vector of colors, or a data.frame is return (see <code>return.parameters</code>).
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>treemap</em> version 2.4-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

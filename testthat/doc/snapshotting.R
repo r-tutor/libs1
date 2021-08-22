@@ -11,7 +11,7 @@ library(testthat)
 ## ----include = FALSE----------------------------------------------------------
 snapper <- testthat:::SnapshotReporter$new()
 options(testthat.snapshotter = snapper)
-snapper$start_file("pizza", "test")
+snapper$start_file("snapshotting.Rmd", "test")
 
 ## -----------------------------------------------------------------------------
 bullets <- function(text, id = NULL) {
@@ -31,25 +31,25 @@ test_that("bullets", {
 
 ## -----------------------------------------------------------------------------
 test_that("bullets", {
-  expect_snapshot_output(cat(bullets("a")))
-  expect_snapshot_output(cat(bullets("a", "b")))
+  expect_snapshot(cat(bullets("a")))
+  expect_snapshot(cat(bullets("a", "b")))
 })
 
 ## ---- include = FALSE---------------------------------------------------------
 # Reset snapshot test
 snapper$end_file()
-snapper$start_file("pizza", "test")
+snapper$start_file("snapshotting.Rmd", "test")
 
 ## -----------------------------------------------------------------------------
 test_that("bullets", {
-  expect_snapshot_output(cat(bullets("a")))
-  expect_snapshot_output(cat(bullets("a", "b")))
+  expect_snapshot(cat(bullets("a")))
+  expect_snapshot(cat(bullets("a", "b")))
 })
 
 ## ---- include = FALSE---------------------------------------------------------
 # Reset snapshot test
 snapper$end_file()
-snapper$start_file("pizza", "test")
+snapper$start_file("snapshotting.Rmd", "test")
 
 ## -----------------------------------------------------------------------------
 bullets <- function(text, id = NULL) {
@@ -60,8 +60,39 @@ bullets <- function(text, id = NULL) {
   )
 }
 test_that("bullets", {
-  expect_snapshot_output(cat(bullets("a")))
-  expect_snapshot_output(cat(bullets("a", "b")))
+  expect_snapshot(cat(bullets("a")))
+  expect_snapshot(cat(bullets("a", "b")))
+})
+
+## -----------------------------------------------------------------------------
+f <- function() {
+  print("Hello")
+  message("Hi!")
+  warning("How are you?")
+}
+
+## -----------------------------------------------------------------------------
+test_that("f() makes lots of noice", {
+  expect_snapshot(f())
+})
+
+## -----------------------------------------------------------------------------
+test_that("you can't add a number and a letter", {
+  expect_snapshot(1 + "a")
+})
+
+## -----------------------------------------------------------------------------
+test_that("you can't add a number and a letter", {
+  expect_snapshot(1 + "a", error = TRUE)
+})
+
+## -----------------------------------------------------------------------------
+test_that("you can't add weird thngs", {
+  expect_snapshot(error = TRUE, {
+    1 + "a"
+    mtcars + iris
+    mean + sum
+  })
 })
 
 ## ---- include = FALSE---------------------------------------------------------

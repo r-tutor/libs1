@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Interactive user interface for treemap</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for itreemap {treemap}"><tr><td>itreemap {treemap}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Interactive user interface for treemap</h2>
+
+<h3>Description</h3>
+
+<p>This function is an interactive user interface for creating treemaps. Interaction is provided for the four main input arguments of (<code><a href="../../treemap/help/treemap.html">treemap</a></code>) besides the data.frame itself, namely <code>index</code>, <code>vSize</code>, <code>vColor</code> and <code>type</code>. Zooming in and out is possible. Command line outputs are generated in the console.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+itreemap(
+  dtf = NULL,
+  index = NULL,
+  vSize = NULL,
+  vColor = NULL,
+  type = NULL,
+  height = 700,
+  command.line.output = TRUE
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dtf</code></td>
+<td>
+<p>a data.frame (<code><a href="../../treemap/help/treemap.html">treemap</a></code>) If not provided, then the first data.frame in the global workspace is loaded.</p>
+</td></tr>
+<tr valign="top"><td><code>index</code></td>
+<td>
+<p>index variables (up to four). See <code><a href="../../treemap/help/treemap.html">treemap</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>vSize</code></td>
+<td>
+<p>name of the variable that determine the rectangle sizes.</p>
+</td></tr>
+<tr valign="top"><td><code>vColor</code></td>
+<td>
+<p>name of the variable that determine the rectangle colors. See <code><a href="../../treemap/help/treemap.html">treemap</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>treemap type. See <code><a href="../../treemap/help/treemap.html">treemap</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>height</code></td>
+<td>
+<p>height of the plotted treemap in pixels. Tip: decrease this number if the treemap doesn't fit conveniently.</p>
+</td></tr>
+<tr valign="top"><td><code>command.line.output</code></td>
+<td>
+<p>if <code>TRUE</code>, the command line output of the generated treemaps are provided in the console.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>This interface will no longer be maintained (except for small bugs), since there is a better interactive interface available: <a href="https://github.com/d3treeR/d3treeR">https://github.com/d3treeR/d3treeR</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+data(business)
+itreemap(business)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>treemap</em> version 2.4-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

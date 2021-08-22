@@ -26,11 +26,19 @@
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -172,7 +180,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p><code>expect_is()</code> is deprecated in favour of the more specific <code>expect_type()</code>, <code>expect_s3_class()</code>, and <code>expect_s4_class()</code>. This ensures that you check the expected class along with the expected OO system.</p></li>
 <li><p>The very old <code>expect_that()</code> syntax is now deprecated. This was an overly clever API that I regretted even before the release of testthat 1.0.0.</p></li>
 <li><p><code>expect_equivalent()</code> has been deprecated since it is now equivalent (HA HA) to <code>expect_equal(ignore_attr = TRUE)</code>.</p></li>
-<li><p><code>setup()</code> an <code>teardown()</code> are deprecated in favour of test fixtures. See <code>vignette(&quot;test-fixtures&quot;)</code> for details.</p></li>
+<li><p><code>setup()</code> and <code>teardown()</code> are deprecated in favour of test fixtures. See <code>vignette(&quot;test-fixtures&quot;)</code> for details.</p></li>
 <li><p><code>expect_known_output()</code>, <code>expect_known_value()</code>, <code>expect_known_hash()</code>, and <code>expect_equal_to_reference()</code> are all deprecated in favour of <code>expect_snapshot_output()</code> and <code>expect_snapshot_value()</code>.</p></li>
 <li><p><code>with_mock()</code> and <code>local_mock()</code> are deprecated; please use the <a href="https://krlmlr.github.io/mockr/">mockr</a> or <a href="https://github.com/r-lib/mockery#mockery">mockery</a> instead.</p></li>
 </ul>
@@ -223,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error: `dt1` (`actual`) not equal to `dt2` (`expected`).</span></span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; `attr(actual, &#39;tzone&#39;)`:   &quot;&quot;               </span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; `attr(expected, &#39;tzone&#39;)`: &quot;America/Chicago&quot;</span></span></code></pre></div></li>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; `attr(expected, &#39;tzone&#39;)`: &quot;Europe/Brussels&quot;</span></span></code></pre></div></li>
 </ul>
 </div>
 <div id="reproducible-output" class="section level3">

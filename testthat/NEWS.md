@@ -1,3 +1,62 @@
+# testthat 3.0.4
+
+* The vendored Catch code used for `use_catch()` now uses an constant
+  value for the stack size rather than relying on SIGSTKSZ. This
+  fixes compatibility for recent glibc versions where SIGSTKSZ is no
+  longer a constant.
+
+* Fixed an issue that caused errors and early termination of tests on
+  R <= 3.6 when a failing condition expectation was signalled inside a
+  snapshot.
+
+# testthat 3.0.3
+
+* `expect_snapshot_file()` gains a `compare` argument (#1378,
+  @nbenn). This is a customisation point for how to compare old and
+  new snapshot files.
+  
+  The functions `compare_file_binary()` and `compare_file_text()` are
+  now exported from testthat to be supplied as `compare`
+  argument. These implement the same behaviour as the old `binary`
+  argument which is now deprecated.
+
+* `expect_snapshot()` no longer deletes snapshots when an unexpected
+  error occurs.
+
+* New `announce_snapshot_file()` function for developers of testthat
+  extensions. Announcing a snapshot file allows testthat to preserve
+  files that were not generated because of an unexpected error or a
+  `skip()` (#1393). Unannounced files are automatically deleted during
+  cleanup if the generating code isn't called.
+
+* New expectation: `expect_no_match()`. It complements `expect_match()` by
+  checking if a string **doesn't match** a regular expression
+  (@michaelquinn32, #1381).
+  
+ * Support setting the testthat edition via an environment variable
+  (`TESTTHAT_EDITION`) as well (@michaelquinn32, #1386).
+ 
+# testthat 3.0.2
+
+* Failing expectations now include a backtrace when they're not called directly
+  from within `test_that()` but are instead wrapped in some helper function 
+  (#1307).
+  
+* `CheckReporter` now only records warnings when not on CRAN. Otherwise 
+  failed CRAN revdep checks tend to be cluttered up with warnings (#1300).
+  It automatically cleans up `testthat-problems.rds` left over from previous
+  runs if the latest run is succesful (#1314).
+
+* `expect_s3_class()` and `expect_s4_class()` can now check that an object
+  _isn't_ an S3 or S4 object by supplying `NA` to the second argument (#1321).
+
+* `expect_s3_class()` and `expect_s4_class()` format class names in a less
+  confusing way (#1322).
+
+* `expect_snapshot()` collapses multiple adjacent headings of the same, so
+  that, e.g., if you have multiple lines of code in a row, you'll only see
+  one "Code:" heading (#1311).
+
 # testthat 3.0.1
 
 * New `testthat.progress.verbose_skips` option. Set to `FALSE` to stop
