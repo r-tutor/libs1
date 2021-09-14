@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Journal of Statistical Software (JSS) format.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for jss_article {rticles}"><tr><td>jss_article {rticles}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Journal of Statistical Software (JSS) format.</h2>
+
+<h3>Description</h3>
+
+<p>Format for creating a Journal of Statistical Software (JSS) articles. Adapted
+from <a href="https://www.jstatsoft.org/about/submissions">https://www.jstatsoft.org/about/submissions</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+jss_article(
+  ...,
+  keep_tex = TRUE,
+  citation_package = "natbib",
+  pandoc_args = NULL
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Arguments to <code><a href="../../rmarkdown/help/pdf_document.html">rmarkdown::pdf_document()</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>keep_tex</code></td>
+<td>
+<p>Keep the intermediate tex file used in the conversion to PDF</p>
+</td></tr>
+<tr valign="top"><td><code>citation_package</code></td>
+<td>
+<p>The LaTeX package to process citations, <code>natbib</code>
+or <code>biblatex</code>. Use <code>default</code> if neither package is to be used,
+which means citations will be processed via the command
+<code>pandoc-citeproc</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>pandoc_args</code></td>
+<td>
+<p>Additional command line options to pass to pandoc</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>rticles</em> version 0.21 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

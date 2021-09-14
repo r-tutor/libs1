@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Extended Information About the Current R Session</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for sessionInfoX {sfsmisc}"><tr><td>sessionInfoX {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Extended Information About the Current R Session</h2>
+
+<h3>Description</h3>
+
+<p>Collect (and print) information about the current <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> session and
+environment, using <code><a href="../../utils/html/sessionInfo.html">sessionInfo</a>()</code> and more mostly
+low-level and platform dependent information.
+</p>
+<p><code>isRshared()</code> is a utility called from <code>sessionInfoX()</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sessionInfoX(pkgs = NULL, list.libP = FALSE, extraR.env = TRUE)
+
+## S3 method for class 'sessionInfoX'
+print(x, locale = TRUE, RLIBS = TRUE, Renv = TRUE, ...)
+
+isRshared(platform = .Platform)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>pkgs</code></td>
+<td>
+<p><code>NULL</code> (default), <code>TRUE</code> or a
+<code><a href="../../base/html/character.html">character</a></code> vector of <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> package names, whose
+<code><a href="../../utils/html/packageDescription.html">packageDescription</a>()</code>s are wanted.  No packages by
+default, <code>TRUE</code> takes all currently loaded pkgs.</p>
+</td></tr>
+<tr valign="top"><td><code>list.libP</code></td>
+<td>
+<p>a logical indicating if for all
+<code><a href="../../base/html/libPaths.html">.libPaths</a></code> entries, the files should be listed via
+<code><a href="../../base/html/list.files.html">list.files</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>extraR.env</code></td>
+<td>
+<p>logical indicating if <em>all</em> environment
+variables should be recorded which start with <code>"R_"</code> or
+<code>"_R_"</code>.</p>
+</td></tr>
+</table>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>typically the result of <code>sessionInfoX()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>locale</code></td>
+<td>
+<p>logical, passed to <code><a href="../../utils/html/sessionInfo.html">print.sessionInfo</a>()</code>
+indicating if the locale information should be printed.</p>
+</td></tr>
+<tr valign="top"><td><code>RLIBS</code></td>
+<td>
+<p>logical indicating if the information about R_LIBS should
+be printed.</p>
+</td></tr>
+<tr valign="top"><td><code>Renv</code></td>
+<td>
+<p>logical indicating if the information about R environment
+variables should be printed.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>passed to <code><a href="../../base/html/print.html">print</a></code> methods.</p>
+</td></tr>
+</table>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>platform</code></td>
+<td>
+<p>a <code><a href="../../base/html/list.html">list</a></code> &ldquo;like&rdquo; <code><a href="../../base/html/Platform.html">.Platform</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>For <code>isRshared()</code>, a <code><a href="../../base/html/logical.html">logical</a></code> indicating if <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> has
+been installed as &ldquo;shared&rdquo;, i.e., linked to &lsquo;<span class="file">libR*</span>&rsquo; shared
+library.
+</p>
+<p>For <code>sessionInfoX()</code>, an object of S3 class <code>"sessionInfoX"</code>, a <code><a href="../../base/html/list.html">list</a></code>
+with components (there may be more, experimental and not yet listed here):
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>sInfo</code></td>
+<td>
+<p>simply the value of <code><a href="../../utils/html/sessionInfo.html">sessionInfo</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>sysInf</code></td>
+<td>
+<p>the value of <code><a href="../../base/html/Sys.info.html">Sys.info</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>capabilities</code></td>
+<td>
+<p>the value of <code><a href="../../base/html/capabilities.html">capabilities</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>extSoft</code></td>
+<td>
+<p>for <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> 3.2.0 and newer, the value of <code><a href="../../base/html/extSoftVersion.html">extSoftVersion</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>grSoft</code></td>
+<td>
+<p>for <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> 3.2.0 and newer, the value of <code><a href="../../grDevices/html/grSoftVersion.html">grSoftVersion</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>tclVersion</code></td>
+<td>
+<p>for <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> 3.2.0 and newer and when <span class="pkg">tcltk</span> is loaded,
+the Tcl version (<code><a href="../../tcltk/help/tclVersion.html">tclVersion</a>()</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>LAPACK</code></td>
+<td>
+<p>for <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> 3.0.3 and newer, the value of <code><a href="../../base/html/La_version.html">La_version</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>pcre</code></td>
+<td>
+<p>for <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> 3.1.3 and newer, the value of <code><a href="../../base/html/pcre_config.html">pcre_config</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>pkgDescr</code></td>
+<td>
+<p>If <code>pkgs</code> was non-empty, a named
+<code><a href="../../base/html/list.html">list</a></code> of <code><a href="../../utils/html/packageDescription.html">packageDescription</a>()</code>s for each
+entry in <code>pkgs</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>libPath</code></td>
+<td>
+<p>the value of <code><a href="../../base/html/libPaths.html">.libPaths</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>RLIBS</code></td>
+<td>
+<p>a <code><a href="../../base/html/character.html">character</a></code> vector of entries from
+<code><a href="../../base/html/Sys.getenv.html">Sys.getenv</a>("R_LIBS")</code>, typically very similar to the
+<code>libPaths</code> component.</p>
+</td></tr>
+<tr valign="top"><td><code>n.RLIBS</code></td>
+<td>
+<p>simply a <code><a href="../../base/html/normalizePath.html">normalizePath</a>()</code>ed version of <code>RLIBS</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>R.env</code></td>
+<td>
+<p>a named character vector with the &ldquo;important&rdquo; <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span>
+environment variables <code>R_ENVIRON</code>, <code>R_PROFILE</code>,
+<code>R_CHECK_ENVIRON</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>xR.env</code></td>
+<td>
+<p>if <code>extraR.env</code> was true, a named character vector
+of &ldquo;all R related&rdquo; environment variables, as specified in
+<code>extraR.env</code>'s description above.</p>
+</td></tr>
+<tr valign="top"><td><code>shared</code></td>
+<td>
+<p>(not available on Windows, where it is conceptually always true:)
+<code><a href="../../base/html/logical.html">logical</a></code> indicating if the version of <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> is
+&ldquo;shared&rdquo;.</p>
+</td></tr> </table>
+
+
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, December 2015 ff.</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../utils/html/sessionInfo.html">sessionInfo</a></code>,
+<code><a href="../../base/html/libPaths.html">.libPaths</a></code>, <code><a href="../../base/html/Version.html">R.version</a></code>, <code><a href="../../base/html/Sys.getenv.html">Sys.getenv</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+six0 &lt;- sessionInfoX()
+six0$shared # useful (for some, e.g., MM) on Unix alikes
+
+sixN &lt;- sessionInfoX("nlme", list.libP = TRUE)
+sixN # -&gt; print() method for "sessionInfoX"
+names(sixN)
+str(sixN, max = 1)# outline of lower-level structure
+str(sixN$pkgDescr) # list with one component "nlme"
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-12 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

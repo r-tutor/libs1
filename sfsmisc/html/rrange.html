@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Robust Range using Boxplot 'Quartiles'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for rrange {sfsmisc}"><tr><td>rrange {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Robust Range using Boxplot 'Quartiles'</h2>
+
+<h3>Description</h3>
+
+<p>Compute a robust range, i.e. the usual <code><a href="../../base/html/range.html">range</a>()</code> as long
+as there are no outliers,  using the &ldquo;whisker boundaries&rdquo; of
+<code><a href="../../graphics/html/boxplot.html">boxplot</a></code>, i.e., <code><a href="../../grDevices/html/boxplot.stats.html">boxplot.stats</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rrange(x, range=1, coef = 1.5, na.rm = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>numeric vector the robust range of which shall be computed.</p>
+</td></tr>
+<tr valign="top"><td><code>range</code></td>
+<td>
+<p>number for S compatibility; <code>1.5 * range</code> is
+equivalent to <code>coef</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>coef</code></td>
+<td>
+<p>numeric multiplication factor definying the outlier
+boundary, see &lsquo;Details&rsquo; below.</p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p>logical indicating how <code><a href="../../base/html/NA.html">NA</a></code> values should be
+handled;  they are simply dropped when <code>na.rm = TRUE</code> as by default.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The robust range is really just what <code><a href="../../grDevices/html/boxplot.stats.html">boxplot.stats</a>(x,
+    coef=coef)</code> returns as the whisker boundaries.
+This is the most extreme values <code>x[j]</code> still inside median
+plus/minus <code>coef * IQR</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>numeric vector <code>c(m,M)</code> with <i>m &lt;= M</i> which is (not
+strictly) inside <code>range(x) = c(min(x),max(x))</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, 1990.</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/range.html">range</a></code>, <code><a href="../../stats/html/fivenum.html">fivenum</a></code>,
+<code><a href="../../graphics/html/boxplot.html">boxplot</a></code> and <code><a href="../../grDevices/html/boxplot.stats.html">boxplot.stats</a></code>.
+</p>
+<p>A more sophisticated robust range for (strongly) asymmetric data can
+be derived from the skewness adjusted boxplot statistics
+<code><a href="../../robustbase/help/adjboxStats.html">adjboxStats</a></code> which is a generalization of
+<code><a href="../../grDevices/html/boxplot.stats.html">boxplot.stats</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+stopifnot(rrange(c(1:10,1000)) == c(1,10))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-12 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

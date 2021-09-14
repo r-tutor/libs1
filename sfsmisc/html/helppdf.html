@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: help() Type=&quot;pdf&quot; and View It</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for helppdf {sfsmisc}"><tr><td>helppdf {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>help() Type=&quot;pdf&quot; and View It</h2>
+
+<h3>Description</h3>
+
+<p>Utility to view PDF-rendered <code><a href="../../utils/html/help.html">help</a></code> pages; particularly
+useful in case they contain mathematical formulas or otherwise
+sophisticated formats.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+helppdf(topic, viewer = getOption("pdfviewer"), quiet = !interactive(), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>topic</code></td>
+<td>
+<p>the topic, passed to <code><a href="../../utils/html/help.html">help</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>viewer</code></td>
+<td>
+<p>a pdf viewer; the default is typically what you want interactively.</p>
+</td></tr>
+<tr valign="top"><td><code>quiet</code></td>
+<td>
+<p><code><a href="../../base/html/logical.html">logical</a></code> indicating that nothing should be
+printed to the console and the result should be returned as
+<code><a href="../../base/html/invisible.html">invisible</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further optional arguments passed to <code>help()</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns the full path of the pdf file produced.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../utils/html/help.html">help</a></code>, <code><a href="../../base/html/system.html">system</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Both calls work :
+if(interactive()) {
+  helppdf(Normal)
+  helppdf("NegBinomial")
+} else { #  batch mode
+  od &lt;- setwd(tempdir())
+  ff &lt;- helppdf(Normal, viewer=NULL)
+  stopifnot(file.exists(ff))
+  setwd(od)# revert to previous dir.
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-12 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

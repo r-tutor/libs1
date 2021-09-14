@@ -1,14 +1,15 @@
 Package: rticles
 Type: Package
 Title: Article Formats for R Markdown
-Version: 0.20
+Version: 0.21
 Authors@R: c(
   person("JJ", "Allaire", role = "aut", email = "jj@rstudio.com"),
   person("Yihui", "Xie", role = c("aut", "cre"), email = "xie@yihui.name", comment = c(ORCID = "0000-0003-0645-5666")),
+  person("Christophe", "Dervieux", role = c("aut"), email = "cderv@rstudio.com", comment = c(ORCID = "0000-0003-4474-2498")),
+  person(family = "RStudio", role = c("cph", "fnd")),
   person(family = "R Foundation", role = c("aut", "cph")),
   person("Hadley", "Wickham", role = "aut", email = "hadley@rstudio.com"),
   person(family = "Journal of Statistical Software", role = c("aut", "cph")),
-  person(family = "RStudio", role = "cph"),
   person("Ramnath ", "Vaidyanathan", role = c("aut", "cph"), email = "ramnath.vaidya@gmail.com"),
   person(family = "Association for Computing Machinery", role = c("aut", "cph")),
   person("Carl", "Boettiger", role = c("aut", "cph"), email = "cboettig@gmail.com"),
@@ -44,9 +45,10 @@ Authors@R: c(
   person("Shixiang", "Wang", role = c("aut", "ctb"), email = "w_shixiang@163.com", comment = c(ORCID = "0000-0001-9855-7357")),
   person('Jay', 'Hesselberth', role = c('aut', 'ctb'), email = 'jay.hesselberth@gmail.com', comment = c(ORCID = '0000-0002-6299-179X')),
   person("Alfredo", "Hernández", role = c("ctb"), email = "aldomann.designs@gmail.com", comment = c(ORCID = "0000-0002-2660-4545")),
-  person("Christophe", "Dervieux", role = c("aut"), email = "cderv@rstudio.com", comment = c(ORCID = "0000-0003-4474-2498")),
   person("Stefano", "Coretta", role = c("ctb"), email = "stefano.coretta@gmail.com", comment = c(ORCID = "0000-0001-9627-5532", github = "stefanocoretta")),
-  person("Alvaro", "Uzaheta", role = c("ctb"), email = "alvaro.uzaheta@gess.ethz.ch", comment = c(github = "auzaheta"))
+  person("Matthias", "Templ", role = c("ctb"), email = "matthias.templ@gmail.com", comment = c(ORCID = "0000-0002-8638-5276", github = "matthias-da")),
+  person("Alvaro", "Uzaheta", role = c("ctb"), email = "alvaro.uzaheta@gess.ethz.ch", comment = c(github = "auzaheta")),
+  person("JooYoung", "Seo", role=c("ctb"), email="jseo1005@illinois.edu", comment = c(ORCID = "0000-0002-4064-6012"))
   )
 Description: A suite of custom R Markdown formats and templates for
   authoring journal articles and conference submissions.
@@ -59,14 +61,16 @@ BugReports: https://github.com/rstudio/rticles/issues
 RoxygenNote: 7.1.1
 Suggests: testit, bookdown, xtable
 Encoding: UTF-8
+Config/Needs/website: magick, pdftools, gifski, rstudio/quillt
 NeedsCompilation: no
-Packaged: 2021-06-23 13:28:39 UTC; yihui
+Packaged: 2021-09-10 16:38:39 UTC; yihui
 Author: JJ Allaire [aut],
   Yihui Xie [aut, cre] (<https://orcid.org/0000-0003-0645-5666>),
+  Christophe Dervieux [aut] (<https://orcid.org/0000-0003-4474-2498>),
+  RStudio [cph, fnd],
   R Foundation [aut, cph],
   Hadley Wickham [aut],
   Journal of Statistical Software [aut, cph],
-  RStudio [cph],
   Ramnath Vaidyanathan [aut, cph],
   Association for Computing Machinery [aut, cph],
   Carl Boettiger [aut, cph],
@@ -105,11 +109,13 @@ Author: JJ Allaire [aut],
   Shixiang Wang [aut, ctb] (<https://orcid.org/0000-0001-9855-7357>),
   Jay Hesselberth [aut, ctb] (<https://orcid.org/0000-0002-6299-179X>),
   Alfredo Hernández [ctb] (<https://orcid.org/0000-0002-2660-4545>),
-  Christophe Dervieux [aut] (<https://orcid.org/0000-0003-4474-2498>),
   Stefano Coretta [ctb] (<https://orcid.org/0000-0001-9627-5532>,
     stefanocoretta),
-  Alvaro Uzaheta [ctb] (auzaheta)
+  Matthias Templ [ctb] (<https://orcid.org/0000-0002-8638-5276>,
+    matthias-da),
+  Alvaro Uzaheta [ctb] (auzaheta),
+  JooYoung Seo [ctb] (<https://orcid.org/0000-0002-4064-6012>)
 Maintainer: Yihui Xie <xie@yihui.name>
 Repository: CRAN
-Date/Publication: 2021-06-23 15:00:02 UTC
-Built: R 4.1.0; ; 2021-08-05 09:54:41 UTC; windows
+Date/Publication: 2021-09-11 06:30:02 UTC
+Built: R 4.1.1; ; 2021-09-14 17:00:17 UTC; windows

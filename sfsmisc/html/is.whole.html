@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Test Whether a Vector or Array Consists of Whole Numbers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for is.whole {sfsmisc}"><tr><td>is.whole {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Test Whether a Vector or Array Consists of Whole Numbers</h2>
+
+<h3>Description</h3>
+
+<p>This function tests whether a <code>numeric</code> or <code>complex</code> vector
+or array consists of whole numbers.  The function <code><a href="../../base/html/integer.html">is.integer</a></code>
+is not appropriate for this since it tests whether the vector is of class
+<code>integer</code> (see examples).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+is.whole(x, tolerance = sqrt(.Machine$double.eps))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p><code>integer</code>, <code>numeric</code>, or <code>complex</code> vector or
+array to be tested</p>
+</td></tr>
+<tr valign="top"><td><code>tolerance</code></td>
+<td>
+<p>maximal distance to the next whole number</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The return value has the same dimension as the argument <code>x</code>: if <code>x</code>
+is a vector, the function returns a <code>logical</code> vector of the same length;
+if <code>x</code> is a matrix or array, the function returns a <code>logical</code> matrix
+or array of the same dimensions.  Each entry in the result indicates whether
+the corresponding entry in <code>x</code> is whole.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Alain Hauser &lt;alain@huschhus.ch&gt;</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/integer.html">is.integer</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Create a random array, matrix, vector
+set.seed(307)
+a &lt;- array(runif(24), dim = c(2, 3, 4))
+a[4:8] &lt;- 4:8
+m &lt;- matrix(runif(12), 3, 4)
+m[2:4] &lt;- 2:4
+v &lt;- complex(real      = seq(0.5, 1.5, by = 0.1),
+             imaginary = seq(2.5, 3.5, by = 0.1))
+
+## Find whole entries
+is.whole(a)
+is.whole(m)
+is.whole(v)
+
+## Numbers of class integer are always whole
+is.whole(dim(a))
+is.whole(length(v))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-12 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

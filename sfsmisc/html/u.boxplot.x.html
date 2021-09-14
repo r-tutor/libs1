@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Utility Returning x-Coordinates of Boxplot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for u.boxplot.x {sfsmisc}"><tr><td>u.boxplot.x {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Utility Returning x-Coordinates of Boxplot</h2>
+
+<h3>Description</h3>
+
+<p>Return the x-coordinates in an &lsquo;n-way&rsquo; side-by-side boxplot.
+This is an auxiliary function and exists mainly for backcompatibility
+with S-plus.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+u.boxplot.x(n, j = 1:n, fullrange = 100)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of boxplots.</p>
+</td></tr>
+<tr valign="top"><td><code>j</code></td>
+<td>
+<p>indices of boxplots.</p>
+</td></tr>
+<tr valign="top"><td><code>fullrange</code></td>
+<td>
+<p>x-coords as 'uniform' in <i>[0,fullrange]</i>;
+(f.=100, corresponds to Splus 3.x (x = 1,2)).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a numeric vector of length <code>n</code>, with values inside <i>(0,M)</i> where
+<i>M = </i> <code>fullrange</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../graphics/html/boxplot.html">boxplot</a></code>.</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ u.boxplot.x(7) # == 8.93 22.62 36.3 ... 91.07
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-12 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

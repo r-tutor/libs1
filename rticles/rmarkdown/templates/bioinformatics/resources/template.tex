@@ -9,6 +9,11 @@ $if(tables)$
 \usepackage{longtable}
 $endif$
 
+% For Pandoc highlighting needs
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
 % Pandoc citation processing
 $if(csl-refs)$
 \newlength{\csllabelwidth}
@@ -49,7 +54,7 @@ $endfor$
 % \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 
 \access{Advance Access Publication Date: $access_date.day$ $access_date.month$ $access_date.year$}
-\appnotes{Manuscript Category}
+\appnotes{$if(manuscript_type)$$manuscript_type$$else$$subject_section$$endif$}
 
 \begin{document}
 \firstpage{1}
@@ -59,9 +64,7 @@ $endfor$
 \title[$title_short$]{$title_full$}
 
 \author[FirstAuthorLastName \textit{et~al}.]{
-$for(author)$
-$author.name$\,\textsuperscript{$author.affiliation$},
-$endfor$
+$for(author)$$author.name$\,\textsuperscript{$author.affiliation$}$sep$, $endfor$
 }
 
 \address{

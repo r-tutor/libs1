@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Nice 10 ** k Label Expressions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for pretty10exp {sfsmisc}"><tr><td>pretty10exp {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Nice  10 ** k  Label Expressions</h2>
+
+<h3>Description</h3>
+
+<p>Produce nice <i>a * 10^k</i> expressions to be used
+instead of the scientific notation  <code>"a E&lt;k&gt;"</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+pretty10exp(x, drop.1 = FALSE, sub10 = FALSE, digits = 7, digits.fuzz,
+            lab.type = c("plotmath","latex"),
+            lab.sep = c("cdot", "times"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>numeric vector (e.g. axis tick locations)</p>
+</td></tr>
+<tr valign="top"><td><code>drop.1</code></td>
+<td>
+<p>logical indicating if <i>1 *</i> should be
+dropped from the resulting expressions.</p>
+</td></tr>
+<tr valign="top"><td><code>sub10</code></td>
+<td>
+<p>logical, <code>"10"</code>, a non-negative integer number or
+an integer vector of length two, say <i>(k1,k2)</i>, indicating if some
+<i>10^j</i> expressions for <i>j in J</i> should be formatted
+traditionally, notably e.g., <i>10^0 == 1</i>.
+<br />
+When a (non-negative) number, say <i>k</i>, <i>
+      J = {j; j &le; k}</i> are all simplified, when a length&ndash;2 vector,
+<i>J = {j; k1 &le; j &le; k2}</i> are.
+</p>
+<p>Special cases: <code>sub10 = TRUE</code> means to use
+<i>1</i> instead of <i>10^0</i> and <code>sub10 = "10"</code> uses both
+<i>1</i> for <i>10^0</i> and <i>10</i> for <i>10^1</i>; these are short
+forms of <code>sub10 = c(0,0)</code> and <code>sub10 = c(0,1)</code> respectively.
+</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>number of digits for mantissa (<i>a</i>) construction;
+the number of <em>significant</em> digits, see <code><a href="../../base/html/Round.html">signif</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>digits.fuzz</code></td>
+<td>
+<p>the old deprecated name for <code>digits</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>lab.type</code></td>
+<td>
+<p>a string indicating how the result should look like.
+By default, (<code><a href="../../grDevices/html/plotmath.html">plotmath</a></code>-compatible)
+<code><a href="../../base/html/expression.html">expression</a></code>s are returned. Alternatively,
+<code>lab.type = "plotmath"</code> returns LaTeX formatted strings for
+labels.  (The latter is useful, e.g., when using the <a href="https://CRAN.R-project.org/package=tikzDevice"><span class="pkg">tikzDevice</span></a>
+package to generate LaTeX-processed figures.)</p>
+</td></tr>
+<tr valign="top"><td><code>lab.sep</code></td>
+<td>
+<p>character separator between mantissa and exponent for
+LaTeX labels; it will be prepended with a backslash,
+i.e., &lsquo;&quot;cdot&quot;&rsquo; will use &lsquo;&quot;\cdot&quot;&rsquo;</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>For the default <code>lab.type = "plotmath"</code>,
+an expression of the same length as <code>x</code>, typically with elements
+of the form <code>a %*% 10 ^ k</code>.
+Exceptions are <code>0</code> which is kept simple, if <code>drop.1</code> is
+true and <i>a = 1</i>, <code>10 ^ k</code> is used, and if <code>sub10</code>
+is not false, <code>a %*% 10 ^ 0</code> as <code>a</code>, and <code>a %*% 10 ^ k</code> as
+as the corresponding formatted number <code>a * 10^k</code> independently of
+<code>drop.1</code>.
+</p>
+<p>Otherwise, a <code><a href="../../base/html/character.html">character</a></code> vector of the same length as
+<code>x</code>.  For <code>lab.type = "latex"</code>, currently the only
+alternative to the default, these strings are LaTeX (math mode)
+compatible strings.
+</p>
+
+
+<h3>Note</h3>
+
+<p>If <code>sub10</code> is set, it will typically be a small number such as 0,
+1, or 2.  Setting <code>sub10 = TRUE</code> will be interpreted as
+<code>sub10 =1</code> where resulting exponents <i>k</i> will either be
+negative or <i>k &gt;= 2</i>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler;  Ben Bolker contributed <code>lab.type = "latex"</code>
+and <code>lab.sep</code>.</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../sfsmisc/help/axTexpr.html">axTexpr</a></code> and <code><a href="../../sfsmisc/help/eaxis.html">eaxis</a>()</code> which build on
+<code>pretty10exp()</code>, notably the <code>eaxis()</code> example plots.
+</p>
+<p>The new <code><a href="../../sfsmisc/help/toLatex.numeric.html">toLatex.numeric</a></code> method which gives very similar
+results with option <code>scientific = TRUE</code>.
+<br /> Further, <code><a href="../../graphics/html/axis.html">axis</a></code>, <code><a href="../../graphics/html/axTicks.html">axTicks</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+pretty10exp(-1:3 * 1000)
+pretty10exp(-1:3 * 1000, drop.1 = TRUE)
+pretty10exp(c(1,2,5,10,20,50,100,200) * 1e3)
+pretty10exp(c(1,2,5,10,20,50,100,200) * 1e3, drop.1 = TRUE)
+
+set.seed(17); lx &lt;- rlnorm(10, m=8, s=6)
+pretty10exp(lx, digits = 3)
+pretty10exp(lx, digits = 3, sub10 = 2)
+
+pretty10exp(lx, digits = 3, lab.type="latex")
+pretty10exp(lx, digits = 3, lab.type="latex", lab.sep="times", sub10=2)
+
+## use regular formatted numbers from 0.03 to 300 :
+pretty10exp(3*10^(-3:4), sub10 = c(-2,2))
+pretty10exp(3*10^(-3:4), sub10 = c(-2,2), lab.type = "l")
+
+
+ax &lt;- 10^(-6:0) - 2e-16
+pretty10exp(ax, drop.1=TRUE) # nice for plotting
+pretty10exp(ax, drop.1=TRUE, sub10=TRUE)
+pretty10exp(ax, drop.1=TRUE, sub10=c(-2,2))
+
+## in sfsmisc version &lt;= 1.0-16, no 'digits',
+## i.e., implicitly had  digits := #{double precision digits} ==
+(dig. &lt;- .Machine$double.digits * log10(2)) # 15.95
+pretty10exp(ax, drop.1=TRUE, digits= dig.)  # ''ugly''
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-12 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

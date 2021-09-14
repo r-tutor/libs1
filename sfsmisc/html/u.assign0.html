@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: 'Portable' assign / get functions (R / S-plus) for 'Frame 0'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for u.assign0 {sfsmisc}"><tr><td>u.assign0 {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>'Portable' assign / get functions (R / S-plus) for 'Frame 0'</h2>
+
+<h3>Description</h3>
+
+<p><span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> does not have S' concept of <code>frame = 0</code>, aka &lsquo;session
+frame&rsquo;.  These two function were an attempt to provide a portable
+way for working with frame 0, particularly when porting code
+<em>from</em> S.
+</p>
+<p>They have been <b>deprecated</b> since August 2013.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+u.assign0(x, value, immediate = FALSE)
+u.get0(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>character string giving the <em>name</em> of the object.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>any <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> object which is to be assigned.</p>
+</td></tr>
+<tr valign="top"><td><code>immediate</code></td>
+<td>
+<p>logical, for S compatibility.  No use in <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span>.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>Really don't use these anymore...</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/get.html">get</a></code>, <code><a href="../../base/html/assign.html">assign</a></code>.</p>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-12 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: R Journal format.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for rjournal_article {rticles}"><tr><td>rjournal_article {rticles}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>R Journal format.</h2>
+
+<h3>Description</h3>
+
+<p>Format for creating R Journal articles. Adapted from
+<a href="https://journal.r-project.org/submissions.html">https://journal.r-project.org/submissions.html</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rjournal_article(..., keep_tex = TRUE, citation_package = "natbib")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Arguments to <code><a href="../../rmarkdown/help/pdf_document.html">rmarkdown::pdf_document()</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>keep_tex</code></td>
+<td>
+<p>Keep the intermediate tex file used in the conversion to PDF</p>
+</td></tr>
+<tr valign="top"><td><code>citation_package</code></td>
+<td>
+<p>The LaTeX package to process citations, <code>natbib</code>
+or <code>biblatex</code>. Use <code>default</code> if neither package is to be used,
+which means citations will be processed via the command
+<code>pandoc-citeproc</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This file is only a basic article template. For full details of <em>The R
+Journal</em> style and information on how to prepare your article for submission,
+see the <a href="https://journal.r-project.org/share/author-guide.pdf">Instructions for Authors</a>
+</p>
+
+
+<h4>About this format and the R Journal requirements</h4>
+
+<p><code>rticles::rjournal_article</code> will help you build the correct files requirements:
+</p>
+
+<ul>
+<li><p> A R file will be generated automatically using <code>knitr::purl</code> - see
+https://bookdown.org/yihui/rmarkdown-cookbook/purl.html for more information.
+</p>
+</li>
+<li><p> A tex file will be generated from this Rmd file and correctly included in
+<code>RJwapper.tex</code> as expected to build <code>RJwrapper.pdf</code>.
+</p>
+</li>
+<li><p> All figure files will be kept in the default rmarkdown <code style="white-space: pre;">*_files</code> folder. This
+happens because <code>keep_tex = TRUE</code> by default in <code>rticles::rjournal_article</code>
+</p>
+</li>
+<li><p> Only the bib filename is to be modified. An example bib file is included in the
+template (<code>RJreferences.bib</code>) and you will have to name your bib file as the
+tex, R, and pdf files.
+</p>
+</li></ul>
+
+
+
+
+<h3>About YAML header fields</h3>
+
+<p>This section documents some of the YAML fields that can be used with this
+formats.
+</p>
+
+
+<h4>The <code>author</code> field in the YAML header</h4>
+
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+   FIELD </td><td style="text-align: left;"> TYPE </td><td style="text-align: left;"> DESCRIPTION </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code>name</code> </td><td style="text-align: left;"> <em>required</em> </td><td style="text-align: left;"> name and surname of the author </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code>affiliation</code> </td><td style="text-align: left;"> <em>required</em> </td><td style="text-align: left;"> name of the author's affiliation </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code>address</code> </td><td style="text-align: left;"> <em>required</em> </td><td style="text-align: left;"> at least one address line for the affiliation </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code>url</code> </td><td style="text-align: left;"> <em>optional</em> </td><td style="text-align: left;"> an additional url for the author or the main affiliation </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code>orcid</code> </td><td style="text-align: left;"> <em>optional</em> </td><td style="text-align: left;"> the authors ORCID if available </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code>email</code> </td><td style="text-align: left;"> <em>required</em> </td><td style="text-align: left;"> the author's e-mail address </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code>affiliation2</code> </td><td style="text-align: left;"> <em>optional</em> </td><td style="text-align: left;"> name of the author's 2nd affiliation </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code>address2</code> </td><td style="text-align: left;"> <em>optional</em> </td><td style="text-align: left;"> address lines belonging to the author's 2nd affiliation </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+<p><em>Please note: Only one <code>url</code>, <code>orcid</code> and <code>email</code> can be provided per author.</em>
+</p>
+
+
+
+<h4>Other YAML fields</h4>
+
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+   FIELD </td><td style="text-align: left;"> TYPE </td><td style="text-align: left;"> DESCRIPTION </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code>bibliography</code> </td><td style="text-align: left;"> <em>with default</em> </td><td style="text-align: left;"> the BibTeX file with the reference entries </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+
+
+<hr /><div style="text-align: center;">[Package <em>rticles</em> version 0.21 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

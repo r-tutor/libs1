@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Give the Quadrant Number of Planar Points</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for quadrant {sfsmisc}"><tr><td>quadrant {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Give the Quadrant Number of Planar Points</h2>
+
+<h3>Description</h3>
+
+<p>Determine the quadrant of planar points, i.e. in which of the four
+parts cut by the x- and y- axis the points lie.  Zero values
+(i.e. points on the axes) are treated as if <em>positive</em>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+quadrant(x, y=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x,y</code></td>
+<td>
+<p>numeric vectors of the same length, or <code>x</code> is an <i>x-y</i>
+structure and <code>y=NULL</code>, see <code><a href="../../grDevices/html/xy.coords.html">xy.coords</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>numeric vector of same length as <code>x</code> (if that's a vector) with
+values in <code>1:4</code> indicating the quadrant number of the
+corresponding point.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+xy &lt;- as.matrix(expand.grid(x= -7:7, y= -7:7)); rownames(xy) &lt;- NULL
+(qu &lt;- quadrant(xy))
+plot(xy, col = qu+1, main = "quadrant() number", axes = FALSE)
+abline(h=0, v=0, col="gray") # the x- and y- axis
+text(xy, lab = qu, col = qu+1, adj = c(1.4,0))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-12 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

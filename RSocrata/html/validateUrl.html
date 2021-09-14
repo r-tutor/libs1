@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert, if necessary, URL to valid REST API URL supported by...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for validateUrl {RSocrata}"><tr><td>validateUrl {RSocrata}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert, if necessary, URL to valid REST API URL supported by Socrata.</h2>
+
+<h3>Description</h3>
+
+<p>Will convert a human-readable URL to a valid REST API call
+supported by Socrata. It will accept a valid API URL if provided
+by users and will also convert a human-readable URL to a valid API
+URL. Will accept queries with optional API token as a separate
+argument or will also accept API token in the URL query. Will
+resolve conflicting API token by deferring to original URL.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+validateUrl(url, app_token)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>url</code></td>
+<td>
+<p>- a string; character vector of length one</p>
+</td></tr>
+<tr valign="top"><td><code>app_token</code></td>
+<td>
+<p>- a string; SODA API token used to query the data 
+portal <a href="https://dev.socrata.com/consumers/getting-started.html">https://dev.socrata.com/consumers/getting-started.html</a></p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a - valid Url
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Tom Schenk Jr <a href="mailto:tom.schenk@cityofchicago.org">tom.schenk@cityofchicago.org</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>RSocrata</em> version 1.7.11-2 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

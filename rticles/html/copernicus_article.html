@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Copernicus journals format.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for copernicus_article {rticles}"><tr><td>copernicus_article {rticles}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Copernicus journals format.</h2>
+
+<h3>Description</h3>
+
+<p>Format for creating submissions to Copernicus journals.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+copernicus_article(
+  ...,
+  keep_tex = TRUE,
+  highlight = NULL,
+  citation_package = "natbib",
+  md_extensions = c("-autolink_bare_uris", "-auto_identifiers")
+)
+
+copernicus_journal_abbreviations(journal_name = "*")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments to <code><a href="../../rmarkdown/help/pdf_document.html">rmarkdown::pdf_document()</a></code>. <strong>Note</strong>: <code>extra_dependencies</code> are not
+allowed as Copernicus does not support additional packages included via <code>\usepackage{}</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>keep_tex</code></td>
+<td>
+<p>Keep the intermediate tex file used in the conversion to PDF</p>
+</td></tr>
+<tr valign="top"><td><code>highlight</code></td>
+<td>
+<p>Syntax highlighting style. Supported styles include
+&quot;default&quot;, &quot;tango&quot;, &quot;pygments&quot;, &quot;kate&quot;, &quot;monochrome&quot;, &quot;espresso&quot;,
+&quot;zenburn&quot;, and &quot;haddock&quot;. Pass <code>NULL</code> to prevent syntax highlighting.</p>
+</td></tr>
+<tr valign="top"><td><code>citation_package</code></td>
+<td>
+<p>The LaTeX package to process citations, <code>natbib</code>
+or <code>biblatex</code>. Use <code>default</code> if neither package is to be used,
+which means citations will be processed via the command
+<code>pandoc-citeproc</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>md_extensions</code></td>
+<td>
+<p>Markdown extensions to be added or removed from the
+default definition or R Markdown. See the <code><a href="../../rmarkdown/help/rmarkdown_format.html">rmarkdown_format</a></code> for
+additional details.</p>
+</td></tr>
+<tr valign="top"><td><code>journal_name</code></td>
+<td>
+<p>A regular expression to filter the by the journal name, see <code>pattern</code> in <code><a href="../../base/help/grep.html">base::grep()</a></code>; defaults to <code>*</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This was adapted from
+<a href="https://publications.copernicus.org/for_authors/manuscript_preparation.html">https://publications.copernicus.org/for_authors/manuscript_preparation.html</a>.
+</p>
+<p>An number of required and optional manuscript sections, e.g. <code>acknowledgements</code>, <code>competinginterests</code>, or <code>authorcontribution</code>, must be declared using the respective properties of the R Markdown header - see skeleton file.
+</p>
+<p><strong>Version:</strong> Based on <code>copernicus_package.zip</code> in the version 6.3, 8 July 2021, using <code>copernicus.cls</code> in version 9.32, 7 July 2021.
+</p>
+<p><strong>Copernicus journal abbreviations:</strong> You can use the function <code>copernicus_journal_abbreviations()</code> to get the journal abbreviation for all journals supported by the Copernicus article template.
+</p>
+<p><strong>Important note:</strong> The online guidelines by Copernicus are the official resource.
+Copernicus is not responsible for the community contributions made to support the template in this package.
+Copernicus converts all typeset TeX files into XML, the expressions and markups have to be highly standardized.
+Therefore, please keep the following in mind:
+</p>
+
+<ul>
+<li><p> Please provide only one figure file for figures with several panels, and please do not use <code style="white-space: pre;">\subfloat</code> or similar commands.
+</p>
+</li>
+<li><p> Please use only commands in which words, numbers, etc. are within braces (e.g. <code style="white-space: pre;">\textrm{TEXT}</code> instead of <code style="white-space: pre;">\rm TEXT</code>).
+</p>
+</li>
+<li><p> For algorithms, please use the syntax given in template.tex or provide your algorithm as a figure.
+</p>
+</li>
+<li><p> Please do not define new commands.
+</p>
+</li>
+<li><p> Supported packages (<code style="white-space: pre;">\usepackage{}</code>) are already integrated in the <code>copernicus.cls</code>.  Please do not insert additional ones in your <code>.tex</code> file.
+</p>
+</li>
+<li><p> If you opt for syntax highlighting for your preprint or other reasons, please do not forget to use
+<code>highlight = NULL</code> for your final file upload once your manuscript was accepted for publication.
+</p>
+</li>
+<li><p> Spaces in labels (<code style="white-space: pre;">\label{}</code>) are not allowed; please make sure that no label name is assigned more than once.
+</p>
+</li>
+<li><p> Please do not use <code style="white-space: pre;">\paragraph{}</code>; only <code style="white-space: pre;">\subsubsection{}</code> is allowed.
+</p>
+</li>
+<li><p> It is not possible to add tables in colour.
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>An R Markdown output format.
+</p>
+
+
+<h3>Note</h3>
+
+<p>If you use <code><a href="../../rmarkdown/help/pdf_document.html">rmarkdown::pdf_document()</a></code>, all internal references (i.e. tables and figures) must use <code style="white-space: pre;">\ref{}</code> whereas with <code><a href="../../bookdown/help/html_document2.html">bookdown::pdf_document2()</a></code>, you can additionally use <code style="white-space: pre;">\@ref()</code>.
+</p>
+
+
+<h3>References</h3>
+
+<p>Manuscript preparation guidelines for authors.
+<a href="https://publications.copernicus.org/for_authors/manuscript_preparation.html">https://publications.copernicus.org/for_authors/manuscript_preparation.html</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+names(copernicus_journal_abbreviations())
+copernicus_journal_abbreviations(journal_name = "Science Data")
+## Not run: 
+library("rmarkdown")
+draft("MyArticle.Rmd", template = "copernicus", package = "rticles")
+render("MyArticle/MyArticle.Rmd")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rticles</em> version 0.21 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

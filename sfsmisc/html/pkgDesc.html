@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Version of packageDescription() as Simple Vector</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for pkgDesc {sfsmisc}"><tr><td>pkgDesc {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Version of packageDescription() as Simple Vector</h2>
+
+<h3>Description</h3>
+
+<p>a simple &ldquo;version&rdquo;, or wrapper for
+<code><a href="../../utils/html/packageDescription.html">packageDescription</a>()</code>, returning a named character vector,
+including <code>"file"</code>, and still has a useful <code><a href="../../base/html/print.html">print</a>()</code>
+method.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+pkgDesc (pkg, lib.loc = NULL, fields = NULL, ...)
+pkgBuilt(pkg, lib.loc = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>pkg</code></td>
+<td>
+<p>a <code><a href="../../base/html/character.html">character</a></code> string, name of an installed <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> package.</p>
+</td></tr>
+<tr valign="top"><td><code>lib.loc</code></td>
+<td>
+<p>library location to find the package in; the default
+<code>NULL</code> uses the full <code><a href="../../base/html/libPaths.html">.libPaths</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>fields</code></td>
+<td>
+<p>a character vector (or <code>NULL</code>) specifying fields to be returned.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further optional arguments passed to <code><a href="../../utils/html/packageDescription.html">packageDescription</a>()</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a named <code><a href="../../base/html/character.html">character</a></code> vector, with <code><a href="../../base/html/names.html">names</a></code>, the
+<em>fields</em>, identical to the names of the <code><a href="../../base/html/list.html">list</a></code> returned
+by <code><a href="../../utils/html/packageDescription.html">packageDescription</a></code>, plus its <code>"file"</code> attribute.
+Additionally the resulting vector is of class <code>"Dlist"</code> which
+activates a useful <code><a href="../../base/html/print.html">print</a>()</code> method.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <code>file</code> is always returned; not the least that the author
+wants to see it quite often as his <code><a href="../../base/html/libPaths.html">.libPaths</a>()</code> is
+non-trivial and typically longer than 4 entries.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, Jan. 2021</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../utils/html/packageDescription.html">packageDescription</a></code>,
+<code><a href="../../base/html/libPaths.html">.libPaths</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+str(pd &lt;- pkgDesc("sfsmisc"))
+pd[c("Date","Packaged", "Built","file")]
+
+pkgBuilt("sfsmisc")
+
+## Show "Built" (and "file") for all packages whose namespaces are loaded:
+lNs &lt;- loadedNamespaces()
+mlNs &lt;- sapply(lNs, pkgBuilt)
+t(mlNs) # typically prints nicely
+
+pkgs &lt;- c("grid", "lattice", "MASS", "Matrix", "nlme", "lme4", "sfsmisc")
+pkgs &lt;- c("foobar", "barbar", pkgs, "kitty") # + names that typically don't exist
+pkgsOk &lt;- basename(find.package(pkgs, quiet=TRUE))
+mpkg &lt;- sapply(pkgsOk, pkgBuilt)
+stopifnot(is.matrix(mpkg), nrow(mpkg) == 2)
+mpkg["Built",]
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-12 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

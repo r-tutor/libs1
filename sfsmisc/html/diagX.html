@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The &quot;Other&quot; Diagonal Matrix</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for diagX {sfsmisc}"><tr><td>diagX {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The &ldquo;Other&rdquo; Diagonal Matrix</h2>
+
+<h3>Description</h3>
+
+<p>Compute the <em>other</em> diagonal identity matrix.
+The result is basically a <em>fast</em> version of <code>diag(n)[, n:1]</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+diagX(n)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>positive integer.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a numeric <i>n * n</i> matrix with many zeros &ndash; apart from
+<code>1</code>s in the <em>other</em> diagonal.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, 1992.</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/diag.html">diag</a></code>.</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+diagX(4)
+for(m in 1:5)
+  stopifnot(identical(diagX(m), diag(m)[, m:1, drop = FALSE]))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-12 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

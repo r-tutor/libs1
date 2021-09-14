@@ -1,0 +1,510 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: R Markdown output formats for (journal) articles</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for acm_article {rticles}"><tr><td>acm_article {rticles}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>R Markdown output formats for (journal) articles</h2>
+
+<h3>Description</h3>
+
+<p>Most article formats are based on <code><a href="../../rmarkdown/help/pdf_document.html">rmarkdown::pdf_document()</a></code>, with a
+custom Pandoc LaTeX template and different default values for other arguments
+(e.g., <code>keep_tex = TRUE</code>).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+acm_article(...)
+
+acs_article(
+  ...,
+  keep_tex = TRUE,
+  md_extensions = c("-autolink_bare_uris"),
+  fig_caption = TRUE
+)
+
+aea_article(..., keep_tex = TRUE, md_extensions = c("-autolink_bare_uris"))
+
+agu_article(
+  ...,
+  keep_tex = TRUE,
+  citation_package = "natbib",
+  highlight = NULL,
+  md_extensions = c("-autolink_bare_uris", "-auto_identifiers")
+)
+
+amq_article(
+  ...,
+  latex_engine = "xelatex",
+  keep_tex = TRUE,
+  fig_caption = TRUE,
+  md_extensions = c("-autolink_bare_uris")
+)
+
+ams_article(..., keep_tex = TRUE, md_extensions = c("-autolink_bare_uris"))
+
+asa_article(..., keep_tex = TRUE, citation_package = "natbib")
+
+arxiv_article(..., keep_tex = TRUE)
+
+bioinformatics_article(..., keep_tex = TRUE, citation_package = "natbib")
+
+biometrics_article(..., keep_tex = TRUE, citation_package = "natbib")
+
+ctex_article(..., template = "default", latex_engine = "xelatex")
+
+ctex(..., template = "default", latex_engine = "xelatex")
+
+elsevier_article(
+  ...,
+  keep_tex = TRUE,
+  md_extensions = c("-autolink_bare_uris")
+)
+
+frontiers_article(..., keep_tex = TRUE)
+
+glossa_article(..., keep_tex = TRUE, latex_engine = "xelatex")
+
+ims_article(
+  journal = c("aoas", "aap", "aop", "aos", "sts"),
+  keep_tex = TRUE,
+  citation_package = "natbib",
+  md_extensions = c("-autolink_bare_uris"),
+  pandoc_args = NULL,
+  ...
+)
+
+jasa_article(
+  ...,
+  keep_tex = TRUE,
+  latex_engine = "xelatex",
+  citation_package = "natbib"
+)
+
+lipics_article(
+  ...,
+  latex_engine = "xelatex",
+  keep_tex = TRUE,
+  citation_package = "natbib",
+  md_extensions = c("-autolink_bare_uris", "-auto_identifiers")
+)
+
+jedm_article(..., keep_tex = TRUE, citation_package = "natbib")
+
+mdpi_article(..., keep_tex = TRUE)
+
+mnras_article(..., keep_tex = TRUE, fig_caption = TRUE)
+
+oup_article(..., keep_tex = TRUE, md_extensions = c("-autolink_bare_uris"))
+
+peerj_article(..., keep_tex = TRUE)
+
+pihph_article(
+  ...,
+  keep_tex = TRUE,
+  latex_engine = "xelatex",
+  citation_package = "biblatex"
+)
+
+plos_article(..., keep_tex = TRUE, md_extensions = c("-autolink_bare_uris"))
+
+pnas_article(..., keep_tex = TRUE)
+
+sage_article(..., highlight = NULL, citation_package = "natbib")
+
+sim_article(..., highlight = NULL, citation_package = "natbib")
+
+springer_article(..., keep_tex = TRUE, citation_package = "default")
+
+tf_article(..., keep_tex = TRUE, citation_package = "natbib")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>..., keep_tex, latex_engine, citation_package, highlight, fig_caption, md_extensions, template, pandoc_args</code></td>
+<td>
+<p>Arguments passed to <code style="white-space: pre;">rmarkdown::[pdf_document]()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>journal</code></td>
+<td>
+<p>one of <code>"aoas"</code>, <code>"aap"</code>, <code>"aop"</code>, <code>"aos"</code>, <code>"sts"</code> for <code>ims_article</code></p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An R Markdown output format.
+</p>
+
+
+<h3>Details</h3>
+
+<p>You can find more details about each output format below.
+</p>
+
+
+<h3><code>acm_article</code></h3>
+
+<p>Format for creating an Association for Computing
+Machinery (ACM) articles. Adapted from
+<a href="https://www.acm.org/publications/proceedings-template">https://www.acm.org/publications/proceedings-template</a>.
+</p>
+
+
+<h3><code>acs_article</code></h3>
+
+<p>Format for creating an American Chemical Society
+(ACS) Journal articles. Adapted from
+<a href="https://pubs.acs.org/page/4authors/submission/tex.html">https://pubs.acs.org/page/4authors/submission/tex.html</a>.
+</p>
+
+
+<h3><code>aea_article</code></h3>
+
+<p>Format for creating submissions to the American
+Economic Association (AER, AEJ, JEL, PP).
+</p>
+
+
+<h3><code>agu_article</code></h3>
+
+<p>Format for creating a American Geophysical Union
+(AGU) article. Adapted from
+<a href="https://www.agu.org/Publish-with-AGU/Publish/#1">https://www.agu.org/Publish-with-AGU/Publish/#1</a>.
+</p>
+
+
+<h3><code>amq_article</code></h3>
+
+<p>Ce format a été adapté du format du bulletin de
+l'AMQ.
+</p>
+
+
+<h3><code>ams_article</code></h3>
+
+<p>Format for creating an American Meteorological
+Society (AMS) Journal articles. Adapted from
+<a href="https://www.ametsoc.org/ams/index.cfm/publications/authors/journal-and-bams-authors/author-resources/latex-author-info/">https://www.ametsoc.org/ams/index.cfm/publications/authors/journal-and-bams-authors/author-resources/latex-author-info/</a>.
+</p>
+
+
+<h3><code>asa_article</code></h3>
+
+<p>This format was adapted from The American
+Statistican (TAS) format, but it should be fairly consistent across
+American Statistical Association (ASA) journals.
+</p>
+
+
+<h3><code>arxiv_article</code></h3>
+
+<p>Adapted from the George Kour's format for
+arXiv and bio-arXiv preprints. So far as I'm aware, entirely
+unofficial but still a staple.
+</p>
+
+
+<h3><code>bioinformatics_article</code></h3>
+
+<p>Format for creating submissions to a Bioinformatics journal. Adapted from
+<a href="https://academic.oup.com/bioinformatics/pages/submission_online">https://academic.oup.com/bioinformatics/pages/submission_online</a>.
+</p>
+
+
+<h3><code>biometrics_article</code></h3>
+
+<p>This format was adapted from the
+Biometrics journal.
+</p>
+
+
+<h3><code>ctex_article</code></h3>
+
+<p>A wrapper function for
+<code><a href="../../rmarkdown/help/pdf_document.html">rmarkdown::pdf_document()</a></code> and the default value of
+<code>latex_engine</code> is changed to <code>xelatex</code>, so it works better for
+typesetting Chinese documents with the LaTeX package <span class="pkg">ctex</span>. The
+function <code>ctex</code> is an alias of <code>ctex_article</code>.
+</p>
+
+
+<h3><code>elsevier_article</code></h3>
+
+<p>Format for creating submissions to Elsevier
+journals. Adapted from
+<a href="https://www.elsevier.com/authors/policies-and-guidelines/latex-instructions">https://www.elsevier.com/authors/policies-and-guidelines/latex-instructions</a>.
+</p>
+
+
+<h3><code>frontiers_article</code></h3>
+
+<p>Format for creating Frontiers journal
+articles. Adapted from
+<a href="https://www.frontiersin.org/about/author-guidelines">https://www.frontiersin.org/about/author-guidelines</a>.
+</p>
+
+
+<h3><code>glossa_article</code></h3>
+
+<p>Format for creating submissions to Glossa: a
+journal of general linguistics. Author Guidelines are available on
+<a href="https://www.glossa-journal.org/site/author-guidelines/">www.glossa-journal.org</a>.
+Template is adapted from <a href="https://github.com/guidovw/Glossalatex">https://github.com/guidovw/Glossalatex</a>.
+</p>
+
+
+<h3><code>ims_article</code></h3>
+
+<p>Format for creating submissions to the Institute of Mathematical Statistics
+<a href="https://imstat.org/">IMS</a> journals and publications. Adapted from
+<a href="https://github.com/vtex-soft/texsupport.ims-aoas">https://github.com/vtex-soft/texsupport.ims-aoas</a>.
+</p>
+<p>The argument <code>journal</code> accepts the acronym of any of the
+<a href="https://www.e-publications.org/ims/support/ims-instructions.html">journals</a> in IMS:
+</p>
+
+<ul>
+<li> <p><code>aap</code>: The Annals of Applied Probability
+</p>
+</li>
+<li> <p><code>aoas</code>: The Annals of Applied Statistics
+</p>
+</li>
+<li> <p><code>aop</code>: The Annals of Probability
+</p>
+</li>
+<li> <p><code>aos</code>: The Annals of Statistics
+</p>
+</li>
+<li> <p><code>sts</code>: Statistical Science
+</p>
+</li></ul>
+
+
+
+<h3><code>jasa_article</code></h3>
+
+<p>Format for creating submissions to the
+Journal of the Acoustical Society of America. Adapted from
+<a href="https://acousticalsociety.org/preparing-latex-manuscripts/">https://acousticalsociety.org/preparing-latex-manuscripts/</a>.
+</p>
+
+
+<h3><code>lipics_article</code></h3>
+
+<p>Format for creating submissions to
+LIPIcs - Leibniz International Proceedings Informatics - articles.
+Adapted from the official Instructions for Authors at
+<a href="https://submission.dagstuhl.de/documentation/authors">https://submission.dagstuhl.de/documentation/authors</a> and the
+template from the archive <code>authors-lipics-v2019.zip</code> downloaded
+with version tag v2019.2. The template is provided under The LaTeX
+Project Public License (LPPL), Version 1.3c.
+</p>
+
+
+<h3><code>jedm_article</code></h3>
+
+<p>Format for creating Journal of Educational
+Data Mining (JEDM) articles. Adapted from
+<a href="https://jedm.educationaldatamining.org/index.php/JEDM/information/authors">https://jedm.educationaldatamining.org/index.php/JEDM/information/authors</a>.
+</p>
+
+
+<h3><code>mdpi_article</code></h3>
+
+<p>Format for creating submissions to
+Multidisciplinary Digital Publishing Institute (MDPI) journals. Adapted
+from <a href="https://www.mdpi.com/authors/latex">https://www.mdpi.com/authors/latex</a>.
+</p>
+
+
+<h3><code>mnras_article</code></h3>
+
+<p>Format for creating an Monthly Notices of
+Royal Astronomical Society (MNRAS) Journal articles. Adapted from
+<a href="https://ras.ac.uk">https://ras.ac.uk</a>.
+</p>
+
+
+<h3><code>oup_article</code></h3>
+
+<p>Format for creating submissions to many Oxford University Press
+journals. Adapted from
+<a href="https://academic.oup.com/journals/pages/authors/preparing_your_manuscript">https://academic.oup.com/journals/pages/authors/preparing_your_manuscript</a>
+and <a href="https://academic.oup.com/icesjms/pages/General_Instructions">https://academic.oup.com/icesjms/pages/General_Instructions</a>.
+</p>
+
+
+<h3><code>peerj_article</code></h3>
+
+<p>Format for creating submissions to The PeerJ
+Journal. This was adapted from the
+<a href="https://www.overleaf.com/latex/templates/latex-template-for-peerj-journal-and-pre-print-submissions/ptdwfrqxqzbn">PeerJ Overleaf Template</a>.
+</p>
+
+
+<h3><code>pihph_article</code></h3>
+
+<p>Format for creating submissions to the Papers
+in Historical Phonology
+(<a href="http://journals.ed.ac.uk/pihph/about/submissions">http://journals.ed.ac.uk/pihph/about/submissions</a>). Adapted from
+<a href="https://github.com/pihph/templates">https://github.com/pihph/templates</a>. This format works well with
+<code>latex_engine = "xelatex"</code> and <code>citation_package="biblatex"</code>,
+which are the default. It may not work correctly if you change these value.
+In that case, please open an issue and, a PR to contribute a change in the
+template.
+</p>
+
+
+<h3><code>plos_article</code></h3>
+
+<p>Format for creating submissions to PLOS
+journals. Adapted from <a href="https://journals.plos.org/ploscompbiol/s/latex">https://journals.plos.org/ploscompbiol/s/latex</a>.
+</p>
+
+
+<h3><code>pnas_article</code></h3>
+
+<p>Format for creating submissions to PNAS
+journals.
+</p>
+
+
+<h3><code>sage_article</code></h3>
+
+<p>Format for creating submissions to Sage
+Journals. Based on the official Sage Journals
+<code style="white-space: pre;">https://uk.sagepub.com/sites/default/files/sage_latex_template_4.zip</code>class.
+</p>
+<p>Possible arguments for the YAML header are:
+</p>
+
+<ul>
+<li> <p><code>title</code> title of the manuscript
+</p>
+</li>
+<li> <p><code>runninghead</code> short author list for header
+</p>
+</li>
+<li> <p><code>author</code> list of authors, containing <code>name</code> and <code>num</code>
+</p>
+</li>
+<li> <p><code>address</code> list containing <code>num</code> and <code>org</code> for defining <code>author</code> affiliations
+</p>
+</li>
+<li> <p><code>corrauth</code> corresponding author name and address
+</p>
+</li>
+<li> <p><code>email</code> correspondence email
+</p>
+</li>
+<li> <p><code>abstract</code> abstract, limited to 200 words
+</p>
+</li>
+<li> <p><code>keywords</code> keywords for the article
+</p>
+</li>
+<li> <p><code>bibliography</code> BibTeX <code>.bib</code> file name
+</p>
+</li>
+<li> <p><code>classoption</code> options of the <code>sagej</code> class
+</p>
+</li>
+<li> <p><code>header-includes</code>: custom additions to the header, before the <code style="white-space: pre;">\begin{document}</code> statement
+</p>
+</li>
+<li> <p><code>include-after</code>: for including additional LaTeX code before the <code style="white-space: pre;">\end\{document}</code> statement
+</p>
+</li></ul>
+
+
+
+<h3><code>sim_article</code></h3>
+
+<p>Format for creating submissions to Statistics in
+Medicine. Based on the official Statistics in Medicine
+<a href="http://onlinelibrary.wiley.com/journal/10.1002/(ISSN)1097-0258/homepage/la_tex_class_file.htm">class</a>.
+</p>
+<p>Possible arguments for the YAML header are:
+</p>
+
+<ul>
+<li> <p><code>title</code> title of the manuscript
+</p>
+</li>
+<li> <p><code>author</code> list of authors, containing <code>name</code> and <code>num</code>
+</p>
+</li>
+<li> <p><code>address</code> list containing <code>num</code> and <code>org</code> for defining <code>author</code> affiliations
+</p>
+</li>
+<li> <p><code>presentaddress</code> not sure what they mean with this
+</p>
+</li>
+<li> <p><code>corres</code> author and address for correspondence
+</p>
+</li>
+<li> <p><code>authormark</code> short author list for header
+</p>
+</li>
+<li> <p><code>received</code>, <code>revised</code>, <code>accepted</code> dates of submission, revision, and acceptance of the manuscript
+</p>
+</li>
+<li> <p><code>abstract</code> abstract, limited to 250 words
+</p>
+</li>
+<li> <p><code>keywords</code> up to 6 keywords
+</p>
+</li>
+<li> <p><code>bibliography</code> BibTeX <code>.bib</code> file
+</p>
+</li>
+<li> <p><code>classoption</code> options of the <code>WileyNJD-v2</code> class
+</p>
+</li>
+<li> <p><code>longtable</code> set to <code>true</code> to include the <code>longtable</code> package, used by default from <code>pandoc</code> to convert markdown to LaTeX code
+</p>
+</li>
+<li> <p><code>header-includes</code>: custom additions to the header, before the <code style="white-space: pre;">\begin{document}</code> statement
+</p>
+</li>
+<li> <p><code>include-after</code>: for including additional LaTeX code before the <code style="white-space: pre;">\end{document}</code> statement
+</p>
+</li></ul>
+
+
+
+<h3><code>springer_article</code></h3>
+
+<p>This format was adapted from the Springer
+Macro package for Springer Journals.
+</p>
+
+
+<h3><code>tf_article</code></h3>
+
+<p>Format for creating submissions to a Taylor &amp; Francis journal. Adapted from
+<span class="samp">https://www.tandf.co.uk/journals/authors/InteractCADLaTeX.zip</span>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+rmarkdown::draft("MyArticle.Rmd", template = "acm", package = "rticles")
+rmarkdown::draft("MyArticle.Rmd", template = "asa", package = "rticles")
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rticles</em> version 0.21 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

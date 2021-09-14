@@ -1,6 +1,17 @@
+.evalwith               Convert an object to evaluating environment for
+                        list elements Users should not directly use
+                        this function
 List                    Create a 'List environment' that wraps given
                         'data' and most list functions are defined for
                         chainable operations.
+args_env                create an environment for args
+args_list               create a list for args
+callwith                Evaluate a function with a modified default
+                        values
+contains                Test if a vector contains certain values
+dots                    Substitute ...
+getnames                Get the names of an object
+is.empty                Check if an object is empty (has length 0)
 list.all                Examine if a condition is true for all elements
                         of a list
 list.any                Examine if a condition is true for at least one
@@ -84,6 +95,7 @@ list.which              Give the indices of list elements satisfying a
 list.zip                Combine multiple lists element-wisely.
 nyweather               New York hourly weather data
 rlist-package           The rlist package
+set_argnames            Make names for unnamed symbol arguments
 subset.list             Subset a list by a logical condition
 tryEval                 Try to evaluate an expression and return a
                         default value if an error occurs or otherwise

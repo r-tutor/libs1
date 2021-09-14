@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Generate Sequences, Equidistant on Log Scale</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for lseq {sfsmisc}"><tr><td>lseq {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Generate Sequences, Equidistant on Log Scale</h2>
+
+<h3>Description</h3>
+
+<p>Generate sequences which are equidistant on a log-scale.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+lseq(from, to, length)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>from</code></td>
+<td>
+<p>starting value of sequence.</p>
+</td></tr>
+<tr valign="top"><td><code>to</code></td>
+<td>
+<p>end value of the sequence.</p>
+</td></tr>
+<tr valign="top"><td><code>length</code></td>
+<td>
+<p>desired length of the sequence.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a <code><a href="../../base/html/numeric.html">numeric</a></code> vector of length <code>length</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/seq.html">seq</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+(x &lt;- lseq(1, 990, length= 21))
+plot(x, x^4,    type = "b", col = 2, log = "xy")
+if(with(R.version, major &gt;= 2 &amp;&amp; minor &gt;= 1))
+plot(x, exp(x), type = "b", col = 2, log = "xy")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-12 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

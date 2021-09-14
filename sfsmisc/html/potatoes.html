@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Fisher's Potato Crop Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for potatoes {sfsmisc}"><tr><td>potatoes {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Fisher's Potato Crop Data</h2>
+
+<h3>Description</h3>
+
+<p>Fisher's potato crop data set is of historical interest as an early
+example of a multi-factor block design.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>data(potatoes)</pre>
+
+
+<h3>Format</h3>
+
+<p>A data frame with 64 observations on the following 5 variables.
+</p>
+
+<dl>
+<dt>pos</dt><dd><p>a factor with levels <code>1:4</code>.</p>
+</dd>
+<dt>treat</dt><dd><p>a factor with 16 levels <code>A</code> to <code>H</code> and
+<code>J</code> to <code>Q</code>, i.e., <code>LETTERS[1:17][-9]</code>.</p>
+</dd>
+<dt>nitrogen</dt><dd><p>a factor specifying the amount of nitrogen
+sulfate (<i>NH_4</i>), with the four levels <code>0,1,2,4</code>.</p>
+</dd>
+<dt>potash</dt><dd><p>a factor specifying the amount of potassium (K,
+&lsquo;kalium&rsquo;) sulfate, with the four levels <code>0,1,2,4</code>.</p>
+</dd>
+<dt>yield</dt><dd><p>a numeric vector giving the yield of potatoes in ...</p>
+</dd></dl>
+
+
+
+
+<h3>Source</h3>
+
+<p>Bennett, J. H. (1972)
+<em>Collected Papers of R. A. Fischer</em> vol.~II, 1925-31;
+The University of Adelaide.
+
+
+</p>
+
+
+<h3>References</h3>
+
+<p>T.Eden and R. A. Fisher (1929)
+Studies in Crop Variation. VI. Experiments on the Response of the
+Potato to Potash and Nitrogen.
+<em>J. Agricultural Science</em> <b>19</b>, 201&ndash;213.
+Accessible from Bennett (1972), see above.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(potatoes)
+## See the experimental design:
+with(potatoes, {
+     cat("4 blocks of experiments;",
+         "each does every (nitrogen,potash) combination (aka 'treat'ment) once.",
+         '', sep="\n")
+     print(ftable(table(nitrogen, potash, treat)))
+     print(ftable(tt &lt;- table(pos,potash,nitrogen)))
+     tt[cbind(pos,potash,nitrogen)] &lt;- as.character(treat)
+     cat("The 4 blocks  pos = 1, 2, 3, 4:\n")
+     ftable(tt)
+     })
+## First plot:
+with(potatoes, interaction.plot(potash,nitrogen, response=yield))
+
+## ANOVAs:
+summary(aov(yield ~ nitrogen * potash + Error(pos), data = potatoes))
+    # "==&gt;" can use simply
+summary(aov(yield ~ nitrogen + potash + pos, data = potatoes))
+    # and
+summary(aov(yield ~ nitrogen + potash, data = potatoes))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-12 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot a Step Function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for plotStep {sfsmisc}"><tr><td>plotStep {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot a Step Function</h2>
+
+<h3>Description</h3>
+
+<p>Plots a step function
+f(x)= <i>sum(i; y[i] *
+    Ind[t[i-1], t[i])(x))</i>, i.e., a piecewise constant function of one variable.
+With one argument, plots <b>the</b> empirical cumulative distribution
+function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+plotStep(ti, y,
+          cad.lag = TRUE,
+          verticals = !cad.lag,
+          left.points= cad.lag, right.points= FALSE, end.points= FALSE,
+	  add = FALSE,
+	  pch = par('pch'),
+          xlab=deparse(substitute(ti)), ylab=deparse(substitute(y)),
+          main=NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>ti</code></td>
+<td>
+<p>numeric vector = <code>X[1:N]</code> or  <code>t[0:n]</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>numeric vector <code>y[1:n]</code>; if omitted take y = k/N
+for empirical CDF.</p>
+</td></tr>
+<tr valign="top"><td><code>cad.lag</code></td>
+<td>
+<p>logical: Draw 'cad.lag', i.e., &ldquo;<em>continue à
+droite, limite à gauche</em>&rdquo;.  Default = TRUE.</p>
+</td></tr>
+<tr valign="top"><td><code>verticals</code></td>
+<td>
+<p>logical: Draw vertical lines?  Default= <code>! cad.lag</code></p>
+</td></tr>
+<tr valign="top"><td><code>left.points</code></td>
+<td>
+<p>logical: Draw left points?     Default= <code>cad.lag</code></p>
+</td></tr>
+<tr valign="top"><td><code>right.points</code></td>
+<td>
+<p>logical: Draw right points?    Default= <code>FALSE</code></p>
+</td></tr>
+<tr valign="top"><td><code>end.points</code></td>
+<td>
+<p>logical: Draw 2 end points?    Default= <code>FALSE</code></p>
+</td></tr>
+<tr valign="top"><td><code>add</code></td>
+<td>
+<p>logical: Add to existing plot?    Default= <code>FALSE</code></p>
+</td></tr>
+<tr valign="top"><td><code>pch</code></td>
+<td>
+<p>plotting character for points, see <code><a href="../../graphics/html/par.html">par</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>xlab,ylab</code></td>
+<td>
+<p>labels of x- and y-axis</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>main title; defaults to the call' if you do not want a title,
+use <code>main = ""</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Any valid argument to <code><a href="../../graphics/html/plot.default.html">plot</a>(..)</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><b>invisibly</b>:  List with components <code>t</code> and <code>y</code>.
+</p>
+
+
+<h3>Side Effects</h3>
+
+<p>Calls plot(..), points(..),  segments(..) appropriately
+and plots on current graphics device.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler, Seminar for Statistics, ETH Zurich,
+<a href="mailto:maechler@stat.math.ethz.ch">maechler@stat.math.ethz.ch</a>, 1991 ff.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>The <code><a href="../../graphics/html/plot.default.html">plot</a></code> methods <code><a href="../../stats/html/ecdf.html">plot.ecdf</a></code> and
+<code><a href="../../stats/html/plot.stepfun.html">plot.stepfun</a></code> in <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> which are conceptually nicer.
+</p>
+<p><code><a href="../../graphics/html/segments.html">segments</a>(..., method = "constant")</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+##-- Draw an Empirical CDF  (and see the default title ..)
+plotStep(rnorm(15))
+
+plotStep(runif(25), cad.lag=FALSE)
+plotStep(runif(25), cad.lag=FALSE, add=TRUE, lty = 2)
+
+ui &lt;- sort(runif(20))
+plotStep(ui, ni &lt;- cumsum(rpois(19, lambda=1.5) - 1.5), cad.lag = FALSE)
+plotStep(ui, ni, verticals = TRUE, right.points = TRUE)
+
+plotStep(rnorm(201), pch = '.') #- smaller points
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-12 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

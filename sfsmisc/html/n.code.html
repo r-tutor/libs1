@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert &quot;Round&quot; Integers to Short Strings and Back</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for n.code {sfsmisc}"><tr><td>n.code {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert &quot;Round&quot; Integers to Short Strings and Back</h2>
+
+<h3>Description</h3>
+
+<p><code>n.code</code> convert &ldquo;round integers&rdquo; to short character strings.
+This is useful to build up variable names in simulations, e.g.
+</p>
+<p><code>code2n</code> is the <em>inverse</em> function of <code>n.code()</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+n.code(n,    ndig = 1, dec.codes = c("", "d", "c", "k"))
+code2n(ncod, ndig = 1, dec.codes = c("", "d", "c", "k"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>integer vector.</p>
+</td></tr>
+<tr valign="top"><td><code>ncod</code></td>
+<td>
+<p>character vector, typically resulting from
+<code>n.code</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>ndig</code></td>
+<td>
+<p>integer giving number of digits before the coding character.</p>
+</td></tr>
+<tr valign="top"><td><code>dec.codes</code></td>
+<td>
+<p>character code for 1, 10, 100, 1000 (etc).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>n.code(n)</code> returns a <code><a href="../../base/html/character.html">character</a></code> vector of the same
+length as <code>n</code>.
+</p>
+<p><code>code2n(ncod)</code> returns a <code><a href="../../base/html/integer.html">integer</a></code> vector of the same
+length as <code>ncod</code>.
+</p>
+<p>Usually, <code>code2n(n.code(n)) == n</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+n10 &lt;-  c(10,20,90, 100,500, 2000,10000)
+(c10 &lt;- n.code(n10))#-&gt; "1d" "2d" "9d" "1c" ..
+stopifnot(code2n(c10) == n10)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-12 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

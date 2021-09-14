@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Kumulative Verteilung Aufzeichnen</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for cum.Vert.funkt {sfsmisc}"><tr><td>cum.Vert.funkt {sfsmisc}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Kumulative Verteilung Aufzeichnen</h2>
+
+<h3>Description</h3>
+
+<p>Kumulative Verteilung von <code>x</code> aufzeichnen, auf Wunsch auch Median
+und Quartile.
+</p>
+<p>This is just an old German language version of
+<code><a href="../../stats/help/plot.ecdf.html">plot.ecdf</a>()</code> used for teaching at ETHZ.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cum.Vert.funkt(x, Quartile = TRUE, titel = TRUE, Datum = TRUE,
+               rang.axis = n &lt;= 20, xlab = "", main = "", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>numeric vector whose empirical distribution should be plotted.</p>
+</td></tr>
+<tr valign="top"><td><code>Quartile</code></td>
+<td>
+<p>logical indicating if all 3 non-trivial quartiles
+should be drawn.</p>
+</td></tr>
+<tr valign="top"><td><code>titel</code></td>
+<td>
+<p>logical indicating if a German title should be drawn.</p>
+</td></tr>
+<tr valign="top"><td><code>Datum</code></td>
+<td>
+<p>logical indicating if <code><a href="../../sfsmisc/help/p.datum.html">p.datum</a></code> should be added.</p>
+</td></tr>
+<tr valign="top"><td><code>rang.axis</code></td>
+<td>
+<p>logical indicating if all the ranks should be marked at
+the y-axis.  Defaults to true if there are not more than 20 observations.</p>
+</td></tr>
+<tr valign="top"><td><code>xlab, main</code></td>
+<td>
+<p>x-axis label and main title; default to empty.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>optional further arguments, passed to <code><a href="../../sfsmisc/help/plotStep.html">plotStep</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>the return value of <code><a href="../../sfsmisc/help/plotStep.html">plotStep</a>()</code> which is called
+internally, <em>invisibly</em>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Maechler et al.</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../sfsmisc/help/plotStep.html">plotStep</a></code> on which it is based; but you should
+really consider using <code><a href="../../stats/help/plot.ecdf.html">plot.ecdf</a>()</code> from the
+<span class="pkg">stats</span> package instead of this.</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+cum.Vert.funkt(runif(12))
+cum.Vert.funkt(runif(20))
+
+Z &lt;- rnorm(50)
+cum.Vert.funkt(Z)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sfsmisc</em> version 1.1-12 <a href="00Index.html">Index</a>]</div>
+</div></body></html>
