@@ -1,8 +1,13 @@
 
-#ifndef miraculix_initrinsics_H
-#define miraculix_initrinsics_H 1
+#ifndef randomfieldsutils_intrinsics_H
+#define randomfieldsutils_intrinsics_H 1
 
-#include <inttypes.h> // uintptr_t
+#ifdef PRINTF
+#error "intrinsics.h not very first"
+#endif
+
+#include<inttypes.h> // uintptr_t
+
 
 // PKG_CXXFLAGS =  $(SHLIB_OPENMP_CXXFLAGS) -mavx ODER -march=native 
 #ifdef __MMX__
@@ -142,11 +147,12 @@
 #endif
 
 #define algn_general(X)  ((1L + (uintptr_t) (((uintptr_t) X - 1L) / BytesPerBlock)) * BytesPerBlock)
-double inline *algn(double *X) {assert(algn_general(X)>=(uintptr_t)X); return (double *) algn_general(X); }
-int inline *algnInt(int *X) {assert(algn_general(X)>=(uintptr_t)X); return (int *) algn_general(X); }
+double inline *algn(double *X) {return (double *) algn_general(X); }
+int inline *algnInt(int *X) {return (int *) algn_general(X); }
 #define ALIGNED __attribute__ ((aligned (BytesPerBlock)))
 #define doubles (BytesPerBlock / 8)
 #define integers (BytesPerBlock / 8)
+
 
 #endif
 

@@ -27,9 +27,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef rfutils_options_H
 #define rfutils_options_H 1
 
-#include <R.h>
-#include <Rdefines.h>
-#include "Basic_utils.h"
 #include "Solve.h"
 
 
@@ -47,7 +44,7 @@ extern int PL, CORES;
 #define LEN_OPTIONNAME 201
 
 #define basicN 9
-// IMPORTANT: all names of basic must be at least 3 letters long !!!
+// IMPORTANT: all names of basic must be at least 3 letters large !!!
 extern const char *basic[basicN];
 typedef struct basic_param {
   int 

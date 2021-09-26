@@ -28,10 +28,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef kleinkram_rfutils_h
 #define kleinkram_rfutils_h 1
 
-#include <R.h>
-#include <Rinternals.h>
-#include "Basic_utils.h" //#include "local1.h"
-
 typedef char name_type[][MAXCHAR];
 
 void strcopyN(char *dest, const char *src, int n);

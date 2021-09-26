@@ -1,6 +1,16 @@
 # Please note that **rgdal** will be retired by the end of 2023, plan transition to sf/stars/terra functions using GDAL and PROJ at your earliest convenience.
 
-# Version 1.5-25 (development, rev. 1122-1140)
+# Version 1.5-27 (development, rev. 1149-)
+
+* Correcting logic error in check for MXE UCRT builds (temporary)
+
+# Version 1.5-26 (2021-09-15, rev. 1141-1148)
+
+* Mute use of PROJ CDN for MXE UCRT builds (temporary)
+
+* Run autoupdate on configure.ac to handle obsolete AC_HELP_STRING etc.
+
+# Version 1.5-25 (2021-09-08, rev. 1122-1140)
 
 * Add environment variable access to --with-data-copy by PROJ_GDAL_DATA_COPY (https://github.com/r-spatial/sf/issues/1605)
 

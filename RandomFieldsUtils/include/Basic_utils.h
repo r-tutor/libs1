@@ -27,8 +27,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef __cplusplus
 #include <stdbool.h>
 #endif
+
 #include <R.h>
 #include <Rmath.h>
+#include <Rinternals.h>
 #include "AutoRandomFieldsUtils.h"
 
 
@@ -68,10 +70,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 #define DOPRINT true
-//#define SCHLATHERS_MACHINE 1
+//// 1
 
 
-// #define HIDE_UNUSED_VARIABLE 1
+// // 1
 
 
 #ifdef __cplusplus
@@ -120,7 +122,7 @@ typedef enum usr_bool {
 #define INFDIM MAXINT
 #define INFTY INFDIM
 
-#define LENGTH length // safety, in order not to use LENGTH defined by R
+#define LENGTH length // safety, to avoid use LENGTH defined by R
 #define complex Rcomplex
 #define DOT "."
 #define GAUSS_RANDOM(SIGMA) rnorm(0.0, SIGMA)
@@ -153,21 +155,21 @@ typedef enum usr_bool {
 #define ACOS std::acos
 #define ASIN std::asin
 #define ATAN std::atan
-#define CEIL(X) std::ceil((double) X) // keine Klammern um X!
+#define CEIL(X) std::ceil((double) X) // OK keine Klammern um X!
 #define COS std::cos
 #define EXP std::exp
-#define FABS(X) std::fabs((double) X) // keine Klammern um X!
+#define FABS(X) std::fabs((double) X) // OK keine Klammern um X!
 #define FLOOR std::floor
 #define LOG std::log
-#define POW(X, Y) R_pow((double) X, (double) Y) // keine Klammern um X!
-#define SIGN(X) sign((double) X)
+#define POW(X, Y) R_pow((double) X, (double) Y) // OK keine Klammern um X!
+#define SIGN(X) sign((double) X) // OK
 #define SIN std::sin
-#define SQRT(X) std::sqrt((double) X)
-#define STRCMP(A, B) std::strcmp(A, B)
-#define STRCPY(A, B) std::strcpy(A, B)
+#define SQRT(X) std::sqrt((double) X) // OK
+#define STRCMP(A, B) std::strcmp(A, B) // OK
+#define STRCPY(A, B) std::strcpy(A, B) // OK
 #define STRLEN std::strlen
-#define STRNCMP(A, B, C) std::strncmp(A, B, C)
-#define STRNCPY(A, B, N) strcopyN(A, B, N)
+#define STRNCMP(A, B, C) std::strncmp(A, B, C) // OK
+#define STRNCPY(A, B, N) strcopyN(A, B, N) // OK
 #define TAN std::tan
 #define MEMCOPYX std::memcpy
 #define MEMSET std::memset  
@@ -176,22 +178,20 @@ typedef enum usr_bool {
 #define MALLOCX std::malloc
 #define FREEX std::free
 #define SPRINTF std::sprintf //
-#define ROUND(X) ownround((double) X)
-#define TRUNC(X) ftrunc((double) X) // keine Klammern um X!
+#define ROUND(X) ownround((double) X) // OK
+#define TRUNC(X) ftrunc((double) X) // OK keine Klammern um X!
 #define QSORT std::qsort
-
-
-#define PRINTF Rprintf //
-#ifdef SCHLATHERS_MACHINE
-#ifdef DO_PARALLEL
-#include <omp.h>
-#undef PRINTF
-#define PRINTF if (omp_get_num_threads() > 1) { error("\n\nnever use Rprintf/PRINTF within parallel constructions!!\n\n"); } else Rprintf // OK
-#endif
-#endif
 
 #define DOPRINTF if (!DOPRINT) {} else PRINTF
 #define print NEVER_USE_print_or_PRINTF_WITHIN_PARALLEL /* // */
 
+#if defined SCHLATHERS_MACHINE && defined DO_PARALLEL
+#define PRINTF if (omp_get_num_threads() > 1) { error("\n\nnever use Rprintf/PRINTF within parallel constructions!!\n\n"); } else Rprintf // OK
+#else
+#define PRINTF Rprintf //
+#endif
+
+#define Long long
+#define Ulong unsigned long
 
 #endif

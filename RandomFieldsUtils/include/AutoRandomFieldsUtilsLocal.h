@@ -4,7 +4,7 @@
 #define PIVOT_NONE 0  
 #define PIVOT_AUTO 1  
 #define PIVOT_DO 2    
-#define PIVOT_IDX 3    // IDX is not returned by RFoptions
+#define PIVOT_IDX 3    // IDX isn't returned by RFoptions
 #define PIVOT_UNDEFINED 4
 #define PIVOTLAST PIVOT_UNDEFINED
 

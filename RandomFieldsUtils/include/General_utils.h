@@ -27,11 +27,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef rfutils_H
 #define rfutils_H 1
 
-#include <R.h>
-#include <Rinternals.h>
-#include <Rmath.h>
-#include <string.h>
-#include "Basic_utils.h"
 #include "errors_messages.h"
 #include "kleinkram.h"
 #include "Solve.h"
@@ -54,7 +49,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // not SCHLATHERS_MACHINE
 #ifndef SCHLATHERS_MACHINE
-#define INTERNAL SERR("Sorry. This functionality does not exist currently. There is work in progress at the moment by the maintainer.")
+#define INTERNAL SERR("Sorry. This functionality doesn't exist currently. There is work in progress at the moment by the maintainer.")
 #define assert(X) {}
 #define BUG {								\
     RFERROR3("Severe error occured in function '%.50s' (file '%.50s', line %d). Please contact maintainer martin.schlather@math.uni-mannheim.de .", \
@@ -69,7 +64,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define XCALLOC CALLOCX
 //
 #define FREE(X) if ((X) != NULL) {FREEX(X); (X)=NULL;}
-//#define FREE(X) if ((X) != NULL) {printf("utils free %.50s %ld Line %d %s\n", #X, (long) X, __LINE__, __FILE__); FREEX(X); (X)=NULL;}
+//#define FREE(X) if ((X) != NULL) {printf("utils free %.50s %ld Line %d %s\n", #X, (Long) X, __LINE__, __FILE__); FREEX(X); (X)=NULL;}
 #define UNCONDFREE(X) {FREEX(X); (X)=NULL;}
 #endif // not SCHLATHERS_MACHINE
 

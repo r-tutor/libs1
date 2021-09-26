@@ -25,8 +25,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #ifndef rfutils_calls_H
 #define rfutils_calls_H 1
-#include <R_ext/Rdynload.h>
-
   
 #define CALL0(V, N)							\
   attribute_hidden V RU_##N() {						\
